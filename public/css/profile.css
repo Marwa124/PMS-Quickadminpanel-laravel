@@ -1,0 +1,19 @@
+.unwrap {
+    margin: -15px;
+}
+
+@media only screen and (min-width: 768px) {
+    .unwrap {
+        margin: -20px;
+    }
+}
+
+.cover-photo {
+    background-image: url(../../asset/img/backgroud_3.png);
+    overflow: hidden;
+}
+
+.bg-cover {
+    background-size: cover;
+}
+

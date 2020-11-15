@@ -1,0 +1,21 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class CreateAttendancesTable extends Migration
+{
+    public function up()
+    {
+        Schema::create('attendances', function (Blueprint $table) {
+            $table->increments('id');
+            $table->date('date_in')->nullable();
+            $table->date('date_out')->nullable();
+            $table->string('attendance_status')->nullable();
+            $table->integer('clocking_status')->nullable();
+            $table->timestamps();
+            $table->softDeletes();
+        });
+    }
+}
