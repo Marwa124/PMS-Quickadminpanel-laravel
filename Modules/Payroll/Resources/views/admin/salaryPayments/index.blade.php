@@ -3,7 +3,7 @@
 @can('salary_payment_create')
     <div style="margin-bottom: 10px;" class="row">
         <div class="col-lg-12">
-            <a class="btn btn-success" href="{{ route('admin.salary-payments.create') }}">
+            <a class="btn btn-success" href="{{ route('payroll.admin.salary-payments.create') }}">
                 {{ trans('global.add') }} {{ trans('cruds.salaryPayment.title_singular') }}
             </a>
         </div>
@@ -71,19 +71,19 @@
                             </td>
                             <td>
                                 @can('salary_payment_show')
-                                    <a class="btn btn-xs btn-primary" href="{{ route('admin.salary-payments.show', $salaryPayment->id) }}">
+                                    <a class="btn btn-xs btn-primary" href="{{ route('payroll.admin.salary-payments.show', $salaryPayment->id) }}">
                                         {{ trans('global.view') }}
                                     </a>
                                 @endcan
 
                                 @can('salary_payment_edit')
-                                    <a class="btn btn-xs btn-info" href="{{ route('admin.salary-payments.edit', $salaryPayment->id) }}">
+                                    <a class="btn btn-xs btn-info" href="{{ route('payroll.admin.salary-payments.edit', $salaryPayment->id) }}">
                                         {{ trans('global.edit') }}
                                     </a>
                                 @endcan
 
                                 @can('salary_payment_delete')
-                                    <form action="{{ route('admin.salary-payments.destroy', $salaryPayment->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                    <form action="{{ route('payroll.admin.salary-payments.destroy', $salaryPayment->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
                                         <input type="hidden" name="_method" value="DELETE">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                         <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
@@ -112,7 +112,7 @@
   let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
   let deleteButton = {
     text: deleteButtonTrans,
-    url: "{{ route('admin.salary-payments.massDestroy') }}",
+    url: "{{ route('payroll.admin.salary-payments.massDestroy') }}",
     className: 'btn-danger',
     action: function (e, dt, node, config) {
       var ids = $.map(dt.rows({ selected: true }).nodes(), function (entry) {

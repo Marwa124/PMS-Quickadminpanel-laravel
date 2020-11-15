@@ -7,7 +7,7 @@
     </div>
 
     <div class="card-body">
-        <form method="POST" action="{{ route("admin.salary-payments.store") }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ route("payroll.admin.salary-payments.store") }}" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
                 <label class="required" for="user_id">{{ trans('cruds.salaryPayment.fields.user') }}</label>

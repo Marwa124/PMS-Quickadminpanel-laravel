@@ -234,12 +234,14 @@
             selectFilter: $(this).val(),
         },
         success: function(data){
-            console.log(data);
-            // $('tbody').html(data)
+            // console.log(data);
+            $('tbody').html(data)
         }
     })
 
   })
+
+
 
 })
 

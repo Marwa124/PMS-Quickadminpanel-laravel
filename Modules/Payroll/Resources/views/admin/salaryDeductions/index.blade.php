@@ -3,7 +3,7 @@
 @can('salary_deduction_create')
     <div style="margin-bottom: 10px;" class="row">
         <div class="col-lg-12">
-            <a class="btn btn-success" href="{{ route('admin.salary-deductions.create') }}">
+            <a class="btn btn-success" href="{{ route('payroll.admin.salary-deductions.create') }}">
                 {{ trans('global.add') }} {{ trans('cruds.salaryDeduction.title_singular') }}
             </a>
         </div>
@@ -61,7 +61,7 @@
 
 
                                 @can('salary_deduction_delete')
-                                    <form action="{{ route('admin.salary-deductions.destroy', $salaryDeduction->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                    <form action="{{ route('payroll.admin.salary-deductions.destroy', $salaryDeduction->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
                                         <input type="hidden" name="_method" value="DELETE">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                         <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
@@ -90,7 +90,7 @@
   let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
   let deleteButton = {
     text: deleteButtonTrans,
-    url: "{{ route('admin.salary-deductions.massDestroy') }}",
+    url: "{{ route('payroll.admin.salary-deductions.massDestroy') }}",
     className: 'btn-danger',
     action: function (e, dt, node, config) {
       var ids = $.map(dt.rows({ selected: true }).nodes(), function (entry) {

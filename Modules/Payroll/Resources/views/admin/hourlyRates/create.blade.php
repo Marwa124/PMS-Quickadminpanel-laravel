@@ -7,7 +7,7 @@
     </div>
 
     <div class="card-body">
-        <form method="POST" action="{{ route("admin.hourly-rates.store") }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ route("payroll.admin.hourly-rates.store") }}" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
                 <label class="required" for="hourly_grade">{{ trans('cruds.hourlyRate.fields.hourly_grade') }}</label>

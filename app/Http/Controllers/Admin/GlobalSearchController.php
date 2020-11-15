@@ -12,7 +12,7 @@ class GlobalSearchController extends Controller
         'User'           => 'cruds.user.title',
         'Employee'       => 'cruds.employee.title',
         'TimeWorkType'   => 'cruds.timeWorkType.title',
-        'Department'    => 'cruds.department.title',
+        'Department'     => 'cruds.department.title',
         'Designation'    => 'cruds.designation.title',
         'AccountDetail'  => 'cruds.accountDetail.title',
         'Holiday'        => 'cruds.holiday.title',

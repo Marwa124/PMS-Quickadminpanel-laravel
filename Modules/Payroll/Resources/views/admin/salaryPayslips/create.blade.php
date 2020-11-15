@@ -7,7 +7,7 @@
     </div>
 
     <div class="card-body">
-        <form method="POST" action="{{ route("admin.salary-payslips.store") }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ route("payroll.admin.salary-payslips.store") }}" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
                 <label for="payslip_number">{{ trans('cruds.salaryPayslip.fields.payslip_number') }}</label>

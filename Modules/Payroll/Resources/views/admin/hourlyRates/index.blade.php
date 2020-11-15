@@ -3,7 +3,7 @@
 @can('hourly_rate_create')
     <div style="margin-bottom: 10px;" class="row">
         <div class="col-lg-12">
-            <a class="btn btn-success" href="{{ route('admin.hourly-rates.create') }}">
+            <a class="btn btn-success" href="{{ route('payroll.admin.hourly-rates.create') }}">
                 {{ trans('global.add') }} {{ trans('cruds.hourlyRate.title_singular') }}
             </a>
         </div>
@@ -55,7 +55,7 @@
 
 
                                 @can('hourly_rate_delete')
-                                    <form action="{{ route('admin.hourly-rates.destroy', $hourlyRate->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                    <form action="{{ route('payroll.admin.hourly-rates.destroy', $hourlyRate->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
                                         <input type="hidden" name="_method" value="DELETE">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                         <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
@@ -84,7 +84,7 @@
   let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
   let deleteButton = {
     text: deleteButtonTrans,
-    url: "{{ route('admin.hourly-rates.massDestroy') }}",
+    url: "{{ route('payroll.admin.hourly-rates.massDestroy') }}",
     className: 'btn-danger',
     action: function (e, dt, node, config) {
       var ids = $.map(dt.rows({ selected: true }).nodes(), function (entry) {

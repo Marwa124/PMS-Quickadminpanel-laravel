@@ -7,7 +7,7 @@
     </div>
 
     <div class="card-body">
-        <form method="POST" action="{{ route("admin.salary-payment-deductions.update", [$salaryPaymentDeduction->id]) }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ route("payroll.admin.salary-payment-deductions.update", [$salaryPaymentDeduction->id]) }}" enctype="multipart/form-data">
             @method('PUT')
             @csrf
             <div class="form-group">
