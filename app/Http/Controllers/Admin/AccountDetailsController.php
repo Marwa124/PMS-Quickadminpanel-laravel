@@ -32,20 +32,22 @@ class AccountDetailsController extends Controller
         $accountDetails = [];
         $users = User::where('banned', 0)->get();
         // $users = User::all();
-
+        $requestResult = '';
         if (request()->all()) {
             $users = User::where('banned', request()->selectFilter)->get();
-            foreach ($users as $key => $value) {
-                $accountDetails[] = $value->accountDetail()->first();
-            }
-            return view('admin.accountDetails.filter', compact('accountDetails'));
+            $requestResult = request()->selectFilter;
+
+            // foreach ($users as $key => $value) {
+            //     $accountDetails[] = $value->accountDetail()->first();
+            // }
+            // return view('admin.accountDetails.filter', compact('accountDetails'));
         }
 
         foreach ($users as $key => $value) {
             $accountDetails[] = $value->accountDetail()->first();
         }
 
-        return view('admin.accountDetails.index', compact('accountDetails'));
+        return view('admin.accountDetails.index', compact('accountDetails', 'requestResult'));
     }
 
     public function passwordReset(Request $request)

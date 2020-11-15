@@ -14,8 +14,8 @@
     <div style="" class="row d-flex ml-auto">
         <div class="col-lg-12">
             <select data-column="0" class="form-control filter-select" name="" id="">
-                <option value="0">Active Users</option>
-                <option value="1">Unactive Users</option>
+                <option value="0" {{($requestResult == 0) ? 'selected' : ''}}>Active Users</option>
+                <option value="1" {{($requestResult == 1) ? 'selected' : ''}}>Unactive Users</option>
             </select>
         </div>
     </div>
@@ -226,7 +226,6 @@
   $(".filter-select").change(function(){
 // console.log($(this).val());
     $.ajax({
-        // headers: {'x-csrf-token': _token},
         type: 'GET',
         url: "{{route('admin.account-details.index')}}",
         dataType: 'html',
@@ -235,7 +234,7 @@
         },
         success: function(data){
             // console.log(data);
-            $('tbody').html(data)
+            $('body').html(data);
         }
     })
 
