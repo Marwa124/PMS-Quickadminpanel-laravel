@@ -4,7 +4,7 @@
 @inject('leaveAppModel', 'Modules\HR\Entities\LeaveApplication')
 <?php
     try {
-        $department_head_employee = App\Models\AccountDetail::find($leaveApplication->user_id)->designation->department()->first()->department_head_id;
+        $department_head_employee = Modules\HR\Entities\AccountDetail::find($leaveApplication->user_id)->designation->department()->first()->department_head_id;
         $board_members = Modules\HR\Entities\Department::where('department_name', 'Board Members')->orWhere('department_name', 'CEO')->select('department_head_id')->get();
         $arr = [];
         foreach ($board_members as $member) {

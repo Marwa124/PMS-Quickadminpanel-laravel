@@ -23,6 +23,7 @@
         "laraveldaily/laravel-charts": "^0.1.14",
         "maatwebsite/excel": "^3.1",
         "nwidart/laravel-modules": "^7.2",
+        "pusher/pusher-php-server": "~4.0",
         "spatie/laravel-medialibrary": "^7.19",
         "yajra/laravel-datatables-oracle": "^9.9"
     },

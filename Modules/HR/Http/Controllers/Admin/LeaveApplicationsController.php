@@ -2,6 +2,7 @@
 
 namespace Modules\HR\Http\Controllers\Admin;
 
+use App\Events\NewNotification;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\MediaUploadingTrait;
 use Modules\HR\Entities\AccountDetail;
@@ -233,6 +234,14 @@ class LeaveApplicationsController extends Controller
 
         //Notify The user having the same User Id
         //Modify Notify users of role admin and the head dep.
+$data = [
+    // 'message' => User::find($request->user_id)->accountDetail()->first()->fullname . ' wants to apply for leave.',
+    'message' => 'success',
+    'data' => $leaveApplication,
+    'user_id' => 23,
+];
+        event(new NewNotification($data));
+
         $notification->users()->attach($request->user_id);
 
 
@@ -276,6 +285,14 @@ class LeaveApplicationsController extends Controller
         } elseif ($leaveApplication->attachments) {
             $leaveApplication->attachments->delete();
         }
+
+        $data = [
+            // 'message' => User::find($request->user_id)->accountDetail()->first()->fullname . ' wants to apply for leave.',
+            'message' => '',
+            'data' => $leaveApplication,
+            'user_id' => 23,
+        ];
+        event(new NewNotification($data));
 
         return redirect()->route('hr.admin.leave-applications.index');
     }

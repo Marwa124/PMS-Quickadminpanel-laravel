@@ -23,6 +23,24 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/1.5.0/css/perfect-scrollbar.min.css" rel="stylesheet" />
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet" />
     @yield('styles')
+
+<script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+
+<script>
+
+    // Enable pusher logging - don't include this in production
+    Pusher.logToConsole = true;
+
+    var pusher = new Pusher('e04bedee804b5bcedb38', {
+      cluster: 'us2'
+    });
+
+    var channel = pusher.subscribe('new-notification');
+    channel.bind('App\\Events\\NewNotification', function(data) {
+        console.log(data);
+      alert(JSON.stringify(data));
+    });
+  </script>
 </head>
 
 <body class="c-app">
