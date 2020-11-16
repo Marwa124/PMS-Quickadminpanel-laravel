@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="{{asset('css/department.css')}}">
 @endsection
 @section('content')
-@inject('accountDetailModel', 'App\Models\AccountDetail')
+@inject('accountDetailModel', 'Modules\HR\Entities\AccountDetail')
 @inject('userModel', 'App\Models\User')
 @inject('roleModel', 'App\Models\Role')
 @inject('departmentModel', 'Modules\HR\Entities\Department')
@@ -13,13 +13,14 @@
 {{-- Board Members --}}
 <div class="pg-orgchart">
     <div class="org-chart">
+        <?php 
+            $roleMembers = $roleModel::where('title', 'Board Members')->first();
+            $roleAdmin = $roleModel::where('title', 'Admin')->first();
+            $boardMembers = $userModel::where('role_id', $roleMembers->id)->get();
+            $adminMembers = $userModel::where('role_id', $roleAdmin->id)->get();
+        ?>
+        <div style="position: absolute">{{$roleMembers->title}}</div>
         <ul>
-            <?php 
-                $roleMembers = $roleModel::where('title', 'Board Members')->first();
-                $roleAdmin = $roleModel::where('title', 'Admin')->first();
-                $boardMembers = $userModel::where('role_id', $roleMembers->id)->get();
-                $adminMembers = $userModel::where('role_id', $roleAdmin->id)->get();
-            ?>
             @foreach ($boardMembers as $item)
             <?php $accountDetail = $item->accountDetail()->first(); ?>
             <li>
@@ -27,8 +28,8 @@
                     <img src="{{ $accountDetail->avatar ? $accountDetail->avatar->getUrl('thumb') : asset('images/default.png') }}"
                         class="img-responsive" />
                     {{-- <div class="name">Roy Lemarie</div> --}}
-                    <div class="role pt-2">{{$accountDetail->user->role()->first()->title}}</div>
-                    <a class="name text-danger" href="{{route('admin.account-details.show', $accountDetail->select('id')->first()->id)}}">{{$accountDetail->fullname}}</a>
+                    {{-- <div class="role pt-2">{{$accountDetail->user->role()->first()->title}}</div> --}}
+                    <a class="name text-danger d-block" href="{{route('hr.admin.account-details.show', $accountDetail->select('id')->first()->id)}}">{{$accountDetail->fullname}}</a>
                 </div>
             </li>
             @endforeach
@@ -46,11 +47,14 @@
         <ul>
         @foreach ($departmentModel::all() as $department)
         @if ($department->department_name != 'Board Members')
+        <div class="pg-orgchart">
+            <div class="org-chart">
             <li>
                 <div class="user">
                     <div class="name">{{$department->department_name}}</div>
                 </div>
-                <ul>
+            </li>
+                {{-- <ul> --}}
                     <?php 
                         $departmentHead = $department->department_head()->first() ? $department->department_head->accountDetail()->first() : '';
                     ?>
@@ -60,8 +64,8 @@
                             <img src="{{ $departmentHead->avatar ? $departmentHead->avatar->getUrl('thumb') : asset('images/default.png') }}"
                                 class="img-responsive" />
                             <div class="name">{{$departmentHead->designation ? $departmentHead->designation->department()->first()->department_name : ''}}</div>
-                            <div class="role">{{$departmentHead->user->role()->first()->title}}</div>
-                            <a class="manager" href="{{route('admin.account-details.show', $departmentHead->user()->select('id')->first()->id)}}">{{$departmentHead->fullname}}</a>
+                            {{-- <div class="role">{{$departmentHead->user->role()->first()->title}}</div> --}}
+                            <a class="manager" href="{{route('hr.admin.account-details.show', $departmentHead->user()->select('id')->first()->id)}}">{{$departmentHead->fullname}}</a>
                         </div>
                         <ul>
                             <?php 
@@ -77,12 +81,13 @@
 
                             <li>
                                 @if ($leader)
-                                <div class="user">
+                                <div class="user" style="background-color: #ccc;">
                                     <img src="{{ $leader->avatar ? $leader->avatar->getUrl('thumb') : asset('images/default.png') }}"
                                     class="img-responsive" />
-                                    <div class="name">{{$leader->designation ? $leader->designation->department()->first()->department_name : ''}}</div>
-                                    <div class="role">{{$leader->user->role()->first()->title}}</div>
-                                    <a class="manager" href="{{route('admin.account-details.show', $leader->user()->select('id')->first()->id)}}">{{$leader->fullname}}</a>
+                                    {{-- <div class="name">{{$leader->designation ? $leader->designation->department()->first()->department_name : ''}}</div> --}}
+                                    <div class="name">{{$leader->designation()->first()->designation_name}}</div>
+                                    {{-- <div class="role">{{$leader->user->role()->first()->title}}</div> --}}
+                                    <a class="manager" href="{{route('hr.admin.account-details.show', $leader->user()->select('id')->first()->id)}}">{{$leader->fullname}}</a>
                                 </div>
                                 <ul>
                                     <?php 
@@ -94,14 +99,15 @@
                                     ?>
                                     @if ($usersDesignation)
                                     @foreach ($usersDesignation as $item)
-                                    @if ($item)
+                                    @if ($item && $item->id != $leader->id)
                                     <li>
                                         <div class="user">
                                             <img src="{{ $item->avatar ? $item->avatar->getUrl('thumb') : asset('images/default.png') }}"
                                                 class="img-responsive" />
-                                            <div class="name">{{$item->designation->department()->first()->department_name}}</div>
-                                            <div class="role">{{$item->user->role()->first()->title}}</div>
-                                            <a class="manager" href="{{route('admin.account-details.show', $item->user()->select('id')->first()->id)}}">{{$item->fullname}}</a>
+                                            {{-- <div class="name">{{$item->designation->department()->first()->department_name}}</div> --}}
+                                            <div class="name">{{$item->designation()->first()->designation_name}}</div>
+                                            {{-- <div class="role">{{$item->user->role()->first()->title}}</div> --}}
+                                            <a class="manager" href="{{route('hr.admin.account-details.show', $item->user()->select('id')->first()->id)}}">{{$item->fullname}}</a>
                                         </div>
                                     </li>
                                     @endif
@@ -136,8 +142,9 @@
                         </li>
                     </ul> --}}
                     @endif
-                </ul>
-            </li>
+                {{-- </ul>
+            </li> --}}
+            </div></div>
         @endif
         @endforeach
         </ul>
@@ -146,19 +153,4 @@
 </div>
 
 
-
-
-
-
-
-
-
-
-
-@endsection
-
-@section('scripts')
-@parent
-{{-- <script src="https://unpkg.com/@popperjs/core@2"></script> --}}
-<script src="https://unpkg.com/@coreui/coreui/dist/js/coreui.bundle.min.js"></script>
 @endsection

@@ -3,7 +3,7 @@
 namespace Modules\HR\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\AccountDetail;
+use Modules\HR\Entities\AccountDetail;
 use Modules\HR\Http\Requests\Destroy\MassDestroyClientMeetingRequest;
 use Modules\HR\Http\Requests\Store\StoreClientMeetingRequest;
 use Modules\HR\Http\Requests\Update\UpdateClientMeetingRequest;

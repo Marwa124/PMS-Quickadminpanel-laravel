@@ -24,7 +24,7 @@ class OvertimeController extends Controller
 
         $overtimes = Overtime::all();
 
-        return view('admin.overtimes.index', compact('overtimes'));
+        return view('hr::admin.overtimes.index', compact('overtimes'));
     }
 
     public function create()
@@ -33,7 +33,7 @@ class OvertimeController extends Controller
 
         $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        return view('admin.overtimes.create', compact('users'));
+        return view('hr::admin.overtimes.create', compact('users'));
     }
 
     public function store(StoreOvertimeRequest $request)
@@ -44,7 +44,7 @@ class OvertimeController extends Controller
             Media::whereIn('id', $media)->update(['model_id' => $overtime->id]);
         }
 
-        return redirect()->route('admin.overtimes.index');
+        return redirect()->route('hr.admin.overtimes.index');
     }
 
     public function edit(Overtime $overtime)
@@ -55,14 +55,14 @@ class OvertimeController extends Controller
 
         $overtime->load('user');
 
-        return view('admin.overtimes.edit', compact('users', 'overtime'));
+        return view('hr::admin.overtimes.edit', compact('users', 'overtime'));
     }
 
     public function update(UpdateOvertimeRequest $request, Overtime $overtime)
     {
         $overtime->update($request->all());
 
-        return redirect()->route('admin.overtimes.index');
+        return redirect()->route('hr.admin.overtimes.index');
     }
 
     public function show(Overtime $overtime)
@@ -71,7 +71,7 @@ class OvertimeController extends Controller
 
         $overtime->load('user');
 
-        return view('admin.overtimes.show', compact('overtime'));
+        return view('hr::admin.overtimes.show', compact('overtime'));
     }
 
     public function destroy(Overtime $overtime)

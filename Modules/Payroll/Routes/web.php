@@ -11,11 +11,12 @@
 |
 */
 
-Route::prefix('payroll')->group(function() {
-    Route::get('/', 'PayrollController@index');
-});
+// Route::prefix('payroll')->group(function() {
+// });
 
 Route::group(['as' => 'payroll.admin.', 'prefix' => 'admin/payroll', 'namespace' => 'Admin', 'middleware' => ['auth']],function() {
+
+    Route::get('/', 'PayrollController@index');
 
 // Advance Salaries
 Route::delete('advance-salaries/destroy', 'AdvanceSalaryController@massDestroy')->name('advance-salaries.massDestroy');

@@ -3,7 +3,7 @@
 namespace Modules\HR\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\AccountDetail;
+use Modules\HR\Entities\AccountDetail;
 use Modules\HR\Entities\Department;
 use App\Models\User;
 use Gate;

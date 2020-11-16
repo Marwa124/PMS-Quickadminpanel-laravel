@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace Modules\HR\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\MediaUploadingTrait;
-use App\Http\Requests\MassDestroyAccountDetailRequest;
-use App\Http\Requests\StoreAccountDetailRequest;
-use App\Http\Requests\UpdateAccountDetailRequest;
+use Modules\HR\Http\Requests\Destroy\MassDestroyAccountDetailRequest;
+use Modules\HR\Http\Requests\Store\StoreAccountDetailRequest;
+use Modules\HR\Http\Requests\Update\UpdateAccountDetailRequest;
 use App\Http\Requests\UpdatePasswordRequest;
-use App\Models\AccountDetail;
+use Modules\HR\Entities\AccountDetail;
 use Modules\HR\Entities\Designation;
 use Modules\HR\Entities\SetTime;
 use App\Models\User;
@@ -30,24 +30,46 @@ class AccountDetailsController extends Controller
 
         // $accountDetails = AccountDetail::all();
         $accountDetails = [];
-        $users = User::where('banned', 0)->get();
+        // $users = User::where('banned', 0)->get();
+        $users = User::all();
         // $users = User::all();
-        $requestResult = '';
-        if (request()->all()) {
-            $users = User::where('banned', request()->selectFilter)->get();
-            $requestResult = request()->selectFilter;
+        /* !!!: alert */
+        // $requestResult = '';
+        // if (request()->all()) {
+        //     $users = User::where('banned', request()->selectFilter)->get();
+        //     $requestResult = request()->selectFilter;
 
-            // foreach ($users as $key => $value) {
-            //     $accountDetails[] = $value->accountDetail()->first();
-            // }
-            // return view('admin.accountDetails.filter', compact('accountDetails'));
-        }
+        //     // foreach ($users as $key => $value) {
+        //     //     $accountDetails[] = $value->accountDetail()->first();
+        //     // }
+        //     // return view('hr::admin.accountDetails.filter', compact('accountDetails'));
+        // }
 
         foreach ($users as $key => $value) {
             $accountDetails[] = $value->accountDetail()->first();
         }
 
-        return view('admin.accountDetails.index', compact('accountDetails', 'requestResult'));
+        // return view('hr::admin.accountDetails.index', compact('accountDetails', 'requestResult'));
+        return view('hr::admin.accountDetails.index', compact('accountDetails'));
+    }
+
+    public function forceDelete(Request $request)
+    {
+        abort_if(Gate::denies('account_detail_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        // dd($request->all());
+        $id = $request->id;
+        $action = $request->action;
+
+        if ($action == 'delete') {
+            AccountDetail::destroy($id);
+        } else if ($action == 'force_delete') {
+            AccountDetail::onlyTrashed()->where('id', $id)->forceDelete();
+        } else if ($action == 'restore') {
+            AccountDetail::onlyTrashed()->where('id', $id)->restore();
+        }
+
+        return back();
     }
 
     public function passwordReset(Request $request)
@@ -88,7 +110,7 @@ class AccountDetailsController extends Controller
 
         $set_times = SetTime::all()->pluck('name', 'id')->prepend(trans('global.timeTableSelect'), '');
 
-        return view('admin.accountDetails.create', compact('users', 'designations', 'set_times'));
+        return view('hr::admin.accountDetails.create', compact('users', 'designations', 'set_times'));
     }
 
     public function store(StoreAccountDetailRequest $request)
@@ -108,7 +130,7 @@ class AccountDetailsController extends Controller
             Media::whereIn('id', $media)->update(['model_id' => $accountDetail->id]);
         }
 
-        return redirect()->route('admin.account-details.index');
+        return redirect()->route('hr.admin.account-details.index');
     }
 
     public function edit(AccountDetail $accountDetail)
@@ -123,7 +145,7 @@ class AccountDetailsController extends Controller
 
         $accountDetail->load('user', 'designation');
 
-        return view('admin.accountDetails.edit', compact('users', 'designations', 'accountDetail', 'set_times'));
+        return view('hr::admin.accountDetails.edit', compact('users', 'designations', 'accountDetail', 'set_times'));
     }
 
     public function update(UpdateAccountDetailRequest $request, AccountDetail $accountDetail)
@@ -142,7 +164,7 @@ class AccountDetailsController extends Controller
             $accountDetail->avatar->delete();
         }
 
-        return redirect()->route('admin.account-details.index');
+        return redirect()->route('hr.admin.account-details.index');
     }
 
     public function show(AccountDetail $accountDetail)
@@ -152,7 +174,7 @@ class AccountDetailsController extends Controller
         // $accountDetail->load('user', 'designation', 'userUserAlerts');
         $accountDetail->load('user', 'designation', 'setTime');
 
-        return view('admin.accountDetails.show', compact('accountDetail'));
+        return view('hr::admin.accountDetails.show', compact('accountDetail'));
     }
 
     public function destroy(AccountDetail $accountDetail)

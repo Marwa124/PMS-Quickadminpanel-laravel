@@ -7,7 +7,7 @@
     </div>
 
     <div class="card-body">
-        <form method="POST" action="{{ route("admin.employee-awards.store") }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ route("hr.admin.employee-awards.store") }}" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
                 <label class="required" for="name">{{ trans('cruds.employeeAward.fields.name') }}</label>

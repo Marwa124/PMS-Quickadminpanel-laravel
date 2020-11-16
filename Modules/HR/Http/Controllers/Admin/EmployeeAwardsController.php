@@ -20,7 +20,7 @@ class EmployeeAwardsController extends Controller
 
         $employeeAwards = EmployeeAward::all();
 
-        return view('admin.employeeAwards.index', compact('employeeAwards'));
+        return view('hr::admin.employeeAwards.index', compact('employeeAwards'));
     }
 
     public function create()
@@ -29,14 +29,14 @@ class EmployeeAwardsController extends Controller
 
         $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        return view('admin.employeeAwards.create', compact('users'));
+        return view('hr::admin.employeeAwards.create', compact('users'));
     }
 
     public function store(StoreEmployeeAwardRequest $request)
     {
         $employeeAward = EmployeeAward::create($request->all());
 
-        return redirect()->route('admin.employee-awards.index');
+        return redirect()->route('hr.admin.employee-awards.index');
     }
 
     public function edit(EmployeeAward $employeeAward)
@@ -47,14 +47,14 @@ class EmployeeAwardsController extends Controller
 
         $employeeAward->load('user');
 
-        return view('admin.employeeAwards.edit', compact('users', 'employeeAward'));
+        return view('hr::admin.employeeAwards.edit', compact('users', 'employeeAward'));
     }
 
     public function update(UpdateEmployeeAwardRequest $request, EmployeeAward $employeeAward)
     {
         $employeeAward->update($request->all());
 
-        return redirect()->route('admin.employee-awards.index');
+        return redirect()->route('hr.admin.employee-awards.index');
     }
 
     public function show(EmployeeAward $employeeAward)
@@ -63,7 +63,7 @@ class EmployeeAwardsController extends Controller
 
         $employeeAward->load('user');
 
-        return view('admin.employeeAwards.show', compact('employeeAward'));
+        return view('hr::admin.employeeAwards.show', compact('employeeAward'));
     }
 
     public function destroy(EmployeeAward $employeeAward)

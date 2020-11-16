@@ -7,7 +7,7 @@ use App\Http\Controllers\Traits\MediaUploadingTrait;
 use App\Http\Requests\MassDestroyClientRequest;
 use App\Http\Requests\StoreClientRequest;
 use App\Http\Requests\UpdateClientRequest;
-use App\Models\AccountDetail;
+use Modules\HR\Entities\AccountDetail;
 use App\Models\Client;
 use Gate;
 use Illuminate\Http\Request;

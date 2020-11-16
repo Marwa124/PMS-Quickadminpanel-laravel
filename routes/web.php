@@ -92,12 +92,12 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::resource('user-alerts', 'UserAlertsController', ['except' => ['edit', 'update']]);
 
     // Account Details
-    Route::delete('account-details/destroy', 'AccountDetailsController@massDestroy')->name('account-details.massDestroy');
-    Route::post('account-details/media', 'AccountDetailsController@storeMedia')->name('account-details.storeMedia');
-    Route::post('account-details/ckmedia', 'AccountDetailsController@storeCKEditorImages')->name('account-details.storeCKEditorImages');
-    Route::post('account-details/password', 'AccountDetailsController@passwordReset')->name('account-details.passwordReset');
-    Route::get('account-details/filter', 'AccountDetailsController@filterSelect')->name('filter-select');
-    Route::resource('account-details', 'AccountDetailsController');
+    // Route::delete('account-details/destroy', 'AccountDetailsController@massDestroy')->name('account-details.massDestroy');
+    // Route::post('account-details/media', 'AccountDetailsController@storeMedia')->name('account-details.storeMedia');
+    // Route::post('account-details/ckmedia', 'AccountDetailsController@storeCKEditorImages')->name('account-details.storeCKEditorImages');
+    // Route::post('account-details/password', 'AccountDetailsController@passwordReset')->name('account-details.passwordReset');
+    // Route::get('account-details/filter', 'AccountDetailsController@filterSelect')->name('filter-select');
+    // Route::resource('account-details', 'AccountDetailsController');
 
     // Proposals
     Route::delete('proposals/destroy', 'ProposalsController@massDestroy')->name('proposals.massDestroy');
@@ -166,8 +166,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::resource('work-trackings', 'WorkTrackingController');
 
     // Accounts
-    Route::delete('accounts/destroy', 'AccountsController@massDestroy')->name('accounts.massDestroy');
-    Route::resource('accounts', 'AccountsController');
+    // Route::delete('accounts/destroy', 'AccountsController@massDestroy')->name('accounts.massDestroy');
+    // Route::resource('accounts', 'AccountsController');
 
     // Milestones
     Route::delete('milestones/destroy', 'MilestonesController@massDestroy')->name('milestones.massDestroy');

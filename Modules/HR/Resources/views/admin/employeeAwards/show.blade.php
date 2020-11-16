@@ -9,7 +9,7 @@
     <div class="card-body">
         <div class="form-group">
             <div class="form-group">
-                <a class="btn btn-default" href="{{ route('admin.employee-awards.index') }}">
+                <a class="btn btn-default" href="{{ route('hr.admin.employee-awards.index') }}">
                     {{ trans('global.back_to_list') }}
                 </a>
             </div>
@@ -74,7 +74,7 @@
                 </tbody>
             </table>
             <div class="form-group">
-                <a class="btn btn-default" href="{{ route('admin.employee-awards.index') }}">
+                <a class="btn btn-default" href="{{ route('hr.admin.employee-awards.index') }}">
                     {{ trans('global.back_to_list') }}
                 </a>
             </div>

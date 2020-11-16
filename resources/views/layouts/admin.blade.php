@@ -68,7 +68,7 @@
                             @if(count($notifications = \Auth::user()->notifications()->withPivot('is_read')->limit(10)->orderBy('created_at', 'ASC')->get()->reverse()) > 0)
                                 @foreach($notifications as $notify)
                                     <div class="dropdown-item">
-                                        <a href="" target="_blank" rel="noopener noreferrer">
+                                        <a href="{{route($notify->show_path, $notify->model_id)}}" target="_blank" rel="noopener noreferrer">
                                             @if($notify->pivot->is_read === 0) <strong> @endif
                                                 {{ $notify->title }}
                                                 <p class="text-muted fa-sm">{{ implode(' ', array_slice(explode(' ', $notify->content), 0, 5))}}</p>
@@ -119,7 +119,6 @@
                     </li>
                 </ul>
                 <!--End User Alert-->
-
 
             </ul>
         </header>

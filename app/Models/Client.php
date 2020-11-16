@@ -8,6 +8,7 @@ use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
 use \DateTimeInterface;
+use Modules\HR\Entities\AccountDetail;
 
 class Client extends Model implements HasMedia
 {

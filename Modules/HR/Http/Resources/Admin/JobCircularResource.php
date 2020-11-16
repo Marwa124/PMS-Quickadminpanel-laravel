@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Resources\Admin;
+namespace Modules\HR\Http\Resources\Admin;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class attendancesResource extends JsonResource
+class JobCircularResource extends JsonResource
 {
     public function toArray($request)
     {

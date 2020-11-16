@@ -1,20 +1,23 @@
 @extends('layouts.admin')
 @section('content')
 
+@inject('accountDetailModel', 'Modules\HR\Entities\AccountDetail')
+
 <div class="card">
     <div class="card-header">
-        {{ trans('global.edit') }} {{ trans('cruds.accountDetail.title_singular') }}
+        {{ trans('global.create') }} {{ trans('cruds.accountDetail.title_singular') }}
     </div>
 
     <div class="card-body">
-        <form method="POST" action="{{ route("admin.account-details.update", [$accountDetail->id]) }}" enctype="multipart/form-data">
-            @method('PUT')
+        <form method="POST" action="{{ route("hr.admin.account-details.store") }}" enctype="multipart/form-data">
             @csrf
+            <input type="hidden" name="employment_id">
+
             <div class="form-group">
                 <label class="required" for="user_id">{{ trans('cruds.accountDetail.fields.user') }}</label>
                 <select class="form-control select2 {{ $errors->has('user') ? 'is-invalid' : '' }}" name="user_id" id="user_id" required>
                     @foreach($users as $id => $user)
-                        <option value="{{ $id }}" {{ (old('user_id') ? old('user_id') : $accountDetail->user->id ?? '') == $id ? 'selected' : '' }}>{{ $user }}</option>
+                        <option value="{{ $id }}" {{ old('user_id') == $id ? 'selected' : '' }}>{{ $user }}</option>
                     @endforeach
                 </select>
                 @if($errors->has('user'))
@@ -26,7 +29,7 @@
             </div>
             <div class="form-group">
                 <label class="required" for="fullname">{{ trans('cruds.accountDetail.fields.fullname') }}</label>
-                <input class="form-control {{ $errors->has('fullname') ? 'is-invalid' : '' }}" type="text" name="fullname" id="fullname" value="{{ old('fullname', $accountDetail->fullname) }}" required>
+                <input class="form-control {{ $errors->has('fullname') ? 'is-invalid' : '' }}" type="text" name="fullname" id="fullname" value="{{ old('fullname', '') }}" required>
                 @if($errors->has('fullname'))
                     <div class="invalid-feedback">
                         {{ $errors->first('fullname') }}
@@ -35,28 +38,18 @@
                 <span class="help-block">{{ trans('cruds.accountDetail.fields.fullname_helper') }}</span>
             </div>
             <div class="form-group">
-                <label for="employment_id">{{ trans('cruds.accountDetail.fields.employment_id') }}</label>
-                <input disabled class="form-control {{ $errors->has('employment_id') ? 'is-invalid' : '' }}" type="text" name="employment_id" id="employment_id" value="{{ old('employment_id', $accountDetail->employment_id) }}">
-                @if($errors->has('employment_id'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('employment_id') }}
-                    </div>
-                @endif
-                <span class="help-block">{{ trans('cruds.accountDetail.fields.company_helper') }}</span>
-            </div>
-            {{-- <div class="form-group">
                 <label for="company">{{ trans('cruds.accountDetail.fields.company') }}</label>
-                <input class="form-control {{ $errors->has('company') ? 'is-invalid' : '' }}" type="text" name="company" id="company" value="{{ old('company', $accountDetail->company) }}">
+                <input class="form-control {{ $errors->has('company') ? 'is-invalid' : '' }}" type="text" name="company" id="company" value="{{ old('company', '') }}">
                 @if($errors->has('company'))
                     <div class="invalid-feedback">
                         {{ $errors->first('company') }}
                     </div>
                 @endif
                 <span class="help-block">{{ trans('cruds.accountDetail.fields.company_helper') }}</span>
-            </div> --}}
+            </div>
             <div class="form-group">
                 <label for="city">{{ trans('cruds.accountDetail.fields.city') }}</label>
-                <input class="form-control {{ $errors->has('city') ? 'is-invalid' : '' }}" type="text" name="city" id="city" value="{{ old('city', $accountDetail->city) }}">
+                <input class="form-control {{ $errors->has('city') ? 'is-invalid' : '' }}" type="text" name="city" id="city" value="{{ old('city', '') }}">
                 @if($errors->has('city'))
                     <div class="invalid-feedback">
                         {{ $errors->first('city') }}
@@ -66,7 +59,7 @@
             </div>
             <div class="form-group">
                 <label for="country">{{ trans('cruds.accountDetail.fields.country') }}</label>
-                <input class="form-control {{ $errors->has('country') ? 'is-invalid' : '' }}" type="text" name="country" id="country" value="{{ old('country', $accountDetail->country) }}">
+                <input class="form-control {{ $errors->has('country') ? 'is-invalid' : '' }}" type="text" name="country" id="country" value="{{ old('country', '') }}">
                 @if($errors->has('country'))
                     <div class="invalid-feedback">
                         {{ $errors->first('country') }}
@@ -76,7 +69,7 @@
             </div>
             <div class="form-group">
                 <label for="locale">{{ trans('cruds.accountDetail.fields.locale') }}</label>
-                <input class="form-control {{ $errors->has('locale') ? 'is-invalid' : '' }}" type="text" name="locale" id="locale" value="{{ old('locale', $accountDetail->locale) }}">
+                <input class="form-control {{ $errors->has('locale') ? 'is-invalid' : '' }}" type="text" name="locale" id="locale" value="{{ old('locale', '') }}">
                 @if($errors->has('locale'))
                     <div class="invalid-feedback">
                         {{ $errors->first('locale') }}
@@ -86,7 +79,7 @@
             </div>
             <div class="form-group">
                 <label for="address">{{ trans('cruds.accountDetail.fields.address') }}</label>
-                <input class="form-control {{ $errors->has('address') ? 'is-invalid' : '' }}" type="text" name="address" id="address" value="{{ old('address', $accountDetail->address) }}">
+                <input class="form-control {{ $errors->has('address') ? 'is-invalid' : '' }}" type="text" name="address" id="address" value="{{ old('address', '') }}">
                 @if($errors->has('address'))
                     <div class="invalid-feedback">
                         {{ $errors->first('address') }}
@@ -96,7 +89,7 @@
             </div>
             <div class="form-group">
                 <label for="phone">{{ trans('cruds.accountDetail.fields.phone') }}</label>
-                <input class="form-control {{ $errors->has('phone') ? 'is-invalid' : '' }}" type="text" name="phone" id="phone" value="{{ old('phone', $accountDetail->phone) }}">
+                <input class="form-control {{ $errors->has('phone') ? 'is-invalid' : '' }}" type="text" name="phone" id="phone" value="{{ old('phone', '') }}">
                 @if($errors->has('phone'))
                     <div class="invalid-feedback">
                         {{ $errors->first('phone') }}
@@ -106,7 +99,7 @@
             </div>
             <div class="form-group">
                 <label for="mobile">{{ trans('cruds.accountDetail.fields.mobile') }}</label>
-                <input class="form-control {{ $errors->has('mobile') ? 'is-invalid' : '' }}" type="text" name="mobile" id="mobile" value="{{ old('mobile', $accountDetail->mobile) }}">
+                <input class="form-control {{ $errors->has('mobile') ? 'is-invalid' : '' }}" type="text" name="mobile" id="mobile" value="{{ old('mobile', '') }}">
                 @if($errors->has('mobile'))
                     <div class="invalid-feedback">
                         {{ $errors->first('mobile') }}
@@ -116,7 +109,7 @@
             </div>
             <div class="form-group">
                 <label for="skype">{{ trans('cruds.accountDetail.fields.skype') }}</label>
-                <input class="form-control {{ $errors->has('skype') ? 'is-invalid' : '' }}" type="text" name="skype" id="skype" value="{{ old('skype', $accountDetail->skype) }}">
+                <input class="form-control {{ $errors->has('skype') ? 'is-invalid' : '' }}" type="text" name="skype" id="skype" value="{{ old('skype', '') }}">
                 @if($errors->has('skype'))
                     <div class="invalid-feedback">
                         {{ $errors->first('skype') }}
@@ -126,7 +119,7 @@
             </div>
             <div class="form-group">
                 <label for="language">{{ trans('cruds.accountDetail.fields.language') }}</label>
-                <input class="form-control {{ $errors->has('language') ? 'is-invalid' : '' }}" type="text" name="language" id="language" value="{{ old('language', $accountDetail->language) }}">
+                <input class="form-control {{ $errors->has('language') ? 'is-invalid' : '' }}" type="text" name="language" id="language" value="{{ old('language', '') }}">
                 @if($errors->has('language'))
                     <div class="invalid-feedback">
                         {{ $errors->first('language') }}
@@ -138,7 +131,7 @@
                 <label for="designation_id">{{ trans('cruds.accountDetail.fields.designation') }}</label>
                 <select class="form-control select2 {{ $errors->has('designation') ? 'is-invalid' : '' }}" name="designation_id" id="designation_id">
                     @foreach($designations as $id => $designation)
-                        <option value="{{ $id }}" {{ (old('designation_id') ? old('designation_id') : $accountDetail->designation->id ?? '') == $id ? 'selected' : '' }}>{{ $designation }}</option>
+                        <option value="{{ $id }}" {{ old('designation_id') == $id ? 'selected' : '' }}>{{ $designation }}</option>
                     @endforeach
                 </select>
                 @if($errors->has('designation'))
@@ -175,7 +168,7 @@
             </div>
             <div class="form-group">
                 <label for="joining_date">{{ trans('cruds.accountDetail.fields.joining_date') }}</label>
-                <input class="form-control date {{ $errors->has('joining_date') ? 'is-invalid' : '' }}" type="text" name="joining_date" id="joining_date" value="{{ old('joining_date', $accountDetail->joining_date) }}">
+                <input class="form-control date {{ $errors->has('joining_date') ? 'is-invalid' : '' }}" type="text" name="joining_date" id="joining_date" value="{{ old('joining_date') }}">
                 @if($errors->has('joining_date'))
                     <div class="invalid-feedback">
                         {{ $errors->first('joining_date') }}
@@ -185,7 +178,7 @@
             </div>
             <div class="form-group">
                 <label for="present_address">{{ trans('cruds.accountDetail.fields.present_address') }}</label>
-                <input class="form-control {{ $errors->has('present_address') ? 'is-invalid' : '' }}" type="text" name="present_address" id="present_address" value="{{ old('present_address', $accountDetail->present_address) }}">
+                <input class="form-control {{ $errors->has('present_address') ? 'is-invalid' : '' }}" type="text" name="present_address" id="present_address" value="{{ old('present_address', '') }}">
                 @if($errors->has('present_address'))
                     <div class="invalid-feedback">
                         {{ $errors->first('present_address') }}
@@ -195,7 +188,7 @@
             </div>
             <div class="form-group">
                 <label for="date_of_birth">{{ trans('cruds.accountDetail.fields.date_of_birth') }}</label>
-                <input class="form-control date {{ $errors->has('date_of_birth') ? 'is-invalid' : '' }}" type="text" name="date_of_birth" id="date_of_birth" value="{{ old('date_of_birth', $accountDetail->date_of_birth) }}">
+                <input class="form-control date {{ $errors->has('date_of_birth') ? 'is-invalid' : '' }}" type="text" name="date_of_birth" id="date_of_birth" value="{{ old('date_of_birth') }}">
                 @if($errors->has('date_of_birth'))
                     <div class="invalid-feedback">
                         {{ $errors->first('date_of_birth') }}
@@ -205,9 +198,9 @@
             </div>
             <div class="form-group">
                 <label class="required">{{ trans('cruds.accountDetail.fields.gender') }}</label>
-                @foreach(App\Models\AccountDetail::GENDER_RADIO as $key => $label)
+                @foreach($accountDetailModel::GENDER_RADIO as $key => $label)
                     <div class="form-check {{ $errors->has('gender') ? 'is-invalid' : '' }}">
-                        <input class="form-check-input" type="radio" id="gender_{{ $key }}" name="gender" value="{{ $key }}" {{ old('gender', $accountDetail->gender) === (string) $key ? 'checked' : '' }} required>
+                        <input class="form-check-input" type="radio" id="gender_{{ $key }}" name="gender" value="{{ $key }}" {{ old('gender', '') === (string) $key ? 'checked' : '' }} required>
                         <label class="form-check-label" for="gender_{{ $key }}">{{ $label }}</label>
                     </div>
                 @endforeach
@@ -222,8 +215,8 @@
                 <label class="required">{{ trans('cruds.accountDetail.fields.martial_status') }}</label>
                 <select class="form-control {{ $errors->has('martial_status') ? 'is-invalid' : '' }}" name="martial_status" id="martial_status" required>
                     <option value disabled {{ old('martial_status', null) === null ? 'selected' : '' }}>{{ trans('global.pleaseSelect') }}</option>
-                    @foreach(App\Models\AccountDetail::martial_status_SELECT as $key => $label)
-                        <option value="{{ $key }}" {{ old('martial_status', $accountDetail->martial_status) === (string) $key ? 'selected' : '' }}>{{ $label }}</option>
+                    @foreach($accountDetailModel::martial_status_SELECT as $key => $label)
+                        <option value="{{ $key }}" {{ old('martial_status', '') === (string) $key ? 'selected' : '' }}>{{ $label }}</option>
                     @endforeach
                 </select>
                 @if($errors->has('martial_status'))
@@ -235,7 +228,7 @@
             </div>
             <div class="form-group">
                 <label for="father_name">{{ trans('cruds.accountDetail.fields.father_name') }}</label>
-                <input class="form-control {{ $errors->has('father_name') ? 'is-invalid' : '' }}" type="text" name="father_name" id="father_name" value="{{ old('father_name', $accountDetail->father_name) }}">
+                <input class="form-control {{ $errors->has('father_name') ? 'is-invalid' : '' }}" type="text" name="father_name" id="father_name" value="{{ old('father_name', '') }}">
                 @if($errors->has('father_name'))
                     <div class="invalid-feedback">
                         {{ $errors->first('father_name') }}
@@ -245,7 +238,7 @@
             </div>
             <div class="form-group">
                 <label for="mother_name">{{ trans('cruds.accountDetail.fields.mother_name') }}</label>
-                <input class="form-control {{ $errors->has('mother_name') ? 'is-invalid' : '' }}" type="text" name="mother_name" id="mother_name" value="{{ old('mother_name', $accountDetail->mother_name) }}">
+                <input class="form-control {{ $errors->has('mother_name') ? 'is-invalid' : '' }}" type="text" name="mother_name" id="mother_name" value="{{ old('mother_name', '') }}">
                 @if($errors->has('mother_name'))
                     <div class="invalid-feedback">
                         {{ $errors->first('mother_name') }}
@@ -255,7 +248,7 @@
             </div>
             <div class="form-group">
                 <label for="passport">{{ trans('cruds.accountDetail.fields.passport') }}</label>
-                <input class="form-control {{ $errors->has('passport') ? 'is-invalid' : '' }}" type="text" name="passport" id="passport" value="{{ old('passport', $accountDetail->passport) }}">
+                <input class="form-control {{ $errors->has('passport') ? 'is-invalid' : '' }}" type="text" name="passport" id="passport" value="{{ old('passport', '') }}">
                 @if($errors->has('passport'))
                     <div class="invalid-feedback">
                         {{ $errors->first('passport') }}
@@ -265,9 +258,9 @@
             </div>
             <div class="form-group">
                 <label>{{ trans('cruds.accountDetail.fields.direction') }}</label>
-                @foreach(App\Models\AccountDetail::DIRECTION_RADIO as $key => $label)
+                @foreach($accountDetailModel::DIRECTION_RADIO as $key => $label)
                     <div class="form-check {{ $errors->has('direction') ? 'is-invalid' : '' }}">
-                        <input class="form-check-input" type="radio" id="direction_{{ $key }}" name="direction" value="{{ $key }}" {{ old('direction', $accountDetail->direction) === (string) $key ? 'checked' : '' }}>
+                        <input class="form-check-input" type="radio" id="direction_{{ $key }}" name="direction" value="{{ $key }}" {{ old('direction', 'ltr') === (string) $key ? 'checked' : '' }}>
                         <label class="form-check-label" for="direction_{{ $key }}">{{ $label }}</label>
                     </div>
                 @endforeach
@@ -294,7 +287,7 @@
 @section('scripts')
 <script>
     Dropzone.options.avatarDropzone = {
-    url: '{{ route('admin.account-details.storeMedia') }}',
+    url: '{{ route('hr.admin.account-details.storeMedia') }}',
     maxFilesize: 1, // MB
     acceptedFiles: '.jpeg,.jpg,.png,.gif',
     maxFiles: 1,
@@ -345,23 +338,5 @@
         return _results
     }
 }
-
-
-
-
-// $(document).ready(function () {
-//     $("#add_more_comments_attachement").click(function () {
-//         var new_comments_attachement = $('<div class="form-group" style="margin-bottom: 0px">\n\
-//         <div class="col-sm-8">\n\
-//         <div class="fileinput fileinput-new" data-provides="fileinput">\n\
-// <span class="btn btn-default btn-file"><span class="fileinput-new" >Select file</span><span class="fileinput-exists" >Change</span><input type="file" name="comments_attachment[]" ></span> <span class="fileinput-filename"></span><a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none;">&times;</a></div></div>\n\<div class="col-sm-4">\n\<strong>\n\
-// <a href="javascript:void(0);" class="c_remCF"><i class="fa fa-times"></i>&nbsp;Remove</a></strong></div>');
-//         $("#new_comments_attachement").append(new_comments_attachement);
-//     });
-
-//     $("#new_comments_attachement").on('click', '.c_remCF', function () {
-//         $(this).parent().parent().parent().remove();
-//     });
-// });
 </script>
 @endsection

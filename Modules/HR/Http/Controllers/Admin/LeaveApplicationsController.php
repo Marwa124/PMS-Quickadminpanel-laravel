@@ -4,7 +4,7 @@ namespace Modules\HR\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\MediaUploadingTrait;
-use App\Models\AccountDetail;
+use Modules\HR\Entities\AccountDetail;
 use App\Models\Notification;
 use Modules\HR\Http\Requests\Destroy\MassDestroyLeaveApplicationRequest;
 use Modules\HR\Http\Requests\Store\StoreLeaveApplicationRequest;
@@ -228,6 +228,7 @@ class LeaveApplicationsController extends Controller
             'content' => User::find($request->user_id)->accountDetail()->first()->fullname . ' wants to apply for leave.',
             'model_id' => $leaveApplication->id,
             'model_type' => 'Modules\HR\Entities\LeaveApplication',
+            'show_path' => 'hr.admin.leave-applications.show',
         ]);
 
         //Notify The user having the same User Id
@@ -285,7 +286,7 @@ class LeaveApplicationsController extends Controller
         // $array = explode('.', $leaveApplication->attachments->getUrl());
         // $extension = strtolower(end($array));
         // dd($extension);
-        $attachment = str_replace('storage', 'storage/app/public', $leaveApplication->attachments->getUrl());
+        $attachment = $leaveApplication->attachments ? str_replace('storage', 'storage/app/public', $leaveApplication->attachments->getUrl()) : '';
 
         // $v = str_replace(env('APP_URL').'/storage', env('APP_URL').'/storage/app/public', $leaveApplication->attachments->getUrl());
 

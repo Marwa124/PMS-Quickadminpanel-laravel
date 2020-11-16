@@ -144,7 +144,7 @@
                                 @endcan
                                 @can('account_detail_access')
                                     <li class="c-sidebar-nav-item">
-                                        <a href="{{ route("admin.account-details.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/account-details") || request()->is("admin/account-details/*") ? "active" : "" }}">
+                                        <a href="{{ route("hr.admin.account-details.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/account-details") || request()->is("admin/account-details/*") ? "active" : "" }}">
                                             <i class="fa-fw fas fa-cogs c-sidebar-nav-icon">
                                             </i>
                                             Employees Details
@@ -330,7 +330,7 @@
                     @endcan
                     @can('account_access')
                         <li class="c-sidebar-nav-item">
-                            <a href="{{ route("admin.accounts.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/accounts") || request()->is("admin/accounts/*") ? "active" : "" }}">
+                            <a href="{{ route("hr.admin.accounts.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/accounts") || request()->is("admin/accounts/*") ? "active" : "" }}">
                                 <i class="fa-fw fas fa-money-check-alt c-sidebar-nav-icon">
 
                                 </i>

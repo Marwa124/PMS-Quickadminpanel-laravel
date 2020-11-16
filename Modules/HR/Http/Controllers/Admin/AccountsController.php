@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace Modules\HR\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\MassDestroyAccountRequest;
-use App\Http\Requests\StoreAccountRequest;
-use App\Http\Requests\UpdateAccountRequest;
-use App\Models\Account;
+use Modules\HR\Http\Requests\Destroy\MassDestroyAccountRequest;
+use Modules\HR\Http\Requests\Store\StoreAccountRequest;
+use Modules\HR\Http\Requests\Update\UpdateAccountRequest;
+use Modules\HR\Entities\Account;
 use App\Models\Permission;
 use Gate;
 use Illuminate\Http\Request;
@@ -22,7 +22,7 @@ class AccountsController extends Controller
 
         $permissions = Permission::get();
 
-        return view('admin.accounts.index', compact('accounts', 'permissions'));
+        return view('hr::admin.accounts.index', compact('accounts', 'permissions'));
     }
 
     public function create()
@@ -31,7 +31,7 @@ class AccountsController extends Controller
 
         $permissions = Permission::all()->pluck('title', 'id');
 
-        return view('admin.accounts.create', compact('permissions'));
+        return view('hr::admin.accounts.create', compact('permissions'));
     }
 
     public function store(StoreAccountRequest $request)
@@ -39,7 +39,7 @@ class AccountsController extends Controller
         $account = Account::create($request->all());
         $account->permissions()->sync($request->input('permissions', []));
 
-        return redirect()->route('admin.accounts.index');
+        return redirect()->route('hr.admin.accounts.index');
     }
 
     public function edit(Account $account)
@@ -50,7 +50,7 @@ class AccountsController extends Controller
 
         $account->load('permissions');
 
-        return view('admin.accounts.edit', compact('permissions', 'account'));
+        return view('hr::admin.accounts.edit', compact('permissions', 'account'));
     }
 
     public function update(UpdateAccountRequest $request, Account $account)
@@ -58,7 +58,7 @@ class AccountsController extends Controller
         $account->update($request->all());
         $account->permissions()->sync($request->input('permissions', []));
 
-        return redirect()->route('admin.accounts.index');
+        return redirect()->route('hr.admin.accounts.index');
     }
 
     public function show(Account $account)
@@ -67,7 +67,7 @@ class AccountsController extends Controller
 
         $account->load('permissions');
 
-        return view('admin.accounts.show', compact('account'));
+        return view('hr::admin.accounts.show', compact('account'));
     }
 
     public function destroy(Account $account)

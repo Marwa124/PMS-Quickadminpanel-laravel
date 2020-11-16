@@ -15,12 +15,11 @@ use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
 use \DateTimeInterface;
 use Modules\HR\Entities\Absence;
+use Modules\HR\Entities\AccountDetail;
 use Modules\HR\Entities\Department;
 use Modules\HR\Entities\Designation;
 use Modules\HR\Entities\LeaveApplication;
 use Modules\HR\Entities\Vacation;
-
-// use App\Models\AccountDetail;
 
 class User extends Authenticatable implements HasMedia
 {

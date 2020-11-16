@@ -3,7 +3,10 @@
     <link href="{{ asset('css/profile.css') }}" rel="stylesheet" />
 @endsection
 @section('content')
-<div class="row">
+
+@inject('leaveCategoryModel', 'Modules\HR\Entities\LeaveCategory')
+
+<div class="row" style="background-color: #ccc;">
     <div class="row col-sm-4"></div>
     <div class="col-sm-3">
         <div class="">
@@ -111,8 +114,6 @@
                             </div>
                             {{-- End Modal --}}
 
-
-
                             </span> </div>
                             @endif
 
@@ -128,7 +129,39 @@
         </div>
         <div class="tab-pane fade" id="v-pills-bank" role="tabpanel" aria-labelledby="v-pills-bank-tab">...</div>
         <div class="tab-pane fade" id="v-pills-salary" role="tabpanel" aria-labelledby="v-pills-salary-tab">...</div>
-        <div class="tab-pane fade" id="v-pills-leaves" role="tabpanel" aria-labelledby="v-pills-leaves-tab">...</div>
+        <div class="tab-pane fade" id="v-pills-leaves" role="tabpanel" aria-labelledby="v-pills-leaves-tab">
+            
+            {{-- Leave Details --}}
+            <div class="card">
+                <h5 class="card-header">Leave Details Of {{$accountDetail->fullname}}</h5>
+                <div class="card-body">
+                    @foreach ($leaveCategoryModel::all() as $item)
+                        <div class="row">
+                            <div class="col-md-6">{{$item->name}}</div>
+                            <div class="col-md-6">???/{{$item->leave_quota}}</div>
+                        </div>
+                    @endforeach
+                    <div class="card-footer">
+                       <div class="row">
+                           <div class="col-md-6">Total:</div>
+                           <div class="col-md-6">
+                               <?php 
+                                    $total = 0;
+                                    foreach ($leaveCategoryModel::select('leave_quota')->get() as $key => $value) {
+                                        $var = (int) $value->leave_quota;
+                                        $total += $var; 
+                                    } 
+                               ?>
+                               {{$total}}
+                           </div>
+                       </div>
+                      </div>
+                </div>
+              </div>
+              {{-- Leave Details --}}
+
+
+        </div>
         <div class="tab-pane fade" id="v-pills-timecard" role="tabpanel" aria-labelledby="v-pills-timecard-tab">...</div>
         <div class="tab-pane fade" id="v-pills-tasks" role="tabpanel" aria-labelledby="v-pills-tasks-tab">...</div>
         <div class="tab-pane fade" id="v-pills-projects" role="tabpanel" aria-labelledby="v-pills-projects-tab">...</div>
@@ -147,14 +180,9 @@
         var confirm_pass = $('input[name=password_confirmation]').val();
         var token = $('input[name=_token]').val();
         var user_id = $('input[name=userId]').val();
-        console.log(old_pass);
-        console.log(new_pass);
-        console.log(confirm_pass);
-        console.log(token);
-        console.log(user_id);
         $.ajax({
             type: 'POST',
-            url: "{{route('admin.account-details.passwordReset')}}",
+            url: "{{route('hr.admin.account-details.passwordReset')}}",
             data: {
                 _token: token,
                 old_password: old_pass,

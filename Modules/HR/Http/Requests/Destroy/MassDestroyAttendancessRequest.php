@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Requests;
+namespace Modules\HR\Http\Requests\Destroy;
 
-use App\Models\AccountDetail;
+use Modules\HR\Entities\attendances;
 use Gate;
 use Illuminate\Foundation\Http\FormRequest;
 use Symfony\Component\HttpFoundation\Response;
 
-class MassDestroyAccountDetailRequest extends FormRequest
+class MassDestroyAttendancesRequest extends FormRequest
 {
     public function authorize()
     {
-        abort_if(Gate::denies('account_detail_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('attendances_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return true;
     }
@@ -20,7 +20,7 @@ class MassDestroyAccountDetailRequest extends FormRequest
     {
         return [
             'ids'   => 'required|array',
-            'ids.*' => 'exists:account_details,id',
+            'ids.*' => 'exists:attendances,id',
         ];
     }
 }

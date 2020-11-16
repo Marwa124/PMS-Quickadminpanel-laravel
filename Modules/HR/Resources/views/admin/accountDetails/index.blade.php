@@ -5,19 +5,29 @@
     @can('account_detail_create')
         <div style="margin-bottom: 10px;" class="row">
             <div class="col-lg-12">
-                <a class="btn btn-success" href="{{ route('admin.account-details.create') }}">
+                <a class="btn btn-success" href="{{ route('hr.admin.account-details.create') }}">
                     {{ trans('global.add') }} {{ trans('cruds.accountDetail.title_singular') }}
                 </a>
             </div>
         </div>
     @endcan
-    <div style="" class="row d-flex ml-auto">
-        <div class="col-lg-12">
-            <select data-column="0" class="form-control filter-select" name="" id="">
-                <option value="0" {{($requestResult == 0) ? 'selected' : ''}}>Active Users</option>
-                <option value="1" {{($requestResult == 1) ? 'selected' : ''}}>Unactive Users</option>
-            </select>
-        </div>
+    <div class="row d-flex ml-auto">
+        {{-- <div style="" class="row d-flex ml-auto"> --}}
+            <div class="col-lg-12">
+                <select data-column="0" class="form-control filter-select" name="" id="">
+                    <option value="0">Active Users</option>
+                    <option value="1">Unactive Users</option>
+                </select>
+            </div>
+        {{-- </div>
+        <div style="" class="row d-flex ml-auto"> --}}
+            {{-- <div class="col-md-6">
+                <select data-column="1" class="form-control filter-deleted" name="" id="">
+                    <option value="">Untrashed</option>
+                    <option value="trashed">Trashed</option>
+                </select>
+            </div> --}}
+        {{-- </div> --}}
     </div>
 </div>
 <div class="card">
@@ -48,8 +58,14 @@
                             {{ trans('cruds.accountDetail.fields.phone_number') }}
                         </th>
                         <th>
+                            Banned
+                        </th>
+                        <th>
                             {{ trans('cruds.accountDetail.fields.joining_date') }}
                         </th>
+                        {{-- <th>
+                            Deleted at
+                        </th> --}}
                         <th>
                             {{ trans('cruds.accountDetail.fields.designation') }}
                         </th>
@@ -112,8 +128,14 @@
                                 {{ $accountDetail->mobile ?? '' }}
                             </td>
                             <td>
+                                {{ $accountDetail->user->banned ?? '' }}
+                            </td>
+                            <td>
                                 {{ $accountDetail->joining_date ?? '' }}
                             </td>
+                            {{-- <td>
+                                {{ $accountDetail->deleted_at ?? '' }}
+                            </td> --}}
                             <td>
                                 {{ $accountDetail->designation->designation_name ?? '' }}
                             </td>
@@ -138,25 +160,47 @@
                                 {{ App\Models\AccountDetail::GENDER_RADIO[$accountDetail->gender] ?? '' }}
                             </td> --}}
                             <td>
-                                @can('account_detail_show')
-                                    <a class="btn btn-xs btn-primary" href="{{ route('admin.account-details.show', $accountDetail->id) }}">
-                                        {{ trans('global.view') }}
-                                    </a>
-                                @endcan
+                                <div class="defaultBtns">
+                                    @can('account_detail_show')
+                                        <a class="btn btn-xs btn-primary" href="{{ route('hr.admin.account-details.show', $accountDetail->id) }}">
+                                            {{ trans('global.view') }}
+                                        </a>
+                                    @endcan
 
-                                @can('account_detail_edit')
-                                    <a class="btn btn-xs btn-info" href="{{ route('admin.account-details.edit', $accountDetail->id) }}">
-                                        {{ trans('global.edit') }}
-                                    </a>
-                                @endcan
+                                    @can('account_detail_edit')
+                                        <a class="btn btn-xs btn-info" href="{{ route('hr.admin.account-details.edit', $accountDetail->id) }}">
+                                            {{ trans('global.edit') }}
+                                        </a>
+                                    @endcan
 
-                                @can('account_detail_delete')
-                                    <form action="{{ route('admin.account-details.destroy', $accountDetail->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
-                                        <input type="hidden" name="_method" value="DELETE">
+                                    @can('account_detail_delete')
+                                        <form action="{{ route('hr.admin.account-details.destroy', $accountDetail->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                            <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
+                                        </form>
+                                    @endcan
+                                </div>
+                                <div class="restoreDelete">
+                                    @can('account_detail_delete')
+                                    <form action="{{ route('hr.admin.account-details.forceDestroy', $accountDetail->id) }}" method="POST" style="display: inline-block;">
+                                        <input type="hidden" name="_method" value="POST">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                        <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
+                                        <input type="hidden" name="id" value="{{$accountDetail->id}}">
+                                        <input type="hidden" name="action" value="restore">
+                                        <input type="submit" class="btn btn-xs btn-success restore" value="Restore">
                                     </form>
-                                @endcan
+                                    <form action="{{ route('hr.admin.account-details.forceDestroy', $accountDetail->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                        <input type="hidden" name="_method" value="POST">
+                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                        <input type="hidden" name="id" value="{{$accountDetail->id}}">
+                                        <input type="hidden" name="action" value="force_delete">
+                                        <input type="submit" class="btn btn-xs btn-danger forceDestroy" value="Force Delete">
+                                    </form>
+                                    @endcan
+                                </div>
+
+
 
                             </td>
 
@@ -177,12 +221,16 @@
 @parent
 <script>
     $(function () {
+        $('.restoreDelete').css('display', 'none');
+
+
+
   let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
 // @can('account_detail_delete')
 //   let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
 //   let deleteButton = {
 //     text: deleteButtonTrans,
-//     url: "{{ route('admin.account-details.massDestroy') }}",
+//     url: "{{ route('hr.admin.account-details.massDestroy') }}",
 //     className: 'btn-danger',
 //     action: function (e, dt, node, config) {
 //       var ids = $.map(dt.rows({ selected: true }).nodes(), function (entry) {
@@ -218,27 +266,57 @@
         buttons: [dtButtons, 'colvis'],
     })
 
+    // Hide columns
+    table.columns( [6] ).visible( false );
+    table.columns([6]).search( 0 ).draw(); // set a default load in datatable column (Active Users)
+
+
   $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e){
       $($.fn.dataTable.tables(true)).DataTable()
           .columns.adjust();
   });
 
-  $(".filter-select").change(function(){
-// console.log($(this).val());
-    $.ajax({
-        type: 'GET',
-        url: "{{route('admin.account-details.index')}}",
-        dataType: 'html',
-        data: {
-            selectFilter: $(this).val(),
-        },
-        success: function(data){
-            // console.log(data);
-            $('body').html(data);
-        }
-    })
+  $('.filter-select').on('change', function () {
+    table
+        .column(6)
+        .search($(this).val())
+        .draw()
+    });
 
-  })
+    
+    // $('.filter-deleted').on('change', function () {
+      
+    //   $('.defaultBtns').css('display', 'none');
+    //   console.log($('.filter-deleted').val());
+
+    //   if ($('.filter-deleted').val() != 1) {
+    //     $('.restoreDelete').css('display', 'block');
+    //     $('.defaultBtns').css('display', 'none');
+    //   }else{
+    //     $('.restoreDelete').css('display', 'none');
+    //     $('.defaultBtns').css('display', 'block');
+    //   }
+    // table
+    //     .column(8)
+    //     .search($(this).val())
+    //     .draw()
+    // });
+//   $(".filter-select").change(function(){
+// // console.log($(this).val());
+//     $.ajax({
+//         type: 'GET',
+//         url: "{{route('hr.admin.account-details.index')}}",
+//         dataType: 'html',
+//         data: {
+//             selectFilter: $(this).val(),
+//         },
+//         success: function(data){
+//             // console.log(data);
+//             $('body').html(data);
+//         }
+//     })
+
+//   })
 
 
 

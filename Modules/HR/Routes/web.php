@@ -25,6 +25,19 @@ Route::post('front/job-applications/{id}', 'HRController@jobApplicationStore')->
 
 Route::group(['as' => 'hr.admin.', 'prefix' => 'admin/hr', 'namespace' => 'Admin', 'middleware' => ['auth']],function() {
 
+    // Account Details
+    Route::delete('account-details/destroy', 'AccountDetailsController@massDestroy')->name('account-details.massDestroy');
+    Route::post('account-details/media', 'AccountDetailsController@storeMedia')->name('account-details.storeMedia');
+    Route::post('account-details/ckmedia', 'AccountDetailsController@storeCKEditorImages')->name('account-details.storeCKEditorImages');
+    Route::post('account-details/password', 'AccountDetailsController@passwordReset')->name('account-details.passwordReset');
+    Route::post('account-details/force-destroy/{id}', 'AccountDetailsController@forceDelete')->name('account-details.forceDestroy');
+    // Route::get('account-details/filter', 'AccountDetailsController@filterSelect')->name('filter-select');
+    Route::resource('account-details', 'AccountDetailsController');
+    
+    // Accounts
+    Route::delete('accounts/destroy', 'AccountsController@massDestroy')->name('accounts.massDestroy');
+    Route::resource('accounts', 'AccountsController');
+    
     //working days
 	Route::get('working-days', 'WorkingDayController@index')->name('working-days.index');
     Route::post('working-days/update/', 'WorkingDayController@update')->name('working-days.update');

@@ -3,15 +3,16 @@
 
 <div class="card">
     <div class="card-header">
-        {{ trans('global.create') }} {{ trans('cruds.account.title_singular') }}
+        {{ trans('global.edit') }} {{ trans('cruds.account.title_singular') }}
     </div>
 
     <div class="card-body">
-        <form method="POST" action="{{ route("admin.accounts.store") }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ route("hr.admin.accounts.update", [$account->id]) }}" enctype="multipart/form-data">
+            @method('PUT')
             @csrf
             <div class="form-group">
                 <label class="required" for="name">{{ trans('cruds.account.fields.name') }}</label>
-                <input class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" type="text" name="name" id="name" value="{{ old('name', '') }}" required>
+                <input class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" type="text" name="name" id="name" value="{{ old('name', $account->name) }}" required>
                 @if($errors->has('name'))
                     <div class="invalid-feedback">
                         {{ $errors->first('name') }}
@@ -21,7 +22,7 @@
             </div>
             <div class="form-group">
                 <label for="description">{{ trans('cruds.account.fields.description') }}</label>
-                <input class="form-control {{ $errors->has('description') ? 'is-invalid' : '' }}" type="text" name="description" id="description" value="{{ old('description', '') }}">
+                <input class="form-control {{ $errors->has('description') ? 'is-invalid' : '' }}" type="text" name="description" id="description" value="{{ old('description', $account->description) }}">
                 @if($errors->has('description'))
                     <div class="invalid-feedback">
                         {{ $errors->first('description') }}
@@ -31,7 +32,7 @@
             </div>
             <div class="form-group">
                 <label for="balance">{{ trans('cruds.account.fields.balance') }}</label>
-                <input class="form-control {{ $errors->has('balance') ? 'is-invalid' : '' }}" type="text" name="balance" id="balance" value="{{ old('balance', '') }}">
+                <input class="form-control {{ $errors->has('balance') ? 'is-invalid' : '' }}" type="text" name="balance" id="balance" value="{{ old('balance', $account->balance) }}">
                 @if($errors->has('balance'))
                     <div class="invalid-feedback">
                         {{ $errors->first('balance') }}
@@ -47,7 +48,7 @@
                 </div>
                 <select class="form-control select2 {{ $errors->has('permissions') ? 'is-invalid' : '' }}" name="permissions[]" id="permissions" multiple>
                     @foreach($permissions as $id => $permissions)
-                        <option value="{{ $id }}" {{ in_array($id, old('permissions', [])) ? 'selected' : '' }}>{{ $permissions }}</option>
+                        <option value="{{ $id }}" {{ (in_array($id, old('permissions', [])) || $account->permissions->contains($id)) ? 'selected' : '' }}>{{ $permissions }}</option>
                     @endforeach
                 </select>
                 @if($errors->has('permissions'))

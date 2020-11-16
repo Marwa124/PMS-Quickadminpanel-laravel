@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="{{asset('css/department.css')}}">
 @endsection
 @section('content')
-@inject('accountDetailModel', 'App\Models\AccountDetail')
+@inject('accountDetailModel', 'Modules\HR\Entities\AccountDetail')
 @inject('userModel', 'App\Models\User')
 @inject('roleModel', 'App\Models\Role')
 @inject('departmentModel', 'Modules\HR\Entities\Department')

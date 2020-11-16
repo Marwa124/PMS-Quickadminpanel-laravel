@@ -2,7 +2,7 @@
 
 namespace Modules\HR\Entities;
 
-use App\Models\AccountDetail;
+use Modules\HR\Entities\AccountDetail;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;

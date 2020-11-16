@@ -7,7 +7,7 @@ use App\Http\Controllers\Traits\MediaUploadingTrait;
 use App\Http\Requests\StoreAccountDetailRequest;
 use App\Http\Requests\UpdateAccountDetailRequest;
 use App\Http\Resources\Admin\AccountDetailResource;
-use App\Models\AccountDetail;
+use Modules\HR\Entities\AccountDetail;
 use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;

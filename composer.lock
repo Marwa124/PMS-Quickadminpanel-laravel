@@ -7000,6 +7000,7 @@
                 "faker",
                 "fixtures"
             ],
+            "abandoned": true,
             "time": "2019-12-12T13:22:17+00:00"
         },
         {
@@ -7109,12 +7110,6 @@
                 }
             ],
             "description": "A front-end framework for Laravel.",
-            "funding": [
-                {
-                    "url": "https://github.com/calebporzio",
-                    "type": "github"
-                }
-            ],
             "time": "2020-10-27T19:08:41+00:00"
         },
         {
@@ -8729,6 +8724,5 @@
     "platform": {
         "php": "^7.2.5"
     },
-    "platform-dev": [],
-    "plugin-api-version": "1.1.0"
+    "platform-dev": []
 }

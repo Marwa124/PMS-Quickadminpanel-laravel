@@ -10,7 +10,7 @@ use Modules\HR\Entities\DailyAttendance;
 use App\Models\User;
 use Gate;
 use Illuminate\Http\Request;
-use App\Models\AccountDetail;
+use Modules\HR\Entities\AccountDetail;
 use Modules\HR\Entities\FingerprintAttendance;
 use Modules\HR\Entities\Holiday;
 use Modules\HR\Entities\SetTime;

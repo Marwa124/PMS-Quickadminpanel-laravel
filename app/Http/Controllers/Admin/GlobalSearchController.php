@@ -41,7 +41,7 @@ class GlobalSearchController extends Controller
         'TimeWorkType'   => 'App\\Models\\',
         'Department'     => 'Modules\\HR\\Entities\\',
         'Designation'    => 'Modules\\HR\\Entities\\',
-        'AccountDetail'  => 'App\\Models\\',
+        'AccountDetail'  => 'Modules\\HR\\Entities\\',
         'Holiday'        => 'Modules\\HR\\Entities\\',
         'Training'       => 'Modules\\HR\\Entities\\',
         'LeaveCategory'  => 'Modules\\HR\\Entities\\',

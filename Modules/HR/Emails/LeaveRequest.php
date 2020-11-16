@@ -2,7 +2,7 @@
 
 namespace Modules\HR\Emails;
 
-use App\Models\AccountDetail;
+use Modules\HR\Entities\AccountDetail;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;

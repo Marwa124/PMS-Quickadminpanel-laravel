@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Payroll\Http\Controllers;
+namespace Modules\Payroll\Http\Controllers\Admin;
 
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Requests;
+namespace Modules\HR\Http\Requests\Update;
 
-use App\Models\attendances;
+use Modules\HR\Entities\attendances;
 use Gate;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Response;

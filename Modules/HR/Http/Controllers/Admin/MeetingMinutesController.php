@@ -4,7 +4,7 @@ namespace Modules\HR\Http\Controllers\Admin;
 
 use Modules\HR\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\MediaUploadingTrait;
-use App\Models\AccountDetail;
+use Modules\HR\Entities\AccountDetail;
 use Modules\HR\Http\Requests\Destroy\MassDestroyMeetingMinuteRequest;
 use Modules\HR\Http\Requests\Store\StoreMeetingMinuteRequest;
 use Modules\HR\Http\Requests\Update\UpdateMeetingMinuteRequest;
