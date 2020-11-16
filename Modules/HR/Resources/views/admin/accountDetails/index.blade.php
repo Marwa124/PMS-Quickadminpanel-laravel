@@ -52,9 +52,6 @@
                             {{ trans('cruds.accountDetail.fields.email') }}
                         </th>
                         <th>
-                            Role
-                        </th>
-                        <th>
                             {{ trans('cruds.accountDetail.fields.phone_number') }}
                         </th>
                         <th>
@@ -63,9 +60,6 @@
                         <th>
                             {{ trans('cruds.accountDetail.fields.joining_date') }}
                         </th>
-                        {{-- <th>
-                            Deleted at
-                        </th> --}}
                         <th>
                             {{ trans('cruds.accountDetail.fields.designation') }}
                         </th>
@@ -75,12 +69,6 @@
                         <th>
                             {{ trans('cruds.accountDetail.fields.salary') }}
                         </th>
-                        {{-- <th>
-                            {{ trans('cruds.accountDetail.fields.designation') }}
-                        </th> --}}
-                        {{-- <th>
-                            {{ trans('cruds.accountDetail.fields.gender') }}
-                        </th> --}}
                         <th>
                             Actions
                         </th>
@@ -122,9 +110,6 @@
                                 {{ $accountDetail->user->email ?? '' }}
                             </td>
                             <td>
-                                {{ $accountDetail->user->role()->first()->title ?? '' }}
-                            </td>
-                            <td>
                                 {{ $accountDetail->mobile ?? '' }}
                             </td>
                             <td>
@@ -133,14 +118,10 @@
                             <td>
                                 {{ $accountDetail->joining_date ?? '' }}
                             </td>
-                            {{-- <td>
-                                {{ $accountDetail->deleted_at ?? '' }}
-                            </td> --}}
                             <td>
                                 {{ $accountDetail->designation->designation_name ?? '' }}
                             </td>
                             <td>
-                                {{-- {{dd($accountDetail->designation->department->department_name )}} --}}
                                 {{ $accountDetail->designation->department->department_name ?? '' }}
                             </td>
                             <td>
@@ -148,17 +129,8 @@
                                     $designatonName = $accountDetail->designation;
                                     $salary = $designatonName ? $salaryTemplateModel::where('salary_grade', $designatonName->designation_name)->select('basic_salary')->first() : '';
                                 ?>
-                                {{-- {{dd($salaryTemplateModel::where('salary_grade', $designatonName)->select('basic_salary')->first()->basic_salary)}} --}}
-
                                 {{  $salary ? 'EGY ' .number_format($salary->basic_salary, 0, ',', '.') : ''}}
-                                {{-- {{ $salary ? $salary->basic_salary : '' }} --}}
                             </td>
-                            {{-- <td>
-                                {{ $accountDetail->designation->designation_name ?? '' }}
-                            </td> --}}
-                            {{-- <td>
-                                {{ App\Models\AccountDetail::GENDER_RADIO[$accountDetail->gender] ?? '' }}
-                            </td> --}}
                             <td>
                                 <div class="defaultBtns">
                                     @can('account_detail_show')
@@ -267,8 +239,8 @@
     })
 
     // Hide columns
-    table.columns( [6] ).visible( false );
-    table.columns([6]).search( 0 ).draw(); // set a default load in datatable column (Active Users)
+    table.columns( [5] ).visible( false );
+    table.columns([5]).search( 0 ).draw(); // set a default load in datatable column (Active Users)
 
 
   $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e){
@@ -278,7 +250,7 @@
 
   $('.filter-select').on('change', function () {
     table
-        .column(6)
+        .column(5)
         .search($(this).val())
         .draw()
     });
