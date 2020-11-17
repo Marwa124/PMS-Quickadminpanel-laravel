@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\MediaUploadingTrait;
 use Modules\HR\Entities\AccountDetail;
 use App\Models\Notification;
+use App\Models\Role;
 use Modules\HR\Http\Requests\Destroy\MassDestroyLeaveApplicationRequest;
 use Modules\HR\Http\Requests\Store\StoreLeaveApplicationRequest;
 use Modules\HR\Http\Requests\Update\UpdateLeaveApplicationRequest;
@@ -218,32 +219,27 @@ class LeaveApplicationsController extends Controller
         if ($media = $request->input('ck-media', false)) {
             Media::whereIn('id', $media)->update(['model_id' => $leaveApplication->id]);
         }
-
+        
+        /* !!!: Leave Notification */
         $leave_category = LeaveCategory::where('id', $leaveApplication->leave_category_id)->first()->name;
+        /* !!!: Leave Mail */
         Mail::to('marwa120640@gmail.com')->cc("marwa120640@gmail.com")
                 ->send(new LeaveRequest($leaveApplication, $leaveApplication->user_id, $leave_category));
 
+        $notifyUsers = globalNotificationId($request->user_id);
 
         $notification = Notification::create([
             'title'   => $leave_category,
             'content' => User::find($request->user_id)->accountDetail()->first()->fullname . ' wants to apply for leave.',
             'model_id' => $leaveApplication->id,
             'model_type' => 'Modules\HR\Entities\LeaveApplication',
-            'show_path' => 'hr.admin.leave-applications.show',
+            'show_path' => 'admin/hr/leave-applications',
         ]);
 
-        //Notify The user having the same User Id
-        //Modify Notify users of role admin and the head dep.
-$data = [
-    // 'message' => User::find($request->user_id)->accountDetail()->first()->fullname . ' wants to apply for leave.',
-    'message' => 'success',
-    'data' => $leaveApplication,
-    'user_id' => 23,
-];
-        event(new NewNotification($data));
+        $notification->users()->attach($notifyUsers);
 
-        $notification->users()->attach($request->user_id);
-
+        event(new NewNotification($notification));
+        /* !!!: End Leave Notification */
 
         // Sending Emails for each User admin and Depart. Head
 
@@ -285,14 +281,23 @@ $data = [
         } elseif ($leaveApplication->attachments) {
             $leaveApplication->attachments->delete();
         }
+        
 
-        $data = [
-            // 'message' => User::find($request->user_id)->accountDetail()->first()->fullname . ' wants to apply for leave.',
-            'message' => '',
-            'data' => $leaveApplication,
-            'user_id' => 23,
-        ];
-        event(new NewNotification($data));
+        $leave_category = LeaveCategory::where('id', $leaveApplication->leave_category_id)->select('name')->first()->name;
+
+        $notifyUsers = globalNotificationId($request->user_id);
+
+        $notification = Notification::create([
+            'title'   => $leave_category,
+            'content' => User::find($request->user_id)->accountDetail()->first()->fullname . ' wants to apply for leave.',
+            'model_id' => $leaveApplication->id,
+            'model_type' => 'Modules\HR\Entities\LeaveApplication',
+            'show_path' => 'admin/hr/leave-applications',
+        ]);
+
+        $notification->users()->attach($notifyUsers);
+        $notification['user_id'] = $request->user_id;
+        event(new NewNotification($notification));
 
         return redirect()->route('hr.admin.leave-applications.index');
     }
@@ -305,8 +310,15 @@ $data = [
         // dd($extension);
         $attachment = $leaveApplication->attachments ? str_replace('storage', 'storage/app/public', $leaveApplication->attachments->getUrl()) : '';
 
-        // $v = str_replace(env('APP_URL').'/storage', env('APP_URL').'/storage/app/public', $leaveApplication->attachments->getUrl());
+        /* !!!: Update is_read Notification */
+        $userNotification = auth()->user()->notifications()->where('notifications.model_id', $leaveApplication->id)->first();
+        if ($userNotification) {
+            $userNotification->pivot->is_read = 1;
+            $userNotification->pivot->save();
+        }
+        /* !!!: End Update is_read Notification */
 
+        // $v = str_replace(env('APP_URL').'/storage', env('APP_URL').'/storage/app/public', $leaveApplication->attachments->getUrl());
         $leaveApplication->load('user', 'leave_category');
 
         return view('hr::admin.leaveApplications.show', compact('leaveApplication', 'attachment'));

@@ -14,9 +14,11 @@ class NewNotification implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $message;
+    public $title;
+    public $content;
+    public $model_id;
+    public $show_path;
     public $user_id;
-    public $data;
 
     /**
      * Create a new event instance.
@@ -25,8 +27,10 @@ class NewNotification implements ShouldBroadcast
      */
     public function __construct($data)
     {
-        $this->message = $data['message'];
-        $this->data = $data['data'];
+        $this->title    = $data['title'];
+        $this->content  = $data['content'];
+        $this->model_id = $data['model_id'];
+        $this->show_path = $data['show_path'];
         $this->user_id = $data['user_id'];
     }
 
@@ -37,7 +41,10 @@ class NewNotification implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        // return new channel('new-notification');
-        return ['new-notification'];
+        $notifyUsers = globalNotificationId($this->user_id);
+
+        return new PrivateChannel('new-notification');
+        // return new PrivateChannel('new-notification.'.$this->user_id);
+        // return ['new-notification.' . 23];
     }
 }

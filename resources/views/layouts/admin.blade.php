@@ -37,8 +37,25 @@
 
     var channel = pusher.subscribe('new-notification');
     channel.bind('App\\Events\\NewNotification', function(data) {
-        console.log(data);
-      alert(JSON.stringify(data));
+
+if (data) {
+    
+        var count = parseInt($('.data-notify-count').html());
+        count += 1;
+        $('.data-notify-count').html(count);
+        $('.data-content').prepend(`
+            <div class="dropdown-item">
+                <a href="{{url('${data.show_path}/${data.model_id}')}}" rel="noopener noreferrer">
+                    <strong>
+                        ${data.title}
+                        <p class="text-muted fa-sm">${data.content}</p>
+                    </strong>
+                </a>
+            </div>
+        `);
+    //   alert(JSON.stringify(data));
+}
+
     });
   </script>
 </head>
@@ -77,20 +94,21 @@
                         <a href="#" class="c-header-nav-link" data-toggle="dropdown">
                             <i class="far fa-bell"></i>
                                 @if($notificationCount > 0)
-                                    <span class="badge badge-warning navbar-badge">
+                                    <span class="badge badge-warning navbar-badge data-notify-count">
                                         {{$notificationCount}}
                                     </span>
                                 @endif
                         </a>
-                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                            @if(count($notifications = \Auth::user()->notifications()->withPivot('is_read')->limit(10)->orderBy('created_at', 'ASC')->get()->reverse()) > 0)
+                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right data-content">
+                            @if(count($notifications = \Auth::user()->notifications()->withPivot('is_read')->limit(10)->orderBy('created_at', 'DESC')->get()) > 0)
                                 @foreach($notifications as $notify)
                                     <div class="dropdown-item">
-                                        <a href="{{route($notify->show_path, $notify->model_id)}}" target="_blank" rel="noopener noreferrer">
+                                        {{-- target="_blank"  --}}
+                                        <a class="notify_is_read" style="color:red" href="{{url($notify->show_path.'/'.  $notify->model_id)}}" rel="noopener noreferrer">
                                             @if($notify->pivot->is_read === 0) <strong> @endif
                                                 {{ $notify->title }}
                                                 <p class="text-muted fa-sm">{{ implode(' ', array_slice(explode(' ', $notify->content), 0, 5))}}</p>
-                                                @if($notify->pivot->is_read === 0) </strong> @endif
+                                            @if($notify->pivot->is_read === 0) </strong> @endif
                                         </a>
                                     </div>
                                 @endforeach
@@ -124,7 +142,7 @@
                                         <a href="{{ $alert->alert_link ? $alert->alert_link : "#" }}" target="_blank" rel="noopener noreferrer">
                                             @if($alert->pivot->read === 0) <strong> @endif
                                                 {{ $alert->alert_text }}
-                                                @if($alert->pivot->read === 0) </strong> @endif
+                                            @if($alert->pivot->read === 0) </strong> @endif
                                         </a>
                                     </div>
                                 @endforeach
@@ -411,8 +429,22 @@
 });
 
     </script>
+   
+
+    <script>
+        // $(document).ready(function(){
+        //     $('.notify_is_read').on('click', function(e){
+        //         $('.notify_is_read').css('color', 'black !important');
+        //         // e.target.style.color = 'black !important';
+        //     })
+        // })
+    </script>
+   
+   
     @yield('scripts')
-<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5fa91eb31c6d29d3"></script>
+
+    {{-- Social Media Share Links --}}
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5fa91eb31c6d29d3"></script>
 
 </body>
 
