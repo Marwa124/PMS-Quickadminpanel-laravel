@@ -1346,6 +1346,14 @@ class PermissionsTableSeeder extends Seeder
             ],
             [
                 'id'    => 335,
+                'title' => 'salary_template_show',
+            ],
+            [
+                'id'    => 336,
+                'title' => 'salary_template_edit',
+            ],
+            [
+                'id'    => 335,
                 'title' => 'salary_template_create',
             ],
             [

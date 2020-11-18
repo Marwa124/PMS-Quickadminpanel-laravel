@@ -3,21 +3,12 @@
 namespace Modules\Payroll\Entities;
 
 use Illuminate\Database\Eloquent\Model;
-// use Illuminate\Database\Eloquent\SoftDeletes;
 use \DateTimeInterface;
 
 class SalaryDeduction extends Model
 {
-    // use SoftDeletes;
-
     public $table = 'salary_deductions';
     public $timestamps = false;
-
-    // protected $dates = [
-    //     'created_at',
-    //     'updated_at',
-    //     'deleted_at',
-    // ];
 
     protected $guarded = [];
 

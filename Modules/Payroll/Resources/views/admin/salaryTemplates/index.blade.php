@@ -52,22 +52,35 @@
                                 {{ $salaryTemplate->salary_grade ?? '' }}
                             </td>
                             <td>
-                                {{ $salaryTemplate->basic_salary ?? '' }}
+                                <?php echo 'EGP '.number_format($salaryTemplate->basic_salary, 2); ?>
+                                {{-- {{ $salaryTemplate->basic_salary ?? '' }} --}}
                             </td>
                             <td>
-                                {{ $salaryTemplate->overtime_salary ?? '' }}
+                                <?php echo 'EGP '.number_format($salaryTemplate->overtime_salary, 2); ?>
+                                {{-- {{ $salaryTemplate->overtime_salary ?? '' }} --}}
                             </td>
                             <td>
+                                <div class="defaultBtns">
 
+                                    @can('salary_template_show')
+                                        <a class="btn btn-xs btn-primary" href="{{ route('payroll.admin.salary-templates.show', $salaryTemplate->id) }}">
+                                            {{ trans('global.view') }}
+                                        </a>
+                                    @endcan
 
-                                @can('salary_template_delete')
-                                    <form action="{{ route('payroll.admin.salary-templates.destroy', $salaryTemplate->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
-                                        <input type="hidden" name="_method" value="DELETE">
-                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                        <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
-                                    </form>
-                                @endcan
-
+                                    @can('salary_template_edit')
+                                        <a class="btn btn-xs btn-info" href="{{ route('payroll.admin.salary-templates.edit', $salaryTemplate->id) }}">
+                                            {{ trans('global.edit') }}
+                                        </a>
+                                    @endcan
+                                    @can('salary_template_delete')
+                                        <form action="{{ route('payroll.admin.salary-templates.destroy', $salaryTemplate->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                            <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
+                                        </form>
+                                    @endcan
+                                </div>
                             </td>
 
                         </tr>

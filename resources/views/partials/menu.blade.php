@@ -380,26 +380,6 @@
                     {{ trans('cruds.payroll.title') }}
                 </a>
                 <ul class="c-sidebar-nav-dropdown-items">
-                    @can('advance_salary_access')
-                        <li class="c-sidebar-nav-item">
-                            <a href="{{ route("payroll.admin.advance-salaries.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/advance-salaries") || request()->is("admin/advance-salaries/*") ? "active" : "" }}">
-                                <i class="fa-fw fab fa-cc-mastercard c-sidebar-nav-icon">
-
-                                </i>
-                                {{ trans('cruds.advanceSalary.title') }}
-                            </a>
-                        </li>
-                    @endcan
-                    @can('salary_allowance_access')
-                        <li class="c-sidebar-nav-item">
-                            <a href="{{ route("payroll.admin.salary-allowances.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/salary-allowances") || request()->is("admin/salary-allowances/*") ? "active" : "" }}">
-                                <i class="fa-fw far fa-circle c-sidebar-nav-icon">
-
-                                </i>
-                                {{ trans('cruds.salaryAllowance.title') }}
-                            </a>
-                        </li>
-                    @endcan
                     @can('salary_template_access')
                         <li class="c-sidebar-nav-item">
                             <a href="{{ route("payroll.admin.salary-templates.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/salary-templates") || request()->is("admin/salary-templates/*") ? "active" : "" }}">
@@ -407,6 +387,26 @@
 
                                 </i>
                                 {{ trans('cruds.salaryTemplate.title') }}
+                            </a>
+                        </li>
+                    @endcan
+                    @can('hourly_rate_access')
+                        <li class="c-sidebar-nav-item">
+                            <a href="{{ route("payroll.admin.hourly-rates.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/hourly-rates") || request()->is("admin/hourly-rates/*") ? "active" : "" }}">
+                                <i class="fa-fw fas fa-hourglass-end c-sidebar-nav-icon">
+
+                                </i>
+                                {{ trans('cruds.hourlyRate.title') }}
+                            </a>
+                        </li>
+                    @endcan
+                    {{-- @can('salary_allowance_access')
+                        <li class="c-sidebar-nav-item">
+                            <a href="{{ route("payroll.admin.salary-allowances.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/salary-allowances") || request()->is("admin/salary-allowances/*") ? "active" : "" }}">
+                                <i class="fa-fw far fa-circle c-sidebar-nav-icon">
+
+                                </i>
+                                {{ trans('cruds.salaryAllowance.title') }}
                             </a>
                         </li>
                     @endcan
@@ -419,8 +419,8 @@
                                 {{ trans('cruds.salaryDeduction.title') }}
                             </a>
                         </li>
-                    @endcan
-                    @can('salary_payment_access')
+                    @endcan --}}
+                    {{-- @can('salary_payment_access')
                         <li class="c-sidebar-nav-item">
                             <a href="{{ route("payroll.admin.salary-payments.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/salary-payments") || request()->is("admin/salary-payments/*") ? "active" : "" }}">
                                 <i class="fa-fw fas fa-circle c-sidebar-nav-icon">
@@ -439,7 +439,7 @@
                                 {{ trans('cruds.salaryPaymentAllowance.title') }}
                             </a>
                         </li>
-                    @endcan
+                    @endcan --}}
                     @can('salary_payment_deduction_access')
                         <li class="c-sidebar-nav-item">
                             <a href="{{ route("payroll.admin.salary-payment-deductions.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/salary-payment-deductions") || request()->is("admin/salary-payment-deductions/*") ? "active" : "" }}">
@@ -470,13 +470,13 @@
                             </a>
                         </li>
                     @endcan
-                    @can('hourly_rate_access')
+                    @can('advance_salary_access')
                         <li class="c-sidebar-nav-item">
-                            <a href="{{ route("payroll.admin.hourly-rates.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/hourly-rates") || request()->is("admin/hourly-rates/*") ? "active" : "" }}">
-                                <i class="fa-fw fas fa-hourglass-end c-sidebar-nav-icon">
+                            <a href="{{ route("payroll.admin.advance-salaries.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/advance-salaries") || request()->is("admin/advance-salaries/*") ? "active" : "" }}">
+                                <i class="fa-fw fab fa-cc-mastercard c-sidebar-nav-icon">
 
                                 </i>
-                                {{ trans('cruds.hourlyRate.title') }}
+                                {{ trans('cruds.advanceSalary.title') }}
                             </a>
                         </li>
                     @endcan

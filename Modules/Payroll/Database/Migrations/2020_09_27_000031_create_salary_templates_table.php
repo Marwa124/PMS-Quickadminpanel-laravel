@@ -12,7 +12,7 @@ class CreateSalaryTemplatesTable extends Migration
             $table->increments('id');
             $table->string('salary_grade');
             $table->string('basic_salary');
-            $table->string('overtime_salary');
+            $table->string('overtime_salary')->default(0);
             $table->timestamps();
             $table->softDeletes();
         });

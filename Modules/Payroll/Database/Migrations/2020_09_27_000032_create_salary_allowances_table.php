@@ -10,10 +10,8 @@ class CreateSalaryAllowancesTable extends Migration
     {
         Schema::create('salary_allowances', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->unique();
+            $table->string('name');
             $table->string('value');
-            $table->timestamps();
-            $table->softDeletes();
         });
     }
 }

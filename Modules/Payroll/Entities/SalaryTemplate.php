@@ -31,4 +31,14 @@ class SalaryTemplate extends Model
     {
         return $date->format('Y-m-d H:i:s');
     }
+
+    public function salaryAllowances()
+    {
+        return $this->hasMany(SalaryAllowance::class, 'salary_template_id');
+    }
+
+    public function salaryDeductions()
+    {
+        return $this->hasMany(SalaryDeduction::class, 'salary_template_id');
+    }
 }

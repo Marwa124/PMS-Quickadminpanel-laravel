@@ -30,7 +30,8 @@ Route::resource('salary-allowances', 'SalaryAllowanceController', ['except' => [
 
 // Salary Templates
 Route::delete('salary-templates/destroy', 'SalaryTemplateController@massDestroy')->name('salary-templates.massDestroy');
-Route::resource('salary-templates', 'SalaryTemplateController', ['except' => ['edit', 'update', 'show']]);
+Route::resource('salary-templates', 'SalaryTemplateController');
+// Route::resource('salary-templates', 'SalaryTemplateController', ['except' => ['edit', 'update', 'show']]);
 
 // Salary Deductions
 Route::delete('salary-deductions/destroy', 'SalaryDeductionsController@massDestroy')->name('salary-deductions.massDestroy');
