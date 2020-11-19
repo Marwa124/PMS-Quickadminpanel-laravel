@@ -3,6 +3,10 @@ $(document).ready(function () {
     var allowanceId = 0;
     var allowancesLabels = [];
     var oldLabelVal = '';
+    ////////// Deductions /////////////
+    var deductionId = 0;
+    var deductionsLabels = [];
+    var oldDeductionLabelVal = '';
 
     // var grossSalary = parseInt($('input[name="gross_salary"]').val());
     $("input[name='basic_salary']").change(function(){
@@ -32,11 +36,11 @@ $(document).ready(function () {
     function totalGross() {
         var basicSalary = parseInt($("input[name='basic_salary']").val());
         var allowanceHouse = parseInt($("input[name='allowance[house_allowance]']").val());
-        var allowanceTax = parseInt($("input[name='allowance[medical_allowance]']").val());
+        var allowanceMedical = parseInt($("input[name='allowance[medical_allowance]']").val());
         
         var allowanceMore = moreAllowances(allowancesLabels);
         
-        return basicSalary + allowanceHouse + allowanceTax + allowanceMore; 
+        return basicSalary + allowanceHouse + allowanceMedical + allowanceMore; 
     }
 
     function moreAllowances(moreAllowanceLabels = []) {
@@ -58,10 +62,27 @@ $(document).ready(function () {
         return moreAllowances;
     }
 
+    function moreDeductions(moreDeductionLabels = []) {
+        var moreDeductions = 0; 
+        
+        var uniqueDeductionLabels = [];
+        $.each(moreDeductionLabels, function(i, el){
+            if($.inArray(el, uniqueDeductionLabels) === -1) uniqueDeductionLabels.push(el);
+        });
+
+        uniqueDeductionLabels.forEach(element => {
+            moreDeductions += parseInt($("input[name='deduction["+element+"]']").val());
+        });
+        return moreDeductions;
+    }
+
     function totalDeductions() {
         var deductionFund = parseInt($("input[name='deduction[provided_fund]']").val());
         var deductionTax = parseInt($("input[name='deduction[tax_deduction]']").val());
-        return deductionFund + deductionTax; 
+
+        var deductionMore = moreDeductions(deductionsLabels);
+        
+        return deductionFund + deductionTax + deductionMore;
     }
 
     function netSalary()
@@ -75,15 +96,15 @@ $(document).ready(function () {
         $('.allowancesGroup').append(`
             <div class="form-group" id="allowance${allowanceId}">
                 <div class="d-flex justify-content-between">
-                    <input class="form-control w-50" placeholder="Enter Allowance Name" type="text" name="allowanceLabel[]" value="" required>
+                    <input class="form-control w-50 allowanceLabel" placeholder="Enter Allowance Name" type="text" name="allowanceLabel[]" value="" required>
                     <a href="javascript:void(0)" class="removeAllowance text-danger"><i class="fas fa-remove"></i>Remove</a>
                 </div>
-                <input class="form-control w-50" placeholder="Enter Allowance Value" type="number" min="0" name="allowanceValue[]" value="0" required disabled>
+                <input class="form-control w-50 allowanceValue" placeholder="Enter Allowance Value" type="number" min="0" name="allowanceValue[]" value="0" required disabled>
             </div>
         `);
 
         // Disable The value input till user enter the label name first
-        $("input[type='text']").focusout(function(){
+        $(".allowanceLabel").focusout(function(){
         // $("input[name='allowanceLabel[]']").focusout(function(){
             if ($('input[name="allowanceLabel[]"]').val() != '') {
                 $("input[name='allowanceValue[]']").attr('disabled', false);
@@ -100,17 +121,17 @@ $(document).ready(function () {
             }
         })
 
-        $("input[type='text']").change(function(){
+        $(".allowanceLabel").change(function(){
             oldLabelVal = $(this).val();
         })
 
 
-        $("input[type='number']").focusout(function(){
+        $(".allowanceValue").focusout(function(){
         // $("input[name='allowanceValue[]']").focusout(function(){
             if ($('input[name="allowanceLabel[]"]').val()) {
                 var labelValue = $(this).closest('.form-group').find('input[name="allowanceLabel[]"]').val();
             }else{
-                var labelValue = $(this).closest('.form-group').find('input[type="text"]').val();
+                var labelValue = $(this).closest('.form-group').find('.allowanceLabel').val();
             }
             console.log(allowancesLabels);
 
@@ -124,7 +145,7 @@ $(document).ready(function () {
         // Remove btn       
         $('.removeAllowance').on('click', function(){
             $('.removeAllowance').attr('disabled', true);
-            var labelName = $(this).closest('.form-group').find('input[type="text"]').val();
+            var labelName = $(this).closest('.form-group').find('.allowanceLabel').val();
 
             allowancesLabels.shift(labelName);
             
@@ -136,5 +157,71 @@ $(document).ready(function () {
         })
     })
 
+// !!!: Deduction Card /////////////////////////////////////////////////////////////////////////////////
+    // !!!: More Deductions Button
+    $('.moreDeductions').on('click', function(){
+        deductionId +=1;
+        $('.deductionsGroup').append(`
+            <div class="form-group" id="deduction${deductionId}">
+                <div class="d-flex justify-content-between">
+                    <input class="form-control w-50 deductionLabel" placeholder="Enter Deduction Name" type="text" name="deductionLabel[]" value="" required>
+                    <a href="javascript:void(0)" class="removeDeduction text-danger"><i class="fas fa-remove"></i>Remove</a>
+                </div>
+                <input class="form-control w-50 deductionValue" placeholder="Enter Deduction Value" type="number" min="0" name="deductionValue[]" value="0" required disabled>
+            </div>
+        `);
 
+        // Disable The value input till user enter the label name first
+        $(".deductionLabel").focusout(function(){
+        // $("input[name='deductionLabel[]']").focusout(function(){
+            if ($('input[name="deductionLabel[]"]').val() != '') {
+                $("input[name='deductionValue[]']").attr('disabled', false);
+
+                var deductionLabelName = $(this).val();
+                if (oldDeductionLabelVal) {
+
+                    deductionsLabels.shift(oldDeductionLabelVal);
+                }
+                deductionsLabels.push(deductionLabelName);
+    
+                // If the label name has changed then the value name must be change to before inserted in the db.
+                $(this).closest('.form-group').find('input[type="number"]').attr('name', 'deduction[' + deductionLabelName + ']');
+            }
+        })
+
+        $(".deductionLabel").change(function(){
+            oldDeductionLabelVal = $(this).val();
+        })
+
+
+        $(".deductionValue").focusout(function(){
+        // $("input[name='deductionValue[]']").focusout(function(){
+            if ($('input[name="deductionLabel[]"]').val()) {
+                var deductionLabelValue = $(this).closest('.form-group').find('input[name="deductionLabel[]"]').val();
+            }else{
+                var deductionLabelValue = $(this).closest('.form-group').find('.deductionLabel').val();
+            }
+            console.log(deductionsLabels);
+
+            $(this).attr('name', 'deduction[' + deductionLabelValue + ']'); // Change the attribute name of label deduction
+            var deductionMore = moreDeductions(deductionsLabels);
+
+            $('#total_deduction').val(totalDeductions());
+            $('#net_salary').val(netSalary());
+        })
+
+        // Remove btn       
+        $('.removeDeduction').on('click', function(){
+            $('.removeDeduction').attr('disabled', true);
+            var deductionLabelName = $(this).closest('.form-group').find('.deductionLabel').val();
+
+            deductionsLabels.shift(deductionLabelName);
+            
+            deductionMore = moreDeductions(deductionsLabels);
+            $('#total_deduction').val(totalDeductions());
+            $('#net_salary').val(netSalary());
+
+            $(this).closest('.form-group').remove();
+        })
+    })
 });

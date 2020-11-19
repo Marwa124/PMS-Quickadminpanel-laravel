@@ -33,7 +33,9 @@ class SalaryTemplateController extends Controller
 
     public function store(StoreSalaryTemplateRequest $request)
     {
+        // dd($request->all());
         $salaryTemplate = SalaryTemplate::create($request->all());
+        // !!!: Add data to Salary Allowances
         try {
             foreach ($request->allowance as $key => $value) {
                 SalaryAllowance::create([
@@ -45,6 +47,7 @@ class SalaryTemplateController extends Controller
         } catch (\Exception $e) {
             return $e->getMessage();
         }
+        // !!!: Add data to Salary Deductions
         try {
             foreach ($request->deduction as $key => $value) {
                 SalaryDeduction::create([
@@ -60,22 +63,27 @@ class SalaryTemplateController extends Controller
         return redirect()->route('payroll.admin.salary-templates.index');
     }
 
-    public function show(SalaryTemplate $salaryTemplate)
+    public function show($id)
+    // public function show(SalaryTemplate $salaryTemplate)
     {
         abort_if(Gate::denies('salary_template_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return view('payroll::admin.salaryTemplates.show');
+        $salaryTemplate = SalaryTemplate::findOrFail($id);
+
+        return view('payroll::admin.salaryTemplates.show', compact('salaryTemplate'));
     }
 
-    public function edit(SalaryTemplate $salaryTemplate)
+    public function edit($id)
+    // public function edit(SalaryTemplate $salaryTemplate)
     {
         abort_if(Gate::denies('salary_template_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         // $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         // $salaryTemplate->load('user');
+        $salaryTemplate = SalaryTemplate::findOrFail($id);
 
-        return view('payroll::admin.salaryTemplates.edit');
+        return view('payroll::admin.salaryTemplates.edit', compact('salaryTemplate'));
     }
 
     public function update(UpdateSalaryTemplateRequest $request, SalaryTemplate $setTime)

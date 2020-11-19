@@ -84,7 +84,7 @@
 
         <div class="card">
             <h5 class="card-header">Deductions</h5>
-            <div class="card-body">
+            <div class="card-body deductionsGroup">
                 <div class="form-group">
                     <label>{{ trans('cruds.salaryTemplate.fields.provided_fund') }}</label>
                     <input class="form-control {{ $errors->has('deduction') ? 'is-invalid' : '' }}" type="number" min="0" name="deduction[provided_fund]" id="provided_fund" value="{{ old('deduction[provided_fund]', '0') }}">
