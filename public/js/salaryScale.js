@@ -2,6 +2,7 @@ $(document).ready(function () {
 
     var allowanceId = 0;
     var allowancesLabels = [];
+    var oldLabelVal = '';
 
     // var grossSalary = parseInt($('input[name="gross_salary"]').val());
     $("input[name='basic_salary']").change(function(){
@@ -41,9 +42,15 @@ $(document).ready(function () {
     function moreAllowances(moreAllowanceLabels = []) {
         var moreAllowances = 0; 
         
-        var uniqueAllowanceLabels = moreAllowanceLabels.filter(function(item, i, moreAllowanceLabels) {
-            return i == moreAllowanceLabels.indexOf(item);
+        var uniqueAllowanceLabels = [];
+        $.each(moreAllowanceLabels, function(i, el){
+            if($.inArray(el, uniqueAllowanceLabels) === -1) uniqueAllowanceLabels.push(el);
         });
+
+
+        // var uniqueAllowanceLabels = moreAllowanceLabels.filter(function(item, i, moreAllowanceLabels) {
+        //     return i == moreAllowanceLabels.indexOf(item);
+        // });
 
         uniqueAllowanceLabels.forEach(element => {
             moreAllowances += parseInt($("input[name='allowance["+element+"]']").val());
@@ -71,14 +78,40 @@ $(document).ready(function () {
                     <input class="form-control w-50" placeholder="Enter Allowance Name" type="text" name="allowanceLabel[]" value="" required>
                     <a href="javascript:void(0)" class="removeAllowance text-danger"><i class="fas fa-remove"></i>Remove</a>
                 </div>
-                <input class="form-control w-50" placeholder="Enter Allowance Value" type="number" min="0" name="allowanceValue[]" value="0" required>
+                <input class="form-control w-50" placeholder="Enter Allowance Value" type="number" min="0" name="allowanceValue[]" value="0" required disabled>
             </div>
         `);
-        
-        $("input[name='allowanceValue[]']").focusout(function(){
-            var labelValue = $(this).closest('.form-group').find('input[name="allowanceLabel[]"]').val();
-            console.log(labelValue);
-            allowancesLabels.push(labelValue);
+
+        // Disable The value input till user enter the label name first
+        $("input[type='text']").focusout(function(){
+        // $("input[name='allowanceLabel[]']").focusout(function(){
+            if ($('input[name="allowanceLabel[]"]').val() != '') {
+                $("input[name='allowanceValue[]']").attr('disabled', false);
+
+                var labelName = $(this).val();
+                if (oldLabelVal) {
+
+                    allowancesLabels.shift(oldLabelVal);
+                }
+                allowancesLabels.push(labelName);
+    
+                // If the label name has changed then the value name must be change to before inserted in the db.
+                $(this).closest('.form-group').find('input[type="number"]').attr('name', 'allowance[' + labelName + ']');
+            }
+        })
+
+        $("input[type='text']").change(function(){
+            oldLabelVal = $(this).val();
+        })
+
+
+        $("input[type='number']").focusout(function(){
+        // $("input[name='allowanceValue[]']").focusout(function(){
+            if ($('input[name="allowanceLabel[]"]').val()) {
+                var labelValue = $(this).closest('.form-group').find('input[name="allowanceLabel[]"]').val();
+            }else{
+                var labelValue = $(this).closest('.form-group').find('input[type="text"]').val();
+            }
             console.log(allowancesLabels);
 
             $(this).attr('name', 'allowance[' + labelValue + ']'); // Change the attribute name of label allowance
@@ -88,12 +121,20 @@ $(document).ready(function () {
             $('#net_salary').val(netSalary());
         })
 
+        // Remove btn       
         $('.removeAllowance').on('click', function(){
+            $('.removeAllowance').attr('disabled', true);
+            var labelName = $(this).closest('.form-group').find('input[type="text"]').val();
+
+            allowancesLabels.shift(labelName);
+            
+            allowanceMore = moreAllowances(allowancesLabels);
+            $('input[name="gross_salary"]').val(totalGross());
+            $('#net_salary').val(netSalary());
+
             $(this).closest('.form-group').remove();
         })
     })
-
-
 
 
 });
