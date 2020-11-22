@@ -176,9 +176,9 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         Jorenvh\Share\Providers\ShareServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
 
         App\Providers\ViewServiceProvider::class,
-
     ],
 
     /*
@@ -232,7 +232,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
         'Share' => Jorenvh\Share\ShareFacade::class,
-
+        'PDF' => Barryvdh\DomPDF\Facade::class,
     ],
 
 ];

@@ -68,6 +68,11 @@ class User extends Authenticatable implements HasMedia
 
     public function scopeUserRole()
     {
+        return $this->role()->first()->title;
+    }
+
+    public function scopeAuthUserRole()
+    {
         return auth()->user()->role()->first()->title;
     }
 

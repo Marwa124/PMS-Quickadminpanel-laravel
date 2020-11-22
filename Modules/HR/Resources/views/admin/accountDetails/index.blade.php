@@ -83,10 +83,19 @@
 
                             </td>
                             <td>
+                                @if ($accountDetail->user_id == 36)
+
+                                    {{-- {{$accountDetail->getMedia('avatar')->first()->getUrl('thumb')}} --}}
+                                    @endif
                                 @if($accountDetail->avatar)
-                                    <a href="{{ str_replace('storage', 'public/storage', $accountDetail->avatar->getUrl()) }}" target="_blank">
+                                    {{-- <a href="{{ str_replace('storage', 'public/storage', $accountDetail->avatar->getUrl()) }}" target="_blank">
                                         <img class="rounded-circle img-thumbnail d-flex m-auto"
                                         src="{{ str_replace('storage', 'public/storage', $accountDetail->avatar->getUrl('thumb')) }}">
+                                    </a> --}}
+
+                                    <a href="{{ str_replace('storage', 'storage/app/public', $accountDetail->avatar->getUrl()) }}" target="_blank">
+                                        <img class="rounded-circle img-thumbnail d-flex m-auto"
+                                        src="{{ str_replace('storage', 'storage/app/public', $accountDetail->avatar->getUrl('thumb')) }}">
                                     </a>
                                     {{-- <a href="{{ $accountDetail->avatar->getUrl() }}" target="_blank">
                                         <img class="rounded-circle img-thumbnail d-flex m-auto"
@@ -255,9 +264,9 @@
         .draw()
     });
 
-    
+
     // $('.filter-deleted').on('change', function () {
-      
+
     //   $('.defaultBtns').css('display', 'none');
     //   console.log($('.filter-deleted').val());
 

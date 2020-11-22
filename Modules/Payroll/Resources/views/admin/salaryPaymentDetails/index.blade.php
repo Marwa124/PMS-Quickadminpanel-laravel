@@ -1,6 +1,7 @@
 @extends('layouts.admin')
 @section('content')
-@can('salary_payment_detail_create')
+@inject('salaryTemplateModel', 'Modules\Payroll\Entities\SalaryTemplate')
+{{-- @can('salary_payment_detail_create')
     <div style="margin-bottom: 10px;" class="row">
         <div class="col-lg-12">
             <a class="btn btn-success" href="{{ route('payroll.admin.salary-payment-details.create') }}">
@@ -8,7 +9,10 @@
             </a>
         </div>
     </div>
-@endcan
+@endcan --}}
+@php
+    // dd($salaryTemplate->where('salary_grade', 'Telemarketing')->first());
+@endphp
 <div class="card">
     <div class="card-header">
         {{ trans('cruds.salaryPaymentDetail.title_singular') }} {{ trans('global.list') }}
@@ -23,54 +27,155 @@
 
                         </th>
                         <th>
-                            {{ trans('cruds.salaryPaymentDetail.fields.id') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.salaryPaymentDetail.fields.salary_payment') }}
-                        </th>
-                        <th>
                             {{ trans('cruds.salaryPaymentDetail.fields.name') }}
                         </th>
                         <th>
-                            {{ trans('cruds.salaryPaymentDetail.fields.value') }}
+                            {{ trans('cruds.salaryPaymentDetail.fields.salary_type') }}
                         </th>
                         <th>
-                            &nbsp;
+                            {{ trans('cruds.salaryPaymentDetail.fields.basic_salary') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.salaryPaymentDetail.fields.overtime') }}
+                        </th>
+                        <th>
+                            Action
                         </th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($salaryPaymentDetails as $key => $salaryPaymentDetail)
-                        <tr data-entry-id="{{ $salaryPaymentDetail->id }}">
-                            <td>
+                    @foreach($users as $key => $detail)
+                        @if ($detail)
+                        <?php
+                            $salaryTemplate = '';
+                            $designation = $detail->designation()->first();
+                            if ($designation) {
+                                $salaryTemplate = $salaryTemplateModel->where('salary_grade', $designation->designation_name)->first();
+                                $departmentName = $detail->designation->department()->select('department_name')->first();
+                            }
+                            // if ($detail->user_id == 36) {
+                            //     // dd($detail);
+                            // }
+                        ?>
+                            <tr data-entry-id="{{ $detail->user_id }}">
+                                <td>
 
-                            </td>
-                            <td>
-                                {{ $salaryPaymentDetail->id ?? '' }}
-                            </td>
-                            <td>
-                                {{ $salaryPaymentDetail->salary_payment->payment_amount ?? '' }}
-                            </td>
-                            <td>
-                                {{ $salaryPaymentDetail->name ?? '' }}
-                            </td>
-                            <td>
-                                {{ $salaryPaymentDetail->value ?? '' }}
-                            </td>
-                            <td>
+                                </td>
+                                <td>
+                                    {{ $detail->fullname ?? '' }}
+                                </td>
+                                <td>
+                                    {{ $salaryTemplate ? $salaryTemplate->salary_grade : '' }}
+                                </td>
+                                <td>
+                                    {{'EGP '.number_format($salaryTemplate ? $salaryTemplate->basic_salary : 0, 2)}}
+                                    {{-- {{ $salaryTemplate ? $salaryTemplate->basic_salary : '' }} --}}
+                                </td>
+                                <td>
+                                    {{ $salaryTemplate ? $salaryTemplate->overtime_salary : '' }}
+                                </td>
+                                <td>
+                                    @can('salary_payment_detail_show')
+                                    <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#showModal{{$detail->user_id}}">
+                                        {{ trans('global.show') }}
+                                    </button>
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="showModal{{$detail->user_id}}" tabindex="-1" role="dialog" aria-labelledby="showModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                <h5 class="modal-title" id="showModalLabel">{{ trans('cruds.salaryPaymentDetail.title_singular') }}</h5>
+                                                <a href="{{route('payroll.admin.salary-employee-details-pdf', $detail->user_id)}}" class="btn btn-danger btn-xs"
+                                                data-toggle="tooltip" data-placement="top" data-original-title="PDF">
+                                                    <i class="fa fa-file-pdf-o"></i>
+                                                </a>
+                                                {{-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button> --}}
+                                                </div>
+                                                <div class="modal-body">
+                                                <div class="row">
+                                                    <div class="col-md-5 d-flex justify-content-center align-self-center">
+                                                        @if($detail->avatar )
+                                                            {{-- <a href="{{ str_replace('storage', 'public/storage', $detail->avatar->getUrl()) }}" target="_blank">
+                                                                <img class="rounded-circle img-thumbnail d-flex m-auto"
+                                                                src="{{ str_replace('storage', 'public/storage', $detail->avatar->getUrl('thumb')) }}">
+                                                            </a> --}}
+                                                            <a href="{{ str_replace('storage', 'storage/app/public', $detail->avatar->getUrl()) }}" target="_blank">
+                                                                <img class="rounded-circle img-thumbnail d-flex m-auto"
+                                                                src="{{ str_replace('storage', 'storage/app/public', $detail->avatar->getUrl('thumb')) }}">
+                                                            </a>
+                                                        @else
+                                                            <a href="javascript:void(0)" style="display: inline-block">
+                                                                <img class="rounded-circle img-thumbnail"
+                                                                style="display: block;
+                                                                    margin-left: auto;
+                                                                    margin-right: auto;
+                                                                    width: 30%;"
+                                                                src="{{ asset('images/default.png') }}">
+                                                            </a>
+                                                        @endif
+                                                    </div>
+                                                    <div class="col-md-7">
+                                                        <h4 class="font-weight-bold">{{$detail->fullname}}</h4>
+                                                        <hr>
+                                                        <div class="row">
+                                                            <div class="col-md-5">EMP ID: </div>
+                                                            <div class="col-md-7">{{ $detail->employment_id }}</div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-5">Departments: </div>
+                                                            <div class="col-md-7"></div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-5">Designation: </div>
+                                                            <div class="col-md-7">{{ $salaryTemplate ? $salaryTemplate->salary_grade : '' }}</div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-5">Joining Date: </div>
+                                                            <div class="col-md-7">{{ $detail->joining_date }}</div>
+                                                        </div>
+                                                    </div>
+                                                </div><!--Row End-->
+                                                <div class="modal-header" style="border-color: tomato;">
+                                                    <h5 class="modal-title">Salary Detail</h5>
+                                                </div>
+                                                <div class="d-flex">
+                                                    <div class="font-weight-bold m-auto">Salary Grades</div>
+                                                    <div class="m-auto">{{ $salaryTemplate ? $salaryTemplate->salary_grade : '' }}</div>
+                                                </div>
+                                                <div class="d-flex">
+                                                    <div class="font-weight-bold m-auto">{{ trans('cruds.salaryPaymentDetail.fields.basic_salary') }}</div>
+                                                    <span class="m-auto">{{'EGP '.number_format($salaryTemplate ? $salaryTemplate->basic_salary : 0, 2)}}</span>
+                                                </div>
+                                                <div class="d-flex">
+                                                    <div class="font-weight-bold m-auto">{{ trans('cruds.salaryPaymentDetail.fields.overtime') }}</div>
+                                                    <span class="m-auto"></span>
+                                                </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary btn-xs" data-dismiss="modal">Close</button>
+                                                <button type="button" class="btn btn-primary btn-xs">Save changes</button>
+                                                </div>
+                                            </div>
+                                            </div>
+                                        </div>
 
 
-                                @can('salary_payment_detail_delete')
-                                    <form action="{{ route('payroll.admin.salary-payment-details.destroy', $salaryPaymentDetail->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
-                                        <input type="hidden" name="_method" value="DELETE">
-                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                        <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
-                                    </form>
-                                @endcan
 
-                            </td>
 
-                        </tr>
+                                    @endcan
+                                    @can('salary_payment_detail_delete')
+                                        <form action="{{ route('payroll.admin.salary-payment-details.destroy', $detail->user_id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                            <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
+                                        </form>
+                                    @endcan
+                                </td>
+
+                            </tr>
+                        @endif
                     @endforeach
                 </tbody>
             </table>
@@ -126,7 +231,7 @@
       $($.fn.dataTable.tables(true)).DataTable()
           .columns.adjust();
   });
-  
+
 })
 
 </script>

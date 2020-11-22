@@ -440,16 +440,6 @@
                             </a>
                         </li>
                     @endcan --}}
-                    @can('salary_payment_deduction_access')
-                        <li class="c-sidebar-nav-item">
-                            <a href="{{ route("payroll.admin.salary-payment-deductions.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/salary-payment-deductions") || request()->is("admin/salary-payment-deductions/*") ? "active" : "" }}">
-                                <i class="fa-fw fas fa-circle c-sidebar-nav-icon">
-
-                                </i>
-                                {{ trans('cruds.salaryPaymentDeduction.title') }}
-                            </a>
-                        </li>
-                    @endcan
                     @can('salary_payment_detail_access')
                         <li class="c-sidebar-nav-item">
                             <a href="{{ route("payroll.admin.salary-payment-details.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/salary-payment-details") || request()->is("admin/salary-payment-details/*") ? "active" : "" }}">
@@ -457,6 +447,16 @@
 
                                 </i>
                                 {{ trans('cruds.salaryPaymentDetail.title') }}
+                            </a>
+                        </li>
+                    @endcan
+                    @can('salary_payment_deduction_access')
+                        <li class="c-sidebar-nav-item">
+                            <a href="{{ route("payroll.admin.salary-payment-deductions.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/salary-payment-deductions") || request()->is("admin/salary-payment-deductions/*") ? "active" : "" }}">
+                                <i class="fa-fw fas fa-circle c-sidebar-nav-icon">
+
+                                </i>
+                                {{ trans('cruds.salaryPaymentDeduction.title') }}
                             </a>
                         </li>
                     @endcan

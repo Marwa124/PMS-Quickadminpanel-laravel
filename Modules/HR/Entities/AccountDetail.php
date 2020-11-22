@@ -12,6 +12,7 @@ use Spatie\MediaLibrary\Models\Media;
 use \DateTimeInterface;
 use Modules\HR\Entities\Designation;
 use Modules\HR\Entities\SetTime;
+use Modules\Payroll\Entities\SalaryTemplate;
 
 class AccountDetail extends Model implements HasMedia
 {
@@ -110,6 +111,11 @@ class AccountDetail extends Model implements HasMedia
     public function designation()
     {
         return $this->belongsTo(Designation::class, 'designation_id');
+    }
+
+    public function salaryTemplate()
+    {
+        return $this->belongsTo(SalaryTemplate::class, 'salary_template_id');
     }
 
     public function getAvatarAttribute()

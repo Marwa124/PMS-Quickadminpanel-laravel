@@ -10,7 +10,7 @@
         <form method="POST" action="{{ route("payroll.admin.salary-payment-details.store") }}" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
-                <label class="required" for="salary_payment_id">{{ trans('cruds.salaryPaymentDetail.fields.salary_payment') }}</label>
+                <label class="required" for="salary_payment_id">{{ trans('cruds.salaryPaymentDetail.fields.employee_salary') }}</label>
                 <select class="form-control select2 {{ $errors->has('salary_payment') ? 'is-invalid' : '' }}" name="salary_payment_id" id="salary_payment_id" required>
                     @foreach($salary_payments as $id => $salary_payment)
                         <option value="{{ $id }}" {{ old('salary_payment_id') == $id ? 'selected' : '' }}>{{ $salary_payment }}</option>
@@ -21,7 +21,7 @@
                         {{ $errors->first('salary_payment') }}
                     </div>
                 @endif
-                <span class="help-block">{{ trans('cruds.salaryPaymentDetail.fields.salary_payment_helper') }}</span>
+                <span class="help-block">{{ trans('cruds.salaryPaymentDetail.fields.employee_salary_helper') }}</span>
             </div>
             <div class="form-group">
                 <label class="required" for="name">{{ trans('cruds.salaryPaymentDetail.fields.name') }}</label>

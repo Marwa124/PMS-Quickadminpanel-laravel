@@ -28,6 +28,9 @@ Route::resource('advance-salaries', 'AdvanceSalaryController');
 Route::delete('salary-allowances/destroy', 'SalaryAllowanceController@massDestroy')->name('salary-allowances.massDestroy');
 Route::resource('salary-allowances', 'SalaryAllowanceController', ['except' => ['edit', 'update', 'show']]);
 
+Route::get('generate-pdf','SalaryTemplateController@generatePDF');
+Route::get('salary-employee-details-pdf/{id}','SalaryPaymentDetailsController@generatePDF')->name('salary-employee-details-pdf');
+
 // Salary Templates
 Route::delete('salary-templates/destroy', 'SalaryTemplateController@massDestroy')->name('salary-templates.massDestroy');
 Route::resource('salary-templates', 'SalaryTemplateController');

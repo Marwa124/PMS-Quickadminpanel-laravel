@@ -12,6 +12,7 @@ use Modules\Payroll\Entities\SalaryAllowance;
 use Modules\Payroll\Entities\SalaryDeduction;
 use Modules\Payroll\Http\Requests\Update\UpdateSalaryTemplateRequest;
 use Symfony\Component\HttpFoundation\Response;
+use PDF;
 
 class SalaryTemplateController extends Controller
 {

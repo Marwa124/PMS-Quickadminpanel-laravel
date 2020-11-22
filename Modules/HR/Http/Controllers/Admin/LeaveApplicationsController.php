@@ -39,7 +39,7 @@ class LeaveApplicationsController extends Controller
             }elseif($request->get('leaveTypes') == 'pending') {
 
                 $isDepartmentHead = Department::where('department_head_id', auth()->user()->id)->first();
-                if (User::userRole() == 'Board Members' || User::userRole() == 'Admin') {
+                if (User::authUserRole() == 'Board Members' || User::authUserRole() == 'Admin') {
                     // All pending leaves for board and admin
                     $query = LeaveApplication::where('application_status', 'pending')->with(['user', 'leave_category'])->select(sprintf('%s.*', (new LeaveApplication)->table));
                 }elseif ($isDepartmentHead) {
@@ -62,7 +62,7 @@ class LeaveApplicationsController extends Controller
                 // All Leaves
 
                 $isDepartmentHead = Department::where('department_head_id', auth()->user()->id)->first();
-                if (User::userRole() == 'Board Members' || User::userRole() == 'Admin') {
+                if (User::authUserRole() == 'Board Members' || User::authUserRole() == 'Admin') {
                     // All pending leaves for board and admin
                     $query = LeaveApplication::with(['user', 'leave_category'])->select(sprintf('%s.*', (new LeaveApplication)->table));
                 }elseif ($isDepartmentHead) {
@@ -219,7 +219,7 @@ class LeaveApplicationsController extends Controller
         if ($media = $request->input('ck-media', false)) {
             Media::whereIn('id', $media)->update(['model_id' => $leaveApplication->id]);
         }
-        
+
         /* !!!: Leave Notification */
         $leave_category = LeaveCategory::where('id', $leaveApplication->leave_category_id)->first()->name;
         /* !!!: Leave Mail */
@@ -281,7 +281,7 @@ class LeaveApplicationsController extends Controller
         } elseif ($leaveApplication->attachments) {
             $leaveApplication->attachments->delete();
         }
-        
+
 
         $leave_category = LeaveCategory::where('id', $leaveApplication->leave_category_id)->select('name')->first()->name;
 

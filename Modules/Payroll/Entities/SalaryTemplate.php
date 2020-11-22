@@ -2,9 +2,11 @@
 
 namespace Modules\Payroll\Entities;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use \DateTimeInterface;
+use Modules\HR\Entities\AccountDetail;
 
 class SalaryTemplate extends Model
 {
@@ -40,5 +42,10 @@ class SalaryTemplate extends Model
     public function salaryDeductions()
     {
         return $this->hasMany(SalaryDeduction::class, 'salary_template_id');
+    }
+
+    public function accountDetails()
+    {
+        return $this->hasMany(AccountDetail::class, 'salary_template_id');
     }
 }
