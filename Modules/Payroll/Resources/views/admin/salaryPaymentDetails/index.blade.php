@@ -80,18 +80,21 @@
                                         {{ trans('global.show') }}
                                     </button>
                                         <!-- Modal -->
-                                        <div class="modal fade" id="showModal{{$detail->user_id}}" tabindex="-1" role="dialog" aria-labelledby="showModalLabel" aria-hidden="true">
+                                        <div class="modal fade showDetailsModal" id="showModal{{$detail->user_id}}" tabindex="-1" role="dialog" aria-labelledby="showModalLabel" aria-hidden="true">
                                             <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                 <h5 class="modal-title" id="showModalLabel">{{ trans('cruds.salaryPaymentDetail.title_singular') }}</h5>
-                                                <a href="{{route('payroll.admin.salary-employee-details-pdf', $detail->user_id)}}" class="btn btn-danger btn-xs"
-                                                data-toggle="tooltip" data-placement="top" data-original-title="PDF">
-                                                    <i class="fa fa-file-pdf-o"></i>
-                                                </a>
-                                                {{-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button> --}}
+                                                <div class="d-flex">
+                                                    <a href="{{route('payroll.admin.salary-employee-details-pdf', $detail->user_id)}}" class="btn btn-danger btn-xs mr-2"
+                                                    data-toggle="tooltip" data-placement="top" data-original-title="PDF">
+                                                        <i class="fa fa-file-pdf-o"></i>
+                                                    </a>
+                                                    <a href="{{ route('payroll.admin.salary-employee-details-print', $detail->user_id) }}" class="btnprn btn btn-primary btn-xs">
+                                                        <i class="fa fa-print"></i>
+                                                    </a>
+                                                </div>
+
                                                 </div>
                                                 <div class="modal-body">
                                                 <div class="row">
@@ -188,6 +191,8 @@
 @endsection
 @section('scripts')
 @parent
+<script src="{{ asset('js/printPage.js') }}"></script>
+
 <script>
     $(function () {
   let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
@@ -232,6 +237,20 @@
           .columns.adjust();
   });
 
+
+  $('.btnprn').printPage();
+  
+
+
+    // $('.print_modal_btn').on('click', function(){
+    //     console.log("sdfjghk");
+    //     var printcontent = $('.print_modal_btn').closest('.showDetailsModal');
+    //     var restorepage = $('body').html();
+    //     $('body').empty().html(printcontent);
+    //         window.print();
+    //         $('body').html(restorepage);
+
+    // })
 })
 
 </script>

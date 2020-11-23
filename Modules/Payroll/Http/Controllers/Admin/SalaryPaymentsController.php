@@ -11,6 +11,7 @@ use Modules\Payroll\Entities\SalaryPayment;
 use App\Models\User;
 use Gate;
 use Illuminate\Http\Request;
+use Modules\HR\Entities\AccountDetail;
 use Spatie\MediaLibrary\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -21,10 +22,28 @@ class SalaryPaymentsController extends Controller
     public function index()
     {
         abort_if(Gate::denies('salary_payment_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        $date = request()->date;
+        if (request()['date'] == '') {
+            $date = date('Y-m');
+        }
+        $departmentRequest = request()->department_id ?? '';
 
-        $salaryPayments = SalaryPayment::all();
+        $users = [];
+        if ($departmentRequest && $date) {
+            // $salaryPayments = SalaryPayment::all();
+            $salaryPayments = AccountDetail::select('user_id', 'designation_id')->orderBy('user_id', 'DESC')->get();
 
-        return view('payroll::admin.salaryPayments.index', compact('salaryPayments'));
+            foreach ($salaryPayments as $key => $value) {
+                $userInDepartment = $value->designation()->first() ? $value->designation->department()->where('id', $departmentRequest)->first() : '';
+                $userRole = User::where('id', $value->user_id)->where('banned', 0)->first();
+                if ($userRole && $userRole->userRole() != 'Board Members' && $userInDepartment) {
+                    $users[] = User::where('id', $value->user_id)->where('banned', 0)->first()->accountDetail()->first();
+                }
+            }
+        }
+        return view('payroll::admin.salaryPayments.index', compact('users', 'date', 'departmentRequest'));
+
+        // return view('payroll::admin.salaryPayments.index', compact('salaryPayments'));
     }
 
     public function create()

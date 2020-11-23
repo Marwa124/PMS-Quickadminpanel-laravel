@@ -71,14 +71,15 @@ class SalaryPaymentDetailsController extends Controller
     public function generatePDF($user_id)
     {
         $detail['detail'] = AccountDetail::where('user_id', $user_id)->first();
-        // $salaryTemplate = '';
-        // $designation = $detail->designation()->first();
-        // if ($designation) {
-        //     $salaryTemplate = SalaryTemplate::where('salary_grade', $designation->designation_name)->first();
-        //     $departmentName = $detail->designation->department()->select('department_name')->first();
-        // }
         $pdf = PDF::loadView('payroll::admin.salaryPaymentDetails.pdf', $detail);
 
         return $pdf->download('Salary Details '.$detail['detail']->fullname.'.pdf');
+    }
+
+    public function printDetails($user_id)
+    {
+        $detail = AccountDetail::where('user_id', $user_id)->first();
+
+        return view('payroll::admin.salaryPaymentDetails.print', compact('detail')); 
     }
 }

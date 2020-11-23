@@ -23,18 +23,7 @@ class SalaryPayment extends Model implements HasMedia
         'deleted_at',
     ];
 
-    protected $fillable = [
-        'user_id',
-        'payment_amount',
-        'fine_deductio',
-        'payment_type',
-        'comments',
-        'paid_date',
-        'deduct_from',
-        'created_at',
-        'updated_at',
-        'deleted_at',
-    ];
+    protected $guarded = [];
 
     protected function serializeDate(DateTimeInterface $date)
     {

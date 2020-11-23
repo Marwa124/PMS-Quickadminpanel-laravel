@@ -420,16 +420,7 @@
                             </a>
                         </li>
                     @endcan --}}
-                    {{-- @can('salary_payment_access')
-                        <li class="c-sidebar-nav-item">
-                            <a href="{{ route("payroll.admin.salary-payments.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/salary-payments") || request()->is("admin/salary-payments/*") ? "active" : "" }}">
-                                <i class="fa-fw fas fa-circle c-sidebar-nav-icon">
-
-                                </i>
-                                {{ trans('cruds.salaryPayment.title') }}
-                            </a>
-                        </li>
-                    @endcan
+                    {{-- 
                     @can('salary_payment_allowance_access')
                         <li class="c-sidebar-nav-item">
                             <a href="{{ route("payroll.admin.salary-payment-allowances.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/salary-payment-allowances") || request()->is("admin/salary-payment-allowances/*") ? "active" : "" }}">
@@ -450,7 +441,17 @@
                             </a>
                         </li>
                     @endcan
-                    @can('salary_payment_deduction_access')
+                    @can('salary_payment_access')
+                        <li class="c-sidebar-nav-item">
+                            <a href="{{ route("payroll.admin.salary-payments.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/salary-payments") || request()->is("admin/salary-payments/*") ? "active" : "" }}">
+                                <i class="fa-fw fas fa-circle c-sidebar-nav-icon">
+
+                                </i>
+                                {{ trans('cruds.salaryPayment.title') }}
+                            </a>
+                        </li>
+                    @endcan
+                    {{-- @can('salary_payment_deduction_access')
                         <li class="c-sidebar-nav-item">
                             <a href="{{ route("payroll.admin.salary-payment-deductions.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/salary-payment-deductions") || request()->is("admin/salary-payment-deductions/*") ? "active" : "" }}">
                                 <i class="fa-fw fas fa-circle c-sidebar-nav-icon">
@@ -459,7 +460,7 @@
                                 {{ trans('cruds.salaryPaymentDeduction.title') }}
                             </a>
                         </li>
-                    @endcan
+                    @endcan --}}
                     @can('salary_payslip_access')
                         <li class="c-sidebar-nav-item">
                             <a href="{{ route("payroll.admin.salary-payslips.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/salary-payslips") || request()->is("admin/salary-payslips/*") ? "active" : "" }}">

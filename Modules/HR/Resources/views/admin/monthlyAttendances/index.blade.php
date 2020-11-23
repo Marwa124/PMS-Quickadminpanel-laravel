@@ -45,7 +45,9 @@
                                         <select class="form-control select2 {{ $errors->has('user') ? 'is-invalid' : '' }}" name="user_id" id="user_id" required>
                                         <option selected disabled >{{ $userRequest ? $selected_user : trans('cruds.monthlyAttendance.fields.select_user') }}</option>
                                             @foreach($userAccounts as $user)
+                                            @if ($user)
                                                 <option value="{{ $user->user_id }}" {{ ($userRequest ?? '') == $user->user_id ? 'selected' : '' }}>{{ $user->fullname }}</option>
+                                            @endif
                                             @endforeach
                                         </select>
                                         @if($errors->has('user'))
