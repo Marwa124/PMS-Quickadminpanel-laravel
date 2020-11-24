@@ -18,6 +18,7 @@ use Modules\HR\Entities\Absence;
 use Modules\HR\Entities\AccountDetail;
 use Modules\HR\Entities\Department;
 use Modules\HR\Entities\Designation;
+use Modules\HR\Entities\FingerprintAttendance;
 use Modules\HR\Entities\LeaveApplication;
 use Modules\HR\Entities\Vacation;
 
@@ -103,6 +104,11 @@ class User extends Authenticatable implements HasMedia
         return $this->hasMany(LeaveApplication::class, 'user_id', 'id');
     }
 
+    public function fingerPrintAttendances()
+    {
+        return $this->hasMany(FingerprintAttendance::class, 'user_id', 'id');
+    }
+
     public function designation()
     {
         return $this->belongsTo(Designation::class, 'designation_id', 'id');
@@ -118,10 +124,10 @@ class User extends Authenticatable implements HasMedia
         return $this->hasOne(AccountDetail::class, 'user_id', 'id');
     }
 
-    // public function absences()
-    // {
-    //     return $this->hasMany(Absence::class, 'user_id', 'id');
-    // }
+    public function absences()
+    {
+        return $this->hasMany(Absence::class, 'user_id', 'id');
+    }
 
     // public function vacations()
     // {

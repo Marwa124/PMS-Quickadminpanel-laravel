@@ -194,6 +194,9 @@ class LeaveApplicationsController extends Controller
 
     public function store(StoreLeaveApplicationRequest $request)
     {
+        ///////////////////////////////
+        // Check if end date leave smaller than start date leave Show Error Msg
+        ///////////////////////////////
         $leaveApplication = new LeaveApplication();
         if ($request->leave_type == 'single_day') {
             $leaveApplication->leave_end_date = $request->leave_start_date;

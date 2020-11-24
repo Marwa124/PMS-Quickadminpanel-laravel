@@ -420,17 +420,6 @@
                             </a>
                         </li>
                     @endcan --}}
-                    {{-- 
-                    @can('salary_payment_allowance_access')
-                        <li class="c-sidebar-nav-item">
-                            <a href="{{ route("payroll.admin.salary-payment-allowances.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/salary-payment-allowances") || request()->is("admin/salary-payment-allowances/*") ? "active" : "" }}">
-                                <i class="fa-fw fas fa-circle c-sidebar-nav-icon">
-
-                                </i>
-                                {{ trans('cruds.salaryPaymentAllowance.title') }}
-                            </a>
-                        </li>
-                    @endcan --}}
                     @can('salary_payment_detail_access')
                         <li class="c-sidebar-nav-item">
                             <a href="{{ route("payroll.admin.salary-payment-details.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/salary-payment-details") || request()->is("admin/salary-payment-details/*") ? "active" : "" }}">
@@ -448,6 +437,15 @@
 
                                 </i>
                                 {{ trans('cruds.salaryPayment.title') }}
+                            </a>
+                        </li>
+                    @endcan
+                    @can('payroll_summary')
+                        <li class="c-sidebar-nav-item">
+                            <a href="{{ route("payroll.admin.payroll-summary") }}" class="c-sidebar-nav-link {{ request()->is("admin/payroll-summary") || request()->is("admin/payroll-summary/*") ? "active" : "" }}">
+                                <i class="fa-fw fas fa-circle c-sidebar-nav-icon">
+                                </i>
+                                Payroll Summary
                             </a>
                         </li>
                     @endcan

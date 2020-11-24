@@ -45,6 +45,9 @@ Route::post('salary-payments/media', 'SalaryPaymentsController@storeMedia')->nam
 Route::post('salary-payments/ckmedia', 'SalaryPaymentsController@storeCKEditorImages')->name('salary-payments.storeCKEditorImages');
 Route::resource('salary-payments', 'SalaryPaymentsController');
 
+// Payroll Summary
+Route::get('payroll-summary', 'PayrollSummaryController@__invoke')->name('payroll-summary');
+
 // Salary Payment Allowances
 Route::delete('salary-payment-allowances/destroy', 'SalaryPaymentAllowanceController@massDestroy')->name('salary-payment-allowances.massDestroy');
 Route::resource('salary-payment-allowances', 'SalaryPaymentAllowanceController', ['except' => ['edit', 'update', 'show']]);

@@ -1868,6 +1868,23 @@ class PermissionsTableSeeder extends Seeder
                 'id'    => 462,
                 'title' => 'set_time_access',
             ],
+            [
+                'id'    => 463,
+                'title' => 'salary_template_show',
+            ],
+            [
+                'id'    => 464,
+                'title' => 'salary_template_edit',
+            ],
+            [
+                'id'    => 465,
+                'title' => 'salary_payment_detail_show',
+            ],
+            [
+                'id'    => 466,
+                'title' => 'payroll_summary',
+            ],
+            
             /////////Set Times////////////////
             /////////Settings////////////////
             // [
