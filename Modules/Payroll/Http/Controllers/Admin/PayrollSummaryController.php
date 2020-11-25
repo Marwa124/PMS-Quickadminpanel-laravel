@@ -26,7 +26,7 @@ class PayrollSummaryController extends Controller
         if (request()['date'] == '') {
             $date = date('Y-m');
         }
-
+        checkAvailableLeaves(4, '2020-10',2);
         
         if ($date) {
             $userAccountDetails = AccountDetail::select('user_id', 'designation_id')->orderBy('user_id', 'DESC')->get();

@@ -30,6 +30,7 @@ if (!function_exists('dateFormation'))
 
 
 // Iterate over the period
+/* !!!: Check if that date exists in this passed period of time */
 if (!function_exists('')) {
     function dateRange($period, $date)
     {
@@ -37,16 +38,16 @@ if (!function_exists('')) {
         $dayRange = [];
         $countNumber = 0;
         $dateFormat = dateFormation($date);
-
         /* !!!: If day in vacation is between 24 of this month and pervious month day 25 */
         foreach ($period as $day) {
             // $dayValue = [];
-            $xxx = '';
+            
             $startTime = strtotime($dateFormat['previousDate']);
             $endTime = strtotime($dateFormat['currentDate']);
             $point = strtotime($day->format('Y-m-d'));
             if( $point >= $startTime && $point < $endTime )
             {
+                // dump($day->format('Y-m-d'));
                 // array_push($dayRange, $day->format('Y-m-d'));
                 $dayRange[] = $day->format('Y-m-d');
                 $countNumber ++;
@@ -98,16 +99,24 @@ if (!function_exists('checkAvailableLeaves')) {
             $categoryLeave = LeaveCategory::where('id', $leave_category_id)->first();
             $category_leave_quota = $categoryLeave->leave_quota;
 
-            $token_leave = LeaveApplication::where('leave_category_id', $leave_category_id)->where('user_id', $user_id)->where('application_status', 2)->get();
-
+            // $token_leave = LeaveApplication::where('leave_category_id', $leave_category_id)->where('user_id', $user_id)->where('application_status', 2)->get();
+            $token_leave = LeaveApplication::where('leave_category_id', $leave_category_id)->where('user_id', $user_id)->get();
             $total_token = 0;
             $leaveCounts = 0;
             $leaveDays = [];
+            $multiDaysLeaves = [];
             foreach ($token_leave as $taken_leave_value) {
-                $period = CarbonPeriod::create($taken_leave_value->leave_start_date, $taken_leave_value->leave_start_date);
+                $period = CarbonPeriod::create($taken_leave_value->leave_start_date, $taken_leave_value->leave_end_date);
                 $leaveDays[] = dateRange($period, $date)['days'];
-                $leaveCounts = dateRange($period, $date)['countNumber'];
+                $leaveCounts += (dateRange($period, $date)['countNumber'] != 0 ) ? dateRange($period, $date)['countNumber'] : 1;
+                // !!!: Only return leaves that have multi days
+                if (dateRange($period, $date)['countNumber']) {
+                    $multiDaysLeaves[] = $taken_leave_value->id;
+                }
+                // dump(dateRange($period, $date)['countNumber']);
             }
+            dd($leaveCounts);
+            // $total_token = ;
 
             $input_ge_days = 0;
             $input_m_days = 0;
