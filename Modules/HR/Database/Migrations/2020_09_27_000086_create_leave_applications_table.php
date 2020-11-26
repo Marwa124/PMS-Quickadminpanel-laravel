@@ -20,6 +20,7 @@ class CreateLeaveApplicationsTable extends Migration
             $table->longText('comments')->nullable();
             $table->string('approved_by')->nullable();
             $table->integer('user_id')->unsigned()->nullable();
+            $table->enum('deduct', ['no', 'yes'])->nullable('no');
             $table->timestamps();
             $table->softDeletes();
         });

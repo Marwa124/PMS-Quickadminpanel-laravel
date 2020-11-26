@@ -20,6 +20,7 @@ use Modules\HR\Entities\Department;
 use Modules\HR\Entities\Designation;
 use Modules\HR\Entities\FingerprintAttendance;
 use Modules\HR\Entities\LeaveApplication;
+use Modules\HR\Entities\SetTime;
 use Modules\HR\Entities\Vacation;
 
 class User extends Authenticatable implements HasMedia
@@ -30,6 +31,12 @@ class User extends Authenticatable implements HasMedia
 
     public static $searchable = [
         'name',
+    ];
+
+    const JOB_TYPE = [
+        'full_time' => 'Full Time',
+        'part_time' => 'Part Time',
+        'freelance' => 'Freelance',
     ];
 
     const BANNED_RADIO = [
@@ -112,6 +119,11 @@ class User extends Authenticatable implements HasMedia
     public function designation()
     {
         return $this->belongsTo(Designation::class, 'designation_id', 'id');
+    }
+
+    public function timeTable()
+    {
+        return $this->belongsTo(SetTime::class, 'set_time_id', 'id');
     }
 
     public function role()
