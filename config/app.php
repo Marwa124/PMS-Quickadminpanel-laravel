@@ -177,6 +177,7 @@ return [
 
         Jorenvh\Share\Providers\ShareServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
+        Spatie\Permission\PermissionServiceProvider::class,
 
         App\Providers\ViewServiceProvider::class,
     ],

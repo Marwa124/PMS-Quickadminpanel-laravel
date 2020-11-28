@@ -17,12 +17,36 @@ Route::Post('user/upload','ImportsController@storeUser');
 Auth::routes(['register' => false]);
 // Admin
 
+
+/**************** permissions *****************/
+
+// roles
+// Route::apiResource('roles', 'AclController')->parameters(['roles' => 'id']);
+Route::resource('roles', 'Admin\AclController')->parameters(['roles' => 'id']);
+Route::get('/name_roles', 'Admin\AclController@getNameRoles');
+
+// permissions
+Route::get('/permissions', 'Admin\AclController@getListPermissions');
+
+// user
+Route::get('/roles_permissions_for_user/{id}', 'Admin\AclController@getRolesAndPermissionsForUser');
+Route::put('/assign_to_user/{id}', 'Admin\AclController@assignToUser');
+
+Route::get('/users_list', 'Admin\AclController@getUsersList');
+
+/*********************************************************************************/
+
+
+
+
+
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'middleware' => ['auth']], function () {
     Route::get('/', 'HomeController@index')->name('home');
     Route::get('user-alerts/read', 'UserAlertsController@read');
     // Permissions
     Route::delete('permissions/destroy', 'PermissionsController@massDestroy')->name('permissions.massDestroy');
-    Route::resource('permissions', 'PermissionsController');
+    Route::get('permissions/{id}', 'PermissionsController@index')->name('permissions.index');
+    // Route::resource('permissions', 'PermissionsController');
 
     // Roles
     Route::delete('roles/destroy', 'RolesController@massDestroy')->name('roles.massDestroy');
@@ -383,3 +407,9 @@ Route::group(['prefix' => 'profile', 'as' => 'profile.', 'namespace' => 'Auth', 
         Route::post('password', 'ChangePasswordController@update')->name('password.update');
     }
 });
+
+
+
+// Route::get('/{any}', function(){
+//     return view('welcome');
+// })->where('any', '.*');

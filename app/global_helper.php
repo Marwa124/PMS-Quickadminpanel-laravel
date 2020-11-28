@@ -17,3 +17,11 @@ function globalNotificationId($user_id){
     return $arr;
     // return [$userHead, $userAdmin];
 }
+
+// get responseHandel
+if (!function_exists('resHandel')) {
+    function resHandel($data = [], $message = 'Success', $code = 200, $headers = []) {
+        return response(['data' => $data, 'message' => $message, 'code' => $code], $code, $headers);
+    }
+}
+/***********************************************************************************/

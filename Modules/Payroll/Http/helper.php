@@ -30,7 +30,7 @@ if (!function_exists('dateFormation'))
 
 
 // Iterate over the period
-if (!function_exists('')) {
+if (!function_exists('dateRange')) {
     function dateRange($period, $date)
     {
 
