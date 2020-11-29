@@ -68,6 +68,7 @@ class LeaveApplication extends Model implements HasMedia
         'created_at',
         'updated_at',
         'deleted_at',
+        'deduct'
     ];
 
     protected function serializeDate(DateTimeInterface $date)

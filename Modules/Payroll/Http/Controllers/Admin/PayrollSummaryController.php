@@ -27,7 +27,8 @@ class PayrollSummaryController extends Controller
         if (request()['date'] == '') {
             $date = date('Y-m');
         }
-
+        // late_leave_deduction(4, '2020-10');
+        deduction('2020-10');
         
         if ($date) {
             $userAccountDetails = AccountDetail::select('user_id', 'designation_id')->orderBy('user_id', 'DESC')->get();

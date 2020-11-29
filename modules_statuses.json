@@ -3,5 +3,6 @@
     "SETTING": true,
     "Migration": true,
     "PAYROLL": true,
-    "Payroll": true
+    "Payroll": true,
+    "ProjectManagement": true
 }

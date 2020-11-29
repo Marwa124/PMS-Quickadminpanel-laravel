@@ -59,4 +59,5 @@ class Department extends Model
         return $this->belongsTo(User::class, 'department_head_id');
     }
 
+
 }
