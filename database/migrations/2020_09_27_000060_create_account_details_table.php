@@ -31,6 +31,9 @@ class CreateAccountDetailsTable extends Migration
             $table->string('passport')->nullable();
             $table->string('direction')->nullable();
             $table->integer('set_time_id')->unsigned()->nullable();
+            $table->integer('user_id')->unsigned();
+            $table->integer('designation_id')->unsigned();
+            $table->string('employment_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

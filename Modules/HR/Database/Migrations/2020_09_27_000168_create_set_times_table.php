@@ -15,6 +15,7 @@ class CreateSetTimesTable extends Migration
             $table->time('out_time')->nullable();
             $table->time('allow_clock_in_late')->nullable();
             $table->time('allow_leave_early')->nullable();
+            $table->string('deduction_day')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

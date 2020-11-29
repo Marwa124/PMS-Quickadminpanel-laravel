@@ -154,6 +154,13 @@
                                         </a>
                                     @endcan
 
+                                    @can('permission_access')
+                                        {{-- <a href="{{ route("admin.permissions.index", $accountDetail->user_id) }}" class="btn btn-xs btn-warning"> --}}
+                                        <a href="{{ route("admin.permissions.index", $accountDetail->id) }}" class="btn btn-xs btn-warning">
+                                            {{ trans('cruds.permission.title') }}
+                                        </a>
+                                    @endcan
+
                                     @can('account_detail_delete')
                                         <form action="{{ route('hr.admin.account-details.destroy', $accountDetail->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
                                             <input type="hidden" name="_method" value="DELETE">

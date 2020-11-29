@@ -18,17 +18,27 @@ use Modules\HR\Entities\Absence;
 use Modules\HR\Entities\AccountDetail;
 use Modules\HR\Entities\Department;
 use Modules\HR\Entities\Designation;
+use Modules\HR\Entities\FingerprintAttendance;
 use Modules\HR\Entities\LeaveApplication;
+use Modules\HR\Entities\SetTime;
 use Modules\HR\Entities\Vacation;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements HasMedia
 {
     use SoftDeletes, Notifiable, HasApiTokens, HasMediaTrait;
+    use HasRoles;
 
     public $table = 'users';
 
     public static $searchable = [
         'name',
+    ];
+
+    const JOB_TYPE = [
+        'full_time' => 'Full Time',
+        'part_time' => 'Part Time',
+        'freelance' => 'Freelance',
     ];
 
     const BANNED_RADIO = [
@@ -66,15 +76,15 @@ class User extends Authenticatable implements HasMedia
 
     protected $guarded = [];
 
-    public function scopeUserRole()
-    {
-        return $this->role()->first()->title;
-    }
+    // public function scopeUserRole()
+    // {
+    //     return $this->role()->first()->title;
+    // }
 
-    public function scopeAuthUserRole()
-    {
-        return auth()->user()->role()->first()->title;
-    }
+    // public function scopeAuthUserRole()
+    // {
+    //     return auth()->user()->role()->first()->title;
+    // }
 
     protected function serializeDate(DateTimeInterface $date)
     {
@@ -103,25 +113,35 @@ class User extends Authenticatable implements HasMedia
         return $this->hasMany(LeaveApplication::class, 'user_id', 'id');
     }
 
+    public function fingerPrintAttendances()
+    {
+        return $this->hasMany(FingerprintAttendance::class, 'user_id', 'id');
+    }
+
     public function designation()
     {
         return $this->belongsTo(Designation::class, 'designation_id', 'id');
     }
 
-    public function role()
+    public function timeTable()
     {
-        return $this->belongsTo(Role::class, 'role_id', 'id');
+        return $this->belongsTo(SetTime::class, 'set_time_id', 'id');
     }
+
+    // public function role()
+    // {
+    //     return $this->belongsTo(Role::class, 'role_id', 'id');
+    // }
 
     public function accountDetail()
     {
         return $this->hasOne(AccountDetail::class, 'user_id', 'id');
     }
 
-    // public function absences()
-    // {
-    //     return $this->hasMany(Absence::class, 'user_id', 'id');
-    // }
+    public function absences()
+    {
+        return $this->hasMany(Absence::class, 'user_id', 'id');
+    }
 
     // public function vacations()
     // {
@@ -165,10 +185,10 @@ class User extends Authenticatable implements HasMedia
         $this->notify(new ResetPassword($token));
     }
 
-    public function roles()
-    {
-        return $this->belongsToMany(Role::class);
-    }
+    // public function roles()
+    // {
+    //     return $this->belongsToMany(Role::class);
+    // }
 
     public function getLastLoginAttribute($value)
     {
@@ -180,10 +200,10 @@ class User extends Authenticatable implements HasMedia
         // $this->attributes['last_login'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
     }
 
-    public function permissions()
-    {
-        return $this->belongsToMany(Permission::class);
-    }
+    // public function permissions()
+    // {
+    //     return $this->belongsToMany(Permission::class);
+    // }
 
     public function getDateOfJoinAttribute($value)
     {

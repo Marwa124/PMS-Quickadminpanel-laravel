@@ -29,7 +29,7 @@
                     {{ trans('cruds.userManagement.title') }}
                 </a>
                 <ul class="c-sidebar-nav-dropdown-items">
-                    @can('permission_access')
+                    {{-- @can('permission_access')
                         <li class="c-sidebar-nav-item">
                             <a href="{{ route("admin.permissions.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/permissions") || request()->is("admin/permissions/*") ? "active" : "" }}">
                                 <i class="fa-fw fas fa-unlock-alt c-sidebar-nav-icon">
@@ -38,7 +38,7 @@
                                 {{ trans('cruds.permission.title') }}
                             </a>
                         </li>
-                    @endcan
+                    @endcan --}}
                     @can('role_access')
                         <li class="c-sidebar-nav-item">
                             <a href="{{ route("admin.roles.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/roles") || request()->is("admin/roles/*") ? "active" : "" }}">
@@ -420,6 +420,7 @@
                             </a>
                         </li>
                     @endcan --}}
+<<<<<<< HEAD
                     {{--
                     @can('salary_payment_allowance_access')
                         <li class="c-sidebar-nav-item">
@@ -431,6 +432,8 @@
                             </a>
                         </li>
                     @endcan --}}
+=======
+>>>>>>> 02ab76f1501d64e5276394715ca635f94cd52bff
                     @can('salary_payment_detail_access')
                         <li class="c-sidebar-nav-item">
                             <a href="{{ route("payroll.admin.salary-payment-details.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/salary-payment-details") || request()->is("admin/salary-payment-details/*") ? "active" : "" }}">
@@ -448,6 +451,15 @@
 
                                 </i>
                                 {{ trans('cruds.salaryPayment.title') }}
+                            </a>
+                        </li>
+                    @endcan
+                    @can('payroll_summary')
+                        <li class="c-sidebar-nav-item">
+                            <a href="{{ route("payroll.admin.payroll-summary") }}" class="c-sidebar-nav-link {{ request()->is("admin/payroll-summary") || request()->is("admin/payroll-summary/*") ? "active" : "" }}">
+                                <i class="fa-fw fas fa-circle c-sidebar-nav-icon">
+                                </i>
+                                Payroll Summary
                             </a>
                         </li>
                     @endcan

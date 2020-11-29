@@ -21,6 +21,7 @@
     <link href="https://unpkg.com/@coreui/coreui@3.2/dist/css/coreui.min.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/1.5.0/css/perfect-scrollbar.min.css" rel="stylesheet" />
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet" />
     @yield('styles')
 
@@ -39,7 +40,7 @@
     channel.bind('App\\Events\\NewNotification', function(data) {
 
 if (data) {
-    
+
         var count = parseInt($('.data-notify-count').html());
         count += 1;
         $('.data-notify-count').html(count);
@@ -61,6 +62,7 @@ if (data) {
 </head>
 
 <body class="c-app">
+    <div class="w-100" id="app">
     @include('partials.menu')
     <div class="c-wrapper">
         <header class="c-header c-header-fixed px-3">
@@ -209,6 +211,9 @@ if (data) {
             </form>
         </div>
     </div>
+    </div> <!--End App Id-->
+    <script src="{{ asset('js/app.js') }}"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
@@ -429,7 +434,7 @@ if (data) {
 });
 
     </script>
-   
+
 
     <script>
         // $(document).ready(function(){
@@ -439,8 +444,7 @@ if (data) {
         //     })
         // })
     </script>
-   
-   
+
     @yield('scripts')
 
     {{-- Social Media Share Links --}}
