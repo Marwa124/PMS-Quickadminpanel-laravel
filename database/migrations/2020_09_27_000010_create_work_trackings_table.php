@@ -17,6 +17,8 @@ class CreateWorkTrackingsTable extends Migration
             $table->string('notify_work_achive')->nullable();
             $table->string('notify_work_not_achive')->nullable();
             $table->string('email_send')->nullable();
+            $table->unsignedInteger('work_type_id');
+            $table->unsignedInteger('account_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

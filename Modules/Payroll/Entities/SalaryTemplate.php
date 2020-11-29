@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use \DateTimeInterface;
 use Modules\HR\Entities\AccountDetail;
+use Modules\HR\Entities\Designation;
 
 class SalaryTemplate extends Model
 {
@@ -47,5 +48,10 @@ class SalaryTemplate extends Model
     public function accountDetails()
     {
         return $this->hasMany(AccountDetail::class, 'salary_template_id');
+    }
+
+    public function designation()
+    {
+        return $this->belongsTo(Designation::class, 'designation_id', 'id');
     }
 }

@@ -27,12 +27,12 @@ class SalaryPaymentDetailsController extends Controller
         $users = [];
         foreach ($userAccounts as $key => $value) {
             $userRole = User::where('id', $value->user_id)->where('banned', 0)->first();
-            if ($userRole && $userRole->userRole() != 'Board Members') {
+            if ($userRole && !$userRole->hasRole('Board Members')) {
                 $users[] = User::where('id', $value->user_id)->where('banned', 0)->first()->accountDetail()
                     ->first();
                     // ->select('fullname', 'user_id', 'employment_id', 'joining_date', 'designation_id', 'avatar')->first();
             }
-        }
+        }  
         return view('payroll::admin.salaryPaymentDetails.index', compact('users'));
     }
 

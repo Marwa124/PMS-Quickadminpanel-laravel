@@ -34,16 +34,19 @@ class DailyAttendancesController extends Controller
 
             $users = User::where('banned', 0)->select('id')->get();
             foreach ($users as $key => $user) {
-                $result = [];
-                $result['user_account_id'] = $user->accountDetail->id;
-                $result['id'] = $user->accountDetail->employment_id;
-                $result['name'] = $user->accountDetail->fullname;
-                $result['clock_out'] = $data_value->where('user_id', $user->id)->max('time') ?? '-';
-                $result['clock_in'] = $data_value->where('user_id', $user->id)->min('time') ?? '-';
-                $result['absent'] = getAbsentUsers($date, $user->id);
-                $result['vacation'] = getVacations($date, $user->id);
-                $result['holiday'] = getHolidays($date);
-                $fingerprintAttendances[] = $result;
+                // dd($user->id);
+                if (!$user->accountDetail()->get()) {
+                    $result = [];
+                    $result['user_account_id'] = $user->accountDetail->id;
+                    $result['id'] = $user->accountDetail->employment_id;
+                    $result['name'] = $user->accountDetail->fullname;
+                    $result['clock_out'] = $data_value->where('user_id', $user->id)->max('time') ?? '-';
+                    $result['clock_in'] = $data_value->where('user_id', $user->id)->min('time') ?? '-';
+                    $result['absent'] = getAbsentUsers($date, $user->id);
+                    $result['vacation'] = getVacations($date, $user->id);
+                    $result['holiday'] = getHolidays($date);
+                    $fingerprintAttendances[] = $result;
+                }
             }
 
             return view('hr::admin.dailyAttendances.index', compact('fingerprintAttendances', 'date'));

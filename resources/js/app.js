@@ -5,8 +5,23 @@
  */
 
 require('./bootstrap');
+import AssignPermissionsToUser from './components/AssignPermissionsToUser.vue';
+import './filter';
 
 window.Vue = require('vue');
+
+/* !!!: alert */
+import BtnCreate from './components/form/BtnCreate'
+Vue.component('BtnCreate', BtnCreate)
+
+import BtnUpdate from './components/form/BtnUpdate'
+Vue.component('BtnUpdate', BtnUpdate)
+/* !!!: alert */
+// import Roles from '../views/hr/permissions/roles/Index'
+// import RolesCreate from '../views/hr/permissions/roles/Create'
+
+
+// Vue.config.devtools = true;
 
 /**
  * The following block of code may be used to automatically register your
@@ -18,8 +33,9 @@ window.Vue = require('vue');
 
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
-
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+Vue.component('assign-permissions-to-user', require('./components/AssignPermissionsToUser.vue'));
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -29,4 +45,6 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 
 const app = new Vue({
     el: '#app',
+    components: { AssignPermissionsToUser }
 });
+

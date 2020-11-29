@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Routing\Controller;
 use Modules\HR\Entities\AccountDetail;
 use Modules\HR\Entities\FingerprintAttendance;
+use Modules\Payroll\Entities\SalaryTemplate;
 
 class PayrollSummaryController extends Controller
 {
@@ -35,20 +36,21 @@ class PayrollSummaryController extends Controller
             $carbonDate = dateFormation($date);
             $holidays = getHolidaysWithInMonth($date);
             foreach ($userAccountDetails as $key => $value) {
-
                 late_leave_deduction(4, '2020-10');
-
-
+                
+                
                 $userVal = [];
                 $userDesignation = $value->designation()->first();
                 if ($userDesignation) {
                     $activeUser = User::where('id', $value->user_id)->where('banned', 0)->first();
                     
-                    if ($activeUser && $activeUser->userRole() != 'Board Members') {
+                    if ($activeUser && !$activeUser->hasRole('Board Members')) {
+
                         $userVal['userVacations'] = getVacationsWithInMonth($date, $value->user_id);
                         $userVal['totalAttendedDays'] = $activeUser->fingerPrintAttendances()->whereBetween('date', [$carbonDate['previousDate'], $carbonDate['currentDate']])->select('date')->distinct('date')->count();
                         $userVal['totalAbsentDays']   = $activeUser->absences()->whereBetween('date', [$carbonDate['previousDate'], $carbonDate['currentDate']])->select('date')->distinct('date')->count();
                         $userVal['detail'] = User::where('id', $value->user_id)->where('banned', 0)->first()->accountDetail()->first();
+                        // dump($userVal['detail']);
                         $users[] = $userVal;
                     }
                 }

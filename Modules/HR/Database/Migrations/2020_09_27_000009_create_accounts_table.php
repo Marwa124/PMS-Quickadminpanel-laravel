@@ -18,8 +18,8 @@ class CreateAccountsTable extends Migration
         });
     }
 
-    public function down()
-    {
-        Schema::dropIfExists('accounts');
-    }
+    // public function down()
+    // {
+    //     Schema::dropIfExists('accounts');
+    // }
 }

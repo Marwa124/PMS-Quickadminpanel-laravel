@@ -14,6 +14,7 @@ class CreateNotificationsTable extends Migration
             $table->text('content')->nullable();
             $table->integer('model_id')->nullable();
             $table->string('model_type')->nullable();
+            $table->string('show_path')->nullable();
             $table->timestamps();
         });
     }

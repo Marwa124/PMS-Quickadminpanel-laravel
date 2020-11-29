@@ -40,7 +40,7 @@ class Designation extends Model
 
     public function salaryTemplate()
     {
-        return $this->belongsTo(SalaryTemplate::class);
+        return $this->hasOne(SalaryTemplate::class);
     }
 
     public function department()

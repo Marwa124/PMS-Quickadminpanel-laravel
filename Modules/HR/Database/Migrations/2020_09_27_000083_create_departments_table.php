@@ -20,6 +20,7 @@ class CreateDepartmentsTable extends Migration
             $table->integer('unread_email')->nullable();
             $table->integer('delete_email_after_import')->nullable();
             $table->string('last_postmaster_run')->nullable();
+            // $table->integer('department_head_id')->unsigned();
             $table->timestamps();
             $table->softDeletes();
         });

@@ -18,6 +18,7 @@ class CreateJobApplicationsTable extends Migration
             $table->date('apply_date')->nullable();
             $table->string('send_email')->nullable();
             $table->date('interview_date')->nullable();
+            $table->unsignedInteger('job_circular_id');
             $table->timestamps();
             $table->softDeletes();
         });

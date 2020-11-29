@@ -62,7 +62,7 @@ class LeaveApplicationsController extends Controller
                 // All Leaves
 
                 $isDepartmentHead = Department::where('department_head_id', auth()->user()->id)->first();
-                if (User::authUserRole() == 'Board Members' || User::authUserRole() == 'Admin') {
+                if (User::find(auth()->user()->id)->hasRole('Board Members') || User::find(auth()->user()->id)->hasRole('Admin')) {
                     // All pending leaves for board and admin
                     $query = LeaveApplication::with(['user', 'leave_category'])->select(sprintf('%s.*', (new LeaveApplication)->table));
                 }elseif ($isDepartmentHead) {

@@ -26,6 +26,7 @@
         "nwidart/laravel-modules": "^7.2",
         "pusher/pusher-php-server": "~4.0",
         "spatie/laravel-medialibrary": "^7.19",
+        "spatie/laravel-permission": "^3.17",
         "yajra/laravel-datatables-oracle": "^9.9"
     },
     "require-dev": {

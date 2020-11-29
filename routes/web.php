@@ -1,13 +1,13 @@
 <?php
 
 Route::redirect('/', '/login');
-Route::get('/home', function () {
-    if (session('status')) {
-        return redirect()->route('admin.home')->with('status', session('status'));
-    }
+// Route::get('/home', function () {
+//     if (session('status')) {
+//         return redirect()->route('admin.home')->with('status', session('status'));
+//     }
 
-    return redirect()->route('admin.home');
-});
+//     return redirect()->route('admin.home');
+// });
 
 
 Route::get('user/upload','ImportsController@user');
@@ -22,7 +22,39 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::get('user-alerts/read', 'UserAlertsController@read');
     // Permissions
     Route::delete('permissions/destroy', 'PermissionsController@massDestroy')->name('permissions.massDestroy');
-    Route::resource('permissions', 'PermissionsController');
+    Route::get('permissions/{id}', 'PermissionsController@index')->name('permissions.index');
+    // Route::resource('permissions', 'PermissionsController');
+
+
+
+
+
+
+        
+    /**************** permissions *****************/
+
+    // roles
+    // Route::apiResource('roles', 'AclController')->parameters(['roles' => 'id']);
+    Route::resource('roles', 'AclController')->parameters(['roles' => 'id']);
+    Route::get('/name_roles', 'AclController@getNameRoles');
+
+    // permissions
+    Route::get('/permissions', 'AclController@getListPermissions');
+
+    // user
+    Route::get('/roles_permissions_for_user/{id}', 'AclController@getRolesAndPermissionsForUser');
+    Route::put('/assign_to_user/{id}', 'AclController@assignToUser');
+
+    Route::get('/users_list', 'AclController@getUsersList');
+
+    /*********************************************************************************/
+
+
+
+
+
+
+
 
     // Roles
     Route::delete('roles/destroy', 'RolesController@massDestroy')->name('roles.massDestroy');
@@ -383,3 +415,9 @@ Route::group(['prefix' => 'profile', 'as' => 'profile.', 'namespace' => 'Auth', 
         Route::post('password', 'ChangePasswordController@update')->name('password.update');
     }
 });
+
+
+
+// Route::get('/{any}', function(){
+//     return view('welcome');
+// })->where('any', '.*');

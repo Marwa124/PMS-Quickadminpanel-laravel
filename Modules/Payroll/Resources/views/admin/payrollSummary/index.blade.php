@@ -78,6 +78,12 @@
                             Deductions
                         </th>
                         <th>
+                            Details
+                        </th>
+                        <th>
+                            Status
+                        </th>
+                        <th>
                             Action
                         </th>
                     </tr>
@@ -87,11 +93,14 @@
     // dd($users);
 @endphp
                     @foreach($users as $key => $user)
+                    {{-- {{dd($user)}} --}}
                     @if ($user['detail'])
                     <?php
                         $salaryTemplate = '';
                         $designation = $user['detail']->designation()->first();
                         if ($designation) {
+                            $salaryTemplate = $user['detail']->designation->salaryTemplate()->get();
+                            $departmentName = $user['detail']->designation->department()->select('department_name')->first();
                             $salaryTemplate = $salaryTemplateModel->where('salary_grade', $designation->designation_name)->first();
                             $departmentName = $user['detail']->designation->department()->select('department_name')->first();
                         }

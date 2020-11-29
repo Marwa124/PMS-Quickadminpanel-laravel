@@ -16,6 +16,7 @@ class CreateAdvanceSalariesTable extends Migration
             $table->date('request_date');
             $table->integer('status');
             $table->integer('approve_by')->nullable();
+            $table->unsignedInteger('user_id');
             $table->timestamps();
             $table->softDeletes();
         });

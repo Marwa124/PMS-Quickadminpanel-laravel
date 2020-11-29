@@ -30,7 +30,7 @@ if (!function_exists('dateFormation'))
 
 
 // Iterate over the period
-if (!function_exists('')) {
+if (!function_exists('dateRange')) {
     function dateRange($period, $date)
     {
 
@@ -160,7 +160,7 @@ if (!function_exists('late_leave_deduction')) {
                 $singleLeaveCount = LeaveApplication::where('leave_start_date','<=' , $value[0])->where('leave_end_date', '>=', $value[0])->first();
 
                 // dump($value[0]);
-                // dump($singleLeaveCount);
+                dump($singleLeaveCount);
             }
         }
         dd();
