@@ -47,7 +47,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::delete('permissions/destroy', 'PermissionsController@massDestroy')->name('permissions.massDestroy');
     Route::get('permissions/{id}', 'PermissionsController@index')->name('permissions.index');
     // Route::resource('permissions', 'PermissionsController');
-<<<<<<< HEAD
 
 
 
@@ -79,8 +78,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
 
 
 
-=======
->>>>>>> d1d885ea86ded9a65227379feffb848749eccf94
 
     // Roles
     Route::delete('roles/destroy', 'RolesController@massDestroy')->name('roles.massDestroy');

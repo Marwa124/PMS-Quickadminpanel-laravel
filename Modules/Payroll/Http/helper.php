@@ -38,14 +38,9 @@ if (!function_exists('dateFormation'))
 
 
 // Iterate over the period
-<<<<<<< HEAD
-if (!function_exists('dateRange')) {
-    function dateRange($period, $date)
-=======
 /* !!!: Check if that date exists in this passed period of time */
 if (!function_exists('dateRange')) {
     function dateRange($period, $date) //(array of days(Y-m-d), $month)
->>>>>>> d1d885ea86ded9a65227379feffb848749eccf94
     {
         $dayRange = [];
         $countNumber = 0;
@@ -73,25 +68,30 @@ if (!function_exists('dateRange')) {
     }
 }
 
-function timeDifferenceInMinutes($start, $end)
-{
-    $printClockIn  = new Carbon($start);
-    $leaveHour    = new Carbon($end);
-    // $late_minutes = $printClockIn->diff($leaveHour)->format('%H:%I:%S');
-    return $printClockIn->diffInMinutes($leaveHour);
+if (!function_exists('timeDifferenceInMinutes')) {
+    function timeDifferenceInMinutes($start, $end)
+    {
+        $printClockIn  = new Carbon($start);
+        $leaveHour    = new Carbon($end);
+        // $late_minutes = $printClockIn->diff($leaveHour)->format('%H:%I:%S');
+        return $printClockIn->diffInMinutes($leaveHour);
+    }
 }
 
-function addToDeductionTable($user_id, $date, $reason, $type = 'days', $minutes = null, $minutes_type = null, $subtracted = 'no')
-{
-    Deduction::create([
-        'user_id' => $user_id,
-        'type'    => $type,
-        'minutes' => $minutes,
-        'minutes_type' => $minutes_type,
-        'date' => $date,
-        'subtracted' => $subtracted,
-        'reason' => $reason
-    ]);
+
+if (!function_exists('addToDeductionTable')) {
+    function addToDeductionTable($user_id, $date, $reason, $type = 'days', $minutes = null, $minutes_type = null, $subtracted = 'no')
+    {
+        Deduction::create([
+            'user_id' => $user_id,
+            'type'    => $type,
+            'minutes' => $minutes,
+            'minutes_type' => $minutes_type,
+            'date' => $date,
+            'subtracted' => $subtracted,
+            'reason' => $reason
+        ]);
+    }
 }
 
 
@@ -213,10 +213,6 @@ if (!function_exists('late_leave_deduction')) {
 }
 
 
-<<<<<<< HEAD
-                // dump($value[0]);
-                dump($singleLeaveCount);
-=======
 if (!function_exists('deduction')) {
     function deduction($month)
     {
@@ -276,15 +272,12 @@ if (!function_exists('deduction')) {
                     }
                     // dump($user->id);
                 }
->>>>>>> d1d885ea86ded9a65227379feffb848749eccf94
             }
         }
         dd();
         // dd($daysInMonth);
     }
 }
-<<<<<<< HEAD
-=======
 
 // $period =$this->period( $this->previous_month($month), $month.'-24');
 
@@ -393,4 +386,3 @@ if (!function_exists('deduction')) {
 //   }
 //      }
 // }
->>>>>>> d1d885ea86ded9a65227379feffb848749eccf94
