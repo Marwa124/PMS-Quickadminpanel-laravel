@@ -420,7 +420,7 @@
                             </a>
                         </li>
                     @endcan --}}
-                    {{-- 
+                    {{--
                     @can('salary_payment_allowance_access')
                         <li class="c-sidebar-nav-item">
                             <a href="{{ route("payroll.admin.salary-payment-allowances.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/salary-payment-allowances") || request()->is("admin/salary-payment-allowances/*") ? "active" : "" }}">
@@ -602,12 +602,12 @@
                     <i class="fa-fw fas fa-list c-sidebar-nav-icon">
 
                     </i>
-                    {{ trans('cruds.taskManagement.title') }}
+                    {{ trans('cruds.projectManagement.title') }}
                 </a>
                 <ul class="c-sidebar-nav-dropdown-items">
                     @can('task_status_access')
                         <li class="c-sidebar-nav-item">
-                            <a href="{{ route("admin.task-statuses.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/task-statuses") || request()->is("admin/task-statuses/*") ? "active" : "" }}">
+                            <a href="{{ route("projectmanagement.admin.task-statuses.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/projectmanagement/task-statuses") || request()->is("admin/projectmanagement/task-statuses/*") ? "active" : "" }}">
                                 <i class="fa-fw fas fa-server c-sidebar-nav-icon">
 
                                 </i>
@@ -617,7 +617,7 @@
                     @endcan
                     @can('task_tag_access')
                         <li class="c-sidebar-nav-item">
-                            <a href="{{ route("admin.task-tags.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/task-tags") || request()->is("admin/task-tags/*") ? "active" : "" }}">
+                            <a href="{{ route("projectmanagement.admin.task-tags.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/projectmanagement/task-tags") || request()->is("admin/projectmanagement/task-tags/*") ? "active" : "" }}">
                                 <i class="fa-fw fas fa-server c-sidebar-nav-icon">
 
                                 </i>
@@ -627,7 +627,7 @@
                     @endcan
                     @can('task_access')
                         <li class="c-sidebar-nav-item">
-                            <a href="{{ route("admin.tasks.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/tasks") || request()->is("admin/tasks/*") ? "active" : "" }}">
+                            <a href="{{ route("projectmanagement.admin.tasks.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/projectmanagement/tasks") || request()->is("admin/projectmanagement/tasks/*") ? "active" : "" }}">
                                 <i class="fa-fw fas fa-briefcase c-sidebar-nav-icon">
 
                                 </i>
@@ -637,7 +637,7 @@
                     @endcan
                     @can('tasks_calendar_access')
                         <li class="c-sidebar-nav-item">
-                            <a href="{{ route("admin.tasks-calendars.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/tasks-calendars") || request()->is("admin/tasks-calendars/*") ? "active" : "" }}">
+                            <a href="{{ route("projectmanagement.admin.tasks-calendars.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/projectmanagement/tasks-calendars") || request()->is("admin/projectmanagement/tasks-calendars/*") ? "active" : "" }}">
                                 <i class="fa-fw fas fa-calendar c-sidebar-nav-icon">
 
                                 </i>
@@ -647,7 +647,7 @@
                     @endcan
                     @can('project_access')
                         <li class="c-sidebar-nav-item">
-                            <a href="{{ route("admin.projects.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/projects") || request()->is("admin/projects/*") ? "active" : "" }}">
+                            <a href="{{ route("projectmanagement.admin.projects.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/projectmanagement/projects") || request()->is("admin/projectmanagement/projects/*") ? "active" : "" }}">
                                 <i class="fa-fw fas fa-folder-open c-sidebar-nav-icon">
 
                                 </i>
@@ -657,7 +657,7 @@
                     @endcan
                     @can('task_uploaded_file_access')
                         <li class="c-sidebar-nav-item">
-                            <a href="{{ route("admin.task-uploaded-files.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/task-uploaded-files") || request()->is("admin/task-uploaded-files/*") ? "active" : "" }}">
+                            <a href="{{ route("projectmanagement.admin.task-uploaded-files.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/projectmanagement/task-uploaded-files") || request()->is("admin/projectmanagement/task-uploaded-files/*") ? "active" : "" }}">
                                 <i class="fa-fw fas fa-copy c-sidebar-nav-icon">
 
                                 </i>
@@ -667,7 +667,7 @@
                     @endcan
                     @can('task_attachment_access')
                         <li class="c-sidebar-nav-item">
-                            <a href="{{ route("admin.task-attachments.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/task-attachments") || request()->is("admin/task-attachments/*") ? "active" : "" }}">
+                            <a href="{{ route("projectmanagement.admin.task-attachments.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/projectmanagement/task-attachments") || request()->is("admin/projectmanagement/task-attachments/*") ? "active" : "" }}">
                                 <i class="fa-fw fas fa-tasks c-sidebar-nav-icon">
 
                                 </i>

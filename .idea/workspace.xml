@@ -1,13 +1,112 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="12c5590f-20f1-441a-b116-7f3f712f734a" name="Default Changelist" comment="" />
+    <list default="true" id="12c5590f-20f1-441a-b116-7f3f712f734a" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/PMS-Quickadminpanel-laravel.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/PMS-Quickadminpanel-laravel.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modules/HR/Entities/Department.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/HR/Entities/Department.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modules/HR/Entities/Designation.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/HR/Entities/Designation.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modules/HR/Http/Controllers/Admin/AccountDetailsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/HR/Http/Controllers/Admin/AccountDetailsController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/ProjectsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Controllers/Admin/ProjectsController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/TaskAttachmentsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Controllers/Admin/TaskAttachmentsController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/TaskController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Controllers/Admin/TaskController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/TaskStatusController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Controllers/Admin/TaskStatusController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/TaskTagController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Controllers/Admin/TaskTagController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/TaskUploadedFilesController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Controllers/Admin/TaskUploadedFilesController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/TasksCalendarController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Controllers/Admin/TasksCalendarController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/V1/Admin/TaskStatusApiController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/V1/Admin/TaskStatusApiController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Api/V1/Admin/TaskTagApiController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Api/V1/Admin/TaskTagApiController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Requests/MassDestroyProjectRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Requests/MassDestroyProjectRequest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Requests/MassDestroyTaskAttachmentRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Requests/MassDestroyTaskAttachmentRequest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Requests/MassDestroyTaskRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Requests/MassDestroyTaskRequest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Requests/MassDestroyTaskStatusRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Requests/MassDestroyTaskStatusRequest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Requests/MassDestroyTaskTagRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Requests/MassDestroyTaskTagRequest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Requests/MassDestroyTaskUploadedFileRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Requests/MassDestroyTaskUploadedFileRequest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Requests/StoreProjectRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Requests/StoreProjectRequest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Requests/StoreTaskAttachmentRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Requests/StoreTaskAttachmentRequest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Requests/StoreTaskRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Requests/StoreTaskRequest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Requests/StoreTaskStatusRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Requests/StoreTaskStatusRequest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Requests/StoreTaskTagRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Requests/StoreTaskTagRequest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Requests/StoreTaskUploadedFileRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Requests/StoreTaskUploadedFileRequest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Requests/UpdateProjectRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Requests/UpdateProjectRequest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Requests/UpdateTaskAttachmentRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Requests/UpdateTaskAttachmentRequest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Requests/UpdateTaskRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Requests/UpdateTaskRequest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Requests/UpdateTaskStatusRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Requests/UpdateTaskStatusRequest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Requests/UpdateTaskTagRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Requests/UpdateTaskTagRequest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Requests/UpdateTaskUploadedFileRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Requests/UpdateTaskUploadedFileRequest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Bug.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Bug.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Client.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Client.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/File.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/File.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Invoice.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Invoice.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Milestone.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Milestone.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Project.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Entities/Project.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Task.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Entities/Task.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/TaskAttachment.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Entities/TaskAttachment.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/TaskStatus.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Entities/TaskStatus.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/TaskTag.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Entities/TaskTag.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/TaskUploadedFile.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Entities/TaskUploadedFile.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Ticket.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Ticket.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Transaction.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Transaction.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/seeds/TaskStatusTableSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeds/TaskStatusTableSeeder.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/modules_statuses.json" beforeDir="false" afterPath="$PROJECT_DIR$/modules_statuses.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/lang/ar/cruds.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/lang/ar/cruds.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/lang/ar/validation.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/lang/ar/validation.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/projects/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/projects/create.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/projects/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/projects/edit.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/projects/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/projects/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/projects/show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/projects/show.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/taskAttachments/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/taskAttachments/create.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/taskAttachments/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/taskAttachments/edit.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/taskAttachments/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/taskAttachments/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/taskAttachments/show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/taskAttachments/show.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/taskStatuses/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/taskStatuses/create.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/taskStatuses/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/taskStatuses/edit.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/taskStatuses/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/taskStatuses/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/taskStatuses/show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/taskStatuses/show.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/taskTags/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/taskTags/create.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/taskTags/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/taskTags/edit.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/taskTags/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/taskTags/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/taskTags/show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/taskTags/show.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/taskUploadedFiles/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/taskUploadedFiles/create.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/taskUploadedFiles/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/taskUploadedFiles/edit.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/taskUploadedFiles/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/taskUploadedFiles/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/taskUploadedFiles/show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/taskUploadedFiles/show.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/tasks/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/tasks/create.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/tasks/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/tasks/edit.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/tasks/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/tasks/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/tasks/show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/tasks/show.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/tasksCalendars/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/tasksCalendars/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/partials/menu.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/partials/menu.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ComposerSettings" synchronizationState="SYNCHRONIZE">
+  <component name="ComposerSettings" doNotAsk="true" synchronizationState="SYNCHRONIZE">
     <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
     <execution />
   </component>
@@ -179,6 +278,21 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_package_manager_path" value="npm" />
   </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\Modules\ProjectManagement\Resources\views\admin" />
+      <recent name="C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\Modules\ProjectManagement\Http\Requests" />
+      <recent name="C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\Modules\ProjectManagement\Entities" />
+      <recent name="C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\Modules\ProjectManagement\Http\Controllers\Admin" />
+      <recent name="C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\Modules\ProjectManagement\Http\Controllers" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="phpunit.xml" type="PHPUnitRunConfigurationType" factoryName="PHPUnit">
+      <TestRunner scope="XML" />
+      <method v="2" />
+    </configuration>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -187,11 +301,42 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1606144533188</updated>
-      <workItem from="1606144534258" duration="980000" />
+      <workItem from="1606144534258" duration="3055000" />
+      <workItem from="1606208388083" duration="1713000" />
+      <workItem from="1606213559337" duration="20305000" />
+      <workItem from="1606295718912" duration="19695000" />
+      <workItem from="1606385682608" duration="18361000" />
+      <workItem from="1606642024120" duration="1950000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="620" y="259" key="FileChooserDialogImpl" timestamp="1606387760749">
+      <screen x="0" y="0" width="1680" height="1010" />
+    </state>
+    <state x="620" y="259" key="FileChooserDialogImpl/0.0.1680.1010@0.0.1680.1010" timestamp="1606387760749" />
+    <state width="498" height="446" key="SwitcherDM" timestamp="1606218756075">
+      <screen x="0" y="0" width="1680" height="1010" />
+    </state>
+    <state width="498" height="446" key="SwitcherDM/0.0.1680.1010@0.0.1680.1010" timestamp="1606218756075" />
+    <state x="496" y="158" width="672" height="678" key="search.everywhere.popup" timestamp="1606225706774">
+      <screen x="0" y="0" width="1680" height="1010" />
+    </state>
+    <state x="496" y="158" width="672" height="678" key="search.everywhere.popup/0.0.1680.1010@0.0.1680.1010" timestamp="1606225706774" />
   </component>
 </project>

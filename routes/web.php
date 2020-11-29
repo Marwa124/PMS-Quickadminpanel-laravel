@@ -70,22 +70,22 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::delete('time-reports/destroy', 'TimeReportController@massDestroy')->name('time-reports.massDestroy');
     Route::resource('time-reports', 'TimeReportController');
 
-    // Task Statuses
-    Route::delete('task-statuses/destroy', 'TaskStatusController@massDestroy')->name('task-statuses.massDestroy');
-    Route::resource('task-statuses', 'TaskStatusController');
+//    // Task Statuses
+//    Route::delete('task-statuses/destroy', 'TaskStatusController@massDestroy')->name('task-statuses.massDestroy');
+//    Route::resource('task-statuses', 'TaskStatusController');
 
-    // Task Tags
-    Route::delete('task-tags/destroy', 'TaskTagController@massDestroy')->name('task-tags.massDestroy');
-    Route::resource('task-tags', 'TaskTagController');
+//    // Task Tags
+//    Route::delete('task-tags/destroy', 'TaskTagController@massDestroy')->name('task-tags.massDestroy');
+//    Route::resource('task-tags', 'TaskTagController');
 
-    // Tasks
-    Route::delete('tasks/destroy', 'TaskController@massDestroy')->name('tasks.massDestroy');
-    Route::post('tasks/media', 'TaskController@storeMedia')->name('tasks.storeMedia');
-    Route::post('tasks/ckmedia', 'TaskController@storeCKEditorImages')->name('tasks.storeCKEditorImages');
-    Route::resource('tasks', 'TaskController');
+//    // Tasks
+//    Route::delete('tasks/destroy', 'TaskController@massDestroy')->name('tasks.massDestroy');
+//    Route::post('tasks/media', 'TaskController@storeMedia')->name('tasks.storeMedia');
+//    Route::post('tasks/ckmedia', 'TaskController@storeCKEditorImages')->name('tasks.storeCKEditorImages');
+//    Route::resource('tasks', 'TaskController');
 
-    // Tasks Calendars
-    Route::resource('tasks-calendars', 'TasksCalendarController', ['except' => ['create', 'store', 'edit', 'update', 'show', 'destroy']]);
+//    // Tasks Calendars
+//    Route::resource('tasks-calendars', 'TasksCalendarController', ['except' => ['create', 'store', 'edit', 'update', 'show', 'destroy']]);
 
     // User Alerts
     Route::delete('user-alerts/destroy', 'UserAlertsController@massDestroy')->name('user-alerts.massDestroy');
@@ -151,11 +151,11 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::delete('menus/destroy', 'MenuController@massDestroy')->name('menus.massDestroy');
     Route::resource('menus', 'MenuController');
 
-    // Projects
-    Route::delete('projects/destroy', 'ProjectsController@massDestroy')->name('projects.massDestroy');
-    Route::post('projects/media', 'ProjectsController@storeMedia')->name('projects.storeMedia');
-    Route::post('projects/ckmedia', 'ProjectsController@storeCKEditorImages')->name('projects.storeCKEditorImages');
-    Route::resource('projects', 'ProjectsController');
+//    // Projects
+//    Route::delete('projects/destroy', 'ProjectsController@massDestroy')->name('projects.massDestroy');
+//    Route::post('projects/media', 'ProjectsController@storeMedia')->name('projects.storeMedia');
+//    Route::post('projects/ckmedia', 'ProjectsController@storeCKEditorImages')->name('projects.storeCKEditorImages');
+//    Route::resource('projects', 'ProjectsController');
 
     // Project Settings
     Route::delete('project-settings/destroy', 'ProjectSettingsController@massDestroy')->name('project-settings.massDestroy');
@@ -289,17 +289,17 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::post('files/ckmedia', 'FilesController@storeCKEditorImages')->name('files.storeCKEditorImages');
     Route::resource('files', 'FilesController', ['except' => ['edit', 'update']]);
 
-    // Task Uploaded Files
-    Route::delete('task-uploaded-files/destroy', 'TaskUploadedFilesController@massDestroy')->name('task-uploaded-files.massDestroy');
-    Route::post('task-uploaded-files/media', 'TaskUploadedFilesController@storeMedia')->name('task-uploaded-files.storeMedia');
-    Route::post('task-uploaded-files/ckmedia', 'TaskUploadedFilesController@storeCKEditorImages')->name('task-uploaded-files.storeCKEditorImages');
-    Route::resource('task-uploaded-files', 'TaskUploadedFilesController');
+//    // Task Uploaded Files
+//    Route::delete('task-uploaded-files/destroy', 'TaskUploadedFilesController@massDestroy')->name('task-uploaded-files.massDestroy');
+//    Route::post('task-uploaded-files/media', 'TaskUploadedFilesController@storeMedia')->name('task-uploaded-files.storeMedia');
+//    Route::post('task-uploaded-files/ckmedia', 'TaskUploadedFilesController@storeCKEditorImages')->name('task-uploaded-files.storeCKEditorImages');
+//    Route::resource('task-uploaded-files', 'TaskUploadedFilesController');
 
-    // Task Attachments
-    Route::delete('task-attachments/destroy', 'TaskAttachmentsController@massDestroy')->name('task-attachments.massDestroy');
-    Route::post('task-attachments/media', 'TaskAttachmentsController@storeMedia')->name('task-attachments.storeMedia');
-    Route::post('task-attachments/ckmedia', 'TaskAttachmentsController@storeCKEditorImages')->name('task-attachments.storeCKEditorImages');
-    Route::resource('task-attachments', 'TaskAttachmentsController');
+//    // Task Attachments
+//    Route::delete('task-attachments/destroy', 'TaskAttachmentsController@massDestroy')->name('task-attachments.massDestroy');
+//    Route::post('task-attachments/media', 'TaskAttachmentsController@storeMedia')->name('task-attachments.storeMedia');
+//    Route::post('task-attachments/ckmedia', 'TaskAttachmentsController@storeCKEditorImages')->name('task-attachments.storeCKEditorImages');
+//    Route::resource('task-attachments', 'TaskAttachmentsController');
 
     // Penalty Categories
     Route::delete('penalty-categories/destroy', 'PenaltyCategoriesController@massDestroy')->name('penalty-categories.massDestroy');

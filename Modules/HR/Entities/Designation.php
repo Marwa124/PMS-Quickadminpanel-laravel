@@ -2,6 +2,7 @@
 
 namespace Modules\HR\Entities;
 
+use App\Models\Permission;
 use Modules\HR\Entities\AccountDetail;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
