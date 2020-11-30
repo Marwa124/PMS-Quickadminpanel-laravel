@@ -50,12 +50,9 @@
                             $salaryTemplate = '';
                             $designation = $detail->designation()->first();
                             if ($designation) {
-                                $salaryTemplate = $salaryTemplateModel->where('salary_grade', $designation->designation_name)->first();
+                                $salaryTemplate = $detail->designation->salaryTemplate()->first();
                                 $departmentName = $detail->designation->department()->select('department_name')->first();
                             }
-                            // if ($detail->user_id == 36) {
-                            //     // dd($detail);
-                            // }
                         ?>
                             <tr data-entry-id="{{ $detail->user_id }}">
                                 <td>
@@ -239,7 +236,7 @@
 
 
   $('.btnprn').printPage();
-  
+
 
 
     // $('.print_modal_btn').on('click', function(){

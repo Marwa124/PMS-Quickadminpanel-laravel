@@ -11,7 +11,7 @@ class DatabaseSeeder extends Seeder
             DesignationsTableSeeder::class,
             SalaryTemplatesTableSeeder::class,
             LeaveCategoriesTableSeeder::class,
-            
+
             RolesTableSeeder::class,
             PermissionsTableSeeder::class,
 

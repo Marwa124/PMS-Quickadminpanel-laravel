@@ -45,11 +45,6 @@ class SalaryTemplate extends Model
         return $this->hasMany(SalaryDeduction::class, 'salary_template_id');
     }
 
-    public function accountDetails()
-    {
-        return $this->hasMany(AccountDetail::class, 'salary_template_id');
-    }
-
     public function designation()
     {
         return $this->belongsTo(Designation::class, 'designation_id', 'id');

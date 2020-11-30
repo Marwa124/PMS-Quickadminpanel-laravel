@@ -420,7 +420,6 @@
                             </a>
                         </li>
                     @endcan --}}
-<<<<<<< HEAD
                     {{--
                     @can('salary_payment_allowance_access')
                         <li class="c-sidebar-nav-item">
@@ -432,8 +431,6 @@
                             </a>
                         </li>
                     @endcan --}}
-=======
->>>>>>> 02ab76f1501d64e5276394715ca635f94cd52bff
                     @can('salary_payment_detail_access')
                         <li class="c-sidebar-nav-item">
                             <a href="{{ route("payroll.admin.salary-payment-details.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/salary-payment-details") || request()->is("admin/salary-payment-details/*") ? "active" : "" }}">

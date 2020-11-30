@@ -188,7 +188,7 @@ class UsersTableSeeder extends Seeder
                 'name' => 'aaaaa',
                 'email' => 'n.gamal@lesaffre',
                 'password' => '186805ef79f7b0a17d4964912d99faf80142cfdd1f16ef5cc07304d5a23722e125407faea9936e3514e9d343dbad564be224f45feb4eaf08862ac1a838d6519f',
-                'banned' => ' 1',
+                'banned' => '1',
                 'ban_reason' => '',
             ],
             [
@@ -236,7 +236,7 @@ class UsersTableSeeder extends Seeder
                 'name' => 'mostafa',
                 'email' => 'm.elgammal@onetecgroup',
                 'password' => '41e4f0aab0b82f2798a575dde22659a7d408eed82e1744b388f88f2e7df5e37fbed570640b7bc35d2905471280d740fa59649ad3d7b2457a96d1aa4f75ea7ebb',
-                'banned' => ' 1',
+                'banned' => '0',
                 'ban_reason' => '',
             ],
             [
@@ -244,7 +244,7 @@ class UsersTableSeeder extends Seeder
                 'name' => 'shady',
                 'email' => 'shady.osama@onetecgroup',
                 'password' => '17ada7ce7a6a9f01f0aabbb431321d365b01a3e3474f107562e738afbfe0c13abf9ea7ee61e22c990912fd2bc5ef0e4c657b4c82f132bf8e79f6dacb14d3c466',
-                'banned' => ' 1',
+                'banned' => '0',
                 'ban_reason' => '',
             ],
             [
@@ -252,7 +252,7 @@ class UsersTableSeeder extends Seeder
                 'name' => 'ali',
                 'email' => 'ali.emad@onetecgroup',
                 'password' => '7c083d22bafb64f66aca61f9f4f810e5b6216e01a4c49bb2b537cbc003385e800c81f65097112ae7f21b1b4e8ef3f0d4d23a7a4b7231bf19db9d74dce0f25f81',
-                'banned' => ' 1',
+                'banned' => '0',
                 'ban_reason' => '',
             ],
         ];

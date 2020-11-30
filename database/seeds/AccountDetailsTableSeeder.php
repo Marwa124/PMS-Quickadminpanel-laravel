@@ -17,7 +17,7 @@ class AccountDetailsTableSeeder extends Seeder
                 'joining_date' => '2019-01-01',
                 'date_of_birth' => '1986-02-23',
                 'user_id' => '2',
-                'designation_id' => 1,
+                'designation_id' => '1',
                 'employment_id' => '3',
             ],
             [
@@ -27,8 +27,8 @@ class AccountDetailsTableSeeder extends Seeder
                 'mobile' => '201006057763',
                 'joining_date' => '2019-07-01',
                 'date_of_birth' => '1986-02-23',
-                'user_id' => '3',
-                'designation_id' => 1,
+                'user_id' => '4',
+                'designation_id' => '15',
                 'employment_id' => '6',
             ],
             [
@@ -38,8 +38,8 @@ class AccountDetailsTableSeeder extends Seeder
                 'mobile' => '201550131255',
                 'joining_date' => '2019-07-01',
                 'date_of_birth' => '1986-02-23',
-                'user_id' => '4',
-                'designation_id' => 15,
+                'user_id' => '6',
+                'designation_id' => '15',
                 'employment_id' => '5',
             ],
             [
@@ -49,8 +49,8 @@ class AccountDetailsTableSeeder extends Seeder
                 'mobile' => '20114713542',
                 'joining_date' => '2019-09-01',
                 'date_of_birth' => '1986-02-23',
-                'user_id' => '6',
-                'designation_id' => 2,
+                'user_id' => '7',
+                'designation_id' => '2',
                 'employment_id' => '4',
             ],
             [
@@ -60,8 +60,8 @@ class AccountDetailsTableSeeder extends Seeder
                 'mobile' => '201069606061',
                 'joining_date' => '2020-05-17',
                 'date_of_birth' => '1986-02-23',
-                'user_id' => '7',
-                'designation_id' => 8,
+                'user_id' => '8',
+                'designation_id' => '8',
                 'employment_id' => '2',
             ],
             [
@@ -71,8 +71,8 @@ class AccountDetailsTableSeeder extends Seeder
                 'mobile' => '201069606061',
                 'joining_date' => '2020-05-17',
                 'date_of_birth' => '1986-02-23',
-                'user_id' => '8',
-                'designation_id' => 8,
+                'user_id' => '9',
+                'designation_id' => '0',
                 'employment_id' => '17',
             ],
             [
@@ -82,8 +82,8 @@ class AccountDetailsTableSeeder extends Seeder
                 'mobile' => '201068608084',
                 'joining_date' => '2020-05-17',
                 'date_of_birth' => '1986-02-23',
-                'user_id' => '9',
-                'designation_id' => 8,
+                'user_id' => '10',
+                'designation_id' => '0',
                 'employment_id' => '15',
             ],
             [
@@ -93,8 +93,8 @@ class AccountDetailsTableSeeder extends Seeder
                 'mobile' => '201228585555',
                 'joining_date' => '2020-05-17',
                 'date_of_birth' => '1986-02-23',
-                'user_id' => '10',
-                'designation_id' => 8,
+                'user_id' => '11',
+                'designation_id' => '0',
                 'employment_id' => '16',
             ],
             [
@@ -104,8 +104,8 @@ class AccountDetailsTableSeeder extends Seeder
                 'mobile' => '971545843777',
                 'joining_date' => '2019-09-22',
                 'date_of_birth' => '1986-02-23',
-                'user_id' => '11',
-                'designation_id' => 1,
+                'user_id' => '13',
+                'designation_id' => '14',
                 'employment_id' => '8',
             ],
             [
@@ -116,7 +116,7 @@ class AccountDetailsTableSeeder extends Seeder
                 'joining_date' => '2019-09-08',
                 'date_of_birth' => '1986-02-23',
                 'user_id' => '14',
-                'designation_id' => 1,
+                'designation_id' => '18',
                 'employment_id' => '7',
             ],
             [
@@ -127,7 +127,7 @@ class AccountDetailsTableSeeder extends Seeder
                 'joining_date' => '2020-05-17',
                 'date_of_birth' => '1986-02-23',
                 'user_id' => '15',
-                'designation_id' => 2,
+                'designation_id' => '21',
                 'employment_id' => '10',
             ],
             [
@@ -138,7 +138,7 @@ class AccountDetailsTableSeeder extends Seeder
                 'joining_date' => '2020-05-17',
                 'date_of_birth' => '1986-02-23',
                 'user_id' => '16',
-                'designation_id' => 1,
+                'designation_id' => '19',
                 'employment_id' => '9',
             ],
             [
@@ -149,7 +149,7 @@ class AccountDetailsTableSeeder extends Seeder
                 'joining_date' => '2020-05-17',
                 'date_of_birth' => '1986-02-23',
                 'user_id' => '20',
-                'designation_id' => 2,
+                'designation_id' => '21',
                 'employment_id' => '11',
             ],
             [
@@ -160,7 +160,7 @@ class AccountDetailsTableSeeder extends Seeder
                 'joining_date' => '2019-11-17',
                 'date_of_birth' => '1982-04-06',
                 'user_id' => '21',
-                'designation_id' => 3,
+                'designation_id' => '3',
                 'employment_id' => '12',
             ],
             [
@@ -171,7 +171,7 @@ class AccountDetailsTableSeeder extends Seeder
                 'joining_date' => '2019-01-19',
                 'date_of_birth' => '1996-01-27',
                 'user_id' => '22',
-                'designation_id' => 2,
+                'designation_id' => '25',
                 'employment_id' => '14',
             ],
             [
@@ -182,7 +182,7 @@ class AccountDetailsTableSeeder extends Seeder
                 'joining_date' => '2019-01-18',
                 'date_of_birth' => '1996-01-27',
                 'user_id' => '23',
-                'designation_id' => 2,
+                'designation_id' => '26',
                 'employment_id' => '13',
             ],
             [
@@ -193,7 +193,7 @@ class AccountDetailsTableSeeder extends Seeder
                 'joining_date' => '2020-02-16',
                 'date_of_birth' => '1986-02-23',
                 'user_id' => '24',
-                'designation_id' => 2,
+                'designation_id' => '27',
                 'employment_id' => '18',
             ],
             [
@@ -204,7 +204,7 @@ class AccountDetailsTableSeeder extends Seeder
                 'joining_date' => '2020-02-13',
                 'date_of_birth' => '1995-05-22',
                 'user_id' => '25',
-                'designation_id' => 3,
+                'designation_id' => '30',
                 'employment_id' => '15',
             ],
             [
@@ -215,7 +215,7 @@ class AccountDetailsTableSeeder extends Seeder
                 'joining_date' => '2020-05-17',
                 'date_of_birth' => '1986-02-23',
                 'user_id' => '27',
-                'designation_id' => 0,
+                'designation_id' => '0',
                 'employment_id' => 'NULL',
             ],
             [
@@ -226,7 +226,7 @@ class AccountDetailsTableSeeder extends Seeder
                 'joining_date' => '2020-05-17',
                 'date_of_birth' => '1986-02-23',
                 'user_id' => '28',
-                'designation_id' => 0,
+                'designation_id' => '0',
                 'employment_id' => 'NULL',
             ],
             [
@@ -237,7 +237,7 @@ class AccountDetailsTableSeeder extends Seeder
                 'joining_date' => '2020-05-17',
                 'date_of_birth' => '1986-02-23',
                 'user_id' => '29',
-                'designation_id' => 2,
+                'designation_id' => '23',
                 'employment_id' => '0',
             ],
             [
@@ -248,7 +248,7 @@ class AccountDetailsTableSeeder extends Seeder
                 'joining_date' => '2020-05-17',
                 'date_of_birth' => '1986-02-23',
                 'user_id' => '30',
-                'designation_id' => 0,
+                'designation_id' => '0',
                 'employment_id' => 'NULL',
             ],
             [
@@ -259,7 +259,7 @@ class AccountDetailsTableSeeder extends Seeder
                 'joining_date' => '2020-05-17',
                 'date_of_birth' => '1994-10-01',
                 'user_id' => '31',
-                'designation_id' => 1,
+                'designation_id' => '15',
                 'employment_id' => '31',
             ],
             [
@@ -270,7 +270,7 @@ class AccountDetailsTableSeeder extends Seeder
                 'joining_date' => '2020-05-17',
                 'date_of_birth' => '1986-02-23',
                 'user_id' => '32',
-                'designation_id' => 0,
+                'designation_id' => '0',
                 'employment_id' => 'NULL',
             ],
             [
@@ -281,7 +281,7 @@ class AccountDetailsTableSeeder extends Seeder
                 'joining_date' => '2020-06-01',
                 'date_of_birth' => '1995-06-29',
                 'user_id' => '33',
-                'designation_id' => 2,
+                'designation_id' => '29',
                 'employment_id' => '33',
             ],
             [
@@ -292,7 +292,7 @@ class AccountDetailsTableSeeder extends Seeder
                 'joining_date' => '2020-08-13',
                 'date_of_birth' => '1996-06-01',
                 'user_id' => '34',
-                'designation_id' => 2,
+                'designation_id' => '23',
                 'employment_id' => '34',
             ],
             [
@@ -303,7 +303,7 @@ class AccountDetailsTableSeeder extends Seeder
                 'joining_date' => '2020-08-10',
                 'date_of_birth' => '1998-02-28',
                 'user_id' => '35',
-                'designation_id' =>35 ,
+                'designation_id' => '26' ,
                 'employment_id' => 26,
                 // 'set_time_id' => '35',
             ],
@@ -315,7 +315,7 @@ class AccountDetailsTableSeeder extends Seeder
                 'joining_date' => '2020-08-10',
                 'date_of_birth' => '1996-06-03',
                 'user_id' => '36',
-                'designation_id' => 3,
+                'designation_id' => '31',
                 'employment_id' => '36',
             ]
         ];
