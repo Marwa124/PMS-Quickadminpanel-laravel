@@ -62,7 +62,7 @@ class LeaveApplicationsController extends Controller
                 // All Leaves
 
                 $isDepartmentHead = Department::where('department_head_id', auth()->user()->id)->first();
-                if (User::authUserRole() == 'Board Members' || User::authUserRole() == 'Admin') {
+                if (User::find(auth()->user()->id)->hasRole('Board Members') || User::find(auth()->user()->id)->hasRole('Admin')) {
                     // All pending leaves for board and admin
                     $query = LeaveApplication::with(['user', 'leave_category'])->select(sprintf('%s.*', (new LeaveApplication)->table));
                 }elseif ($isDepartmentHead) {
@@ -194,6 +194,9 @@ class LeaveApplicationsController extends Controller
 
     public function store(StoreLeaveApplicationRequest $request)
     {
+        ///////////////////////////////
+        // Check if end date leave smaller than start date leave Show Error Msg
+        ///////////////////////////////
         $leaveApplication = new LeaveApplication();
         if ($request->leave_type == 'single_day') {
             $leaveApplication->leave_end_date = $request->leave_start_date;

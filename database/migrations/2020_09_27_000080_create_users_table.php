@@ -17,6 +17,8 @@ class CreateUsersTable extends Migration
             $table->integer('role_id')->nullable();
             $table->string('remember_token')->nullable();
             $table->string('username')->nullable();
+            $table->integer('set_time_id')->unsigned()->nullable();
+            $table->enum('job_type', ['full_time', 'part_time', 'freelance'])->default('full_time')->nullable();
             $table->string('activated')->nullable();
             $table->string('banned')->nullable();
             $table->longText('ban_reason')->nullable();
@@ -46,12 +48,5 @@ class CreateUsersTable extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
-    }
-
-    public function down()
-    {
-        Schema::drop('users');
-
-        Schema::dropIfExists('users');
     }
 }

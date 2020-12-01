@@ -28,8 +28,7 @@ Route::resource('advance-salaries', 'AdvanceSalaryController');
 Route::delete('salary-allowances/destroy', 'SalaryAllowanceController@massDestroy')->name('salary-allowances.massDestroy');
 Route::resource('salary-allowances', 'SalaryAllowanceController', ['except' => ['edit', 'update', 'show']]);
 
-Route::get('generate-pdf','SalaryTemplateController@generatePDF');
-Route::get('salary-employee-details-pdf/{id}','SalaryPaymentDetailsController@generatePDF')->name('salary-employee-details-pdf');
+// Route::get('generate-pdf','SalaryTemplateController@generatePDF');
 
 // Salary Templates
 Route::delete('salary-templates/destroy', 'SalaryTemplateController@massDestroy')->name('salary-templates.massDestroy');
@@ -46,6 +45,9 @@ Route::post('salary-payments/media', 'SalaryPaymentsController@storeMedia')->nam
 Route::post('salary-payments/ckmedia', 'SalaryPaymentsController@storeCKEditorImages')->name('salary-payments.storeCKEditorImages');
 Route::resource('salary-payments', 'SalaryPaymentsController');
 
+// Payroll Summary
+Route::get('payroll-summary', 'PayrollSummaryController@__invoke')->name('payroll-summary');
+
 // Salary Payment Allowances
 Route::delete('salary-payment-allowances/destroy', 'SalaryPaymentAllowanceController@massDestroy')->name('salary-payment-allowances.massDestroy');
 Route::resource('salary-payment-allowances', 'SalaryPaymentAllowanceController', ['except' => ['edit', 'update', 'show']]);
@@ -55,6 +57,9 @@ Route::delete('salary-payment-deductions/destroy', 'SalaryPaymentDeductionsContr
 Route::resource('salary-payment-deductions', 'SalaryPaymentDeductionsController', ['except' => ['edit', 'update', 'show']]);
 
 // Salary Payment Details
+Route::get('salary-employee-details-pdf/{id}','SalaryPaymentDetailsController@generatePDF')->name('salary-employee-details-pdf');
+Route::get('salary-employee-details-print/{id}','SalaryPaymentDetailsController@printDetails')->name('salary-employee-details-print');
+
 Route::delete('salary-payment-details/destroy', 'SalaryPaymentDetailsController@massDestroy')->name('salary-payment-details.massDestroy');
 Route::resource('salary-payment-details', 'SalaryPaymentDetailsController', ['except' => ['edit', 'update', 'show']]);
 

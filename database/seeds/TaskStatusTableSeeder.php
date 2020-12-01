@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\TaskStatus;
+use Modules\ProjectManagement\Entities\TaskStatus;
 use Illuminate\Database\Seeder;
 
 class TaskStatusTableSeeder extends Seeder

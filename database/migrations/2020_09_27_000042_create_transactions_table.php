@@ -30,6 +30,11 @@ class CreateTransactionsTable extends Migration
             $table->string('deposit')->nullable();
             $table->string('deposit_2')->nullable();
             $table->string('under_55')->nullable();
+            $table->unsignedInteger('project_id')->nullable();
+            $table->unsignedInteger('account_id');
+            $table->unsignedInteger('invoice_id');
+            $table->unsignedInteger('payment_method_id')->nullable();
+            $table->unsignedInteger('expense_category_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

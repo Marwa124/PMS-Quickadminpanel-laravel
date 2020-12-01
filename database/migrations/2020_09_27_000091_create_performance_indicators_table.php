@@ -24,6 +24,7 @@ class CreatePerformanceIndicatorsTable extends Migration
             $table->string('conflict_management')->nullable();
             $table->string('attendance')->nullable();
             $table->string('ability_to_meet_deadline')->nullable();
+            $table->unsignedInteger('designation_id');
             $table->timestamps();
             $table->softDeletes();
         });

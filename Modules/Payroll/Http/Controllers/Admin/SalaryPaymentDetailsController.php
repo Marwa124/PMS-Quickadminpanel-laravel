@@ -27,12 +27,14 @@ class SalaryPaymentDetailsController extends Controller
         $users = [];
         foreach ($userAccounts as $key => $value) {
             $userRole = User::where('id', $value->user_id)->where('banned', 0)->first();
-            if ($userRole && $userRole->userRole() != 'Board Members') {
+            // dump($value->user_id);
+            if ($userRole && !$userRole->hasRole('Board Members')) {
                 $users[] = User::where('id', $value->user_id)->where('banned', 0)->first()->accountDetail()
                     ->first();
                     // ->select('fullname', 'user_id', 'employment_id', 'joining_date', 'designation_id', 'avatar')->first();
             }
         }
+        // dd($users);
         return view('payroll::admin.salaryPaymentDetails.index', compact('users'));
     }
 
@@ -71,14 +73,15 @@ class SalaryPaymentDetailsController extends Controller
     public function generatePDF($user_id)
     {
         $detail['detail'] = AccountDetail::where('user_id', $user_id)->first();
-        // $salaryTemplate = '';
-        // $designation = $detail->designation()->first();
-        // if ($designation) {
-        //     $salaryTemplate = SalaryTemplate::where('salary_grade', $designation->designation_name)->first();
-        //     $departmentName = $detail->designation->department()->select('department_name')->first();
-        // }
         $pdf = PDF::loadView('payroll::admin.salaryPaymentDetails.pdf', $detail);
 
         return $pdf->download('Salary Details '.$detail['detail']->fullname.'.pdf');
+    }
+
+    public function printDetails($user_id)
+    {
+        $detail = AccountDetail::where('user_id', $user_id)->first();
+
+        return view('payroll::admin.salaryPaymentDetails.print', compact('detail'));
     }
 }

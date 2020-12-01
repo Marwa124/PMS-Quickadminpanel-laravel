@@ -1,6 +1,54 @@
 @extends('layouts.admin')
 @section('content')
 
+@inject('departmentModel', 'Modules\HR\Entities\Department')
+
+
+@can('salary_payment_show')
+<!-- Search -->
+
+<div class="card">
+    <h5 class="card-header">Make Payment</h5>
+    <form action="{{ route('payroll.admin.salary-payments.index') }}" method="get">
+        {{-- @csrf --}}
+        <div class="card-body">
+            <div class="">
+                <div class="form-group d-flex justify-content-center">
+                    <label for="department_id" class="required mr-2">Select Department</label>
+                    <?php
+                    if ($departmentRequest != '') {
+                        $selected_department = $departmentModel::where('id', $departmentRequest)->first()->departmant_name;
+                    }
+                    $departments = $departmentModel->where('department_name', '!=', 'CEO')->where('department_name', '!=', 'Board Members')->pluck('department_name', 'id');
+                    ?>
+                    <select class="form-control select2 w-50" name="department_id" id="department_id" required>
+                        {{-- trans('cruds.monthlyAttendance.fields.select_user') --}}
+                        <option selected disabled >{{ $departmentRequest ? $selected_department :  'Select Department'}}</option>
+                        @foreach($departments as $key => $department)
+                            <option value="{{ $key }}" {{ ($departmentRequest ?? '') == $key ? 'selected' : '' }}>{{ $department }}</option>
+                        @endforeach
+                    </select>
+
+
+                </div>
+            </div>
+            <div class="form-group margin d-flex justify-content-center">
+                <div class="nav-link mr-2"><i class="fa fa-calendar"></i></div>
+                <input class="form-control w-50" type="text" name="date" id="datepicker" value="{{ $date }}" required>
+              </span>
+          </div>
+
+            <input type="submit" class="btn btn-primary d-flex justify-content-center m-auto d-block w-25" value="{{ __('Go') }}"/>
+        </div>
+    </form>
+</div>
+
+<!-- /.End Search -->
+@endcan
+
+
+
+
 <div class="card">
     <div class="card-header">
         {{ trans('global.create') }} {{ trans('cruds.salaryPayment.title_singular') }}

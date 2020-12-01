@@ -17,6 +17,9 @@ class CreatePurchasePaymentsTable extends Migration
             $table->date('payment_date')->nullable();
             $table->integer('paid_to')->nullable();
             $table->integer('paid_by')->nullable();
+            $table->unsignedInteger('purchase_id')->nullable();
+            $table->unsignedInteger('account_id')->nullable();
+            $table->unsignedInteger('transaction_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

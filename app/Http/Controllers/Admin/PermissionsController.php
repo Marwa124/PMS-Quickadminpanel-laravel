@@ -9,17 +9,16 @@ use App\Http\Requests\UpdatePermissionRequest;
 use App\Models\Permission;
 use Gate;
 use Illuminate\Http\Request;
+use Modules\HR\Entities\AccountDetail;
 use Symfony\Component\HttpFoundation\Response;
 
 class PermissionsController extends Controller
 {
-    public function index()
+    public function index($id)
     {
-        abort_if(Gate::denies('permission_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        $permissions = Permission::all();
-
-        return view('admin.permissions.index', compact('permissions'));
+        // abort_if(Gate::denies('permission_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        $user_id = AccountDetail::where('user_id', $id)->first();
+        return view('admin.permissions.index', compact('user_id', 'id'));
     }
 
     public function create()

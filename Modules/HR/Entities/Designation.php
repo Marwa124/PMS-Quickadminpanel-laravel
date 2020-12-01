@@ -2,6 +2,7 @@
 
 namespace Modules\HR\Entities;
 
+use App\Models\Permission;
 use Modules\HR\Entities\AccountDetail;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
@@ -40,7 +41,7 @@ class Designation extends Model
 
     public function salaryTemplate()
     {
-        return $this->belongsTo(SalaryTemplate::class);
+        return $this->hasOne(SalaryTemplate::class);
     }
 
     public function department()

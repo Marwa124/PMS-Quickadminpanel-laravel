@@ -17,6 +17,9 @@ class CreatePaymentsTable extends Migration
             $table->longText('notes')->nullable();
             $table->date('payment_date')->nullable();
             $table->integer('paid_by')->nullable();
+            $table->unsignedInteger('invoice_id');
+            $table->unsignedInteger('account_id')->nullable();
+            $table->unsignedInteger('transaction_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

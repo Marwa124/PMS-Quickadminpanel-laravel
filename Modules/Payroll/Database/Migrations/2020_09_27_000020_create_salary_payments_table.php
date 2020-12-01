@@ -10,11 +10,11 @@ class CreateSalaryPaymentsTable extends Migration
     {
         Schema::create('salary_payments', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('payment_amount');
-            $table->string('fine_deductio');
+            $table->string('payment_month');
+            $table->string('fine_deduction');
             $table->string('payment_type');
             $table->longText('comments')->nullable();
-            $table->date('paid_date');
+            $table->date('paid_date')->nullable();
             $table->string('deduct_from');
             $table->timestamps();
             $table->softDeletes();

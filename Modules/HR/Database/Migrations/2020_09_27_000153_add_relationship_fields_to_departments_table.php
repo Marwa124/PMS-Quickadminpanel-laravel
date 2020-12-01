@@ -10,7 +10,7 @@ class AddRelationshipFieldsToDepartmentsTable extends Migration
     {
         Schema::table('departments', function (Blueprint $table) {
             $table->unsignedInteger('department_head_id')->nullable();
-            $table->foreign('department_head_id', 'department_head_fk_2165716')->references('id')->on('users');
+            // $table->foreign('department_head_id', 'department_head_fk_2165716')->references('id')->on('users');
         });
     }
 }

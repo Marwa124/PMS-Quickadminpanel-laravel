@@ -8,6 +8,6 @@
         "Modules\\Payroll\\Providers\\PayrollServiceProvider"
     ],
     "aliases": {},
-    "files": [],
+    "files": ["Http/helper.php"],
     "requires": []
 }
