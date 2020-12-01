@@ -226,55 +226,53 @@ if (!function_exists('deduction')) {
 
         $activeUsers = User::where('banned', 0)->get();
         foreach ($activeUsers as $key => $user) {
-            if ($user->role()) {
-                if ($user->userRole() != 'Board Members') {
-                    if($userTimeTable = $user->timeTable()->first()){
-                        $timetable_clockIn   = $userTimeTable->in_time;
-                        $timetable_clockOut  = $userTimeTable->out_time;
-                        $timetable_allowed_late  = $userTimeTable->allow_clock_in_late;
-                        $timetable_allowed_leave_early  = $userTimeTable->allow_leave_early;
-                        $timetable_deduction = $userTimeTable->deduction_day;
-                    } else{
-                        $timetable_clockIn = date("H:i:s",strtotime( '09:00:00'));
-                        $timetable_clockOut =  date("H:i:s",strtotime('17:00:00'));
-                        $timetable_allowed_late =45;
-                        $timetable_allowed_leave_early =15;
-                        $timetable_deduction =.5;
-                    }
+            if (!$user->hasRole('Board Members')) {
+                if($userTimeTable = $user->timeTable()->first()){
+                    $timetable_clockIn   = $userTimeTable->in_time;
+                    $timetable_clockOut  = $userTimeTable->out_time;
+                    $timetable_allowed_late  = $userTimeTable->allow_clock_in_late;
+                    $timetable_allowed_leave_early  = $userTimeTable->allow_leave_early;
+                    $timetable_deduction = $userTimeTable->deduction_day;
+                } else{
+                    $timetable_clockIn = date("H:i:s",strtotime( '09:00:00'));
+                    $timetable_clockOut =  date("H:i:s",strtotime('17:00:00'));
+                    $timetable_allowed_late =45;
+                    $timetable_allowed_leave_early =15;
+                    $timetable_deduction =.5;
+                }
 
-                    foreach ($daysInMonth as $key => $day) {
-                        if($day <= date('Y-m-d')){
-                            if(weekEnds($day) || getHolidays($day) || late_leave_deduction($user->id, $day) )
-                            {
+                foreach ($daysInMonth as $key => $day) {
+                    if($day <= date('Y-m-d')){
+                        if(weekEnds($day) || getHolidays($day) || late_leave_deduction($user->id, $day) )
+                        {
 
-                            }else{
-                                $fingerClockIn = FingerprintAttendance::where('date', $day)->where('user_id', $user->id)->get()->min('time');
-                                $fingerClockOut = FingerprintAttendance::where('date', $day)->where('user_id', $user->id)->get()->max('time');
-                                // dump($fingerClockOut);
-                                if($fingerClockOut > $timetable_clockOut){
-                                    $diff_minutes = timeDifferenceInMinutes($fingerClockOut, $timetable_clockOut);
-                                    addToDeductionTable($user->id, $day, 'leave_late', 'minutes', $diff_minutes, 'extra');
+                        }else{
+                            $fingerClockIn = FingerprintAttendance::where('date', $day)->where('user_id', $user->id)->get()->min('time');
+                            $fingerClockOut = FingerprintAttendance::where('date', $day)->where('user_id', $user->id)->get()->max('time');
+                            // dump($fingerClockOut);
+                            if($fingerClockOut > $timetable_clockOut){
+                                $diff_minutes = timeDifferenceInMinutes($fingerClockOut, $timetable_clockOut);
+                                addToDeductionTable($user->id, $day, 'leave_late', 'minutes', $diff_minutes, 'extra');
 
-                                }
-                                if ($fingerClockIn == null && $day <= date('Y-m-d')) {
-                                    // if(!(date('l', strtotime($day)) == 'Saturday' || date('l',strtotime($day)) == 'Friday' ) ){
-                                    // $data_absent = array(
-                                    //     'user_id' => $user->user_id,
-                                    //     'date' => $formated_date,
-                                    //     'method' => 'deduction method inside  clock_in equals null',
-                                    // );
-                                    // $this->db->insert('tbl_absent', $data_absent);
-                                    // }
-                                }
+                            }
+                            if ($fingerClockIn == null && $day <= date('Y-m-d')) {
+                                // if(!(date('l', strtotime($day)) == 'Saturday' || date('l',strtotime($day)) == 'Friday' ) ){
+                                // $data_absent = array(
+                                //     'user_id' => $user->user_id,
+                                //     'date' => $formated_date,
+                                //     'method' => 'deduction method inside  clock_in equals null',
+                                // );
+                                // $this->db->insert('tbl_absent', $data_absent);
+                                // }
                             }
                         }
-                        // dump($day);
                     }
-                    // dump($user->id);
+                    // dump($day);
                 }
+                // dump($user->id);
             }
         }
-        dd();
+        // dd();
         // dd($daysInMonth);
     }
 }

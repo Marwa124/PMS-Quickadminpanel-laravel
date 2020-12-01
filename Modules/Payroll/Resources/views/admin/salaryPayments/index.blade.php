@@ -244,7 +244,7 @@
                                     @endcan
                                 @elseif($salaryTemplate)
                                     @can('salary_payment_create')
-                                        <a class="text-danger" href="{{ route('payroll.admin.salary-payments.create') }}">
+                                        <a class="text-danger" href="{{ route('payroll.admin.salary-payments.create', $date.'&'.$departmentRequest) }}">
                                             {{ trans('cruds.salaryPayment.fields.make_payment') }}
                                         </a>
                                     @endcan

@@ -93,7 +93,7 @@ class SalaryTemplatesTableSeeder extends Seeder
                 'designation_id' => '28',
             ],
             [
-                'id'        => '16',
+                'id'        => '23',
                 'salary_grade' => 'Mobile App Developer',
                 'basic_salary' => '7150',
                 'designation_id' => '29',
