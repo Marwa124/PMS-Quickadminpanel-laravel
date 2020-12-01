@@ -56,10 +56,14 @@ class SalaryPaymentsController extends Controller
         $date = $result[0];
         $departmentRequest = $result[1];
 
+        $monthNum = explode('-', $date);
+        $monthName = date('F', mktime(0, 0, 0, $monthNum[1], 10));
+        $year      = $monthNum[0];
+
         $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
 
-        return view('payroll::admin.salaryPayments.create', compact('users', 'date', 'departmentRequest'));
+        return view('payroll::admin.salaryPayments.create', compact('users', 'date', 'departmentRequest', 'monthName', 'year'));
     }
 
     public function store(StoreSalaryPaymentRequest $request)
