@@ -708,7 +708,7 @@
                 <ul class="c-sidebar-nav-dropdown-items">
                     @can('proposal_access')
                         <li class="c-sidebar-nav-item">
-                            <a href="{{ route("admin.proposals.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/proposals") || request()->is("admin/proposals/*") ? "active" : "" }}">
+                            <a href="{{ route("sales.admin.proposals.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/proposals") || request()->is("admin/proposals/*") ? "active" : "" }}">
                                 <i class="fa-fw fas fa-cogs c-sidebar-nav-icon">
 
                                 </i>
@@ -718,7 +718,7 @@
                     @endcan
                     @can('interested_in_access')
                         <li class="c-sidebar-nav-item">
-                            <a href="{{ route("admin.interested-ins.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/interested-ins") || request()->is("admin/interested-ins/*") ? "active" : "" }}">
+                            <a href="{{ route("sales.admin.interested-ins.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/interested-ins") || request()->is("admin/interested-ins/*") ? "active" : "" }}">
                                 <i class="fa-fw fas fa-american-sign-language-interpreting c-sidebar-nav-icon">
 
                                 </i>
@@ -852,7 +852,7 @@
                     @endcan
                     @can('proposals_item_access')
                         <li class="c-sidebar-nav-item">
-                            <a href="{{ route("admin.proposals-items.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/proposals-items") || request()->is("admin/proposals-items/*") ? "active" : "" }}">
+                            <a href="{{ route("sales.admin.proposals-items.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/proposals-items") || request()->is("admin/proposals-items/*") ? "active" : "" }}">
                                 <i class="fa-fw fas fa-cube c-sidebar-nav-icon">
 
                                 </i>
