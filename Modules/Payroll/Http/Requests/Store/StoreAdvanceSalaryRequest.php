@@ -11,7 +11,8 @@ class StoreAdvanceSalaryRequest extends FormRequest
 {
     public function authorize()
     {
-        return Gate::allows('advance_salary_create');
+        // return Gate::allows('advance_salary_create');
+        return true;
     }
 
     public function rules()
@@ -21,30 +22,45 @@ class StoreAdvanceSalaryRequest extends FormRequest
                 'required',
                 'integer',
             ],
-            'advance_amount' => [
-                'string',
+            'amount' => [
+                'integer',
                 'required',
             ],
-            'deduct_month'   => [
+            'month'   => [
                 'string',
                 'nullable',
             ],
-            'request_date'   => [
-                'required',
-                'date_format:' . config('panel.date_format'),
-            ],
-            'status'         => [
-                'required',
-                'integer',
-                'min:-2147483648',
-                'max:2147483647',
-            ],
-            'approve_by'     => [
+            'reason'   => [
+                'string',
                 'nullable',
-                'integer',
-                'min:-2147483648',
-                'max:2147483647',
             ],
+            'type'   => [
+                'string',
+                'required',
+            ],
+            // 'request_date'   => [
+            //     'required',
+            //     'date_format:' . config('panel.date_format'),
+            // ],
+            // 'status'         => [
+            //     'required',
+            //     'integer',
+            //     'min:-2147483648',
+            //     'max:2147483647',
+            // ],
+            // 'approve_by'     => [
+            //     'nullable',
+            //     'integer',
+            //     'min:-2147483648',
+            //     'max:2147483647',
+            // ],
         ];
     }
+
+    // public function messages()
+    // {
+    //     return [
+    //         'type.required' => 'IT\'s a required field',
+    //     ];
+    // }
 }

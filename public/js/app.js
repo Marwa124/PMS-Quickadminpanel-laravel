@@ -86,7 +86,6 @@
 /************************************************************************/
 /******/ ({
 
-<<<<<<< HEAD
 /***/ "./node_modules/@babel/runtime/regenerator/index.js":
 /*!**********************************************************!*\
   !*** ./node_modules/@babel/runtime/regenerator/index.js ***!
@@ -52062,13 +52061,10 @@ module.exports = function(module) {
 
 /***/ }),
 
-=======
->>>>>>> d1d885ea86ded9a65227379feffb848749eccf94
 /***/ "./resources/js/app.js":
 /*!*****************************!*\
   !*** ./resources/js/app.js ***!
   \*****************************/
-<<<<<<< HEAD
 /*! no exports provided */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -52305,12 +52301,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ExampleComponent_vue_vue_type_template_id_299e239e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
-=======
-/*! no static exports found */
-/***/ (function(module, exports) {
->>>>>>> d1d885ea86ded9a65227379feffb848749eccf94
 
-throw new Error("Module build failed (from ./node_modules/babel-loader/lib/index.js):\nError: Cannot find module 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\node_modules\\@babel\\compat-data\\data\\corejs3-shipped-proposals'\n    at createEsmNotFoundErr (internal/modules/cjs/loader.js:907:15)\n    at finalizeEsmResolution (internal/modules/cjs/loader.js:900:15)\n    at resolveExports (internal/modules/cjs/loader.js:432:14)\n    at Function.Module._findPath (internal/modules/cjs/loader.js:472:31)\n    at Function.Module._resolveFilename (internal/modules/cjs/loader.js:867:27)\n    at Function.Module._load (internal/modules/cjs/loader.js:725:27)\n    at Module.require (internal/modules/cjs/loader.js:952:19)\n    at require (C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\node_modules\\v8-compile-cache\\v8-compile-cache.js:161:20)\n    at Object.<anonymous> (C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\node_modules\\@babel\\preset-env\\lib\\polyfills\\corejs3\\usage-plugin.js:10:55)\n    at Module._compile (C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\node_modules\\v8-compile-cache\\v8-compile-cache.js:192:30)\n    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)\n    at Module.load (internal/modules/cjs/loader.js:928:32)\n    at Function.Module._load (internal/modules/cjs/loader.js:769:14)\n    at Module.require (internal/modules/cjs/loader.js:952:19)\n    at require (C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\node_modules\\v8-compile-cache\\v8-compile-cache.js:161:20)\n    at Object.<anonymous> (C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\node_modules\\@babel\\preset-env\\lib\\index.js:29:44)\n    at Module._compile (C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\node_modules\\v8-compile-cache\\v8-compile-cache.js:192:30)\n    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)\n    at Module.load (internal/modules/cjs/loader.js:928:32)\n    at Function.Module._load (internal/modules/cjs/loader.js:769:14)\n    at Module.require (internal/modules/cjs/loader.js:952:19)\n    at require (C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\node_modules\\v8-compile-cache\\v8-compile-cache.js:161:20)\n    at requireModule (C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\node_modules\\@babel\\core\\lib\\config\\files\\plugins.js:165:12)\n    at loadPreset (C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\node_modules\\@babel\\core\\lib\\config\\files\\plugins.js:83:17)\n    at createDescriptor (C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\node_modules\\@babel\\core\\lib\\config\\config-descriptors.js:154:9)\n    at C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\node_modules\\@babel\\core\\lib\\config\\config-descriptors.js:109:50\n    at Array.map (<anonymous>)\n    at createDescriptors (C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\node_modules\\@babel\\core\\lib\\config\\config-descriptors.js:109:29)\n    at createPresetDescriptors (C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\node_modules\\@babel\\core\\lib\\config\\config-descriptors.js:101:10)\n    at C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\node_modules\\@babel\\core\\lib\\config\\config-descriptors.js:58:104\n    at cachedFunction (C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\node_modules\\@babel\\core\\lib\\config\\caching.js:62:27)\n    at cachedFunction.next (<anonymous>)\n    at evaluateSync (C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\node_modules\\gensync\\index.js:244:28)\n    at sync (C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\node_modules\\gensync\\index.js:84:14)\n    at presets (C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\node_modules\\@babel\\core\\lib\\config\\config-descriptors.js:29:84)\n    at mergeChainOpts (C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\node_modules\\@babel\\core\\lib\\config\\config-chain.js:320:26)");
 
 /***/ }),
 
@@ -52465,13 +52456,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.filter("slug", function (value) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-<<<<<<< HEAD
 __webpack_require__(/*! C:\laragon\www\01-Test-Permission-PMS\resources\js\app.js */"./resources/js/app.js");
 module.exports = __webpack_require__(/*! C:\laragon\www\01-Test-Permission-PMS\resources\sass\app.scss */"./resources/sass/app.scss");
-=======
-__webpack_require__(/*! C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\resources\sass\app.scss */"./resources/sass/app.scss");
->>>>>>> d1d885ea86ded9a65227379feffb848749eccf94
 
 
 /***/ })

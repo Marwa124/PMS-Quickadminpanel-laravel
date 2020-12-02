@@ -4,7 +4,6 @@ namespace Modules\Payroll\Entities;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
@@ -12,53 +11,45 @@ use \DateTimeInterface;
 
 class AdvanceSalary extends Model implements HasMedia
 {
-    use SoftDeletes, HasMediaTrait;
+    use HasMediaTrait;
 
     public $table = 'advance_salaries';
+    public $timestamps = false;
 
     protected $dates = [
-        'request_date',
-        'created_at',
-        'updated_at',
-        'deleted_at',
+        'month',
     ];
 
-    protected $fillable = [
-        'user_id',
-        'advance_amount',
-        'deduct_month',
-        'reason',
-        'request_date',
-        'status',
-        'approve_by',
-        'created_at',
-        'updated_at',
-        'deleted_at',
+    protected $guarded = [];
+
+    const TYPE_SELECT = [
+        'Bonus'   => 'Bonus',
+        'Penalty' => 'Penalty',
     ];
 
-    protected function serializeDate(DateTimeInterface $date)
-    {
-        return $date->format('Y-m-d H:i:s');
-    }
+    // protected function serializeDate(DateTimeInterface $date)
+    // {
+    //     return $date->format('Y-m-d H:i:s');
+    // }
 
-    public function registerMediaConversions(Media $media = null)
-    {
-        $this->addMediaConversion('thumb')->fit('crop', 50, 50);
-        $this->addMediaConversion('preview')->fit('crop', 120, 120);
-    }
+    // public function registerMediaConversions(Media $media = null)
+    // {
+    //     $this->addMediaConversion('thumb')->fit('crop', 50, 50);
+    //     $this->addMediaConversion('preview')->fit('crop', 120, 120);
+    // }
 
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function getRequestDateAttribute($value)
+    public function getMonthAttribute($value)
     {
         return $value ? Carbon::parse($value)->format(config('panel.date_format')) : null;
     }
 
-    public function setRequestDateAttribute($value)
+    public function setMonthAttribute($value)
     {
-        $this->attributes['request_date'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
+        $this->attributes['month'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m') : null;
     }
 }

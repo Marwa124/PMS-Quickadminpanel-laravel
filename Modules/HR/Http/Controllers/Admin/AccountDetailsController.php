@@ -19,6 +19,8 @@ use Spatie\MediaLibrary\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Modules\Payroll\Entities\AdvanceSalary;
+use Modules\Payroll\Http\Requests\Store\StoreAdvanceSalaryRequest;
 
 class AccountDetailsController extends Controller
 {
@@ -51,6 +53,13 @@ class AccountDetailsController extends Controller
 
         // return view('hr::admin.accountDetails.index', compact('accountDetails', 'requestResult'));
         return view('hr::admin.accountDetails.index', compact('accountDetails'));
+    }
+
+    public function advancedSalary(StoreAdvanceSalaryRequest $request)
+    {
+        AdvanceSalary::create($request->all());
+        // AdvanceSalary::create($request->only(['user_id', 'amount', 'month', 'reason', 'type']));
+        return response()->json();
     }
 
     public function forceDelete(Request $request)

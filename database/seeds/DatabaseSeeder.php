@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
 
             UsersTableSeeder::class,
             AccountDetailsTableSeeder::class,
-
+            PaymentMethodsTableSeeder::class,
 
             // PermissionRoleTableSeeder::class,
             // CrmStatusTableSeeder::class,

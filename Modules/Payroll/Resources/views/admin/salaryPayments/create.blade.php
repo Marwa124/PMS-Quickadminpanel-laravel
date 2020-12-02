@@ -2,6 +2,7 @@
 @section('content')
 
 @inject('departmentModel', 'Modules\HR\Entities\Department')
+@inject('paymentMethodModel', 'Modules\Payroll\Entities\PaymentMethod')
 
 
 @can('salary_payment_show')
@@ -77,7 +78,9 @@
           <div class="form-group">
             <label for="">Payment Method</label>
             <select class="form-control" name="payment_type">
-              <option value=""></option>
+                @foreach ($paymentMethodModel::pluck('name', 'id') as $key => $method)
+                    <option value="{{$key}}" {{($method == 'Cache') ? 'selected' : ''}}>{{$method}}</option>
+                @endforeach
             </select>
           </div>
           <div class="form-group">

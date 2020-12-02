@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace Modules\Payroll\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\MassDestroyPaymentMethodRequest;
-use App\Http\Requests\StorePaymentMethodRequest;
-use App\Models\PaymentMethod;
+use Modules\Payroll\Http\Requests\Destroy\MassDestroyPaymentMethodRequest;
+use Modules\Payroll\Http\Requests\Store\StorePaymentMethodRequest;
 use Gate;
 use Illuminate\Http\Request;
+use Modules\Payroll\Entities\PaymentMethod;
 use Symfony\Component\HttpFoundation\Response;
 
 class PaymentMethodsController extends Controller

@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Requests;
+namespace Modules\Payroll\Http\Requests\Destroy;
 
-use App\Models\PaymentMethod;
 use Gate;
 use Illuminate\Foundation\Http\FormRequest;
 use Symfony\Component\HttpFoundation\Response;

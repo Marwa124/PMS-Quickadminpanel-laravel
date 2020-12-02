@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace Modules\Payroll\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\MediaUploadingTrait;
-use App\Http\Requests\MassDestroyPaymentRequest;
-use App\Http\Requests\StorePaymentRequest;
-use App\Http\Requests\UpdatePaymentRequest;
+use Modules\Payroll\Http\Requests\Destroy\MassDestroyPaymentRequest;
+use Modules\Payroll\Http\Requests\Store\StorePaymentRequest;
+use Modules\Payroll\Http\Requests\Update\UpdatePaymentRequest;
 use App\Models\Account;
 use App\Models\Invoice;
-use App\Models\Payment;
 use App\Models\Transaction;
 use Gate;
 use Illuminate\Http\Request;
+use Modules\Payroll\Entities\Payment;
 use Spatie\MediaLibrary\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
 
