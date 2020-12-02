@@ -13,9 +13,17 @@ class CreateNotificationsTable extends Migration
             $table->string('title');
             $table->text('content')->nullable();
             $table->integer('model_id')->nullable();
-            $table->string('model_type')->nullable();
-            $table->string('show_path')->nullable();
+            $table->boolean('type');
+            $table->unsignedInteger('notify_type');
+            $table->string('redirect_id')->nullable();
+            $table->unsignedInteger('user_id');
+            $table->foreign('user_id')
+                ->references('id')->on('users')
+                ->onDelete('cascade');
+            $table->boolean('is_send');
             $table->timestamps();
+
+  
         });
     }
 

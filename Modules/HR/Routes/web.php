@@ -32,6 +32,7 @@ Route::group(['as' => 'hr.admin.', 'prefix' => 'admin/hr', 'namespace' => 'Admin
     Route::post('account-details/password', 'AccountDetailsController@passwordReset')->name('account-details.passwordReset');
     Route::post('account-details/force-destroy/{id}', 'AccountDetailsController@forceDelete')->name('account-details.forceDestroy');
     // Route::get('account-details/filter', 'AccountDetailsController@filterSelect')->name('filter-select'); // For filter soft delete
+    Route::post('account-details/advanced-salary/{id}', 'AccountDetailsController@advancedSalary')->name('account-details.advancedSalary'); // For filter soft delete
     Route::resource('account-details', 'AccountDetailsController');
     
     // Accounts

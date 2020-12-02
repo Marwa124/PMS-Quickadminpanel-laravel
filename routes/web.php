@@ -154,15 +154,15 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     // Route::get('account-details/filter', 'AccountDetailsController@filterSelect')->name('filter-select');
     // Route::resource('account-details', 'AccountDetailsController');
 
-    // Proposals
-    Route::delete('proposals/destroy', 'ProposalsController@massDestroy')->name('proposals.massDestroy');
-    Route::post('proposals/media', 'ProposalsController@storeMedia')->name('proposals.storeMedia');
-    Route::post('proposals/ckmedia', 'ProposalsController@storeCKEditorImages')->name('proposals.storeCKEditorImages');
-    Route::resource('proposals', 'ProposalsController');
+    // // Proposals
+    // Route::delete('proposals/destroy', 'ProposalsController@massDestroy')->name('proposals.massDestroy');
+    // Route::post('proposals/media', 'ProposalsController@storeMedia')->name('proposals.storeMedia');
+    // Route::post('proposals/ckmedia', 'ProposalsController@storeCKEditorImages')->name('proposals.storeCKEditorImages');
+    // Route::resource('proposals', 'ProposalsController');
 
-    // Interested Ins
-    Route::delete('interested-ins/destroy', 'InterestedInController@massDestroy')->name('interested-ins.massDestroy');
-    Route::resource('interested-ins', 'InterestedInController', ['except' => ['edit', 'update', 'show']]);
+    // // Interested Ins
+    // Route::delete('interested-ins/destroy', 'InterestedInController@massDestroy')->name('interested-ins.massDestroy');
+    // Route::resource('interested-ins', 'InterestedInController', ['except' => ['edit', 'update', 'show']]);
 
     // Lead Categories
     Route::delete('lead-categories/destroy', 'LeadCategoriesController@massDestroy')->name('lead-categories.massDestroy');
@@ -264,11 +264,11 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::post('invoices/ckmedia', 'InvoicesController@storeCKEditorImages')->name('invoices.storeCKEditorImages');
     Route::resource('invoices', 'InvoicesController');
 
-    // Proposals Items
-    Route::delete('proposals-items/destroy', 'ProposalsItemsController@massDestroy')->name('proposals-items.massDestroy');
-    Route::post('proposals-items/media', 'ProposalsItemsController@storeMedia')->name('proposals-items.storeMedia');
-    Route::post('proposals-items/ckmedia', 'ProposalsItemsController@storeCKEditorImages')->name('proposals-items.storeCKEditorImages');
-    Route::resource('proposals-items', 'ProposalsItemsController');
+    // // Proposals Items
+    // Route::delete('proposals-items/destroy', 'ProposalsItemsController@massDestroy')->name('proposals-items.massDestroy');
+    // Route::post('proposals-items/media', 'ProposalsItemsController@storeMedia')->name('proposals-items.storeMedia');
+    // Route::post('proposals-items/ckmedia', 'ProposalsItemsController@storeCKEditorImages')->name('proposals-items.storeCKEditorImages');
+    // Route::resource('proposals-items', 'ProposalsItemsController');
 
     // Suppliers
     Route::delete('suppliers/destroy', 'SuppliersController@massDestroy')->name('suppliers.massDestroy');

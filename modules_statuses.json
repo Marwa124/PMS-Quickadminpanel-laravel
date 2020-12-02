@@ -4,5 +4,6 @@
     "Migration": true,
     "PAYROLL": true,
     "Payroll": true,
+    "Sales": true,
     "ProjectManagement": true
 }

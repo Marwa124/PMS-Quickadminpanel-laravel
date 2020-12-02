@@ -87,11 +87,38 @@ class SalaryTemplateController extends Controller
         return view('payroll::admin.salaryTemplates.edit', compact('salaryTemplate'));
     }
 
-    public function update(UpdateSalaryTemplateRequest $request, SalaryTemplate $setTime)
+    // public function update(UpdateSalaryTemplateRequest $request, SalaryTemplate $setTime)
+    public function update(UpdateSalaryTemplateRequest $request, SalaryTemplate $salaryItem, $id)
     {
-        $setTime->update($request->all());
 
-        return redirect()->route('payroll.admin.payroll.salary-templates.index');
+        $salaryItem->update($request->all());
+        
+        // !!!: Add data to Salary Allowances
+        try {
+            foreach ($request->allowance as $key => $value) {
+                SalaryAllowance::create([
+                    'name' => $key,
+                    'value' => $value,
+                    'salary_template_id' => $id
+                ]);
+            }
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+        // !!!: Add data to Salary Deductions
+        try {
+            foreach ($request->deduction as $key => $value) {
+                SalaryDeduction::create([
+                    'name' => $key,
+                    'value' => $value,
+                    'salary_template_id' => $id
+                ]);
+            }
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+
+        return redirect()->route('payroll.admin.salary-templates.index');
     }
 
     public function destroy(SalaryTemplate $salaryTemplate)

@@ -1,6 +1,111 @@
 @extends('layouts.admin')
 @section('content')
 
+@inject('departmentModel', 'Modules\HR\Entities\Department')
+@inject('paymentMethodModel', 'Modules\Payroll\Entities\PaymentMethod')
+
+
+@can('salary_payment_show')
+<!-- Search -->
+
+<div class="card">
+    <h5 class="card-header">Make Payment</h5>
+    <form action="{{ route('payroll.admin.salary-payments.index') }}" method="get">
+        {{-- @csrf --}}
+        <div class="card-body">
+            <div class="">
+                <div class="form-group d-flex justify-content-center">
+                    <label for="department_id" class="required mr-2">Select Department</label>
+                    <?php
+                    if ($departmentRequest != '') {
+                        $selected_department = $departmentModel::where('id', $departmentRequest)->first()->departmant_name;
+                    }
+                    $departments = $departmentModel->where('department_name', '!=', 'CEO')->where('department_name', '!=', 'Board Members')->pluck('department_name', 'id');
+                    ?>
+                    <select class="form-control select2 w-50" name="department_id" id="department_id" required>
+                        {{-- trans('cruds.monthlyAttendance.fields.select_user') --}}
+                        <option selected disabled >{{ $departmentRequest ? $selected_department :  'Select Department'}}</option>
+                        @foreach($departments as $key => $department)
+                            <option value="{{ $key }}" {{ ($departmentRequest ?? '') == $key ? 'selected' : '' }}>{{ $department }}</option>
+                        @endforeach
+                    </select>
+
+
+                </div>
+            </div>
+            <div class="form-group margin d-flex justify-content-center">
+                <div class="nav-link mr-2"><i class="fa fa-calendar"></i></div>
+                <input class="form-control w-50" type="text" name="date" id="datepicker" value="{{ $date }}" required>
+              </span>
+          </div>
+
+            <input type="submit" class="btn btn-primary d-flex justify-content-center m-auto d-block w-25" value="{{ __('Go') }}"/>
+        </div>
+    </form>
+</div>
+
+<!-- /.End Search -->
+@endcan
+
+
+
+<div class="row">
+  <div class="col-md-3">
+      <div class="card">
+       
+        <h5 class="card-header" style="border-color: red;">Payment For <span class="text-danger"> {{$monthName}} {{$year}} </span></h5>
+        <div class="card-body">
+          <div class="form-group">
+            <label for="">Gross Salary</label>
+            <input type="text" class="form-control" value="11" disabled>
+          </div>
+          <div class="form-group">
+            <label for="">Total Deduction</label>
+            <input type="text" class="form-control" value="11" disabled>
+          </div>
+          <div class="form-group">
+            <label for="">Net Salary</label>
+            <input type="text" class="form-control" value="11" disabled>
+          </div>
+          <div class="form-group">
+            <label for="">Fine Deduction</label>
+            <input type="text" class="form-control" value="">
+          </div>
+          <div class="form-group">
+            <label for="">Payment Amount</label> Ajax(net - total deductions)
+            <input type="text" class="form-control" name="payment_amount" value="" disabled>
+          </div>
+          <div class="form-group">
+            <label for="">Payment Method</label>
+            <select class="form-control" name="payment_type">
+                @foreach ($paymentMethodModel::pluck('name', 'id') as $key => $method)
+                    <option value="{{$key}}" {{($method == 'Cache') ? 'selected' : ''}}>{{$method}}</option>
+                @endforeach
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="">Comments</label>
+            <input type="text" class="form-control" name="comments" value="">
+          </div>
+
+          <a href="#" class="btn btn-primary">Update</a>
+        </div>
+      </div>
+      {{-- card End --}}
+  </div>
+  <div class="col-md-9">
+      <div class="card">
+        <h5 class="card-header">Payroll History</h5>
+        <div class="card-body">
+          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        </div>
+      </div>
+      {{-- card End --}}
+  </div>
+</div>
+
+
+
 <div class="card">
     <div class="card-header">
         {{ trans('global.create') }} {{ trans('cruds.salaryPayment.title_singular') }}
@@ -99,66 +204,8 @@
 @section('scripts')
 <script>
     $(document).ready(function () {
-  function SimpleUploadAdapter(editor) {
-    editor.plugins.get('FileRepository').createUploadAdapter = function(loader) {
-      return {
-        upload: function() {
-          return loader.file
-            .then(function (file) {
-              return new Promise(function(resolve, reject) {
-                // Init request
-                var xhr = new XMLHttpRequest();
-                xhr.open('POST', '/admin/salary-payments/ckmedia', true);
-                xhr.setRequestHeader('x-csrf-token', window._token);
-                xhr.setRequestHeader('Accept', 'application/json');
-                xhr.responseType = 'json';
-
-                // Init listeners
-                var genericErrorText = `Couldn't upload file: ${ file.name }.`;
-                xhr.addEventListener('error', function() { reject(genericErrorText) });
-                xhr.addEventListener('abort', function() { reject() });
-                xhr.addEventListener('load', function() {
-                  var response = xhr.response;
-
-                  if (!response || xhr.status !== 201) {
-                    return reject(response && response.message ? `${genericErrorText}\n${xhr.status} ${response.message}` : `${genericErrorText}\n ${xhr.status} ${xhr.statusText}`);
-                  }
-
-                  $('form').append('<input type="hidden" name="ck-media[]" value="' + response.id + '">');
-
-                  resolve({ default: response.url });
-                });
-
-                if (xhr.upload) {
-                  xhr.upload.addEventListener('progress', function(e) {
-                    if (e.lengthComputable) {
-                      loader.uploadTotal = e.total;
-                      loader.uploaded = e.loaded;
-                    }
-                  });
-                }
-
-                // Send request
-                var data = new FormData();
-                data.append('upload', file);
-                data.append('crud_id', {{ $salaryPayment->id ?? 0 }});
-                xhr.send(data);
-              });
-            })
-        }
-      };
-    }
-  }
-
-  var allEditors = document.querySelectorAll('.ckeditor');
-  for (var i = 0; i < allEditors.length; ++i) {
-    ClassicEditor.create(
-      allEditors[i], {
-        extraPlugins: [SimpleUploadAdapter]
-      }
-    );
-  }
-});
+      
+    });
 </script>
 
 @endsection

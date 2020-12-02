@@ -10,15 +10,16 @@ class CreateAdvanceSalariesTable extends Migration
     {
         Schema::create('advance_salaries', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('advance_amount');
-            $table->string('deduct_month')->nullable();
+            $table->string('amount');
+            $table->enum('type', ['Bonus', 'Penalty']);
+            $table->string('month')->nullable();
             $table->longText('reason')->nullable();
-            $table->date('request_date');
-            $table->integer('status');
-            $table->integer('approve_by')->nullable();
+            // $table->date('request_date');
+            // $table->integer('status');
+            // $table->integer('approve_by')->nullable();
             $table->unsignedInteger('user_id');
             $table->timestamps();
-            $table->softDeletes();
+            // $table->softDeletes();
         });
     }
 }
