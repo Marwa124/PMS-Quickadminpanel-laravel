@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
 
             UsersTableSeeder::class,
             AccountDetailsTableSeeder::class,
+            SalaryDeductionsTableSeeder::class,
 
 
             // PermissionRoleTableSeeder::class,

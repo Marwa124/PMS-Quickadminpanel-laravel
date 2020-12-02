@@ -605,7 +605,7 @@
                 </ul>
             </li>
         @endcan
-        @can('task_management_access')
+        {{-- @can('task_management_access')
             <li class="c-sidebar-nav-dropdown">
                 <a class="c-sidebar-nav-dropdown-toggle" href="#">
                     <i class="fa-fw fas fa-list c-sidebar-nav-icon">
@@ -686,7 +686,7 @@
                     @endcan
                 </ul>
             </li>
-        @endcan
+        @endcan --}}
         @can('user_alert_access')
             <li class="c-sidebar-nav-item">
                 <a href="{{ route("admin.user-alerts.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/user-alerts") || request()->is("admin/user-alerts/*") ? "active" : "" }}">
