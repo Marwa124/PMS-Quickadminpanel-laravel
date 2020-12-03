@@ -287,20 +287,20 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::resource('return-stocks', 'ReturnStockController');
 
     // Purchase Payments
-    Route::delete('purchase-payments/destroy', 'PurchasePaymentsController@massDestroy')->name('purchase-payments.massDestroy');
-    Route::post('purchase-payments/media', 'PurchasePaymentsController@storeMedia')->name('purchase-payments.storeMedia');
-    Route::post('purchase-payments/ckmedia', 'PurchasePaymentsController@storeCKEditorImages')->name('purchase-payments.storeCKEditorImages');
-    Route::resource('purchase-payments', 'PurchasePaymentsController');
+    // Route::delete('purchase-payments/destroy', 'PurchasePaymentsController@massDestroy')->name('purchase-payments.massDestroy');
+    // Route::post('purchase-payments/media', 'PurchasePaymentsController@storeMedia')->name('purchase-payments.storeMedia');
+    // Route::post('purchase-payments/ckmedia', 'PurchasePaymentsController@storeCKEditorImages')->name('purchase-payments.storeCKEditorImages');
+    // Route::resource('purchase-payments', 'PurchasePaymentsController');
 
     // Payment Methods
-    Route::delete('payment-methods/destroy', 'PaymentMethodsController@massDestroy')->name('payment-methods.massDestroy');
-    Route::resource('payment-methods', 'PaymentMethodsController', ['except' => ['edit', 'update', 'show']]);
+    // Route::delete('payment-methods/destroy', 'PaymentMethodsController@massDestroy')->name('payment-methods.massDestroy');
+    // Route::resource('payment-methods', 'PaymentMethodsController', ['except' => ['edit', 'update', 'show']]);
 
     // Payments
-    Route::delete('payments/destroy', 'PaymentsController@massDestroy')->name('payments.massDestroy');
-    Route::post('payments/media', 'PaymentsController@storeMedia')->name('payments.storeMedia');
-    Route::post('payments/ckmedia', 'PaymentsController@storeCKEditorImages')->name('payments.storeCKEditorImages');
-    Route::resource('payments', 'PaymentsController');
+    // Route::delete('payments/destroy', 'PaymentsController@massDestroy')->name('payments.massDestroy');
+    // Route::post('payments/media', 'PaymentsController@storeMedia')->name('payments.storeMedia');
+    // Route::post('payments/ckmedia', 'PaymentsController@storeCKEditorImages')->name('payments.storeCKEditorImages');
+    // Route::resource('payments', 'PaymentsController');
 
     // Transactions
     Route::delete('transactions/destroy', 'TransactionsController@massDestroy')->name('transactions.massDestroy');

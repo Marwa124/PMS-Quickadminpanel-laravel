@@ -7,7 +7,7 @@ use App\Http\Controllers\Traits\MediaUploadingTrait;
 use App\Http\Requests\MassDestroyLeadRequest;
 use App\Http\Requests\StoreLeadRequest;
 use App\Http\Requests\UpdateLeadRequest;
-use App\Models\InterestedIn;
+use Modules\Sales\Entities\InterestedIn;
 use App\Models\Lead;
 use App\Models\LeadCategory;
 use App\Models\LeadSource;

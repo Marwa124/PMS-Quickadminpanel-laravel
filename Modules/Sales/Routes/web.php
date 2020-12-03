@@ -15,7 +15,7 @@
 //     Route::get('/', 'SalesController@index');
 // });
 Route::group(['as' => 'sales.admin.', 'prefix' => 'admin/sales', 'namespace' => 'Admin', 'middleware' => ['auth']],function() {
-    Route::get('/', 'SalesController@index');
+    // Route::get('/', 'SalesController@index');
      // Proposals
     Route::delete('proposals/destroy', 'ProposalsController@massDestroy')->name('proposals.massDestroy');
     Route::post('proposals/media', 'ProposalsController@storeMedia')->name('proposals.storeMedia');
@@ -31,5 +31,14 @@ Route::group(['as' => 'sales.admin.', 'prefix' => 'admin/sales', 'namespace' => 
     // Interested Ins
     Route::delete('interested-ins/destroy', 'InterestedInController@massDestroy')->name('interested-ins.massDestroy');
     Route::resource('interested-ins', 'InterestedInController', ['except' => ['edit', 'update', 'show']]);
-
+    
+    // types
+    Route::resource('types', 'TypesController');
+    Route::delete('type/destroy', 'TypesController@massDestroy')->name('type.massDestroy');
+    // results
+    Route::resource('results', 'ResultsController');
+    // countries
+    Route::resource('countries', 'CountriesController');
+    Route::delete('country/destroy', 'CountriesController@massDestroy')->name('country.massDestroy');
+    // http://127.0.0.1:8000/admin/sales/countries/destroy
 });
