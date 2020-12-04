@@ -287,10 +287,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::resource('return-stocks', 'ReturnStockController');
 
     // Purchase Payments
-    Route::delete('purchase-payments/destroy', 'PurchasePaymentsController@massDestroy')->name('purchase-payments.massDestroy');
-    Route::post('purchase-payments/media', 'PurchasePaymentsController@storeMedia')->name('purchase-payments.storeMedia');
-    Route::post('purchase-payments/ckmedia', 'PurchasePaymentsController@storeCKEditorImages')->name('purchase-payments.storeCKEditorImages');
-    Route::resource('purchase-payments', 'PurchasePaymentsController');
+    // Route::delete('purchase-payments/destroy', 'PurchasePaymentsController@massDestroy')->name('purchase-payments.massDestroy');
+    // Route::post('purchase-payments/media', 'PurchasePaymentsController@storeMedia')->name('purchase-payments.storeMedia');
+    // Route::post('purchase-payments/ckmedia', 'PurchasePaymentsController@storeCKEditorImages')->name('purchase-payments.storeCKEditorImages');
+    // Route::resource('purchase-payments', 'PurchasePaymentsController');
 
     // Transactions
     Route::delete('transactions/destroy', 'TransactionsController@massDestroy')->name('transactions.massDestroy');
