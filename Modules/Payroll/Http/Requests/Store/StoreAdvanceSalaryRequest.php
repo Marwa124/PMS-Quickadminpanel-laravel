@@ -23,7 +23,7 @@ class StoreAdvanceSalaryRequest extends FormRequest
                 'integer',
             ],
             'amount' => [
-                'integer',
+                'float',
                 'required',
             ],
             'month'   => [

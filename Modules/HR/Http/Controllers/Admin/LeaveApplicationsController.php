@@ -177,6 +177,26 @@ class LeaveApplicationsController extends Controller
         return view('hr::admin.leaveApplications.index');
     }
 
+
+    public function details(Request $request)
+    {
+        $userId = $request['user_id'];
+        $userName = $request['user_name'];
+        $date = $request['date'];
+
+        $categoryDetails = [];
+        foreach(LeaveCategory::all() as $category)
+        {
+            $cat = [];
+            $cat['name'] = $category->name;
+            $cat['check_available'] = checkAvailableLeaves($userId, $date, $category->id);
+            $categoryDetails[] = $cat;
+        }
+
+        return view('hr::admin.leaveApplications.leaves_details', compact('userId', 'userName', 'categoryDetails'))->render();
+    }
+
+
     public function create()
     {
         abort_if(Gate::denies('leave_application_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
@@ -185,8 +205,23 @@ class LeaveApplicationsController extends Controller
         $users = [];
         $activeUsers = User::where('banned', 0)->get();
         foreach ($activeUsers as $key => $value) {
-            $users[] = $value->accountDetail()->pluck('fullname', 'user_id');
+            if (auth()->user()->hasAnyRole(['Admin', 'Board Members'])) {
+                $users[] = $value->accountDetail()->pluck('fullname', 'user_id');
+            }else{
+                $users = auth()->user()->accountDetail()->pluck('fullname', 'user_id');
+            }
         }
+
+        $categoryDetails = [];
+        if (!auth()->user()->hasAnyRole(['Admin', 'Board Members'])) {
+            foreach(LeaveCategory::all() as $category)
+            {
+                $cat['name'] = $category->name;
+                $cat['check_available'] = checkAvailableLeaves(auth()->user()->id, date('Y-m'), $category->id);
+                $categoryDetails[] = $cat;
+            }
+        }
+
         $leave_categories = LeaveCategory::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         return view('hr::admin.leaveApplications.create', compact('users', 'leave_categories'));
@@ -239,7 +274,9 @@ class LeaveApplicationsController extends Controller
             'show_path' => 'admin/hr/leave-applications',
         ]);
 
+
         $notification->users()->attach($notifyUsers);
+        // dd($notifyUsers);
 
         event(new NewNotification($notification));
         /* !!!: End Leave Notification */

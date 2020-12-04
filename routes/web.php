@@ -53,7 +53,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
 
 
 
-        
+
     /**************** permissions *****************/
 
     // roles
@@ -80,8 +80,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
 
 
     // Roles
-    Route::delete('roles/destroy', 'RolesController@massDestroy')->name('roles.massDestroy');
-    Route::resource('roles', 'RolesController');
+    // Route::delete('roles/destroy', 'RolesController@massDestroy')->name('roles.massDestroy');
+    // Route::resource('roles', 'RolesController');
 
     // Users
     Route::delete('users/destroy', 'UsersController@massDestroy')->name('users.massDestroy');
@@ -291,16 +291,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::post('purchase-payments/media', 'PurchasePaymentsController@storeMedia')->name('purchase-payments.storeMedia');
     Route::post('purchase-payments/ckmedia', 'PurchasePaymentsController@storeCKEditorImages')->name('purchase-payments.storeCKEditorImages');
     Route::resource('purchase-payments', 'PurchasePaymentsController');
-
-    // Payment Methods
-    Route::delete('payment-methods/destroy', 'PaymentMethodsController@massDestroy')->name('payment-methods.massDestroy');
-    Route::resource('payment-methods', 'PaymentMethodsController', ['except' => ['edit', 'update', 'show']]);
-
-    // Payments
-    Route::delete('payments/destroy', 'PaymentsController@massDestroy')->name('payments.massDestroy');
-    Route::post('payments/media', 'PaymentsController@storeMedia')->name('payments.storeMedia');
-    Route::post('payments/ckmedia', 'PaymentsController@storeCKEditorImages')->name('payments.storeCKEditorImages');
-    Route::resource('payments', 'PaymentsController');
 
     // Transactions
     Route::delete('transactions/destroy', 'TransactionsController@massDestroy')->name('transactions.massDestroy');

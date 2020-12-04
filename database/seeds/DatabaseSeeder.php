@@ -17,13 +17,11 @@ class DatabaseSeeder extends Seeder
 
             UsersTableSeeder::class,
             AccountDetailsTableSeeder::class,
-            SalaryDeductionsTableSeeder::class,
 
             PaymentMethodsTableSeeder::class,
 
-            // PermissionRoleTableSeeder::class,
-            // CrmStatusTableSeeder::class,
-            // TaskStatusTableSeeder::class,
+            // Exists in Payroll Module
+            // SalaryDeductionsTableSeeder::class,
         ]);
     }
 }

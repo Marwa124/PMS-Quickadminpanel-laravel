@@ -9,6 +9,7 @@ use Modules\HR\Entities\Holiday;
 use Modules\HR\Entities\LeaveApplication;
 use Modules\HR\Entities\LeaveCategory;
 use Modules\HR\Entities\Vacation;
+use Modules\Payroll\Entities\AdvanceSalary;
 use Modules\Payroll\Entities\Deduction;
 
 /* !!!: From Current month day 24 to pervious month day 25 */
@@ -79,11 +80,19 @@ if (!function_exists('timeDifferenceInMinutes')) {
 }
 
 if (!function_exists('formattedTimeSummation')) {
-    function formattedTimeSummation($timeIn, $timeOut)
+    function formattedTimeSummation($timeIn, $timeOut, $type = 'minutes')
     {
-        $in = strtotime($timeIn);
-        $out = strtotime($timeOut);
-        $sum = $in + $out ;
+        if($type != 'minutes'){
+            $in = strtotime($timeIn);
+            $out = strtotime($timeOut);
+            $sum = $in + $out ;
+        }else{
+            $formateTimeOut = "00:".$timeOut.":00";
+            $out = strtotime(date('H:i:s', strtotime($formateTimeOut)));
+
+            $in = strtotime($timeIn);
+            $sum = $in + $out ;
+        }
         return date("H:i:s", $sum);
     }
 }
@@ -251,6 +260,8 @@ if (!function_exists('deduction')) {
         foreach ($activeUsers as $key => $user) {
 
             if (!$user->hasRole('Board Members')) {
+                $sum_late_minutes = 0;
+                $sum_extra_minutes = 0;
 
                 $userTimeTable = $user->timeTable()->first();
 
@@ -264,36 +275,43 @@ if (!function_exists('deduction')) {
                     if($day <= date('Y-m-d')){
                         if(weekEnds($day) || getHolidays($day) || late_leave_deduction($user->id, $day) )
                         {
-                            echo "exit Week";
+
                         }else{
                             $fingerClockIn = FingerprintAttendance::where('date', $day)->where('user_id', $user->id)->get()->min('time');
                             $fingerClockOut = FingerprintAttendance::where('date', $day)->where('user_id', $user->id)->get()->max('time');
-                            dump('fb__ '. $fingerClockIn. "   _table__  ". $timetable_clockIn);
-                            dump('fb__ '. $fingerClockOut. "   _table__  ". $timetable_clockOut);
+                        //    dump(formattedTimeSummation($timetable_clockIn, $timetable_allowed_late));
                             if($fingerClockOut > $timetable_clockOut){
+                                // dump('extra,  '. $fingerClockIn);
                                 $diff_minutes = timeDifferenceInMinutes($fingerClockOut, $timetable_clockOut);
                                 addToDeductionTable($user->id, $day, 'leave_late', 'minutes', $diff_minutes, 'extra');
                             }
                             if ($fingerClockIn == null && $day <= date('Y-m-d')) {
+                                // dump('absent, '. $fingerClockIn);
                                 Absence::create([
                                     'user_id' => $user->id,
                                     'date' => $day,
                                 ]); // Insert User as Absent for that day
-                            }elseif ($fingerClockIn > formattedTimeSummation($timetable_clockIn, '04:00:00')) {
+                            }elseif ($fingerClockIn > formattedTimeSummation($timetable_clockIn, '04:00:00', 'timeFormat')) {
+                                // dump('absent,  came after 4 hours,   ' . $fingerClockIn);
                                 Absence::create([
                                     'user_id' => $user->id,
                                     'date' => $day,
                                 ]);
                             // }elseif ($fingerClockIn > date("H:i:s",strtotime($timetable_clockIn.'+'.$timetable_clockIn .'minutes'))) {
+                            }elseif ($fingerClockIn > $timetable_clockIn && $fingerClockIn <= formattedTimeSummation($timetable_clockIn, $timetable_allowed_late)) {
+                                // dump('late Minutes,  Before time table allowed late , ' . $fingerClockIn);
+                                $late_minutes = timeDifferenceInMinutes($timetable_clockIn, $fingerClockIn);
+                                $sum_late_minutes += $late_minutes;
+                                addToDeductionTable($user->id, $day, 'late_minutes', 'minutes', $late_minutes, 'deduction');
                             }elseif ($fingerClockIn > formattedTimeSummation($timetable_clockIn, $timetable_allowed_late)) {
+                                // dump('late days,  after time table allowed late ,  deduct( .5) day, ' . $fingerClockIn);
                                 addToDeductionTable($user->id, $day, 'late_days');
                             // }elseif ($fingerClockIn > $timetable_clockIn && $fingerClockIn <= date("H:i:s",strtotime($timetable_clockIn.'+'.$timetable_allowed_late .'minutes'))) {
-                            }elseif ($fingerClockIn > $timetable_clockIn && $fingerClockIn <= formattedTimeSummation($timetable_clockIn, $timetable_allowed_late)) {
-                                $late_minutes = timeDifferenceInMinutes($timetable_clockIn, $fingerClockIn);
-                                addToDeductionTable($user->id, $day, 'late_minutes', 'minutes', $late_minutes, 'deduction');
                             }elseif ($fingerClockIn < $timetable_clockIn) {
-                                $late_minutes = timeDifferenceInMinutes($timetable_clockIn, $fingerClockIn);
-                                addToDeductionTable($user->id, $day, 'early', 'minutes', $late_minutes, 'extra');
+                                // dump('early,  before time clockin,  '.$fingerClockIn);
+                                $extra_minutes = timeDifferenceInMinutes($timetable_clockIn, $fingerClockIn);
+                                $sum_extra_minutes += $extra_minutes;
+                                addToDeductionTable($user->id, $day, 'early', 'minutes', $extra_minutes, 'extra');
                             }
                         }
                             /* !!!: End Else today is not a weekend */
@@ -305,23 +323,27 @@ if (!function_exists('deduction')) {
                 // dump($user->id);
             }
              /* !!!: End if user not an employee like "Board Members" */
-            echo "End User Iteration__  ". $user->name;
         }
         /* !!!: End foreach on every user */
         // dd();
         // dd($daysInMonth);
+        return [
+            'total_late_minutes' => $sum_late_minutes,
+            'total_extra_minutes' => $sum_extra_minutes,
+        ];
     }
 }
 
 
-if (!function_exists('calcLateExtraMinutes')) {
-    function calcLateExtraMinutes($month, $user_id, $dailySalary, $absent_value)
+if (!function_exists('deductionDetails')) {
+    function deductionDetails($month, $user_id, $dailySalary, $absent_value)
     {
-        $fp_late_minus_deduction = 0;
-        $fp_days_deduction       = 0;
-        $leave_exceeded_deduction = 0;
+        $fp_late_minus_deduction    = 0;
+        $fp_days_deduction          = 0;
+        $leave_exceeded_deduction   = 0;
         $leave_late_minus_deduction = 0;
-        $extra_minutes           = 0;
+        $extra_minutes              = 0;
+        $penalty                    = 0;
 
         $allDeductions = Deduction::where('user_id', $user_id)->where('date', '>=', dateFormation($month)['previousDate'])
                 ->where('date', '<=', dateFormation($month)['currentDate'])->get();
@@ -340,20 +362,32 @@ if (!function_exists('calcLateExtraMinutes')) {
             }
         }
 
-        $missing_hours = 0;
+         // !!!: Check User Advanced Salary (Penalty)
+        $check_user_advanced_salary =  AdvanceSalary::where('month', $month)->where('user_id', $user_id)->first();
+        if ($check_user_advanced_salary) {
+            $penalty = ($check_user_advanced_salary->type == 'Penalty') ?
+                round($check_user_advanced_salary->amount * $dailySalary) : 0;
+        }
+
+        // $missing_hours = 0;
         $totalLate = $leave_late_minus_deduction + $fp_late_minus_deduction;
-        $missing_hours = ($totalLate > $extra_minutes) ?
-            ( floor(($totalLate - $extra_minutes) / 60 ) * 0.5  ) : 0;
-        $minutes_deduction =  round($missing_hours * $dailySalary);
-        $fp_days_deduction = round($fp_days_deduction * $dailySalary);
+        $minutes_deduction = ($totalLate > $extra_minutes) ?
+            round(((($totalLate - $extra_minutes) / 60) / 8) * $dailySalary) : 0;
+            // ( floor(($totalLate - $extra_minutes) / 60 ) * 0.5  ) : 0;
+        // $minutes_deduction =  round($missing_hours * $dailySalary) ?? 0;
+        $fp_days_deduction = round($fp_days_deduction * $dailySalary) ?? 0;
 
         $leave_exceeded_deduction = round($leave_exceeded_deduction * $dailySalary);
-        $v_total_deduction = round($minutes_deduction + $fp_days_deduction + $leave_exceeded_deduction);
+        $v_total_deduction = round($minutes_deduction + $fp_days_deduction + $leave_exceeded_deduction + $penalty);
 
         return [
             'totalDeductions' => $v_total_deduction + $absent_value,
             'lateMinutes'     => $totalLate,
             'extraMinutes'    => $extra_minutes,
+            'minutesDeduction'=> $minutes_deduction,
+            'fpDaysDeduction' => $fp_days_deduction,
+            'leavesDeduction' => $leave_exceeded_deduction,
+            'penalty'         => $penalty,
         ];
     }
 }

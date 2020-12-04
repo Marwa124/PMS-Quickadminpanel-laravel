@@ -250,8 +250,8 @@ if (data) {
 
   let languages = {
     'ar': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/Arabic.json',
-        'en': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/English.json',
-        'de': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/German.json'
+    'en': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/English.json',
+    'de': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/German.json'
   };
 
   $.extend(true, $.fn.dataTable.Buttons.defaults.dom.button, { className: 'btn' })

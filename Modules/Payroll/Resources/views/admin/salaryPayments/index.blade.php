@@ -122,7 +122,7 @@
                             <td>
                                 {{number_format($salaryTemplate ? $salaryTemplate->basic_salary : 0, 2)}}
                             </td>
-                            <?php 
+                            <?php
                             $netSalary = 0;
                             if ($salaryTemplate) {
                                 $salaryDeduction = $salaryDeductionModel->where('salary_template_id', $salaryTemplate->id)->sum('value');
@@ -132,7 +132,7 @@
                             <td>{{number_format($netSalary ?? 0, 2)}}</td>
                             <td>
                                 @can('salary_payment_show')
-                                
+
                                 <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#showModal{{$detail->user_id}}">
                                     <i class="fa fa-list-alt"></i>
                                 </button>
@@ -222,7 +222,7 @@
                                     </div>
 
                                 @endcan
-                                
+
                             </td>
                             <?php
                                 $salaryPayment = $salaryPaymentModel->where('payment_month', date('Y-m'))->where('user_id', $detail->user_id)->first();
@@ -284,14 +284,14 @@
       $($.fn.dataTable.tables(true)).DataTable()
           .columns.adjust();
   });
-  
+
 
   $("#datepicker").datepicker( {
         format: "yyyy-mm",
         startView: "months",
         minViewMode: "months"
     });
-    
+
 })
 
 </script>

@@ -57,15 +57,16 @@
                         </div>
                         <div class="col-md-6">
                             <div class="row"> <p class="font-bold col-md-5">Full Name:</p> <span class="col-md-7">{{ $accountDetail->fullname }}</span> </div>
-                            
+
                             <?php
-                                $user = Auth::user()->role ? (Auth::user()->role->title == 'Admin' ? true : false) : false;
+                                $user = Auth::user()->hasRole('Admin') ? true : false;
+                                // $user = Auth::user()->role ? (Auth::user()->role->title == 'Admin' ? true : false) : false;
                                 $owner = (Auth::user()->id == $accountDetail->user->id) ? true : false;
                             ?>
                             @if ($owner || $user)
-                                
+
                             <div class="row"> <p class="font-bold col-md-5">Password: </p><span class="col-md-7">
-                            
+
 
 
                                 <button  data-toggle="modal" data-target="#passwordModal" class="btn-xs btn-link passwordBtn">Reset Password
@@ -93,7 +94,7 @@
                                         </div>
                                         <div class="form-group">
                                             <input placeholder="Enter New Password" id="password" type="password" name="password" class="form-control" required placeholder="{{ trans('global.login_password') }}">
-                    
+
                                             @if($errors->has('password'))
                                                 <div class="invalid-feedback">
                                                     {{ $errors->first('password') }}
@@ -130,29 +131,37 @@
         <div class="tab-pane fade" id="v-pills-bank" role="tabpanel" aria-labelledby="v-pills-bank-tab">...</div>
         <div class="tab-pane fade" id="v-pills-salary" role="tabpanel" aria-labelledby="v-pills-salary-tab">...</div>
         <div class="tab-pane fade" id="v-pills-leaves" role="tabpanel" aria-labelledby="v-pills-leaves-tab">
-            
+
             {{-- Leave Details --}}
+            <?php $total_token = 0; ?>
             <div class="card">
                 <h5 class="card-header">Leave Details Of {{$accountDetail->fullname}}</h5>
                 <div class="card-body">
-                    @foreach ($leaveCategoryModel::all() as $item)
-                        <div class="row">
-                            <div class="col-md-6">{{$item->name}}</div>
-                            <div class="col-md-6">???/{{$item->leave_quota}}</div>
-                        </div>
+                    @foreach ($categoryDetails as $item)
+                    {{-- {{dd($item['check_available']['token_leaves'])}}
+                    {{dd($item['check_available']['category_leave_quota'])}} --}}
+                    <div class="row">
+                        <div class="col-md-6">{{$item['name']}}</div>
+                        <div class="col-md-6">
+                            <?php $total_token += $item['check_available']['token_leaves'];?>
+                            {{$item['check_available']['token_leaves']}}
+                            /{{$item['check_available']['category_leave_quota']}}</div>
+                            {{-- {{checkAvailableLeaves(auth()->user()->id, date('Y-m'), $item->id)}} --}}
+
+                    </div>
                     @endforeach
                     <div class="card-footer">
                        <div class="row">
                            <div class="col-md-6">Total:</div>
                            <div class="col-md-6">
-                               <?php 
+                               <?php
                                     $total = 0;
                                     foreach ($leaveCategoryModel::select('leave_quota')->get() as $key => $value) {
                                         $var = (int) $value->leave_quota;
-                                        $total += $var; 
-                                    } 
+                                        $total += $var;
+                                    }
                                ?>
-                               {{$total}}
+                               {{$total_token}}/{{$total}}
                            </div>
                        </div>
                       </div>

@@ -14,8 +14,8 @@
 // Route::prefix('sales')->group(function() {
 //     Route::get('/', 'SalesController@index');
 // });
+Route::get('/', 'SalesController@index');
 Route::group(['as' => 'sales.admin.', 'prefix' => 'admin/sales', 'namespace' => 'Admin', 'middleware' => ['auth']],function() {
-    Route::get('/', 'SalesController@index');
      // Proposals
     Route::delete('proposals/destroy', 'ProposalsController@massDestroy')->name('proposals.massDestroy');
     Route::post('proposals/media', 'ProposalsController@storeMedia')->name('proposals.storeMedia');

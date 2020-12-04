@@ -19,6 +19,7 @@ use Spatie\MediaLibrary\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Modules\HR\Entities\LeaveCategory;
 use Modules\Payroll\Entities\AdvanceSalary;
 use Modules\Payroll\Http\Requests\Store\StoreAdvanceSalaryRequest;
 
@@ -30,34 +31,25 @@ class AccountDetailsController extends Controller
     {
         abort_if(Gate::denies('account_detail_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        // $accountDetails = AccountDetail::all();
         $accountDetails = [];
-        // $users = User::where('banned', 0)->get();
         $users = User::all();
-        // $users = User::all();
-        /* !!!: alert */
-        // $requestResult = '';
-        // if (request()->all()) {
-        //     $users = User::where('banned', request()->selectFilter)->get();
-        //     $requestResult = request()->selectFilter;
-
-        //     // foreach ($users as $key => $value) {
-        //     //     $accountDetails[] = $value->accountDetail()->first();
-        //     // }
-        //     // return view('hr::admin.accountDetails.filter', compact('accountDetails'));
-        // }
 
         foreach ($users as $key => $value) {
             $accountDetails[] = $value->accountDetail()->first();
         }
-
-        // return view('hr::admin.accountDetails.index', compact('accountDetails', 'requestResult'));
         return view('hr::admin.accountDetails.index', compact('accountDetails'));
     }
 
     public function advancedSalary(StoreAdvanceSalaryRequest $request)
     {
-        AdvanceSalary::create($request->all());
+        // dd($request->all());
+        // !!!: Check if User has a salary for this month to just update
+        $check_user_advanced_salary =  AdvanceSalary::where('month', $request['month'])->where('user_id', $request['user_id'])->first();
+        if ($check_user_advanced_salary) {
+            $check_user_advanced_salary->update($request->all());
+        }else{
+            AdvanceSalary::create($request->all());
+        }
         // AdvanceSalary::create($request->only(['user_id', 'amount', 'month', 'reason', 'type']));
         return response()->json();
     }
@@ -183,7 +175,15 @@ class AccountDetailsController extends Controller
         // $accountDetail->load('user', 'designation', 'userUserAlerts');
         $accountDetail->load('user', 'designation', 'setTime');
 
-        return view('hr::admin.accountDetails.show', compact('accountDetail'));
+        $categoryDetails = [];
+        foreach(LeaveCategory::all() as $category)
+        {
+            $cat['name'] = $category->name;
+            $cat['check_available'] = checkAvailableLeaves($accountDetail->user_id, date('Y-m'), $category->id);
+            $categoryDetails[] = $cat;
+        }
+
+        return view('hr::admin.accountDetails.show', compact('accountDetail', 'categoryDetails'));
     }
 
     public function destroy(AccountDetail $accountDetail)

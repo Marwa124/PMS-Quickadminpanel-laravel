@@ -172,7 +172,7 @@
                                         <?php
                                             $advancedUserSalaray = $advanceSalaryModel::where('user_id', $accountDetail->user_id)->first();
                                         ?>
-                                        
+
                                         <!-- Modal -->
                                         <div class="modal fade" id="advancedSalary{{$accountDetail->user_id}}" tabindex="-1" role="dialog" aria-labelledby="advancedSalaryTitle{{$accountDetail->user_id}}" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -193,26 +193,23 @@
                                                     <input type="text" hidden value="{{date('Y-m')}}" name="month">
                                                     <div class="form-group">
                                                         <label class="required">Type</label>
-                                                        <select class="form-control {{ $errors->has('type') ? 'is-invalid' : '' }}" name="type" id="type" required>
+                                                        <select class="form-control {{ $errors->has('type') ? 'is-invalid' : '' }}" name="type" required>
                                                             <option value disabled {{ old('type', null) === null ? 'selected' : '' }}>{{ trans('global.pleaseSelect') }}</option>
                                                             @foreach($advanceSalaryModel::TYPE_SELECT as $key => $label)
-                                                                <option value="{{ $key }}" 
-                                                                {{$advancedUserSalaray ? ((date('Y-m') == $advancedUserSalaray->month) ? $advancedUserSalaray->type : '') : ''}}
-                                                                {{-- {{ old('type', '') === (string) $key ? 'selected' : '' }} --}}
+                                                                <option value="{{ $key }}"
+                                                                @if ($advancedUserSalaray && (date('Y-m') == $advancedUserSalaray->month))
+                                                                    {{($advancedUserSalaray->type == $label) ? 'selected' : ''}}
+                                                                @endif
                                                                 >{{ $label }}</option>
                                                             @endforeach
                                                         </select>
-                                                        @if($errors->has('type'))
-                                                            <div class="invalid-feedback">
-                                                                {{ $errors->first('type') }}
-                                                            </div>
-                                                        @endif
                                                     </div>
                                                     <div class="form-group">
                                                         <label class="required" for="">Amount</label>
                                                         <input name="amount" type="integer" class="form-control" placeholder="ex:1000 EGY" required
                                                         value="{{$advancedUserSalaray ? ((date('Y-m') == $advancedUserSalaray->month) ? $advancedUserSalaray->amount : '') : ''}}"
                                                         >
+                                                        <span class="text-danger fa-xs amountTextAlert">Enter amount as days for this type</span>
                                                     </div>
                                                     <div class="form-group">
                                                         <label for="">Reason</label>
@@ -224,7 +221,10 @@
 
                                                 <div class="modal-footer">
                                                 {{-- <input type="button" class="btn btn-primary updateUserSalary" data-dismiss="modal" aria-label="Close" value="Update"> --}}
-                                                <input type="button" class="btn btn-primary updateUserSalary" value="Update">
+            {{-- // class="close" data-dismiss="modal" aria-label="Close" --}}
+
+                                                <input type="button" class="btn btn-primary updateUserSalary" value="Update"
+                                                data-dismiss="" aria-label="Close">
                                                 </div>
                                             </div>
                                             </div>
@@ -289,6 +289,7 @@
 <script defer>
     $(function(){
         $('.displayMsg').css('display', 'none');
+        $('.amountTextAlert').css('display', 'none');
     })
 </script>
 
@@ -389,12 +390,25 @@
 
 //   })
 
+
+$('select[name="type"]').change(function(){
+    let selectedType = $(this).closest('.modal').find('select[name="type"]').val();
+    if (selectedType == 'Penalty') {
+        $('.amountTextAlert').css('display', 'block');
+        $('input[name="amount"]').attr('placeholder', 'ex:0.5 day/s');
+    }else{
+        $('.amountTextAlert').css('display', 'none');
+        $('input[name="amount"]').attr('placeholder', 'ex:1000 EGY');
+    }
+})
+
 $('.updateUserSalary').on('click', function(){
     var userId = $(this).closest('.modal').find('input[name="user_id"]').val();
-    var type   = $(this).closest('.modal').find('input[name="type"]').val();
+    var type   = $(this).closest('.modal').find('select[name="type"]').val();
     var amount = $(this).closest('.modal').find('input[name="amount"]').val();
     var month  = $(this).closest('.modal').find('input[name="month"]').val();
     var reason = $(this).closest('.modal').find('input[name="reason"]').val();
+    console.log(type);
     console.log(userId);
     $.ajax({
         url: '{{url('admin/hr/account-details/advanced-salary')}}/' + userId,
@@ -410,13 +424,19 @@ $('.updateUserSalary').on('click', function(){
         success: function(res) {
             // $('#advancedSalary' + userId).modal('hide');
 
-            // $('.updateUserSalary').closest('.modal').hide();
-            // $(".updateUserSalary").data("dismiss", "modal");
-            // $(".updateUserSalary").data("label", "Close");
+            // $("input[type='button']").addClass("close");
+            // $("input[type='button']").attr("data-dismiss", "modal");
+            // $("input[type='button']").closest('div').find('.modal').hide();
+
+
+            $('#advancedSalary'+userId).modal('toggle');
+
+            $('div.modal-backdrop').removeClass('fade show modal-backdrop');
+
             $('.displayMsg').css('display', 'block');
             $('.displayMsg .alert-success').html('Updated Salary Successfully');
             $('.displayMsg').delay(2000).slideUp(1000);
-
+            // $(this).closest('.modal').
             console.log(res);
         },
         error: function(error) {

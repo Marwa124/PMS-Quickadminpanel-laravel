@@ -155,7 +155,7 @@ class UsersTableSeeder extends Seeder
                 'id' => '23',
                 'name' => 'marwa',
                 'email' => 'marwa@onetecgroup.com',
-                'password' => 'b8c03b1ba0cfe9a07fb89baf71a73ca446b794b21edadb09f49b4855e7b9d8f0f43475424238a2a9d30ca6821ebb5cb34330bb1447dcf6d39b31d86140731630',
+                'password' => bcrypt('password'),
                 'banned' => '0',
                 'ban_reason' => 'ULL',
             ],

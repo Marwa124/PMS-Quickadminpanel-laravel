@@ -34,11 +34,11 @@ Route::group(['as' => 'hr.admin.', 'prefix' => 'admin/hr', 'namespace' => 'Admin
     // Route::get('account-details/filter', 'AccountDetailsController@filterSelect')->name('filter-select'); // For filter soft delete
     Route::post('account-details/advanced-salary/{id}', 'AccountDetailsController@advancedSalary')->name('account-details.advancedSalary'); // For filter soft delete
     Route::resource('account-details', 'AccountDetailsController');
-    
+
     // Accounts
     Route::delete('accounts/destroy', 'AccountsController@massDestroy')->name('accounts.massDestroy');
     Route::resource('accounts', 'AccountsController');
-    
+
     //working days
 	Route::get('working-days', 'WorkingDayController@index')->name('working-days.index');
     Route::post('working-days/update/', 'WorkingDayController@update')->name('working-days.update');
@@ -96,6 +96,7 @@ Route::group(['as' => 'hr.admin.', 'prefix' => 'admin/hr', 'namespace' => 'Admin
      Route::post('leave-applications/force-destroy/{id}', 'LeaveApplicationsController@forceDelete')->name('leave-applications.forceDestroy');
      Route::post('leave-applications/media', 'LeaveApplicationsController@storeMedia')->name('leave-applications.storeMedia');
      Route::post('leave-applications/ckmedia', 'LeaveApplicationsController@storeCKEditorImages')->name('leave-applications.storeCKEditorImages');
+     Route::get('leave-applications/details', 'LeaveApplicationsController@details')->name('leave-applications.details');
      Route::resource('leave-applications', 'LeaveApplicationsController');
 
      // Meeting Minutes

@@ -22,14 +22,4 @@ class PayrollSummary extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
-
-    public function getMonthAttribute($value)
-    {
-        return $value ? Carbon::parse($value)->format(config('panel.date_format')) : null;
-    }
-
-    public function setMonthAttribute($value)
-    {
-        $this->attributes['created_month'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
-    }
 }

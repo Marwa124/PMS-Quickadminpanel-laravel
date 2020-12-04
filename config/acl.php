@@ -323,6 +323,7 @@
                 'salary_template_edit',
                 'salary_payment_detail_show',
                 'payroll_summary',
+                'advance_salary_create',
             ],
 
             'vacations' => [

@@ -50,9 +50,9 @@
                         <th width="40">
                             {{ trans('cruds.salaryPaymentDetail.fields.salary_type') }}
                         </th>
-                        <th>
+                        {{-- <th>
                             Gross Salary
-                        </th>
+                        </th> --}}
                         <th>
                             {{ trans('cruds.salaryPayment.fields.net_salary') }}
                         </th>
@@ -77,11 +77,17 @@
                         <th>
                             Late Minutes
                         </th>
-                        <th>
+                        {{-- <th>
                             Extra Minutes
+                        </th> --}}
+                        <th>
+                            Bonus
                         </th>
                         <th>
                             Net Paid
+                        </th>
+                        <th>
+                            Leave Details
                         </th>
                         <th>
                             Month
@@ -89,51 +95,152 @@
                     </tr>
                 </thead>
                 <tbody>
-@php
-    // dd($users);
-@endphp
-                    @foreach($users as $key => $user)
-                    {{-- {{dd($user)}} --}}
-                    @if ($user['detail'])
-                        <tr data-entry-id="{{ $user['detail']->user_id }}">
-                            <td>
-                                {{ $user['detail']->fullname ?? '' }}
-                            </td>
-                            <td>
-                                @if ($user['salaryTemplate'])
-                                    {{$user['salaryTemplate']->salary_grade}}
+
+
+                    {{-- {{dd($users)}} --}}
+                        @foreach($users as $key => $user)
+                            @if ($user || $user['detail'])
+                            <tr data-entry-id="{{ $user->user_id ?? $user['detail']->user_id}}">
+                                @if ($date < date('Y-m'))
+
+                                    <td class="user_name">
+                                        {{ $user->username ?? '' }}
+                                    </td>
+                                    <td>
+                                        {{$user->job_title}}
+                                    </td>
+                                    {{-- <td>
+                                        {{'EGP '. number_format($user['salaryTemplate'] ? $user['salaryTemplate']->basic_salary : 0, 2)}}
+                                    </td> --}}
+                                    <td>{{'EGP '. number_format($user->net_salary ?? 0, 2)}}</td>
+
+                                    <td>{{'EGP '. number_format($user->daily_salary ?? 0, 2)}}</td>
+
+                                    <td>{{$user->total_days}}</td>
+
+                                    <td>{{$user->total_absence}}</td>
+
+                                    <td>{{$user->holidays}}</td>
+
+                                    <td>{{$user->vacations}}</td>
+
+                                    <td>
+                                        <button class="btn btn-xs btn-secondary pt-1" disabled>
+                                            {{'EGP '. number_format($user->deductions ?? 0, 2)}}
+                                        </button>
+                                    </td>
+                                    {{-- Display Only The deduction amount if the month past. --}}
+
+                                    <td>{{$user->late_minutes}}</td>
+                                    {{-- <td>{{$user->extra_minutes}}</td> --}}
+                                    <td>{{'EGP '. number_format($user->bonus ?? 0, 2)}}</td>
+
+                                    <td>{{'EGP '. number_format($user->net_paid ?? 0, 2)}}</td>
+                                    {{-- if Date is the present Month --}}
                                 @else
-                                    <span class="text-danger">Salary did not set yet</span>
+                                    <td class="user_name">
+                                        {{ $user['detail']->fullname ?? '' }}
+                                    </td>
+                                    <td>
+                                        @if ($user['salaryTemplate'])
+                                            {{$user['salaryTemplate']->salary_grade}}
+                                        @else
+                                            <span class="text-danger">Salary did not set yet</span>
+                                        @endif
+                                    </td>
+                                    {{-- <td>
+                                        {{'EGP '. number_format($user['salaryTemplate'] ? $user['salaryTemplate']->basic_salary : 0, 2)}}
+                                    </td> --}}
+                                    <td>{{'EGP '. number_format($user['netSalary'] ?? 0, 2)}}</td>
+
+                                    <td>{{'EGP '. number_format($user['netSalary']/30 ?? 0, 2)}}</td>
+
+                                    <td>{{$user['totalAttendedDays']}}</td>
+
+                                    <td>{{$user['totalAbsentDays']}}</td>
+
+                                    <td>{{$holidays}}</td>
+
+                                    <td>{{$user['userVacations']}}</td>
+
+                                    <td>
+                                        <!-- Deduction Details -->
+                                        <button type="button" class="btn btn-xs pt-1 {{($user['totalDeductions'] == 0) ? 'btn-info' : 'btn-danger'}} "
+                                            data-toggle="modal" data-target="#deductionDetails{{$user['detail']->id}}">
+                                            {{'EGP '. number_format($user['totalDeductions'] ?? 0, 2)}}
+                                        </button>
+                                    </td>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="deductionDetails{{$user['detail']->id}}" tabindex="-1" role="dialog" aria-labelledby="deductionDetails{{$user['detail']->id}}Title" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header" style="border-color: red;">
+                                                <h5 class="modal-title" id="deductionDetails{{$user['detail']->id}}Title">{{ $user['detail']->fullname ?? '' }} Deduction Details</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="row">
+                                                    <div class="col-md-7">Petty Cache</div>
+                                                    <div class="col-md-5">{{'EGP '. number_format(0, 2)}}</div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-7">Fp Days</div>
+                                                    <div class="col-md-5">{{'EGP '. number_format($user['fpDaysDeduction'] ?? 0, 2)}}</div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-7">Minutes</div>
+                                                    <div class="col-md-5">{{'EGP '. number_format($user['minutesDeduction'] ?? 0, 2)}}</div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-7">Abssent Days</div>
+                                                    <div class="col-md-5">{{'EGP '. number_format($user['totalAbsentDays'] * ($user['netSalary']/30) ?? 0, 2)}}</div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-7">Deduction Leaves</div>
+                                                    <div class="col-md-5">{{'EGP '. number_format($user['leavesDeduction'] ?? 0, 2)}}</div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-7">Penalty</div>
+                                                    <div class="col-md-5">{{'EGP '. number_format($user['penalty'] ?? 0, 2)}}</div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer d-flex justify-content-between" style="background-color: #ccc;">
+                                                {{-- <div class="row"> --}}
+                                                    <div class="">Tota</div>
+                                                    <div class="">{{'EGP '. number_format($user['totalDeductions'] ?? 0, 2)}}</div>
+                                                {{-- </div> --}}
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    {{-- Show Modal Deduction Details if It's the current Month. --}}
+
+
+                                    <td>{{$user['lateMinutes']}}</td>
+                                    {{-- <td>{{$user['extraMinutes']}}</td> --}}
+                                    <td>{{'EGP '. number_format($user['bonus'] ?? 0, 2)}}</td>
+
+                                    <td>{{'EGP '. number_format(($user['netSalary'] + $user['bonus'] - $user['totalDeductions']) ?? 0, 2)}}</td>
+                                    {{-- End if Date is the past Month --}}
                                 @endif
-                            </td>
-                            <td>
-                                {{'EGP '. number_format($user['salaryTemplate'] ? $user['salaryTemplate']->basic_salary : 0, 2)}}
-                            </td>
-                            <td>{{'EGP '. number_format($user['netSalary'] ?? 0, 2)}}</td>
+                                    <td>
+                                        <!-- Leave Details modal -->
+                                        <button type="button" class="btn btn-primary btn-xs leaveDetails" data-toggle="modal" data-target="#leavesDetails{{$user->user_id ?? $user['detail']->user_id}}">
+                                            <i class="fas fa-clipboard-list"></i>
+                                        </button>
+                                        <div class="leaveDetailsModal"></div>
+                                    </td>
 
-                            <td>{{'EGP '. number_format($user['netSalary']/30 ?? 0, 2)}}</td>
-
-                            <td>{{$user['totalAttendedDays']}}</td>
-
-                            <td>{{$user['totalAbsentDays']}}</td>
-
-                            <td>{{$holidays}}</td>
-
-                            <td>{{$user['userVacations']}}</td>
-
-                            <td>{{$user['totalDeductions']}}</td>
-                            <td>{{$user['lateMinutes']}}</td>
-                            <td>{{$user['extraMinutes']}}</td>
-
-                            <td>{{'EGP '. number_format($user['netSalary'] - $user['totalDeductions'] ?? 0, 2)}}</td>
-
-                            <td>
-                                {{$date}}
-                            </td>
-
-                        </tr>
-                    @endif
-                @endforeach
+                                    <td>
+                                        {{$date}}
+                                    </td>
+                            </tr>
+                            @endif
+                            {{-- end If user not null --}}
+                        @endforeach
                 </tbody>
             </table>
         </div>
@@ -183,11 +290,42 @@
   $('.btnprn').printPage();
 
 
-  $("#datepicker").datepicker( {
+
+    $('.leaveDetailsModal').html(``);
+
+
+    //Leave User Details Redirect Btn to modal blade
+    $('.leaveDetails').click(function(){
+        let userId = $(this).closest('tr').attr('data-entry-id');
+        let userName = $(this).closest('tr').find('.user_name').text();
+        let date = $('input[name="date"]').val();
+        var e = $(this);
+        $.ajax({
+            url: '{{route("hr.admin.leave-applications.details")}}',
+            type:'get',
+            dataType: 'html',
+            data: {
+                user_id: userId,
+                user_name: userName,
+                date: date,
+            },
+            success: function(res){
+                e.closest('td').find('.leaveDetailsModal').html(res);
+
+                $('#leavesDetails'+userId).modal('toggle');
+            }
+        })
+    });
+
+
+
+
+    $("#datepicker").datepicker({
         format: "yyyy-mm",
         startView: "months",
         minViewMode: "months"
     });
+
 
 })
 

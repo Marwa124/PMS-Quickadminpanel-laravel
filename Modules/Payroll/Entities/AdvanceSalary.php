@@ -16,9 +16,9 @@ class AdvanceSalary extends Model implements HasMedia
     public $table = 'advance_salaries';
     public $timestamps = false;
 
-    protected $dates = [
-        'month',
-    ];
+    // protected $dates = [
+    //     'month',
+    // ];
 
     protected $guarded = [];
 
@@ -43,13 +43,13 @@ class AdvanceSalary extends Model implements HasMedia
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function getMonthAttribute($value)
-    {
-        return $value ? Carbon::parse($value)->format(config('panel.date_format')) : null;
-    }
+    // public function getMonthAttribute($value)
+    // {
+    //     return $value ? Carbon::parse($value)->format(config('panel.date_format')) : null;
+    // }
 
-    public function setMonthAttribute($value)
-    {
-        $this->attributes['month'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m') : null;
-    }
+    // public function setMonthAttribute($value)
+    // {
+    //     $this->attributes['month'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m') : null;
+    // }
 }

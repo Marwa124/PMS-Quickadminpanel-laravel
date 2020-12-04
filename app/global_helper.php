@@ -46,9 +46,9 @@ function notify($title = null, $body = null, $json_data, $user)
         $option = $optionBuilder->build();
         $notificationBuilder->build();
         $data = $dataBuilder->build();
-    
+
             $downstreamResponse = \FCM::sendTo($user->firebase_token,$option,null,$data);
-       
+
         return true;
     } catch (\Exception $exception) {
         return false;
@@ -104,24 +104,21 @@ function _fireSMS($number, $msg)
 
 
 
-
-
-
-
-
 //get global user notify
 if (!function_exists('globalNotificationId')) {
     function globalNotificationId($user_id){
         $departHead = User::find($user_id)->department()->first() ? User::find($user_id)->department->department_head()->select('department_head_id')->first()->department_head_id : '';
         $userHead   = User::find($departHead);
-        // $roleAdmin  = Role::whereIn('title', ['Admin','Board Members'])->pluck('id')->toArray();
-        $userAdmin  = User::find($user_id)->hasRole(['Admin','Board Members'])->get();
-        // $userAdmin  = User::whereIn('role_id', $roleAdmin)->select('id')->get();
+        // $userAdmin  = User::find($user_id)->hasAnyRole(['Admin', 'Board Members']);
 
-        $arr = [$userHead];
-        foreach ($userAdmin as $key => $value) {
-            $arr[] = $value->id;
+        $arr = $userHead ? [$userHead->id] : [];
+
+        foreach (User::all() as $key => $user) {
+            if ($user->hasAnyRole(['Admin', 'Board Members'])) {
+                $arr[]  = $user->id;
+            }
         }
+        // dd($arr);
         return $arr;
         // return [$userHead, $userAdmin];
     }
