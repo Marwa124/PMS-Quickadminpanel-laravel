@@ -31,10 +31,6 @@ Route::group(['as' => 'sales.admin.', 'prefix' => 'admin/sales', 'namespace' => 
     // Interested Ins
     Route::delete('interested-ins/destroy', 'InterestedInController@massDestroy')->name('interested-ins.massDestroy');
     Route::resource('interested-ins', 'InterestedInController', ['except' => ['edit', 'update', 'show']]);
-<<<<<<< HEAD
-
-});
-=======
 
     // types
     Route::resource('types', 'TypesController');
@@ -46,4 +42,3 @@ Route::group(['as' => 'sales.admin.', 'prefix' => 'admin/sales', 'namespace' => 
     Route::delete('country/destroy', 'CountriesController@massDestroy')->name('country.massDestroy');
     // http://127.0.0.1:8000/admin/sales/countries/destroy
 });
->>>>>>> 60a01cec7902e17b0850e1ecb3ccbaa34a88499e

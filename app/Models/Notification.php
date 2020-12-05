@@ -12,7 +12,7 @@ class Notification extends Model
     public $timestamps = true;
     protected $guarded = [];
 
-    /** NOtification has to be belonges to only one donation request  or order request
+    /** NOtification has to be belongs to only one donation request  or order request
     *   while Donation Request has one notification or
     *      Order Request has Many Notification (arrive, recive, fail)
     */

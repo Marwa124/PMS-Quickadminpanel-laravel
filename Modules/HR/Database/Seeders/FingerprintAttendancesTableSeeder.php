@@ -77,7 +77,6 @@ class FingerprintAttendancesTableSeeder extends Seeder
         // FingerprintAttendance::insert($fingerprintAttendance);
 
         DB::table('fingerprint_attendances')->insert(
-            ['email' => 'john@example.com', 'votes' => 0],
             ['id' => 1, 'user_id' => 23, 'date' => '2020-09-21', 'time' => '16:57:20'],
             ['id' => 2, 'user_id' => 36, 'date' => '2020-09-21', 'time' => '16:56:50'],
             ['id' => 3, 'user_id' => 25, 'date' => '2020-09-21', 'time' => '16:56:44'],

@@ -81,11 +81,6 @@ class User extends Authenticatable implements HasMedia
     //     return $this->role()->first()->title;
     // }
 
-    // public function scopeAuthUserRole()
-    // {
-    //     return auth()->user()->role()->first()->title;
-    // }
-
     protected function serializeDate(DateTimeInterface $date)
     {
         return $date->format('Y-m-d H:i:s');
@@ -127,11 +122,6 @@ class User extends Authenticatable implements HasMedia
     {
         return $this->belongsTo(SetTime::class, 'set_time_id', 'id');
     }
-
-    // public function role()
-    // {
-    //     return $this->belongsTo(Role::class, 'role_id', 'id');
-    // }
 
     public function accountDetail()
     {
@@ -185,11 +175,6 @@ class User extends Authenticatable implements HasMedia
         $this->notify(new ResetPassword($token));
     }
 
-    // public function roles()
-    // {
-    //     return $this->belongsToMany(Role::class);
-    // }
-
     public function getLastLoginAttribute($value)
     {
         return $value ? Carbon::parse($value)->format(config('panel.date_format')) : null;
@@ -199,11 +184,6 @@ class User extends Authenticatable implements HasMedia
     {
         // $this->attributes['last_login'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
     }
-
-    // public function permissions()
-    // {
-    //     return $this->belongsToMany(Permission::class);
-    // }
 
     public function getDateOfJoinAttribute($value)
     {
@@ -225,8 +205,8 @@ class User extends Authenticatable implements HasMedia
         $this->attributes['date_of_insurance'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
     }
 
-    public function notifications()
-    {
-        return $this->morphedByMany(Notification::class, 'userable')->withPivot('is_read');
-    }
+    // public function notifications()
+    // {
+    //     return $this->morphedByMany(Notification::class, 'userable')->withPivot('is_read');
+    // }
 }
