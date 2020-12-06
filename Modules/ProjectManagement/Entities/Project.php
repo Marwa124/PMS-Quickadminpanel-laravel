@@ -3,6 +3,7 @@
 namespace Modules\ProjectManagement\Entities;
 
 use App\Models\Client;
+use App\Models\Milestone;
 use App\Models\Permission;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -48,6 +49,8 @@ class Project extends Model implements HasMedia
     protected $fillable = [
         'name',
         'client_id',
+        'project_specification_id',
+        'department_id',
         'progress',
         'calculate_progress',
         'start_date',
@@ -110,8 +113,24 @@ class Project extends Model implements HasMedia
         $this->attributes['end_date'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
     }
 
-    public function permissions()
-    {
-        return $this->belongsToMany(Permission::class);
+//    public function permissions()
+//    {
+//        return $this->belongsToMany(Permission::class);
+//    }
+
+    public function department(){
+
+        return $this->belongsTo('Modules\HR\Entities\Department', 'department_id');
+    }
+
+    public function accountDetails(){
+
+        return $this->belongsToMany('Modules\HR\Entities\AccountDetail',
+            'project_account_details_pivot','project_id','account_details_id');
+
+    }
+
+    public function milestones(){
+        return $this->hasMany(Milestone::class,'project_id');
     }
 }

@@ -32,6 +32,7 @@ class DepartmentsController extends Controller
             return view('hr::admin.departments.body_form', compact('result', 'department_id', 'department_head', 'userAccounts'));
 
         }
+        return view('hr::admin.departments.index');
 
         return view('hr::admin.departments.index', compact('result', 'department', 'department_head', 'designationId', 'designationName'));
     }

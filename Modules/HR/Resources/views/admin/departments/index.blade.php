@@ -11,31 +11,31 @@
 
 
 {{-- Board Members --}}
-<div class="pg-orgchart">
-    <div class="org-chart">
-        <?php 
-            $roleMembers = $roleModel::where('title', 'Board Members')->first();
-            $roleAdmin = $roleModel::where('title', 'Admin')->first();
-            $boardMembers = $userModel::where('role_id', $roleMembers->id)->get();
-            $adminMembers = $userModel::where('role_id', $roleAdmin->id)->get();
-        ?>
-        <div style="position: absolute">{{$roleMembers->title}}</div>
-        <ul>
-            @foreach ($boardMembers as $item)
-            <?php $accountDetail = $item->accountDetail()->first(); ?>
-            <li>
-                <div class="user">
-                    <img src="{{ $accountDetail->avatar ? $accountDetail->avatar->getUrl('thumb') : asset('images/default.png') }}"
-                        class="img-responsive" />
-                    {{-- <div class="name">Roy Lemarie</div> --}}
-                    {{-- <div class="role pt-2">{{$accountDetail->user->role()->first()->title}}</div> --}}
-                    <a class="name text-danger d-block" href="{{route('hr.admin.account-details.show', $accountDetail->select('id')->first()->id)}}">{{$accountDetail->fullname}}</a>
-                </div>
-            </li>
-            @endforeach
-        </ul>
-    </div>
-</div>
+{{--<div class="pg-orgchart">--}}
+{{--    <div class="org-chart">--}}
+{{--        <?php--}}
+{{--            $roleMembers = $roleModel::where('title', 'Board Members')->first();--}}
+{{--            $roleAdmin = $roleModel::where('title', 'Admin')->first();--}}
+{{--            $boardMembers = $userModel::where('role_id', $roleMembers->id)->get();--}}
+{{--            $adminMembers = $userModel::where('role_id', $roleAdmin->id)->get();--}}
+{{--        ?>--}}
+{{--        <div style="position: absolute">{{$roleMembers->title}}</div>--}}
+{{--        <ul>--}}
+{{--            @foreach ($boardMembers as $item)--}}
+{{--            <?php $accountDetail = $item->accountDetail()->first(); ?>--}}
+{{--            <li>--}}
+{{--                <div class="user">--}}
+{{--                    <img src="{{ $accountDetail->avatar ? $accountDetail->avatar->getUrl('thumb') : asset('images/default.png') }}"--}}
+{{--                        class="img-responsive" />--}}
+{{--                     <div class="name">Roy Lemarie</div>--}}
+{{--                     <div class="role pt-2">{{$accountDetail->user->role()->first()->title}}</div>--}}
+{{--                    <a class="name text-danger d-block" href="{{route('hr.admin.account-details.show', $accountDetail->select('id')->first()->id)}}">{{$accountDetail->fullname}}</a>--}}
+{{--                </div>--}}
+{{--            </li>--}}
+{{--            @endforeach--}}
+{{--        </ul>--}}
+{{--    </div>--}}
+{{--</div>--}}
 {{-- Board Members --}}
 
 
@@ -55,7 +55,7 @@
                 </div>
             </li>
                 {{-- <ul> --}}
-                    <?php 
+                    <?php
                         $departmentHead = $department->department_head()->first() ? $department->department_head->accountDetail()->first() : '';
                     ?>
                     @if ($departmentHead)
@@ -68,7 +68,7 @@
                             <a class="manager" href="{{route('hr.admin.account-details.show', $departmentHead->user()->select('id')->first()->id)}}">{{$departmentHead->fullname}}</a>
                         </div>
                         <ul>
-                            <?php 
+                            <?php
                                 $designations = $department->departmentDesignations()->get();
 
                                 $groupedLeaders = $designations->groupBy('designation_leader_id')->toArray();
@@ -90,7 +90,7 @@
                                     <a class="manager" href="{{route('hr.admin.account-details.show', $leader->user()->select('id')->first()->id)}}">{{$leader->fullname}}</a>
                                 </div>
                                 <ul>
-                                    <?php 
+                                    <?php
                                         $designationIds = [];
                                             foreach ($designation as $key => $des) {
                                                 $designationIds[] = $des['id'] ?? '';

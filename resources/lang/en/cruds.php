@@ -3085,5 +3085,56 @@ return [
             'config_company_zip_code' => 'Zip Code',
             'config_company_zip_codehelper' => '',
         ]
-    ]
+    ],
+
+    /********** project management****************/
+
+    'projectSpecification'   => [
+        'title'          => 'Project Specifications',
+        'title_singular' => 'project specification',
+        'fields'         => [
+            'id'                => 'ID',
+            'id_helper'         => ' ',
+            'name'              => 'Name',
+            'name_helper'       => ' ',
+            'created_at'        => 'Created at',
+            'created_at_helper' => ' ',
+            'updated_at'        => 'Updated at',
+            'updated_at_helper' => ' ',
+            'deleted_at'        => 'Deleted at',
+            'deleted_at_helper' => ' ',
+        ],
+    ],
+    'sub_department'   => [
+        'title'          => 'Sub Departments',
+        'title_singular' => 'Sub Department',
+        'fields'         => [
+            'id'                => 'ID',
+            'id_helper'         => ' ',
+            'name'              => 'Name',
+            'name_helper'       => ' ',
+            'created_at'        => 'Created at',
+            'created_at_helper' => ' ',
+            'updated_at'        => 'Updated at',
+            'updated_at_helper' => ' ',
+            'deleted_at'        => 'Deleted at',
+            'deleted_at_helper' => ' ',
+        ],
+    ],
+//    'projectSpecificationDepartment'   => [
+//        'title'          => 'Project Specification Departs',
+//        'title_singular' => 'Project Specification Department',
+//        'fields'         => [
+//            'id'                => 'ID',
+//            'id_helper'         => ' ',
+//            'name'              => 'Name',
+//            'name_helper'       => ' ',
+//            'created_at'        => 'Created at',
+//            'created_at_helper' => ' ',
+//            'updated_at'        => 'Updated at',
+//            'updated_at_helper' => ' ',
+//            'deleted_at'        => 'Deleted at',
+//            'deleted_at_helper' => ' ',
+//        ],
+//    ],
 ];

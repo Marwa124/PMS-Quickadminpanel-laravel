@@ -414,7 +414,9 @@
                 'project_setting_create', // done
                 'project_setting_delete',
                 'project_setting_access',
+                'project_assign_to',
             ],
+
 
             // accounting
             // 'banks' => [

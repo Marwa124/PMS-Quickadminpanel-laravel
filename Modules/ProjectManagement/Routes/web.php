@@ -14,7 +14,10 @@
 Route::prefix('projectmanagement')->group(function() {
     Route::get('/', 'ProjectManagementController@index');
 });
-
+//Route::group([ 'namespace' => 'Admin'], function () {
+//
+//    Route::get('employees','SubDepartmentController@get_employees')->name('sub-department.get_employees');
+//});
 Route::group(['prefix' => 'admin/projectmanagement', 'as' => 'projectmanagement.admin.', 'namespace' => 'Admin', 'middleware' => ['auth']], function () {
 
 
@@ -40,6 +43,8 @@ Route::group(['prefix' => 'admin/projectmanagement', 'as' => 'projectmanagement.
     Route::post('projects/media', 'ProjectsController@storeMedia')->name('projects.storeMedia');
     Route::post('projects/ckmedia', 'ProjectsController@storeCKEditorImages')->name('projects.storeCKEditorImages');
     Route::resource('projects', 'ProjectsController');
+    Route::get('projects/assign_to/{id}','ProjectsController@getAssignTo')->name('projects.getAssignTo');
+    Route::post('projects/assign_to','ProjectsController@storeAssignTo')->name('projects.storeAssignTo');
 
     // Task Uploaded Files
     Route::delete('task-uploaded-files/destroy', 'TaskUploadedFilesController@massDestroy')->name('task-uploaded-files.massDestroy');
@@ -53,5 +58,11 @@ Route::group(['prefix' => 'admin/projectmanagement', 'as' => 'projectmanagement.
     Route::post('task-attachments/ckmedia', 'TaskAttachmentsController@storeCKEditorImages')->name('task-attachments.storeCKEditorImages');
     Route::resource('task-attachments', 'TaskAttachmentsController');
 
+
+//    Route::get('employees','SubDepartmentController@get_employees')->name('sub-department.get_employees');
+
+//    //Project Specifications sub-department (values)
+//    Route::delete('project_specification_departments/destroy', 'ProjectSpecificationDepartmentController@massDestroy')->name('project_specification_departments.massDestroy');
+//    Route::resource('project_specification_departments', 'ProjectSpecificationDepartmentController');
 
 });

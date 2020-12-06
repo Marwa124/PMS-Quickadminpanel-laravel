@@ -31,12 +31,12 @@
                         <th>
                             {{ trans('cruds.project.fields.client') }}
                         </th>
-                        <th>
-                            {{ trans('cruds.project.fields.progress') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.project.fields.calculate_progress') }}
-                        </th>
+{{--                        <th>--}}
+{{--                            {{ trans('cruds.project.fields.progress') }}--}}
+{{--                        </th>--}}
+{{--                        <th>--}}
+{{--                            {{ trans('cruds.project.fields.calculate_progress') }}--}}
+{{--                        </th>--}}
                         <th>
                             {{ trans('cruds.project.fields.start_date') }}
                         </th>
@@ -47,8 +47,20 @@
                             {{ trans('cruds.project.fields.actual_completion') }}
                         </th>
                         <th>
+                            {{ trans('cruds.task.title_singular') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.milestone.title_singular') }}
+                        </th>
+                        <th>
                             {{ trans('cruds.project.fields.project_status') }}
                         </th>
+                        <th>
+                            {{ trans('cruds.department.title_singular') }}
+                        </th>
+{{--                        <th>--}}
+{{--                            {{ trans('global.assign_to') }}--}}
+{{--                        </th>--}}
                         <th>
                             &nbsp;
                         </th>
@@ -70,8 +82,15 @@
                                 @endforeach
                             </select>
                         </td>
+{{--                        <td>--}}
+{{--                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">--}}
+{{--                        </td>--}}
+{{--                        <td>--}}
+{{--                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">--}}
+{{--                        </td>--}}
                         <td>
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
+                        </td>
+                        <td>
                         </td>
                         <td>
                             <input class="search" type="text" placeholder="{{ trans('global.search') }}">
@@ -86,6 +105,9 @@
                         <td>
                             <input class="search" type="text" placeholder="{{ trans('global.search') }}">
                         </td>
+{{--                        <td>--}}
+{{--                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">--}}
+{{--                        </td>--}}
                         <td>
                         </td>
                     </tr>
@@ -100,17 +122,25 @@
                                 {{ $project->id ?? '' }}
                             </td>
                             <td>
-                                {{ $project->name ?? '' }}
+                                {{ ucwords($project->name ?? '') }}<br>
+                                <div class="progress" >
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: {{$project->calculate_progress}}%; display: {{$project->calculate_progress?:'none'}}" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                                        {{$project->calculate_progress}}%
+                                    </div>
+                                </div>
                             </td>
                             <td>
                                 {{ $project->client->name ?? '' }}
                             </td>
-                            <td>
-                                {{ $project->progress ?? '' }}
-                            </td>
-                            <td>
-                                {{ $project->calculate_progress ? $project->calculate_progress .'%' : '' }}
-                            </td>
+{{--                            <td>--}}
+
+{{--                                {{ $project->progress == 'through_tasks' ? 'Through Tasks' : '' }}--}}
+{{--                                {{ $project->progress == 'project_hours' ? 'Project Hours' : '' }}--}}
+{{--                            </td>--}}
+{{--                                {{ $project->progress == 'through_tasks' ? 'Through Tasks' :  $project->progress == 'project_hours' ? 'Project Hours' : ''  }}--}}
+{{--                            <td>--}}
+{{--                                {{ $project->calculate_progress ? $project->calculate_progress .'%' : '' }}--}}
+{{--                            </td>--}}
                             <td>
                                 {{ $project->start_date ?? '' }}
                             </td>
@@ -121,20 +151,63 @@
                                 {{ $project->actual_completion ?? '' }}
                             </td>
                             <td>
+{{--                                {{ $project->with_tasks ?? 'No' }}--}}
+                                @if($project->with_tasks)
+                                    <a class="btn btn-info {{$project->tasks && $project->tasks->count()>0 ? '':'disabled'}}" >
+                                        {{$project->tasks->count()>0 ? $project->tasks->count():'No Tasks'}}
+                                    </a>
+                                @else
+                                    <a class="btn btn-info disabled" >
+                                        No Tasks
+                                    </a>
+                                @endif
+                            </td>
+                            <td>
+                                <a class="btn btn-info {{$project->milestones && $project->milestones->count()>0 ? '':'disabled'}}" >
+                                    {{$project->milestones && $project->milestones->count()>0 ? $project->milestones->count():'No Milestone'}}
+                                </a>
+{{--                                @forelse($project->milestones as $milestone)--}}
+{{--                                    {{ $milestone->name }} ,--}}
+{{--                                    <button id="myBtn">Open Modal</button>--}}
+
+{{--                                @empty--}}
+{{--                                    No Milestone--}}
+{{--                                @endforelse--}}
+                            </td>
+                            <td>
                                 {{ $project->project_status ?? '' }}
                             </td>
                             <td>
+                                {{ $project->department->department_name ?? '' }}
+                            </td>
+{{--                            <td>--}}
+{{--                                @forelse($project->accountDetails as $accountDetail)--}}
+{{--                                    {{ $accountDetail->fullname ?? '' }},--}}
+{{--                                @empty--}}
+{{--                                @endforelse--}}
+{{--                            </td>--}}
+                            <td>
                                 @can('project_show')
-                                    <a class="btn btn-xs btn-primary" href="{{ route('projectmanagement.admin.projects.show', $project->id) }}">
-                                        {{ trans('global.view') }}
+                                    <a class="btn btn-xs btn-primary" href="{{ route('projectmanagement.admin.projects.show', $project->id) }}" title=" {{ trans('global.view') }}">
+{{--                                        {{ trans('global.view') }}--}}
+                                        <span class="fa fa-eye"></span>
+                                    </a>
+                                @endcan
+                                @can('project_edit')
+                                    <a class="btn btn-xs btn-info" href="{{ route('projectmanagement.admin.projects.edit', $project->id) }}" title="{{ trans('global.edit') }}">
+{{--                                        {{ trans('global.edit') }}--}}
+                                        <span class="fa fa-pencil-square-o"></span>
                                     </a>
                                 @endcan
 
-                                @can('project_edit')
-                                    <a class="btn btn-xs btn-info" href="{{ route('projectmanagement.admin.projects.edit', $project->id) }}">
-                                        {{ trans('global.edit') }}
+                                @can('project_assign_to')
+
+                                    <a class="btn btn-xs btn-success {{$project->department ? '' : 'disabled'}}" href="{{ route('projectmanagement.admin.projects.getAssignTo', $project->id) }}" title="{{$project->department ? '' : 'add department to project'}}" >
+                                        {{ trans('global.assign_to') }}
                                     </a>
+
                                 @endcan
+
 
                                 @can('project_delete')
                                     <form action="{{ route('projectmanagement.admin.projects.destroy', $project->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
@@ -211,6 +284,7 @@
         .draw()
   });
 })
+
 
 </script>
 @endsection
