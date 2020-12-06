@@ -16,67 +16,7 @@ class FingerprintAttendancesTableSeeder extends Seeder
      */
     public function run()
     {
-        // $fingerprintAttendance = [
-        //     [
-        //         'user_id'              => 1,
-        //         'date'                 => '2020-08-26',
-        //         'time'                 => '09:45:44',
-        //     ],
-        //     [
-        //         'user_id'              => 1,
-        //         'date'                 => '2020-08-26',
-        //         'time'                 => '17:45:44',
-        //     ],
-        //     [
-        //         'user_id'              => 2,
-        //         'date'                 => '2020-08-26',
-        //         'time'                 => '10:45:44',
-        //     ],
-        //     [
-        //         'user_id'              => 2,
-        //         'date'                 => '2020-08-26',
-        //         'time'                 => '14:45:44',
-        //     ],
-        //     [
-        //         'user_id'              => 3,
-        //         'date'                 => '2020-08-26',
-        //         'time'                 => '08:45:44',
-        //     ],
-        //     [
-        //         'user_id'              => 3,
-        //         'date'                 => '2020-08-26',
-        //         'time'                 => '17:45:44',
-        //     ],
-        //     [
-        //         'user_id'              => 1,
-        //         'date'                 => '2020-08-26',
-        //         'time'                 => '19:45:44',
-        //     ],
-        //     [
-        //         'user_id'              => 1,
-        //         'date'                 => '2020-08-27',
-        //         'time'                 => '09:45:44',
-        //     ],
-        //     [
-        //         'user_id'              => 1,
-        //         'date'                 => '2020-08-27',
-        //         'time'                 => '09:45:44',
-        //     ],
-        //     [
-        //         'user_id'              => 1,
-        //         'date'                 => '2020-08-28',
-        //         'time'                 => '09:45:44',
-        //     ],
-        //     [
-        //         'user_id'              => 1,
-        //         'date'                 => '2020-08-28',
-        //         'time'                 => '09:45:44',
-        //     ],
-        // ];
-
-        // FingerprintAttendance::insert($fingerprintAttendance);
-
-        DB::table('fingerprint_attendances')->insert(
+        $fingerprintAttendance = [
             ['id' => 1, 'user_id' => 23, 'date' => '2020-09-21', 'time' => '16:57:20'],
             ['id' => 2, 'user_id' => 36, 'date' => '2020-09-21', 'time' => '16:56:50'],
             ['id' => 3, 'user_id' => 25, 'date' => '2020-09-21', 'time' => '16:56:44'],
@@ -529,6 +469,10 @@ class FingerprintAttendancesTableSeeder extends Seeder
             ['id' => 452, 'user_id' => 1, 'date' => '2020-08-27', 'time' => '09:45:44'],
             ['id' => 453, 'user_id' => 1, 'date' => '2020-08-28', 'time' => '09:45:4'],
             ['id' => 454, 'user_id' => 1, 'date' => '2020-08-28', 'time' => '09:45:44'],
-        );
+        ];
+
+
+        FingerprintAttendance::insert($fingerprintAttendance);
+
     }
 }
