@@ -19,17 +19,23 @@
         <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
       </path>
     </expand>
-    <select />
+    <select>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="BRANCH:master" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </select>
   </component>
   <component name="ChangeListManager">
     <list default="true" id="12c5590f-20f1-441a-b116-7f3f712f734a" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/PMS-Quickadminpanel-laravel.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/PMS-Quickadminpanel-laravel.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/ProjectManagement/Database/Migrations/2020_11_26_152955_create_project_type_values_pivot_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Database/Migrations/2020_11_29_152955_create_project_specification_values_pivot_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/css/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/app.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/mix-manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/public/mix-manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modules/Payroll/Database/Seeders/SalaryDeductionsTableSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/Payroll/Database/Seeders/SalaryDeductionsTableSeeder.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/User.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/seeds/DatabaseSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeds/DatabaseSeeder.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,7 +59,6 @@
       <path value="$PROJECT_DIR$/vendor/firebase/php-jwt" />
       <path value="$PROJECT_DIR$/vendor/hamcrest/hamcrest-php" />
       <path value="$PROJECT_DIR$/vendor/lcobucci/jwt" />
-      <path value="$PROJECT_DIR$/vendor/livewire/livewire" />
       <path value="$PROJECT_DIR$/vendor/php-http/message-factory" />
       <path value="$PROJECT_DIR$/vendor/fideloper/proxy" />
       <path value="$PROJECT_DIR$/vendor/fruitcake/laravel-cors" />
@@ -130,7 +135,6 @@
       <path value="$PROJECT_DIR$/vendor/pusher/pusher-php-server" />
       <path value="$PROJECT_DIR$/vendor/ramsey/collection" />
       <path value="$PROJECT_DIR$/vendor/ramsey/uuid" />
-      <path value="$PROJECT_DIR$/vendor/scrivo/highlight.php" />
       <path value="$PROJECT_DIR$/vendor/spatie/image" />
       <path value="$PROJECT_DIR$/vendor/spatie/image-optimizer" />
       <path value="$PROJECT_DIR$/vendor/spatie/laravel-medialibrary" />
@@ -180,7 +184,6 @@
       <path value="$PROJECT_DIR$/vendor/symfony/polyfill-intl-idn" />
       <path value="$PROJECT_DIR$/vendor/symfony/polyfill-intl-normalizer" />
       <path value="$PROJECT_DIR$/vendor/symfony/polyfill-mbstring" />
-      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-php70" />
       <path value="$PROJECT_DIR$/vendor/symfony/polyfill-php72" />
       <path value="$PROJECT_DIR$/vendor/symfony/polyfill-php73" />
       <path value="$PROJECT_DIR$/vendor/symfony/polyfill-php80" />
@@ -196,6 +199,8 @@
       <path value="$PROJECT_DIR$/vendor/barryvdh/laravel-dompdf" />
       <path value="$PROJECT_DIR$/vendor/doctrine/cache" />
       <path value="$PROJECT_DIR$/vendor/spatie/laravel-permission" />
+      <path value="$PROJECT_DIR$/vendor/psr/http-client" />
+      <path value="$PROJECT_DIR$/vendor/apility/laravel-fcm" />
     </include_path>
   </component>
   <component name="ProjectId" id="1khEgRSk9dPk83k7KPysVXYMDp1" />
@@ -206,16 +211,23 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/Modules/ProjectManagement/Database/Migrations" />
     <property name="nodejs_package_manager_path" value="npm" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\Modules\ProjectManagement\Database\Migrations" />
+      <recent name="C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\database\migrations" />
+      <recent name="C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\Modules\ProjectManagement\Http\Controllers\Admin" />
       <recent name="C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\Modules\ProjectManagement\Resources\views\admin" />
       <recent name="C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\Modules\ProjectManagement\Http\Requests" />
-      <recent name="C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\Modules\ProjectManagement\Entities" />
-      <recent name="C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\Modules\ProjectManagement\Http\Controllers\Admin" />
-      <recent name="C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\Modules\ProjectManagement\Http\Controllers" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\Modules\ProjectManagement\Database\Migrations" />
+      <recent name="C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\Modules\ProjectManagement\Resources\views\admin\projects" />
+      <recent name="C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\Modules\ProjectManagement\Resources\views\admin" />
+      <recent name="C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\Modules\ProjectManagement\Http\Requests" />
+      <recent name="C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\Modules\ProjectManagement\Resources\lang" />
     </key>
   </component>
   <component name="RunManager">
@@ -238,7 +250,12 @@
       <workItem from="1606295718912" duration="19695000" />
       <workItem from="1606385682608" duration="18361000" />
       <workItem from="1606642024120" duration="4036000" />
-      <workItem from="1606646077460" duration="320000" />
+      <workItem from="1606646077460" duration="22175000" />
+      <workItem from="1606728202275" duration="21785000" />
+      <workItem from="1606816034392" duration="24153000" />
+      <workItem from="1606900785008" duration="20557000" />
+      <workItem from="1606985879820" duration="18336000" />
+      <workItem from="1607247019027" duration="6036000" />
     </task>
     <servers />
   </component>
@@ -250,7 +267,19 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="master" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
@@ -258,17 +287,89 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="620" y="259" key="FileChooserDialogImpl" timestamp="1606387760749">
+    <state x="570" y="259" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1606751011434">
       <screen x="0" y="0" width="1680" height="1010" />
     </state>
-    <state x="620" y="259" key="FileChooserDialogImpl/0.0.1680.1010@0.0.1680.1010" timestamp="1606387760749" />
-    <state width="498" height="446" key="SwitcherDM" timestamp="1606218756075">
+    <state x="570" y="259" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1680.1010@0.0.1680.1010" timestamp="1606751011434" />
+    <state x="620" y="259" key="FileChooserDialogImpl" timestamp="1606989481106">
       <screen x="0" y="0" width="1680" height="1010" />
     </state>
-    <state width="498" height="446" key="SwitcherDM/0.0.1680.1010@0.0.1680.1010" timestamp="1606218756075" />
-    <state x="496" y="158" width="672" height="678" key="search.everywhere.popup" timestamp="1606644789411">
+    <state x="620" y="259" key="FileChooserDialogImpl/0.0.1680.1010@0.0.1680.1010" timestamp="1606989481106" />
+    <state width="1637" height="336" key="GridCell.Tab.0.bottom" timestamp="1606668695252">
       <screen x="0" y="0" width="1680" height="1010" />
     </state>
-    <state x="496" y="158" width="672" height="678" key="search.everywhere.popup/0.0.1680.1010@0.0.1680.1010" timestamp="1606644789411" />
+    <state width="1637" height="336" key="GridCell.Tab.0.bottom/0.0.1680.1010@0.0.1680.1010" timestamp="1606668695252" />
+    <state width="1637" height="336" key="GridCell.Tab.0.center" timestamp="1606668695251">
+      <screen x="0" y="0" width="1680" height="1010" />
+    </state>
+    <state width="1637" height="336" key="GridCell.Tab.0.center/0.0.1680.1010@0.0.1680.1010" timestamp="1606668695251" />
+    <state width="1637" height="336" key="GridCell.Tab.0.left" timestamp="1606668695251">
+      <screen x="0" y="0" width="1680" height="1010" />
+    </state>
+    <state width="1637" height="336" key="GridCell.Tab.0.left/0.0.1680.1010@0.0.1680.1010" timestamp="1606668695251" />
+    <state width="1637" height="336" key="GridCell.Tab.0.right" timestamp="1606668695252">
+      <screen x="0" y="0" width="1680" height="1010" />
+    </state>
+    <state width="1637" height="336" key="GridCell.Tab.0.right/0.0.1680.1010@0.0.1680.1010" timestamp="1606668695252" />
+    <state width="1637" height="336" key="GridCell.Tab.1.bottom" timestamp="1606668695252">
+      <screen x="0" y="0" width="1680" height="1010" />
+    </state>
+    <state width="1637" height="336" key="GridCell.Tab.1.bottom/0.0.1680.1010@0.0.1680.1010" timestamp="1606668695252" />
+    <state width="1637" height="336" key="GridCell.Tab.1.center" timestamp="1606668695252">
+      <screen x="0" y="0" width="1680" height="1010" />
+    </state>
+    <state width="1637" height="336" key="GridCell.Tab.1.center/0.0.1680.1010@0.0.1680.1010" timestamp="1606668695252" />
+    <state width="1637" height="336" key="GridCell.Tab.1.left" timestamp="1606668695252">
+      <screen x="0" y="0" width="1680" height="1010" />
+    </state>
+    <state width="1637" height="336" key="GridCell.Tab.1.left/0.0.1680.1010@0.0.1680.1010" timestamp="1606668695252" />
+    <state width="1637" height="336" key="GridCell.Tab.1.right" timestamp="1606668695252">
+      <screen x="0" y="0" width="1680" height="1010" />
+    </state>
+    <state width="1637" height="336" key="GridCell.Tab.1.right/0.0.1680.1010@0.0.1680.1010" timestamp="1606668695252" />
+    <state width="1637" height="336" key="GridCell.Tab.2.bottom" timestamp="1606668695253">
+      <screen x="0" y="0" width="1680" height="1010" />
+    </state>
+    <state width="1637" height="336" key="GridCell.Tab.2.bottom/0.0.1680.1010@0.0.1680.1010" timestamp="1606668695253" />
+    <state width="1637" height="336" key="GridCell.Tab.2.center" timestamp="1606668695253">
+      <screen x="0" y="0" width="1680" height="1010" />
+    </state>
+    <state width="1637" height="336" key="GridCell.Tab.2.center/0.0.1680.1010@0.0.1680.1010" timestamp="1606668695253" />
+    <state width="1637" height="336" key="GridCell.Tab.2.left" timestamp="1606668695252">
+      <screen x="0" y="0" width="1680" height="1010" />
+    </state>
+    <state width="1637" height="336" key="GridCell.Tab.2.left/0.0.1680.1010@0.0.1680.1010" timestamp="1606668695252" />
+    <state width="1637" height="336" key="GridCell.Tab.2.right" timestamp="1606668695253">
+      <screen x="0" y="0" width="1680" height="1010" />
+    </state>
+    <state width="1637" height="336" key="GridCell.Tab.2.right/0.0.1680.1010@0.0.1680.1010" timestamp="1606668695253" />
+    <state width="1637" height="336" key="GridCell.Tab.3.bottom" timestamp="1606668695253">
+      <screen x="0" y="0" width="1680" height="1010" />
+    </state>
+    <state width="1637" height="336" key="GridCell.Tab.3.bottom/0.0.1680.1010@0.0.1680.1010" timestamp="1606668695253" />
+    <state width="1637" height="336" key="GridCell.Tab.3.center" timestamp="1606668695253">
+      <screen x="0" y="0" width="1680" height="1010" />
+    </state>
+    <state width="1637" height="336" key="GridCell.Tab.3.center/0.0.1680.1010@0.0.1680.1010" timestamp="1606668695253" />
+    <state width="1637" height="336" key="GridCell.Tab.3.left" timestamp="1606668695253">
+      <screen x="0" y="0" width="1680" height="1010" />
+    </state>
+    <state width="1637" height="336" key="GridCell.Tab.3.left/0.0.1680.1010@0.0.1680.1010" timestamp="1606668695253" />
+    <state width="1637" height="336" key="GridCell.Tab.3.right" timestamp="1606668695253">
+      <screen x="0" y="0" width="1680" height="1010" />
+    </state>
+    <state width="1637" height="336" key="GridCell.Tab.3.right/0.0.1680.1010@0.0.1680.1010" timestamp="1606668695253" />
+    <state width="498" height="446" key="SwitcherDM" timestamp="1607251821295">
+      <screen x="0" y="0" width="1680" height="1010" />
+    </state>
+    <state width="498" height="446" key="SwitcherDM/0.0.1680.1010@0.0.1680.1010" timestamp="1607251821295" />
+    <state x="496" y="233" key="run.anything.popup" timestamp="1606649859096">
+      <screen x="0" y="0" width="1680" height="1010" />
+    </state>
+    <state x="496" y="233" key="run.anything.popup/0.0.1680.1010@0.0.1680.1010" timestamp="1606649859096" />
+    <state x="496" y="158" width="672" height="678" key="search.everywhere.popup" timestamp="1607252976505">
+      <screen x="0" y="0" width="1680" height="1010" />
+    </state>
+    <state x="496" y="158" width="672" height="678" key="search.everywhere.popup/0.0.1680.1010@0.0.1680.1010" timestamp="1607252976505" />
   </component>
 </project>

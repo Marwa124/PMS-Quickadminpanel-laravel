@@ -165,7 +165,7 @@
                             </a>
                         </li>
                     @endcan
-                    {{-- {{auth()->user()->can('attendances_access')}} --}}
+{{--                     {{auth()->user()->can('attendances_access')}}--}}
                     @can('attendances_access')
                         <li class="c-sidebar-nav-dropdown">
                             <a class="c-sidebar-nav-dropdown-toggle" href="#">
@@ -420,6 +420,10 @@
                             </a>
                         </li>
                     @endcan --}}
+{{--<<<<<<< HEAD--}}
+{{--<<<<<<< HEAD--}}
+{{--=======--}}
+{{-->>>>>>> aa652cf4ba0582a41789ba280011a914311f4fbe--}}
                     {{--
                     @can('salary_payment_allowance_access')
                         <li class="c-sidebar-nav-item">
@@ -431,6 +435,11 @@
                             </a>
                         </li>
                     @endcan --}}
+{{--<<<<<<< HEAD--}}
+{{--=======--}}
+{{-->>>>>>> 02ab76f1501d64e5276394715ca635f94cd52bff--}}
+{{--=======--}}
+{{-->>>>>>> aa652cf4ba0582a41789ba280011a914311f4fbe--}}
                     @can('salary_payment_detail_access')
                         <li class="c-sidebar-nav-item">
                             <a href="{{ route("payroll.admin.salary-payment-details.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/salary-payment-details") || request()->is("admin/salary-payment-details/*") ? "active" : "" }}">
@@ -605,7 +614,8 @@
                 </ul>
             </li>
         @endcan
-        @can('task_management_access')
+        @canany(['task_management_access' , 'project_management_access'])
+{{--        @if(auth()->user()->can('task_management_access') || auth()->user()->can('project_management_access'))--}}
             <li class="c-sidebar-nav-dropdown">
                 <a class="c-sidebar-nav-dropdown-toggle" href="#">
                     <i class="fa-fw fas fa-list c-sidebar-nav-icon">
@@ -686,7 +696,8 @@
                     @endcan
                 </ul>
             </li>
-        @endcan
+{{--        @endif--}}
+        @endcanany
         @can('user_alert_access')
             <li class="c-sidebar-nav-item">
                 <a href="{{ route("admin.user-alerts.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/user-alerts") || request()->is("admin/user-alerts/*") ? "active" : "" }}">

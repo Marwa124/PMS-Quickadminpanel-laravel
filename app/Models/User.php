@@ -86,10 +86,10 @@ class User extends Authenticatable implements HasMedia
         return $date->format('Y-m-d H:i:s');
     }
 
-    public function getIsAdminAttribute()
-    {
-        return $this->roles()->where('id', 1)->exists();
-    }
+    // public function getIsAdminAttribute()
+    // {
+    //     return $this->roles()->where('id', 1)->exists();
+    // }
 
     public function registerMediaConversions(Media $media = null)
     {
@@ -100,7 +100,7 @@ class User extends Authenticatable implements HasMedia
     /* !!!: Relations */
     public function department()
     {
-        return $this->belongsTo(Department::class, 'department_head_id', 'id');
+        return $this->hasMany(Department::class, 'department_head_id', 'id');
     }
 
     public function leaveApplications()
@@ -184,6 +184,11 @@ class User extends Authenticatable implements HasMedia
     {
         // $this->attributes['last_login'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
     }
+
+//     public function permissions()
+//     {
+//         return $this->belongsToMany(Permission::class);
+//     }
 
     public function getDateOfJoinAttribute($value)
     {

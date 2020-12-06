@@ -135,11 +135,16 @@
                 </div>
                 <div class="form-group">
                     <label for="progress">{{ trans('cruds.project.fields.progress') }}</label>
-                    <select name="progress" id="progress" class="form-control {{ $errors->has('progress') ? 'is-invalid' : '' }}">
-                        <option selected="" value="project_hours" {{ old('progress') == 'started' ? 'selected' : '' }}> Project Hours</option>
-                        <option value="through_tasks" {{ old('progress') == 'through_tasks' ? 'selected' : '' }}>Through tasks</option>
+                    <input type="checkbox" id="progress_hours" name="progress" value="project_hours" {{ old('progress') == 'project_hours' ? 'checked' : '' }} onclick="ProgressInput1()" />  Project Hours
+                    <input type="checkbox" id="progress_tasks" name="progress" value="through_tasks" {{ old('progress') == 'through_tasks' ? 'checked' : '' }} onclick="ProgressInput2()" />  Through tasks
 
-                    </select>
+
+{{--                    <select name="progress" id="progress" class="form-control {{ $errors->has('progress') ? 'is-invalid' : '' }}" onchange="disableProgressInput()">--}}
+{{--                        <option value="" selected disabled>Select {{ trans('cruds.project.fields.progress') }}</option>--}}
+{{--                        <option  value="project_hours" {{ old('progress') == 'project_hours' ? 'selected' : '' }}> Project Hours</option>--}}
+{{--                        <option value="through_tasks" {{ old('progress') == 'through_tasks' ? 'selected' : '' }}>Through tasks</option>--}}
+
+{{--                    </select>--}}
 {{--                    <input class="form-control {{ $errors->has('progress') ? 'is-invalid' : '' }}" type="text" name="progress" id="progress" value="{{ old('progress', '') }}">--}}
                     @if($errors->has('progress'))
                         <div class="invalid-feedback">
@@ -149,7 +154,7 @@
                     <span class="help-block">{{ trans('cruds.project.fields.progress_helper') }}</span>
                 </div>
 
-                <div class="form-group w3-light-grey w3-xlarge">
+                <div class="form-group w3-light-grey w3-xlarge" id="div_progress_input" style="display:block;">
                     <label for="calculate_progress">{{ trans('cruds.project.fields.calculate_progress') }}</label>
                     <input class="form-control w3-container w3-green {{ $errors->has('calculate_progress') ? 'is-invalid' : '' }}" type="range"
                            min="0" max="100" name="calculate_progress" id="calculate_progress" value="{{ old('calculate_progress', '') }}" onchange="displayProgressValue()">
@@ -194,7 +199,7 @@
                 </div>
                 <div class="form-group">
                     <label class="required" for="project_cost">{{ trans('cruds.project.fields.project_cost') }}</label>
-                    <input class="form-control {{ $errors->has('project_cost') ? 'is-invalid' : '' }}" type="number" name="project_cost" id="project_cost" value="{{ old('project_cost', '') }}" step="0.01">
+                    <input class="form-control {{ $errors->has('project_cost') ? 'is-invalid' : '' }}" type="number" name="project_cost" id="project_cost" value="{{ old('project_cost', '') }}" step="1.00" placeholder="50">
                     @if($errors->has('project_cost'))
                         <div class="invalid-feedback">
                             {{ $errors->first('project_cost') }}
@@ -204,7 +209,7 @@
                 </div>
                 <div class="form-group">
                     <label for="demo_url">{{ trans('cruds.project.fields.demo_url') }}</label>
-                    <input class="form-control {{ $errors->has('demo_url') ? 'is-invalid' : '' }}" type="text" name="demo_url" id="demo_url" value="{{ old('demo_url', '') }}">
+                    <input class="form-control {{ $errors->has('demo_url') ? 'is-invalid' : '' }}" type="text" name="demo_url" id="demo_url" value="{{ old('demo_url', '') }}" placeholder="http://www.demourl.com">
                     @if($errors->has('demo_url'))
                         <div class="invalid-feedback">
                             {{ $errors->first('demo_url') }}
@@ -240,6 +245,23 @@
                         </div>
                     @endif
                     <span class="help-block">{{ trans('cruds.project.fields.estimate_hours_helper') }}</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="department">{{ trans('cruds.department.title_singular') }}</label>
+                    <select class="form-control select2 {{ $errors->has('department') ? 'is-invalid' : '' }}" name="department_id" id="department_id">
+                        <option value="" selected disabled>Please Select {{ trans('cruds.department.title_singular') }}</option>
+
+                        @foreach($departments as $department)
+                            <option value="{{ $department->id }}" {{ old('department_id') == $department->id ? 'selected' : '' }}>{{ $department->department_name }}</option>
+                        @endforeach
+                    </select>
+                    @if($errors->has('department'))
+                        <div class="invalid-feedback">
+                            {{ $errors->first('department') }}
+                        </div>
+                    @endif
+{{--                    <span class="help-block">{{ trans('cruds.projectSpecification.title_singular') }}</span>--}}
                 </div>
 
 {{--                <div class="form-group">--}}
@@ -373,6 +395,45 @@
      document.getElementById("progress_value").classList.remove('invisible');
      document.getElementById("progress_value").innerHTML = "Progress "+ value + "%";
  }
+
+    function ProgressInput1() {
+        var progress_hours = document.getElementById("progress_hours");
+        var progress_tasks = document.getElementById("progress_tasks");
+        var progress_input = document.getElementById("div_progress_input");
+        if (progress_hours.checked == true){
+            progress_tasks.checked = false;
+            //progress_input.style.display = "none";
+            document.getElementById("calculate_progress").disabled = true;
+        } else {
+
+            //progress_input.style.display = "block";
+            document.getElementById("calculate_progress").disabled = false;
+        }
+
+
+    }
+
+    function  ProgressInput2() {
+        var progress_hours = document.getElementById("progress_hours");
+        var progress_tasks = document.getElementById("progress_tasks");
+        var progress_input = document.getElementById("div_progress_input");
+        if (progress_tasks.checked == true){
+            progress_hours.checked = false;
+            //progress_input.style.display = "none";
+            document.getElementById("calculate_progress").disabled = true;
+
+        } else {
+
+            //progress_input.style.display = "block";
+            document.getElementById("calculate_progress").disabled = false;
+        }
+
+
+    }
+    // function disableProgressInput() {
+    //     document.getElementById("div_progress_input").style.display = 'none';
+    //     //document.getElementById("div_progress_input").classList.add('disabled');
+    // }
 
 </script>
 

@@ -279,4 +279,7 @@ return [
     'Monday'                               => 'Monday',
     'Friday'                               => 'Friday',
     'Saturday'                             => 'Saturday',
+
+    ////////
+    'assign_to'                            => 'Assign To'
 ];
