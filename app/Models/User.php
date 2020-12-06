@@ -113,10 +113,10 @@ class User extends Authenticatable implements HasMedia
         return $this->hasMany(FingerprintAttendance::class, 'user_id', 'id');
     }
 
-    public function designation()
-    {
-        return $this->belongsTo(Designation::class, 'designation_id', 'id');
-    }
+    // public function designation()
+    // {
+    //     return $this->belongsTo(Designation::class, 'designation_id', 'id');
+    // }
 
     public function timeTable()
     {

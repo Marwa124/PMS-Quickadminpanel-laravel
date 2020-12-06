@@ -79,8 +79,8 @@
                     @foreach($fingerprintAttendances as $key => $dailyAttendance)
                     @if ($dailyAttendance != null)
                     {{-- {{dd($dailyAttendance)}} --}}
-                    <tr data-entry-id="{{ $dailyAttendance['id'] }}">
-                        <input type="integer" class="hidden_user_id" value="{{ $dailyAttendance['user_id'] ?? '' }}" hidden>
+                    <tr data-entry-id="{{ $dailyAttendance['id'] }}" data-user-id="{{ $dailyAttendance['user_id'] ?? '' }}">
+                        {{-- <input type="integer" class="hidden_user_id" value="{{ $dailyAttendance['user_id'] ?? '' }}" hidden> --}}
                         <td>
                             {{ $dailyAttendance['user_id'] ?? '' }}
                         </td>
@@ -163,12 +163,12 @@
 
     //Leave User Details Redirect Btn to modal blade
     $('.leaveDetails').click(function(){
-        let userId   = $(this).closest('tr').find('.hidden_user_id').val();
+        let userId   = $(this).closest("tr").attr("data-user-id");
         let userName = $(this).closest('tr').find('.user_name').text();
         let str = $('input[name="date"]').val();
         var date = str.substr(0, 7);
-        console.log($(this).closest('tr').find('.hidden_user_id'));
-        console.log(userId);
+
+        // console.log($(this).closest("tr").attr("data-user-id"));
         var e = $(this);
         $.ajax({
             url: '{{route("hr.admin.leave-applications.details")}}',

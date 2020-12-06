@@ -12,6 +12,7 @@ use App\Models\User;
 use Gate;
 use Illuminate\Http\Request;
 use Modules\HR\Entities\AccountDetail;
+use Modules\Payroll\Entities\SalaryDeduction;
 use Spatie\MediaLibrary\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -59,11 +60,31 @@ class SalaryPaymentsController extends Controller
         $monthNum = explode('-', $date);
         $monthName = date('F', mktime(0, 0, 0, $monthNum[1], 10));
         $year      = $monthNum[0];
+        
+        // $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $user = User::find($result[2]);
 
-        $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        /* !!!: Deduction Details */
+        $carbonDate = dateFormation($date);
+        $basic_salary = $user->accountDetail->designation->salaryTemplate()->first();
+        $salaryDeduction = SalaryDeduction::where('salary_template_id', $basic_salary->id)->sum('value');
+        $netSalary = (int) ($basic_salary->basic_salary) - (int) $salaryDeduction;
+        $dailySalary = $netSalary/30;
+        $totalAbsentDays   = $user->absences()->whereBetween('date', [$carbonDate['previousDate'], $carbonDate['currentDate']])->select('date')->distinct('date')->count();
+        $absent_value = round($totalAbsentDays * $dailySalary);
 
+        $deductionDetails = deductionDetails($date, $user->id, $dailySalary, $absent_value);
 
-        return view('payroll::admin.salaryPayments.create', compact('users', 'date', 'departmentRequest', 'monthName', 'year'));
+        $subDeductions = [
+            'gross_salary'     => $basic_salary->basic_salary,
+            'total_absent'     => $totalAbsentDays,
+            'salary_deduction' => $salaryDeduction,
+            'net_salary'       => $netSalary
+        ]; 
+        /* !!!: Deduction Details */
+
+        return view('payroll::admin.salaryPayments.create', 
+            compact('user', 'subDeductions', 'deductionDetails', 'date', 'departmentRequest', 'monthName', 'year'));
     }
 
     public function store(StoreSalaryPaymentRequest $request)

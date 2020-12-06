@@ -18,7 +18,7 @@
                 {{'EMP ID: '. $accountDetail->employment_id }}
             </p>
             <p class="text-center">
-                {{ $accountDetail->designation->department()->first()->department_name .' => '. $accountDetail->designation()->first()->designation_name}}
+                {{ $accountDetail->designation()->first() ? $accountDetail->designation->department()->first()->department_name .' => '. $accountDetail->designation()->first()->designation_name : ''}}
             </p>
         </div>
     </div>
