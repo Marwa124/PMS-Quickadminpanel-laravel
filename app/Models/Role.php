@@ -9,21 +9,21 @@ use Modules\HR\Entities\Employee;
 
 class Role extends Model
 {
-    use SoftDeletes;
+    // use SoftDeletes;
 
     public $table = 'roles';
 
     protected $dates = [
         'created_at',
         'updated_at',
-        'deleted_at',
+        // 'deleted_at',
     ];
 
     protected $fillable = [
         'title',
         'created_at',
         'updated_at',
-        'deleted_at',
+        // 'deleted_at',
     ];
 
     protected function serializeDate(DateTimeInterface $date)

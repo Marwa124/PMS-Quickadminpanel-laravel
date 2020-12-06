@@ -19,6 +19,8 @@ class CreateTicketsTable extends Migration
             $table->string('priority')->nullable();
             $table->longText('comment')->nullable();
             $table->string('last_reply')->nullable();
+            $table->unsignedInteger('project_id')->nullable();
+            $table->unsignedInteger('department_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

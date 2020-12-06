@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 @section('content')
-@inject('salaryTemplateModel', 'Modules\Payroll\Entities\SalaryTemplate')
+{{-- @inject('salaryTemplateModel', 'Modules\Payroll\Entities\SalaryTemplate') --}}
 @inject('salaryPaymentModel', 'Modules\Payroll\Entities\SalaryPayment')
 @inject('salaryDeductionModel', 'Modules\Payroll\Entities\SalaryDeduction')
 
@@ -44,18 +44,15 @@
             <table class=" table table-bordered table-striped table-hover datatable datatable-PayrollSummary">
                 <thead>
                     <tr>
-                        <th width="10">
-
-                        </th>
                         <th>
                             {{ trans('cruds.salaryPaymentDetail.fields.name') }}
                         </th>
-                        <th>
+                        <th width="40">
                             {{ trans('cruds.salaryPaymentDetail.fields.salary_type') }}
                         </th>
-                        <th>
+                        {{-- <th>
                             Gross Salary
-                        </th>
+                        </th> --}}
                         <th>
                             {{ trans('cruds.salaryPayment.fields.net_salary') }}
                         </th>
@@ -78,192 +75,172 @@
                             Deductions
                         </th>
                         <th>
-                            Action
+                            Late Minutes
+                        </th>
+                        {{-- <th>
+                            Extra Minutes
+                        </th> --}}
+                        <th>
+                            Bonus
+                        </th>
+                        <th>
+                            Net Paid
+                        </th>
+                        <th>
+                            Leave Details
+                        </th>
+                        <th>
+                            Month
                         </th>
                     </tr>
                 </thead>
                 <tbody>
-@php
-    // dd($users);
-@endphp
-                    @foreach($users as $key => $user)
-                    @if ($user['detail'])
-                    <?php
-                        $salaryTemplate = '';
-                        $designation = $user['detail']->designation()->first();
-                        if ($designation) {
-                            $salaryTemplate = $salaryTemplateModel->where('salary_grade', $designation->designation_name)->first();
-                            $departmentName = $user['detail']->designation->department()->select('department_name')->first();
-                        }
-                    ?>
-                        <tr data-entry-id="{{ $user['detail']->user_id }}">
-                            <td>
 
-                            </td>
-                            <td>
-                                {{ $user['detail']->fullname ?? '' }}
-                            </td>
-                            <td>
-                                @if ($salaryTemplate)
-                                    {{$salaryTemplate->salary_grade}}
+
+                    {{-- {{dd($users)}} --}}
+                        @foreach($users as $key => $user)
+                            @if ($user || $user['detail'])
+                            <tr data-entry-id="{{ $user->user_id ?? $user['detail']->user_id}}">
+                                @if ($date < date('Y-m'))
+
+                                    <td class="user_name">
+                                        {{ $user->username ?? '' }}
+                                    </td>
+                                    <td>
+                                        {{$user->job_title}}
+                                    </td>
+                                    {{-- <td>
+                                        {{'EGP '. number_format($user['salaryTemplate'] ? $user['salaryTemplate']->basic_salary : 0, 2)}}
+                                    </td> --}}
+                                    <td>{{'EGP '. number_format($user->net_salary ?? 0, 2)}}</td>
+
+                                    <td>{{'EGP '. number_format($user->daily_salary ?? 0, 2)}}</td>
+
+                                    <td>{{$user->total_days}}</td>
+
+                                    <td>{{$user->total_absence}}</td>
+
+                                    <td>{{$user->holidays}}</td>
+
+                                    <td>{{$user->vacations}}</td>
+
+                                    <td>
+                                        <button class="btn btn-xs btn-secondary pt-1" disabled>
+                                            {{'EGP '. number_format($user->deductions ?? 0, 2)}}
+                                        </button>
+                                    </td>
+                                    {{-- Display Only The deduction amount if the month past. --}}
+
+                                    <td>{{$user->late_minutes}}</td>
+                                    {{-- <td>{{$user->extra_minutes}}</td> --}}
+                                    <td>{{'EGP '. number_format($user->bonus ?? 0, 2)}}</td>
+
+                                    <td>{{'EGP '. number_format($user->net_paid ?? 0, 2)}}</td>
+                                    {{-- if Date is the present Month --}}
                                 @else
-                                    <span class="text-danger">Salary did not set yet</span>
-                                @endif
-                            </td>
-                            <td>
-                                {{'EGP '. number_format($salaryTemplate ? $salaryTemplate->basic_salary : 0, 2)}}
-                            </td>
-                            <?php 
-                            $netSalary = 0;
-                            if ($salaryTemplate) {
-                                $salaryDeduction = $salaryDeductionModel->where('salary_template_id', $salaryTemplate->id)->sum('value');
-                                $netSalary = (int) ($salaryTemplate->basic_salary) - (int) $salaryDeduction;
-                            }
-                            ?>
-                            <td>{{'EGP '. number_format($netSalary ?? 0, 2)}}</td>
+                                    <td class="user_name">
+                                        {{ $user['detail']->fullname ?? '' }}
+                                    </td>
+                                    <td>
+                                        @if ($user['salaryTemplate'])
+                                            {{$user['salaryTemplate']->salary_grade}}
+                                        @else
+                                            <span class="text-danger">Salary did not set yet</span>
+                                        @endif
+                                    </td>
+                                    {{-- <td>
+                                        {{'EGP '. number_format($user['salaryTemplate'] ? $user['salaryTemplate']->basic_salary : 0, 2)}}
+                                    </td> --}}
+                                    <td>{{'EGP '. number_format($user['netSalary'] ?? 0, 2)}}</td>
 
-                            <td>{{'EGP '. number_format($netSalary/30 ?? 0, 2)}}</td>
+                                    <td>{{'EGP '. number_format($user['netSalary']/30 ?? 0, 2)}}</td>
 
-                            <td>{{$user['totalAttendedDays']}}</td>
+                                    <td>{{$user['totalAttendedDays']}}</td>
 
-                            <td>{{$user['totalAbsentDays']}}</td>
+                                    <td>{{$user['totalAbsentDays']}}</td>
 
-                            <td>{{$holidays}}</td>
-                            
-                            <td>{{$user['userVacations']}}</td>
+                                    <td>{{$holidays}}</td>
 
-                            <td>Deductions</td>
-                            
-                            <td>
-                                @can('payroll_summary')
-                                
-                                <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#showModal{{$user['detail']->user_id}}">
-                                    <i class="fa fa-list-alt"></i>
-                                </button>
+                                    <td>{{$user['userVacations']}}</td>
+
+                                    <td>
+                                        <!-- Deduction Details -->
+                                        <button type="button" class="btn btn-xs pt-1 {{($user['totalDeductions'] == 0) ? 'btn-info' : 'btn-danger'}} "
+                                            data-toggle="modal" data-target="#deductionDetails{{$user['detail']->id}}">
+                                            {{'EGP '. number_format($user['totalDeductions'] ?? 0, 2)}}
+                                        </button>
+                                    </td>
+
                                     <!-- Modal -->
-                                    <div class="modal fade showDetailsModal" id="showModal{{$user['detail']->user_id}}" tabindex="-1" role="dialog" aria-labelledby="showModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog" role="document">
+                                    <div class="modal fade" id="deductionDetails{{$user['detail']->id}}" tabindex="-1" role="dialog" aria-labelledby="deductionDetails{{$user['detail']->id}}Title" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
-                                            <div class="modal-header">
-                                            <h5 class="modal-title" id="showModalLabel">{{ trans('cruds.salaryPaymentDetail.title_singular') }}</h5>
-                                            <div class="d-flex">
-                                                <a href="{{route('payroll.admin.salary-employee-details-pdf', $user['detail']->user_id)}}" class="btn btn-danger btn-xs mr-2"
-                                                data-toggle="tooltip" data-placement="top" data-original-title="PDF">
-                                                    <i class="fa fa-file-pdf-o"></i>
-                                                </a>
-                                                <a href="{{ route('payroll.admin.salary-employee-details-print', $user['detail']->user_id) }}" class="btnprn btn btn-primary btn-xs">
-                                                    <i class="fa fa-print"></i>
-                                                </a>
-                                            </div>
-
+                                            <div class="modal-header" style="border-color: red;">
+                                                <h5 class="modal-title" id="deductionDetails{{$user['detail']->id}}Title">{{ $user['detail']->fullname ?? '' }} Deduction Details</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
                                             </div>
                                             <div class="modal-body">
-                                            <div class="row">
-                                                <div class="col-md-5 d-flex justify-content-center align-self-center">
-                                                    @if($user['detail']->avatar )
-                                                        {{-- <a href="{{ str_replace('storage', 'public/storage', $user['detail']->avatar->getUrl()) }}" target="_blank">
-                                                            <img class="rounded-circle img-thumbnail d-flex m-auto"
-                                                            src="{{ str_replace('storage', 'public/storage', $user['detail']->avatar->getUrl('thumb')) }}">
-                                                        </a> --}}
-                                                        <a href="{{ str_replace('storage', 'storage/app/public', $user['detail']->avatar->getUrl()) }}" target="_blank">
-                                                            <img class="rounded-circle img-thumbnail d-flex m-auto"
-                                                            src="{{ str_replace('storage', 'storage/app/public', $user['detail']->avatar->getUrl('thumb')) }}">
-                                                        </a>
-                                                    @else
-                                                        <a href="javascript:void(0)" style="display: inline-block">
-                                                            <img class="rounded-circle img-thumbnail"
-                                                            style="display: block;
-                                                                margin-left: auto;
-                                                                margin-right: auto;
-                                                                width: 30%;"
-                                                            src="{{ asset('images/default.png') }}">
-                                                        </a>
-                                                    @endif
+                                                <div class="row">
+                                                    <div class="col-md-7">Petty Cache</div>
+                                                    <div class="col-md-5">{{'EGP '. number_format(0, 2)}}</div>
                                                 </div>
-                                                <div class="col-md-7">
-                                                    <h4 class="font-weight-bold">{{$user['detail']->fullname}}</h4>
-                                                    <hr>
-                                                    <div class="row">
-                                                        <div class="col-md-5">EMP ID: </div>
-                                                        <div class="col-md-7">{{ $user['detail']->employment_id }}</div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-5">Departments: </div>
-                                                        <div class="col-md-7"></div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-5">Designation: </div>
-                                                        <div class="col-md-7">{{ $salaryTemplate ? $salaryTemplate->salary_grade : '' }}</div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-5">Joining Date: </div>
-                                                        <div class="col-md-7">{{ $user['detail']->joining_date }}</div>
-                                                    </div>
+                                                <div class="row">
+                                                    <div class="col-md-7">Fp Days</div>
+                                                    <div class="col-md-5">{{'EGP '. number_format($user['fpDaysDeduction'] ?? 0, 2)}}</div>
                                                 </div>
-                                            </div><!--Row End-->
-                                            <div class="modal-header" style="border-color: tomato;">
-                                                <h5 class="modal-title">Salary Detail</h5>
+                                                <div class="row">
+                                                    <div class="col-md-7">Minutes</div>
+                                                    <div class="col-md-5">{{'EGP '. number_format($user['minutesDeduction'] ?? 0, 2)}}</div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-7">Abssent Days</div>
+                                                    <div class="col-md-5">{{'EGP '. number_format($user['totalAbsentDays'] * ($user['netSalary']/30) ?? 0, 2)}}</div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-7">Deduction Leaves</div>
+                                                    <div class="col-md-5">{{'EGP '. number_format($user['leavesDeduction'] ?? 0, 2)}}</div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-7">Penalty</div>
+                                                    <div class="col-md-5">{{'EGP '. number_format($user['penalty'] ?? 0, 2)}}</div>
+                                                </div>
                                             </div>
-                                            <div class="d-flex">
-                                                <div class="font-weight-bold m-auto">Salary Grades</div>
-                                                <div class="m-auto">{{ $salaryTemplate ? $salaryTemplate->salary_grade : '' }}</div>
-                                            </div>
-                                            <div class="d-flex">
-                                                <div class="font-weight-bold m-auto">{{ trans('cruds.salaryPaymentDetail.fields.basic_salary') }}</div>
-                                                <span class="m-auto">{{'EGP '.number_format($salaryTemplate ? $salaryTemplate->basic_salary : 0, 2)}}</span>
-                                            </div>
-                                            <div class="d-flex">
-                                                <div class="font-weight-bold m-auto">{{ trans('cruds.salaryPaymentDetail.fields.overtime') }}</div>
-                                                <span class="m-auto"></span>
-                                            </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary btn-xs" data-dismiss="modal">Close</button>
-                                            <button type="button" class="btn btn-primary btn-xs">Save changes</button>
+                                            <div class="modal-footer d-flex justify-content-between" style="background-color: #ccc;">
+                                                {{-- <div class="row"> --}}
+                                                    <div class="">Tota</div>
+                                                    <div class="">{{'EGP '. number_format($user['totalDeductions'] ?? 0, 2)}}</div>
+                                                {{-- </div> --}}
                                             </div>
                                         </div>
                                         </div>
                                     </div>
+                                    {{-- Show Modal Deduction Details if It's the current Month. --}}
 
-                                @endcan
-                                
-                            </td>
-                            <?php
-                                $salaryPayment = $salaryPaymentModel->where('payment_month', date('Y-m'))->where('user_id', $user['detail']->user_id)->first();
-                            ?>
-                            <td>
-                                @if ($salaryPayment)
-                                    <span class="bg-success p-1 fa-xs font-weight-bold" style="border-radius:4px;">Paid</span>
-                                @else
-                                    <span class="bg-danger p-1 fa-xs font-weight-bold" style="border-radius:4px;">Unpaid</span>
+
+                                    <td>{{$user['lateMinutes']}}</td>
+                                    {{-- <td>{{$user['extraMinutes']}}</td> --}}
+                                    <td>{{'EGP '. number_format($user['bonus'] ?? 0, 2)}}</td>
+
+                                    <td>{{'EGP '. number_format(($user['netSalary'] + $user['bonus'] - $user['totalDeductions']) ?? 0, 2)}}</td>
+                                    {{-- End if Date is the past Month --}}
                                 @endif
-                            </td>
+                                    <td>
+                                        <!-- Leave Details modal -->
+                                        <button type="button" class="btn btn-primary btn-xs leaveDetails" data-toggle="modal" data-target="#leavesDetails{{$user->user_id ?? $user['detail']->user_id}}">
+                                            <i class="fas fa-clipboard-list"></i>
+                                        </button>
+                                        <div class="leaveDetailsModal"></div>
+                                    </td>
 
-                            <td>
-                                @if ($salaryPayment && $salaryTemplate)
-                                    @can('salary_payment_create')
-                                        <a class="text-success" href="{{ route('payroll.admin.salary-payments.create') }}">
-                                            {{ trans('cruds.salaryPayment.fields.generate_payslip') }}
-                                        </a>
-                                    @endcan
-                                @elseif($salaryTemplate)
-                                    @can('salary_payment_create')
-                                        <a class="text-danger" href="{{ route('payroll.admin.salary-payments.create') }}">
-                                            {{ trans('cruds.salaryPayment.fields.make_payment') }}
-                                        </a>
-                                    @endcan
-                                @else()
-                                    @can('salary_payment_create')
-                                        <a class="text-warning" href="{{ route('payroll.admin.salary-payments.create') }}">
-                                            Set Salary
-                                        </a>
-                                    @endcan
-                                @endif
-                            </td>
-
-                        </tr>
-                    @endif
-                @endforeach
+                                    <td>
+                                        {{$date}}
+                                    </td>
+                            </tr>
+                            @endif
+                            {{-- end If user not null --}}
+                        @endforeach
                 </tbody>
             </table>
         </div>
@@ -287,7 +264,7 @@
     pageLength: 25,
   });
 //   let table = $('.datatable-PayrollSummary:not(.ajaxTable)').DataTable({ buttons: dtButtons })
-  let table = $('.datatable-PayrollSummary:not(.ajaxTable)').DataTable({ 
+  let table = $('.datatable-PayrollSummary:not(.ajaxTable)').DataTable({
     "buttons": [
        { "extend": 'pdf', "text":'PDF',"className": 'btn btn-default' },
        { "extend": 'csv', "text":'CSV',"className": 'btn btn-default' },
@@ -311,13 +288,44 @@
 
 
   $('.btnprn').printPage();
-  
 
-  $("#datepicker").datepicker( {
+
+
+    $('.leaveDetailsModal').html(``);
+
+
+    //Leave User Details Redirect Btn to modal blade
+    $('.leaveDetails').click(function(){
+        let userId = $(this).closest('tr').attr('data-entry-id');
+        let userName = $(this).closest('tr').find('.user_name').text();
+        let date = $('input[name="date"]').val();
+        var e = $(this);
+        $.ajax({
+            url: '{{route("hr.admin.leave-applications.details")}}',
+            type:'get',
+            dataType: 'html',
+            data: {
+                user_id: userId,
+                user_name: userName,
+                date: date,
+            },
+            success: function(res){
+                e.closest('td').find('.leaveDetailsModal').html(res);
+
+                $('#leavesDetails'+userId).modal('toggle');
+            }
+        })
+    });
+
+
+
+
+    $("#datepicker").datepicker({
         format: "yyyy-mm",
         startView: "months",
         minViewMode: "months"
     });
+
 
 })
 

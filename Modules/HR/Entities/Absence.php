@@ -10,6 +10,7 @@ use \DateTimeInterface;
 class Absence extends Model
 {
     public $table = 'absences';
+    public $timestamps = false;
 
     protected $dates = [
         'date',

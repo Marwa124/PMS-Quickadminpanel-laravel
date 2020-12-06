@@ -27,7 +27,7 @@ class CreatePayrollSummariesTable extends Migration
             $table->string('net_paid')->default(0);
             $table->string('month')->nullable();
             $table->integer('user_id')->unsigned();
-            $table->timestamps();
+            // $table->timestamps();
         });
     }
 }

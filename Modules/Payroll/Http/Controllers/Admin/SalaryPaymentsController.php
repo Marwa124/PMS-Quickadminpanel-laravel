@@ -35,8 +35,8 @@ class SalaryPaymentsController extends Controller
 
             foreach ($salaryPayments as $key => $value) {
                 $userInDepartment = $value->designation()->first() ? $value->designation->department()->where('id', $departmentRequest)->first() : '';
-                $userRole = User::where('id', $value->user_id)->where('banned', 0)->first();
-                if ($userRole && $userRole->userRole() != 'Board Members' && $userInDepartment) {
+                $activeUser = User::where('id', $value->user_id)->where('banned', 0)->first();
+                if ($activeUser && !$activeUser->hasRole('Board Members') && $userInDepartment) {
                     $users[] = User::where('id', $value->user_id)->where('banned', 0)->first()->accountDetail()->first();
                 }
             }
@@ -49,10 +49,21 @@ class SalaryPaymentsController extends Controller
     public function create()
     {
         abort_if(Gate::denies('salary_payment_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        $result = [];
+        foreach (request()->all() as $key => $value) {
+            $result[] = $key;
+        }
+        $date = $result[0];
+        $departmentRequest = $result[1];
+
+        $monthNum = explode('-', $date);
+        $monthName = date('F', mktime(0, 0, 0, $monthNum[1], 10));
+        $year      = $monthNum[0];
 
         $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        return view('payroll::admin.salaryPayments.create', compact('users'));
+
+        return view('payroll::admin.salaryPayments.create', compact('users', 'date', 'departmentRequest', 'monthName', 'year'));
     }
 
     public function store(StoreSalaryPaymentRequest $request)

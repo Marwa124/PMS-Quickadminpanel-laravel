@@ -1,13 +1,13 @@
 <?php
 
 Route::redirect('/', '/login');
-Route::get('/home', function () {
-    if (session('status')) {
-        return redirect()->route('admin.home')->with('status', session('status'));
-    }
+// Route::get('/home', function () {
+//     if (session('status')) {
+//         return redirect()->route('admin.home')->with('status', session('status'));
+//     }
 
-    return redirect()->route('admin.home');
-});
+//     return redirect()->route('admin.home');
+// });
 
 
 Route::get('user/upload','ImportsController@user');
@@ -48,9 +48,40 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::get('permissions/{id}', 'PermissionsController@index')->name('permissions.index');
     // Route::resource('permissions', 'PermissionsController');
 
+
+
+
+
+
+
+    /**************** permissions *****************/
+
+    // roles
+    // Route::apiResource('roles', 'AclController')->parameters(['roles' => 'id']);
+    Route::resource('roles', 'AclController')->parameters(['roles' => 'id']);
+    Route::get('/name_roles', 'AclController@getNameRoles');
+
+    // permissions
+    Route::get('/permissions', 'AclController@getListPermissions');
+
+    // user
+    Route::get('/roles_permissions_for_user/{id}', 'AclController@getRolesAndPermissionsForUser');
+    Route::put('/assign_to_user/{id}', 'AclController@assignToUser');
+
+    Route::get('/users_list', 'AclController@getUsersList');
+
+    /*********************************************************************************/
+
+
+
+
+
+
+
+
     // Roles
-    Route::delete('roles/destroy', 'RolesController@massDestroy')->name('roles.massDestroy');
-    Route::resource('roles', 'RolesController');
+    // Route::delete('roles/destroy', 'RolesController@massDestroy')->name('roles.massDestroy');
+    // Route::resource('roles', 'RolesController');
 
     // Users
     Route::delete('users/destroy', 'UsersController@massDestroy')->name('users.massDestroy');
@@ -115,23 +146,15 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::delete('user-alerts/destroy', 'UserAlertsController@massDestroy')->name('user-alerts.massDestroy');
     Route::resource('user-alerts', 'UserAlertsController', ['except' => ['edit', 'update']]);
 
-    // Account Details
-    // Route::delete('account-details/destroy', 'AccountDetailsController@massDestroy')->name('account-details.massDestroy');
-    // Route::post('account-details/media', 'AccountDetailsController@storeMedia')->name('account-details.storeMedia');
-    // Route::post('account-details/ckmedia', 'AccountDetailsController@storeCKEditorImages')->name('account-details.storeCKEditorImages');
-    // Route::post('account-details/password', 'AccountDetailsController@passwordReset')->name('account-details.passwordReset');
-    // Route::get('account-details/filter', 'AccountDetailsController@filterSelect')->name('filter-select');
-    // Route::resource('account-details', 'AccountDetailsController');
+    // // Proposals
+    // Route::delete('proposals/destroy', 'ProposalsController@massDestroy')->name('proposals.massDestroy');
+    // Route::post('proposals/media', 'ProposalsController@storeMedia')->name('proposals.storeMedia');
+    // Route::post('proposals/ckmedia', 'ProposalsController@storeCKEditorImages')->name('proposals.storeCKEditorImages');
+    // Route::resource('proposals', 'ProposalsController');
 
-    // Proposals
-    Route::delete('proposals/destroy', 'ProposalsController@massDestroy')->name('proposals.massDestroy');
-    Route::post('proposals/media', 'ProposalsController@storeMedia')->name('proposals.storeMedia');
-    Route::post('proposals/ckmedia', 'ProposalsController@storeCKEditorImages')->name('proposals.storeCKEditorImages');
-    Route::resource('proposals', 'ProposalsController');
-
-    // Interested Ins
-    Route::delete('interested-ins/destroy', 'InterestedInController@massDestroy')->name('interested-ins.massDestroy');
-    Route::resource('interested-ins', 'InterestedInController', ['except' => ['edit', 'update', 'show']]);
+    // // Interested Ins
+    // Route::delete('interested-ins/destroy', 'InterestedInController@massDestroy')->name('interested-ins.massDestroy');
+    // Route::resource('interested-ins', 'InterestedInController', ['except' => ['edit', 'update', 'show']]);
 
     // Lead Categories
     Route::delete('lead-categories/destroy', 'LeadCategoriesController@massDestroy')->name('lead-categories.massDestroy');
@@ -233,11 +256,11 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::post('invoices/ckmedia', 'InvoicesController@storeCKEditorImages')->name('invoices.storeCKEditorImages');
     Route::resource('invoices', 'InvoicesController');
 
-    // Proposals Items
-    Route::delete('proposals-items/destroy', 'ProposalsItemsController@massDestroy')->name('proposals-items.massDestroy');
-    Route::post('proposals-items/media', 'ProposalsItemsController@storeMedia')->name('proposals-items.storeMedia');
-    Route::post('proposals-items/ckmedia', 'ProposalsItemsController@storeCKEditorImages')->name('proposals-items.storeCKEditorImages');
-    Route::resource('proposals-items', 'ProposalsItemsController');
+    // // Proposals Items
+    // Route::delete('proposals-items/destroy', 'ProposalsItemsController@massDestroy')->name('proposals-items.massDestroy');
+    // Route::post('proposals-items/media', 'ProposalsItemsController@storeMedia')->name('proposals-items.storeMedia');
+    // Route::post('proposals-items/ckmedia', 'ProposalsItemsController@storeCKEditorImages')->name('proposals-items.storeCKEditorImages');
+    // Route::resource('proposals-items', 'ProposalsItemsController');
 
     // Suppliers
     Route::delete('suppliers/destroy', 'SuppliersController@massDestroy')->name('suppliers.massDestroy');
@@ -256,20 +279,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::resource('return-stocks', 'ReturnStockController');
 
     // Purchase Payments
-    Route::delete('purchase-payments/destroy', 'PurchasePaymentsController@massDestroy')->name('purchase-payments.massDestroy');
-    Route::post('purchase-payments/media', 'PurchasePaymentsController@storeMedia')->name('purchase-payments.storeMedia');
-    Route::post('purchase-payments/ckmedia', 'PurchasePaymentsController@storeCKEditorImages')->name('purchase-payments.storeCKEditorImages');
-    Route::resource('purchase-payments', 'PurchasePaymentsController');
-
-    // Payment Methods
-    Route::delete('payment-methods/destroy', 'PaymentMethodsController@massDestroy')->name('payment-methods.massDestroy');
-    Route::resource('payment-methods', 'PaymentMethodsController', ['except' => ['edit', 'update', 'show']]);
-
-    // Payments
-    Route::delete('payments/destroy', 'PaymentsController@massDestroy')->name('payments.massDestroy');
-    Route::post('payments/media', 'PaymentsController@storeMedia')->name('payments.storeMedia');
-    Route::post('payments/ckmedia', 'PaymentsController@storeCKEditorImages')->name('payments.storeCKEditorImages');
-    Route::resource('payments', 'PaymentsController');
+    // Route::delete('purchase-payments/destroy', 'PurchasePaymentsController@massDestroy')->name('purchase-payments.massDestroy');
+    // Route::post('purchase-payments/media', 'PurchasePaymentsController@storeMedia')->name('purchase-payments.storeMedia');
+    // Route::post('purchase-payments/ckmedia', 'PurchasePaymentsController@storeCKEditorImages')->name('purchase-payments.storeCKEditorImages');
+    // Route::resource('purchase-payments', 'PurchasePaymentsController');
 
     // Transactions
     Route::delete('transactions/destroy', 'TransactionsController@massDestroy')->name('transactions.massDestroy');

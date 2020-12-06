@@ -11,11 +11,12 @@ use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
 use \DateTimeInterface;
+use Illuminate\Notifications\Notifiable;
 use Spatie\MediaLibrary\File;
 
 class LeaveApplication extends Model implements HasMedia
 {
-    use SoftDeletes, HasMediaTrait;
+    use SoftDeletes, HasMediaTrait, Notifiable;
 
     public $table = 'leave_applications';
 
@@ -99,10 +100,10 @@ class LeaveApplication extends Model implements HasMedia
         return $this->belongsTo(LeaveCategory::class, 'leave_category_id');
     }
 
-    public function notification()
-    {
-        return $this->hasOne(Notification::class);
-    }
+    // public function notification()
+    // {
+    //     return $this->hasOne(Notification::class);
+    // }
 
     public function getLeaveStartDateAttribute($value)
     {

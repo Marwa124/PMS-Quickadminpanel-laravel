@@ -421,6 +421,9 @@
                         </li>
                     @endcan --}}
 {{--<<<<<<< HEAD--}}
+{{--<<<<<<< HEAD--}}
+{{--=======--}}
+{{-->>>>>>> aa652cf4ba0582a41789ba280011a914311f4fbe--}}
                     {{--
                     @can('salary_payment_allowance_access')
                         <li class="c-sidebar-nav-item">
@@ -432,8 +435,11 @@
                             </a>
                         </li>
                     @endcan --}}
+{{--<<<<<<< HEAD--}}
 {{--=======--}}
 {{-->>>>>>> 02ab76f1501d64e5276394715ca635f94cd52bff--}}
+{{--=======--}}
+{{-->>>>>>> aa652cf4ba0582a41789ba280011a914311f4fbe--}}
                     @can('salary_payment_detail_access')
                         <li class="c-sidebar-nav-item">
                             <a href="{{ route("payroll.admin.salary-payment-details.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/salary-payment-details") || request()->is("admin/salary-payment-details/*") ? "active" : "" }}">
@@ -702,7 +708,7 @@
                 </a>
             </li>
         @endcan
-        @can('sale_access')
+       {{-- @can('sale_access') --}}
             <li class="c-sidebar-nav-dropdown">
                 <a class="c-sidebar-nav-dropdown-toggle" href="#">
                     <i class="fa-fw fas fa-shopping-cart c-sidebar-nav-icon">
@@ -711,57 +717,58 @@
                     {{ trans('cruds.sale.title') }}
                 </a>
                 <ul class="c-sidebar-nav-dropdown-items">
-                    @can('proposal_access')
+                   {{-- @can('proposal_access') --}}
                         <li class="c-sidebar-nav-item">
-                            <a href="{{ route("admin.proposals.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/proposals") || request()->is("admin/proposals/*") ? "active" : "" }}">
+                            <a href="{{ route("sales.admin.proposals.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/proposals") || request()->is("admin/proposals/*") ? "active" : "" }}">
                                 <i class="fa-fw fas fa-cogs c-sidebar-nav-icon">
 
                                 </i>
                                 {{ trans('cruds.proposal.title') }}
                             </a>
                         </li>
-                    @endcan
-                    @can('interested_in_access')
+                   {{-- @endcan --}}
+                    {{--@can('interested_in_access') --}}
+
                         <li class="c-sidebar-nav-item">
-                            <a href="{{ route("admin.interested-ins.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/interested-ins") || request()->is("admin/interested-ins/*") ? "active" : "" }}">
+                            <a href="{{ route("sales.admin.interested-ins.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/interested-ins") || request()->is("admin/interested-ins/*") ? "active" : "" }}">
                                 <i class="fa-fw fas fa-american-sign-language-interpreting c-sidebar-nav-icon">
 
                                 </i>
                                 {{ trans('cruds.interestedIn.title') }}
                             </a>
                         </li>
-                    @endcan
-                    @can('lead_category_access')
+                   {{-- @endcan --}}
+                   {{-- @can('lead_category_access') --}}
                         <li class="c-sidebar-nav-item">
-                            <a href="{{ route("admin.lead-categories.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/lead-categories") || request()->is("admin/lead-categories/*") ? "active" : "" }}">
+                            <a href="{{ route("sales.admin.results.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/results") || request()->is("admin/results/*") ? "active" : "" }}">
                                 <i class="fa-fw fas fa-align-center c-sidebar-nav-icon">
 
                                 </i>
-                                {{ trans('cruds.leadCategory.title') }}
+                                {{ trans('cruds.Results.title') }}
                             </a>
                         </li>
-                    @endcan
-                    @can('lead_source_access')
+                   {{-- @endcan --}}
+                   {{-- @can('lead_source_access') --}}
                         <li class="c-sidebar-nav-item">
-                            <a href="{{ route("admin.lead-sources.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/lead-sources") || request()->is("admin/lead-sources/*") ? "active" : "" }}">
+                            <a href="{{ route("sales.admin.types.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/types") || request()->is("admin/types/*") ? "active" : "" }}">
                                 <i class="fa-fw fab fa-soundcloud c-sidebar-nav-icon">
 
                                 </i>
-                                {{ trans('cruds.leadSource.title') }}
+                                {{ trans('cruds.Types.title') }}
                             </a>
                         </li>
-                    @endcan
-                    @can('lead_status_access')
+                   {{-- @endcan --}}
+                   {{-- @can('lead_status_access') --}}
                         <li class="c-sidebar-nav-item">
-                            <a href="{{ route("admin.lead-statuses.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/lead-statuses") || request()->is("admin/lead-statuses/*") ? "active" : "" }}">
+                            <a href="{{ route("sales.admin.countries.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/countries") || request()->is("admin/countries/*") ? "active" : "" }}">
                                 <i class="fa-fw fab fa-staylinked c-sidebar-nav-icon">
 
                                 </i>
-                                {{ trans('cruds.leadStatus.title') }}
+                                {{ trans('cruds.Countries_Code.title') }}
                             </a>
                         </li>
-                    @endcan
-                    @can('salutation_access')
+                   {{-- @endcan --}}
+                   {{-- @can('salutation_access') --}}
                         <li class="c-sidebar-nav-item">
                             <a href="{{ route("admin.salutations.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/salutations") || request()->is("admin/salutations/*") ? "active" : "" }}">
                                 <i class="fa-fw fab fa-safari c-sidebar-nav-icon">
@@ -770,8 +777,8 @@
                                 {{ trans('cruds.salutation.title') }}
                             </a>
                         </li>
-                    @endcan
-                    @can('lead_access')
+                   {{-- @endcan --}}
+                   {{-- @can('lead_access') --}}
                         <li class="c-sidebar-nav-item">
                             <a href="{{ route("admin.leads.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/leads") || request()->is("admin/leads/*") ? "active" : "" }}">
                                 <i class="fa-fw fas fa-rocket c-sidebar-nav-icon">
@@ -780,8 +787,8 @@
                                 {{ trans('cruds.lead.title') }}
                             </a>
                         </li>
-                    @endcan
-                    @can('opportunity_access')
+                   {{-- @endcan --}}
+                   {{-- @can('opportunity_access') --}}
                         <li class="c-sidebar-nav-item">
                             <a href="{{ route("admin.opportunities.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/opportunities") || request()->is("admin/opportunities/*") ? "active" : "" }}">
                                 <i class="fa-fw fas fa-filter c-sidebar-nav-icon">
@@ -790,8 +797,8 @@
                                 {{ trans('cruds.opportunity.title') }}
                             </a>
                         </li>
-                    @endcan
-                    @can('client_access')
+                  {{--  @endcan --}}
+                  {{--  @can('client_access') --}}
                         <li class="c-sidebar-nav-item">
                             <a href="{{ route("admin.clients.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/clients") || request()->is("admin/clients/*") ? "active" : "" }}">
                                 <i class="fa-fw fas fa-users c-sidebar-nav-icon">
@@ -800,10 +807,10 @@
                                 {{ trans('cruds.client.title') }}
                             </a>
                         </li>
-                    @endcan
+                   {{-- @endcan --}}
                 </ul>
             </li>
-        @endcan
+       {{-- @endcan --}}
         @can('adminstration_access')
             <li class="c-sidebar-nav-dropdown">
                 <a class="c-sidebar-nav-dropdown-toggle" href="#">
@@ -857,7 +864,7 @@
                     @endcan
                     @can('proposals_item_access')
                         <li class="c-sidebar-nav-item">
-                            <a href="{{ route("admin.proposals-items.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/proposals-items") || request()->is("admin/proposals-items/*") ? "active" : "" }}">
+                            <a href="{{ route("sales.admin.proposals-items.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/proposals-items") || request()->is("admin/proposals-items/*") ? "active" : "" }}">
                                 <i class="fa-fw fas fa-cube c-sidebar-nav-icon">
 
                                 </i>

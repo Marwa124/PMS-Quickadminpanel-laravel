@@ -102,10 +102,28 @@ if (data) {
                                 @endif
                         </a>
                         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right data-content">
-                            @if(count($notifications = \Auth::user()->notifications()->withPivot('is_read')->limit(10)->orderBy('created_at', 'DESC')->get()) > 0)
+                            <input type="text" hidden value="{{auth()->user()->id}}" class="hidden_auth_user_id">
+                            @forelse (\Auth::user()->notifications as $notify)
+                            {{-- @json($notify->data) --}}
+                                <div class="dropdown-item">
+                                    <a class="notify_is_read" href="{{route('hr.admin.leave-applications.edit', $notify->data['leave_id'])}}" rel="noopener noreferrer">
+                                        <input type="integer" hidden value="{{$notify->id}}" class="hidden_notification_id">
+
+                                        {{-- <a class="notify_is_read" style="color:red" href="{{url($notify->show_path.'/'.  $notify->model_id)}}" rel="noopener noreferrer"> --}}
+                                        @if(!$notify->read_at) <strong class="text-danger"> @endif
+                                            <p> {{$notify->data['title']}} </p>
+                                            {{-- <p class="text-muted fa-sm">{{ implode(' ', array_slice(explode(' ', $notify->content), 0, 5))}}</p> --}}
+                                        @if(!$notify->read_at) </strong> @endif
+                                    </a>
+                                </div>
+                            @empty
+                                <div class="text-center">
+                                    {{ trans('global.no_alerts') }}
+                                </div>
+                            @endforelse
+                            {{-- @if(count($notifications = \Auth::user()->notifications()->withPivot('is_read')->limit(10)->orderBy('created_at', 'DESC')->get()) > 0)
                                 @foreach($notifications as $notify)
                                     <div class="dropdown-item">
-                                        {{-- target="_blank"  --}}
                                         <a class="notify_is_read" style="color:red" href="{{url($notify->show_path.'/'.  $notify->model_id)}}" rel="noopener noreferrer">
                                             @if($notify->pivot->is_read === 0) <strong> @endif
                                                 {{ $notify->title }}
@@ -118,7 +136,7 @@ if (data) {
                                 <div class="text-center">
                                     {{ trans('global.no_alerts') }}
                                 </div>
-                            @endif
+                            @endif --}}
                         </div>
                     </li>
                 </ul>
@@ -250,8 +268,8 @@ if (data) {
 
   let languages = {
     'ar': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/Arabic.json',
-        'en': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/English.json',
-        'de': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/German.json'
+    'en': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/English.json',
+    'de': 'https://cdn.datatables.net/plug-ins/1.10.19/i18n/German.json'
   };
 
   $.extend(true, $.fn.dataTable.Buttons.defaults.dom.button, { className: 'btn' })
@@ -437,12 +455,26 @@ if (data) {
 
 
     <script>
-        // $(document).ready(function(){
-        //     $('.notify_is_read').on('click', function(e){
-        //         $('.notify_is_read').css('color', 'black !important');
-        //         // e.target.style.color = 'black !important';
-        //     })
-        // })
+        $(document).ready(function(){
+            $('.notify_is_read').on('click', function(e){
+                // $('.notify_is_read').css('color', 'black !important');
+                // e.target.style.color = 'black !important';
+
+                // e.preventDefault();
+                let applicationId = $(this).closest('.dropdown-menu').find('.hidden_notification_id').val();
+                let authUserId = $('.hidden_auth_user_id').val();
+                console.log(applicationId);
+                $.ajax({
+                    url: '{{url('admin/hr/leave-applications/mark-notification-as-read')}}/' + authUserId,
+                    data:{
+                        application_id: applicationId
+                    },
+                    // success: () => {
+                    //     console.log('success');
+                    // }
+                })
+            })
+        })
     </script>
 
     @yield('scripts')

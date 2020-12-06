@@ -24,6 +24,17 @@ Route::post('advance-salaries/media', 'AdvanceSalaryController@storeMedia')->nam
 Route::post('advance-salaries/ckmedia', 'AdvanceSalaryController@storeCKEditorImages')->name('advance-salaries.storeCKEditorImages');
 Route::resource('advance-salaries', 'AdvanceSalaryController');
 
+
+ // Payment Methods
+Route::delete('payment-methods/destroy', 'PaymentMethodsController@massDestroy')->name('payment-methods.massDestroy');
+Route::resource('payment-methods', 'PaymentMethodsController', ['except' => ['edit', 'update', 'show']]);
+
+// Payments
+Route::delete('payments/destroy', 'PaymentsController@massDestroy')->name('payments.massDestroy');
+Route::post('payments/media', 'PaymentsController@storeMedia')->name('payments.storeMedia');
+Route::post('payments/ckmedia', 'PaymentsController@storeCKEditorImages')->name('payments.storeCKEditorImages');
+Route::resource('payments', 'PaymentsController');
+
 // Dalary Allowances
 Route::delete('salary-allowances/destroy', 'SalaryAllowanceController@massDestroy')->name('salary-allowances.massDestroy');
 Route::resource('salary-allowances', 'SalaryAllowanceController', ['except' => ['edit', 'update', 'show']]);

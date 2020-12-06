@@ -34,44 +34,45 @@ class DailyAttendancesController extends Controller
 
             $users = User::where('banned', 0)->select('id')->get();
             foreach ($users as $key => $user) {
-                $result = [];
-                $result['user_account_id'] = $user->accountDetail->id;
-                $result['id'] = $user->accountDetail->employment_id;
-                $result['name'] = $user->accountDetail->fullname;
-                $result['clock_out'] = $data_value->where('user_id', $user->id)->max('time') ?? '-';
-                $result['clock_in'] = $data_value->where('user_id', $user->id)->min('time') ?? '-';
-                $result['absent'] = getAbsentUsers($date, $user->id);
-                $result['vacation'] = getVacations($date, $user->id);
-                $result['holiday'] = getHolidays($date);
-                $fingerprintAttendances[] = $result;
+                if ($user->accountDetail()->first()) {
+                    $result = [];
+                    $result['user_account_id'] = $user->accountDetail->id;
+                    $result['user_id'] = $user->id;
+                    $result['id'] = $user->accountDetail->employment_id;
+                    $result['name'] = $user->accountDetail->fullname;
+                    $result['clock_out'] = $data_value->where('user_id', $user->id)->max('time') ?? '-';
+                    $result['clock_in'] = $data_value->where('user_id', $user->id)->min('time') ?? '-';
+                    $result['absent'] = getAbsentUsers($date, $user->id);
+                    $result['vacation'] = getVacations($date, $user->id);
+                    $result['holiday'] = getHolidays($date);
+                    $fingerprintAttendances[] = $result;
+                }
             }
 
             return view('hr::admin.dailyAttendances.index', compact('fingerprintAttendances', 'date'));
     }
 
     public function timeSet(Request $request) {
-        //return $request;
         $id=$request->id;
 
         $setimes= SetTime::all();
 
         if($setimes->count()>0){
-         $setimes= SetTime::find($id);
-        $setimes->in_time = $request->in_time;
-        $setimes->out_time = $request->out_time;
-        $setimes->save();
+            $setimes= SetTime::find($id);
+            $setimes->in_time = $request->in_time;
+            $setimes->out_time = $request->out_time;
+            $setimes->save();
 
-        return redirect()->back()->with('message', 'Set Update Successful!');
-
+            return redirect()->back()->with('message', 'Set Update Successful!');
         }else{
 
-         $setimes= new SetTime;
-        $setimes->created_by = auth()->user()->id;
-        $setimes->in_time = $request->in_time;
-        $setimes->out_time = $request->out_time;
-        $setimes->save();
+            $setimes= new SetTime;
+            $setimes->created_by = auth()->user()->id;
+            $setimes->in_time = $request->in_time;
+            $setimes->out_time = $request->out_time;
+            $setimes->save();
 
-        return redirect()->back()->with('message', 'Set Successful!');
+            return redirect()->back()->with('message', 'Set Successful!');
         }
 
     }

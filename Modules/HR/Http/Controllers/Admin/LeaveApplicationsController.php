@@ -6,14 +6,14 @@ use App\Events\NewNotification;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\MediaUploadingTrait;
 use Modules\HR\Entities\AccountDetail;
-use App\Models\Notification;
-use App\Models\Role;
+// use App\Models\Notification;
 use Modules\HR\Http\Requests\Destroy\MassDestroyLeaveApplicationRequest;
 use Modules\HR\Http\Requests\Store\StoreLeaveApplicationRequest;
 use Modules\HR\Http\Requests\Update\UpdateLeaveApplicationRequest;
 use Modules\HR\Entities\LeaveApplication;
 use Modules\HR\Entities\LeaveCategory;
 use App\Models\User;
+use App\Notifications\LeaveApplicationNotification;
 use Gate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -60,9 +60,8 @@ class LeaveApplicationsController extends Controller
                 }
             }else{
                 // All Leaves
-
                 $isDepartmentHead = Department::where('department_head_id', auth()->user()->id)->first();
-                if (User::authUserRole() == 'Board Members' || User::authUserRole() == 'Admin') {
+                if (User::find(auth()->user()->id)->hasRole('Board Members') || User::find(auth()->user()->id)->hasRole('Admin')) {
                     // All pending leaves for board and admin
                     $query = LeaveApplication::with(['user', 'leave_category'])->select(sprintf('%s.*', (new LeaveApplication)->table));
                 }elseif ($isDepartmentHead) {
@@ -177,6 +176,36 @@ class LeaveApplicationsController extends Controller
         return view('hr::admin.leaveApplications.index');
     }
 
+    // display all leaves of which the user has taken
+    // Return Total leaves taken by user and leave_quota
+    public function details(Request $request)
+    {
+        $userId = $request['user_id'];
+        $userName = $request['user_name'];
+        $date = $request['date'];
+
+        $categoryDetails = [];
+        foreach(LeaveCategory::all() as $category)
+        {
+            $cat = [];
+            $cat['name'] = $category->name;
+            $cat['check_available'] = checkAvailableLeaves($userId, $date, $category->id);
+            $categoryDetails[] = $cat;
+        }
+
+        return view('hr::admin.leaveApplications.leaves_details', compact('userId', 'userName', 'categoryDetails'))->render();
+    }
+
+    public function markNotificationAsRead($id)
+    {
+        // dd(Request()->application_id);
+        $user = User::findOrFail($id);
+        if ($notifyId = Request()->application_id) {
+            $user->notifications->find($notifyId)->markAsRead();
+        }
+        // return response()->json();
+    }
+
     public function create()
     {
         abort_if(Gate::denies('leave_application_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
@@ -185,8 +214,23 @@ class LeaveApplicationsController extends Controller
         $users = [];
         $activeUsers = User::where('banned', 0)->get();
         foreach ($activeUsers as $key => $value) {
-            $users[] = $value->accountDetail()->pluck('fullname', 'user_id');
+            if (auth()->user()->hasAnyRole(['Admin', 'Board Members'])) {
+                $users[] = $value->accountDetail()->pluck('fullname', 'user_id');
+            }else{
+                $users = auth()->user()->accountDetail()->pluck('fullname', 'user_id');
+            }
         }
+
+        $categoryDetails = [];
+        if (!auth()->user()->hasAnyRole(['Admin', 'Board Members'])) {
+            foreach(LeaveCategory::all() as $category)
+            {
+                $cat['name'] = $category->name;
+                $cat['check_available'] = checkAvailableLeaves(auth()->user()->id, date('Y-m'), $category->id);
+                $categoryDetails[] = $cat;
+            }
+        }
+
         $leave_categories = LeaveCategory::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         return view('hr::admin.leaveApplications.create', compact('users', 'leave_categories'));
@@ -226,23 +270,27 @@ class LeaveApplicationsController extends Controller
         /* !!!: Leave Notification */
         $leave_category = LeaveCategory::where('id', $leaveApplication->leave_category_id)->first()->name;
         /* !!!: Leave Mail */
-        Mail::to('marwa120640@gmail.com')->cc("marwa120640@gmail.com")
-                ->send(new LeaveRequest($leaveApplication, $leaveApplication->user_id, $leave_category));
+        // Mail::to('marwa120640@gmail.com')->cc("marwa120640@gmail.com")
+        //         ->send(new LeaveRequest($leaveApplication, $leaveApplication->user_id, $leave_category));
 
-        $notifyUsers = globalNotificationId($request->user_id);
+        // $notifyUsers = globalNotificationId($request->user_id);
+        // $notification = Notification::create([
+        //     'title'   => $leave_category,
+        //     'content' => User::find($request->user_id)->accountDetail()->first()->fullname . ' wants to apply for leave.',
+        //     'model_id' => $leaveApplication->id,
+        //     'model_type' => 'Modules\HR\Entities\LeaveApplication',
+        //     'show_path' => 'admin/hr/leave-applications',
+        // ]);
 
-        $notification = Notification::create([
-            'title'   => $leave_category,
-            'content' => User::find($request->user_id)->accountDetail()->first()->fullname . ' wants to apply for leave.',
-            'model_id' => $leaveApplication->id,
-            'model_type' => 'Modules\HR\Entities\LeaveApplication',
-            'show_path' => 'admin/hr/leave-applications',
-        ]);
-
-        $notification->users()->attach($notifyUsers);
-
-        event(new NewNotification($notification));
+        // $notification->users()->attach($notifyUsers);
+        // event(new NewNotification($notification));
         /* !!!: End Leave Notification */
+
+        /* !!!: Notification (db, mail) via Laravel $user->notify() */
+        $user = User::find(1);
+        $user->notify(new LeaveApplicationNotification($leaveApplication, $leave_category));
+        /* !!!: End Notification (db, mail) via Laravel $user->notify() */
+
 
         // Sending Emails for each User admin and Depart. Head
 
@@ -373,8 +421,6 @@ class LeaveApplicationsController extends Controller
 
         return response(null, Response::HTTP_NO_CONTENT);
     }
-
-
 
     public function storeCKEditorImages(Request $request)
     {

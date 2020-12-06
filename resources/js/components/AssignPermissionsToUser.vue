@@ -143,11 +143,11 @@ export default {
     ],
     data() {
       return {
-        url_users_list: '/users_list',
-        urlAssignToUser: '/assign_to_user/',
-        urlGetPermissions: '/permissions',
-        urlGetNameRoles: '/name_roles',
-        urlGetUserPermissions: '/roles_permissions_for_user/',
+        url_users_list: '/admin/users_list',
+        urlAssignToUser: '/admin/assign_to_user/',
+        urlGetPermissions: '/admin/permissions',
+        urlGetNameRoles: '/admin/name_roles',
+        urlGetUserPermissions: '/admin/roles_permissions_for_user/',
         userData: {
             fullname: '',
             user: {},

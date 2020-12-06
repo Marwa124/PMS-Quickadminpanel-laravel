@@ -6,11 +6,12 @@
 @section('content')
 @inject('accountDetailModel', 'Modules\HR\Entities\AccountDetail')
 @inject('userModel', 'App\Models\User')
-@inject('roleModel', 'App\Models\Role')
+@inject('roleModel', 'Spatie\Permission\Models\Role')
 @inject('departmentModel', 'Modules\HR\Entities\Department')
 
 
 {{-- Board Members --}}
+<<<<<<< HEAD
 {{--<div class="pg-orgchart">--}}
 {{--    <div class="org-chart">--}}
 {{--        <?php--}}
@@ -36,6 +37,41 @@
 {{--        </ul>--}}
 {{--    </div>--}}
 {{--</div>--}}
+=======
+<div class="pg-orgchart">
+    <div class="org-chart">
+        <?php 
+            $roleMembers = $roleModel::where('name', 'Board Members')->first();
+            // $roleAdmin = $roleModel::where('name', 'Admin')->first();
+
+            $boardMembers = [];
+            foreach ($userModel::all() as $key => $value) {
+                if($value->hasRole('Board Members')){
+                    $boardMembers[] = $value;
+                }
+            }
+            // dd();
+            // $boardMembers = $userModel::hasRole('Board Members');
+            // $adminMembers = $userModel::hasRole('Admin');
+        ?>
+        <div style="position: absolute">{{$roleMembers->name}}</div>
+        <ul>
+            @foreach ($boardMembers as $item)
+            <?php $accountDetail = $item->accountDetail()->first(); ?>
+            <li>
+                <div class="user">
+                    <img src="{{ $accountDetail->avatar ? $accountDetail->avatar->getUrl('thumb') : asset('images/default.png') }}"
+                        class="img-responsive" />
+                    {{-- <div class="name">Roy Lemarie</div> --}}
+                    {{-- <div class="role pt-2">{{$accountDetail->user->role()->first()->title}}</div> --}}
+                    <a class="name text-danger d-block" href="{{route('hr.admin.account-details.show', $accountDetail->select('id')->first()->id)}}">{{$accountDetail->fullname}}</a>
+                </div>
+            </li>
+            @endforeach
+        </ul>
+    </div>
+</div>
+>>>>>>> aa652cf4ba0582a41789ba280011a914311f4fbe
 {{-- Board Members --}}
 
 
@@ -64,7 +100,6 @@
                             <img src="{{ $departmentHead->avatar ? $departmentHead->avatar->getUrl('thumb') : asset('images/default.png') }}"
                                 class="img-responsive" />
                             <div class="name">{{$departmentHead->designation ? $departmentHead->designation->department()->first()->department_name : ''}}</div>
-                            {{-- <div class="role">{{$departmentHead->user->role()->first()->title}}</div> --}}
                             <a class="manager" href="{{route('hr.admin.account-details.show', $departmentHead->user()->select('id')->first()->id)}}">{{$departmentHead->fullname}}</a>
                         </div>
                         <ul>
@@ -86,7 +121,6 @@
                                     class="img-responsive" />
                                     {{-- <div class="name">{{$leader->designation ? $leader->designation->department()->first()->department_name : ''}}</div> --}}
                                     <div class="name">{{$leader->designation()->first()->designation_name}}</div>
-                                    {{-- <div class="role">{{$leader->user->role()->first()->title}}</div> --}}
                                     <a class="manager" href="{{route('hr.admin.account-details.show', $leader->user()->select('id')->first()->id)}}">{{$leader->fullname}}</a>
                                 </div>
                                 <ul>
@@ -106,7 +140,6 @@
                                                 class="img-responsive" />
                                             {{-- <div class="name">{{$item->designation->department()->first()->department_name}}</div> --}}
                                             <div class="name">{{$item->designation()->first()->designation_name}}</div>
-                                            {{-- <div class="role">{{$item->user->role()->first()->title}}</div> --}}
                                             <a class="manager" href="{{route('hr.admin.account-details.show', $item->user()->select('id')->first()->id)}}">{{$item->fullname}}</a>
                                         </div>
                                     </li>

@@ -122,7 +122,7 @@
                             <td>
                                 {{number_format($salaryTemplate ? $salaryTemplate->basic_salary : 0, 2)}}
                             </td>
-                            <?php 
+                            <?php
                             $netSalary = 0;
                             if ($salaryTemplate) {
                                 $salaryDeduction = $salaryDeductionModel->where('salary_template_id', $salaryTemplate->id)->sum('value');
@@ -132,7 +132,7 @@
                             <td>{{number_format($netSalary ?? 0, 2)}}</td>
                             <td>
                                 @can('salary_payment_show')
-                                
+
                                 <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#showModal{{$detail->user_id}}">
                                     <i class="fa fa-list-alt"></i>
                                 </button>
@@ -222,7 +222,7 @@
                                     </div>
 
                                 @endcan
-                                
+
                             </td>
                             <?php
                                 $salaryPayment = $salaryPaymentModel->where('payment_month', date('Y-m'))->where('user_id', $detail->user_id)->first();
@@ -244,7 +244,7 @@
                                     @endcan
                                 @elseif($salaryTemplate)
                                     @can('salary_payment_create')
-                                        <a class="text-danger" href="{{ route('payroll.admin.salary-payments.create') }}">
+                                        <a class="text-danger" href="{{ route('payroll.admin.salary-payments.create', $date.'&'.$departmentRequest) }}">
                                             {{ trans('cruds.salaryPayment.fields.make_payment') }}
                                         </a>
                                     @endcan
@@ -274,36 +274,6 @@
 <script>
     $(function () {
   let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-@can('salary_payment_delete')
-  let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
-  let deleteButton = {
-    text: deleteButtonTrans,
-    url: "{{ route('payroll.admin.salary-payments.massDestroy') }}",
-    className: 'btn-danger',
-    action: function (e, dt, node, config) {
-      var ids = $.map(dt.rows({ selected: true }).nodes(), function (entry) {
-          return $(entry).data('entry-id')
-      });
-
-      if (ids.length === 0) {
-        alert('{{ trans('global.datatables.zero_selected') }}')
-
-        return
-      }
-
-      if (confirm('{{ trans('global.areYouSure') }}')) {
-        $.ajax({
-          headers: {'x-csrf-token': _token},
-          method: 'POST',
-          url: config.url,
-          data: { ids: ids, _method: 'DELETE' }})
-          .done(function () { location.reload() })
-      }
-    }
-  }
-  dtButtons.push(deleteButton)
-@endcan
-
   $.extend(true, $.fn.dataTable.defaults, {
     orderCellsTop: true,
     order: [[ 1, 'desc' ]],
@@ -314,14 +284,14 @@
       $($.fn.dataTable.tables(true)).DataTable()
           .columns.adjust();
   });
-  
+
 
   $("#datepicker").datepicker( {
         format: "yyyy-mm",
         startView: "months",
         minViewMode: "months"
     });
-    
+
 })
 
 </script>

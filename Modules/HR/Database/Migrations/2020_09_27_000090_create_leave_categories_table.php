@@ -12,8 +12,8 @@ class CreateLeaveCategoriesTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->integer('leave_quota')->nullable();
-            $table->float('deducted_amount')->nullable();
-            $table->float('annual_monthly')->nullable()->comment('annually=1 monthly=0');
+            $table->float('deducted_amount')->default(0);
+            $table->float('annual_monthly')->default(0)->comment('annually=1 monthly=0');
             $table->timestamps();
             $table->softDeletes();
         });

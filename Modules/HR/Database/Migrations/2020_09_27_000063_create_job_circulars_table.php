@@ -20,6 +20,7 @@ class CreateJobCircularsTable extends Migration
             $table->date('last_date')->nullable();
             $table->longText('description')->nullable();
             $table->string('status')->nullable();
+            $table->unsignedInteger('designation_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

@@ -28,7 +28,7 @@
                 <!-- /.Notification Box -->
                 <div class="col-md-12">
                     <form action="{{ route('hr.admin.monthly-attendances.index') }}" method="get">
-                        @csrf
+                        {{-- @csrf --}}
                         <div class="form-group m-auto d-flex justify-content-center">
                             <div class="col-sm-offset-3 col-sm-6">
                                 <div class="input-group margin">

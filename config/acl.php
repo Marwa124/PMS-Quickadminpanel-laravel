@@ -323,6 +323,7 @@
                 'salary_template_edit',
                 'salary_payment_detail_show',
                 'payroll_summary',
+                'advance_salary_create',
             ],
 
             'vacations' => [
@@ -350,20 +351,20 @@
             ],
             // crm
             'leads' => [
-                'lead_category_create', // done
-                'lead_category_edit', // done
-                'lead_category_show', // done
-                'lead_category_delete', // done
-                'lead_category_access', // done
-                'lead_source_create', // done
-                'lead_source_delete', // done
-                'lead_source_access',
-                'lead_status_create',
-                'lead_status_delete',
-                'lead_status_access',
-                'salutation_create',
-                'salutation_delete',
-                'salutation_access',
+                'countries_create', // done
+                'countries_edit', // done
+                'countries_show', // done
+                'countries_delete', // done
+                // 'lead_category_access', // done
+                // 'lead_source_create', // done
+                // 'lead_source_delete', // done
+                // 'lead_source_access',
+                // 'lead_status_create',
+                // 'lead_status_delete',
+                // 'lead_status_access',
+                // 'salutation_create',
+                // 'salutation_delete',
+                // 'salutation_access',
                 'lead_create',
                 'lead_edit',
                 'lead_show',

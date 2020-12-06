@@ -10,7 +10,7 @@ class AddRelationshipFieldsToSalaryDeductionsTable extends Migration
     {
         Schema::table('salary_deductions', function (Blueprint $table) {
             $table->unsignedInteger('salary_template_id');
-            $table->foreign('salary_template_id', 'salary_template_fk_2181316')->references('id')->on('salary_templates');
+            // $table->foreign('salary_template_id', 'salary_template_fk_2181316')->references('id')->on('salary_templates');
         });
     }
 }

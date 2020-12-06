@@ -1,6 +1,15 @@
 @extends('layouts.admin')
 @section('content')
 @inject('salaryTemplateModel', 'Modules\Payroll\Entities\SalaryTemplate')
+@inject('advanceSalaryModel', 'Modules\Payroll\Entities\AdvanceSalary')
+
+
+<div class="row">
+    <div class="displayMsg">
+        <div class="alert alert-success" role="alert">
+        </div>
+    </div>
+</div>
 <div class="row">
     @can('account_detail_create')
         <div style="margin-bottom: 10px;" class="row">
@@ -93,9 +102,9 @@
                                         src="{{ str_replace('storage', 'public/storage', $accountDetail->avatar->getUrl('thumb')) }}">
                                     </a> --}}
 
-                                    <a href="{{ str_replace('storage', 'storage/app/public', $accountDetail->avatar->getUrl()) }}" target="_blank">
+                                    <a href="{{ $accountDetail->avatar->getUrl() }}" target="_blank">
                                         <img class="rounded-circle img-thumbnail d-flex m-auto"
-                                        src="{{ str_replace('storage', 'storage/app/public', $accountDetail->avatar->getUrl('thumb')) }}">
+                                        src="{{$accountDetail->avatar->getUrl('thumb') }}">
                                     </a>
                                     {{-- <a href="{{ $accountDetail->avatar->getUrl() }}" target="_blank">
                                         <img class="rounded-circle img-thumbnail d-flex m-auto"
@@ -154,6 +163,76 @@
                                         </a>
                                     @endcan
 
+                                    {{-- Adjust User Salary --}}
+                                    @can('employee_award_access')
+                                        <button type="button" class="btn btn-xs btn-secondary" data-toggle="modal" data-target="#advancedSalary{{$accountDetail->user_id}}">
+                                            Edit Salary
+                                        </button>
+
+                                        <?php
+                                            $advancedUserSalaray = $advanceSalaryModel::where('user_id', $accountDetail->user_id)->first();
+                                        ?>
+
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="advancedSalary{{$accountDetail->user_id}}" tabindex="-1" role="dialog" aria-labelledby="advancedSalaryTitle{{$accountDetail->user_id}}" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                <h5 class="modal-title" id="advancedSalaryTitle{{$accountDetail->user_id}}">Adjust User Salary for {{date('F')}} Month</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                </div>
+                                                {{-- <form action="{{route('hr.admin.account-details.advancedSalary', $accountDetail->user_id)}}" method="post"></form> --}}
+                                                <div class="modal-body">
+                                                    <div class="displayMsg">
+                                                        <ul class="alert alert-danger" role="alert">
+                                                        </ul>
+                                                    </div>
+                                                    <input type="integer" hidden value="{{$accountDetail->user_id}}" name="user_id">
+                                                    <input type="text" hidden value="{{date('Y-m')}}" name="month">
+                                                    <div class="form-group">
+                                                        <label class="required">Type</label>
+                                                        <select class="form-control {{ $errors->has('type') ? 'is-invalid' : '' }}" name="type" required>
+                                                            <option value disabled {{ old('type', null) === null ? 'selected' : '' }}>{{ trans('global.pleaseSelect') }}</option>
+                                                            @foreach($advanceSalaryModel::TYPE_SELECT as $key => $label)
+                                                                <option value="{{ $key }}"
+                                                                @if ($advancedUserSalaray && (date('Y-m') == $advancedUserSalaray->month))
+                                                                    {{($advancedUserSalaray->type == $label) ? 'selected' : ''}}
+                                                                @endif
+                                                                >{{ $label }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="required" for="">Amount</label>
+                                                        <input name="amount" type="integer" class="form-control" placeholder="ex:1000 EGY" required
+                                                        value="{{$advancedUserSalaray ? ((date('Y-m') == $advancedUserSalaray->month) ? $advancedUserSalaray->amount : '') : ''}}"
+                                                        >
+                                                        <span class="text-danger fa-xs amountTextAlert">Enter amount as days for this type</span>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="">Reason</label>
+                                                        <textarea name="reason" class="form-control" id=""
+                                                        value="{{$advancedUserSalaray ? ((date('Y-m') == $advancedUserSalaray->month) ? $advancedUserSalaray->reason : '') : ''}}"
+                                                        ></textarea>
+                                                    </div>
+                                                </div>
+
+                                                <div class="modal-footer">
+                                                {{-- <input type="button" class="btn btn-primary updateUserSalary" data-dismiss="modal" aria-label="Close" value="Update"> --}}
+            {{-- // class="close" data-dismiss="modal" aria-label="Close" --}}
+
+                                                <input type="button" class="btn btn-primary updateUserSalary" value="Update"
+                                                data-dismiss="" aria-label="Close">
+                                                </div>
+                                            </div>
+                                            </div>
+                                        </div>
+                                    @endcan
+                                    {{-- Adjust User Salary --}}
+
+
                                     @can('permission_access')
                                         {{-- <a href="{{ route("admin.permissions.index", $accountDetail->user_id) }}" class="btn btn-xs btn-warning"> --}}
                                         <a href="{{ route("admin.permissions.index", $accountDetail->id) }}" class="btn btn-xs btn-warning">
@@ -207,11 +286,16 @@
 @endsection
 @section('scripts')
 @parent
+<script defer>
+    $(function(){
+        $('.displayMsg').css('display', 'none');
+        $('.amountTextAlert').css('display', 'none');
+    })
+</script>
+
 <script>
     $(function () {
         $('.restoreDelete').css('display', 'none');
-
-
 
   let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
 // @can('account_detail_delete')
@@ -307,6 +391,69 @@
 //   })
 
 
+$('select[name="type"]').change(function(){
+    let selectedType = $(this).closest('.modal').find('select[name="type"]').val();
+    if (selectedType == 'Penalty') {
+        $('.amountTextAlert').css('display', 'block');
+        $('input[name="amount"]').attr('placeholder', 'ex:0.5 day/s');
+    }else{
+        $('.amountTextAlert').css('display', 'none');
+        $('input[name="amount"]').attr('placeholder', 'ex:1000 EGY');
+    }
+})
+
+$('.updateUserSalary').on('click', function(){
+    var userId = $(this).closest('.modal').find('input[name="user_id"]').val();
+    var type   = $(this).closest('.modal').find('select[name="type"]').val();
+    var amount = $(this).closest('.modal').find('input[name="amount"]').val();
+    var month  = $(this).closest('.modal').find('input[name="month"]').val();
+    var reason = $(this).closest('.modal').find('input[name="reason"]').val();
+    console.log(type);
+    console.log(userId);
+    $.ajax({
+        url: '{{url('admin/hr/account-details/advanced-salary')}}/' + userId,
+        type: 'post',
+        data: {
+            _token: '{{csrf_token()}}',
+            user_id: userId,
+            type:    type,
+            amount:  amount,
+            month:   month,
+            reason:  reason
+        },
+        success: function(res) {
+            // $('#advancedSalary' + userId).modal('hide');
+
+            // $("input[type='button']").addClass("close");
+            // $("input[type='button']").attr("data-dismiss", "modal");
+            // $("input[type='button']").closest('div').find('.modal').hide();
+
+
+            $('#advancedSalary'+userId).modal('toggle');
+
+            $('div.modal-backdrop').removeClass('fade show modal-backdrop');
+
+            $('.displayMsg').css('display', 'block');
+            $('.displayMsg .alert-success').html('Updated Salary Successfully');
+            $('.displayMsg').delay(2000).slideUp(1000);
+            // $(this).closest('.modal').
+            console.log(res);
+        },
+        error: function(error) {
+            $('.displayMsg .alert-danger').html(``);
+
+            console.log(error.responseJSON.errors);
+
+            $.each( error.responseJSON.errors, function( index, value ){
+                value.forEach(err => {
+                $('.displayMsg').css('display', 'block');
+                    $('.displayMsg .alert-danger').append(`<li>`+err+`</li>`);
+                });
+            });
+        }
+
+    })
+});
 
 })
 

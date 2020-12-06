@@ -41,7 +41,7 @@ class NewNotification implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        $notifyUsers = globalNotificationId($this->user_id);
+        // $notifyUsers = globalNotificationId($this->user_id);
 
         return new PrivateChannel('new-notification');
         // return new PrivateChannel('new-notification.'.$this->user_id);

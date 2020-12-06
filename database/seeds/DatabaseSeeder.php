@@ -10,6 +10,7 @@ class DatabaseSeeder extends Seeder
             DepartmentsTableSeeder::class,
             DesignationsTableSeeder::class,
             SalaryTemplatesTableSeeder::class,
+            LeaveCategoriesTableSeeder::class,
 
             RolesTableSeeder::class,
             PermissionsTableSeeder::class,
@@ -17,10 +18,10 @@ class DatabaseSeeder extends Seeder
             UsersTableSeeder::class,
             AccountDetailsTableSeeder::class,
 
+            PaymentMethodsTableSeeder::class,
 
-            // PermissionRoleTableSeeder::class,
-            // CrmStatusTableSeeder::class,
-            // TaskStatusTableSeeder::class,
+            // Exists in Payroll Module
+            // SalaryDeductionsTableSeeder::class,
         ]);
     }
 }

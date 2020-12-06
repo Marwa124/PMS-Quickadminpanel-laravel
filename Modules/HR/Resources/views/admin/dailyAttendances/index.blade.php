@@ -17,7 +17,7 @@
                 <!-- /.Notification Box -->
                 <div class="col-md-12">
                     <form action="{{ route('hr.admin.daily-attendances.index') }}" method="get">
-                        @csrf
+                        {{-- @csrf --}}
                         <div class="form-group m-auto d-flex justify-content-center">
                             <div class="col-sm-offset-3 col-sm-6">
                                 <div class="input-group margin">
@@ -70,17 +70,22 @@
                         <th>
                             {{ trans('cruds.dailyAttendance.fields.holiday') }}
                         </th>
+                        <th>
+                            Leave Details
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($fingerprintAttendances as $key => $dailyAttendance)
                     @if ($dailyAttendance != null)
+                    {{-- {{dd($dailyAttendance)}} --}}
                     <tr data-entry-id="{{ $dailyAttendance['id'] }}">
+                        <input type="integer" class="hidden_user_id" value="{{ $dailyAttendance['user_id'] ?? '' }}" hidden>
                         <td>
-                            {{ $dailyAttendance['id'] ?? '' }}
+                            {{ $dailyAttendance['user_id'] ?? '' }}
                         </td>
                         <td>
-                            <a href="{{route('admin.account-details.show', $dailyAttendance['user_account_id'])}}">
+                            <a href="{{route('hr.admin.account-details.show', $dailyAttendance['user_account_id'])}}" class="user_name">
                                 {{ $dailyAttendance['name'] ?? '' }}
                             </a>
                         </td>
@@ -99,6 +104,13 @@
                         </td>
                         <td>
                             {{ $dailyAttendance['holiday'] ?? '' }}
+                        </td>
+                        <td>
+                            <!-- Leave Details modal -->
+                            <button type="button" class="btn btn-primary btn-xs leaveDetails" data-toggle="modal" data-target="#leavesDetails{{$dailyAttendance['user_id'] ?? ''}}">
+                                <i class="fas fa-clipboard-list"></i>
+                            </button>
+                            <div class="leaveDetailsModal"></div>
                         </td>
                     </tr>
                     @endif
@@ -123,7 +135,7 @@
     order: [[ 1, 'desc' ]],
     pageLength: 25,
   });
-  let table = $('.datatable-DailyAttendance:not(.ajaxTable)').DataTable({ 
+  let table = $('.datatable-DailyAttendance:not(.ajaxTable)').DataTable({
     "buttons": [
        { "extend": 'pdf', "text":'PDF',"className": 'btn btn-default' },
        { "extend": 'csv', "text":'CSV',"className": 'btn btn-default' },
@@ -144,6 +156,36 @@
       $($.fn.dataTable.tables(true)).DataTable()
           .columns.adjust();
   });
+
+
+    $('.leaveDetailsModal').html(``);
+
+
+    //Leave User Details Redirect Btn to modal blade
+    $('.leaveDetails').click(function(){
+        let userId   = $(this).closest('tr').find('.hidden_user_id').val();
+        let userName = $(this).closest('tr').find('.user_name').text();
+        let str = $('input[name="date"]').val();
+        var date = str.substr(0, 7);
+        console.log($(this).closest('tr').find('.hidden_user_id'));
+        console.log(userId);
+        var e = $(this);
+        $.ajax({
+            url: '{{route("hr.admin.leave-applications.details")}}',
+            type:'get',
+            dataType: 'html',
+            data: {
+                user_id:   userId,
+                user_name: userName,
+                date: date,
+            },
+            success: function(res){
+                e.closest('td').find('.leaveDetailsModal').html(res);
+
+                $('#leavesDetails'+userId).modal('toggle');
+            }
+        })
+    });
 
 })
 
