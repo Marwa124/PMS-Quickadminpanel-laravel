@@ -102,9 +102,9 @@
                                         src="{{ str_replace('storage', 'public/storage', $accountDetail->avatar->getUrl('thumb')) }}">
                                     </a> --}}
 
-                                    <a href="{{ str_replace('storage', 'storage/app/public', $accountDetail->avatar->getUrl()) }}" target="_blank">
+                                    <a href="{{ $accountDetail->avatar->getUrl() }}" target="_blank">
                                         <img class="rounded-circle img-thumbnail d-flex m-auto"
-                                        src="{{ str_replace('storage', 'storage/app/public', $accountDetail->avatar->getUrl('thumb')) }}">
+                                        src="{{$accountDetail->avatar->getUrl('thumb') }}">
                                     </a>
                                     {{-- <a href="{{ $accountDetail->avatar->getUrl() }}" target="_blank">
                                         <img class="rounded-circle img-thumbnail d-flex m-auto"

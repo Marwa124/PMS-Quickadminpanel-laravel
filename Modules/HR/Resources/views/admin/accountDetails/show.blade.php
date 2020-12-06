@@ -11,7 +11,7 @@
     <div class="col-sm-3">
         <div class="">
             <div class="text-center">
-                <img class="img-thumbnail rounded-circle" width="30%" src="{{ $accountDetail->avatar ? str_replace('storage', 'public/storage', $accountDetail->avatar->getUrl()) : asset('images/default.png') }}" alt="">
+                <img class="img-thumbnail rounded-circle" width="30%" src="{{ $accountDetail->avatar ? str_replace('storage', 'storage', $accountDetail->avatar->getUrl()) : asset('images/default.png') }}" alt="">
             </div>
             <h3 class="m0 text-center">{{ $accountDetail->fullname ?? '' }}</h3>
             <p class="text-center">
