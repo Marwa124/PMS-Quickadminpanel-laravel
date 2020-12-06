@@ -185,14 +185,11 @@ class User extends Authenticatable implements HasMedia
         // $this->attributes['last_login'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
     }
 
-<<<<<<< HEAD
 //     public function permissions()
 //     {
 //         return $this->belongsToMany(Permission::class);
 //     }
 
-=======
->>>>>>> aa652cf4ba0582a41789ba280011a914311f4fbe
     public function getDateOfJoinAttribute($value)
     {
         return $value ? Carbon::parse($value)->format(config('panel.date_format')) : null;

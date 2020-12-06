@@ -57,7 +57,7 @@ class ProjectsController extends Controller
         $sittings = json_encode($request->settings);
         unset($request['settings']);
         $request['project_settings'] = $sittings;
-        dd($request->all());
+
         $project = Project::create($request->all());
         //$project->permissions()->sync($request->input('permissions', []));
 
@@ -74,7 +74,7 @@ class ProjectsController extends Controller
 
         $clients = Client::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        //$permissions = Permission::all()->pluck('title', 'id');
+
         $project->load('client','department');
         //$project->load('client', 'permissions');
 
@@ -90,7 +90,7 @@ class ProjectsController extends Controller
         $sittings = json_encode($request->settings);
         unset($request['settings']);
         $request['project_settings'] = $sittings;
-        //dd($request->all());
+
         if (!$request->progress){
             $request['progress'] = null;
         }
@@ -123,19 +123,6 @@ class ProjectsController extends Controller
         abort_if(Gate::denies('project_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $project = Project::where('id',$id)->with('accountDetails.user.permissions')->first();
 
-//        foreach ($project->accountDetails as $account){
-//            dd($account->projects,$account);
-//            if ($account->projects->count()>1){
-//                $project->accountDetails()->detach();
-//                $project->delete();
-//                return back();
-//            }
-//            foreach ($account->user->permissions as $permission){
-//                dd($permission->name);
-//            }
-//            dd($account->user->permissions);
-//        }
-//        dd('llll');
         $project->accountDetails()->detach();
         $project->delete();
         return back();
@@ -199,42 +186,28 @@ class ProjectsController extends Controller
         $project_permissions_notToMember = $this->getPermissionID($project_permissions_notToMember_names);
         $project_permissions_toMember = $this->getPermissionID($project_permissions_toMember_names);
 
-        //dd($project_permissions_head,$project_permissions_notToMember,$project_permissions_toMember);
         foreach ($accounts as $account){
 
             foreach ($account->user->permissions as $permission){
 
-                //dd($permission->name);
                 if (in_array($permission->name,$project_permissions_notToMember_names)){
-                    //$account->user->detachPermissions($project_permissions_notToMember);
                     $account->user->permissions()->detach($project_permissions_notToMember);
                 }
             }
-            //$account->user->syncWithoutDetachingPermissions($project_permissions_toMember);
             $account->user->permissions()->syncWithoutDetaching($project_permissions_toMember);
 
             foreach ($account->user->department as $department){
                 if ($department->department_name == $project->department->department_name){
-                    //$account->user->syncWithoutDetachingPermissions($project_permissions_head);
                     $account->user->permissions()->syncWithoutDetaching($project_permissions_head);
-                    //dd($account->user->permissions);
-                    //$account->user->syncPermissions($project_permissions_head);
+
 
                     break;
                 }
 
-                //dd($department,$project->department->department_name);
+
             }
-            //$account->user->syncPermissions(['project_management_access','project_access', 'project_show']);
-            //dd($account->user->department->toArray(),$project->department->department_name);
-//            if (in_array($project->department,$account->user->department)){
-//
-//                $account->user->syncPermissions(['project_management_access','project_create', 'project_show','project_edit']);
-//            }else{
-//                $account->user->syncPermissions(['project_management_access', 'project_show']);
-//            }
+
         }
-        //dd($account->user->department,$project->department);
 
         return redirect()->route('projectmanagement.admin.projects.index');
     }
