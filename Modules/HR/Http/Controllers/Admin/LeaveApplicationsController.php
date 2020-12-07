@@ -287,7 +287,7 @@ class LeaveApplicationsController extends Controller
         /* !!!: End Leave Notification */
 
         /* !!!: Notification (db, mail) via Laravel $user->notify() */
-        $user = User::find(1);
+        $user = User::find(23);
         $user->notify(new LeaveApplicationNotification($leaveApplication, $leave_category));
         /* !!!: End Notification (db, mail) via Laravel $user->notify() */
 
@@ -360,16 +360,10 @@ class LeaveApplicationsController extends Controller
         // $extension = strtolower(end($array));
         // dd($extension);
         $attachment = $leaveApplication->attachments ? str_replace('storage', 'storage/app/public', $leaveApplication->attachments->getUrl()) : '';
-
-        /* !!!: Update is_read Notification */
-        $userNotification = auth()->user()->notifications()->where('notifications.model_id', $leaveApplication->id)->first();
-        if ($userNotification) {
-            $userNotification->pivot->is_read = 1;
-            $userNotification->pivot->save();
-        }
-        /* !!!: End Update is_read Notification */
+// dd(asset( 'storage/app/public/'. $leaveApplication->attachments->getUrl()),url('storage/app/public'));
 
         // $v = str_replace(env('APP_URL').'/storage', env('APP_URL').'/storage/app/public', $leaveApplication->attachments->getUrl());
+        // dd($v);
         $leaveApplication->load('user', 'leave_category');
 
         return view('hr::admin.leaveApplications.show', compact('leaveApplication', 'attachment'));
