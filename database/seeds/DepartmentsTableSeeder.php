@@ -18,7 +18,7 @@ class DepartmentsTableSeeder extends Seeder
                 'username' => 'helpdesk@onetecgroup.com',
                 'password' => 'M29ndkdvN1VEMWpnUGdUQllqTXJndz09',
                 'mailbox' => 'INBOX',
-                // 'department_head_id' => '25',
+                'department_head_id' => User::where('id',25)->first()->id,
             ],
             [
                 'id' => '2',
@@ -29,7 +29,7 @@ class DepartmentsTableSeeder extends Seeder
                 'username' => 'support@onetecgroup.com',
                 'password' => 'M29ndkdvN1VEMWpnUGdUQllqTXJndz09',
                 'mailbox' => 'INBOX',
-                // 'department_head_id' => '6',
+                 'department_head_id' => User::where('id',6)->first()->id,
             ],
             [
                 'id' => '3',
@@ -40,7 +40,7 @@ class DepartmentsTableSeeder extends Seeder
                 'username' => 'sales@onetecgroup.com',
                 'password' => 'M29ndkdvN1VEMWpnUGdUQllqTXJndz09',
                 'mailbox' => 'INBOX',
-                // 'department_head_id' => '15',
+                 'department_head_id' => User::where('id',15)->first()->id,
             ],
             [
                 'id' => '4',
@@ -51,7 +51,7 @@ class DepartmentsTableSeeder extends Seeder
                 'username' => 'finance@onetecgroup.com',
                 'password' => 'M29ndkdvN1VEMWpnUGdUQllqTXJndz09',
                 'mailbox' => 'INBOX',
-                // 'department_head_id' => '7',
+                 'department_head_id' => User::where('id',7)->first()->id,
             ],
             [
                 'id' => '5',
@@ -62,7 +62,7 @@ class DepartmentsTableSeeder extends Seeder
                 'username' => 'hr@onetecgroup.com',
                 'password' => 'M29ndkdvN1VEMWpnUGdUQllqTXJndz09',
                 'mailbox' => 'INBOX',
-                // 'department_head_id' => '',
+                 'department_head_id' => User::where('id',11)->first()->id,
             ],
             [
                 'id' => '7',
@@ -73,7 +73,7 @@ class DepartmentsTableSeeder extends Seeder
                 'username' => 'ceo@onetecgroup.com',
                 'password' => 'M29ndkdvN1VEMWpnUGdUQllqTXJndz09',
                 'mailbox' => 'INBOX',
-                // 'department_head_id' => '11',
+                 'department_head_id' => User::where('id',11)->first()->id,
             ],
             [
                 'id' => '8',
@@ -84,7 +84,7 @@ class DepartmentsTableSeeder extends Seeder
                 'username' => 'ceo@onetecgroup.com',
                 'password' => 'M29ndkdvN1VEMWpnUGdUQllqTXJndz09',
                 'mailbox' => 'INBOX',
-                // 'department_head_id' => '11',
+                 'department_head_id' => User::where('id',11)->first()->id,
             ]
         ];
 

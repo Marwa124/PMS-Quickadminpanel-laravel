@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
+use Modules\ProjectManagement\Entities\Project;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
@@ -214,4 +215,17 @@ class User extends Authenticatable implements HasMedia
     // {
     //     return $this->morphedByMany(Notification::class, 'userable')->withPivot('is_read');
     // }
+
+
+    public function getUserProjectsByUserID($user_id){
+        $user = User::findOrFail($user_id);
+        if ($user->hasrole(['Admin','Super Admin'])){
+            $projects = Project::all();
+//            $clients = Client::get();
+        }else{
+            $projects = $user->accountDetail->projects;
+        }
+
+        return $projects;
+    }
 }

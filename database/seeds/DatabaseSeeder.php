@@ -20,8 +20,6 @@ class DatabaseSeeder extends Seeder
 
             PaymentMethodsTableSeeder::class,
 
-            // Exists in Payroll Module
-            // SalaryDeductionsTableSeeder::class,
         ]);
     }
 }

@@ -39,14 +39,14 @@
                             {{ $project->client->name ?? '' }}
                         </td>
                     </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.project.fields.progress') }}
-                        </th>
-                        <td>
-                            {{ $project->progress }}
-                        </td>
-                    </tr>
+{{--                    <tr>--}}
+{{--                        <th>--}}
+{{--                            {{ trans('cruds.project.fields.progress') }}--}}
+{{--                        </th>--}}
+{{--                        <td>--}}
+{{--                            {{ $project->progress }}--}}
+{{--                        </td>--}}
+{{--                    </tr>--}}
                     <tr>
                         <th>
                             {{ trans('cruds.project.fields.calculate_progress') }}
@@ -71,14 +71,14 @@
                             {{ $project->end_date }}
                         </td>
                     </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.project.fields.actual_completion') }}
-                        </th>
-                        <td>
-                            {{ $project->actual_completion }}
-                        </td>
-                    </tr>
+{{--                    <tr>--}}
+{{--                        <th>--}}
+{{--                            {{ trans('cruds.project.fields.actual_completion') }}--}}
+{{--                        </th>--}}
+{{--                        <td>--}}
+{{--                            {{ $project->actual_completion }}--}}
+{{--                        </td>--}}
+{{--                    </tr>--}}
                     <tr>
                         <th>
                             {{ trans('cruds.project.fields.alert_overdue') }}
@@ -119,57 +119,47 @@
                             {!! $project->description !!}
                         </td>
                     </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.project.fields.notify_client') }}
-                        </th>
-                        <td>
-                            {{ Modules\ProjectManagement\Entities\Project::NOTIFY_CLIENT_RADIO[$project->notify_client] ?? 'No' }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.project.fields.timer_status') }}
-                        </th>
-                        <td>
-                            {{ Modules\ProjectManagement\Entities\Project::TIMER_STATUS_RADIO[$project->timer_status] ?? '' }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.project.fields.timer_started_by') }}
-                        </th>
-                        <td>
-                            {{ $project->timer_started_by }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.project.fields.start_time') }}
-                        </th>
-                        <td>
-                            {{ $project->start_time }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.project.fields.logged_time') }}
-                        </th>
-                        <td>
-                            {{ $project->logged_time }}
-                        </td>
-                    </tr>
-
 {{--                    <tr>--}}
 {{--                        <th>--}}
-{{--                            {{ trans('cruds.project.fields.permissions') }}--}}
+{{--                            {{ trans('cruds.project.fields.notify_client') }}--}}
 {{--                        </th>--}}
 {{--                        <td>--}}
-{{--                            @foreach($project->permissions as $key => $permissions)--}}
-{{--                                <span class="label label-info">{{ $permissions->title }}</span>--}}
-{{--                            @endforeach--}}
+{{--                            {{ Modules\ProjectManagement\Entities\Project::NOTIFY_CLIENT_RADIO[$project->notify_client] ?? 'No' }}--}}
 {{--                        </td>--}}
 {{--                    </tr>--}}
+{{--                    <tr>--}}
+{{--                        <th>--}}
+{{--                            {{ trans('cruds.project.fields.timer_status') }}--}}
+{{--                        </th>--}}
+{{--                        <td>--}}
+{{--                            {{ Modules\ProjectManagement\Entities\Project::TIMER_STATUS_RADIO[$project->timer_status] ?? '' }}--}}
+{{--                        </td>--}}
+{{--                    </tr>--}}
+{{--                    <tr>--}}
+{{--                        <th>--}}
+{{--                            {{ trans('cruds.project.fields.timer_started_by') }}--}}
+{{--                        </th>--}}
+{{--                        <td>--}}
+{{--                            {{ $project->timer_started_by }}--}}
+{{--                        </td>--}}
+{{--                    </tr>--}}
+{{--                    <tr>--}}
+{{--                        <th>--}}
+{{--                            {{ trans('cruds.project.fields.start_time') }}--}}
+{{--                        </th>--}}
+{{--                        <td>--}}
+{{--                            {{ $project->start_time }}--}}
+{{--                        </td>--}}
+{{--                    </tr>--}}
+{{--                    <tr>--}}
+{{--                        <th>--}}
+{{--                            {{ trans('cruds.project.fields.logged_time') }}--}}
+{{--                        </th>--}}
+{{--                        <td>--}}
+{{--                            {{ $project->logged_time }}--}}
+{{--                        </td>--}}
+{{--                    </tr>--}}
+
                     <tr>
                         <th>
                             {{ trans('cruds.project.fields.notes') }}
@@ -178,36 +168,22 @@
                             {!! $project->notes !!}
                         </td>
                     </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.project.fields.hourly_rate') }}
-                        </th>
-                        <td>
-                            {{ $project->hourly_rate }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.project.fields.fixed_rate') }}
-                        </th>
-                        <td>
-                            {{ $project->fixed_rate }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.project.fields.project_settings') }}
-                        </th>
-                        <td>
-                            @forelse($project_settings as $setting)
-
-                                allow client {{ $setting}} ,
-
-                            @empty
-                            @endforelse
-{{--                            {!! $project->project_settings !!}--}}
-                        </td>
-                    </tr>
+{{--                    <tr>--}}
+{{--                        <th>--}}
+{{--                            {{ trans('cruds.project.fields.hourly_rate') }}--}}
+{{--                        </th>--}}
+{{--                        <td>--}}
+{{--                            {{ $project->hourly_rate }}--}}
+{{--                        </td>--}}
+{{--                    </tr>--}}
+{{--                    <tr>--}}
+{{--                        <th>--}}
+{{--                            {{ trans('cruds.project.fields.fixed_rate') }}--}}
+{{--                        </th>--}}
+{{--                        <td>--}}
+{{--                            {{ $project->fixed_rate }}--}}
+{{--                        </td>--}}
+{{--                    </tr>--}}
                     <tr>
                         <th>
                             {{ trans('cruds.project.fields.with_tasks') }}
