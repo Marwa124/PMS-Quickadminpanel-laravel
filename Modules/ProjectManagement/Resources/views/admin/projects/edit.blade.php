@@ -136,24 +136,19 @@
                 </div>
 
 
-                <div class="form-group">
-                    <label for="progress">{{ trans('cruds.project.fields.progress') }}</label>
-                    <input type="checkbox" id="progress_hours" name="progress" value="project_hours" {{ old('progress') == 'project_hours' ? 'checked' : $project->progress == 'project_hours' ? 'checked' : '' }} onclick="ProgressInput1()" />  Project Hours
-                    <input type="checkbox" id="progress_tasks" name="progress" value="through_tasks" {{ old('progress') == 'through_tasks' ? 'checked' : $project->progress == 'through_tasks' ? 'checked' : '' }} onclick="ProgressInput2()" />  Through tasks
+{{--                <div class="form-group">--}}
+{{--                    <label for="progress">{{ trans('cruds.project.fields.progress') }}</label>--}}
+{{--                    <input type="checkbox" id="progress_hours" name="progress" value="project_hours" {{ old('progress') == 'project_hours' ? 'checked' : $project->progress == 'project_hours' ? 'checked' : '' }} onclick="ProgressInput1()" />  Project Hours--}}
+{{--                    <input type="checkbox" id="progress_tasks" name="progress" value="through_tasks" {{ old('progress') == 'through_tasks' ? 'checked' : $project->progress == 'through_tasks' ? 'checked' : '' }} onclick="ProgressInput2()" />  Through tasks--}}
 
-{{--                    <select name="progress" id="progress" class="form-control {{ $errors->has('progress') ? 'is-invalid' : '' }}" onchange="disableProgressInput()">--}}
-{{--                        <option value="" selected disabled>Select {{ trans('cruds.project.fields.progress') }}</option>--}}
-{{--                        <option value="project_hours" {{ old('progress') == 'project_hours' ? 'selected' : $project->progress == 'project_hours' ? 'selected' :'' }}> Project Hours</option>--}}
-{{--                        <option value="through_tasks" {{ old('progress') == 'through_tasks' ? 'selected' : $project->progress == 'through_tasks' ? 'selected' : '' }}>Through tasks</option>--}}
 
-{{--                    </select>--}}
-                    @if($errors->has('progress'))
-                        <div class="invalid-feedback">
-                            {{ $errors->first('progress') }}
-                        </div>
-                    @endif
-                    <span class="help-block">{{ trans('cruds.project.fields.progress_helper') }}</span>
-                </div>
+{{--                    @if($errors->has('progress'))--}}
+{{--                        <div class="invalid-feedback">--}}
+{{--                            {{ $errors->first('progress') }}--}}
+{{--                        </div>--}}
+{{--                    @endif--}}
+{{--                    <span class="help-block">{{ trans('cruds.project.fields.progress_helper') }}</span>--}}
+{{--                </div>--}}
 
                 <div class="form-group w3-light-grey w3-xlarge" id="div_progress_input">
                     <label for="calculate_progress">{{ trans('cruds.project.fields.calculate_progress') }}</label>
@@ -239,26 +234,6 @@
                     <span class="help-block">{{ trans('cruds.project.fields.project_status_helper') }}</span>
                 </div>
 
-{{--                <div class="form-group">--}}
-{{--                    <label for="permissions">{{ trans('cruds.project.fields.permissions') }}</label>--}}
-{{--                    <div style="padding-bottom: 4px">--}}
-{{--                        <span class="btn btn-info btn-xs select-all" style="border-radius: 0">{{ trans('global.select_all') }}</span>--}}
-{{--                        <span class="btn btn-info btn-xs deselect-all" style="border-radius: 0">{{ trans('global.deselect_all') }}</span>--}}
-{{--                    </div>--}}
-{{--                    <select class="form-control select2 {{ $errors->has('permissions') ? 'is-invalid' : '' }}" name="permissions[]" id="permissions" multiple>--}}
-{{--                        @foreach($permissions as $id => $permissions)--}}
-{{--                            <option value="{{ $id }}" {{ (in_array($id, old('permissions', [])) || $project->permissions->contains($id)) ? 'selected' : '' }}>{{ $permissions }}</option>--}}
-{{--                        @endforeach--}}
-{{--                    </select>--}}
-{{--                    @if($errors->has('permissions'))--}}
-{{--                        <div class="invalid-feedback">--}}
-{{--                            {{ $errors->first('permissions') }}--}}
-{{--                        </div>--}}
-{{--                    @endif--}}
-{{--                    <span class="help-block">{{ trans('cruds.project.fields.permissions_helper') }}</span>--}}
-{{--                </div>--}}
-
-
                 <div class="form-group">
                     <label for="estimate_hours">{{ trans('cruds.project.fields.estimate_hours') }}</label>
                     <input class="form-control {{ $errors->has('estimate_hours') ? 'is-invalid' : '' }}" type="text" name="estimate_hours" id="estimate_hours" value="{{ old('estimate_hours', $project->estimate_hours) }}">
@@ -284,23 +259,8 @@
                             {{ $errors->first('department_id') }}
                         </div>
                     @endif
-                    {{--<span class="help-block">{{ trans('cruds.projectSpecification.title_singular') }}</span>--}}
                 </div>
 
-            </div>
-
-
-            <div class="col-md-6 float-left">
-                @forelse($project_settings as $setting)
-
-                    <div class="checkbox c-checkbox">
-
-                        <input type="checkbox" name="settings[]" value="{{ $setting->name}}" checked/> allow client {{ $setting->description}}<br/>
-
-                    </div>
-                    <hr class="mt-sm mb-sm"/>
-                @empty
-                @endforelse
             </div>
 
             <div class="clearfix"></div>
@@ -435,10 +395,6 @@
 
 
     }
-    // function disableProgressInput() {
-    //     document.getElementById("div_progress_input").style.display = 'none';
-    //     //document.getElementById("div_progress_input").classList.add('disabled');
-    // }
 
 </script>
 

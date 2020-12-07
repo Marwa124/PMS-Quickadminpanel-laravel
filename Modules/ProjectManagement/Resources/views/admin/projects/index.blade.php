@@ -43,9 +43,9 @@
                         <th>
                             {{ trans('cruds.project.fields.end_date') }}
                         </th>
-                        <th>
-                            {{ trans('cruds.project.fields.actual_completion') }}
-                        </th>
+{{--                        <th>--}}
+{{--                            {{ trans('cruds.project.fields.actual_completion') }}--}}
+{{--                        </th>--}}
                         <th>
                             {{ trans('cruds.task.title_singular') }}
                         </th>
@@ -58,9 +58,6 @@
                         <th>
                             {{ trans('cruds.department.title_singular') }}
                         </th>
-{{--                        <th>--}}
-{{--                            {{ trans('global.assign_to') }}--}}
-{{--                        </th>--}}
                         <th>
                             &nbsp;
                         </th>
@@ -92,9 +89,9 @@
                         </td>
                         <td>
                         </td>
-                        <td>
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                        </td>
+{{--                        <td>--}}
+{{--                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">--}}
+{{--                        </td>--}}
                         <td>
                         </td>
                         <td>
@@ -124,7 +121,7 @@
                             <td>
                                 {{ ucwords($project->name ?? '') }}<br>
                                 <div class="progress" >
-                                    <div class="progress-bar bg-success" role="progressbar" style="width: {{$project->calculate_progress}}%; display: {{$project->calculate_progress?:'none'}}" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                                    <div class="progress-bar {{$project->calculate_progress < 50 ? 'bg-danger':'bg-success'}}" role="progressbar" style="width: {{$project->calculate_progress}}%; display: {{$project->calculate_progress?:'none'}}" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
                                         {{$project->calculate_progress}}%
                                     </div>
                                 </div>
@@ -147,9 +144,7 @@
                             <td>
                                 {{ $project->end_date ?? '' }}
                             </td>
-                            <td>
-                                {{ $project->actual_completion ?? '' }}
-                            </td>
+
                             <td>
 {{--                                {{ $project->with_tasks ?? 'No' }}--}}
                                 @if($project->with_tasks)
@@ -166,13 +161,6 @@
                                 <a class="btn btn-info {{$project->milestones && $project->milestones->count()>0 ? '':'disabled'}}" >
                                     {{$project->milestones && $project->milestones->count()>0 ? $project->milestones->count():'No Milestone'}}
                                 </a>
-{{--                                @forelse($project->milestones as $milestone)--}}
-{{--                                    {{ $milestone->name }} ,--}}
-{{--                                    <button id="myBtn">Open Modal</button>--}}
-
-{{--                                @empty--}}
-{{--                                    No Milestone--}}
-{{--                                @endforelse--}}
                             </td>
                             <td>
                                 {{ $project->project_status ?? '' }}

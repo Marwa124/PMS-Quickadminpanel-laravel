@@ -28,13 +28,10 @@ class ProjectsController extends Controller
     {
         abort_if(Gate::denies('project_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $projects = Project::all();
-
+        $projects = auth()->user()->getUserProjectsByUserID(auth()->user()->id);
         $clients = Client::get();
 
-        $permissions = Permission::get();
-
-        return view('projectmanagement::admin.projects.index', compact('projects', 'clients', 'permissions'));
+        return view('projectmanagement::admin.projects.index', compact('projects', 'clients'));
     }
 
     public function create()
@@ -45,21 +42,16 @@ class ProjectsController extends Controller
 
         $permissions = Permission::all()->pluck('title', 'id');
 
-        $project_settings = ProjectSetting::all();
+        //$project_settings = ProjectSetting::all();
 
         $departments = Department::all();
 
-        return view('projectmanagement::admin.projects.create', compact('clients', 'permissions','project_settings','departments'));
+        return view('projectmanagement::admin.projects.create', compact('clients', 'permissions','departments'));
     }
 
     public function store(StoreProjectRequest $request)
     {
-        $sittings = json_encode($request->settings);
-        unset($request['settings']);
-        $request['project_settings'] = $sittings;
-
         $project = Project::create($request->all());
-        //$project->permissions()->sync($request->input('permissions', []));
 
         if ($media = $request->input('ck-media', false)) {
             Media::whereIn('id', $media)->update(['model_id' => $project->id]);
@@ -74,26 +66,16 @@ class ProjectsController extends Controller
 
         $clients = Client::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-
         $project->load('client','department');
-        //$project->load('client', 'permissions');
-
-        $project_settings = ProjectSetting::all();
 
         $departments = Department::all();
 
-        return view('projectmanagement::admin.projects.edit', compact('clients', 'project','project_settings','departments'));
+        return view('projectmanagement::admin.projects.edit', compact('clients', 'project','departments'));
     }
 
     public function update(UpdateProjectRequest $request, Project $project)
     {
-        $sittings = json_encode($request->settings);
-        unset($request['settings']);
-        $request['project_settings'] = $sittings;
 
-        if (!$request->progress){
-            $request['progress'] = null;
-        }
         if(!$request->calculate_progress){
             $request['calculate_progress'] = null;
         }
@@ -103,7 +85,6 @@ class ProjectsController extends Controller
         }
 
         $project->update($request->all());
-        //$project->permissions()->sync($request->input('permissions', []));
 
         return redirect()->route('projectmanagement.admin.projects.index');
     }
@@ -113,9 +94,8 @@ class ProjectsController extends Controller
         abort_if(Gate::denies('project_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $project->load('client','department');
-        $project_settings = json_decode($project->project_settings);
-//        $project->load('client', 'permissions');
-        return view('projectmanagement::admin.projects.show', compact('project','project_settings'));
+
+        return view('projectmanagement::admin.projects.show', compact('project'));
     }
 
     public function destroy($id)
@@ -181,7 +161,6 @@ class ProjectsController extends Controller
         $project_permissions_notToMember_names = ['project_create','project_edit','project_assign_to'];
         $project_permissions_toMember_names = ['project_management_access','project_access', 'project_show'];
 
-
         $project_permissions_head = $this->getPermissionID($project_permissions_head_names);
         $project_permissions_notToMember = $this->getPermissionID($project_permissions_notToMember_names);
         $project_permissions_toMember = $this->getPermissionID($project_permissions_toMember_names);
@@ -203,12 +182,8 @@ class ProjectsController extends Controller
 
                     break;
                 }
-
-
             }
-
         }
-
         return redirect()->route('projectmanagement.admin.projects.index');
     }
 

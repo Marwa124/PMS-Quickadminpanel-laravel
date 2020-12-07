@@ -15,8 +15,8 @@ class CreateProjectsTable extends Migration
             $table->string('calculate_progress')->nullable();
             $table->date('start_date');
             $table->date('end_date');
-            $table->string('actual_completion');
-            $table->integer('alert_overdue');
+            $table->string('actual_completion')->nullable();
+            $table->integer('alert_overdue')->default(0);
             $table->float('project_cost', 15, 2)->nullable();
             $table->string('demo_url')->nullable();
             $table->string('project_status')->nullable();
@@ -30,7 +30,7 @@ class CreateProjectsTable extends Migration
             $table->string('hourly_rate')->nullable();
             $table->string('fixed_rate')->nullable();
             $table->longText('project_settings')->nullable();
-            $table->string('with_tasks');
+            $table->string('with_tasks')->default('no');
             $table->string('estimate_hours')->nullable();
             $table->timestamps();
             $table->softDeletes();
