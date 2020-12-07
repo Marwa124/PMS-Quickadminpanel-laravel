@@ -3,7 +3,8 @@
 
 @inject('departmentModel', 'Modules\HR\Entities\Department')
 @inject('paymentMethodModel', 'Modules\Payroll\Entities\PaymentMethod')
-@inject('salaryPaymentModel', 'Modules\Payroll\Entities\SalaryPayment')
+{{-- @inject('salaryPaymentModel', 'Modules\Payroll\Entities\SalaryPayment') --}}
+@inject('payrollSummaryModel', 'Modules\Payroll\Entities\PayrollSummary')
 
 
 @can('salary_payment_show')
@@ -58,18 +59,11 @@
         <div class="card-body">
           <div class="form-group">
             <label for="">Gross Salary</label>
-            <input type="text" class="form-control" value="{{$subDeductions['gross_salary']}}" disabled>
+            <input type="text" class="form-control gross-salary" value="{{$subDeductions['gross_salary']}}" disabled>
           </div>
           <div class="form-group">
             <label for="">Total Deduction</label>
-            <!-- Deduction Details Models -->
-            <button type="button" class="btn btn-xs pt-1 {{($deductionDetails['totalDeductions'] == 0) ? 'btn-info' : 'btn-danger'}} "
-                data-toggle="modal" data-target="#deductionDetails{{$user->id}}">
-                {{'EGP '. number_format($deductionDetails['totalDeductions'] ?? 0, 2)}}
-            </button>
-            <!-- Deduction Details Models -->
-
-            <input type="text" class="form-control" value="{{$deductionDetails['totalDeductions']}}">
+            <input type="text" class="form-control tax-deduction" value="{{$subDeductions['salary_deduction']}}" disabled>
           </div>
           <div class="form-group">
             <label for="">Net Salary</label>
@@ -77,7 +71,13 @@
           </div>
           <div class="form-group">
             <label for="">Fine Deduction</label>
-            <input type="text" class="form-control" value="{{$subDeductions['salary_deduction']}}">
+            <!-- Deduction Details Models -->
+            <button type="button" class="btn btn-xs pt-1 {{($deductionDetails['totalDeductions'] == 0) ? 'btn-info' : 'btn-danger'}} "
+                data-toggle="modal" data-target="#deductionDetails{{$user->id}}">
+                {{'EGP '. number_format($deductionDetails['totalDeductions'] ?? 0, 2)}}
+            </button>
+            <!-- Deduction Details Models -->
+            <input type="text" class="form-control fine-deduction" value="{{$deductionDetails['totalDeductions']}}">
           </div>
           <div class="form-group">
             <label for="">Payment Amount</label> Ajax(net - total deductions)
@@ -103,39 +103,52 @@
   </div>
   <div class="col-md-9">
       <?php
-            $paymentHistory = $salaryPaymentModel::where('payment_month', $date)->get();
-        ?>
+            $payrollSummary = $payrollSummaryModel::where('user_id', $user->id)->get();
+            // dd($payrollSummary);
+      ?>
       <div class="card">
         <h5 class="card-header">Payroll History</h5>
         <div class="card-body">
             <table class="table">
                 <thead class="thead-dark">
                   <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">First</th>
-                    <th scope="col">Last</th>
-                    <th scope="col">Handle</th>
+                    <th scope="col">Month</th>
+                    <th scope="col">Gross Salary</th>
+                    <th scope="col">Total Deduction</th>
+                    <th scope="col">Leaves</th>
+                    <th scope="col">Net Salary</th>
+                    <th scope="col">Fine Deduction</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Details</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">3</th>
-                    <td>Larry</td>
-                    <td>the Bird</td>
-                    <td>@twitter</td>
-                  </tr>
+                  @forelse ($payrollSummary as $item)
+                  <?php 
+                    // $monthNum = explode('-', date('Y-m', strtotime($item->month)));
+                    $monthNum = explode('-', $item->month);
+                    $monthName = date('F', mktime(0, 0, 0, $monthNum[1], 10));
+                  ?>
+                    <tr data-user-id="{{$user->id}}" data-month="{{$item->month}}" data-user-name="{{$user->accountDetail->fullname}}">
+                      <td>{{$monthName.'-'.$monthNum[0]}}</td>
+                      <td>{{$item->gross_salary}}</td>
+                      <td>{{$item->deductions}}</td>
+                      <td>
+                        <!-- Leave Details modal -->
+                        <button type="button" class="btn btn-primary btn-xs leaveDetails" data-toggle="modal" data-target="#leavesDetails{{$user->id ?? ''}}">
+                          {{$item->leave_days}}
+                        </button>
+                        <div class="leaveDetailsModal"></div>
+                          
+                      </td>
+                      <th>{{$item->net_salary}}</th>
+                      <td>FineDeduction</td>
+                      <td>Amount</td>
+                      <td></td>
+                    </tr>
+                  @empty
+                      <tr>No Data Found</tr>
+                  @endforelse
                 </tbody>
               </table>
               
@@ -144,9 +157,6 @@
       {{-- card End --}}
   </div>
 </div>
-
-{{-- {{dd($subDeductions)}} --}}
-{{-- {{dd($deductionDetails)}} --}}
 
 
 
@@ -211,7 +221,57 @@
 @section('scripts')
 <script>
     $(document).ready(function () {
-      
+
+      var gross_salary   = $('.gross-salary').val();
+      var tax_deduction  = $('.tax-deduction').val();
+      var fine_deduction = $('.fine-deduction').val();
+
+      let payment_amount = gross_salary - tax_deduction - fine_deduction;
+
+      $('input[name="payment_amount"').val(payment_amount);
+
+
+      $('.fine-deduction').on('keyup', function() {
+        payment_amount = gross_salary - tax_deduction - $(this).val();
+        $('input[name="payment_amount"').val(payment_amount);
+        // console.log(payment_amount);
+        // console.log($(this).val());
+      });
+
+
+
+
+
+
+      $('.leaveDetailsModal').html(``);
+
+
+      //Leave User Details Redirect Btn to modal blade
+      $('.leaveDetails').click(function(){
+          let userId     = $(this).closest("tr").attr("data-user-id");
+          let userName   = $(this).closest("tr").attr("data-user-name");
+          let date       = $(this).closest("tr").attr("data-month");
+ 
+          console.log(userId);
+          console.log(userName);
+          console.log(date);
+          var e = $(this);
+          $.ajax({
+              url: '{{route("hr.admin.leave-applications.details")}}',
+              type:'get',
+              dataType: 'html',
+              data: {
+                  user_id:   userId,
+                  user_name: userName,
+                  date:      date,
+              },
+              success: function(res){
+                  e.closest('td').find('.leaveDetailsModal').html(res);
+
+                  $('#leavesDetails'+userId).modal('toggle');
+              }
+          })
+      });
     });
 </script>
 
