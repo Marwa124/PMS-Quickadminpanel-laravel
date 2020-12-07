@@ -123,36 +123,14 @@
                     {{ trans('cruds.hr.title') }}
                 </a>
                 <ul class="c-sidebar-nav-dropdown-items">
-                    @can('employees_access')
-                        <li class="c-sidebar-nav-dropdown">
-                            <a class="c-sidebar-nav-dropdown-toggle" href="#">
-                                <i class="fa-fw fas fa-users-cog c-sidebar-nav-icon">
-
+                    @can('account_detail_access')
+                        <li class="c-sidebar-nav-item">
+                            <a href="{{ route("hr.admin.account-details.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/account-details") || request()->is("admin/account-details/*") ? "active" : "" }}">
+                                <i class="fa-fw fas fa-cogs c-sidebar-nav-icon">
                                 </i>
-                                {{ trans('cruds.employees.title') }}
+                                Employees Details
+                                {{-- {{ trans('cruds.accountDetail.title') }} --}}
                             </a>
-                            <ul class="c-sidebar-nav-dropdown-items">
-                                @can('employee_access')
-                                    <li class="c-sidebar-nav-item">
-                                        <a href="{{ route("hr.admin.employees.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/employees") || request()->is("admin/employees/*") ? "active" : "" }}">
-                                            <i class="fa-fw fas fa-users c-sidebar-nav-icon">
-
-                                            </i>
-                                            {{ trans('cruds.employee.title') }}
-                                        </a>
-                                    </li>
-                                @endcan
-                                @can('account_detail_access')
-                                    <li class="c-sidebar-nav-item">
-                                        <a href="{{ route("hr.admin.account-details.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/account-details") || request()->is("admin/account-details/*") ? "active" : "" }}">
-                                            <i class="fa-fw fas fa-cogs c-sidebar-nav-icon">
-                                            </i>
-                                            Employees Details
-                                            {{-- {{ trans('cruds.accountDetail.title') }} --}}
-                                        </a>
-                                    </li>
-                                @endcan
-                            </ul>
                         </li>
                     @endcan
                     @can('department_access')
@@ -165,7 +143,6 @@
                             </a>
                         </li>
                     @endcan
-{{--                     {{auth()->user()->can('attendances_access')}}--}}
                     @can('attendances_access')
                         <li class="c-sidebar-nav-dropdown">
                             <a class="c-sidebar-nav-dropdown-toggle" href="#">

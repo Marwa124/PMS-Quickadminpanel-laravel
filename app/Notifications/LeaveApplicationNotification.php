@@ -37,7 +37,7 @@ class LeaveApplicationNotification extends Notification
     public function via($notifiable)
     {
         // return ['mail'];
-        // return ['mail', 'database'];
+        return ['mail', 'database'];
     }
 
     /**
@@ -88,11 +88,14 @@ class LeaveApplicationNotification extends Notification
      */
     public function toArray($notifiable)
     {
-        $userName = AccountDetail::where('user_id', $notifiable->id)->first();
+        // dd($this->application->user_id);
+        $userName = AccountDetail::where('user_id', $this->application->user_id)->first();
 
         return [
-            'title' => $userName->fullname ?? '' . ' applies for ' . $this->leave_category,
-            'leave_id' => $this->application->id,
+            'title'      => $userName->fullname ?? '' . ' applies for ' . $this->leave_category,
+            'leave_id'   => $this->application->id,
+            'route_path' => 'hr.admin.leave-applications.edit',
+            'leave_name' => $this->application->leave_type
         ];
     }
 }

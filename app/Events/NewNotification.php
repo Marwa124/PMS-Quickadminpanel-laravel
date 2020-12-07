@@ -15,23 +15,31 @@ class NewNotification implements ShouldBroadcast
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $title;
-    public $content;
-    public $model_id;
-    public $show_path;
-    public $user_id;
+    // public $content;
+    // public $model_id;
+    // public $show_path;
+    // public $user_id;
 
+    public $leave_id;
+    public $show_path;
+    public $leave_name;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($data)
+    public function __construct($data, $leaveName)
     {
-        $this->title    = $data['title'];
-        $this->content  = $data['content'];
-        $this->model_id = $data['model_id'];
-        $this->show_path = $data['show_path'];
-        $this->user_id = $data['user_id'];
+        $this->title    = $data['data']['title'];
+        $this->leave_id  = $data['data']['leave_id'];
+        $this->show_path = $data['data']['route_path'];
+        $this->leave_name = $data['data']['leave_name'];
+
+        // $this->title    = $data['title'];
+        // $this->content  = $data['content'];
+        // $this->model_id = $data['model_id'];
+        // $this->show_path = $data['show_path'];
+        // $this->user_id = $data['user_id'];
     }
 
     /**
@@ -43,7 +51,7 @@ class NewNotification implements ShouldBroadcast
     {
         // $notifyUsers = globalNotificationId($this->user_id);
 
-        return new PrivateChannel('new-notification');
+        return new Channel('new-notification');
         // return new PrivateChannel('new-notification.'.$this->user_id);
         // return ['new-notification.' . 23];
     }

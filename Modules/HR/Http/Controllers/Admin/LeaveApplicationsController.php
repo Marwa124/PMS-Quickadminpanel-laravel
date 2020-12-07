@@ -336,19 +336,27 @@ class LeaveApplicationsController extends Controller
 
         $leave_category = LeaveCategory::where('id', $leaveApplication->leave_category_id)->select('name')->first()->name;
 
-        $notifyUsers = globalNotificationId($request->user_id);
 
-        $notification = Notification::create([
-            'title'   => $leave_category,
-            'content' => User::find($request->user_id)->accountDetail()->first()->fullname . ' wants to apply for leave.',
-            'model_id' => $leaveApplication->id,
-            'model_type' => 'Modules\HR\Entities\LeaveApplication',
-            'show_path' => 'admin/hr/leave-applications',
-        ]);
+         /* !!!: Notification (db, mail) via Laravel $user->notify() */
+         $user = User::find(23);
+         $user->notify(new LeaveApplicationNotification($leaveApplication, $leave_category));
+         /* !!!: End Notification (db, mail) via Laravel $user->notify() */
 
-        $notification->users()->attach($notifyUsers);
-        $notification['user_id'] = $request->user_id;
-        event(new NewNotification($notification));
+         $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
+
+         // $notifyUsers = globalNotificationId($request->user_id);
+
+        // $notification = Notification::create([
+        //     'title'   => $leave_category,
+        //     'content' => User::find($request->user_id)->accountDetail()->first()->fullname . ' wants to apply for leave.',
+        //     'model_id' => $leaveApplication->id,
+        //     'model_type' => 'Modules\HR\Entities\LeaveApplication',
+        //     'show_path' => 'admin/hr/leave-applications',
+        // ]);
+
+        // $notification->users()->attach($notifyUsers);
+        // $notification['user_id'] = $request->user_id;
+        event(new NewNotification($userNotify, $leave_category));
 
         return redirect()->route('hr.admin.leave-applications.index');
     }

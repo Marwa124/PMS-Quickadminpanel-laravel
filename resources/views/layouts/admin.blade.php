@@ -40,21 +40,24 @@
     channel.bind('App\\Events\\NewNotification', function(data) {
 
 if (data) {
+console.log(data);
+    if ($('.notifiable_id').val() == $('.hidden_auth_user_id').val()) {
 
         var count = parseInt($('.data-notify-count').html());
         count += 1;
         $('.data-notify-count').html(count);
         $('.data-content').prepend(`
             <div class="dropdown-item">
-                <a href="{{url('${data.show_path}/${data.model_id}')}}" rel="noopener noreferrer">
+                <a href="{{route('${data.show_path}, ${data.leave_id}')}}" rel="noopener noreferrer">
                     <strong>
                         ${data.title}
-                        <p class="text-muted fa-sm">${data.content}</p>
+                        <p class="text-muted fa-sm">wants to apply for ${data.leave_name}</p>
                     </strong>
                 </a>
             </div>
         `);
     //   alert(JSON.stringify(data));
+    }
 }
 
     });
@@ -102,17 +105,20 @@ if (data) {
                                 @endif
                         </a>
                         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right data-content">
-                            <input type="text" hidden value="{{auth()->user()->id}}" class="hidden_auth_user_id">
+                            <input type="integer" class="hidden_auth_user_id" value="{{auth()->user()->id}}" hidden>
                             @forelse (\Auth::user()->notifications as $notify)
                             {{-- @json($notify->data) --}}
+
+                            <input type="integer" class="notifiable_id" value="{{$notify->notifiable_id}}" hidden>
                                 <div class="dropdown-item">
-                                    <a class="notify_is_read" href="{{route('hr.admin.leave-applications.edit', $notify->data['leave_id'])}}" rel="noopener noreferrer">
+                                    <a class="notify_is_read" href="{{route($notify->data['route_path'], $notify->data['leave_id'])}}" rel="noopener noreferrer">
+                                    {{-- <a class="notify_is_read" href="{{route('hr.admin.leave-applications.edit', $notify->data['leave_id'])}}" rel="noopener noreferrer"> --}}
                                         <input type="integer" hidden value="{{$notify->id}}" class="hidden_notification_id">
 
                                         {{-- <a class="notify_is_read" style="color:red" href="{{url($notify->show_path.'/'.  $notify->model_id)}}" rel="noopener noreferrer"> --}}
                                         @if(!$notify->read_at) <strong class="text-danger"> @endif
-                                            <p> {{$notify->data['title']}} </p>
-                                            {{-- <p class="text-muted fa-sm">{{ implode(' ', array_slice(explode(' ', $notify->content), 0, 5))}}</p> --}}
+                                            {{$notify->data['title']}}
+                                            <p class="text-muted fa-sm">wants to apply for {{$notify->data['leave_name']}}</p>
                                         @if(!$notify->read_at) </strong> @endif
                                     </a>
                                 </div>
@@ -469,9 +475,6 @@ if (data) {
                     data:{
                         application_id: applicationId
                     },
-                    // success: () => {
-                    //     console.log('success');
-                    // }
                 })
             })
         })
