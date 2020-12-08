@@ -51,9 +51,9 @@ Route::delete('salary-deductions/destroy', 'SalaryDeductionsController@massDestr
 Route::resource('salary-deductions', 'SalaryDeductionsController', ['except' => ['edit', 'update', 'show']]);
 
 // Salary Payments
-Route::delete('salary-payments/destroy', 'SalaryPaymentsController@massDestroy')->name('salary-payments.massDestroy');
-Route::post('salary-payments/media', 'SalaryPaymentsController@storeMedia')->name('salary-payments.storeMedia');
-Route::post('salary-payments/ckmedia', 'SalaryPaymentsController@storeCKEditorImages')->name('salary-payments.storeCKEditorImages');
+// Route::delete('salary-payments/destroy', 'SalaryPaymentsController@massDestroy')->name('salary-payments.massDestroy');
+// Route::post('salary-payments/media', 'SalaryPaymentsController@storeMedia')->name('salary-payments.storeMedia');
+// Route::post('salary-payments/ckmedia', 'SalaryPaymentsController@storeCKEditorImages')->name('salary-payments.storeCKEditorImages');
 Route::resource('salary-payments', 'SalaryPaymentsController');
 
 // Payroll Summary

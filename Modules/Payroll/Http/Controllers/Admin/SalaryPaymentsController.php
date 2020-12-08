@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class SalaryPaymentsController extends Controller
 {
-    use MediaUploadingTrait;
+    // use MediaUploadingTrait;
 
     public function index()
     {
@@ -31,7 +31,6 @@ class SalaryPaymentsController extends Controller
 
         $users = [];
         if ($departmentRequest && $date) {
-            // $salaryPayments = SalaryPayment::all();
             $salaryPayments = AccountDetail::select('user_id', 'designation_id')->orderBy('user_id', 'DESC')->get();
 
             foreach ($salaryPayments as $key => $value) {
@@ -43,8 +42,6 @@ class SalaryPaymentsController extends Controller
             }
         }
         return view('payroll::admin.salaryPayments.index', compact('users', 'date', 'departmentRequest'));
-
-        // return view('payroll::admin.salaryPayments.index', compact('salaryPayments'));
     }
 
     public function create()
@@ -60,7 +57,7 @@ class SalaryPaymentsController extends Controller
         $monthNum = explode('-', $date);
         $monthName = date('F', mktime(0, 0, 0, $monthNum[1], 10));
         $year      = $monthNum[0];
-        
+
         // $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
         $user = User::find($result[2]);
 
@@ -80,40 +77,21 @@ class SalaryPaymentsController extends Controller
             'total_absent'     => $totalAbsentDays,
             'salary_deduction' => $salaryDeduction,
             'net_salary'       => $netSalary
-        ]; 
+        ];
         /* !!!: Deduction Details */
 
-        return view('payroll::admin.salaryPayments.create', 
+        return view('payroll::admin.salaryPayments.create',
             compact('user', 'subDeductions', 'deductionDetails', 'date', 'departmentRequest', 'monthName', 'year'));
     }
 
-    public function store(StoreSalaryPaymentRequest $request)
+    public function store()
     {
-        $salaryPayment = SalaryPayment::create($request->all());
-
-        if ($media = $request->input('ck-media', false)) {
-            Media::whereIn('id', $media)->update(['model_id' => $salaryPayment->id]);
+        $totalLeaveDays = SalaryPayment::where('user_id', request()->id)->where('payment_month', request()->payment_month)->select('id')->first();
+        if(!$totalLeaveDays){
+            SalaryPayment::create(request()->all());
         }
 
-        return redirect()->route('admin.payroll.salary-payments.index');
-    }
-
-    public function edit(SalaryPayment $salaryPayment)
-    {
-        abort_if(Gate::denies('salary_payment_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
-
-        $salaryPayment->load('user');
-
-        return view('payroll::admin.salaryPayments.edit', compact('users', 'salaryPayment'));
-    }
-
-    public function update(UpdateSalaryPaymentRequest $request, SalaryPayment $salaryPayment)
-    {
-        $salaryPayment->update($request->all());
-
-        return redirect()->route('admin.payroll.salary-payments.index');
+        // return redirect()->route('payroll.admin.salary-payments.index');
     }
 
     public function show(SalaryPayment $salaryPayment)
@@ -132,24 +110,5 @@ class SalaryPaymentsController extends Controller
         $salaryPayment->delete();
 
         return back();
-    }
-
-    public function massDestroy(MassDestroySalaryPaymentRequest $request)
-    {
-        SalaryPayment::whereIn('id', request('ids'))->delete();
-
-        return response(null, Response::HTTP_NO_CONTENT);
-    }
-
-    public function storeCKEditorImages(Request $request)
-    {
-        abort_if(Gate::denies('salary_payment_create') && Gate::denies('salary_payment_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        $model         = new SalaryPayment();
-        $model->id     = $request->input('crud_id', 0);
-        $model->exists = true;
-        $media         = $model->addMediaFromRequest('upload')->toMediaCollection('ck-media');
-
-        return response()->json(['id' => $media->id, 'url' => $media->getUrl()], Response::HTTP_CREATED);
     }
 }

@@ -2,7 +2,6 @@
 
 namespace Modules\HR\Entities;
 
-use App\Models\Permission;
 use Modules\HR\Entities\AccountDetail;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
@@ -53,11 +52,6 @@ class Designation extends Model
     {
         return $this->belongsTo(User::class, 'designation_leader_id');
     }
-
-    // public function permissions()
-    // {
-    //     return $this->belongsToMany(Permission::class);
-    // }
 
     public function accountDetails()
     {

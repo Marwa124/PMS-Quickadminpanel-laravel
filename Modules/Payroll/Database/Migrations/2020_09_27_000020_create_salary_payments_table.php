@@ -15,7 +15,7 @@ class CreateSalaryPaymentsTable extends Migration
             $table->unsignedInteger('payment_method_id');
             $table->longText('comments')->nullable();
             $table->timestamp('paid_date')->nullable();
-            $table->string('deduct_from');
+            $table->string('deduct_from')->nullable();
             $table->timestamps();
             // $table->softDeletes();
         });

@@ -7,7 +7,7 @@
     </div>
 
     <div class="card-body">
-        <form method="POST" action="{{ route("admin.designations.update", [$designation->id]) }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ route("hr.admin.designations.update", [$designation->id]) }}" enctype="multipart/form-data">
             @method('PUT')
             @csrf
             <div class="form-group">
@@ -40,7 +40,7 @@
                     <span class="btn btn-info btn-xs select-all" style="border-radius: 0">{{ trans('global.select_all') }}</span>
                     <span class="btn btn-info btn-xs deselect-all" style="border-radius: 0">{{ trans('global.deselect_all') }}</span>
                 </div>
-                <select class="form-control select2 {{ $errors->has('permissions') ? 'is-invalid' : '' }}" name="permissions[]" id="permissions" multiple>
+                {{-- <select class="form-control select2 {{ $errors->has('permissions') ? 'is-invalid' : '' }}" name="permissions[]" id="permissions" multiple>
                     @foreach($permissions as $id => $permissions)
                         <option value="{{ $id }}" {{ (in_array($id, old('permissions', [])) || $designation->permissions->contains($id)) ? 'selected' : '' }}>{{ $permissions }}</option>
                     @endforeach
@@ -49,7 +49,7 @@
                     <div class="invalid-feedback">
                         {{ $errors->first('permissions') }}
                     </div>
-                @endif
+                @endif --}}
                 <span class="help-block">{{ trans('cruds.designation.fields.permissions_helper') }}</span>
             </div>
             <div class="form-group">

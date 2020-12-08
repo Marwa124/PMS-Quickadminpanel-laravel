@@ -46,7 +46,7 @@
             $('.data-notify-count').html(count);
             $('.data-content').prepend(`
                 <div class="dropdown-item">
-                    <a href="{{url('${data.show_path}/${data.leave_id}/show')}}" rel="noopener noreferrer">
+                    <a href="{{url('${data.show_path}/${data.leave_id}')}}" rel="noopener noreferrer">
                         <strong>
                             <span class="text-danger">${data.title}</span>
                             <p class="text-muted fa-sm">${data.leave_name}</p>
@@ -109,7 +109,7 @@
 
                             <input type="integer" class="notifiable_id" value="{{$notify->notifiable_id}}" hidden>
                                 <div class="dropdown-item">
-                                    <a class="notify_is_read" href="{{url($notify->data['route_path'].'/'.$notify->data['leave_id'].'/show')}}" rel="noopener noreferrer">
+                                    <a class="notify_is_read" href="{{url($notify->data['route_path'].'/'.$notify->data['leave_id'])}}" rel="noopener noreferrer">
                                     {{-- <a class="notify_is_read" href="{{route($notify->data['route_path'], $notify->data['leave_id'])}}" rel="noopener noreferrer"> --}}
                                         <input type="integer" hidden value="{{$notify->id}}" class="hidden_notification_id">
 

@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-
+@inject('designationModel', 'Modules\HR\Entities\Designation')
 @section('styles')
 <style>
     .card-header:first-child {
@@ -21,7 +21,16 @@
     </div>
 
     <div class="card-body">
-        
+
+            <div class="form-group">
+                <label class="required" for="salary_grade">Designation Name</label>
+                <select class="form-control" name="designation_id" id="">
+                    <option value="" disabled selected>Please Select</option>
+                    @foreach ($designationModel::pluck('designation_name', 'id') as $key => $item)
+                        <option value="{{$key}}">{{$item}}</option>
+                    @endforeach
+                </select>
+            </div>
             <div class="form-group">
                 <label class="required" for="salary_grade">{{ trans('cruds.salaryTemplate.fields.salary_grade') }}</label>
                 <input class="form-control {{ $errors->has('salary_grade') ? 'is-invalid' : '' }}" type="text" name="salary_grade" id="salary_grade" value="{{ old('salary_grade', '') }}" required>
@@ -44,7 +53,7 @@
             </div>
             <div class="form-group">
                 <label for="overtime_salary">{{ trans('cruds.salaryTemplate.fields.overtime_salary') }}</label>
-                <input class="form-control {{ $errors->has('overtime_salary') ? 'is-invalid' : '' }}" type="text" name="overtime_salary" id="overtime_salary" value="{{ old('overtime_salary', '') }}" required>
+                <input class="form-control {{ $errors->has('overtime_salary') ? 'is-invalid' : '' }}" type="integer" min="0" name="overtime_salary" id="overtime_salary" value="{{ old('overtime_salary', '') }}" required>
                 @if($errors->has('overtime_salary'))
                     <div class="invalid-feedback">
                         {{ $errors->first('overtime_salary') }}
@@ -52,7 +61,7 @@
                 @endif
                 <span class="help-block">{{ trans('cruds.salaryTemplate.fields.overtime_salary_helper') }}</span>
             </div>
-            
+
     </div>
 </div>
 
@@ -96,7 +105,7 @@
                 <a href="javascript:void(0)" class="moreDeductions"><i class="fas fa-plus"></i>Add More</a>
             </div>
           </div>
-        
+
     </div> <!--End Col 6-->
 </div> <!--End Row-->
 

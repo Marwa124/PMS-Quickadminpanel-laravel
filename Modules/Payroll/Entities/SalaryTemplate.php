@@ -25,6 +25,7 @@ class SalaryTemplate extends Model
         'salary_grade',
         'basic_salary',
         'overtime_salary',
+        'designation_id',
         'created_at',
         'updated_at',
         'deleted_at',
