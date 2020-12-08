@@ -1,6 +1,7 @@
 @extends('layouts.admin')
 @section('content')
 @inject('clientMeetingModel', 'Modules\HR\Entities\ClientMeeting')
+@inject('accountDetailModel', 'Modules\HR\Entities\AccountDetail')
 
 @can('employee_request_create')
     <div style="margin-bottom: 10px;" class="row">
@@ -66,7 +67,7 @@
                             <td>
                                 @foreach ($meeting->users as $item)
                                 @php
-                                $userName = App\Models\AccountDetail::where('user_id', $item)->pluck('fullname')->first();
+                                $userName = $accountDetailModel::where('user_id', $item)->pluck('fullname')->first();
                                 @endphp
                                 {{ $userName ?? '' }} <?php echo "</br>"; ?>
                                 @endforeach

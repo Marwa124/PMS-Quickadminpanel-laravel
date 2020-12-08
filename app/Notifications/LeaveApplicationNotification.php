@@ -36,7 +36,6 @@ class LeaveApplicationNotification extends Notification
      */
     public function via($notifiable)
     {
-        // return ['mail'];
         return ['mail', 'database'];
     }
 
@@ -50,7 +49,8 @@ class LeaveApplicationNotification extends Notification
     {
         $userName = AccountDetail::where('user_id', $this->application->user_id)->first();
         $attachment = $this->application->attachments ?
-            env('APP_URL') . str_replace('storage', 'storage/app/public', $this->application->attachments->getUrl()) : '';
+            asset($this->application->attachments->getUrl()) : '';
+            // env('APP_URL') . str_replace('storage', 'storage/app/public', $this->application->attachments->getUrl()) : '';
         /////////// Fix Attachment URL
         if ($attachment) {
             $sendMail = (new MailMessage)
@@ -62,9 +62,8 @@ class LeaveApplicationNotification extends Notification
                 ->line('Leave hours: ' . $this->application->hours)
                 ->attach($attachment)
                 ->line('Reason: ' . strip_tags($this->application->reason) ?? '')
-                ->action('Go To Request', route("hr.admin.leave-applications.edit", $this->application->id));
+                ->action('Go To Request', route("hr.admin.leave-applications.show", $this->application->id));
                 // ->action('Go To Request', url("admin/hr/leave-applications/". $this->application->id . '/edit'));
-
         }else{
             $sendMail = (new MailMessage)
                     ->subject('Pending Leave Request ')
@@ -74,7 +73,7 @@ class LeaveApplicationNotification extends Notification
                     ->line('Leave end date: ' . $this->application->leave_end_date)
                     ->line('Leave hours: ' . $this->application->hours)
                     ->line('Reason: ' . strip_tags($this->application->reason) ?? '')
-                    ->action('Go To Request', route("hr.admin.leave-applications.edit", $this->application->id));
+                    ->action('Go To Request', route("hr.admin.leave-applications.show", $this->application->id));
         }
 
         return $sendMail;
@@ -96,7 +95,7 @@ class LeaveApplicationNotification extends Notification
             'leave_id'   => $this->application->id,
             'route_path' => 'admin/hr/leave-applications',
             // 'route_path' => 'hr.admin.leave-applications.edit',
-            'leave_name' => $this->application->leave_type
+            'leave_name' => 'wants to apply for '.$this->application->leave_type
         ];
     }
 }

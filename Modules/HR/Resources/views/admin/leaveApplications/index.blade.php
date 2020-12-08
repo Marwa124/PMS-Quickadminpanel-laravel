@@ -162,16 +162,6 @@
       table.draw();
   })
 
-
-
-//   $(".forceDestroy").click(function(e){
-//       e.preventDefault();
-//         console.log("sdkjvcbk");
-
-//   })
-
-
-
 });
 
 </script>

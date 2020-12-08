@@ -46,10 +46,10 @@
             $('.data-notify-count').html(count);
             $('.data-content').prepend(`
                 <div class="dropdown-item">
-                    <a href="{{url('${data.show_path}/${data.leave_id}/edit')}}" rel="noopener noreferrer">
+                    <a href="{{url('${data.show_path}/${data.leave_id}/show')}}" rel="noopener noreferrer">
                         <strong>
                             <span class="text-danger">${data.title}</span>
-                            <p class="text-muted fa-sm">wants to apply for ${data.leave_name}</p>
+                            <p class="text-muted fa-sm">${data.leave_name}</p>
                         </strong>
                     </a>
                 </div>
@@ -102,21 +102,21 @@
                         </a>
                         {{-- {{dd(\Auth::user()->notifications->sortBy(['created_at', 'asc'])->take(5))}} --}}
                         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right data-content"
-                            style="overflow-y: scroll; height:80vh;">
+                            style="overflow-y: visible; max-height:80vh;">
                             <input type="integer" class="hidden_auth_user_id" value="{{auth()->user()->id}}" hidden>
                             @forelse (\Auth::user()->notifications->sortBy(['created_at', 'asc']) as $notify)
                             {{-- @json($notify->data) --}}
 
                             <input type="integer" class="notifiable_id" value="{{$notify->notifiable_id}}" hidden>
                                 <div class="dropdown-item">
-                                    <a class="notify_is_read" href="{{url($notify->data['route_path'].'/'.$notify->data['leave_id'].'/edit')}}" rel="noopener noreferrer">
+                                    <a class="notify_is_read" href="{{url($notify->data['route_path'].'/'.$notify->data['leave_id'].'/show')}}" rel="noopener noreferrer">
                                     {{-- <a class="notify_is_read" href="{{route($notify->data['route_path'], $notify->data['leave_id'])}}" rel="noopener noreferrer"> --}}
                                         <input type="integer" hidden value="{{$notify->id}}" class="hidden_notification_id">
 
                                         {{-- <a class="notify_is_read" style="color:red" href="{{url($notify->show_path.'/'.  $notify->model_id)}}" rel="noopener noreferrer"> --}}
                                         @if(!$notify->read_at) <strong class="text-danger"> @endif
                                             {{$notify->data['title']}}
-                                            <p class="text-muted fa-sm">wants to apply for {{$notify->data['leave_name']}}</p>
+                                            <p class="text-muted fa-sm">{{$notify->data['leave_name']}}</p>
                                         @if(!$notify->read_at) </strong> @endif
                                     </a>
                                 </div>

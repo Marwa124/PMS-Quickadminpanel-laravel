@@ -13,6 +13,7 @@ use Modules\HR\Http\Requests\Update\UpdateLeaveApplicationRequest;
 use Modules\HR\Entities\LeaveApplication;
 use Modules\HR\Entities\LeaveCategory;
 use App\Models\User;
+use App\Notifications\ApproveRejectLeaveNotification;
 use App\Notifications\LeaveApplicationNotification;
 use Gate;
 use Illuminate\Http\Request;
@@ -40,7 +41,7 @@ class LeaveApplicationsController extends Controller
             }elseif($request->get('leaveTypes') == 'pending') {
 
                 $isDepartmentHead = Department::where('department_head_id', auth()->user()->id)->first();
-                if (User::authUserRole() == 'Board Members' || User::authUserRole() == 'Admin') {
+                if (auth()->user()->hasAnyRole('Board Members', 'Admin')) {
                     // All pending leaves for board and admin
                     $query = LeaveApplication::where('application_status', 'pending')->with(['user', 'leave_category'])->select(sprintf('%s.*', (new LeaveApplication)->table));
                 }elseif ($isDepartmentHead) {
@@ -80,9 +81,6 @@ class LeaveApplicationsController extends Controller
                 }else{
                     $query = LeaveApplication::where('user_id', auth()->user()->id)->with(['leave_category'])->select(sprintf('%s.*', (new LeaveApplication)->table));
                 }
-
-                // All Leaves
-                // $query = LeaveApplication::with(['user', 'leave_category'])->select(sprintf('%s.*', (new LeaveApplication)->table));
             }
 
             $table = Datatables::of($query);
@@ -95,36 +93,30 @@ class LeaveApplicationsController extends Controller
                 if ($request->get('trashed')) {
                     $viewGate      = '';
                     $editGate      = '';
+                    $approveReject = 'approve_reject';
                     $deleteGate    = 'leave_application_delete';
                     $deleteRestore    = 'delete_restore';
                     $modalId       = 'hr.';
                     $crudRoutePart = 'leave-applications';
-
-                    return view('partials.datatablesActions', compact(
-                        'viewGate',
-                        'editGate',
-                        'deleteGate',
-                        'deleteRestore',
-                        'modalId',
-                        'crudRoutePart',
-                        'row'
-                    ));
                 }else{
                     $viewGate      = 'leave_application_show';
-                    $editGate      = 'leave_application_edit';
+                    $editGate      = '';
+                    $approveReject = 'approve_reject';
+                    // $editGate      = 'leave_application_edit';
                     $deleteGate    = 'leave_application_delete';
                     $modalId       = 'hr.';
                     $crudRoutePart = 'leave-applications';
-
-                    return view('partials.datatablesActions', compact(
-                        'viewGate',
-                        'editGate',
-                        'deleteGate',
-                        'modalId',
-                        'crudRoutePart',
-                        'row'
-                    ));
                 }
+
+                return view('partials.datatablesActions', compact(
+                    'viewGate',
+                    'editGate',
+                    'approveReject',
+                    'deleteGate',
+                    'modalId',
+                    'crudRoutePart',
+                    'row'
+                ));
 
             })->filter(function ($instance) use ($request) {
                 if ($request->get('trashed')) {
@@ -141,30 +133,24 @@ class LeaveApplicationsController extends Controller
             $table->addColumn('leave_category_name', function ($row) {
                 return $row->leave_category ? $row->leave_category->name : '';
             });
-            $table->editColumn('hours', function ($row) {
-                return $row->hours ? $row->hours : "";
-            });
             $table->editColumn('leave_start_date', function ($row) {
                 return $row->leave_start_date ? $row->leave_start_date : "";
             });
             $table->editColumn('leave_end_date', function ($row) {
                 return $row->leave_end_date ? $row->leave_end_date : "";
             });
-
             $table->editColumn('status_color', function ($row) {
                 return $row->application_status && LeaveApplication::STATUS_COLOR[$row->application_status] ? LeaveApplication::STATUS_COLOR[$row->application_status] : 'none';
             });
             $table->editColumn('application_status', function ($row) {
                 return $row->application_status ? LeaveApplication::APPLICATION_STATUS_SELECT[$row->application_status] : '';
             });
-
             $table->editColumn('leave_type', function ($row) {
                 return $row->leave_type ? LeaveApplication::LEAVE_TYPE_SELECT[$row->leave_type] : '';
             });
             $table->editColumn('hours', function ($row) {
                 return $row->hours ? $row->hours : "";
             });
-
             $table->addColumn('user_name', function ($row) {
                 return $row->user->accountDetail->fullname ?? '';
             });
@@ -204,7 +190,6 @@ class LeaveApplicationsController extends Controller
         if ($notifyId = Request()->application_id) {
             $user->notifications->find($notifyId)->markAsRead();
         }
-        // return response()->json();
     }
 
     public function create()
@@ -256,61 +241,37 @@ class LeaveApplicationsController extends Controller
 
         if ($request->input('attachments', false)) {
             $leaveApplication->addMedia(storage_path('tmp/uploads/' . $request->input('attachments')))->toMediaCollection('attachments');
-
-            // try {
-            //     $leaveApplication->addMedia(storage_path('tmp/uploads/' . $request->input('attachments')))->toMediaCollection('attachments');
-            // } catch (\Throwable $th) {
-            //     dd(str_replace('Spatie\MediaLibrary\\', '', get_class($th)));
-            // }
         }
 
         if ($media = $request->input('ck-media', false)) {
             Media::whereIn('id', $media)->update(['model_id' => $leaveApplication->id]);
         }
 
-        /* !!!: Leave Notification */
-        $leave_category = LeaveCategory::where('id', $leaveApplication->leave_category_id)->first()->name;
-        /* !!!: Leave Mail */
-        // Mail::to('marwa120640@gmail.com')->cc("marwa120640@gmail.com")
-        //         ->send(new LeaveRequest($leaveApplication, $leaveApplication->user_id, $leave_category));
-
-        // $notifyUsers = globalNotificationId($request->user_id);
-        // $notification = Notification::create([
-        //     'title'   => $leave_category,
-        //     'content' => User::find($request->user_id)->accountDetail()->first()->fullname . ' wants to apply for leave.',
-        //     'model_id' => $leaveApplication->id,
-        //     'model_type' => 'Modules\HR\Entities\LeaveApplication',
-        //     'show_path' => 'admin/hr/leave-applications',
-        // ]);
-
-        // $notification->users()->attach($notifyUsers);
-        // event(new NewNotification($notification));
-        /* !!!: End Leave Notification */
-
+        /* !!!: Sending Emails for each User admin and Depart. Head */
         /* !!!: Notification (db, mail) via Laravel $user->notify() */
-        $user = User::find(23);
-        $user->notify(new LeaveApplicationNotification($leaveApplication, $leave_category));
+
+        $leave_category = LeaveCategory::where('id', $leaveApplication->leave_category_id)->first()->name;
+        $department_head_employee = User::find($leaveApplication->user_id)->accountDetail->designation->department->department_head()->first();
+        $board_members = Department::where('department_name', 'Board Members')->orWhere('department_name', 'CEO')->select('email')->get();
+
+        // $user = User::find(23);
+        // $user->notify(new LeaveApplicationNotification($leaveApplication, $leave_category));
+        // $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
+        // event(new NewNotification($userNotify));
+
+        if($department_head_employee){
+            $department_head_employee->notify(new LeaveApplicationNotification($leaveApplication, $leave_category));
+            $userNotify = $department_head_employee->notifications->where('notifiable_id', $department_head_employee->id)->sortBy(['created_at' => 'desc'])->first();
+            event(new NewNotification($userNotify));
+        }
         /* !!!: End Notification (db, mail) via Laravel $user->notify() */
+        /* !!!: End Sending Emails for each User admin and Depart. Head */
 
-        $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
-        event(new NewNotification($userNotify, $leave_category));
-
-        // Sending Emails for each User admin and Depart. Head
-
-        // dd(new LeaveRequest($leaveApplication));
-        // $department_head_employee = AccountDetail::find($leaveApplication->user_id)->designation->department()->first()->email;
-        // $board_members = Department::where('department_name', 'Board Members')->orWhere('department_name', 'CEO')->select('email')->get();
-
-        // foreach (['marwa120640@gmail.com'] as $recipient) {
-        //     Mail::to($recipient)->cc("marwa120640@gmail.com")
-        //         ->send(new LeaveRequest($leaveApplication));
-        // }
         return redirect()->route('hr.admin.leave-applications.index');
     }
 
     public function markAttendance($id)
     {
-        // dd(request()->type);
         try {
             FingerprintAttendance::create([
                 'user_id' => $id,
@@ -323,44 +284,18 @@ class LeaveApplicationsController extends Controller
         }
     }
 
-    public function edit(LeaveApplication $leaveApplication)
+    public function approveReject($id, $status)
     {
-        abort_if(Gate::denies('leave_application_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        $leaveApplication = LeaveApplication::find($id);
+        $leaveApplication->update(['application_status' => $status]);
 
-        // $users = User::where('banned', 0)->get()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
-        $users = AccountDetail::where('employment_id', '!=', null)->get()->pluck('fullname', 'user_id')->prepend(trans('global.pleaseSelect'), '');
-
-        $leave_categories = LeaveCategory::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
-        $leaveApplication->load('user', 'leave_category');
-
-        return view('hr::admin.leaveApplications.edit', compact('users', 'leave_categories', 'leaveApplication'));
-    }
-
-    public function update(UpdateLeaveApplicationRequest $request, LeaveApplication $leaveApplication)
-    {
-        $leaveApplication->update($request->all());
-
-        if ($request->input('attachments', false)) {
-            if (!$leaveApplication->attachments || $request->input('attachments') !== $leaveApplication->attachments->file_name) {
-                if ($leaveApplication->attachments) {
-                    $leaveApplication->attachments->delete();
-                }
-                $leaveApplication->addMedia(storage_path('tmp\uploads\\' . $request->input('attachments')))->toMediaCollection('attachments');
-            }
-        } elseif ($leaveApplication->attachments) {
-            $leaveApplication->attachments->delete();
-        }
-
-        $leave_category = LeaveCategory::where('id', $leaveApplication->leave_category_id)->select('name')->first()->name;
-
-
-         /* !!!: Notification (db, mail) via Laravel $user->notify() */
-         $user = User::find(23);
-         $user->notify(new LeaveApplicationNotification($leaveApplication, $leave_category));
-         /* !!!: End Notification (db, mail) via Laravel $user->notify() */
+        $user = User::find($leaveApplication->user_id);
+        $leaveCategory = $leaveApplication->leave_category()->first();
+        $user->notify(new ApproveRejectLeaveNotification($leaveApplication, $leaveCategory, $status));
+        /* !!!: End Notification (db, mail) via Laravel $user->notify() */
 
         $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
-        event(new NewNotification($userNotify, $leave_category));
+        event(new NewNotification($userNotify));
 
         return redirect()->route('hr.admin.leave-applications.index');
     }
@@ -368,14 +303,7 @@ class LeaveApplicationsController extends Controller
     public function show(LeaveApplication $leaveApplication)
     {
         abort_if(Gate::denies('leave_application_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        // $array = explode('.', $leaveApplication->attachments->getUrl());
-        // $extension = strtolower(end($array));
-        // dd($extension);
-        $attachment = $leaveApplication->attachments ? str_replace('storage', 'storage/app/public', $leaveApplication->attachments->getUrl()) : '';
-// dd(asset( 'storage/app/public/'. $leaveApplication->attachments->getUrl()),url('storage/app/public'));
-
-        // $v = str_replace(env('APP_URL').'/storage', env('APP_URL').'/storage/app/public', $leaveApplication->attachments->getUrl());
-        // dd($v);
+        $attachment = $leaveApplication->attachments ? asset($leaveApplication->attachments->getUrl()) : '';
         $leaveApplication->load('user', 'leave_category');
 
         return view('hr::admin.leaveApplications.show', compact('leaveApplication', 'attachment'));
@@ -390,8 +318,6 @@ class LeaveApplicationsController extends Controller
         } else {
             $leaveApplication->delete();
         }
-
-        // $leaveApplication->delete();
 
         return back();
     }
@@ -422,8 +348,6 @@ class LeaveApplicationsController extends Controller
         } else {
             LeaveApplication::whereIn('id', request('ids'))->delete();
         }
-
-        // LeaveApplication::whereIn('id', request('ids'))->delete();
 
         return response(null, Response::HTTP_NO_CONTENT);
     }

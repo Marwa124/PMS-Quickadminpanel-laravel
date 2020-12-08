@@ -1,3 +1,15 @@
+{{-- Conserned only with leave Applications --}}
+<?php
+    $notifyUsers = globalNotificationId($row->user_id);
+    $admins = in_array(auth()->user()->id, $notifyUsers);
+    $approveReject = $approveReject ?? '';
+?>
+@if ($approveReject && $admins && $row->application_status == 'pending')
+    <a href="{{route('hr.admin.leave-applications.approveReject', [$row->id, 'accepted'])}}" class="text-success approve_leave">Approve</a>/
+    <a href="{{route('hr.admin.leave-applications.approveReject', [$row->id, 'rejected'])}}" onclick="return confirm('Are you sure?')" class="text-danger reject_leave">Reject</a>
+@endif
+{{-- End Conserned only with leave Applications --}}
+
 @can($viewGate)
     <a class="btn btn-xs btn-primary" href="{{ route($modalId.'admin.' . $crudRoutePart . '.show', $row->id) }}">
         {{ trans('global.view') }}
