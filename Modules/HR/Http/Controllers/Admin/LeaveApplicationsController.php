@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Modules\HR\Emails\LeaveRequest;
 use Modules\HR\Entities\Department;
+use Modules\HR\Entities\FingerprintAttendance;
 use Spatie\MediaLibrary\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
 use Yajra\DataTables\Facades\DataTables;
@@ -291,6 +292,8 @@ class LeaveApplicationsController extends Controller
         $user->notify(new LeaveApplicationNotification($leaveApplication, $leave_category));
         /* !!!: End Notification (db, mail) via Laravel $user->notify() */
 
+        $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
+        event(new NewNotification($userNotify, $leave_category));
 
         // Sending Emails for each User admin and Depart. Head
 
@@ -303,6 +306,21 @@ class LeaveApplicationsController extends Controller
         //         ->send(new LeaveRequest($leaveApplication));
         // }
         return redirect()->route('hr.admin.leave-applications.index');
+    }
+
+    public function markAttendance($id)
+    {
+        // dd(request()->type);
+        try {
+            FingerprintAttendance::create([
+                'user_id' => $id,
+                'date'    => date('Y-m-d'),
+                'time'    => date('H:i:s'),
+                'type'    => request()->type,
+            ]);
+        } catch (\Exception $msg) {
+            return $msg->getMessage();
+        }
     }
 
     public function edit(LeaveApplication $leaveApplication)
@@ -333,7 +351,6 @@ class LeaveApplicationsController extends Controller
             $leaveApplication->attachments->delete();
         }
 
-
         $leave_category = LeaveCategory::where('id', $leaveApplication->leave_category_id)->select('name')->first()->name;
 
 
@@ -342,20 +359,7 @@ class LeaveApplicationsController extends Controller
          $user->notify(new LeaveApplicationNotification($leaveApplication, $leave_category));
          /* !!!: End Notification (db, mail) via Laravel $user->notify() */
 
-         $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
-
-         // $notifyUsers = globalNotificationId($request->user_id);
-
-        // $notification = Notification::create([
-        //     'title'   => $leave_category,
-        //     'content' => User::find($request->user_id)->accountDetail()->first()->fullname . ' wants to apply for leave.',
-        //     'model_id' => $leaveApplication->id,
-        //     'model_type' => 'Modules\HR\Entities\LeaveApplication',
-        //     'show_path' => 'admin/hr/leave-applications',
-        // ]);
-
-        // $notification->users()->attach($notifyUsers);
-        // $notification['user_id'] = $request->user_id;
+        $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
         event(new NewNotification($userNotify, $leave_category));
 
         return redirect()->route('hr.admin.leave-applications.index');

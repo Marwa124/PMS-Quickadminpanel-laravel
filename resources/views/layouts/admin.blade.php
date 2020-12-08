@@ -26,7 +26,6 @@
     @yield('styles')
 
 <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
-
 <script>
 
     // Enable pusher logging - don't include this in production
@@ -39,26 +38,24 @@
     var channel = pusher.subscribe('new-notification');
     channel.bind('App\\Events\\NewNotification', function(data) {
 
-if (data) {
-console.log(data);
-    if ($('.notifiable_id').val() == $('.hidden_auth_user_id').val()) {
+    if (data) {
+        if ($('.notifiable_id').val() == $('.hidden_auth_user_id').val()) {
 
-        var count = parseInt($('.data-notify-count').html());
-        count += 1;
-        $('.data-notify-count').html(count);
-        $('.data-content').prepend(`
-            <div class="dropdown-item">
-                <a href="{{route('${data.show_path}, ${data.leave_id}')}}" rel="noopener noreferrer">
-                    <strong>
-                        ${data.title}
-                        <p class="text-muted fa-sm">wants to apply for ${data.leave_name}</p>
-                    </strong>
-                </a>
-            </div>
-        `);
-    //   alert(JSON.stringify(data));
+            var count = parseInt($('.data-notify-count').html());
+            count += 1;
+            $('.data-notify-count').html(count);
+            $('.data-content').prepend(`
+                <div class="dropdown-item">
+                    <a href="{{url('${data.show_path}/${data.leave_id}/edit')}}" rel="noopener noreferrer">
+                        <strong>
+                            <span class="text-danger">${data.title}</span>
+                            <p class="text-muted fa-sm">wants to apply for ${data.leave_name}</p>
+                        </strong>
+                    </a>
+                </div>
+            `);
+        }
     }
-}
 
     });
   </script>
@@ -72,7 +69,6 @@ console.log(data);
             <button class="c-header-toggler c-class-toggler d-lg-none mfe-auto" type="button" data-target="#sidebar" data-class="c-sidebar-show">
                 <i class="fas fa-fw fa-bars"></i>
             </button>
-
             <a class="c-header-brand d-lg-none" href="#">{{ trans('panel.site_title') }}</a>
 
             <button class="c-header-toggler c-class-toggler mfs-3 d-md-down-none" type="button" data-target="#sidebar" data-class="c-sidebar-lg-show" responsive="true">
@@ -104,15 +100,17 @@ console.log(data);
                                     </span>
                                 @endif
                         </a>
-                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right data-content">
+                        {{-- {{dd(\Auth::user()->notifications->sortBy(['created_at', 'asc'])->take(5))}} --}}
+                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right data-content"
+                            style="overflow-y: scroll; height:80vh;">
                             <input type="integer" class="hidden_auth_user_id" value="{{auth()->user()->id}}" hidden>
-                            @forelse (\Auth::user()->notifications as $notify)
+                            @forelse (\Auth::user()->notifications->sortBy(['created_at', 'asc']) as $notify)
                             {{-- @json($notify->data) --}}
 
                             <input type="integer" class="notifiable_id" value="{{$notify->notifiable_id}}" hidden>
                                 <div class="dropdown-item">
-                                    <a class="notify_is_read" href="{{route($notify->data['route_path'], $notify->data['leave_id'])}}" rel="noopener noreferrer">
-                                    {{-- <a class="notify_is_read" href="{{route('hr.admin.leave-applications.edit', $notify->data['leave_id'])}}" rel="noopener noreferrer"> --}}
+                                    <a class="notify_is_read" href="{{url($notify->data['route_path'].'/'.$notify->data['leave_id'].'/edit')}}" rel="noopener noreferrer">
+                                    {{-- <a class="notify_is_read" href="{{route($notify->data['route_path'], $notify->data['leave_id'])}}" rel="noopener noreferrer"> --}}
                                         <input type="integer" hidden value="{{$notify->id}}" class="hidden_notification_id">
 
                                         {{-- <a class="notify_is_read" style="color:red" href="{{url($notify->show_path.'/'.  $notify->model_id)}}" rel="noopener noreferrer"> --}}
@@ -150,7 +148,7 @@ console.log(data);
 
 
                 <!--User Alert-->
-                <ul class="c-header-nav ml-auto">
+                {{-- <ul class="c-header-nav ml-auto">
                     <li class="c-header-nav-item dropdown notifications-menu">
                         <a href="#" class="c-header-nav-link" data-toggle="dropdown">
                             <i class="far fa-bell"></i>
@@ -179,29 +177,12 @@ console.log(data);
                             @endif
                         </div>
                     </li>
-                </ul>
+                </ul> --}}
                 <!--End User Alert-->
 
             </ul>
         </header>
-        <?php
-            $systemClockIn = false;
-            $allUserLeaves = auth()->user()->leaveApplications()->get();
-            foreach ($allUserLeaves as $key => $value) {
-                if ($value->leave_category()->first()->name == 'Working From Home') {
-                    if ($value->leave_start_date == date('Y-m-d')) {
-                        $systemClockIn = true;
-                    }
-                }
-            }
-        ?>
-        @if ($systemClockIn)
-            <div class="row">
-                <div class="" style="position: absolute; right:20px;">
-                    <button class="btn btn-danger">Clock In</button>
-                </div>
-            </div>
-        @endif
+
 
         <div class="c-body">
             <main class="c-main">
@@ -462,13 +443,11 @@ console.log(data);
 
     <script>
         $(document).ready(function(){
-            $('.notify_is_read').on('click', function(e){
-                // $('.notify_is_read').css('color', 'black !important');
-                // e.target.style.color = 'black !important';
+            var authUserId = $('.hidden_auth_user_id').val();
 
-                // e.preventDefault();
+            $('.notify_is_read').on('click', function(e){
+                // e.target.style.color = 'black !important';
                 let applicationId = $(this).closest('.dropdown-menu').find('.hidden_notification_id').val();
-                let authUserId = $('.hidden_auth_user_id').val();
                 console.log(applicationId);
                 $.ajax({
                     url: '{{url('admin/hr/leave-applications/mark-notification-as-read')}}/' + authUserId,
@@ -476,7 +455,7 @@ console.log(data);
                         application_id: applicationId
                     },
                 })
-            })
+            });
         })
     </script>
 

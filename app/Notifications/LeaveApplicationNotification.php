@@ -48,7 +48,7 @@ class LeaveApplicationNotification extends Notification
      */
     public function toMail($notifiable)
     {
-        $userName = AccountDetail::where('user_id', $notifiable->id)->first();
+        $userName = AccountDetail::where('user_id', $this->application->user_id)->first();
         $attachment = $this->application->attachments ?
             env('APP_URL') . str_replace('storage', 'storage/app/public', $this->application->attachments->getUrl()) : '';
         /////////// Fix Attachment URL
@@ -94,7 +94,8 @@ class LeaveApplicationNotification extends Notification
         return [
             'title'      => $userName->fullname ?? '' . ' applies for ' . $this->leave_category,
             'leave_id'   => $this->application->id,
-            'route_path' => 'hr.admin.leave-applications.edit',
+            'route_path' => 'admin/hr/leave-applications',
+            // 'route_path' => 'hr.admin.leave-applications.edit',
             'leave_name' => $this->application->leave_type
         ];
     }
