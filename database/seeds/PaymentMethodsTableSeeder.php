@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Role;
 use Illuminate\Database\Seeder;
 use Modules\Payroll\Entities\PaymentMethod;
 
