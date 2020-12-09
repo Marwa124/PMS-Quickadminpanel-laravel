@@ -271,7 +271,8 @@
                 'milestone_edit',
                 'milestone_show',
                 'milestone_delete',
-                'milestone_access'
+                'milestone_access',
+                'milestone_assign_to',
             ],
 
             'bugs' => [

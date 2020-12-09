@@ -571,26 +571,6 @@
                             </a>
                         </li>
                     @endcan
-                    @can('milestone_access')
-                        <li class="c-sidebar-nav-item">
-                            <a href="{{ route("admin.milestones.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/milestones") || request()->is("admin/milestones/*") ? "active" : "" }}">
-                                <i class="fa-fw fab fa-app-store c-sidebar-nav-icon">
-
-                                </i>
-                                {{ trans('cruds.milestone.title') }}
-                            </a>
-                        </li>
-                    @endcan
-                    @can('bug_access')
-                        <li class="c-sidebar-nav-item">
-                            <a href="{{ route("admin.bugs.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/bugs") || request()->is("admin/bugs/*") ? "active" : "" }}">
-                                <i class="fa-fw fas fa-bug c-sidebar-nav-icon">
-
-                                </i>
-                                {{ trans('cruds.bug.title') }}
-                            </a>
-                        </li>
-                    @endcan
                     @can('ticket_access')
                         <li class="c-sidebar-nav-item">
                             <a href="{{ route("admin.tickets.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/tickets") || request()->is("admin/tickets/*") ? "active" : "" }}">
@@ -671,6 +651,26 @@
 
                                 </i>
                                 {{ trans('cruds.project.title') }}
+                            </a>
+                        </li>
+                    @endcan
+                    @can('milestone_access')
+                        <li class="c-sidebar-nav-item">
+                            <a href="{{ route("projectmanagement.admin.milestones.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/projectmanagement/milestones") || request()->is("admin/projectmanagement/milestones/*") ? "active" : "" }}">
+                                <i class="fa-fw fab fa-app-store c-sidebar-nav-icon">
+
+                                </i>
+                                {{ trans('cruds.milestone.title') }}
+                            </a>
+                        </li>
+                    @endcan
+                    @can('bug_access')
+                        <li class="c-sidebar-nav-item">
+                            <a href="{{ route("admin.bugs.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/bugs") || request()->is("admin/bugs/*") ? "active" : "" }}">
+                                <i class="fa-fw fas fa-bug c-sidebar-nav-icon">
+
+                                </i>
+                                {{ trans('cruds.bug.title') }}
                             </a>
                         </li>
                     @endcan

@@ -216,9 +216,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     // Route::delete('accounts/destroy', 'AccountsController@massDestroy')->name('accounts.massDestroy');
     // Route::resource('accounts', 'AccountsController');
 
-    // Milestones
-    Route::delete('milestones/destroy', 'MilestonesController@massDestroy')->name('milestones.massDestroy');
-    Route::resource('milestones', 'MilestonesController');
 
     // Bugs
     Route::delete('bugs/destroy', 'BugsController@massDestroy')->name('bugs.massDestroy');

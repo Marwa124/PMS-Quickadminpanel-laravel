@@ -98,10 +98,10 @@ class ProjectsController extends Controller
         return view('projectmanagement::admin.projects.show', compact('project'));
     }
 
-    public function destroy($id)
+    public function destroy(Project $project)
     {
         abort_if(Gate::denies('project_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        $project = Project::where('id',$id)->with('accountDetails.user.permissions')->first();
+        //$project = Project::where('id',$id)->with('accountDetails.user.permissions')->first();
 
         $project->accountDetails()->detach();
         $project->delete();
@@ -137,8 +137,8 @@ class ProjectsController extends Controller
     public function getAssignTo($id){
 
         abort_if(Gate::denies('project_assign_to'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        $project = Project::where('id',$id)->with('department','accountDetails')->first();
+        $project = Project::findOrFail($id);
+        //$project = Project::where('id',$id)->with('department','accountDetails')->first();
         $department = $project->department()->first();
 
         if (!$department){

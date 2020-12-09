@@ -3,7 +3,7 @@
 namespace Modules\ProjectManagement\Entities;
 
 use App\Models\Client;
-use App\Models\Milestone;
+use Modules\ProjectManagement\Entities\Milestone;
 use App\Models\Permission;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;

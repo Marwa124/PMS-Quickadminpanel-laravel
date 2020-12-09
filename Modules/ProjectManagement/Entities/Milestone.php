@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace Modules\ProjectManagement\Entities;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -68,4 +68,12 @@ class Milestone extends Model
     {
         $this->attributes['end_date'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
     }
+
+    public function accountDetails(){
+
+        return $this->belongsToMany('Modules\HR\Entities\AccountDetail',
+            'milestone_account_details_pivot','milestone_id','account_details_id');
+
+    }
+
 }

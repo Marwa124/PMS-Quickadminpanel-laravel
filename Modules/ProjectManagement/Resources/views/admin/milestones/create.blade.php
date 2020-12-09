@@ -7,22 +7,22 @@
     </div>
 
     <div class="card-body">
-        <form method="POST" action="{{ route("admin.milestones.store") }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ route("projectmanagement.admin.milestones.store") }}" enctype="multipart/form-data">
             @csrf
-            <div class="form-group">
-                <label class="required" for="user_id">{{ trans('cruds.milestone.fields.user') }}</label>
-                <select class="form-control select2 {{ $errors->has('user') ? 'is-invalid' : '' }}" name="user_id" id="user_id" required>
-                    @foreach($users as $id => $user)
-                        <option value="{{ $id }}" {{ old('user_id') == $id ? 'selected' : '' }}>{{ $user }}</option>
-                    @endforeach
-                </select>
-                @if($errors->has('user'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('user') }}
-                    </div>
-                @endif
-                <span class="help-block">{{ trans('cruds.milestone.fields.user_helper') }}</span>
-            </div>
+{{--            <div class="form-group">--}}
+{{--                <label class="required" for="user_id">{{ trans('cruds.milestone.fields.user') }}</label>--}}
+{{--                <select class="form-control select2 {{ $errors->has('user') ? 'is-invalid' : '' }}" name="user_id" id="user_id" required>--}}
+{{--                    @foreach($users as $id => $user)--}}
+{{--                        <option value="{{ $id }}" {{ old('user_id') == $id ? 'selected' : '' }}>{{ $user }}</option>--}}
+{{--                    @endforeach--}}
+{{--                </select>--}}
+{{--                @if($errors->has('user'))--}}
+{{--                    <div class="invalid-feedback">--}}
+{{--                        {{ $errors->first('user') }}--}}
+{{--                    </div>--}}
+{{--                @endif--}}
+{{--                <span class="help-block">{{ trans('cruds.milestone.fields.user_helper') }}</span>--}}
+{{--            </div>--}}
             <div class="form-group">
                 <label class="required" for="project_id">{{ trans('cruds.milestone.fields.project') }}</label>
                 <select class="form-control select2 {{ $errors->has('project') ? 'is-invalid' : '' }}" name="project_id" id="project_id" required>
@@ -67,17 +67,17 @@
                 @endif
                 <span class="help-block">{{ trans('cruds.milestone.fields.end_date_helper') }}</span>
             </div>
-            <div class="form-group">
-                <label for="client_visible">{{ trans('cruds.milestone.fields.client_visible') }}</label>
-                <textarea class="form-control {{ $errors->has('client_visible') ? 'is-invalid' : '' }}" name="client_visible" id="client_visible">{{ old('client_visible') }}</textarea>
-                @if($errors->has('client_visible'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('client_visible') }}
-                    </div>
-                @endif
-                <span class="help-block">{{ trans('cruds.milestone.fields.client_visible_helper') }}</span>
-            </div>
-            <div class="form-group">
+{{--            <div class="form-group">--}}
+{{--                <label for="client_visible">{{ trans('cruds.milestone.fields.client_visible') }}</label>--}}
+{{--                <textarea class="form-control {{ $errors->has('client_visible') ? 'is-invalid' : '' }}" name="client_visible" id="client_visible">{{ old('client_visible') }}</textarea>--}}
+{{--                @if($errors->has('client_visible'))--}}
+{{--                    <div class="invalid-feedback">--}}
+{{--                        {{ $errors->first('client_visible') }}--}}
+{{--                    </div>--}}
+{{--                @endif--}}
+{{--                <span class="help-block">{{ trans('cruds.milestone.fields.client_visible_helper') }}</span>--}}
+{{--            </div>--}}
+            <div class="form-group float-right">
                 <button class="btn btn-danger" type="submit">
                     {{ trans('global.save') }}
                 </button>

@@ -9,7 +9,7 @@
     <div class="card-body">
         <div class="form-group">
             <div class="form-group">
-                <a class="btn btn-default" href="{{ route('admin.milestones.index') }}">
+                <a class="btn btn-default" href="{{ route('projectmanagement.admin.milestones.index') }}">
                     {{ trans('global.back_to_list') }}
                 </a>
             </div>
@@ -23,14 +23,14 @@
                             {{ $milestone->id }}
                         </td>
                     </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.milestone.fields.user') }}
-                        </th>
-                        <td>
-                            {{ $milestone->user->name ?? '' }}
-                        </td>
-                    </tr>
+{{--                    <tr>--}}
+{{--                        <th>--}}
+{{--                            {{ trans('cruds.milestone.fields.user') }}--}}
+{{--                        </th>--}}
+{{--                        <td>--}}
+{{--                            {{ $milestone->user->name ?? '' }}--}}
+{{--                        </td>--}}
+{{--                    </tr>--}}
                     <tr>
                         <th>
                             {{ trans('cruds.milestone.fields.project') }}
@@ -63,20 +63,28 @@
                             {{ $milestone->end_date }}
                         </td>
                     </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.milestone.fields.client_visible') }}
-                        </th>
-                        <td>
-                            {{ $milestone->client_visible }}
-                        </td>
-                    </tr>
+{{--                    <tr>--}}
+{{--                        <th>--}}
+{{--                            {{ trans('cruds.milestone.fields.client_visible') }}--}}
+{{--                        </th>--}}
+{{--                        <td>--}}
+{{--                            {{ $milestone->client_visible }}--}}
+{{--                        </td>--}}
+{{--                    </tr>--}}
                 </tbody>
             </table>
-            <div class="form-group">
-                <a class="btn btn-default" href="{{ route('admin.milestones.index') }}">
+            <div class="form-group float-right">
+                <a class="btn btn-default" href="{{ route('projectmanagement.admin.milestones.index') }}">
                     {{ trans('global.back_to_list') }}
                 </a>
+                @can('milestone_edit')
+                    <a class="btn btn-info " href="{{ route('projectmanagement.admin.milestones.edit', $milestone->id) }}">
+                        {{ trans('global.edit') }}
+                    </a>
+                @endcan
+            </div>
+            <div class="form-group">
+
             </div>
         </div>
     </div>

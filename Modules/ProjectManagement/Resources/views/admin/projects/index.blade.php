@@ -66,10 +66,10 @@
                         <td>
                         </td>
                         <td>
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
+                            <input class="search" type="text" placeholder="{{ trans('global.search') }}" style="width: 110px;">
                         </td>
                         <td>
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
+                            <input class="search" type="text" placeholder="{{ trans('global.search') }}" >
                         </td>
                         <td>
                             <select class="search">
@@ -97,10 +97,10 @@
                         <td>
                         </td>
                         <td>
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
+                            <input class="search" type="text" placeholder="{{ trans('global.search') }}" style="width: 110px;">
                         </td>
                         <td>
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
+                            <input class="search" type="text" placeholder="{{ trans('global.search') }}" >
                         </td>
 {{--                        <td>--}}
 {{--                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">--}}
@@ -147,7 +147,7 @@
 
                             <td>
 {{--                                {{ $project->with_tasks ?? 'No' }}--}}
-                                @if($project->with_tasks)
+                                @if($project->with_tasks && $project->tasks)
                                     <a class="btn btn-info {{$project->tasks && $project->tasks->count()>0 ? '':'disabled'}}" >
                                         {{$project->tasks->count()>0 ? $project->tasks->count():'No Tasks'}}
                                     </a>
@@ -158,7 +158,7 @@
                                 @endif
                             </td>
                             <td>
-                                <a class="btn btn-info {{$project->milestones && $project->milestones->count()>0 ? '':'disabled'}}" >
+                                <a href="{{route('projectmanagement.admin.milestones.index')}}" class="btn btn-info {{$project->milestones && $project->milestones->count()>0 ? '':'disabled'}}" >
                                     {{$project->milestones && $project->milestones->count()>0 ? $project->milestones->count():'No Milestone'}}
                                 </a>
                             </td>
@@ -195,7 +195,6 @@
                                     </a>
 
                                 @endcan
-
 
                                 @can('project_delete')
                                     <form action="{{ route('projectmanagement.admin.projects.destroy', $project->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">

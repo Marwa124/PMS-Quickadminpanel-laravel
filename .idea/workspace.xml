@@ -29,21 +29,37 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="12c5590f-20f1-441a-b116-7f3f712f734a" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/milestones/assignto.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/ProjectManagement/Database/Migrations/2020_09_27_000013_create_projects_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Database/Migrations/2020_09_27_000013_create_projects_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modules/HR/Entities/AccountDetail.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/HR/Entities/AccountDetail.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Modules/ProjectManagement/Entities/Project.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Entities/Project.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modules/ProjectManagement/Entities/Task.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Entities/Task.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Controllers/Admin/ProjectsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Controllers/Admin/ProjectsController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/projects/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/projects/create.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/projects/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/projects/edit.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Controllers/Admin/TaskController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Controllers/Admin/TaskController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/projects/assignto.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/projects/assignto.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/projects/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/projects/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/projects/show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/projects/show.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modules/ProjectManagement/Routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Routes/web.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/BugsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/BugsController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/MilestonesController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Controllers/Admin/MilestonesController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Requests/MassDestroyMilestoneRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Requests/MassDestroyMilestoneRequest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Requests/StoreMilestoneRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Requests/StoreMilestoneRequest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Requests/UpdateMilestoneRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Requests/UpdateMilestoneRequest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Bug.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Bug.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Milestone.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Entities/Milestone.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Models/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/User.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2020_09_27_000161_add_relationship_fields_to_leads_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_09_27_000161_add_relationship_fields_to_leads_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/acl.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/acl.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_09_27_000008_create_milestones_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Database/Migrations/2020_09_27_000008_create_milestones_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_09_27_000066_create_tasks_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Database/Migrations/2020_09_27_000066_create_tasks_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2020_09_27_000179_add_relationship_fields_to_milestones_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Database/Migrations/2020_09_27_000179_add_relationship_fields_to_milestones_table.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/database/seeds/DatabaseSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeds/DatabaseSeeder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/seeds/DepartmentsTableSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeds/DepartmentsTableSeeder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/seeds/PermissionsTableSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeds/PermissionsTableSeeder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/seeds/DesignationsTableSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeds/DesignationsTableSeeder.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/lang/en/cruds.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/lang/en/cruds.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/milestones/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/milestones/create.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/milestones/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/milestones/edit.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/milestones/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/milestones/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/admin/milestones/show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/milestones/show.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/partials/menu.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/partials/menu.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -219,23 +235,23 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/Modules/ProjectManagement/Database/Migrations" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/milestones" />
     <property name="nodejs_package_manager_path" value="npm" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\Modules\ProjectManagement\Database\Migrations" />
-      <recent name="C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\database\migrations" />
-      <recent name="C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\Modules\ProjectManagement\Http\Controllers\Admin" />
-      <recent name="C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\Modules\ProjectManagement\Resources\views\admin" />
-      <recent name="C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\Modules\ProjectManagement\Http\Requests" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\Modules\ProjectManagement\Resources\views\admin\milestones" />
       <recent name="C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\Modules\ProjectManagement\Database\Migrations" />
       <recent name="C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\Modules\ProjectManagement\Resources\views\admin\projects" />
       <recent name="C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\Modules\ProjectManagement\Resources\views\admin" />
       <recent name="C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\Modules\ProjectManagement\Http\Requests" />
-      <recent name="C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\Modules\ProjectManagement\Resources\lang" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\Modules\ProjectManagement\Database\Migrations" />
+      <recent name="C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\Modules\ProjectManagement\Entities" />
+      <recent name="C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\Modules\ProjectManagement\Resources\views\admin" />
+      <recent name="C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\Modules\ProjectManagement\Http\Requests" />
+      <recent name="C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\Modules\ProjectManagement\Http\Controllers\Admin" />
     </key>
   </component>
   <component name="RunManager">
@@ -264,7 +280,9 @@
       <workItem from="1606900785008" duration="20557000" />
       <workItem from="1606985879820" duration="18336000" />
       <workItem from="1607247019027" duration="21769000" />
-      <workItem from="1607334451217" duration="519000" />
+      <workItem from="1607334451217" duration="21879000" />
+      <workItem from="1607417835453" duration="14832000" />
+      <workItem from="1607504259215" duration="599000" />
     </task>
     <servers />
   </component>
@@ -296,10 +314,10 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="570" y="259" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1606751011434">
+    <state x="570" y="259" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1607429467441">
       <screen x="0" y="0" width="1680" height="1010" />
     </state>
-    <state x="570" y="259" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1680.1010@0.0.1680.1010" timestamp="1606751011434" />
+    <state x="570" y="259" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1680.1010@0.0.1680.1010" timestamp="1607429467441" />
     <state x="620" y="259" key="FileChooserDialogImpl" timestamp="1606989481106">
       <screen x="0" y="0" width="1680" height="1010" />
     </state>
@@ -376,9 +394,9 @@
       <screen x="0" y="0" width="1680" height="1010" />
     </state>
     <state x="496" y="233" key="run.anything.popup/0.0.1680.1010@0.0.1680.1010" timestamp="1606649859096" />
-    <state x="496" y="158" width="672" height="678" key="search.everywhere.popup" timestamp="1607272414994">
+    <state x="496" y="158" width="672" height="678" key="search.everywhere.popup" timestamp="1607345024526">
       <screen x="0" y="0" width="1680" height="1010" />
     </state>
-    <state x="496" y="158" width="672" height="678" key="search.everywhere.popup/0.0.1680.1010@0.0.1680.1010" timestamp="1607272414994" />
+    <state x="496" y="158" width="672" height="678" key="search.everywhere.popup/0.0.1680.1010@0.0.1680.1010" timestamp="1607345024526" />
   </component>
 </project>

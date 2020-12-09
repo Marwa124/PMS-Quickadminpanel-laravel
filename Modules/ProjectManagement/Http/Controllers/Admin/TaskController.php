@@ -4,11 +4,11 @@ namespace Modules\ProjectManagement\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\MediaUploadingTrait;
+use Modules\ProjectManagement\Entities\Milestone;
 use Modules\ProjectManagement\Http\Requests\MassDestroyTaskRequest;
 use Modules\ProjectManagement\Http\Requests\StoreTaskRequest;
 use Modules\ProjectManagement\Http\Requests\UpdateTaskRequest;
 use App\Models\Lead;
-use App\Models\Milestone;
 use App\Models\Opportunity;
 use App\Models\Permission;
 use Modules\ProjectManagement\Entities\Project;

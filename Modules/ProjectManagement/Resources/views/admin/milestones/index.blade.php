@@ -3,7 +3,7 @@
 @can('milestone_create')
     <div style="margin-bottom: 10px;" class="row">
         <div class="col-lg-12">
-            <a class="btn btn-success" href="{{ route('admin.milestones.create') }}">
+            <a class="btn btn-success" href="{{ route('projectmanagement.admin.milestones.create') }}">
                 {{ trans('global.add') }} {{ trans('cruds.milestone.title_singular') }}
             </a>
         </div>
@@ -25,9 +25,9 @@
                         <th>
                             {{ trans('cruds.milestone.fields.id') }}
                         </th>
-                        <th>
-                            {{ trans('cruds.milestone.fields.user') }}
-                        </th>
+{{--                        <th>--}}
+{{--                            {{ trans('cruds.milestone.fields.user') }}--}}
+{{--                        </th>--}}
                         <th>
                             {{ trans('cruds.milestone.fields.project') }}
                         </th>
@@ -40,12 +40,36 @@
                         <th>
                             {{ trans('cruds.milestone.fields.end_date') }}
                         </th>
-                        <th>
-                            {{ trans('cruds.milestone.fields.client_visible') }}
-                        </th>
+{{--                        <th>--}}
+{{--                            {{ trans('cruds.milestone.fields.client_visible') }}--}}
+{{--                        </th>--}}
                         <th>
                             &nbsp;
                         </th>
+                    </tr>
+                    <tr>
+                        <td>
+                        </td>
+                        <td>
+                            <input class="search" type="text" placeholder="{{ trans('global.search') }}" style="width: 110px;">
+                        </td>
+{{--                        <td>--}}
+{{--                            <input class="search" type="text" placeholder="{{ trans('global.search') }}" >--}}
+{{--                        </td>--}}
+                        <td>
+                            <input class="search" type="text" placeholder="{{ trans('global.search') }}" >
+                        </td>
+                        <td>
+                            <input class="search" type="text" placeholder="{{ trans('global.search') }}" >
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+{{--                        <td>--}}
+{{--                        </td>--}}
+                        <td>
+                        </td>
                     </tr>
                 </thead>
                 <tbody>
@@ -57,9 +81,9 @@
                             <td>
                                 {{ $milestone->id ?? '' }}
                             </td>
-                            <td>
-                                {{ $milestone->user->name ?? '' }}
-                            </td>
+{{--                            <td>--}}
+{{--                                {{ $milestone->user->name ?? '' }}--}}
+{{--                            </td>--}}
                             <td>
                                 {{ $milestone->project->name ?? '' }}
                             </td>
@@ -72,24 +96,34 @@
                             <td>
                                 {{ $milestone->end_date ?? '' }}
                             </td>
-                            <td>
-                                {{ $milestone->client_visible ?? '' }}
-                            </td>
+{{--                            <td>--}}
+{{--                                {{ $milestone->client_visible ?? '' }}--}}
+{{--                            </td>--}}
                             <td>
                                 @can('milestone_show')
-                                    <a class="btn btn-xs btn-primary" href="{{ route('admin.milestones.show', $milestone->id) }}">
-                                        {{ trans('global.view') }}
+                                    <a class="btn btn-xs btn-primary" href="{{ route('projectmanagement.admin.milestones.show', $milestone->id) }}">
+{{--                                        {{ trans('global.view') }}--}}
+                                        <span class="fa fa-eye"></span>
                                     </a>
                                 @endcan
 
                                 @can('milestone_edit')
-                                    <a class="btn btn-xs btn-info" href="{{ route('admin.milestones.edit', $milestone->id) }}">
-                                        {{ trans('global.edit') }}
+                                    <a class="btn btn-xs btn-info" href="{{ route('projectmanagement.admin.milestones.edit', $milestone->id) }}">
+{{--                                        {{ trans('global.edit') }}--}}
+                                        <span class="fa fa-pencil-square-o"></span>
                                     </a>
                                 @endcan
 
+                                @can('milestone_assign_to')
+
+                                    <a class="btn btn-xs btn-success" href="{{ route('projectmanagement.admin.milestones.getAssignTo', $milestone->id) }}" >
+                                        {{ trans('global.assign_to') }}
+                                    </a>
+
+                                @endcan
+
                                 @can('milestone_delete')
-                                    <form action="{{ route('admin.milestones.destroy', $milestone->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                    <form action="{{ route('projectmanagement.admin.milestones.destroy', $milestone->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
                                         <input type="hidden" name="_method" value="DELETE">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                         <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
@@ -118,7 +152,7 @@
   let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
   let deleteButton = {
     text: deleteButtonTrans,
-    url: "{{ route('admin.milestones.massDestroy') }}",
+    url: "{{ route('projectmanagement.admin.milestones.massDestroy') }}",
     className: 'btn-danger',
     action: function (e, dt, node, config) {
       var ids = $.map(dt.rows({ selected: true }).nodes(), function (entry) {
@@ -144,17 +178,26 @@
   dtButtons.push(deleteButton)
 @endcan
 
-  $.extend(true, $.fn.dataTable.defaults, {
-    orderCellsTop: true,
-    order: [[ 1, 'desc' ]],
-    pageLength: 25,
-  });
-  let table = $('.datatable-Milestone:not(.ajaxTable)').DataTable({ buttons: dtButtons })
-  $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e){
-      $($.fn.dataTable.tables(true)).DataTable()
-          .columns.adjust();
-  });
-  
+    $.extend(true, $.fn.dataTable.defaults, {
+        orderCellsTop: true,
+        order: [[ 1, 'desc' ]],
+        pageLength: 25,
+    });
+    let table = $('.datatable-Milestone:not(.ajaxTable)').DataTable({ buttons: dtButtons })
+        $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e){
+          $($.fn.dataTable.tables(true)).DataTable()
+              .columns.adjust();
+    });
+
+    $('.datatable thead').on('input', '.search', function () {
+        let strict = $(this).attr('strict') || false
+        let value = strict && this.value ? "^" + this.value + "$" : this.value
+        table
+            .column($(this).parent().index())
+            .search(value, strict)
+            .draw()
+    });
+
 })
 
 </script>

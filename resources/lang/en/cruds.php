@@ -387,8 +387,8 @@ return [
         'title_singular' => 'Task management',
     ],
     'taskStatus'             => [
-        'title'          => 'Statuses',
-        'title_singular' => 'Status',
+        'title'          => 'Task Statuses',
+        'title_singular' => 'Task Status',
         'fields'         => [
             'id'                => 'ID',
             'id_helper'         => ' ',
@@ -403,8 +403,8 @@ return [
         ],
     ],
     'taskTag'                => [
-        'title'          => 'Tags',
-        'title_singular' => 'Tag',
+        'title'          => 'Task Tags',
+        'title_singular' => 'Task Tag',
         'fields'         => [
             'id'                => 'ID',
             'id_helper'         => ' ',

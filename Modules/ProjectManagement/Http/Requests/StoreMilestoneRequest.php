@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Requests;
+namespace Modules\ProjectManagement\Http\Requests;
 
 use App\Models\Milestone;
 use Gate;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Response;
+use Illuminate\Validation\Rule;
 
 class StoreMilestoneRequest extends FormRequest
 {
@@ -17,10 +18,10 @@ class StoreMilestoneRequest extends FormRequest
     public function rules()
     {
         return [
-            'user_id'    => [
-                'required',
-                'integer',
-            ],
+//            'user_id'    => [
+//                'required',
+//                'integer',
+//            ],
             'project_id' => [
                 'required',
                 'integer',
@@ -28,7 +29,14 @@ class StoreMilestoneRequest extends FormRequest
             'name'       => [
                 'string',
                 'required',
-                'unique:milestones',
+                //'unique:milestones,name,'.request()->project_id.',project_id',
+                Rule::unique('milestones','name')->where(function($query) {
+
+                    $query->where('project_id', '=', request()->project_id);
+
+                }),
+
+               // Rule::unique('milestones','name')->ignore(request()->project_id,'project_id'),
             ],
             'start_date' => [
                 'required',

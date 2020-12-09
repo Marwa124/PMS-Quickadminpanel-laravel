@@ -156,4 +156,12 @@ class AccountDetail extends Model implements HasMedia
             'project_account_details_pivot','account_details_id','project_id');
 
     }
+
+    public function milestones(){
+
+        return $this->belongsToMany('Modules\ProjectManagement\Entities\Milestone',
+            'milestone_account_details_pivot','account_details_id','milestone_id');
+
+    }
+
 }

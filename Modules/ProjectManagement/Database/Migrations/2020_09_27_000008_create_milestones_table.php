@@ -10,7 +10,7 @@ class CreateMilestonesTable extends Migration
     {
         Schema::create('milestones', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->unique();
+            $table->string('name');
             $table->date('start_date');
             $table->date('end_date');
             $table->longText('client_visible')->nullable();
