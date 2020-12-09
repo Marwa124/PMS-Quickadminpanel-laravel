@@ -43,6 +43,10 @@ class SalaryPayment extends Model implements HasMedia
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function paymentMethod()
+    {
+        return $this->belongsTo(PaymentMethod::class, 'payment_method_id');
+    }
     // public function getPaidDateAttribute($value)
     // {
     //     return $value ? Carbon::parse($value)->format(config('panel.date_format')) : null;

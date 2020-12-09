@@ -34,7 +34,6 @@ class SalaryTemplateController extends Controller
 
     public function store(StoreSalaryTemplateRequest $request)
     {
-        // dd($request->all());
         $salaryTemplate = SalaryTemplate::create($request->all());
         // !!!: Add data to Salary Allowances
         try {
@@ -75,12 +74,8 @@ class SalaryTemplateController extends Controller
     }
 
     public function edit($id)
-    // public function edit(SalaryTemplate $salaryTemplate)
     {
         abort_if(Gate::denies('salary_template_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        // $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
-
         // $salaryTemplate->load('user');
         $salaryTemplate = SalaryTemplate::findOrFail($id);
 
@@ -90,9 +85,8 @@ class SalaryTemplateController extends Controller
     // public function update(UpdateSalaryTemplateRequest $request, SalaryTemplate $setTime)
     public function update(UpdateSalaryTemplateRequest $request, SalaryTemplate $salaryItem, $id)
     {
-
         $salaryItem->update($request->all());
-        
+
         // !!!: Add data to Salary Allowances
         try {
             foreach ($request->allowance as $key => $value) {
@@ -134,9 +128,9 @@ class SalaryTemplateController extends Controller
 
     public function massDestroy(MassDestroySalaryTemplateRequest $request)
     {
-        SalaryTemplate::whereIn('id', request('ids'))->delete();
-        SalaryAllowance::whereIn('salary_template_id', request('ids'))->delete();
-        SalaryDeduction::whereIn('salary_template_id', request('ids'))->delete();
+        SalaryAllowance::whereIn('salary_template_id', request('ids'))->forceDelete();
+        SalaryDeduction::whereIn('salary_template_id', request('ids'))->forceDelete();
+        SalaryTemplate::whereIn('id', request('ids'))->forceDelete();
         return response(null, Response::HTTP_NO_CONTENT);
     }
 }

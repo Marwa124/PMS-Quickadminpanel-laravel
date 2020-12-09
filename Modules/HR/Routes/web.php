@@ -98,7 +98,9 @@ Route::group(['as' => 'hr.admin.', 'prefix' => 'admin/hr', 'namespace' => 'Admin
      Route::post('leave-applications/ckmedia', 'LeaveApplicationsController@storeCKEditorImages')->name('leave-applications.storeCKEditorImages');
      Route::get('leave-applications/details', 'LeaveApplicationsController@details')->name('leave-applications.details');
      Route::get('leave-applications/mark-notification-as-read/{id}', 'LeaveApplicationsController@markNotificationAsRead')->name('leave-applications.markNotificationAsRead');
-     Route::resource('leave-applications', 'LeaveApplicationsController');
+     Route::get('leave-applications/mark-attendance/{id}', 'LeaveApplicationsController@markAttendance')->name('leave-applications.markAttendance');
+     Route::get('leave-applications/approve_reject/{id}/{status}', 'LeaveApplicationsController@approveReject')->name('leave-applications.approveReject');
+     Route::resource('leave-applications', 'LeaveApplicationsController', ['except' => ['edit']]);
 
      // Meeting Minutes
      Route::delete('meeting-minutes/destroy', 'MeetingMinutesController@massDestroy')->name('meeting-minutes.massDestroy');

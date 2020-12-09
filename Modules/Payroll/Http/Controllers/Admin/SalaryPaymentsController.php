@@ -9,6 +9,7 @@ use Modules\Payroll\Http\Requests\Store\StoreSalaryPaymentRequest;
 use Modules\Payroll\Http\Requests\Update\UpdateSalaryPaymentRequest;
 use Modules\Payroll\Entities\SalaryPayment;
 use App\Models\User;
+use PDF;
 use Gate;
 use Illuminate\Http\Request;
 use Modules\HR\Entities\AccountDetail;
@@ -18,7 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class SalaryPaymentsController extends Controller
 {
-    use MediaUploadingTrait;
+    // use MediaUploadingTrait;
 
     public function index()
     {
@@ -31,7 +32,6 @@ class SalaryPaymentsController extends Controller
 
         $users = [];
         if ($departmentRequest && $date) {
-            // $salaryPayments = SalaryPayment::all();
             $salaryPayments = AccountDetail::select('user_id', 'designation_id')->orderBy('user_id', 'DESC')->get();
 
             foreach ($salaryPayments as $key => $value) {
@@ -43,8 +43,6 @@ class SalaryPaymentsController extends Controller
             }
         }
         return view('payroll::admin.salaryPayments.index', compact('users', 'date', 'departmentRequest'));
-
-        // return view('payroll::admin.salaryPayments.index', compact('salaryPayments'));
     }
 
     public function create()
@@ -60,7 +58,7 @@ class SalaryPaymentsController extends Controller
         $monthNum = explode('-', $date);
         $monthName = date('F', mktime(0, 0, 0, $monthNum[1], 10));
         $year      = $monthNum[0];
-        
+
         // $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
         $user = User::find($result[2]);
 
@@ -80,76 +78,105 @@ class SalaryPaymentsController extends Controller
             'total_absent'     => $totalAbsentDays,
             'salary_deduction' => $salaryDeduction,
             'net_salary'       => $netSalary
-        ]; 
+        ];
         /* !!!: Deduction Details */
 
-        return view('payroll::admin.salaryPayments.create', 
+        return view('payroll::admin.salaryPayments.create',
             compact('user', 'subDeductions', 'deductionDetails', 'date', 'departmentRequest', 'monthName', 'year'));
     }
 
-    public function store(StoreSalaryPaymentRequest $request)
+    public function store()
     {
-        $salaryPayment = SalaryPayment::create($request->all());
-
-        if ($media = $request->input('ck-media', false)) {
-            Media::whereIn('id', $media)->update(['model_id' => $salaryPayment->id]);
+        $totalLeaveDays = SalaryPayment::where('user_id', request()->id)->where('payment_month', request()->payment_month)->select('id')->first();
+        if(!$totalLeaveDays){
+            SalaryPayment::create(request()->all());
         }
 
-        return redirect()->route('admin.payroll.salary-payments.index');
+        // return redirect()->route('payroll.admin.salary-payments.index');
     }
 
-    public function edit(SalaryPayment $salaryPayment)
+    public function payslipGenerate()
     {
-        abort_if(Gate::denies('salary_payment_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        $salaryPayment = $this->createPayslip();
 
-        $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        // dd($salaryPayment);
+        $pdf = PDF::loadView('payroll::admin.salaryPayments.payslip_generate', $salaryPayment);
+        // $pdf = PDF::loadView('payroll::admin.salaryPayments.payslip_generate', [
+        //     $salaryPayment['user'], 
+        //     $salaryPayment['subDeductions'], 
+        //     $salaryPayment['deductionDetails'], 
+        //     $salaryPayment['date'], 
+        //     $salaryPayment['departmentRequest'], 
+        //     $salaryPayment['monthName'], 
+        //     $salaryPayment['year']
+        // ]);
 
-        $salaryPayment->load('user');
+        return $pdf->download('Payslip Details '.$salaryPayment['user']->accountDetail->fullname.'.pdf');
 
-        return view('payroll::admin.salaryPayments.edit', compact('users', 'salaryPayment'));
+        // return view('payroll::admin.salaryPayments.payslip_generate',
+        //     compact($salaryPayment['user'], 
+        //             $salaryPayment['subDeductions'], 
+        //             $salaryPayment['deductionDetails'], 
+        //             $salaryPayment['date'], 
+        //             $salaryPayment['departmentRequest'], 
+        //             $salaryPayment['monthName'], 
+        //             $salaryPayment['year']
+        //         ));
+
     }
 
-    public function update(UpdateSalaryPaymentRequest $request, SalaryPayment $salaryPayment)
+    public function createPayslip()
     {
-        $salaryPayment->update($request->all());
+        $result = [];
+        foreach (request()->all() as $key => $value) {
+            $result[] = $key;
+        }
+        $result['date'] = $result[0];
+        $result['departmentRequest'] = $result[1];
 
-        return redirect()->route('admin.payroll.salary-payments.index');
+        $monthNum = explode('-', $result['date']);
+        $result['monthName'] = date('F', mktime(0, 0, 0, $monthNum[1], 10));
+        $result['year'] = $monthNum[0];
+
+        $result['user'] = $user = User::find($result[2]);
+
+        /* !!!: Deduction Details */
+        $carbonDate = dateFormation($result['date']);
+        $basic_salary = $user->accountDetail->designation->salaryTemplate()->first();
+        $salaryDeduction = SalaryDeduction::where('salary_template_id', $basic_salary->id)->sum('value');
+        $netSalary = (int) ($basic_salary->basic_salary) - (int) $salaryDeduction;
+        $dailySalary = $netSalary/30;
+        $totalAbsentDays   = $user->absences()->whereBetween('date', [$carbonDate['previousDate'], $carbonDate['currentDate']])->select('date')->distinct('date')->count();
+        $absent_value = round($totalAbsentDays * $dailySalary);
+
+        $result['deductionDetails'] = deductionDetails($result['date'], $user->id, $dailySalary, $absent_value);
+
+        $result['subDeductions'] = [
+            'gross_salary'     => $basic_salary->basic_salary,
+            'total_absent'     => $totalAbsentDays,
+            'salary_deduction' => $salaryDeduction,
+            'net_salary'       => $netSalary
+        ];
+        /* !!!: Deduction Details */
+
+        return $result;
     }
 
-    public function show(SalaryPayment $salaryPayment)
-    {
-        abort_if(Gate::denies('salary_payment_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+    // public function show(SalaryPayment $salaryPayment)
+    // {
+    //     abort_if(Gate::denies('salary_payment_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $salaryPayment->load('user');
+    //     $salaryPayment->load('user');
 
-        return view('payroll::admin.salaryPayments.show', compact('salaryPayment'));
-    }
+    //     return view('payroll::admin.salaryPayments.show', compact('salaryPayment'));
+    // }
 
-    public function destroy(SalaryPayment $salaryPayment)
-    {
-        abort_if(Gate::denies('salary_payment_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+    // public function destroy(SalaryPayment $salaryPayment)
+    // {
+    //     abort_if(Gate::denies('salary_payment_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $salaryPayment->delete();
+    //     $salaryPayment->delete();
 
-        return back();
-    }
-
-    public function massDestroy(MassDestroySalaryPaymentRequest $request)
-    {
-        SalaryPayment::whereIn('id', request('ids'))->delete();
-
-        return response(null, Response::HTTP_NO_CONTENT);
-    }
-
-    public function storeCKEditorImages(Request $request)
-    {
-        abort_if(Gate::denies('salary_payment_create') && Gate::denies('salary_payment_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        $model         = new SalaryPayment();
-        $model->id     = $request->input('crud_id', 0);
-        $model->exists = true;
-        $media         = $model->addMediaFromRequest('upload')->toMediaCollection('ck-media');
-
-        return response()->json(['id' => $media->id, 'url' => $media->getUrl()], Response::HTTP_CREATED);
-    }
+    //     return back();
+    // }
 }

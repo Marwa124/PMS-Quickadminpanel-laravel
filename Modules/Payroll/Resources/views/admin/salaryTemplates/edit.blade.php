@@ -1,4 +1,5 @@
 @extends('layouts.admin')
+@inject('designationModel', 'Modules\HR\Entities\Designation')
 
 @section('styles')
 <style>
@@ -12,17 +13,24 @@
 
 <div class="section mb-5 pb-5">
 
-<form method="POST" action="{{ route("payroll.admin.salary-templates.update", [$salaryTemplate->id]) }}" enctype="multipart/form-data">
-    @method('PUT')
-    @csrf
-
 <div class="card">
     <div class="card-header">
         {{ trans('global.edit') }} {{ trans('cruds.salaryTemplate.title_singular') }}
     </div>
 
     <div class="card-body">
-        
+        <form method="POST" action="{{ route("payroll.admin.salary-templates.update", [$salaryTemplate->id]) }}" enctype="multipart/form-data">
+            @method('PUT')
+            @csrf
+
+        <div class="form-group">
+            <label class="required" for="salary_grade">Designation Name</label>
+            <select name="designation_id" class="form-control" id="">
+                @foreach ($designationModel::pluck('designation_name', 'id') as $key => $item)
+                    <option value="{{$key}}" {{($salaryTemplate->designation_id == $key) ? 'selected' : ''}}>{{$item}}</option>
+                @endforeach
+            </select>
+        </div>
             <div class="form-group">
                 <label class="required" for="salary_grade">{{ trans('cruds.salaryTemplate.fields.salary_grade') }}</label>
                 <input class="form-control {{ $errors->has('salary_grade') ? 'is-invalid' : '' }}" type="text" name="salary_grade" id="salary_grade" value="{{ old('salary_grade', $salaryTemplate->salary_grade) }}" required>
@@ -45,7 +53,7 @@
             </div>
             <div class="form-group">
                 <label for="overtime_salary">{{ trans('cruds.salaryTemplate.fields.overtime_salary') }}</label>
-                <input class="form-control {{ $errors->has('overtime_salary') ? 'is-invalid' : '' }}" type="text" name="overtime_salary" id="overtime_salary" value="{{ old('overtime_salary', $salaryTemplate->overtime_salary) }}" required>
+                <input class="form-control {{ $errors->has('overtime_salary') ? 'is-invalid' : '' }}" type="integer" min="0" name="overtime_salary" id="overtime_salary" value="{{ old('overtime_salary', $salaryTemplate->overtime_salary) }}" required>
                 @if($errors->has('overtime_salary'))
                     <div class="invalid-feedback">
                         {{ $errors->first('overtime_salary') }}
@@ -53,11 +61,11 @@
                 @endif
                 <span class="help-block">{{ trans('cruds.salaryTemplate.fields.overtime_salary_helper') }}</span>
             </div>
-            
+        </form>
     </div>
 </div>
 
-<?php 
+<?php
     $allowances = $salaryTemplate->salaryAllowances()->get();
     $deductions = $salaryTemplate->salaryDeductions()->get();
 ?>
@@ -86,19 +94,19 @@
 
         <div class="card">
             <h5 class="card-header">Deductions</h5>
-            <div class="card-body deductionsGroup">                
+            <div class="card-body deductionsGroup">
                 @foreach ($deductions as $deduction)
                 <div class="form-group">
                     <input class="form-control deductionLabel" type="text" name="deductionLabel[]" value="{{ old('deductionLabel[]', $deduction->name) }}">
                     <input class="form-control deductionValue" type="number" min="0" name="deduction[{{$deduction->name}}]" value="{{ $deduction->value}}">
                 </div>
                 @endforeach
-  
-  
+
+
                 <a href="javascript:void(0)" class="moreDeductions"><i class="fas fa-plus"></i>Add More</a>
             </div>
           </div>
-        
+
     </div> <!--End Col 6-->
 </div> <!--End Row-->
 
@@ -130,7 +138,6 @@
         {{ trans('global.save') }}
     </button>
 </div>
-</form>
 
 </div>
 @endsection

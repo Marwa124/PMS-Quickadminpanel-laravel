@@ -48,16 +48,6 @@
 <!-- /.End Search -->
 @endcan
 
-
-@can('salary_payment_create')
-    {{-- <div style="margin-bottom: 10px;" class="row">
-        <div class="col-lg-12">
-            <a class="btn btn-success" href="{{ route('payroll.admin.salary-payments.create') }}">
-                {{ trans('global.add') }} {{ trans('cruds.salaryPayment.title_singular') }}
-            </a>
-        </div>
-    </div> --}}
-@endcan
 <div class="card">
     <div class="card-header">
         {{ trans('cruds.salaryPayment.title_singular') }} {{ trans('global.list') }}
@@ -238,7 +228,7 @@
                             <td>
                                 @if ($salaryPayment && $salaryTemplate)
                                     @can('salary_payment_create')
-                                        <a class="text-success" href="{{ route('payroll.admin.salary-payments.create') }}">
+                                        <a class="text-success" href="{{ route('payroll.admin.salary-payments.payslipGenerate', $date.'&'.$departmentRequest.'&'.$detail->user_id) }}">
                                             {{ trans('cruds.salaryPayment.fields.generate_payslip') }}
                                         </a>
                                     @endcan
@@ -250,8 +240,8 @@
                                     @endcan
                                 @else()
                                     @can('salary_payment_create')
-                                        <a class="text-warning" href="{{ route('payroll.admin.salary-payments.create') }}">
-                                            Set Salary
+                                        <a class="text-warning" href="{{ route('hr.admin.account-details.edit', $detail->id) }}">
+                                            Set Salary as designation
                                         </a>
                                     @endcan
                                 @endif

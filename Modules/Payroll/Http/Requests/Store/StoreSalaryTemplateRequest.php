@@ -17,6 +17,10 @@ class StoreSalaryTemplateRequest extends FormRequest
     public function rules()
     {
         return [
+            'designation_id'    => [
+                'integer',
+                'required',
+            ],
             'salary_grade'    => [
                 'string',
                 'required',

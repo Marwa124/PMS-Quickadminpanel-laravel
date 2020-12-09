@@ -115,11 +115,6 @@ class User extends Authenticatable implements HasMedia
         return $this->hasMany(FingerprintAttendance::class, 'user_id', 'id');
     }
 
-    // public function designation()
-    // {
-    //     return $this->belongsTo(Designation::class, 'designation_id', 'id');
-    // }
-
     public function timeTable()
     {
         return $this->belongsTo(SetTime::class, 'set_time_id', 'id');
@@ -187,11 +182,6 @@ class User extends Authenticatable implements HasMedia
         // $this->attributes['last_login'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
     }
 
-//     public function permissions()
-//     {
-//         return $this->belongsToMany(Permission::class);
-//     }
-
     public function getDateOfJoinAttribute($value)
     {
         return $value ? Carbon::parse($value)->format(config('panel.date_format')) : null;
@@ -212,6 +202,7 @@ class User extends Authenticatable implements HasMedia
         $this->attributes['date_of_insurance'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
     }
 
+<<<<<<< HEAD
     // public function notifications()
     // {
     //     return $this->morphedByMany(Notification::class, 'userable')->withPivot('is_read');
@@ -220,6 +211,9 @@ class User extends Authenticatable implements HasMedia
 
     public function getUserProjectsByUserID($user_id)
     {
+=======
+    public function getUserProjectsByUserID($user_id){
+>>>>>>> 2e671a6b6793722af1daf7822ff43a801d81f4a1
         $user = User::findOrFail($user_id);
 
         if ($user->hasrole(['Admin','Super Admin'])){
