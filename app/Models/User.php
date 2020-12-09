@@ -202,18 +202,7 @@ class User extends Authenticatable implements HasMedia
         $this->attributes['date_of_insurance'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
     }
 
-<<<<<<< HEAD
-    // public function notifications()
-    // {
-    //     return $this->morphedByMany(Notification::class, 'userable')->withPivot('is_read');
-    // }
-
-
-    public function getUserProjectsByUserID($user_id)
-    {
-=======
     public function getUserProjectsByUserID($user_id){
->>>>>>> 2e671a6b6793722af1daf7822ff43a801d81f4a1
         $user = User::findOrFail($user_id);
 
         if ($user->hasrole(['Admin','Super Admin'])){

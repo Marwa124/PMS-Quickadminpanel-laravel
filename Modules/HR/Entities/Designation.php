@@ -28,6 +28,7 @@ class Designation extends Model
     protected $fillable = [
         'department_id',
         'designation_name',
+        'designation_leader_id',
         'created_at',
         'updated_at',
         'deleted_at',

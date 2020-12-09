@@ -28,15 +28,15 @@ class DesignationsController extends Controller
         abort_if(Gate::denies('designation_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $departments = Department::all()->pluck('department_name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $designations = Designation::all()->pluck('designation_name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        return view('hr::admin.designations.create', compact('departments'));
+        return view('hr::admin.designations.create', compact('departments', 'designations'));
     }
 
     public function store(StoreDesignationRequest $request)
     {
         // dd($request->all());
         $designation = Designation::create($request->all());
-        return response()->json($designation);
 
         return redirect()->route('hr.admin.designations.index');
     }
@@ -46,10 +46,11 @@ class DesignationsController extends Controller
         abort_if(Gate::denies('designation_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $departments = Department::all()->pluck('department_name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $designations = Designation::all()->pluck('designation_name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         $designation->load('department');
 
-        return view('hr::admin.designations.edit', compact('departments', 'designation'));
+        return view('hr::admin.designations.edit', compact('departments', 'designation', 'designations'));
     }
 
     public function update(UpdateDesignationRequest $request, Designation $designation)
