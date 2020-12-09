@@ -29,37 +29,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="12c5590f-20f1-441a-b116-7f3f712f734a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/milestones/assignto.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/HR/Entities/AccountDetail.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/HR/Entities/AccountDetail.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/ProjectManagement/Entities/Project.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Entities/Project.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/ProjectManagement/Entities/Task.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Entities/Task.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Controllers/Admin/ProjectsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Controllers/Admin/ProjectsController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Controllers/Admin/TaskController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Controllers/Admin/TaskController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/projects/assignto.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/projects/assignto.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/projects/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/projects/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/ProjectManagement/Routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Routes/web.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/BugsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/BugsController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/MilestonesController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Controllers/Admin/MilestonesController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Requests/MassDestroyMilestoneRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Requests/MassDestroyMilestoneRequest.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Requests/StoreMilestoneRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Requests/StoreMilestoneRequest.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Requests/UpdateMilestoneRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Requests/UpdateMilestoneRequest.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Bug.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Bug.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Milestone.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Entities/Milestone.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Models/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/User.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/acl.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/acl.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2020_09_27_000008_create_milestones_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Database/Migrations/2020_09_27_000008_create_milestones_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2020_09_27_000066_create_tasks_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Database/Migrations/2020_09_27_000066_create_tasks_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2020_09_27_000179_add_relationship_fields_to_milestones_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Database/Migrations/2020_09_27_000179_add_relationship_fields_to_milestones_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/seeds/DatabaseSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeds/DatabaseSeeder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/seeds/DesignationsTableSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeds/DesignationsTableSeeder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/lang/en/cruds.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/lang/en/cruds.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/milestones/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/milestones/create.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/milestones/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/milestones/edit.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/milestones/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/milestones/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/admin/milestones/show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/milestones/show.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/partials/menu.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/partials/menu.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -282,7 +253,7 @@
       <workItem from="1607247019027" duration="21769000" />
       <workItem from="1607334451217" duration="21879000" />
       <workItem from="1607417835453" duration="14832000" />
-      <workItem from="1607504259215" duration="599000" />
+      <workItem from="1607504259215" duration="5096000" />
     </task>
     <servers />
   </component>
