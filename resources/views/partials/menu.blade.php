@@ -456,7 +456,7 @@
                             </a>
                         </li>
                     @endcan --}}
-                    @can('salary_payslip_access')
+                    {{-- @can('salary_payslip_access')
                         <li class="c-sidebar-nav-item">
                             <a href="{{ route("payroll.admin.salary-payslips.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/salary-payslips") || request()->is("admin/salary-payslips/*") ? "active" : "" }}">
                                 <i class="fa-fw fas fa-circle c-sidebar-nav-icon">
@@ -465,7 +465,7 @@
                                 {{ trans('cruds.salaryPayslip.title') }}
                             </a>
                         </li>
-                    @endcan
+                    @endcan --}}
                     @can('advance_salary_access')
                         <li class="c-sidebar-nav-item">
                             <a href="{{ route("payroll.admin.advance-salaries.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/advance-salaries") || request()->is("admin/advance-salaries/*") ? "active" : "" }}">

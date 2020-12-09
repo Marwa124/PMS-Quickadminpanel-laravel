@@ -228,7 +228,7 @@
                             <td>
                                 @if ($salaryPayment && $salaryTemplate)
                                     @can('salary_payment_create')
-                                        <a class="text-success" href="{{ route('payroll.admin.salary-payments.create') }}">
+                                        <a class="text-success" href="{{ route('payroll.admin.salary-payments.payslipGenerate', $date.'&'.$departmentRequest.'&'.$detail->user_id) }}">
                                             {{ trans('cruds.salaryPayment.fields.generate_payslip') }}
                                         </a>
                                     @endcan

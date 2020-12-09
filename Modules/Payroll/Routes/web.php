@@ -54,7 +54,8 @@ Route::resource('salary-deductions', 'SalaryDeductionsController', ['except' => 
 // Route::delete('salary-payments/destroy', 'SalaryPaymentsController@massDestroy')->name('salary-payments.massDestroy');
 // Route::post('salary-payments/media', 'SalaryPaymentsController@storeMedia')->name('salary-payments.storeMedia');
 // Route::post('salary-payments/ckmedia', 'SalaryPaymentsController@storeCKEditorImages')->name('salary-payments.storeCKEditorImages');
-Route::resource('salary-payments', 'SalaryPaymentsController');
+Route::get('salary-payments/payslip-generate', 'SalaryPaymentsController@payslipGenerate')->name('salary-payments.payslipGenerate');
+Route::resource('salary-payments', 'SalaryPaymentsController', ['except' => ['edit', 'update', 'show', 'destroy']]);
 
 // Payroll Summary
 Route::get('payroll-summary', 'PayrollSummaryController@__invoke')->name('payroll-summary');

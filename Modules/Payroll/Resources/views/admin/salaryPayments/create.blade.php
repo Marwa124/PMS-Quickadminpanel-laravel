@@ -9,7 +9,6 @@
 
 @can('salary_payment_show')
 <!-- Search -->
-
 <div class="card">
     <h5 class="card-header">Make Payment</h5>
     <form action="{{ route('payroll.admin.salary-payments.index') }}" method="get">
@@ -130,6 +129,9 @@
                     $monthName = date('F', mktime(0, 0, 0, $monthNum[1], 10));
                     $totalLeaveDays = $payrollSummaryModel::where('user_id', $user->id)->where('month', $item->payment_month)->select('leave_days')->first();
                   ?>
+                  {{-- {{dd($item->payment_month)}}
+                  {{dd($payrollSummaryModel::where('user_id', $user->id)->where('month', $item->payment_month)->first())}} --}}
+
                     <tr data-user-id="{{$user->id}}" data-month="{{$item->payment_month}}" data-user-name="{{$user->accountDetail->fullname}}">
                       <td>{{$monthName.'-'.$monthNum[0]}}</td>
                       <td>{{$subDeductions['gross_salary']}}</td>
@@ -137,14 +139,14 @@
                       <td>
                         <!-- Leave Details modal -->
                         <button type="button" class="btn btn-primary btn-xs leaveDetails" data-toggle="modal" data-target="#leavesDetails{{$item->payment_month ?? ''}}">
-                          {{$totalLeaveDays->leave_days}}
+                          {{$totalLeaveDays ? $totalLeaveDays->leave_days : 0}}
                         </button>
                         <div class="leaveDetailsModal"></div>
 
                       </td>
                       <th>{{$subDeductions['net_salary']}}</th>
                       <td>{{$item->fine_deduction}}</td>
-                      <td>{{$subDeductions['net_salary'] - $item->fine_deduction}}</td>
+                      <td>{{(int) $subDeductions['net_salary'] - (int) $item->fine_deduction}}</td>
                     </tr>
                   @empty
                       <tr><td>No Data Found</td></tr>
@@ -247,7 +249,7 @@
                 payment_month:  $('input[name="payment_month"]').val(),
                 paid_date:      $('input[name="paid_date"]').val(),
                 fine_deduction: fine_deduction,
-                payment_type:   $('select[name="payment_type"]').val(),
+                payment_method_id:   $('select[name="payment_type"]').val(),
                 comments:       $('input[name="comments"]').val(),
             },
             success: function(res){
