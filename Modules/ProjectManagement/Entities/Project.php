@@ -15,7 +15,9 @@ use \DateTimeInterface;
 
 class Project extends Model implements HasMedia
 {
-    use SoftDeletes, HasMediaTrait;
+    use
+    // SoftDeletes,
+    HasMediaTrait;
 
     public $table = 'projects';
 
@@ -43,7 +45,7 @@ class Project extends Model implements HasMedia
         'end_date',
         'created_at',
         'updated_at',
-        'deleted_at',
+        // 'deleted_at',
     ];
 
     protected $fillable = [
