@@ -103,8 +103,13 @@ class ProjectsController extends Controller
         abort_if(Gate::denies('project_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         //$project = Project::where('id',$id)->with('accountDetails.user.permissions')->first();
 
-        $project->accountDetails()->detach();
-        $project->delete();
+        // dd($project->deleted_at);
+        if($project->deleted_at == 0){
+            $project->update(['deleted_at' => 1]);
+        }else{
+            $project->accountDetails()->detach();
+            $project->delete();
+        }
         return back();
     }
 
