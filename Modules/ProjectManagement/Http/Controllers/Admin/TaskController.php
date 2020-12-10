@@ -42,15 +42,15 @@ class TaskController extends Controller
 
         $milestones = Milestone::get();
 
-        $opportunities = Opportunity::get();
+        //$opportunities = Opportunity::get();
 
         $work_trackings = WorkTracking::get();
 
-        $leads = Lead::get();
+        //$leads = Lead::get();
 
-        $permissions = Permission::get();
+        //$permissions = Permission::get();
 
-        return view('projectmanagement::admin.tasks.index', compact('tasks', 'task_statuses', 'task_tags', 'users', 'projects', 'milestones', 'opportunities', 'work_trackings', 'leads', 'permissions'));
+        return view('projectmanagement::admin.tasks.index', compact('tasks', 'task_statuses', 'task_tags', 'users', 'projects', 'milestones', 'work_trackings'));
     }
 
     public function create()
