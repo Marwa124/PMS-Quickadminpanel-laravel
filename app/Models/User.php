@@ -202,7 +202,7 @@ class User extends Authenticatable implements HasMedia
         $this->attributes['date_of_insurance'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
     }
 
-//<<<<<<< HEAD
+
     // public function notifications()
     // {
     //     return $this->morphedByMany(Notification::class, 'userable')->withPivot('is_read');

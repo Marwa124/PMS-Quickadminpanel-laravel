@@ -25,6 +25,20 @@
                 <span class="help-block">{{ trans('cruds.designation.fields.department_helper') }}</span>
             </div>
             <div class="form-group">
+                <label for="designation_leader_id">Designation</label>
+                <select class="form-control select2 {{ $errors->has('leaderId') ? 'is-invalid' : '' }}" name="designation_leader_id" id="designation_leader_id">
+                    @foreach($designations as $id => $leaderId)
+                        <option value="{{ $id }}" {{ ($designation->designation_leader_id == $id) ? 'selected' : '' }}>{{ $leaderId }}</option>
+                    @endforeach
+                </select>
+                @if($errors->has('leaderId'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('leaderId') }}
+                    </div>
+                @endif
+                <span class="help-block">{{ trans('cruds.designation.fields.department_helper') }}</span>
+            </div>
+            <div class="form-group">
                 <label class="required" for="designation_name">{{ trans('cruds.designation.fields.designation_name') }}</label>
                 <input class="form-control {{ $errors->has('designation_name') ? 'is-invalid' : '' }}" type="text" name="designation_name" id="designation_name" value="{{ old('designation_name', $designation->designation_name) }}" required>
                 @if($errors->has('designation_name'))
@@ -61,6 +75,21 @@
     </div>
 </div>
 
+@endsection
 
+@section('scripts')
+@parent
+<script>
+    // $(function () {
 
+    //     $.ajax({
+    //         url: '{{url('permissions')}}',
+    //         success: (res) => {
+    //             console.log(res);
+    //         }
+    //     });
+
+    // });
+
+</script>
 @endsection

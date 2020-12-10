@@ -90,19 +90,18 @@ class LeaveApplicationsController extends Controller
             $table->addColumn('status_color', '&nbsp;');
 
             $table->editColumn('actions', function ($row) use ($request){
-                if ($request->get('trashed')) {
+                if ($request->get('trashed') == 1) {
                     $viewGate      = '';
                     $editGate      = '';
-                    $approveReject = 'approve_reject';
+                    $approveReject = '';
                     $deleteGate    = 'leave_application_delete';
-                    $deleteRestore    = 'delete_restore';
+                    $deleteRestore = 'delete_restore';
                     $modalId       = 'hr.';
                     $crudRoutePart = 'leave-applications';
                 }else{
                     $viewGate      = 'leave_application_show';
                     $editGate      = '';
                     $approveReject = 'approve_reject';
-                    // $editGate      = 'leave_application_edit';
                     $deleteGate    = 'leave_application_delete';
                     $modalId       = 'hr.';
                     $crudRoutePart = 'leave-applications';
@@ -112,6 +111,7 @@ class LeaveApplicationsController extends Controller
                     'viewGate',
                     'editGate',
                     'approveReject',
+                    'deleteRestore',
                     'deleteGate',
                     'modalId',
                     'crudRoutePart',

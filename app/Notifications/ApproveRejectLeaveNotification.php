@@ -72,7 +72,6 @@ class ApproveRejectLeaveNotification extends Notification
      */
     public function toArray($notifiable)
     {
-        // dd($this->application->user_id);
         if(User::find(auth()->user()->id)->accountDetail()->first())
         {
             $userName = AccountDetail::where('user_id', auth()->user()->id)->first()->fullname;

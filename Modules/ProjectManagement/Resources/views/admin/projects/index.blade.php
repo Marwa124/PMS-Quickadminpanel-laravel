@@ -9,6 +9,14 @@
         </div>
     </div>
 @endcan
+<div class="row">
+    <div class="col-lg-3">
+        <select data-column="0" class="form-control filter-select" name="" id="">
+            <option value="0">Active Projects</option>
+            <option value="1">Trashed Projects</option>
+        </select>
+    </div>
+</div>
 <div class="card">
     <div class="card-header">
         {{ trans('cruds.project.title_singular') }} {{ trans('global.list') }}
@@ -28,6 +36,7 @@
                         <th>
                             {{ trans('cruds.project.fields.name') }}
                         </th>
+                        <th style="display: none;"></th>
                         <th>
                             {{ trans('cruds.project.fields.client') }}
                         </th>
@@ -71,6 +80,8 @@
                         <td>
                             <input class="search" type="text" placeholder="{{ trans('global.search') }}" >
                         </td>
+                        <td style="display: none;">
+                        </td>
                         <td>
                             <select class="search">
                                 <option value>{{ trans('global.all') }}</option>
@@ -79,19 +90,10 @@
                                 @endforeach
                             </select>
                         </td>
-{{--                        <td>--}}
-{{--                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">--}}
-{{--                        </td>--}}
-{{--                        <td>--}}
-{{--                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">--}}
-{{--                        </td>--}}
                         <td>
                         </td>
                         <td>
                         </td>
-{{--                        <td>--}}
-{{--                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">--}}
-{{--                        </td>--}}
                         <td>
                         </td>
                         <td>
@@ -102,9 +104,6 @@
                         <td>
                             <input class="search" type="text" placeholder="{{ trans('global.search') }}" >
                         </td>
-{{--                        <td>--}}
-{{--                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">--}}
-{{--                        </td>--}}
                         <td>
                         </td>
                     </tr>
@@ -126,6 +125,7 @@
                                     </div>
                                 </div>
                             </td>
+                            <td style="display: none;">{{$project->deleted_at ?? ''}}</td>
                             <td>
                                 {{ $project->client->name ?? '' }}
                             </td>
@@ -158,9 +158,9 @@
                                 @endif
                             </td>
                             <td>
-                                <a href="{{route('projectmanagement.admin.milestones.index')}}" class="btn btn-info {{$project->milestones && $project->milestones->count()>0 ? '':'disabled'}}" >
-                                    {{$project->milestones && $project->milestones->count()>0 ? $project->milestones->count():'No Milestone'}}
-                                </a>
+                                {{-- <a href="{{route('projectmanagement.admin.milestones.index')}}" class="btn btn-info {{$project->milestones && $project->milestones->count()>0 ? '':'disabled'}}" > --}}
+                                    {{-- {{$project->milestones && $project->milestones->count()>0 ? $project->milestones->count():'No Milestone'}} --}}
+                                {{-- </a> --}}
                             </td>
                             <td>
                                 {{ $project->project_status ?? '' }}
@@ -252,16 +252,38 @@
   dtButtons.push(deleteButton)
 @endcan
 
-  $.extend(true, $.fn.dataTable.defaults, {
+
+
+
+
+$.extend(true, $.fn.dataTable.defaults, {
     orderCellsTop: true,
     order: [[ 1, 'desc' ]],
     pageLength: 25,
+    // scrollX : false,
   });
-  let table = $('.datatable-Project:not(.ajaxTable)').DataTable({ buttons: dtButtons })
+  let table = $('.datatable-Project:not(.ajaxTable)').DataTable({
+        buttons: [dtButtons, 'colvis'],
+    })
+
+    // Hide columns
+    // table.columns([3]).visible( true );
+    table.columns([3]).search( 0 ).draw(); // set a default load in datatable column (Active Users)
+
+
   $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e){
       $($.fn.dataTable.tables(true)).DataTable()
           .columns.adjust();
   });
+
+  $('.filter-select').on('change', function () {
+      console.log("dgsdf");
+    table
+        .column(3)
+        .search($(this).val())
+        .draw()
+    });
+
   $('.datatable thead').on('input', '.search', function () {
       let strict = $(this).attr('strict') || false
       let value = strict && this.value ? "^" + this.value + "$" : this.value

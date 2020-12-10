@@ -15,29 +15,6 @@ Route::Post('user/upload','ImportsController@storeUser');
 
 
 Auth::routes(['register' => false]);
-// Admin
-
-
-/**************** permissions *****************/
-
-// roles
-// Route::apiResource('roles', 'AclController')->parameters(['roles' => 'id']);
-Route::resource('roles', 'Admin\AclController')->parameters(['roles' => 'id']);
-Route::get('/name_roles', 'Admin\AclController@getNameRoles');
-
-// permissions
-Route::get('/permissions', 'Admin\AclController@getListPermissions');
-
-// user
-Route::get('/roles_permissions_for_user/{id}', 'Admin\AclController@getRolesAndPermissionsForUser');
-Route::put('/assign_to_user/{id}', 'Admin\AclController@assignToUser');
-
-Route::get('/users_list', 'Admin\AclController@getUsersList');
-
-/*********************************************************************************/
-
-
-
 
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'middleware' => ['auth']], function () {
@@ -47,10 +24,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::delete('permissions/destroy', 'PermissionsController@massDestroy')->name('permissions.massDestroy');
     Route::get('permissions/{id}', 'PermissionsController@index')->name('permissions.index');
     // Route::resource('permissions', 'PermissionsController');
-
-
-
-
 
 
 

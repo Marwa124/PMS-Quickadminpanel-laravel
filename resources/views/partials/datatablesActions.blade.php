@@ -22,6 +22,9 @@
 @endcan
 @can($deleteGate)
     <?php $deleteRestore = $deleteRestore ?? '';?>
+
+
+
     @if ($deleteRestore)
         <form action="{{ route($modalId.'admin.' . $crudRoutePart . '.forceDestroy', $row->id) }}" method="POST" style="display: inline-block;">
             <input type="hidden" name="_method" value="POST">
