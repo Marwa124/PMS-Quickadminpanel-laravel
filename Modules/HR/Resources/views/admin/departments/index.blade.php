@@ -11,36 +11,9 @@
 
 
 {{-- Board Members --}}
-<<<<<<< HEAD
-{{--<div class="pg-orgchart">--}}
-{{--    <div class="org-chart">--}}
-{{--        <?php--}}
-{{--            $roleMembers = $roleModel::where('title', 'Board Members')->first();--}}
-{{--            $roleAdmin = $roleModel::where('title', 'Admin')->first();--}}
-{{--            $boardMembers = $userModel::where('role_id', $roleMembers->id)->get();--}}
-{{--            $adminMembers = $userModel::where('role_id', $roleAdmin->id)->get();--}}
-{{--        ?>--}}
-{{--        <div style="position: absolute">{{$roleMembers->title}}</div>--}}
-{{--        <ul>--}}
-{{--            @foreach ($boardMembers as $item)--}}
-{{--            <?php $accountDetail = $item->accountDetail()->first(); ?>--}}
-{{--            <li>--}}
-{{--                <div class="user">--}}
-{{--                    <img src="{{ $accountDetail->avatar ? $accountDetail->avatar->getUrl('thumb') : asset('images/default.png') }}"--}}
-{{--                        class="img-responsive" />--}}
-{{--                     <div class="name">Roy Lemarie</div>--}}
-{{--                     <div class="role pt-2">{{$accountDetail->user->role()->first()->title}}</div>--}}
-{{--                    <a class="name text-danger d-block" href="{{route('hr.admin.account-details.show', $accountDetail->select('id')->first()->id)}}">{{$accountDetail->fullname}}</a>--}}
-{{--                </div>--}}
-{{--            </li>--}}
-{{--            @endforeach--}}
-{{--        </ul>--}}
-{{--    </div>--}}
-{{--</div>--}}
-=======
 <div class="pg-orgchart">
     <div class="org-chart">
-        <?php 
+        <?php
             $roleMembers = $roleModel::where('name', 'Board Members')->first();
             // $roleAdmin = $roleModel::where('name', 'Admin')->first();
 
@@ -71,7 +44,6 @@
         </ul>
     </div>
 </div>
->>>>>>> aa652cf4ba0582a41789ba280011a914311f4fbe
 {{-- Board Members --}}
 
 

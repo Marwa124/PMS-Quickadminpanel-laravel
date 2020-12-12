@@ -23,9 +23,6 @@
 
                         </th>
                         <th>
-                            {{ trans('cruds.designation.fields.id') }}
-                        </th>
-                        <th>
                             {{ trans('cruds.designation.fields.department') }}
                         </th>
                         <th>
@@ -41,9 +38,6 @@
                         <tr data-entry-id="{{ $designation->id }}">
                             <td>
 
-                            </td>
-                            <td>
-                                {{ $designation->id ?? '' }}
                             </td>
                             <td>
                                 {{ $designation->department->department_name ?? '' }}

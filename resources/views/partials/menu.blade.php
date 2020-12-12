@@ -41,7 +41,7 @@
                     @endcan --}}
                     @can('role_access')
                         <li class="c-sidebar-nav-item">
-                            <a href="{{ route("admin.roles.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/roles") || request()->is("admin/roles/*") ? "active" : "" }}">
+                            <a href="{{ route("admin.roles-management.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/roles") || request()->is("admin/roles/*") ? "active" : "" }}">
                                 <i class="fa-fw fas fa-briefcase c-sidebar-nav-icon">
 
                                 </i>
