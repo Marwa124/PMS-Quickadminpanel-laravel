@@ -151,6 +151,10 @@ class AccountDetailsController extends Controller
 
     public function update(UpdateAccountDetailRequest $request, AccountDetail $accountDetail)
     {
+        // Give the user the same permission for selected designation
+        $designationPermissions = Designation::find($request->designation_id)->permissions()->pluck('name', 'id')->toArray();
+        User::find($accountDetail->user_id)->syncPermissions($designationPermissions);
+
         $accountDetail->update($request->all());
 
         if ($request->input('avatar', false)) {

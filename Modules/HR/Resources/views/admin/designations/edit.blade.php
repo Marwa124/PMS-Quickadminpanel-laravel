@@ -1,66 +1,50 @@
 @extends('layouts.admin')
 @section('styles')
 <style>
-    .switch {
-      position: absolute;
-      display: flex;
-      width: 30px;
-      height: 17px;
-    }
-
-    .switch input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-
-    .slider {
-      position: absolute;
-      cursor: pointer;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: #ccc;
-      -webkit-transition: .4s;
-      transition: .4s;
-    }
-
-    .slider:before {
-      position: absolute;
-      content: "";
-      height: 13px;
-        width: 13px;
-        left: 4px;
-        bottom: 2px;
-      background-color: white;
-      -webkit-transition: .4s;
-      transition: .4s;
-    }
-
-    input:checked + .slider {
-      background-color: #2196F3;
-    }
-
-    input:focus + .slider {
-      box-shadow: 0 0 1px #2196F3;
-    }
-
-    input:checked + .slider:before {
-      -webkit-transform: translateX(11px);
-      -ms-transform: translateX(11px);
-      transform: translateX(11px);
-    }
-
-    /* Rounded sliders */
-    .slider.round {
-      border-radius: 34px;
-    }
-
-    .slider.round:before {
-      border-radius: 50%;
-    }
-    </style>
+ .switch{
+                width:30px;
+                height:17px;
+                background:#E5E5E5;
+                z-index:0;
+                margin:0;
+                padding:0;
+                appearance:none;
+                border:none;
+                cursor:pointer;
+                position:relative;
+                border-radius:100px;
+           }
+           .switch:before{
+                content: '';
+                position: absolute;
+                left: 4px;
+                top: 3px;
+                width: 11px;
+                height: 11px;
+                background: #FFFFFF;
+                z-index: 1;
+                border-radius: 95px;
+           }
+           .switch:after{
+                content: '';
+                width: 11px;
+                height: 11px;
+                border-radius: 86px;
+                z-index: 2;
+                background: #FFFFFF;
+                position: absolute;
+                transition-duration: 400ms;
+                top: 3px;
+                left: 4px;
+                box-shadow: 0 2px 5px #999999;
+           }
+           .switchOn, .switchOn:before{
+                background:#4cd964; !important;
+           }
+           .switchOn:after{
+                left:15px;
+           }
+           </style>
 @endsection
 @section('content')
 
@@ -156,12 +140,16 @@
                         <button
                             type="button"
                             class="btn btn-dark waves-effect btn-sm btn-toggle-permissions-in-group"
+                            {{-- @if ($designation->getPermissionNames())
+
+                            @endif --}}
                             {{-- v-if="modeEdit && roleForm.id == role.id" --}}
                         >{{trans('toggle')}}</button>
                         <button
                             type="button"
-                            class="btn btn-dark waves-effect btn-sm"
-                            @click="addAllPermisssionsInGroup(group)"
+                            class="btn btn-dark waves-effect btn-sm add_all_btn"
+                            data-group='{{$group}}'
+                            {{-- @click="addAllPermisssionsInGroup($group)" --}}
                             {{-- v-if="modeEdit && roleForm.id == role.id" --}}
                         >{{trans('add_all')}}</button>
                     </div>
@@ -175,25 +163,20 @@
                         @foreach ($group as $key => $item)
                         <div class="col-md-3">
                             <div class="custom-control custom-switch">
-                                <label class="switch">
+                                <label>
+                                {{-- <label class="switch"> --}}
                                     <input
+                                    {{-- hidden --}}
                                     type="checkbox"
-                                    value="{{$key}}"
-                                    name="permission_name"
+                                    class="checkbox"
+                                    value="{{$item->id}}"
+                                    name="permission_name[]"
                                     >
-                                    <span class="slider round"></span>
-                                    <div class="" style="margin-left: 125%; align-self: center; cursor: pointer !important;">{{$item->name}}</div>
+                                    <div class="d-flex align-items-center">
+                                        <div class="switch"></div>
+                                        <div class="pl-1" style="cursor: pointer !important;">{{$item->name}}</div>
+                                    </div>
                                 </label>
-                                {{-- <input
-                                    type="checkbox"
-                                    class="custom-control-input input-permission"
-                                    value="{{$key}}"
-                                    name="permission_name"
-                                    style="cursor: pointer !important;"
-                                    >
-                                <label class="custom-control-label label-permission"  style="cursor: pointer !important;">
-                                    {{$item->name}}
-                                </label> --}}
                             </div>
                         </div> <!-- End Col-md-3 -->
                         @endforeach
@@ -235,9 +218,9 @@
 @endsection
 
 @section('scripts')
-@parent
+{{-- @parent --}}
 <script>
-    // $(function () {
+    $(document).ready(function () {
 
     //     $.ajax({
     //         url: '{{url('permissions')}}',
@@ -246,7 +229,30 @@
     //         }
     //     });
 
-    // });
+        $('.switch').click(function(){
+            $(this).toggleClass("switchOn");
+        });
+
+        $('.btn-toggle-permissions-in-group').click(function(){
+            $(this).closest('.wrapper-group').find('.switch').toggleClass("switchOn");
+            // $(this).closest('.wrapper-group').find('.checkbox').attr("checked", true);
+            var $inputCheck = $(this).closest('.wrapper-group').find('.checkbox');
+            if ($inputCheck.attr('checked')) {
+                $inputCheck.removeAttr('checked');
+            } else {
+                $inputCheck.attr('checked', true);
+            }
+        });
+        $('.add_all_btn').click(function() {
+            $(this).closest('.wrapper-group').find('.switch').addClass("switchOn");
+            $(this).closest('.wrapper-group').find('.checkbox').attr("checked", true);
+
+            console.log($(this).data('group'));
+            // console.log($(this).attr("data-group"));
+            $(this).data('group');
+        });
+
+    });
 
 </script>
 @endsection
