@@ -10,10 +10,10 @@ use App\Http\Requests\UpdateBugRequest;
 use App\Models\Bug;
 use App\Models\Opportunity;
 use App\Models\Permission;
-use App\Models\Project;
-use App\Models\Task;
 use Gate;
 use Illuminate\Http\Request;
+use Modules\ProjectManagement\Entities\Project;
+use Modules\ProjectManagement\Entities\Task;
 use Spatie\MediaLibrary\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
 

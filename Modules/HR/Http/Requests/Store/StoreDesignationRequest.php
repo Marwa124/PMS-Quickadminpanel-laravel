@@ -22,6 +22,14 @@ class StoreDesignationRequest extends FormRequest
                 'string',
                 'required',
             ],
+            'department_id' => [
+                'integer',
+                'required',
+            ],
+            'designation_leader_id' => [
+                'integer',
+                'nullable',
+            ],
             'permissions.*'    => [
                 'integer',
             ],

@@ -13,7 +13,7 @@ class AddRelationshipFieldsToTaskAttachmentsTable extends Migration
             $table->foreign('task_id', 'task_fk_2182408')->references('id')->on('tasks');
             $table->unsignedInteger('user_id')->nullable();
             $table->foreign('user_id', 'user_fk_2182409')->references('id')->on('users');
-            $table->unsignedInteger('lead_id')->nullable();
+            $table->unsignedBigInteger('lead_id')->nullable();
             $table->foreign('lead_id', 'lead_fk_2182412')->references('id')->on('leads');
             $table->unsignedInteger('opportunities_id')->nullable();
             $table->foreign('opportunities_id', 'opportunities_fk_2182413')->references('id')->on('opportunities');

@@ -149,4 +149,19 @@ class AccountDetail extends Model implements HasMedia
     {
         $this->attributes['date_of_birth'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
     }
+
+    public function projects(){
+
+        return $this->belongsToMany('Modules\ProjectManagement\Entities\Project',
+            'project_account_details_pivot','account_details_id','project_id');
+
+    }
+
+    public function milestones(){
+
+        return $this->belongsToMany('Modules\ProjectManagement\Entities\Milestone',
+            'milestone_account_details_pivot','account_details_id','milestone_id');
+
+    }
+
 }

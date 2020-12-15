@@ -7,8 +7,6 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
-            DepartmentsTableSeeder::class,
-            DesignationsTableSeeder::class,
             SalaryTemplatesTableSeeder::class,
             LeaveCategoriesTableSeeder::class,
 
@@ -16,12 +14,16 @@ class DatabaseSeeder extends Seeder
             PermissionsTableSeeder::class,
 
             UsersTableSeeder::class,
-            AccountDetailsTableSeeder::class,
+            // AccountDetailsTableSeeder::class,
+
+            DepartmentsTableSeeder::class,
+            DesignationsTableSeeder::class,
+
+            DepartmentsTableSeeder::class,
+            DesignationsTableSeeder::class,
 
             PaymentMethodsTableSeeder::class,
 
-            // Exists in Payroll Module
-            // SalaryDeductionsTableSeeder::class,
         ]);
     }
 }

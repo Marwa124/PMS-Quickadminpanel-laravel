@@ -36,21 +36,13 @@
             <div class="row">
                 <div class="col-md-5 d-flex justify-content-center align-self-center">
                     @if($detail->avatar )
-                        {{-- <a href="{{ str_replace('storage', 'public/storage', $detail->avatar->getUrl()) }}" target="_blank">
+                        <a href="{{ asset( $detail->avatar->getUrl()) }}" target="_blank">
                             <img class="rounded-circle img-thumbnail d-flex m-auto"
-                            src="{{ str_replace('storage', 'public/storage', $detail->avatar->getUrl('thumb')) }}">
-                        </a> --}}
-                        <a href="{{ str_replace('storage', 'storage/app/public', $detail->avatar->getUrl()) }}" target="_blank">
-                            <img class="rounded-circle img-thumbnail d-flex m-auto"
-                            src="{{ str_replace('storage', 'storage/app/public', $detail->avatar->getUrl('thumb')) }}">
+                            src="{{ asset( $detail->avatar->getUrl('thumb')) }}">
                         </a>
                     @else
                         <a href="javascript:void(0)" style="display: inline-block">
                             <img class="rounded-circle img-thumbnail d-flex m-auto"
-                            {{-- style="display: block;
-                                margin-left: auto;
-                                margin-right: auto;
-                                width: 30%;" --}}
                             src="{{ asset('images/default.png') }}">
                         </a>
                     @endif

@@ -3,6 +3,7 @@
 namespace Modules\ProjectManagement\Entities;
 
 use App\Models\Client;
+use Modules\ProjectManagement\Entities\Milestone;
 use App\Models\Permission;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -14,7 +15,9 @@ use \DateTimeInterface;
 
 class Project extends Model implements HasMedia
 {
-    use SoftDeletes, HasMediaTrait;
+    use
+    // SoftDeletes,
+    HasMediaTrait;
 
     public $table = 'projects';
 
@@ -42,12 +45,14 @@ class Project extends Model implements HasMedia
         'end_date',
         'created_at',
         'updated_at',
-        'deleted_at',
+        // 'deleted_at',
     ];
 
     protected $fillable = [
         'name',
         'client_id',
+        'project_specification_id',
+        'department_id',
         'progress',
         'calculate_progress',
         'start_date',
@@ -110,8 +115,35 @@ class Project extends Model implements HasMedia
         $this->attributes['end_date'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
     }
 
-    public function permissions()
-    {
-        return $this->belongsToMany(Permission::class);
+//    public function permissions()
+//    {
+//        return $this->belongsToMany(Permission::class);
+//    }
+
+    public function department(){
+
+        return $this->belongsTo('Modules\HR\Entities\Department', 'department_id');
+    }
+
+    public function accountDetails(){
+
+        return $this->belongsToMany('Modules\HR\Entities\AccountDetail',
+            'project_account_details_pivot','project_id','account_details_id');
+
+    }
+
+    public function milestones(){
+        return $this->hasMany(Milestone::class,'project_id');
+    }
+
+    public function getProjects(){
+        if (auth()->user()->hasrole(['Admin','Super Admin'])){
+            $projects = $this->all();
+//            $clients = Client::get();
+        }else{
+            $projects = auth()->user()->accountDetail->projects;
+        }
+
+        return $projects;
     }
 }

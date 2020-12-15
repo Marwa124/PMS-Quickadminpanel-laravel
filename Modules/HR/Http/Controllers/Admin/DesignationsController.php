@@ -3,14 +3,17 @@
 namespace Modules\HR\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\PermissionGroup;
+use App\Models\User;
 use Modules\HR\Http\Requests\Destroy\MassDestroyDesignationRequest;
 use Modules\HR\Http\Requests\Store\StoreDesignationRequest;
 use Modules\HR\Http\Requests\Update\UpdateDesignationRequest;
 use Modules\HR\Entities\Department;
 use Modules\HR\Entities\Designation;
-use App\Models\Permission;
 use Gate;
 use Illuminate\Http\Request;
+use Modules\HR\Entities\AccountDetail;
+use Spatie\Permission\Models\Permission;
 use Symfony\Component\HttpFoundation\Response;
 
 class DesignationsController extends Controller
@@ -21,7 +24,7 @@ class DesignationsController extends Controller
 
         $designations = Designation::all();
 
-        return view('admin.designations.index', compact('designations'));
+        return view('hr::admin.designations.index', compact('designations'));
     }
 
     public function create()
@@ -29,52 +32,53 @@ class DesignationsController extends Controller
         abort_if(Gate::denies('designation_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $departments = Department::all()->pluck('department_name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $designations = Designation::all()->pluck('designation_name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $permissions = Permission::all()->pluck('title', 'id');
-
-        return view('admin.designations.create', compact('departments', 'permissions'));
+        return view('hr::admin.designations.create', compact('departments', 'designations'));
     }
 
     public function store(StoreDesignationRequest $request)
     {
         // dd($request->all());
         $designation = Designation::create($request->all());
-        return response()->json($designation);
-     
-        // $designation = Designation::create($request->all());
-        // $designation->permissions()->sync($request->input('permissions', []));
 
-        return redirect()->route('admin.designations.index');
+        return redirect()->route('hr.admin.designations.index');
     }
 
-    public function edit(Designation $designation)
+    public function edit($id)
     {
         abort_if(Gate::denies('designation_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $departments = Department::all()->pluck('department_name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $designation = Designation::find($id);
+        $users = AccountDetail::all()->pluck('fullname', 'user_id')->prepend(trans('global.pleaseSelect'), '');
+        $permissions = PermissionGroup::with('permissions')->get();
+        // dd($permissions);
+        // $permissions = Permission::all()->pluck('name', 'id');
+        $permissions = Permission::get()->groupBy('permission_group_id');
 
-        $permissions = Permission::all()->pluck('title', 'id');
 
-        $designation->load('department', 'permissions');
 
-        return view('admin.designations.edit', compact('departments', 'permissions', 'designation'));
+        return view('hr::admin.designations.edit', compact('departments', 'users', 'designation', 'permissions'));
     }
 
+    // public function update(Request $request, Designation $designation)
     public function update(UpdateDesignationRequest $request, Designation $designation)
     {
+        $designation->syncPermissions(request()->permission_name);
+        // dd($request->all());
         $designation->update($request->all());
-        $designation->permissions()->sync($request->input('permissions', []));
 
-        return redirect()->route('admin.designations.index');
+        return redirect()->route('hr.admin.designations.index');
     }
 
     public function show(Designation $designation)
     {
         abort_if(Gate::denies('designation_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $designation->load('department', 'permissions');
+        $designation->load('department');
 
-        return view('admin.designations.show', compact('designation'));
+        return view('hr::admin.designations.show', compact('designation'));
     }
 
     public function destroy(Designation $designation)

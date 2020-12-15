@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
+use Modules\ProjectManagement\Entities\Milestone;
+use Modules\ProjectManagement\Entities\Project;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
@@ -100,7 +102,7 @@ class User extends Authenticatable implements HasMedia
     /* !!!: Relations */
     public function department()
     {
-        return $this->belongsTo(Department::class, 'department_head_id', 'id');
+        return $this->hasMany(Department::class, 'department_head_id', 'id');
     }
 
     public function leaveApplications()
@@ -111,11 +113,6 @@ class User extends Authenticatable implements HasMedia
     public function fingerPrintAttendances()
     {
         return $this->hasMany(FingerprintAttendance::class, 'user_id', 'id');
-    }
-
-    public function designation()
-    {
-        return $this->belongsTo(Designation::class, 'designation_id', 'id');
     }
 
     public function timeTable()
@@ -205,8 +202,34 @@ class User extends Authenticatable implements HasMedia
         $this->attributes['date_of_insurance'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
     }
 
-    // public function notifications()
-    // {
-    //     return $this->morphedByMany(Notification::class, 'userable')->withPivot('is_read');
-    // }
+    public function getUserProjectsByUserID($user_id){
+        $user = User::findOrFail($user_id);
+
+        if ($user->hasrole(['Admin','Super Admin'])){
+
+            $projects = Project::all();
+//            $clients = Client::get();
+        }else{
+
+            $projects = $user->accountDetail->projects;
+        }
+
+        return $projects;
+    }
+
+    public function getUserMilestonesByUserID($user_id)
+    {
+        $user = User::findOrFail($user_id);
+
+        if ($user->hasrole(['Admin','Super Admin'])){
+
+            $milestones = Milestone::all();
+
+        }else{
+
+            $milestones = $user->accountDetail->milestones;
+        }
+
+        return $milestones;
+    }
 }

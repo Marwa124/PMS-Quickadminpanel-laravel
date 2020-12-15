@@ -99,19 +99,15 @@
                         </th>
                         <th>
                             {{ trans('cruds.monthlyAttendance.fields.clock_out') }}
-                            {{-- {{ trans('cruds.monthlyAttendance.fields.total_attendance_days') }} --}}
                         </th>
                         <th>
                             {{ trans('cruds.monthlyAttendance.fields.absence') }}
-                            {{-- {{ trans('cruds.monthlyAttendance.fields.total_hours') }} --}}
                         </th>
                         <th>
                             {{ trans('cruds.monthlyAttendance.fields.vacation') }}
-                            {{-- {{ trans('cruds.monthlyAttendance.fields.total_absence') }} --}}
                         </th>
                         <th>
                             {{ trans('cruds.monthlyAttendance.fields.holiday') }}
-                            {{-- {{ trans('cruds.monthlyAttendance.fields.total_vacation') }} --}}
                         </th>
                         <th>
                             {{ trans('cruds.monthlyAttendance.fields.leave_request') }}
@@ -120,12 +116,6 @@
                 </thead>
                 <tbody>
                     @foreach($monthlyAttendances as $key => $monthlyAttendance)
-                    <?php
-        // echo "<pre>";
-        //     var_dump($monthlyAttendance[]);
-            // die();
-            // var_dump($dailyAttendance->user->userAccountDetail->fullname);
-                    ?>
                         <tr style="{{ $monthlyAttendance['weekEnd'] ? 'background-color:#f9b11599;' : '' }}">
                             <td>
                                 {{ $monthlyAttendance['fingerDate'] ?? '' }} <br>
@@ -151,10 +141,7 @@
                             </td>
                         </tr>
                     @endforeach
-                    <?php
-            // die();
 
-                    ?>
                 </tbody>
             </table>
         </div>

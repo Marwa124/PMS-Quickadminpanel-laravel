@@ -271,7 +271,8 @@
                 'milestone_edit',
                 'milestone_show',
                 'milestone_delete',
-                'milestone_access'
+                'milestone_access',
+                'milestone_assign_to',
             ],
 
             'bugs' => [
@@ -355,13 +356,13 @@
                 'countries_edit', // done
                 'countries_show', // done
                 'countries_delete', // done
-                // 'lead_category_access', // done
-                // 'lead_source_create', // done
-                // 'lead_source_delete', // done
-                // 'lead_source_access',
-                // 'lead_status_create',
-                // 'lead_status_delete',
-                // 'lead_status_access',
+                'countries_access', // done
+                'types_create', // done
+                'types_delete', // done
+                'types_access',
+                'result_create',
+                'result_delete',
+                'result_access',
                 // 'salutation_create',
                 // 'salutation_delete',
                 // 'salutation_access',
@@ -415,7 +416,9 @@
                 'project_setting_create', // done
                 'project_setting_delete',
                 'project_setting_access',
+                'project_assign_to',
             ],
+
 
             // accounting
             // 'banks' => [

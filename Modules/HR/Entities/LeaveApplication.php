@@ -100,11 +100,6 @@ class LeaveApplication extends Model implements HasMedia
         return $this->belongsTo(LeaveCategory::class, 'leave_category_id');
     }
 
-    // public function notification()
-    // {
-    //     return $this->hasOne(Notification::class);
-    // }
-
     public function getLeaveStartDateAttribute($value)
     {
         return $value ? Carbon::parse($value)->format(config('panel.date_format')) : null;

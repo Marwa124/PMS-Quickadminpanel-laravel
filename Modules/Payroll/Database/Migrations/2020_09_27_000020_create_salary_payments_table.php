@@ -11,13 +11,13 @@ class CreateSalaryPaymentsTable extends Migration
         Schema::create('salary_payments', function (Blueprint $table) {
             $table->increments('id');
             $table->string('payment_month');
-            $table->string('fine_deduction');
-            $table->string('payment_type');
+            $table->float('fine_deduction');
+            $table->unsignedInteger('payment_method_id');
             $table->longText('comments')->nullable();
-            $table->date('paid_date')->nullable();
-            $table->string('deduct_from');
+            $table->timestamp('paid_date')->nullable();
+            $table->string('deduct_from')->nullable();
             $table->timestamps();
-            $table->softDeletes();
+            // $table->softDeletes();
         });
     }
 }

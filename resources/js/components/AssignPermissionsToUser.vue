@@ -160,8 +160,6 @@ export default {
             roles: [],
             permissions: []
         }),
-        // idPage: 'users',
-        // typePage: 'edit',
       }
     },
     methods: {
@@ -205,8 +203,6 @@ export default {
         },
         async getUserPermissions() {
             await axios.get(this.urlGetUserPermissions + this.userId).then(response => {
-                // console.log(this.$route);
-                console.log(id);
                 console.log(this.userId +'   xxxxx');
                 console.log(response);
                 if (response.status === 200) {
@@ -241,7 +237,8 @@ export default {
                     //     text: this.success_msg
                     // })
                     // setTimeout(() => {
-                    //     this.$router.push({name: 'users'})
+                    //     console.log(this.$router);
+                    //     this.$router.push({name: 'admin'})
                     // }, 1000)
                 }
             }).catch(response => {

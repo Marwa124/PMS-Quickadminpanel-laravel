@@ -27,9 +27,9 @@ class NotifyUserViaEmailListener
      */
     public function handle($event)
     {
-         /* !!!: Leave Mail */
-         Mail::to('marwa120640@gmail.com')->cc("marwa120640@gmail.com")
-         ->send(new LeaveRequest($event->leaveApplication, $event->leaveApplication->user_id, $event->title));
+        //  /* !!!: Leave Mail */
+        //  Mail::to('marwa120640@gmail.com')->cc("marwa120640@gmail.com")
+        //  ->send(new LeaveRequest($event->leaveApplication, $event->leaveApplication->user_id, $event->title));
 
     }
 }

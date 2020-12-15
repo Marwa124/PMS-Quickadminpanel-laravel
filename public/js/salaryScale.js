@@ -13,7 +13,7 @@ $(document).ready(function () {
         $('input[name="gross_salary"]').val(totalGross());
         $('#net_salary').val(netSalary());
     })
-    
+
     $("input[name='allowance[house_allowance]']").focusout(function(){
         $('input[name="gross_salary"]').val(totalGross());
         $('#net_salary').val(netSalary());
@@ -34,23 +34,22 @@ $(document).ready(function () {
 
 
     function totalGross() {
-        var basicSalary = parseInt($("input[name='basic_salary']").val());
-        var allowanceHouse = parseInt($("input[name='allowance[house_allowance]']").val());
-        var allowanceMedical = parseInt($("input[name='allowance[medical_allowance]']").val());
-        
+        var basicSalary      = parseInt($("input[name='basic_salary']").val());
+        var allowanceHouse   = parseInt($("input[name='allowance[house_allowance]']").val() ?? 0);
+        var allowanceMedical = parseInt($("input[name='allowance[medical_allowance]']").val() ?? 0);
+
         var allowanceMore = moreAllowances(allowancesLabels);
-        
-        return basicSalary + allowanceHouse + allowanceMedical + allowanceMore; 
+
+        return basicSalary + allowanceHouse + allowanceMedical + allowanceMore;
     }
 
     function moreAllowances(moreAllowanceLabels = []) {
-        var moreAllowances = 0; 
-        
+        var moreAllowances = 0;
+
         var uniqueAllowanceLabels = [];
         $.each(moreAllowanceLabels, function(i, el){
             if($.inArray(el, uniqueAllowanceLabels) === -1) uniqueAllowanceLabels.push(el);
         });
-
 
         // var uniqueAllowanceLabels = moreAllowanceLabels.filter(function(item, i, moreAllowanceLabels) {
         //     return i == moreAllowanceLabels.indexOf(item);
@@ -63,8 +62,8 @@ $(document).ready(function () {
     }
 
     function moreDeductions(moreDeductionLabels = []) {
-        var moreDeductions = 0; 
-        
+        var moreDeductions = 0;
+
         var uniqueDeductionLabels = [];
         $.each(moreDeductionLabels, function(i, el){
             if($.inArray(el, uniqueDeductionLabels) === -1) uniqueDeductionLabels.push(el);
@@ -77,11 +76,11 @@ $(document).ready(function () {
     }
 
     function totalDeductions() {
-        var deductionFund = parseInt($("input[name='deduction[provided_fund]']").val());
-        var deductionTax = parseInt($("input[name='deduction[tax_deduction]']").val());
+        var deductionFund = parseInt($("input[name='deduction[provided_fund]']").val() ?? 0);
+        var deductionTax = parseInt($("input[name='deduction[tax_deduction]']").val() ?? 0);
 
         var deductionMore = moreDeductions(deductionsLabels);
-        
+
         return deductionFund + deductionTax + deductionMore;
     }
 
@@ -90,7 +89,7 @@ $(document).ready(function () {
         return totalGross() - totalDeductions();
     }
 
-    // !!!: More Allowances Button
+    // !!!: More Allowances Button /////////////////////////////
     $('.moreAllowances').on('click', function(){
         allowanceId +=1;
         $('.allowancesGroup').append(`
@@ -115,7 +114,7 @@ $(document).ready(function () {
                     allowancesLabels.shift(oldLabelVal);
                 }
                 allowancesLabels.push(labelName);
-    
+
                 // If the label name has changed then the value name must be change to before inserted in the db.
                 $(this).closest('.form-group').find('input[type="number"]').attr('name', 'allowance[' + labelName + ']');
             }
@@ -127,7 +126,6 @@ $(document).ready(function () {
 
 
         $(".allowanceValue").focusout(function(){
-        // $("input[name='allowanceValue[]']").focusout(function(){
             if ($('input[name="allowanceLabel[]"]').val()) {
                 var labelValue = $(this).closest('.form-group').find('input[name="allowanceLabel[]"]').val();
             }else{
@@ -142,13 +140,13 @@ $(document).ready(function () {
             $('#net_salary').val(netSalary());
         })
 
-        // Remove btn       
+        // Remove btn
         $('.removeAllowance').on('click', function(){
             $('.removeAllowance').attr('disabled', true);
             var labelName = $(this).closest('.form-group').find('.allowanceLabel').val();
 
             allowancesLabels.shift(labelName);
-            
+
             allowanceMore = moreAllowances(allowancesLabels);
             $('input[name="gross_salary"]').val(totalGross());
             $('#net_salary').val(netSalary());
@@ -183,7 +181,7 @@ $(document).ready(function () {
                     deductionsLabels.shift(oldDeductionLabelVal);
                 }
                 deductionsLabels.push(deductionLabelName);
-    
+
                 // If the label name has changed then the value name must be change to before inserted in the db.
                 $(this).closest('.form-group').find('input[type="number"]').attr('name', 'deduction[' + deductionLabelName + ']');
             }
@@ -195,7 +193,6 @@ $(document).ready(function () {
 
 
         $(".deductionValue").focusout(function(){
-        // $("input[name='deductionValue[]']").focusout(function(){
             if ($('input[name="deductionLabel[]"]').val()) {
                 var deductionLabelValue = $(this).closest('.form-group').find('input[name="deductionLabel[]"]').val();
             }else{
@@ -210,13 +207,13 @@ $(document).ready(function () {
             $('#net_salary').val(netSalary());
         })
 
-        // Remove btn       
+        // Remove btn
         $('.removeDeduction').on('click', function(){
             $('.removeDeduction').attr('disabled', true);
             var deductionLabelName = $(this).closest('.form-group').find('.deductionLabel').val();
 
             deductionsLabels.shift(deductionLabelName);
-            
+
             deductionMore = moreDeductions(deductionsLabels);
             $('#total_deduction').val(totalDeductions());
             $('#net_salary').val(netSalary());
@@ -224,4 +221,14 @@ $(document).ready(function () {
             $(this).closest('.form-group').remove();
         })
     })
+
+
+
+    /* !!!: Total Salary ****************************/
+    $('input[name="gross_salary"]').val(totalGross());
+    console.log(totalGross());
+    console.log(totalDeductions());
+    console.log(netSalary());
+    $('#total_deduction').val(totalDeductions());
+    $('#net_salary').val(netSalary());
 });

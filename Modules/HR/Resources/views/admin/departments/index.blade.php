@@ -13,7 +13,7 @@
 {{-- Board Members --}}
 <div class="pg-orgchart">
     <div class="org-chart">
-        <?php 
+        <?php
             $roleMembers = $roleModel::where('name', 'Board Members')->first();
             // $roleAdmin = $roleModel::where('name', 'Admin')->first();
 
@@ -63,7 +63,7 @@
                 </div>
             </li>
                 {{-- <ul> --}}
-                    <?php 
+                    <?php
                         $departmentHead = $department->department_head()->first() ? $department->department_head->accountDetail()->first() : '';
                     ?>
                     @if ($departmentHead)
@@ -75,7 +75,7 @@
                             <a class="manager" href="{{route('hr.admin.account-details.show', $departmentHead->user()->select('id')->first()->id)}}">{{$departmentHead->fullname}}</a>
                         </div>
                         <ul>
-                            <?php 
+                            <?php
                                 $designations = $department->departmentDesignations()->get();
 
                                 $groupedLeaders = $designations->groupBy('designation_leader_id')->toArray();
@@ -96,7 +96,7 @@
                                     <a class="manager" href="{{route('hr.admin.account-details.show', $leader->user()->select('id')->first()->id)}}">{{$leader->fullname}}</a>
                                 </div>
                                 <ul>
-                                    <?php 
+                                    <?php
                                         $designationIds = [];
                                             foreach ($designation as $key => $des) {
                                                 $designationIds[] = $des['id'] ?? '';

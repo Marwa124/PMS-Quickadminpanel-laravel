@@ -13,13 +13,13 @@
     @can('leave_application_delete')
         <div style="" class="row d-flex ml-auto">
             <div class="col-md-6">
-                <select data-column="0" class="form-control filter-select" name="" id="">
+                <select data-column="0" class="form-control filter-select" name="trashed" id="">
                     <option value="0">Active</option>
                     <option value="1">Trashed Leaves</option>
                 </select>
             </div>
             <div class="col-md-6">
-                <select data-column="0" class="form-control filter-leaves-type" name="" id="">
+                <select data-column="0" class="form-control filter-leaves-type" name="leaveTypes" id="">
                     <option value="allLeaves">All Leaves</option>
                     <option value="pending">Pending Approval</option>
                     <option value="myLeaves">My Leaves</option>
@@ -161,16 +161,6 @@
   $('.filter-leaves-type').change(function() {
       table.draw();
   })
-
-
-
-//   $(".forceDestroy").click(function(e){
-//       e.preventDefault();
-//         console.log("sdkjvcbk");
-
-//   })
-
-
 
 });
 

@@ -2,6 +2,12 @@
 
 namespace Modules\ProjectManagement\Entities;
 
+use App\Models\Lead;
+use App\Models\Milestone;
+use App\Models\Opportunity;
+use App\Models\Permission;
+use App\Models\User;
+use App\Models\WorkTracking;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;

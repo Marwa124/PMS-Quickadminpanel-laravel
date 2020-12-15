@@ -2,19 +2,20 @@
 
 namespace Modules\HR\Entities;
 
-use App\Models\Permission;
 use Modules\HR\Entities\AccountDetail;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use \DateTimeInterface;
 use Modules\Payroll\Entities\SalaryTemplate;
+use Spatie\Permission\Traits\HasRoles;
 
 class Designation extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HasRoles;
 
     public $table = 'designations';
+    protected $guard_name = 'web';
 
     public static $searchable = [
         'designation_name',
@@ -29,6 +30,7 @@ class Designation extends Model
     protected $fillable = [
         'department_id',
         'designation_name',
+        'designation_leader_id',
         'created_at',
         'updated_at',
         'deleted_at',
@@ -52,11 +54,6 @@ class Designation extends Model
     public function designationLeader()
     {
         return $this->belongsTo(User::class, 'designation_leader_id');
-    }
-
-    public function permissions()
-    {
-        return $this->belongsToMany(Permission::class);
     }
 
     public function accountDetails()
