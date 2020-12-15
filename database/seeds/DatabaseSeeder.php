@@ -22,6 +22,9 @@ class DatabaseSeeder extends Seeder
             DepartmentsTableSeeder::class,
             DesignationsTableSeeder::class,
 
+            DepartmentsTableSeeder::class,
+            DesignationsTableSeeder::class,
+
             PaymentMethodsTableSeeder::class,
 
         ]);
