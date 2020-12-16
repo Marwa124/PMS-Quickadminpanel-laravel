@@ -3,13 +3,13 @@
 
 <div class="card">
     <div class="card-header">
-        {{ trans('cruds.milestone.title_singular') }} {{ trans('global.assign_to') }} {{ trans('cruds.employee.title_singular') }}
+        {{ trans('cruds.task.title_singular') }} {{ trans('global.assign_to') }} {{ trans('cruds.employee.title_singular') }}
     </div>
 
     <div class="card-body">
-        <form method="POST" action="{{ route("projectmanagement.admin.milestones.storeAssignTo") }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ route("projectmanagement.admin.tasks.storeAssignTo") }}" enctype="multipart/form-data">
             @csrf
-            <input type="hidden" name="milsetone_id" value="{{$milestone->id}}"/>
+            <input type="hidden" name="task_id" value="{{$task->id}}"/>
             @php
                 $keydes = 0;
             @endphp
@@ -19,17 +19,14 @@
 {{--                    <label for="{{$designation->designation_name}}"><b>{{$designation->designation_name}}</b></label>--}}
 {{--                    <hr class="mt-sm mb-sm"/>--}}
                     <div >
-{{--                        @dd($designation->accountDetails()->get())--}}
                         @php
                             $designation_key = 0;
                         @endphp
-
-                        @forelse($designation->accountDetails()->get() as $account)
-
+                        @forelse($designation->accountDetails()->get() as $key => $account)
                             @php
                             $key = 0;
                             @endphp
-                            @forelse($milestone->project->accountDetails as $project_account)
+                            @forelse($task->milestone->accountDetails as $project_account)
                                 @if($project_account->id == $account->id)
                                     @if($designation_key == 0)
 
@@ -41,7 +38,7 @@
                                     @endif
                                     <div class="checkbox c-checkbox col-md-6 {{$key % 2 == 1 ? 'float-right':'float-left'}}">
                                         <input type="checkbox" name="accounts[]" value="{{ $account->id}}"
-                                            @forelse($milestone->accountDetails as $accountDetail)
+                                            @forelse($task->accountDetails as $accountDetail)
                                                 {{ $accountDetail->id == $account->id ? 'checked':''}}
 
                                             @empty
@@ -59,7 +56,7 @@
                                 @if($keydes == 0)
                                     <div class="form-group col-md-6">
 
-                                        No accounts assign to project of milestone
+                                        No accounts assign to milestone of task
                                         @php
                                             $keydes++;
                                         @endphp
@@ -68,16 +65,16 @@
                             @endforelse
 
                         @empty
-{{--                            <div class="form-group col-md-6">--}}
-
-{{--                                No Sub Department available "please add sub department"--}}
-{{--                            </div>--}}
                         @endforelse
                     </div>
                 </div>
 
                 <div class="clearfix"></div>
             @empty
+                <div class="form-group col-md-6">
+
+                    No designation found in project Department
+                </div>
             @endforelse
 
             <div class="form-group">

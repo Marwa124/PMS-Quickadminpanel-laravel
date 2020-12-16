@@ -643,7 +643,7 @@
                     @endcan
                     @can('bug_access')
                         <li class="c-sidebar-nav-item">
-                            <a href="{{ route("admin.bugs.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/bugs") || request()->is("admin/bugs/*") ? "active" : "" }}">
+                            <a href="{{ route("projectmanagement.admin.bugs.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/projectmanagement/bugs") || request()->is("admin/projectmanagement/bugs/*") ? "active" : "" }}">
                                 <i class="fa-fw fas fa-bug c-sidebar-nav-icon">
 
                                 </i>

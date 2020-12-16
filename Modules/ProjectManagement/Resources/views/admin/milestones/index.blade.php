@@ -73,67 +73,70 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($milestones as $key => $milestone)
-                        <tr data-entry-id="{{ $milestone->id }}">
-                            <td>
+                    @if($milestones)
+                        @forelse($milestones as $key => $milestone)
+                            <tr data-entry-id="{{ $milestone->id }}">
+                                <td>
 
-                            </td>
-                            <td>
-                                {{ $milestone->id ?? '' }}
-                            </td>
-{{--                            <td>--}}
-{{--                                {{ $milestone->user->name ?? '' }}--}}
-{{--                            </td>--}}
-                            <td>
-                                {{ $milestone->project->name ?? '' }}
-                            </td>
-                            <td>
-                                {{ $milestone->name ?? '' }}
-                            </td>
-                            <td>
-                                {{ $milestone->start_date ?? '' }}
-                            </td>
-                            <td>
-                                {{ $milestone->end_date ?? '' }}
-                            </td>
-{{--                            <td>--}}
-{{--                                {{ $milestone->client_visible ?? '' }}--}}
-{{--                            </td>--}}
-                            <td>
-                                @can('milestone_show')
-                                    <a class="btn btn-xs btn-primary" href="{{ route('projectmanagement.admin.milestones.show', $milestone->id) }}">
-{{--                                        {{ trans('global.view') }}--}}
-                                        <span class="fa fa-eye"></span>
-                                    </a>
-                                @endcan
+                                </td>
+                                <td>
+                                    {{ $milestone->id ?? '' }}
+                                </td>
+    {{--                            <td>--}}
+    {{--                                {{ $milestone->user->name ?? '' }}--}}
+    {{--                            </td>--}}
+                                <td>
+                                    {{ $milestone->project->name ?? '' }}
+                                </td>
+                                <td>
+                                    {{ $milestone->name ?? '' }}
+                                </td>
+                                <td>
+                                    {{ $milestone->start_date ?? '' }}
+                                </td>
+                                <td>
+                                    {{ $milestone->end_date ?? '' }}
+                                </td>
+    {{--                            <td>--}}
+    {{--                                {{ $milestone->client_visible ?? '' }}--}}
+    {{--                            </td>--}}
+                                <td>
+                                    @can('milestone_show')
+                                        <a class="btn btn-xs btn-primary" href="{{ route('projectmanagement.admin.milestones.show', $milestone->id) }}">
+    {{--                                        {{ trans('global.view') }}--}}
+                                            <span class="fa fa-eye"></span>
+                                        </a>
+                                    @endcan
 
-                                @can('milestone_edit')
-                                    <a class="btn btn-xs btn-info" href="{{ route('projectmanagement.admin.milestones.edit', $milestone->id) }}">
-{{--                                        {{ trans('global.edit') }}--}}
-                                        <span class="fa fa-pencil-square-o"></span>
-                                    </a>
-                                @endcan
+                                    @can('milestone_edit')
+                                        <a class="btn btn-xs btn-info" href="{{ route('projectmanagement.admin.milestones.edit', $milestone->id) }}">
+    {{--                                        {{ trans('global.edit') }}--}}
+                                            <span class="fa fa-pencil-square-o"></span>
+                                        </a>
+                                    @endcan
 
-                                @can('milestone_assign_to')
+                                    @can('milestone_assign_to')
 
-                                    <a class="btn btn-xs btn-success" href="{{ route('projectmanagement.admin.milestones.getAssignTo', $milestone->id) }}" >
-                                        {{ trans('global.assign_to') }}
-                                    </a>
+                                        <a class="btn btn-xs btn-success" href="{{ route('projectmanagement.admin.milestones.getAssignTo', $milestone->id) }}" >
+                                            {{ trans('global.assign_to') }}
+                                        </a>
 
-                                @endcan
+                                    @endcan
 
-                                @can('milestone_delete')
-                                    <form action="{{ route('projectmanagement.admin.milestones.destroy', $milestone->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
-                                        <input type="hidden" name="_method" value="DELETE">
-                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                        <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
-                                    </form>
-                                @endcan
+                                    @can('milestone_delete')
+                                        <form action="{{ route('projectmanagement.admin.milestones.destroy', $milestone->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                            <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
+                                        </form>
+                                    @endcan
 
-                            </td>
+                                </td>
 
-                        </tr>
-                    @endforeach
+                            </tr>
+                        @empty
+                        @endforelse
+                    @endif
                 </tbody>
             </table>
         </div>

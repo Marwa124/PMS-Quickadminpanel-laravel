@@ -5,6 +5,7 @@ namespace Modules\ProjectManagement\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Permission;
 use Modules\HR\Entities\AccountDetail;
+use Modules\ProjectManagement\Http\Controllers\Traits\PermissionHelperTrait;
 use Modules\ProjectManagement\Http\Requests\MassDestroyMilestoneRequest;
 use Modules\ProjectManagement\Http\Requests\StoreMilestoneRequest;
 use Modules\ProjectManagement\Http\Requests\UpdateMilestoneRequest;
@@ -17,6 +18,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class MilestonesController extends Controller
 {
+    use PermissionHelperTrait;
+
+    public function __construct()
+    {
+        $this->middleware('AllowAccessShowAndEditPages:Milestone',['only' => ['show','edit','getAssignTo']]);
+    }
+
     public function index()
     {
         abort_if(Gate::denies('milestone_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
@@ -129,48 +137,52 @@ class MilestonesController extends Controller
     public function storeAssignTo(Request $request){
         //dd($request->all());
         $milestone = Milestone::findOrFail($request->milsetone_id);
-        //$milestone->accountDetails()->detach();
-        $milestone->accountDetails()->sync($request->accounts);
+        if ($request->accounts) {
+            //$milestone->accountDetails()->detach();
+            $milestone->accountDetails()->sync($request->accounts);
 
-        // set permission to users
-        $accounts = AccountDetail::whereIn('id',$request->accounts)->with('user.department')->get();
+            // set permission to users
+            $accounts = AccountDetail::whereIn('id', $request->accounts)->with('user.department')->get();
 
-        $milestone_permissions_head_names = ['project_management_access','milestone_access','milestone_create', 'milestone_show','milestone_edit','milestone_assign_to'];
-        $milestone_permissions_notToMember_names = ['milestone_create','milestone_edit','milestone_assign_to'];
-        $milestone_permissions_toMember_names = ['project_management_access','milestone_access', 'milestone_show'];
+            $milestone_permissions_head_names = ['project_management_access', 'milestone_access', 'milestone_create', 'milestone_show', 'milestone_edit', 'milestone_assign_to'];
+            $milestone_permissions_notToMember_names = ['milestone_create', 'milestone_edit', 'milestone_assign_to'];
+            $milestone_permissions_toMember_names = ['project_management_access', 'milestone_access', 'milestone_show'];
 
-        $milestone_permissions_head = $this->getPermissionID($milestone_permissions_head_names);
-        $milestone_permissions_notToMember = $this->getPermissionID($milestone_permissions_notToMember_names);
-        $milestone_permissions_toMember = $this->getPermissionID($milestone_permissions_toMember_names);
+            $milestone_permissions_head = $this->getPermissionID($milestone_permissions_head_names);
+            $milestone_permissions_notToMember = $this->getPermissionID($milestone_permissions_notToMember_names);
+            $milestone_permissions_toMember = $this->getPermissionID($milestone_permissions_toMember_names);
 
-        foreach ($accounts as $account){
+            foreach ($accounts as $account) {
 
-            foreach ($account->user->permissions as $permission){
+                foreach ($account->user->permissions as $permission) {
 
-                if (in_array($permission->name,$milestone_permissions_notToMember_names)){
-                    $account->user->permissions()->detach($milestone_permissions_notToMember);
+                    if (in_array($permission->name, $milestone_permissions_notToMember_names)) {
+                        $account->user->permissions()->detach($milestone_permissions_notToMember);
+                    }
+                }
+                $account->user->permissions()->syncWithoutDetaching($milestone_permissions_toMember);
+
+                foreach ($account->user->department as $department) {
+                    if ($department->department_name == $milestone->project->department->department_name) {
+                        $account->user->permissions()->syncWithoutDetaching($milestone_permissions_head);
+
+                        break;
+                    }
                 }
             }
-            $account->user->permissions()->syncWithoutDetaching($milestone_permissions_toMember);
-
-            foreach ($account->user->department as $department){
-                if ($department->department_name == $milestone->project->department->department_name){
-                    $account->user->permissions()->syncWithoutDetaching($milestone_permissions_head);
-
-                    break;
-                }
-            }
+        }else{
+            $milestone->accountDetails()->detach();
         }
         return redirect()->route('projectmanagement.admin.milestones.index');
     }
 
-    public function getPermissionID($permissions){
-        $permissions_id =[];
-        foreach ($permissions as $permission_name){
-
-            $permission = Permission::where('name',$permission_name)->first();
-            array_push($permissions_id,$permission->id);
-        }
-        return $permissions_id;
-    }
+//    public function getPermissionID($permissions){
+//        $permissions_id =[];
+//        foreach ($permissions as $permission_name){
+//
+//            $permission = Permission::where('name',$permission_name)->first();
+//            array_push($permissions_id,$permission->id);
+//        }
+//        return $permissions_id;
+//    }
 }

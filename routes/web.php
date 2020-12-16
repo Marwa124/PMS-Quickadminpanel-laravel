@@ -190,12 +190,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     // Route::resource('accounts', 'AccountsController');
 
 
-    // Bugs
-    Route::delete('bugs/destroy', 'BugsController@massDestroy')->name('bugs.massDestroy');
-    Route::post('bugs/media', 'BugsController@storeMedia')->name('bugs.storeMedia');
-    Route::post('bugs/ckmedia', 'BugsController@storeCKEditorImages')->name('bugs.storeCKEditorImages');
-    Route::resource('bugs', 'BugsController');
-
     // Tickets
     Route::delete('tickets/destroy', 'TicketsController@massDestroy')->name('tickets.massDestroy');
     Route::post('tickets/media', 'TicketsController@storeMedia')->name('tickets.storeMedia');

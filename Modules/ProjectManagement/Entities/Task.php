@@ -3,7 +3,6 @@
 namespace Modules\ProjectManagement\Entities;
 
 use App\Models\Lead;
-use App\Models\Milestone;
 use App\Models\Opportunity;
 use App\Models\Permission;
 use App\Models\User;
@@ -149,5 +148,16 @@ class Task extends Model implements HasMedia
     public function permissions()
     {
         return $this->belongsToMany(Permission::class);
+    }
+
+    public function createBy(){
+        return $this->belongsTo(User::class,'created_by');
+    }
+
+    public function accountDetails(){
+
+        return $this->belongsToMany('Modules\HR\Entities\AccountDetail',
+            'task_account_details_pivot','task_id','account_details_id');
+
     }
 }

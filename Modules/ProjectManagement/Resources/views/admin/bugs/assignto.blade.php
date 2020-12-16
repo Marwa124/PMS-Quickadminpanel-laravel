@@ -7,9 +7,9 @@
     </div>
 
     <div class="card-body">
-        <form method="POST" action="{{ route("projectmanagement.admin.milestones.storeAssignTo") }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ route("projectmanagement.admin.bugs.storeAssignTo") }}" enctype="multipart/form-data">
             @csrf
-            <input type="hidden" name="milsetone_id" value="{{$milestone->id}}"/>
+            <input type="hidden" name="bug_id" value="{{$bug->id}}"/>
             @php
                 $keydes = 0;
             @endphp
@@ -19,47 +19,47 @@
 {{--                    <label for="{{$designation->designation_name}}"><b>{{$designation->designation_name}}</b></label>--}}
 {{--                    <hr class="mt-sm mb-sm"/>--}}
                     <div >
-{{--                        @dd($designation->accountDetails()->get())--}}
                         @php
                             $designation_key = 0;
                         @endphp
 
-                        @forelse($designation->accountDetails()->get() as $account)
+                        @forelse($designation->accountDetails()->get() as $key => $account)
 
                             @php
                             $key = 0;
+                            //$designation_key = 0;
                             @endphp
-                            @forelse($milestone->project->accountDetails as $project_account)
-                                @if($project_account->id == $account->id)
+                            @forelse($bug->task->accountDetails as $task_account)
+{{--                                @forelse($task->milestone->accountDetails as $milestone_account)--}}
+                                @if($task_account->id == $account->id)
                                     @if($designation_key == 0)
-
                                         <label for="{{$designation->designation_name}}"><b>{{$designation->designation_name}}</b></label>
                                         <hr class="mt-sm mb-sm"/>
                                         @php
                                             $designation_key++;
                                         @endphp
                                     @endif
-                                    <div class="checkbox c-checkbox col-md-6 {{$key % 2 == 1 ? 'float-right':'float-left'}}">
-                                        <input type="checkbox" name="accounts[]" value="{{ $account->id}}"
-                                            @forelse($milestone->accountDetails as $accountDetail)
-                                                {{ $accountDetail->id == $account->id ? 'checked':''}}
+                                <div class="checkbox c-checkbox col-md-6 {{$key % 2 == 1 ? 'float-right':'float-left'}}">
+                                    <input type="checkbox" name="accounts[]" value="{{ $account->id}}"
+                                        @forelse($bug->accountDetails as $accountDetail)
+                                            {{ $accountDetail->id == $account->id ? 'checked':''}}
 
-                                            @empty
-                                            @endforelse
+                                        @empty
+                                        @endforelse
 
-                                            /> {{ $account->fullname}}<br/>
-                                        <hr class="mt-sm mb-sm"/>
+                                        /> {{ $account->fullname}}<br/>
+                                    <hr class="mt-sm mb-sm"/>
 
-                                    </div>
-                                    @php
-                                        $key++;
-                                    @endphp
+                                </div>
+                                @php
+                                    $key++;
+                                @endphp
                                 @endif
                             @empty
                                 @if($keydes == 0)
                                     <div class="form-group col-md-6">
 
-                                        No accounts assign to project of milestone
+                                        No accounts assign to task of bug
                                         @php
                                             $keydes++;
                                         @endphp

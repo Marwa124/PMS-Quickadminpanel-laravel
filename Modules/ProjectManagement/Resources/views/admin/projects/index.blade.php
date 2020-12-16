@@ -9,14 +9,14 @@
         </div>
     </div>
 @endcan
-<div class="row">
-    <div class="col-lg-3">
-        <select data-column="0" class="form-control filter-select" name="" id="">
-            <option value="0">Active Projects</option>
-            <option value="1">Trashed Projects</option>
-        </select>
-    </div>
-</div>
+{{--<div class="row">--}}
+{{--    <div class="col-lg-3">--}}
+{{--        <select data-column="0" class="form-control filter-select" name="" id="">--}}
+{{--            <option value="0">Active Projects</option>--}}
+{{--            <option value="1">Trashed Projects</option>--}}
+{{--        </select>--}}
+{{--    </div>--}}
+{{--</div>--}}
 <div class="card">
     <div class="card-header">
         {{ trans('cruds.project.title_singular') }} {{ trans('global.list') }}
@@ -109,105 +109,108 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($projects as $key => $project)
-                        <tr data-entry-id="{{ $project->id }}">
-                            <td>
+                    @if($projects)
+                        @forelse($projects as $key => $project)
+                            <tr data-entry-id="{{ $project->id }}">
+                                <td>
 
-                            </td>
-                            <td>
-                                {{ $project->id ?? '' }}
-                            </td>
-                            <td>
-                                {{ ucwords($project->name ?? '') }}<br>
-                                <div class="progress" >
-                                    <div class="progress-bar {{$project->calculate_progress < 50 ? 'bg-danger':'bg-success'}}" role="progressbar" style="width: {{$project->calculate_progress}}%; display: {{$project->calculate_progress?:'none'}}" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-                                        {{$project->calculate_progress}}%
+                                </td>
+                                <td>
+                                    {{ $project->id ?? '' }}
+                                </td>
+                                <td>
+                                    {{ ucwords($project->name ?? '') }}<br>
+                                    <div class="progress" >
+                                        <div class="progress-bar {{$project->calculate_progress < 50 ? 'bg-danger':'bg-success'}}" role="progressbar" style="width: {{$project->calculate_progress}}%; display: {{$project->calculate_progress?:'none'}}" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                                            {{$project->calculate_progress}}%
+                                        </div>
                                     </div>
-                                </div>
-                            </td>
-                            <td style="display: none;">{{$project->deleted_at ?? ''}}</td>
-                            <td>
-                                {{ $project->client->name ?? '' }}
-                            </td>
-{{--                            <td>--}}
+                                </td>
+                                <td style="display: none;">{{$project->deleted_at ?? ''}}</td>
+                                <td>
+                                    {{ $project->client->name ?? '' }}
+                                </td>
+    {{--                            <td>--}}
 
-{{--                                {{ $project->progress == 'through_tasks' ? 'Through Tasks' : '' }}--}}
-{{--                                {{ $project->progress == 'project_hours' ? 'Project Hours' : '' }}--}}
-{{--                            </td>--}}
-{{--                                {{ $project->progress == 'through_tasks' ? 'Through Tasks' :  $project->progress == 'project_hours' ? 'Project Hours' : ''  }}--}}
-{{--                            <td>--}}
-{{--                                {{ $project->calculate_progress ? $project->calculate_progress .'%' : '' }}--}}
-{{--                            </td>--}}
-                            <td>
-                                {{ $project->start_date ?? '' }}
-                            </td>
-                            <td>
-                                {{ $project->end_date ?? '' }}
-                            </td>
+    {{--                                {{ $project->progress == 'through_tasks' ? 'Through Tasks' : '' }}--}}
+    {{--                                {{ $project->progress == 'project_hours' ? 'Project Hours' : '' }}--}}
+    {{--                            </td>--}}
+    {{--                                {{ $project->progress == 'through_tasks' ? 'Through Tasks' :  $project->progress == 'project_hours' ? 'Project Hours' : ''  }}--}}
+    {{--                            <td>--}}
+    {{--                                {{ $project->calculate_progress ? $project->calculate_progress .'%' : '' }}--}}
+    {{--                            </td>--}}
+                                <td>
+                                    {{ $project->start_date ?? '' }}
+                                </td>
+                                <td>
+                                    {{ $project->end_date ?? '' }}
+                                </td>
 
-                            <td>
-{{--                                {{ $project->with_tasks ?? 'No' }}--}}
-                                @if($project->with_tasks && $project->tasks)
-                                    <a class="btn btn-info {{$project->tasks && $project->tasks->count()>0 ? '':'disabled'}}" >
-                                        {{$project->tasks->count()>0 ? $project->tasks->count():'No Tasks'}}
-                                    </a>
-                                @else
-                                    <a class="btn btn-info disabled" >
-                                        No Tasks
-                                    </a>
-                                @endif
-                            </td>
-                            <td>
-                                {{-- <a href="{{route('projectmanagement.admin.milestones.index')}}" class="btn btn-info {{$project->milestones && $project->milestones->count()>0 ? '':'disabled'}}" > --}}
-                                    {{-- {{$project->milestones && $project->milestones->count()>0 ? $project->milestones->count():'No Milestone'}} --}}
-                                {{-- </a> --}}
-                            </td>
-                            <td>
-                                {{ $project->project_status ?? '' }}
-                            </td>
-                            <td>
-                                {{ $project->department->department_name ?? '' }}
-                            </td>
-{{--                            <td>--}}
-{{--                                @forelse($project->accountDetails as $accountDetail)--}}
-{{--                                    {{ $accountDetail->fullname ?? '' }},--}}
-{{--                                @empty--}}
-{{--                                @endforelse--}}
-{{--                            </td>--}}
-                            <td>
-                                @can('project_show')
-                                    <a class="btn btn-xs btn-primary" href="{{ route('projectmanagement.admin.projects.show', $project->id) }}" title=" {{ trans('global.view') }}">
-{{--                                        {{ trans('global.view') }}--}}
-                                        <span class="fa fa-eye"></span>
-                                    </a>
-                                @endcan
-                                @can('project_edit')
-                                    <a class="btn btn-xs btn-info" href="{{ route('projectmanagement.admin.projects.edit', $project->id) }}" title="{{ trans('global.edit') }}">
-{{--                                        {{ trans('global.edit') }}--}}
-                                        <span class="fa fa-pencil-square-o"></span>
-                                    </a>
-                                @endcan
+                                <td>
+    {{--                                {{ $project->with_tasks ?? 'No' }}--}}
+                                    @if($project->with_tasks || $project->tasks)
+                                        <a href="{{route('projectmanagement.admin.tasks.index')}}" class="btn btn-info {{$project->tasks && $project->tasks->count()>0 ? '':'disabled'}}" >
+                                            {{$project->tasks->count()>0 ? $project->tasks->count():'No Tasks'}}
+                                        </a>
+                                    @else
+                                        <a class="btn btn-info disabled" >
+                                            No Tasks
+                                        </a>
+                                    @endif
+                                </td>
+                                <td>
+                                     <a href="{{route('projectmanagement.admin.milestones.index')}}" class="btn btn-info {{$project->milestones && $project->milestones->count()>0 ? '':'disabled'}}" >
+                                         {{$project->milestones && $project->milestones->count()>0 ? $project->milestones->count():'No Milestone'}}
+                                     </a>
+                                </td>
+                                <td>
+                                    {{ $project->project_status ?? '' }}
+                                </td>
+                                <td>
+                                    {{ $project->department->department_name ?? '' }}
+                                </td>
+    {{--                            <td>--}}
+    {{--                                @forelse($project->accountDetails as $accountDetail)--}}
+    {{--                                    {{ $accountDetail->fullname ?? '' }},--}}
+    {{--                                @empty--}}
+    {{--                                @endforelse--}}
+    {{--                            </td>--}}
+                                <td>
+                                    @can('project_show')
+                                        <a class="btn btn-xs btn-primary" href="{{ route('projectmanagement.admin.projects.show', $project->id) }}" title=" {{ trans('global.view') }}">
+    {{--                                        {{ trans('global.view') }}--}}
+                                            <span class="fa fa-eye"></span>
+                                        </a>
+                                    @endcan
+                                    @can('project_edit')
+                                        <a class="btn btn-xs btn-info" href="{{ route('projectmanagement.admin.projects.edit', $project->id) }}" title="{{ trans('global.edit') }}">
+    {{--                                        {{ trans('global.edit') }}--}}
+                                            <span class="fa fa-pencil-square-o"></span>
+                                        </a>
+                                    @endcan
 
-                                @can('project_assign_to')
+                                    @can('project_assign_to')
 
-                                    <a class="btn btn-xs btn-success {{$project->department ? '' : 'disabled'}}" href="{{ route('projectmanagement.admin.projects.getAssignTo', $project->id) }}" title="{{$project->department ? '' : 'add department to project'}}" >
-                                        {{ trans('global.assign_to') }}
-                                    </a>
+                                        <a class="btn btn-xs btn-success {{$project->department ? '' : 'disabled'}}" href="{{ route('projectmanagement.admin.projects.getAssignTo', $project->id) }}" title="{{$project->department ? '' : 'add department to project'}}" >
+                                            {{ trans('global.assign_to') }}
+                                        </a>
 
-                                @endcan
+                                    @endcan
 
-                                @can('project_delete')
-                                    <form action="{{ route('projectmanagement.admin.projects.destroy', $project->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
-                                        <input type="hidden" name="_method" value="DELETE">
-                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                        <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
-                                    </form>
-                                @endcan
+                                    @can('project_delete')
+                                        <form action="{{ route('projectmanagement.admin.projects.destroy', $project->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                            <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
+                                        </form>
+                                    @endcan
 
-                            </td>
+                                </td>
 
-                        </tr>
-                    @endforeach
+                            </tr>
+                        @empty
+                        @endforelse
+                    @endif
                 </tbody>
             </table>
         </div>
@@ -268,7 +271,7 @@ $.extend(true, $.fn.dataTable.defaults, {
 
     // Hide columns
     // table.columns([3]).visible( true );
-    table.columns([3]).search( 0 ).draw(); // set a default load in datatable column (Active Users)
+    //table.columns([3]).search( 0 ).draw(); // set a default load in datatable column (Active Users)
 
 
   $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e){

@@ -9,7 +9,7 @@
     <div class="card-body">
         <div class="form-group">
             <div class="form-group">
-                <a class="btn btn-default" href="{{ route('admin.bugs.index') }}">
+                <a class="btn btn-default" href="{{ route('projectmanagement.admin.bugs.index') }}">
                     {{ trans('global.back_to_list') }}
                 </a>
             </div>
@@ -39,14 +39,14 @@
                             {{ $bug->project->name ?? '' }}
                         </td>
                     </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.bug.fields.opportunities') }}
-                        </th>
-                        <td>
-                            {{ $bug->opportunities->name ?? '' }}
-                        </td>
-                    </tr>
+{{--                    <tr>--}}
+{{--                        <th>--}}
+{{--                            {{ trans('cruds.bug.fields.opportunities') }}--}}
+{{--                        </th>--}}
+{{--                        <td>--}}
+{{--                            {{ $bug->opportunities->name ?? '' }}--}}
+{{--                        </td>--}}
+{{--                    </tr>--}}
                     <tr>
                         <th>
                             {{ trans('cruds.bug.fields.task') }}
@@ -116,31 +116,36 @@
                             {{ trans('cruds.bug.fields.reporter') }}
                         </th>
                         <td>
-                            {{ $bug->reporter }}
+                            {{ $bug->reporterBy->name }}
                         </td>
                     </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.bug.fields.permissions') }}
-                        </th>
-                        <td>
-                            @foreach($bug->permissions as $key => $permissions)
-                                <span class="label label-info">{{ $permissions->title }}</span>
-                            @endforeach
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.bug.fields.client_visible') }}
-                        </th>
-                        <td>
-                            {{ $bug->client_visible }}
-                        </td>
-                    </tr>
+{{--                    <tr>--}}
+{{--                        <th>--}}
+{{--                            {{ trans('cruds.bug.fields.permissions') }}--}}
+{{--                        </th>--}}
+{{--                        <td>--}}
+{{--                            @foreach($bug->permissions as $key => $permissions)--}}
+{{--                                <span class="label label-info">{{ $permissions->title }}</span>--}}
+{{--                            @endforeach--}}
+{{--                        </td>--}}
+{{--                    </tr>--}}
+{{--                    <tr>--}}
+{{--                        <th>--}}
+{{--                            {{ trans('cruds.bug.fields.client_visible') }}--}}
+{{--                        </th>--}}
+{{--                        <td>--}}
+{{--                            {{ $bug->client_visible }}--}}
+{{--                        </td>--}}
+{{--                    </tr>--}}
                 </tbody>
             </table>
-            <div class="form-group">
-                <a class="btn btn-default" href="{{ route('admin.bugs.index') }}">
+            <div class="form-group float-right">
+                @can('bug_edit')
+                    <a class="btn btn-info" href="{{ route('projectmanagement.admin.bugs.edit', $bug->id) }}">
+                        {{ trans('global.edit') }}
+                    </a>
+                @endcan
+                <a class="btn btn-default" href="{{ route('projectmanagement.admin.bugs.index') }}">
                     {{ trans('global.back_to_list') }}
                 </a>
             </div>

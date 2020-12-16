@@ -39,13 +39,13 @@ class UpdateTaskRequest extends FormRequest
                 'date_format:' . config('panel.date_format'),
                 'nullable',
             ],
-            'progress'           => [
-                'required',
-                'nullable',
-                'integer',
-                'min:-2147483648',
-                'max:2147483647',
-            ],
+//            'progress'           => [
+//                'required',
+//                'nullable',
+//                'integer',
+//                'min:-2147483648',
+//                'max:2147483647',
+//            ],
             'calculate_progress' => [
                 'string',
                 'nullable',
@@ -54,56 +54,56 @@ class UpdateTaskRequest extends FormRequest
                 'string',
                 'nullable',
             ],
-            'timer_status'       => [
-                'required',
-            ],
-            'timer_started_by'   => [
-                'nullable',
-                'integer',
-                'min:-2147483648',
-                'max:2147483647',
-            ],
-            'start_timer'        => [
-                'nullable',
-                'integer',
-                'min:-2147483648',
-                'max:2147483647',
-            ],
-            'logged_timer'       => [
-                'nullable',
-                'integer',
-                'min:-2147483648',
-                'max:2147483647',
-            ],
-            'created_by'         => [
-                'nullable',
-                'integer',
-                'min:-2147483648',
-                'max:2147483647',
-            ],
-            'permissions.*'      => [
-                'integer',
-            ],
-            'permissions'        => [
-                'array',
-            ],
-            'client_visible'     => [
-                'string',
-                'nullable',
-            ],
-            'hourly_rate'        => [
-                'numeric',
-            ],
-            'billable'           => [
-                'string',
-                'required',
-            ],
-            'index_no'           => [
-                'nullable',
-                'integer',
-                'min:-2147483648',
-                'max:2147483647',
-            ],
+//            'timer_status'       => [
+//                'required',
+//            ],
+//            'timer_started_by'   => [
+//                'nullable',
+//                'integer',
+//                'min:-2147483648',
+//                'max:2147483647',
+//            ],
+//            'start_timer'        => [
+//                'nullable',
+//                'integer',
+//                'min:-2147483648',
+//                'max:2147483647',
+//            ],
+//            'logged_timer'       => [
+//                'nullable',
+//                'integer',
+//                'min:-2147483648',
+//                'max:2147483647',
+//            ],
+//            'created_by'         => [
+//                'nullable',
+//                'integer',
+//                'min:-2147483648',
+//                'max:2147483647',
+//            ],
+//            'permissions.*'      => [
+//                'integer',
+//            ],
+//            'permissions'        => [
+//                'array',
+//            ],
+//            'client_visible'     => [
+//                'string',
+//                'nullable',
+//            ],
+//            'hourly_rate'        => [
+//                'numeric',
+//            ],
+//            'billable'           => [
+//                'string',
+//                'required',
+//            ],
+//            'index_no'           => [
+//                'nullable',
+//                'integer',
+//                'min:-2147483648',
+//                'max:2147483647',
+//            ],
         ];
     }
 }

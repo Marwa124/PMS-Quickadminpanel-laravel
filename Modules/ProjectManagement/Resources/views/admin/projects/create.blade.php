@@ -287,6 +287,9 @@
 @section('scripts')
 <script>
     $(document).ready(function () {
+
+        displayProgressValue();
+
   function SimpleUploadAdapter(editor) {
     editor.plugins.get('FileRepository').createUploadAdapter = function(loader) {
       return {

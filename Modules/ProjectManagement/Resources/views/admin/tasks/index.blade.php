@@ -46,18 +46,21 @@
                         <th>
                             {{ trans('cruds.task.fields.due_date') }}
                         </th>
-                        <th>
-                            {{ trans('cruds.task.fields.assigned_to') }}
-                        </th>
+{{--                        <th>--}}
+{{--                            {{ trans('cruds.task.fields.assigned_to') }}--}}
+{{--                        </th>--}}
                         <th>
                             {{ trans('cruds.task.fields.project') }}
                         </th>
                         <th>
-                            {{ trans('cruds.task.fields.work_tracking') }}
+                            {{ trans('cruds.task.fields.milestone') }}
                         </th>
-                        <th>
-                            {{ trans('cruds.task.fields.progress') }}
-                        </th>
+{{--                        <th>--}}
+{{--                            {{ trans('cruds.task.fields.work_tracking') }}--}}
+{{--                        </th>--}}
+{{--                        <th>--}}
+{{--                            {{ trans('cruds.task.fields.progress') }}--}}
+{{--                        </th>--}}
                         <th>
                             &nbsp;
                         </th>
@@ -66,7 +69,7 @@
                         <td>
                         </td>
                         <td>
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
+                            <input class="search" type="text" placeholder="{{ trans('global.search') }}" style="width: 100px">
                         </td>
                         <td>
                             <input class="search" type="text" placeholder="{{ trans('global.search') }}">
@@ -77,17 +80,19 @@
                         <td>
                             <select class="search">
                                 <option value>{{ trans('global.all') }}</option>
-                                @foreach($task_statuses as $key => $item)
+                                @forelse($task_statuses as $key => $item)
                                     <option value="{{ $item->name }}">{{ $item->name }}</option>
-                                @endforeach
+                                @empty
+                                @endforelse
                             </select>
                         </td>
                         <td>
                             <select class="search">
                                 <option value>{{ trans('global.all') }}</option>
-                                @foreach($task_tags as $key => $item)
+                                @forelse($task_tags as $key => $item)
                                     <option value="{{ $item->name }}">{{ $item->name }}</option>
-                                @endforeach
+                                @empty
+                                @endforelse
                             </select>
                         </td>
                         <td>
@@ -96,110 +101,139 @@
                         </td>
                         <td>
                         </td>
+{{--                        <td>--}}
+{{--                            <select class="search">--}}
+{{--                                <option value>{{ trans('global.all') }}</option>--}}
+{{--                                @forelse($users as $key => $item)--}}
+{{--                                    <option value="{{ $item->name }}">{{ $item->name }}</option>--}}
+{{--                                @empty--}}
+{{--                                @endforelse--}}
+{{--                            </select>--}}
+{{--                        </td>--}}
                         <td>
-                            <select class="search">
-                                <option value>{{ trans('global.all') }}</option>
-                                @foreach($users as $key => $item)
-                                    <option value="{{ $item->name }}">{{ $item->name }}</option>
-                                @endforeach
-                            </select>
-                        </td>
-                        <td>
-                            <select class="search">
-                                <option value>{{ trans('global.all') }}</option>
-                                @foreach($projects as $key => $item)
-                                    <option value="{{ $item->name }}">{{ $item->name }}</option>
-                                @endforeach
-                            </select>
-                        </td>
-                        <td>
-                            <select class="search">
-                                <option value>{{ trans('global.all') }}</option>
-                                @foreach($work_trackings as $key => $item)
-                                    <option value="{{ $item->achievement }}">{{ $item->achievement }}</option>
-                                @endforeach
-                            </select>
+{{--                                <select class="search">--}}
+{{--                                    <option value>{{ trans('global.all') }}</option>--}}
+{{--                                    @forelse($projects as $key => $item)--}}
+{{--                                        <option value="{{ $item->name }}">{{ $item->name }}</option>--}}
+{{--                                    @empty--}}
+{{--                                    @endforelse--}}
+{{--                                </select>--}}
+                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
                         </td>
                         <td>
                             <input class="search" type="text" placeholder="{{ trans('global.search') }}">
                         </td>
+{{--                        <td>--}}
+{{--                            <select class="search">--}}
+{{--                                <option value>{{ trans('global.all') }}</option>--}}
+{{--                                @forelse($work_trackings as $key => $item)--}}
+{{--                                    <option value="{{ $item->achievement }}">{{ $item->achievement }}</option>--}}
+{{--                                    @empty--}}
+{{--                                @endforelse--}}
+{{--                            </select>--}}
+{{--                        </td>--}}
+{{--                        <td>--}}
+{{--                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">--}}
+{{--                        </td>--}}
                         <td>
                         </td>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($tasks as $key => $task)
-                        <tr data-entry-id="{{ $task->id }}">
-                            <td>
+                    @if($tasks)
+                        @forelse($tasks as $key => $task)
+                            <tr data-entry-id="{{ $task->id }}">
+                                <td>
 
-                            </td>
-                            <td>
-                                {{ $task->id ?? '' }}
-                            </td>
-                            <td>
-                                {{ $task->name ?? '' }}
-                            </td>
-                            <td>
-                                {{ $task->description ?? '' }}
-                            </td>
-                            <td>
-                                {{ $task->status->name ?? '' }}
-                            </td>
-                            <td>
-                                @foreach($task->tags as $key => $item)
-                                    <span class="badge badge-info">{{ $item->name }}</span>
-                                @endforeach
-                            </td>
-                            <td>
-                                @if($task->attachment)
-                                    <a href="{{ $task->attachment->getUrl() }}" target="_blank">
-                                        {{ trans('global.view_file') }}
-                                    </a>
-                                @endif
-                            </td>
-                            <td>
-                                {{ $task->start_date ?? '' }}
-                            </td>
-                            <td>
-                                {{ $task->due_date ?? '' }}
-                            </td>
-                            <td>
-                                {{ $task->assigned_to->name ?? '' }}
-                            </td>
-                            <td>
-                                {{ $task->project->name ?? '' }}
-                            </td>
-                            <td>
-                                {{ $task->work_tracking->achievement ?? '' }}
-                            </td>
-                            <td>
-                                {{ $task->progress ?? '' }}
-                            </td>
-                            <td>
-                                @can('task_show')
-                                    <a class="btn btn-xs btn-primary" href="{{ route('projectmanagement.admin.tasks.show', $task->id) }}">
-                                        {{ trans('global.view') }}
-                                    </a>
-                                @endcan
+                                </td>
+                                <td>
+                                    {{ $task->id ?? '' }}
+                                </td>
+                                <td>
+                                    {{ $task->name ?? '' }}
+                                    <div class="progress" >
+                                        <div class="progress-bar {{$task->calculate_progress < 50 ? 'bg-danger':'bg-success'}}" role="progressbar" style="width: {{$task->calculate_progress}}%; display: {{$task->calculate_progress?:'none'}}" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                                            {{$task->calculate_progress}}%
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    {{ $task->description ?? '' }}
+                                </td>
+                                <td>
+                                    {{ $task->status->name ?? '' }}
+                                </td>
+                                <td>
+                                    @forelse($task->tags as $key => $item)
+                                        <span class="badge badge-info">{{ $item->name }}</span>
+                                    @empty
+                                    @endforelse
+                                </td>
+                                <td>
+                                    @if($task->attachment)
+                                        <a href="{{ $task->attachment->getUrl() }}" target="_blank">
+                                            {{ trans('global.view_file') }}
+                                        </a>
+                                    @endif
+                                </td>
+                                <td>
+                                    {{ $task->start_date ?? '' }}
+                                </td>
+                                <td>
+                                    {{ $task->due_date ?? '' }}
+                                </td>
+    {{--                            <td>--}}
+    {{--                                {{ $task->assigned_to->name ?? '' }}--}}
+    {{--                            </td>--}}
+                                <td>
+                                    {{ $task->project->name ?? '' }}
+                                </td>
+                                <td>
+                                    {{ $task->milestone->name ?? '' }}
+                                </td>
+    {{--                            <td>--}}
+    {{--                                {{ $task->work_tracking->achievement ?? '' }}--}}
+    {{--                            </td>--}}
+    {{--                            <td>--}}
+    {{--                                {{ $task->progress ?? '' }}--}}
+    {{--                            </td>--}}
+                                <td>
+                                    @can('task_show')
+                                        <a class="btn btn-xs btn-primary" href="{{ route('projectmanagement.admin.tasks.show', $task->id) }}">
+    {{--                                        {{ trans('global.view') }}--}}
+                                            <span class="fa fa-eye"></span>
+                                        </a>
+                                    @endcan
 
-                                @can('task_edit')
-                                    <a class="btn btn-xs btn-info" href="{{ route('projectmanagement.admin.tasks.edit', $task->id) }}">
-                                        {{ trans('global.edit') }}
-                                    </a>
-                                @endcan
+                                    @can('task_edit')
+                                        <a class="btn btn-xs btn-info" href="{{ route('projectmanagement.admin.tasks.edit', $task->id) }}">
+    {{--                                        {{ trans('global.edit') }}--}}
+                                            <span class="fa fa-pencil-square-o"></span>
+                                        </a>
+                                    @endcan
 
-                                @can('task_delete')
-                                    <form action="{{ route('projectmanagement.admin.tasks.destroy', $task->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
-                                        <input type="hidden" name="_method" value="DELETE">
-                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                        <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
-                                    </form>
-                                @endcan
+    {{--                                @can('task_assign_to')--}}
 
-                            </td>
+                                        <a class="btn btn-xs btn-success {{$task->project->department ? '' : 'disabled'}}" href="{{ route('projectmanagement.admin.tasks.getAssignTo', $task->id) }}" title="{{$task->project->department ? '' : 'add department to project'}}" >
+                                            {{ trans('global.assign_to') }}
+                                        </a>
 
-                        </tr>
-                    @endforeach
+    {{--                                @endcan--}}
+
+                                    @can('task_delete')
+                                        <form action="{{ route('projectmanagement.admin.tasks.destroy', $task->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                            <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
+                                        </form>
+                                    @endcan
+
+                                </td>
+
+                            </tr>
+                        @empty
+                        @endforelse
+                    @endif
                 </tbody>
             </table>
         </div>
