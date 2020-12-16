@@ -145,10 +145,10 @@ class Task extends Model implements HasMedia
         return $this->belongsTo(Lead::class, 'lead_id');
     }
 
-    public function permissions()
-    {
-        return $this->belongsToMany(Permission::class);
-    }
+//    public function permissions()
+//    {
+//        return $this->belongsToMany(Permission::class);
+//    }
 
     public function createBy(){
         return $this->belongsTo(User::class,'created_by');

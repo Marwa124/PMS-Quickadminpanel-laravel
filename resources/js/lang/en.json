@@ -1,0 +1,209 @@
+{
+    "global": {
+        "home": "Home",
+        "dashboard": "Dashboard",
+        "user": "user",
+        "name": "Name",
+        "total": "Total",
+        "info": "Info",
+        "infor": "Information",
+        "infors": "Informations",
+        "company": "Company",
+        "type": "type",
+        "setting": "setting",
+        "button": "Button",
+
+        "logout": "Logout",
+        "create": "Create",
+        "create_again": "Create Again",
+        "edit": "Edit",
+        "update": "update",
+        "save": "Save",
+        "read": "Read",
+        "toggle": "Toggle",
+        "actions": "Actions",
+        "action": "Action",
+        "add_all": "Add all",
+        "all": "All",
+        "n_all": "All",
+        "read_more": "Read more",
+        "more_info": "More info",
+        "choose_image": "Choose image",
+        "drag_msg": "Drag and drop file here",
+        "choose_file": "Choose file",
+        "download": "Download",
+        "download_all": "Download all",
+        "download_file": "Download file",
+        "download_logo_src": "Download logo source",
+        "download_image": "Download image",
+        "to_mail": "to mail",
+        "to_whatsapp": "to whatsapp",
+        "renewal": "Renewal",
+
+        "none_status": "None status",
+
+        "items": "Items",
+        "item": "Item",
+        "left": "Left",
+
+        "active": "Active",
+        "completed": "Completed",
+        "clear_completed": "Clear completed",
+        "disactive": "Disactive",
+        "activate": "Activate",
+        "activation": "Activation",
+        "activated_at": "Activated at",
+        "accepted_at": "Accepted at",
+        "accepte": "Accepte",
+        "accepte_now": "Accepte now",
+        "done_at": "Done at",
+        "in_progress": "In progress",
+        "available": "Available",
+        "unavailable": "Unavailable",
+
+        "hidden": "Hidden",
+        "visible": "Visible",
+
+        "show": "Show",
+        "send": "Send",
+        "hide": "Hide",
+        "view": "View",
+        "donwload": "Donwload",
+        "close": "Close",
+        "display": "Display",
+        "from": "From",
+        "to": "To",
+        "in": "In",
+        "on": "On",
+        "or": "Or",
+        "with": "With",
+        "yes": "Yes",
+        "no": "No",
+
+        "delete": "Delete",
+        "deleted": "Deleted",
+        "force_delete": "Force delete",
+        "remove": "Remove",
+        "removed": "Removed",
+        "restore": "Restore",
+        "restored": "Restored",
+        "failed": "Failed",
+        "cancel": "Cancel",
+        "undefined": "Undefined",
+
+        "meeting": "Meeting",
+        "next_meeting": "Next meeting",
+        "contract": "Contract",
+        "payments": "Payments",
+        "view_payments": "View payments",
+        "invoice": "Invoice",
+        "lead": "Lead",
+        "client": "Client",
+
+        "yes_delete_it": "Yes, delete it",
+        "yes_remove_it": "Yes, remove it",
+        "yes_restore_it": "Yes, restore it",
+
+        "settings_table": "Settings table {model} on all screens",
+
+        "notifications": "Notifications",
+        "the_notifications": "Notifications",
+        "notification": "Notification",
+        "all_notifications": "All notifications",
+        "the_messages": "Messages",
+        "all_messages": "All messages",
+        "latest_messages": "Latest Messages",
+        "staff": "staff",
+        "clients": "Clients",
+        "vendors": "Vendors",
+
+        "notif_create_user": "A new employee was created by",
+
+        "currency": "EGP",
+
+        "payment_methods": {
+            "cash": "Cash",
+            "bank": "Bank",
+            "partner_drawing": "Partner drawing"
+        },
+
+        "projects_posts_type": {
+            "single": "single",
+            "grouped": "grouped",
+            "cover_post": "cover post"
+        },
+
+        "requests_types": {
+            "1": "casual vacation",
+            "2": "medical issues",
+            "3": "travel",
+            "4": "permission",
+            "5": "check in",
+            "6": "check out"
+        },
+
+        "accounts_types": {
+            "saving": "Saving account",
+            "current": "Current account",
+            "joint": "Joint partner",
+            "recom": "Recommended partner"
+        },
+
+        "logo_profile": "Logo Details",
+        "hosting_profile": "Host profile",
+
+        "website_profile": "Website Details",
+        "": "",
+        "": ""
+    },
+
+
+
+    "messages": {
+        "delete_msg": "Are you sure to delete this element?",
+        "delete_success_msg": "The element has been deleted.",
+        "delete_failed_msg": "The element has not been deleted.",
+
+        "force_delete_msg": "Are you sure to remove this element?",
+        "force_delete_success_msg": "The element has been removed.",
+        "force_delete_failed_msg": "The element has not been removed.",
+
+        "restore_msg": "Are you sure to restore this element?",
+        "restore_success_msg": "The element has been restored.",
+        "restore_failed_msg": "The element has not been restored.",
+
+        "multi_delete_msg": "Are you sure to delete all checked elements?",
+        "multi_delete_success_msg": "All elements checked as deleted.",
+        "multi_delete_failed_msg": "Not all checked elements have been deleted.",
+
+        "multi_force_delete_msg": "Are you sure to permanently remove all checked elements?",
+        "multi_force_delete_success_msg": "All checked elements have been permanently removed.",
+        "multi_force_delete_failed_msg": "Not all checked elements have been removed.",
+
+        "multi_restore_msg": "Are you sure to restore all checked elements?",
+        "multi_restore_success_msg": "All elements checked as restored.",
+        "multi_restore_failed_msg": "Not all checked elements have been restored.",
+
+
+
+        "change_lead_status_success_msg": "Lead status has been successfully updated",
+        "change_lead_status_failed_msg": "Lead status was not updated",
+
+        "change_client_status_success_msg": "Client status has been successfully updated",
+        "change_client_status_failed_msg": "Client status was not updated",
+
+        "change_meeting_status_success_msg": "Meeting status has been successfully updated",
+        "change_meeting_status_failed_msg": "Meeting status was not updated",
+
+        "reason_status": "Reason change status",
+        "change_meeting_status_to": "Change Meeting status to",
+
+
+        "not_found_roles": "Not found roles",
+
+
+
+        "msg_not_mail_lead_registerd": "This client does'nt have a registered email."
+
+    }
+}

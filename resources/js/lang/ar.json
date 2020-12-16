@@ -1,0 +1,261 @@
+{
+    "global": {
+        "home": "الرئيسية",
+        "dashboard": "الرئيسية",
+        "user": "مدير",
+        "hotel": "فندق",
+        "the_hotel": "الفندق",
+        "the_price": "السعر",
+        "the_travel": "الرحلة",
+        "the_offers": "العروض",
+        "room": "غرفة",
+        "the_travel_program": "برنامج الرحلة",
+        "the_travel_category": "قسم الرحلة",
+        "the_images": "الصور",
+        "type": "نوع",
+        "comment": "تعليق",
+        "winner": "فائز",
+        "setting": "إعداد",
+
+        "no_rooms": "لا يوجد غرف",
+        "no_travels": "لا يوجد رحلات",
+        "no_hotel_features": "لا توجد مميزات للفندق",
+        "no_offers": "لا توجد عروض لهذه الرحلة",
+        "no_bookings": "لا توجد حجوزات لهذه الرحلة",
+        "no_gallery": "لا توجد صور",
+        "no_location": "لا توجد خريطة",
+        "show_map": "اعرض الخريطة",
+        "days": "أيام",
+        "day": "يوم",
+
+        "profile": "بروفايل",
+        "the_profile": "البروفايل",
+        "edit_profile": "تعديل البيانات الشخصية",
+        "view_profile": "عرض الصفحة الشخصية",
+        "user_profile": "الصفحة الشخصية",
+        "lead_profile": "صفحة العميل",
+
+        "model_is_deleted": "محذوف",
+
+
+        "logout": "تسجيل الخروج",
+        "create": "إنشاء",
+        "create_again": "إنشاء مرة أخرى",
+        "edit": "تعديل",
+        "update": "تحديث",
+        "save": "حفظ",
+        "read": "اقرأ",
+        "all": "الكل",
+        "n_all": "كل",
+        "read_more": "اقرأ المزيد",
+        "more_info": "معرفة المزيد",
+        "choose_image": "اختر صورة",
+        "drag_msg": "اسحب الصورة وضعها هنا أو اضغط للاختيار",
+
+        "none_status": "بدون حالة",
+
+        "active": "مفعل",
+        "disactive": "غير مفعل",
+        "available": "متاح",
+        "unavailable": "غير متاح",
+
+        "hidden": "مخفى",
+        "visible": "ظاهر",
+
+        "show": "عرض",
+        "hide": "إخفاء",
+        "view": "عرض",
+        "close": "إغلاق",
+        "display": "إظهار",
+        "from": "من",
+        "to": "إلى",
+        "in": "فى",
+        "on": "على",
+        "or": "أو",
+        "with": "مع",
+
+        "delete": "حذف",
+        "deleted": "تم الحذف",
+        "force_delete": "إزالة نهائيا",
+        "remove": "إزالة",
+        "removed": "تمت الإزالة",
+        "restore": "استرجاع",
+        "restored": "تم الإسترجاع",
+        "failed": "فشل",
+        "cancel": "إلغاء",
+
+        "yes_delete_it": "تأكيد الحذف",
+        "yes_remove_it": "تأكيد الإزالة",
+        "yes_restore_it": "تأكيد الإسترجاع",
+
+
+        "settings_table": "إعدادات جدول {model} فى كل الشاشات",
+
+        "notifications": "إشعارات",
+        "the_notifications": "الإشعارات",
+        "notification": "إشعار",
+        "all_notifications": "كل الإشعارات",
+        "the_messages": "الرسائل",
+        "all_messages": "كل الرسائل",
+        "latest_messages": "اخر الرسائل",
+        "staff": "الموظفين",
+        "clients": "العملاء",
+        "vendors": "الموردين",
+
+        "reports": "التقارير",
+
+        "notif_create_user": "تم إنشاء موظف جديد بواسطة",
+
+        "currency": "جنية"
+    },
+
+    "messages": {
+        "delete_msg": "هل أنت متأكد من حذف هذا العنصر ؟",
+        "delete_success_msg": "تم حذف العنصر.",
+        "delete_failed_msg": "لم يتم حذف العنصر.",
+
+        "force_delete_msg": "هل أنت متأكد من إزالة هذا العنصر بشكل نهائى ؟",
+        "force_delete_success_msg": "تم إزالة العنصر بشكل نهائى.",
+        "force_delete_failed_msg": "لم يتم إزالة العنصر.",
+
+        "restore_msg": "هل أنت متأكد من استرجاع هذا العنصر ؟",
+        "restore_success_msg": "تم استرجاع العنصر.",
+        "restore_failed_msg": "لم يتم استرجاع العنصر.",
+
+
+        "multi_delete_msg": "هل أنت متأكد من حذف جميع العناصر المعلم عليها؟",
+        "multi_delete_success_msg": "تم حذف جميع العناصر المعلم عليها.",
+        "multi_delete_failed_msg": "لم يتم حذف جميع العناصر المعلم عليها.",
+
+        "multi_force_delete_msg": "هل أنت متأكد من إزالة جميع العناصر المعلم عليها بشكل نهائى ؟",
+        "multi_force_delete_success_msg": "تم إزالة جميع العناصر المعلم عليها بشكل نهائى.",
+        "multi_force_delete_failed_msg": "لم يتم إزالة جميع العناصر المعلم عليها.",
+
+        "multi_restore_msg": "هل أنت متأكد من استرجاع جميع العناصر المعلم عليها؟",
+        "multi_restore_success_msg": "تم استرجاع جميع العناصر المعلم عليها.",
+        "multi_restore_failed_msg": "لم يتم استرجاع جميع العناصر المعلم عليها.",
+
+
+
+        "change_lead_status_success_msg": "تم تحديث حالة العميل بنجاح",
+        "change_lead_status_failed_msg": "لم يتم تحديث حالة العميل",
+
+        "change_meeting_status_success_msg": "تم تحديث حالة المقابلة بنجاح",
+        "change_meeting_status_failed_msg": "لم يتم تحديث حالة المقابلة",
+
+        "reason_status": "سبب تغيير الحالة",
+        "change_meeting_status_to": "تغيير حالة المقابلة إلى"
+
+    },
+
+    "users_table": {
+        "id": "المعرف",
+        "name": "الاسم",
+        "name_ar": "الاسم عربى",
+        "email": "البريد الإليكتروني",
+        "password": "كلمة السر",
+        "repeat_password": "أعد كلمة السر",
+        "phone": "الموبايل",
+        "home_phone": "تليفون المنزل",
+        "emergency_phone": "رقم الطوارئ",
+        "country": "البلد",
+        "city": "المدينة",
+        "address": "عنوان المنزل",
+        "photo": "الصورة الشخصية",
+        "id_cart": "رقم البطاقة الشخصية",
+        "nationality": "الجنسية",
+        "marital_status": "الحالة الزوجية",
+        "gender": "الجنس",
+        "birth_date": "تاريخ الميلاد",
+
+        "work_phone": "موبايل العمل",
+        "work_email": "بريد العمل",
+        "work_address": "عنوان العمل",
+        "bank_account_number": "رقم حساب البنك",
+        "visa_number": "رقم الفيزا",
+        "visa_expire_date": "تاريخ انتهاء الفيزا",
+
+        "certificate_level": "المستوى التعليمى",
+        "school": "الجامعة / المدرسة",
+
+        "job_title_id": "المسمى الوظيفى",
+        "department_id": "القسم",
+        "work_period_id": "فترة العمل",
+        "hiring_date": "تاريخ التوظيف",
+        "salary": "الراتب",
+        "rule": "الصلاحية",
+        "active": "التفعيل",
+
+        "document_note": "ملحوظة",
+
+        "updated_at": "أخر تعديل",
+        "created_at": "تاريخ الإنشاء",
+        "actions": "الإجراءات",
+
+        "registration_data": "بيانات التسجيل",
+        "personal_data": "البيانات الشخصية",
+        "education": "التعليم",
+        "word_data": "بيانات العمل",
+        "job_data": "بيانات الوظيفة",
+
+        "activate": {
+            "on": "مفعل",
+            "off": "غير مفعل"
+        },
+
+        "rules": {
+            "super_admin": "مشرف سوبر",
+            "admin": "مشرف",
+            "user": "مستخدم"
+        },
+
+        "genders": {
+            "male": "ذكر",
+            "female": "أنثى",
+            "others": "أخرى"
+        },
+
+        "marital_statuses": {
+            "single": "أعزب",
+            "engaged": "خاطب / مخطوبة",
+            "married": "متزوج",
+            "others": "حالة أخرى"
+        },
+
+
+        "p_create": {
+            "success_msg": "تم إنشاء موظف جديد.",
+            "failed_msg": "لم يتم إنشاء الموظف الجديد."
+        },
+        "p_edit": {
+            "success_msg": "تم تحديث الموظف.",
+            "failed_msg": "لم يتم تحديث هذا الموظف."
+        }
+    },
+
+    "departments_table": {
+        "id": "المعرف",
+        "name": "اسم القسم",
+        "updated_at": "أخر تعديل",
+        "created_at": "تاريخ الإنشاء",
+        "actions": "الإجراءات",
+
+        "p_create": {
+            "success_msg": "تم إنشاء قسم جديد.",
+            "failed_msg": "لم يتم إنشاء القسم الجديد."
+        },
+        "p_edit": {
+            "success_msg": "تم تحديث القسم.",
+            "failed_msg": "لم يتم تحديث هذا القسم."
+        }
+    },
+
+    "job_titles_table": {
+        "id": "المعرف",
+        "name": "اسم الوظيفة",
+        "department_id": "القسم",
+        "updated_at": "أخر تعديل",
+        "created_at": "تاريخ الإنشاء",
+        "actions": "الإجراءات"
+    }
+}

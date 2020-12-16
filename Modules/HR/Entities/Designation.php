@@ -8,12 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use \DateTimeInterface;
 use Modules\Payroll\Entities\SalaryTemplate;
+use Spatie\Permission\Traits\HasRoles;
 
 class Designation extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, HasRoles;
 
     public $table = 'designations';
+    protected $guard_name = 'web';
 
     public static $searchable = [
         'designation_name',

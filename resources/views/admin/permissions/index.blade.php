@@ -16,6 +16,8 @@
 
     <assign-permissions-to-user :user-id={{$id}}>
     </assign-permissions-to-user>
+
+    <a href="{{route('admin.home')}}">Back to dashboard</a>
 </div>
 
 
