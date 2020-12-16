@@ -29,10 +29,10 @@
 {{--                            {{ trans('cruds.milestone.fields.user') }}--}}
 {{--                        </th>--}}
                         <th>
-                            {{ trans('cruds.milestone.fields.project') }}
+                            {{ trans('cruds.milestone.fields.name') }}
                         </th>
                         <th>
-                            {{ trans('cruds.milestone.fields.name') }}
+                            {{ trans('cruds.milestone.fields.project') }}
                         </th>
                         <th>
                             {{ trans('cruds.milestone.fields.start_date') }}
@@ -86,10 +86,10 @@
     {{--                                {{ $milestone->user->name ?? '' }}--}}
     {{--                            </td>--}}
                                 <td>
-                                    {{ $milestone->project->name ?? '' }}
+                                    {{ $milestone->name ?? '' }}
                                 </td>
                                 <td>
-                                    {{ $milestone->name ?? '' }}
+                                    {{ $milestone->project->name ?? '' }}
                                 </td>
                                 <td>
                                     {{ $milestone->start_date ?? '' }}

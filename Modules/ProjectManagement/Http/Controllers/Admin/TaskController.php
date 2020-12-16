@@ -37,28 +37,15 @@ class TaskController extends Controller
     {
         abort_if(Gate::denies('task_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        //$tasks = Task::with('project','milestone')->get();
-
         $tasks = auth()->user()->getUserTasksByUserID(auth()->user()->id);
 
         $task_statuses = TaskStatus::get();
 
         $task_tags = TaskTag::get();
 
-        //$users = User::get();
-
         $projects = Project::get();
 
         $milestones = Milestone::get();
-
-        //$opportunities = Opportunity::get();
-
-        //$work_trackings = WorkTracking::get();
-
-        //$leads = Lead::get();
-
-        //$permissions = Permission::get();
-        //dd($milestones);
 
         return view('projectmanagement::admin.tasks.index', compact('tasks', 'task_statuses', 'task_tags', 'projects', 'milestones'));
     }
@@ -71,39 +58,9 @@ class TaskController extends Controller
 
         $tags = TaskTag::all()->pluck('name', 'id');
 
-//        $assigned_tos = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
-
         $projects = Project::all()->pluck('name', 'id');
 
-        //$milestones1 = Milestone::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
         $milestones = Milestone::with('project')->get();
-
-//        $allmilestones =[];
-//        foreach ($milestones1 as $id => $milestone1){
-//            foreach ($milestones as $milestone){
-//                if($id == $milestone->id){
-//
-//                    //dd($id,$milestone1,$milestone->project);
-//                    array_push($allmilestones,[ 'milestone_id' =>$id,
-//                        'milestone_name' =>$milestone1,
-//                        'project_id' => $milestone->project->id,
-//                       ]);
-//
-//                }
-//            }
-//        }
-//        dd($milestones);
-//        foreach ($allmilestones as $milestone){
-//            dd($milestone['milestone_name']);
-//        }
-
-//        $opportunities = Opportunity::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
-
-//        $work_trackings = WorkTracking::all()->pluck('achievement', 'id')->prepend(trans('global.pleaseSelect'), '');
-
-//        $leads = Lead::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
-
-//        $permissions = Permission::all()->pluck('title', 'id');
 
         return view('projectmanagement::admin.tasks.create', compact('statuses', 'tags', 'projects', 'milestones'));
     }
@@ -112,11 +69,9 @@ class TaskController extends Controller
     {
         unset($request['created_by']);
         $request['created_by'] = auth()->user()->id;
-        //dd($request->all());
 
         $task = Task::create($request->all());
         $task->tags()->sync($request->input('tags', []));
-//        $task->permissions()->sync($request->input('permissions', []));
 
         if ($request->input('attachment', false)) {
             $task->addMedia(storage_path('tmp/uploads/' . $request->input('attachment')))->toMediaCollection('attachment');
@@ -137,20 +92,9 @@ class TaskController extends Controller
 
         $tags = TaskTag::all()->pluck('name', 'id');
 
-//        $assigned_tos = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
-
         $projects = Project::all()->pluck('name', 'id');
 
-        //$milestones = Milestone::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
         $milestones = Milestone::with('project')->get();
-
-//        $opportunities = Opportunity::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
-//
-//        $work_trackings = WorkTracking::all()->pluck('achievement', 'id')->prepend(trans('global.pleaseSelect'), '');
-//
-//        $leads = Lead::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
-//
-//        $permissions = Permission::all()->pluck('title', 'id');
 
         $task->load('status', 'tags', 'assigned_to', 'project', 'milestone');
 
@@ -159,10 +103,8 @@ class TaskController extends Controller
 
     public function update(UpdateTaskRequest $request, Task $task)
     {
-        //dd($request->all(),$task);
         $task->update($request->all());
         $task->tags()->sync($request->input('tags', []));
-//        $task->permissions()->sync($request->input('permissions', []));
 
         if ($request->input('attachment', false)) {
             if (!$task->attachment || $request->input('attachment') !== $task->attachment->file_name) {
@@ -219,10 +161,10 @@ class TaskController extends Controller
     public function getAssignTo($id)
     {
 
-//        abort_if(Gate::denies('task_assign_to'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('task_assign_to'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $task = Task::findOrFail($id);
         $department = $task->project->department;
-        //dd($department,$task->project);
+
         if (!$department){
             abort(404,"this project don't have department ");
         }
@@ -232,7 +174,7 @@ class TaskController extends Controller
 
     public function storeAssignTo(Request $request)
     {
-        //dd($request->all());
+
         $task = Task::findOrFail($request->task_id);
         if ($request->accounts) {
 
@@ -241,10 +183,10 @@ class TaskController extends Controller
             // set permission to users
             $accounts = AccountDetail::whereIn('id', $request->accounts)->with('user.department')->get();
 
-//            $task_permissions_head_names = ['project_management_access','task_access','task_create', 'task_show','task_edit','task_assign_to'];
-//            $task_permissions_notToMember_names = ['task_create','task_assign_to'];
-            $task_permissions_head_names = ['project_management_access', 'task_access', 'task_create', 'task_show', 'task_edit'];
-            $task_permissions_notToMember_names = ['task_create'];
+            $task_permissions_head_names = ['project_management_access','task_access','task_create', 'task_show','task_edit','task_assign_to'];
+            $task_permissions_notToMember_names = ['task_create','task_assign_to'];
+//            $task_permissions_head_names = ['project_management_access', 'task_access', 'task_create', 'task_show', 'task_edit'];
+//            $task_permissions_notToMember_names = ['task_create'];
             $task_permissions_toMember_names = ['project_management_access', 'task_access', 'task_show', 'task_edit'];
 
             $task_permissions_head = $this->getPermissionID($task_permissions_head_names);

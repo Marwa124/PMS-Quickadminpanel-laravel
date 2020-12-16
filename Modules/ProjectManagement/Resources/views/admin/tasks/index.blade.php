@@ -46,21 +46,13 @@
                         <th>
                             {{ trans('cruds.task.fields.due_date') }}
                         </th>
-{{--                        <th>--}}
-{{--                            {{ trans('cruds.task.fields.assigned_to') }}--}}
-{{--                        </th>--}}
+
                         <th>
                             {{ trans('cruds.task.fields.project') }}
                         </th>
                         <th>
                             {{ trans('cruds.task.fields.milestone') }}
                         </th>
-{{--                        <th>--}}
-{{--                            {{ trans('cruds.task.fields.work_tracking') }}--}}
-{{--                        </th>--}}
-{{--                        <th>--}}
-{{--                            {{ trans('cruds.task.fields.progress') }}--}}
-{{--                        </th>--}}
                         <th>
                             &nbsp;
                         </th>
@@ -101,40 +93,13 @@
                         </td>
                         <td>
                         </td>
-{{--                        <td>--}}
-{{--                            <select class="search">--}}
-{{--                                <option value>{{ trans('global.all') }}</option>--}}
-{{--                                @forelse($users as $key => $item)--}}
-{{--                                    <option value="{{ $item->name }}">{{ $item->name }}</option>--}}
-{{--                                @empty--}}
-{{--                                @endforelse--}}
-{{--                            </select>--}}
-{{--                        </td>--}}
                         <td>
-{{--                                <select class="search">--}}
-{{--                                    <option value>{{ trans('global.all') }}</option>--}}
-{{--                                    @forelse($projects as $key => $item)--}}
-{{--                                        <option value="{{ $item->name }}">{{ $item->name }}</option>--}}
-{{--                                    @empty--}}
-{{--                                    @endforelse--}}
-{{--                                </select>--}}
+
                             <input class="search" type="text" placeholder="{{ trans('global.search') }}">
                         </td>
                         <td>
                             <input class="search" type="text" placeholder="{{ trans('global.search') }}">
                         </td>
-{{--                        <td>--}}
-{{--                            <select class="search">--}}
-{{--                                <option value>{{ trans('global.all') }}</option>--}}
-{{--                                @forelse($work_trackings as $key => $item)--}}
-{{--                                    <option value="{{ $item->achievement }}">{{ $item->achievement }}</option>--}}
-{{--                                    @empty--}}
-{{--                                @endforelse--}}
-{{--                            </select>--}}
-{{--                        </td>--}}
-{{--                        <td>--}}
-{{--                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">--}}
-{{--                        </td>--}}
                         <td>
                         </td>
                     </tr>
@@ -182,43 +147,34 @@
                                 <td>
                                     {{ $task->due_date ?? '' }}
                                 </td>
-    {{--                            <td>--}}
-    {{--                                {{ $task->assigned_to->name ?? '' }}--}}
-    {{--                            </td>--}}
+
                                 <td>
                                     {{ $task->project->name ?? '' }}
                                 </td>
                                 <td>
                                     {{ $task->milestone->name ?? '' }}
                                 </td>
-    {{--                            <td>--}}
-    {{--                                {{ $task->work_tracking->achievement ?? '' }}--}}
-    {{--                            </td>--}}
-    {{--                            <td>--}}
-    {{--                                {{ $task->progress ?? '' }}--}}
-    {{--                            </td>--}}
+
                                 <td>
                                     @can('task_show')
                                         <a class="btn btn-xs btn-primary" href="{{ route('projectmanagement.admin.tasks.show', $task->id) }}">
-    {{--                                        {{ trans('global.view') }}--}}
                                             <span class="fa fa-eye"></span>
                                         </a>
                                     @endcan
 
                                     @can('task_edit')
                                         <a class="btn btn-xs btn-info" href="{{ route('projectmanagement.admin.tasks.edit', $task->id) }}">
-    {{--                                        {{ trans('global.edit') }}--}}
                                             <span class="fa fa-pencil-square-o"></span>
                                         </a>
                                     @endcan
 
-    {{--                                @can('task_assign_to')--}}
+                                    @can('task_assign_to')
 
                                         <a class="btn btn-xs btn-success {{$task->project->department ? '' : 'disabled'}}" href="{{ route('projectmanagement.admin.tasks.getAssignTo', $task->id) }}" title="{{$task->project->department ? '' : 'add department to project'}}" >
                                             {{ trans('global.assign_to') }}
                                         </a>
 
-    {{--                                @endcan--}}
+                                    @endcan
 
                                     @can('task_delete')
                                         <form action="{{ route('projectmanagement.admin.tasks.destroy', $task->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">

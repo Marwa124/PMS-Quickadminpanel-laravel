@@ -10,8 +10,6 @@ use Modules\ProjectManagement\Http\Controllers\Traits\PermissionHelperTrait;
 use Modules\ProjectManagement\Http\Requests\MassDestroyBugRequest;
 use Modules\ProjectManagement\Http\Requests\StoreBugRequest;
 use Modules\ProjectManagement\Http\Requests\UpdateBugRequest;
-use App\Models\Opportunity;
-use App\Models\Permission;
 use Gate;
 use Illuminate\Http\Request;
 use Modules\ProjectManagement\Entities\Project;
@@ -32,22 +30,13 @@ class BugsController extends Controller
     {
         abort_if(Gate::denies('bug_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        //$bugs = Bug::all();
         $bugs = auth()->user()->getUserBugsByUserID(auth()->user()->id);
-//        $bugs = Bug::whereHas('reporterBy' , function ($query){
-//            $query->where('id',auth()->user()->id);
-//        })->with('reporterBy')->get();
-//        dd($bugs);
-        //dd($bugs);
-        $projects = Project::get();
 
-        $opportunities = Opportunity::get();
+        $projects = Project::get();
 
         $tasks = Task::get();
 
-        $permissions = Permission::get();
-
-        return view('projectmanagement::admin.bugs.index', compact('bugs', 'projects', 'opportunities', 'tasks', 'permissions'));
+        return view('projectmanagement::admin.bugs.index', compact('bugs', 'projects', 'tasks'));
     }
 
     public function create()
@@ -56,22 +45,17 @@ class BugsController extends Controller
 
         $projects = Project::all()->pluck('name', 'id');
 
-//        $opportunities = Opportunity::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
-
         $tasks = Task::with('project')->get();
-
-//        $permissions = Permission::all()->pluck('title', 'id');
 
         return view('projectmanagement::admin.bugs.create', compact('projects','tasks'));
     }
 
     public function store(StoreBugRequest $request)
     {
-        $request['issue_no'] = 'pms'.substr(time(),-8);
+        $request['issue_no'] = 'pms'.substr(time(),-8);           //pms + time function to be sure this num is unique
         $request['reporter'] = auth()->user()->id;
-        //dd($request->all(),time());
+
         $bug = Bug::create($request->all());
-//        $bug->permissions()->sync($request->input('permissions', []));
 
         if ($media = $request->input('ck-media', false)) {
             Media::whereIn('id', $media)->update(['model_id' => $bug->id]);
@@ -86,11 +70,7 @@ class BugsController extends Controller
 
         $projects = Project::all()->pluck('name', 'id');
 
-//        $opportunities = Opportunity::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
-
         $tasks = Task::with('project')->get();
-
-//        $permissions = Permission::all()->pluck('title', 'id');
 
         $bug->load('project','task');
 
@@ -99,9 +79,7 @@ class BugsController extends Controller
 
     public function update(UpdateBugRequest $request, Bug $bug)
     {
-        //dd($request->all());
         $bug->update($request->all());
-        //$bug->permissions()->sync($request->input('permissions', []));
 
         return redirect()->route('projectmanagement.admin.bugs.index');
     }
@@ -146,10 +124,11 @@ class BugsController extends Controller
     public function getAssignTo($id)
     {
 
-//        abort_if(Gate::denies('bug_assign_to'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('bug_assign_to'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $bug = Bug::findOrFail($id);
         $department = $bug->project->department;
-        //dd($department,$task->project);
+
         if (!$department){
             abort(404,"this project don't have department ");
         }
@@ -159,7 +138,6 @@ class BugsController extends Controller
 
     public function storeAssignTo(Request $request)
     {
-        //dd($request->accounts);
         $bug = Bug::findOrFail($request->bug_id);
         if ($request->accounts){
 
@@ -168,10 +146,10 @@ class BugsController extends Controller
             // set permission to users
             $accounts = AccountDetail::whereIn('id',$request->accounts)->with('user.department')->get();
 
-//            $bug_permissions_head_names = ['project_management_access','bug_access','bug_create', 'bug_show','bug_edit','bug_assign_to'];
-//            $bug_permissions_notToMember_names = ['bug_create','bug_assign_to'];
-            $bug_permissions_head_names = ['project_management_access','bug_access','bug_create', 'bug_show','bug_edit'];
-            $bug_permissions_notToMember_names = ['bug_create'];
+            $bug_permissions_head_names = ['project_management_access','bug_access','bug_create', 'bug_show','bug_edit','bug_assign_to'];
+            $bug_permissions_notToMember_names = ['bug_create','bug_assign_to'];
+//            $bug_permissions_head_names = ['project_management_access','bug_access','bug_create', 'bug_show','bug_edit'];
+//            $bug_permissions_notToMember_names = ['bug_create'];
             $bug_permissions_toMember_names = ['project_management_access','bug_access','bug_show','bug_edit'];
 
             $bug_permissions_head = $this->getPermissionID($bug_permissions_head_names);

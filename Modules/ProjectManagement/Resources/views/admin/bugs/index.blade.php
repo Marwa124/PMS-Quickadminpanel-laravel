@@ -59,29 +59,17 @@
                         <td>
                             <input class="search" type="text" placeholder="{{ trans('global.search') }}" >
 
-{{--                            <select class="search">--}}
-{{--                                <option value>{{ trans('global.all') }}</option>--}}
-{{--                                @foreach($projects as $key => $item)--}}
-{{--                                    <option value="{{ $item->name }}">{{ $item->name }}</option>--}}
-{{--                                @endforeach--}}
-{{--                            </select>--}}
+
                         </td>
                         <td >
                             <input class="search" type="text" placeholder="{{ trans('global.search') }}" >
 
-{{--                            <select class="search">--}}
-{{--                                <option value>{{ trans('global.all') }}</option>--}}
-{{--                                @foreach($tasks as $key => $item)--}}
-{{--                                    <option value="{{ $item->name }}">{{ $item->name }}</option>--}}
-{{--                                @endforeach--}}
-{{--                            </select>--}}
                         </td>
                         <td>
                             <input class="search" type="text" placeholder="{{ trans('global.search') }}">
 
                         </td>
                         <td>
-{{--                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">--}}
                             <select class="search">
                                 <option value>{{ trans('global.all') }}</option>
                                 <option value="unconfirmed">Unconfirmed</option>
@@ -159,13 +147,13 @@
                                             <span class="fa fa-pencil-square-o"></span>
                                         </a>
                                     @endcan
-    {{--                                @can('bug_assign_to')--}}
+                                    @can('bug_assign_to')
 
                                         <a class="btn btn-xs btn-success {{$bug->project->department ? '' : 'disabled'}}" href="{{ route('projectmanagement.admin.bugs.getAssignTo', $bug->id) }}" title="{{$bug->project->department ? '' : 'add department to project'}}" >
                                             {{ trans('global.assign_to') }}
                                         </a>
 
-    {{--                                @endcan--}}
+                                    @endcan
 
                                     @can('bug_delete')
                                         <form action="{{ route('projectmanagement.admin.bugs.destroy', $bug->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">

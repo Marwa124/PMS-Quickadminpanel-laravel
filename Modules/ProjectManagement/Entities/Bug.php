@@ -75,10 +75,6 @@ class Bug extends Model implements HasMedia
         return $this->belongsTo(Task::class, 'task_id');
     }
 
-//    public function permissions()
-//    {
-//        return $this->belongsToMany(Permission::class);
-//    }
 
     public function reporterBy(){
         return $this->belongsTo(User::class,'reporter');

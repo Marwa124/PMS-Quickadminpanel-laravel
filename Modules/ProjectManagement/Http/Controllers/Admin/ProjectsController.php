@@ -46,13 +46,9 @@ class ProjectsController extends Controller
 
         $clients = Client::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $permissions = Permission::all()->pluck('title', 'id');
-
-        //$project_settings = ProjectSetting::all();
-
         $departments = Department::all();
 
-        return view('projectmanagement::admin.projects.create', compact('clients', 'permissions','departments'));
+        return view('projectmanagement::admin.projects.create', compact('clients','departments'));
     }
 
     public function store(StoreProjectRequest $request)
@@ -107,12 +103,7 @@ class ProjectsController extends Controller
     public function destroy(Project $project)
     {
         abort_if(Gate::denies('project_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        //$project = Project::where('id',$id)->with('accountDetails.user.permissions')->first();
 
-<<<<<<< HEAD
-=======
-        // dd($project->deleted_at);
->>>>>>> 0cd07cc7446fb5ded5e0f06a599f89d43292a833
         if($project->deleted_at == 0){
             $project->update(['deleted_at' => 1]);
         }else{
@@ -152,7 +143,6 @@ class ProjectsController extends Controller
 
         abort_if(Gate::denies('project_assign_to'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $project = Project::findOrFail($id);
-        //$project = Project::where('id',$id)->with('department','accountDetails')->first();
         $department = $project->department()->first();
 
         if (!$department){

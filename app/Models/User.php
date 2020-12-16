@@ -207,11 +207,7 @@ class User extends Authenticatable implements HasMedia
     }
 
 
-    // public function notifications()
-    // {
-    //     return $this->morphedByMany(Notification::class, 'userable')->withPivot('is_read');
-    // }
-
+    // get Project management details to specific User
 
     public function getUserProjectsByUserID($user_id)
     {
