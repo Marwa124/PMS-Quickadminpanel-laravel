@@ -134,6 +134,7 @@
                 'task_delete',
                 'task_access',
                 'tasks_calendar_access',
+                'task_assign_to'
             ],
 
             'user_alerts' => [
@@ -288,6 +289,7 @@
                 'bug_show',
                 'bug_delete',
                 'bug_access',
+                'bug_assign_to',
             ],
 
             'tickets' => [

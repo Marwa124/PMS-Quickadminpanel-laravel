@@ -164,4 +164,18 @@ class AccountDetail extends Model implements HasMedia
 
     }
 
+    public function tasks(){
+
+        return $this->belongsToMany('Modules\ProjectManagement\Entities\Task',
+            'task_account_details_pivot','account_details_id','task_id');
+
+    }
+
+    public function bugs(){
+
+        return $this->belongsToMany('Modules\ProjectManagement\Entities\Bug',
+            'bug_account_details_pivot','account_details_id','bug_id');
+
+    }
+
 }

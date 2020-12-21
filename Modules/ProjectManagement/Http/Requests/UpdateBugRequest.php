@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace Modules\ProjectManagement\Http\Requests;
 
 use App\Models\Bug;
 use Gate;

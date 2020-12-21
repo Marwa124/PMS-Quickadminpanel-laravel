@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace Modules\ProjectManagement\Http\Requests;
 
 use App\Models\Bug;
 use Gate;
@@ -17,10 +17,10 @@ class StoreBugRequest extends FormRequest
     public function rules()
     {
         return [
-            'issue_no'       => [
-                'string',
-                'nullable',
-            ],
+//            'issue_no'       => [
+//                'string',
+//                'nullable',
+//            ],
             'name'           => [
                 'string',
                 'required',
@@ -37,22 +37,22 @@ class StoreBugRequest extends FormRequest
                 'string',
                 'nullable',
             ],
-            'reporter'       => [
-                'nullable',
-                'integer',
-                'min:-2147483648',
-                'max:2147483647',
-            ],
-            'permissions.*'  => [
-                'integer',
-            ],
-            'permissions'    => [
-                'array',
-            ],
-            'client_visible' => [
-                'string',
-                'nullable',
-            ],
+//            'reporter'       => [
+//                'nullable',
+//                'integer',
+//                'min:-2147483648',
+//                'max:2147483647',
+//            ],
+//            'permissions.*'  => [
+//                'integer',
+//            ],
+//            'permissions'    => [
+//                'array',
+//            ],
+//            'client_visible' => [
+//                'string',
+//                'nullable',
+//            ],
         ];
     }
 }

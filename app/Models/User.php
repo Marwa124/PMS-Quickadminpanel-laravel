@@ -10,8 +10,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
+use Modules\HR\Entities\EmployeeAward;
+use Modules\HR\Entities\Training;
+use Modules\ProjectManagement\Entities\Bug;
 use Modules\ProjectManagement\Entities\Milestone;
 use Modules\ProjectManagement\Entities\Project;
+use Modules\ProjectManagement\Entities\Task;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
@@ -202,7 +206,11 @@ class User extends Authenticatable implements HasMedia
         $this->attributes['date_of_insurance'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
     }
 
-    public function getUserProjectsByUserID($user_id){
+
+    // get Project management details to specific User
+
+    public function getUserProjectsByUserID($user_id)
+    {
         $user = User::findOrFail($user_id);
 
         if ($user->hasrole(['Admin','Super Admin'])){
@@ -231,5 +239,44 @@ class User extends Authenticatable implements HasMedia
         }
 
         return $milestones;
+    }
+
+    public function getUserTasksByUserID($user_id)
+    {
+        $user = User::findOrFail($user_id);
+
+        if ($user->hasrole(['Admin','Super Admin'])){
+
+            $tasks = Task::all();
+
+        }else{
+
+            $tasks = $user->accountDetail->tasks;
+        }
+
+        return $tasks;
+    }
+
+    public function getUserBugsByUserID($user_id)
+    {
+        $user = User::findOrFail($user_id);
+
+        if ($user->hasrole(['Admin','Super Admin'])){
+
+            $bugs = Bug::all();
+
+        }else{
+
+            $bugs = $user->accountDetail->bugs;
+            //dd($bugs);
+            if (!$bugs){
+                $bugs =Bug::whereHas('reporterBy' , function ($query){
+                    $query->where('id',auth()->user()->id);
+                })->with('reporterBy')->get();
+            }
+        }
+
+        return $bugs;
+
     }
 }

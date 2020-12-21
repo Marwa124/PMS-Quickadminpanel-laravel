@@ -136,7 +136,12 @@ class Project extends Model implements HasMedia
         return $this->hasMany(Milestone::class,'project_id');
     }
 
+    public function tasks(){
+        return $this->hasMany(Task::class,'project_id');
+    }
+
     public function getProjects(){
+
         if (auth()->user()->hasrole(['Admin','Super Admin'])){
             $projects = $this->all();
 //            $clients = Client::get();
