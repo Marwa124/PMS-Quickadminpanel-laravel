@@ -1,18 +1,10 @@
-@extends('header')
-@section('title','Edit Call')
-
-
-@extends('sidebar')
-
-
-
+@extends('layouts.admin')
 @section('content')
-
 
 
     <div class="display" style="width:100%">
         <div class="main">
-            <form class="d-flex justify-content-start" action="{{route('calls.update',$call->id)}}" method="post">
+            <form class="d-flex justify-content-start" action="{{route('sales.admin.calls.update',$call->id)}}" method="post">
                 @csrf
                 @method("PUT")
                 <div class="container">
@@ -109,9 +101,11 @@
 
 
 
+@endsection
+@section('scripts')
+@parent
 
 
 @endsection
-@extends('footer')
 
 

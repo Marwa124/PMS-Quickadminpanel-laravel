@@ -1,44 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.admin')
+@section('content')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lead</title>
-    {{--<link rel="stylesheet" href="./index.css">--}}
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-</head>
-<style>
-    body {
-        font-size: 1.4rem !important;
-    }
+<div class="card">
+    <div class="card-body">
 
-    section {
-        border-bottom: 2px solid rgb(131, 131, 131);
-        padding: 100px 0;
-    }
-
-    .data {
-        display: block;
-        border: 1px solid #ccc;
-        padding: 10px;
-    }
-</style>
-
-<body class="p-5">
     <section>
         <h2 class="mb-5">{{$lead->client_name ?? ''}}</h2>
         <div class="row">
             <div class="col">
                 <div class="data d-flex mb-3">
                     <strong class="mr-3">Client ID on pms:</strong>
-                    <div>{{$lead->leads_id ?? ''}}</div>
+                    <div>{{$lead->client_id_on_pms ?? ''}}</div>
                 </div>
 
                 <div class="data d-flex mb-3">
                     <strong class="mr-3">Type:</strong>
-                    <div>{{$type->name ?? ''}}</div>
+                    <div>{{$lead->type->name ?? ''}}</div>
                 </div>
                 <div class="data d-flex mb-3">
                     <strong class="mr-3">Product:</strong>
@@ -62,11 +39,11 @@
             <div class="col">
                 <div class="data d-flex mb-3">
                     <strong class="mr-3">Company:</strong>
-                    <div>{{$lead->lead_name ?? ''}}</div>
+                    <div>{{$lead->company ?? ''}}</div>
                 </div>
                 <div class="data d-flex mb-3">
                     <strong class="mr-3">Phone 1:</strong>
-                    <div>{{$lead->phone ?? ''}}</div>
+                    <div>{{$lead->phone1 ?? ''}}</div>
                 </div>
                 <div class="data d-flex mb-3">
                     <strong class="mr-3">Phone 2:</strong>
@@ -104,7 +81,7 @@
                 </div>
                 <div class="data d-flex mb-3">
                     <strong class="mr-3">Date Contacted:</strong>
-                    <div>{{$firstCall[0]->date ?? ''}}</div>
+                    <div>{{$firstCall[0]->contacted_date ?? ''}}</div>
                 </div>
                 <div class="data d-flex mb-3">
                     <strong class="mr-3">LEAD QUALIFICATIONS:</strong>
@@ -206,6 +183,6 @@
         </div>
     </section>
     @endif
-</body>
-
-</html>
+    </div>
+ </div>
+@endsection

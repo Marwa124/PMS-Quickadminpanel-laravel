@@ -177,21 +177,14 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::post('kb-categories/ckmedia', 'KbCategoriesController@storeCKEditorImages')->name('kb-categories.storeCKEditorImages');
     Route::resource('kb-categories', 'KbCategoriesController', ['except' => ['edit', 'update', 'show']]);
 
-    // Customer Groups
-    Route::delete('customer-groups/destroy', 'CustomerGroupsController@massDestroy')->name('customer-groups.massDestroy');
-    Route::post('customer-groups/media', 'CustomerGroupsController@storeMedia')->name('customer-groups.storeMedia');
-    Route::post('customer-groups/ckmedia', 'CustomerGroupsController@storeCKEditorImages')->name('customer-groups.storeCKEditorImages');
-    Route::resource('customer-groups', 'CustomerGroupsController');
-
+ 
     // Invoices
     Route::delete('invoices/destroy', 'InvoicesController@massDestroy')->name('invoices.massDestroy');
     Route::post('invoices/media', 'InvoicesController@storeMedia')->name('invoices.storeMedia');
     Route::post('invoices/ckmedia', 'InvoicesController@storeCKEditorImages')->name('invoices.storeCKEditorImages');
     Route::resource('invoices', 'InvoicesController');
 
-    // Suppliers
-    Route::delete('suppliers/destroy', 'SuppliersController@massDestroy')->name('suppliers.massDestroy');
-    Route::resource('suppliers', 'SuppliersController');
+   
 
     // Purchases
     Route::delete('purchases/destroy', 'PurchaseController@massDestroy')->name('purchases.massDestroy');

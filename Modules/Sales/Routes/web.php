@@ -44,10 +44,12 @@ Route::group(['as' => 'sales.admin.', 'prefix' => 'admin/sales', 'namespace' => 
 
     // leads
     Route::resource('leads', 'LeadsController');
-    Route::get('leads/getdata', 'LeadsController@getData')->name('leads.getdata');
+    Route::delete('leads/destroy', 'LeadsController@massDestroy')->name('leads.massDestroy');
+
+    Route::get('leads_getdata', 'LeadsController@getData')->name('leads.getdata');
     Route::get('lead-convert-opportunity/{id}', 'LeadsController@convert_opportunity')->name('convert.to.oppurtinuty');
     Route::get('assign', 'LeadsController@assignLeadsView')->name('assign')->middleware('access');
-    Route::post('assign', 'LeadsController@assignLeadsProcess')->name('assignPost')->middleware('access');
+    Route::post('assign', 'LeadsController@assignLeadsProcess')->name('leads.assignPost');//->middleware('access')
     //calls
     Route::get('calls/getdata', 'CallsController@getData')->name('calls.getdata');
     Route::resource('calls', 'CallsController');

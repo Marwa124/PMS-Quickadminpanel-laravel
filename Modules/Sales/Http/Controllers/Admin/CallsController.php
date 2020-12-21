@@ -1,12 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Modules\Sales\Http\Controllers\Admin;
 
-use App\Call;
+use App\Http\Controllers\Controller;
+
+use Modules\Sales\Entities\Call;
 use App\Imports\CallsImport;
-use App\Lead;
-use App\LeadUsers;
-use App\Result;
+use Modules\Sales\Entities\Lead;
+use Modules\Sales\Entities\LeadUsers;
+use Modules\Sales\Entities\Result;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
@@ -22,7 +24,7 @@ class CallsController extends Controller
     public function addSheet(){
 
 
-        return view('callupload');
+        return view('sales::admin.callupload');
     }
 
 
@@ -60,7 +62,7 @@ class CallsController extends Controller
      */
     public function index()
     {
-        return view('calls.index');
+        return view('sales::admin.calls.index');
     }
 
     public function getData(Request $request)
@@ -159,7 +161,7 @@ class CallsController extends Controller
       }
 
         $results = Result::all();
-        return view('calls.create',compact('leads','results'));
+        return view('sales::admin.calls.create',compact('leads','results'));
 
     }
 
@@ -191,14 +193,14 @@ class CallsController extends Controller
                 $lead->save();
             }
             else{
-                return redirect('calls');
+                return redirect()->route('sales.admin.calls');
             }
 
             Call::create($request->all());
 
 
             DB::commit();
-            return redirect('calls');
+            return redirect()->route('sales.admin.calls');
 
         } catch (\Exception $e) {
             echo 'Process Failed';
@@ -236,7 +238,7 @@ class CallsController extends Controller
 
         $call = Call::findOrFail($id);
         $results = Result::all();
-        return view('calls.edit', compact('call' , 'leads','results'));
+        return view('sales::admin.calls.edit', compact('call' , 'leads','results'));
     }
 
     /**
@@ -270,7 +272,7 @@ class CallsController extends Controller
 
 
             DB::commit();
-            return redirect('calls');
+            return redirect()->route('sales.admin.calls');
 
         } catch (\Exception $e) {
             echo 'Process Failed';
@@ -290,7 +292,7 @@ class CallsController extends Controller
         try {
             Call::where('id', $id)->delete();
             DB::commit();
-            return redirect('calls');
+            return redirect()->route('sales.admin.calls');
         } catch (\Exception $e) {
             echo 'Process Failed';
         }

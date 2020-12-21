@@ -20,8 +20,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
 use DataTables;
-
-
+use Auth;
+use Modules\Sales\Http\Requests\Destroy\MassDestroyLeadRequest;
+use Modules\Sales\Http\Requests\Store\AssignLeadRequest;
+use Symfony\Component\HttpFoundation\Response;
 class LeadsController extends Controller
 {
 
@@ -72,24 +74,20 @@ class LeadsController extends Controller
         // $users = DB::connection('mysql2')->table('tbl_users')->get();
         $types = Type::all();
         $codes = Country::all();
-        $users = User::whereHas('accountDetail')->get();
-        $leads = Lead::with('type','firstCall','secondCall','secondassign')->latest()->get();
-    // dd($leads);
-        return view('sales::admin.leads.index',compact('users','types','codes','leads'));
+        $users = User::with('accountDetail')->get();
+        // dd($users->first());
+        return view('sales::admin.leads.index',compact('users','types','codes'));
     }
 
 
     public function getData(Request $request)
     {
-       
-
+ 
         if ($request->ajax()) {
 
-            $leads = Lead::with('type','firstCall','secondCall','secondassign');
-            dd($leads);
+            $leads = Lead::with('type','firstCall','secondCall','secondassign','addby')->select('leads.*');
+            // dd($leads);
                     $company = (!empty($request->get('company'))) ? ($request->get('company')) : ('');
-                   
-             
                     if($company){
                      $leads->where('leads.company','like', '%' .$company. '%');
                     }
@@ -146,34 +144,24 @@ class LeadsController extends Controller
 
                     return DataTables::of($leads)
                     ->addIndexColumn()
-                    ->addColumn('assign', function ($request) { 
-                         $requestActions = '<li class="d-inline-block mr-2">
-                                        <fieldset>
-                                           <div class="vs-checkbox-con vs-checkbox-primary">
-                                               <input type="checkbox" value="'.$request->id.'"  name="id[]">
-                                               <span class="vs-checkbox">
-                                     <span class="vs-checkbox--check">
-                                       <i class="vs-icon feather icon-check"></i>
-                                     </span>
-                                   </span>
-                                           </div>
-                                       </fieldset>
-                                  </li>';
-                       return $requestActions;
-                         }) ->editColumn('actions', function($request){
+                    // ->editColumn('assign', function ($request) { 
+                    //      $requestActions = '';
+                    //    return $requestActions;
+                    //      }) 
+                         ->editColumn('actions', function($request){
                             $actions =' <form class="text-center" action="'.route('sales.admin.leads.destroy',$request->id).'" method="post">
                             <a href="'.route('sales.admin.leads.edit',$request->id).'" calss="leads_edit" data-id="'.$request->id.'" data-toggle="modal" data-target="#exampleModal" 
                             data-client_id_on_pms="'.$request->client_id_on_pms.'" 
                             data-type_id="'.$request->type_id.'"
                             data-product="'.$request->product.'" 
                             data-company="'.$request->company.'" 
+                            data-notes="'.$request->notes.'" 
                             data-site_url="'.$request->site_url.'" 
                             data-phone1="'.$request->phone1.'"
                             data-phone2="'.$request->phone2.'" 
                             data-email="'.$request->email.'" 
                             data-way_of_communication="'.$request->way_of_communication.'"
                             data-contacted_date="'.$request->contacted_date.'" 
-                            data-notes="'.$request->notes.'" 
                             data-next_action_date="'.$request->next_action_date.'"
                             data-priority="'.$request->priority.'" 
                             data-client_name="'.$request->client_name.'" 
@@ -186,43 +174,47 @@ class LeadsController extends Controller
                             '.csrf_field().'
                             '.
                                 method_field("DELETE").'
-                            <button class="btn" type="submit"><i style="color:#cd0a0a" class="fas fa-trash"></i></button>
+                            <button class="btn" type="submit" onsubmit="return confirm('.trans('global.areYouSure').');"><i style="color:#cd0a0a" class="fas fa-trash"  ></i></button>
                             </form>';
                             return $actions;
                         })
                         ->editColumn('created_at', function ($request) {
                             return \Carbon\Carbon::parse($request->created_at)->toDateString() ?? '';
                          })
+                        ->editColumn('type', function ($request) {
+                            
+                            return $request->type() && $request->type->name ?  $request->type->name  : '';
+                         })
+                       
                          ->editColumn('client_name', function ($request) {
                             return '<a href="'.route('sales.admin.leads.show',$request->id).'">'.$request->client_name.'</a>';
                         })
-                        ->editColumn('second_call_by', function ($request) {
-                            return $request->secondCall->call_by ?? '';
+                        ->editColumn('secondCall', function ($request) {
+                            return $request->secondCall &&  $request->secondCall->call_by ?  $request->secondCall->call_by : '';
                         })
                         ->editColumn('firstCall', function ($request) {
-                            $data = $request->firstCall->call_by  ?? '';
+                            $data = $request->firstCall && $request->firstCall->call_by  ? $request->firstCall->call_by  : '';
                             return $data;
                         })
-                        ->editColumn('1st assgin', function ($request) {
-                            $data = $request->addby->fullname ?? '';
+                        ->editColumn('addby', function ($request) {
+                            $data = $request->addby && $request->addby->fullname ? $request->addby->fullname : '';
                              return $data;
                             // return '<a data-toggle="modal" data-target="#modal_first_assign" href="#">' . $data. '</a>';
                          })
-                        ->editColumn('2st assgin', function ($request) {
-                            $data = $request->secondassign->leadusersss->fullname ?? '';
+                        ->editColumn('secondassign', function ($request) {
+                            // dd($request->secondassign);
+                            $data =$request->secondassign && $request->secondassign->leaduser ? $request->secondassign->leaduser->fullname : '';
                              return $data;
                          })
-                        ->editColumn('firstCall_result', function ($request) {
-                            $data = $request->firstCall->result->name ?? '';
-                            return $data;
-                        })
-                            ->editColumn('secondCall', function ($request) {
-                            $data = $request->secondCall->call_by  ?? '';
-                            return $data;
-                        })
+                        // ->editColumn('firstCall_result', function ($request) {
+                        //     $data = $request->firstCallResult && $request->firstCallResult->name ? $request->firstCallResult->name : '';
+                        //     return $data;
+                        // })
                         
-                        ->rawColumns(['actions'])
+                        ->rawColumns(['created_at','type','Client_Name','firstCall','secondassign','secondCall','addby','2st_assgin','actions'])
+                        ->escapeColumns([])
                         ->make(true);
+                        // dd($xyz);
         }
     }
     /**
@@ -251,13 +243,7 @@ class LeadsController extends Controller
         DB::beginTransaction();
 
         try {
-             $id = DB::connection('mysql2')->table('tbl_leads')->where('leads_id', \DB::raw("(select max(`leads_id`) from tbl_leads)"))->first();
-             $id = $id->leads_id+1;
-            //             var_dump($id->leads_id+1);
-            //             dd($id->leads_id+1);
             $data = [
-                'id'        => $id,
-                'client_id_on_pms' => $id,
                 'type_id' => $request->type_id,
                 'product' => $request->product,
                 'company' => $request->company,
@@ -272,39 +258,13 @@ class LeadsController extends Controller
                 'priority' => $request->priority,
                 'client_name' => $request->client_name,
                 'contracted' => $request->contracted,
-                'added_by'  => session()->get('user_id')
+                'added_by'  => Auth::user()->id
             ];
 
             Lead::create($data);
-            $permission = json_encode([
-                [session()->get('user_id') => ['edit', 'view']],
-                [44 => ['edit', 'view', 'delete']],
-                [25 => ['edit', 'view', 'delete']]]
-            );
-            DB::connection('mysql2')->table('tbl_leads')->insert([
-                'leads_id' => $id,
-                'type_id' => $data['type_id'],
-                'product' => $data['product'],
-                'company_name' => $data['company'],
-                'site_url' => $data['site_url'],
-                'phone' => $data['phone1'],
-                'phone2' => $data['phone2'],
-                'email' => $data['email'],
-                'way_of_communication' => $data['way_of_communication'],
-                'notes' => $data['notes'],
-                'priority' => $data['priority'],
-                'lead_name' => $data['client_name'],
-                'contracted' => $data['contracted'],
-                'next_action_date' => $data['next_action_date'],
-                'lead_status_id' => 1,
-                'lead_source_id' => 5,
-                'permission' => $permission,
-            ]);
-
-
 
             DB::commit();
-            return redirect('leads');
+            return redirect()->route('sales.admin.leads.index');
 
         } catch (\Exception $e) {
             // dd($e);
@@ -321,46 +281,19 @@ class LeadsController extends Controller
     public function show($id)
     {
       try{
-        $lead = DB::connection('mysql2')->table('tbl_leads')->where('leads_id', $id)->first();
-        if($lead == null){
-          $lead = Lead::findOrFail($id);
+       
+            $lead = Lead::findOrFail($id);
+            $type = Type::where('id',$lead->type_id)->first();
+            $firstCall = Call::where([
+                ['lead_id',$id],
+                ['call','first'],
+            ])->get();
+            $secondCall = Call::where([
+                ['lead_id',$id],
+                ['call','second'],
+            ])->get();
+            $finalresult = Finalresult::where('lead_id' , $id)->get();
 
-          DB::connection('mysql2')->table('tbl_leads')->insert([
-            'leads_id' => $lead->client_id_on_pms ?? null,
-            'type_id' => $lead->type_id ?? null,
-            'product' => $lead->product ?? null,
-            'company_name' => $lead->company  == null ? $lead->client_name : null,
-            'site_url' => $lead->site_url ?? null,
-            'phone' => $lead->phone1 ?? null,
-            'phone2' => $lead->phone2 ?? null,
-            'email' => $lead->email ?? null,
-            'way_of_communication' => $lead->way_of_communication ?? null,
-            'notes' => $lead->notes ?? null,
-            'priority' => $lead->priority ?? null,
-            'lead_name' => $lead->client_name ?? null,
-            'contracted' => $lead->contracted ?? null,
-            'next_action_date' => $lead->next_action_date ?? null,
-        ]);
-        }
-          $lead = DB::connection('mysql2')->table('tbl_leads')->where('leads_id', $id)->first();
-
-        $type = Type::where('id',$lead->type_id)->first();
-
-
-        // $lead = Lead::findOrFail($id);
-        $firstCall = Call::where([
-            ['lead_id',$id],
-            ['call','first'],
-        ])->get();
-        $secondCall = Call::where([
-            ['lead_id',$id],
-            ['call','second'],
-        ])->get();
-        $finalresult = Finalresult::where('lead_id' , $id)->get();
-
-
-            // dd(date('Y-m-d',strtotime(date('Y-m-d')) - $lead->contacted_date) );
-            // dd($lead->contacted_date);
 
         return view('sales::admin.leads.show',compact('lead','firstCall','secondCall','finalresult','type'));
       } catch (\Exception $e) {
@@ -420,27 +353,27 @@ class LeadsController extends Controller
             $lead->update($data);
 
 
-            DB::connection('mysql2')->table('tbl_leads')->where('leads_id', $lead->client_id_on_pms)->update([
-                'leads_id' =>  $lead->client_id_on_pms,
-                'type_id' => $data['type_id'],
-                'product' => $data['product'],
-                'company_name' => $data['company'],
-                'site_url' => $data['site_url'],
-                'phone' => $data['phone1'],
-                'phone2' => $data['phone2'],
-                'email' => $data['email'],
-                'way_of_communication' => $data['way_of_communication'],
-                'notes' => $data['notes'],
-                'priority' => $data['priority'],
-                'lead_name' => $data['client_name'],
-                'contracted' => $data['contracted'],
-                'next_action_date' => $data['next_action_date'],
-            ]);
+            // DB::connection('mysql2')->table('tbl_leads')->where('leads_id', $lead->client_id_on_pms)->update([
+            //     'leads_id' =>  $lead->client_id_on_pms,
+            //     'type_id' => $data['type_id'],
+            //     'product' => $data['product'],
+            //     'company_name' => $data['company'],
+            //     'site_url' => $data['site_url'],
+            //     'phone' => $data['phone1'],
+            //     'phone2' => $data['phone2'],
+            //     'email' => $data['email'],
+            //     'way_of_communication' => $data['way_of_communication'],
+            //     'notes' => $data['notes'],
+            //     'priority' => $data['priority'],
+            //     'lead_name' => $data['client_name'],
+            //     'contracted' => $data['contracted'],
+            //     'next_action_date' => $data['next_action_date'],
+            // ]);
 
 
 
             DB::commit();
-            return redirect('leads');
+            return redirect()->route('sales.admin.leads.index');
 
 
 
@@ -460,15 +393,15 @@ class LeadsController extends Controller
         DB::beginTransaction();
 
         try {
-            $lead = Lead::where('id', $id)->delete();
             $finalresult = Finalresult::where('lead_id',$id)->delete();
             $call = Call::where('lead_id',$id)->delete();
+            $lead = Lead::where('id', $id)->delete();
 
-            DB::connection('mysql2')->table('tbl_leads')->where('leads_id', $id)->delete();
+            // DB::connection('mysql2')->table('tbl_leads')->where('leads_id', $id)->delete();
 
 
             DB::commit();
-            return redirect('leads');
+            return redirect()->route('sales.admin.leads.index');
 
         } catch (\Exception $e) {
             echo 'Process Failed';
@@ -478,25 +411,22 @@ class LeadsController extends Controller
 
 
 
-      public function assignLeadsView(){
-        $leads = Lead::all();
-        $users = DB::connection('mysql2')->table('tbl_users')->get();
+    //   public function assignLeadsView(){
+    //     $leads = Lead::all();
+    //     $users = DB::connection('mysql2')->table('tbl_users')->get();
 
-        return view('sales::admin.assign.create',compact('leads','users'));
-      }
+    //     return view('sales::admin.assign.create',compact('leads','users'));
+    //   }
 
 
 
-          public function assignLeadsProcess(Request $request){
+          public function assignLeadsProcess(AssignLeadRequest $request){
 
-              try
-              {
-                  $this->validate($request,[
-                     'id' => 'required',
-                     'user' => 'required',
-                  ]);
+            //   try
+            //   {
+               
 
-                  foreach ($request->id as $lead){
+                  foreach (request('ids') as $lead){
                       $check = LeadUsers::where('lead_id',$lead)->where('user_id',$request->user)->first();
                       if($check == null){
                           LeadUsers::create([
@@ -505,11 +435,12 @@ class LeadsController extends Controller
                           ]);
                       }
                   }
-                  return redirect(route('sales.admin.leads.index'));
-              }
-              catch (\Exception $e){
-                  return back();
-              }
+                  return response(null, Response::HTTP_NO_CONTENT);
+            //       return redirect(route('sales.admin.leads.index'));
+            //   }
+            //   catch (\Exception $e){
+            //       return back();
+            //   }
           }
 
 
@@ -588,4 +519,10 @@ class LeadsController extends Controller
           }
 
 
+          public function massDestroy(MassDestroyInterestedInRequest $request)
+          {
+              Lead::whereIn('id', request('ids'))->delete();
+      
+              return response(null, Response::HTTP_NO_CONTENT);
+          }
 }

@@ -46,8 +46,8 @@
                             <input type="text" name="site_url" class="form-control" id="exampleFormControlInput1" placeholder="Type site url">
                         </div>
                         <div class="form-group mr-5">
-                            <label for="exampleFormControlSelect1">Code</label>
-                            <select class="form-control" id="exampleFormControlSelect1" name="country_code">
+                            <label for="exampleFormControlSelect21">Code</label>
+                            <select class="form-control" id="exampleFormControlSelect21" name="country_code">
                                 @if(!empty($types))
                                 @foreach($codes as $code)
                                 <option value="{{$code->code}}">{{$code->code}}</option>
@@ -71,8 +71,8 @@
                         </div>
 
                         <div class="form-group mr-5">
-                            <label for="exampleFormControlSelect1">WAY OF Communication</label>
-                            <select class="form-control" id="exampleFormControlSelect1" name="way_of_communication">
+                            <label for="exampleFormControlSelect31">WAY OF Communication</label>
+                            <select class="form-control" id="exampleFormControlSelect31" name="way_of_communication">
 
                                 <option value="Direct Call">Direct Call</option>
                                 <option value="Whatsapp">Whatsapp</option>
@@ -93,8 +93,8 @@
                             <input type="date" class="form-control" name="next_action_date" id="exampleFormControlInput1" placeholder="select date">
                         </div>
                         <div class="form-group mr-5">
-                            <label for="exampleFormControlSelect1">Priority</label>
-                            <select class="form-control" id="exampleFormControlSelect1" name="priority">
+                            <label for="exampleFormControlSelect41">Priority</label>
+                            <select class="form-control" id="exampleFormControlSelect41" name="priority">
 
                                 <option value="URGENT">URGENT</option>
                                 <option value="NORMAL">NORMAL</option>
@@ -103,8 +103,8 @@
                             </select>
                         </div>
                         <div class="form-group mr-5">
-                            <label for="exampleFormControlSelect1">Contacted</label>
-                            <select class="form-control" id="exampleFormControlSelect1" name="contracted">
+                            <label for="exampleFormControlSelect51">Contacted</label>
+                            <select class="form-control" id="exampleFormControlSelect51" name="contracted">
                                 <option value="Busy">Busy</option>
                                 <option value="Call Later">Call Later</option>
                                 <option value="No Answer">No Answer</option>

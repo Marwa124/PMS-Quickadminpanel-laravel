@@ -14,13 +14,7 @@ class DatabaseSeeder extends Seeder
             PermissionsTableSeeder::class,
 
             UsersTableSeeder::class,
-            // AccountDetailsTableSeeder::class,
-
-            DepartmentsTableSeeder::class,
-            DesignationsTableSeeder::class,
-
-            DepartmentsTableSeeder::class,
-            DesignationsTableSeeder::class,
+            AccountDetailsTableSeeder::class,
 
             DepartmentsTableSeeder::class,
             DesignationsTableSeeder::class,

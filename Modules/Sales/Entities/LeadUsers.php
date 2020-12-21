@@ -14,9 +14,10 @@ class LeadUsers extends Model
     {
       return $this->belongsTo(Lead::class);
     }
+
     public function leaduser()
     {
-      return $this->belongsTo(Account::class,'user_id','user_id');
+        return $this->belongsTo(\Modules\HR\Entities\AccountDetail::class,'user_id','user_id');
     }
   
 }

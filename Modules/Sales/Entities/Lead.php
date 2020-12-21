@@ -12,7 +12,7 @@ class Lead extends Model
 
     public function type()
     {
-        return $this->belongsTo(Type::class,'type_id','id');
+        return $this->belongsTo(Type::class,'type_id','id')->withDefault();
     }
 
     public function addby()
@@ -34,7 +34,7 @@ class Lead extends Model
 
     public function secondCall()
     {
-        return $this->belongsTo(Call::class,'lead_id','id')->latest();
+        return $this->hasOne(Call::class,'lead_id','id')->latest();
     }
 
     public function firstCallResult()

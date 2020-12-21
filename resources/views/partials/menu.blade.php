@@ -706,14 +706,14 @@
                    {{-- @endcan --}}
                     {{--@can('interested_in_access') --}}
 
-                        <li class="c-sidebar-nav-item">
+                        {{-- <li class="c-sidebar-nav-item">
                             <a href="{{ route("sales.admin.interested-ins.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/interested-ins") || request()->is("admin/interested-ins/*") ? "active" : "" }}">
                                 <i class="fa-fw fas fa-american-sign-language-interpreting c-sidebar-nav-icon">
 
                                 </i>
                                 {{ trans('cruds.interestedIn.title') }}
                             </a>
-                        </li>
+                        </li> --}}
                    {{-- @endcan --}}
                    {{-- @can('lead_category_access') --}}
                         <li class="c-sidebar-nav-item">
@@ -746,14 +746,14 @@
                         </li>
                    {{-- @endcan --}}
                    {{-- @can('salutation_access') --}}
-                        <li class="c-sidebar-nav-item">
+                        {{-- <li class="c-sidebar-nav-item">
                             <a href="{{ route("admin.salutations.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/salutations") || request()->is("admin/salutations/*") ? "active" : "" }}">
                                 <i class="fa-fw fab fa-safari c-sidebar-nav-icon">
 
                                 </i>
                                 {{ trans('cruds.salutation.title') }}
                             </a>
-                        </li>
+                        </li> --}}
                    {{-- @endcan --}}
                    {{-- @can('lead_access') --}}
                         <li class="c-sidebar-nav-item">
@@ -831,7 +831,7 @@
                 <ul class="c-sidebar-nav-dropdown-items">
                     @can('customer_group_access')
                         <li class="c-sidebar-nav-item">
-                            <a href="{{ route("admin.customer-groups.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/customer-groups") || request()->is("admin/customer-groups/*") ? "active" : "" }}">
+                            <a href="{{ route("materialssuppliers.admin.customer-groups.index") }}" class="c-sidebar-nav-link {{ request()->is("materialssuppliers/admin/customer-groups") || request()->is("materialssuppliers/admin/customer-groups/*") ? "active" : "" }}">
                                 <i class="fa-fw fas fa-th c-sidebar-nav-icon">
 
                                 </i>
@@ -851,7 +851,7 @@
                     @endcan
                     @can('supplier_access')
                         <li class="c-sidebar-nav-item">
-                            <a href="{{ route("admin.suppliers.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/suppliers") || request()->is("admin/suppliers/*") ? "active" : "" }}">
+                            <a href="{{ route("materialssuppliers.admin.suppliers.index") }}" class="c-sidebar-nav-link {{ request()->is("materialssuppliers/admin/suppliers") || request()->is("materialssuppliers/admin/suppliers/*") ? "active" : "" }}">
                                 <i class="fa-fw fas fa-briefcase c-sidebar-nav-icon">
 
                                 </i>

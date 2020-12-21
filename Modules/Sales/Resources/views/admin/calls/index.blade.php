@@ -1,29 +1,9 @@
-@extends('header')
-@section('title','Calls')
-
-
-
-@section('style')
-
-<link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.semanticui.min.css">
-<link href="https://use.fontawesome.com/releases/v5.0.4/css/all.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.1.7/css/fixedHeader.dataTables.min.css">
-
-
-@endsection
-
-@extends('sidebar')
-
-
-
+@extends('layouts.admin')
 @section('content')
 
 
-
 <div class="main">
-<a href="{{ route('calls.create') }}" class="btn btn-info mb-4"><i></i>Add Call</a>
+<a href="{{ route('sales.admin.calls.create') }}" class="btn btn-info mb-4"><i></i>Add Call</a>
     <table id="data-table" class="table table-scripted table-bordered">
         <thead>
             <tr>
@@ -54,8 +34,8 @@
                 {{--<td>{{$call->call}}</td>--}}
                 {{--<td>--}}
 
-                    {{--<form class="text-center" action="{{route('calls.destroy',$call->id)}}" method="post">--}}
-                        {{--<a href="{{route('calls.edit',$call->id)}}"><i class="fas fa-edit"></i></a>--}}
+                    {{--<form class="text-center" action="{{route('sales.admin.calls.destroy',$call->id)}}" method="post">--}}
+                        {{--<a href="{{route('sales.admin.calls.edit',$call->id)}}"><i class="fas fa-edit"></i></a>--}}
                      {{----}}
 
                         {{--@method("DELETE")--}}
@@ -78,15 +58,8 @@
 
 
 @endsection
-@section('js')
-
-
-<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-<script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.21/js/dataTables.semanticui.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.js"></script>
-<script src="https://cdn.datatables.net/fixedheader/3.1.7/js/dataTables.fixedHeader.min.js"></script>
-
+@section('scripts')
+@parent
 <script type="text/javascript">
     $(document).ready(function(){
 
@@ -107,7 +80,7 @@
 
                 ajax:{
 
-                    url:"{{ route('calls.getdata') }}",
+                    url:"{{ route('sales.admin.calls.getdata') }}",
                     data:{}
 
                 },
@@ -135,9 +108,4 @@
     });
 
 </script>
-
-
-
-
 @endsection
-@extends('footer')

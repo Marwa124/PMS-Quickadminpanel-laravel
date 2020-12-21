@@ -1303,6 +1303,8 @@ return [
             'Phone_2_helper'               => ' ',
             'Email'                        => 'Email',
             'Email_helper'                 => ' ',
+            'second_call_By'                => 'second call By',
+            'second_call_By_helper' => ' ',
             'first_call_By'                => 'first call By',
             'first_call_By_helper' => ' ',
             'WAY_OF_Communication'         => 'WAY OF Communication',
