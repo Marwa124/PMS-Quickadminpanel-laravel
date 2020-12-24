@@ -216,7 +216,7 @@ class User extends Authenticatable implements HasMedia
         if ($user->hasrole(['Admin','Super Admin'])){
 
             $projects = Project::all();
-//            $clients = Client::get();
+            //            $clients = Client::get();
         }else{
 
             $projects = $user->accountDetail->projects;
@@ -279,4 +279,6 @@ class User extends Authenticatable implements HasMedia
         return $bugs;
 
     }
+
+   
 }

@@ -13,8 +13,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use DataTables;
-
-
+use Gate;
+use Modules\Sales\Http\Requests\Destroy\MassCallRequest;
+use Symfony\Component\HttpFoundation\Response;
 class CallsController extends Controller
 {
 
@@ -62,22 +63,23 @@ class CallsController extends Controller
      */
     public function index()
     {
+        abort_if(Gate::denies('calls_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         return view('sales::admin.calls.index');
     }
 
     public function getData(Request $request)
     {
 
-
+        abort_if(Gate::denies('calls_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         if ($request->ajax()) {
 
-          if(session()->get('role') == 'admin' || session()->get('user_id') == 44){
+        if (auth()->user()->hasrole(['Admin','Super Admin'])){
 
             $calls = Call::with('result','lead');
           }
           else{
 
-                $array = LeadUsers::where('user_id',session()->get('user_id'))->pluck('lead_id');
+              $array = LeadUsers::where('user_id',session()->get('user_id'))->pluck('lead_id');
               $calls = Call::whereHas('lead' , function($q) use($array){
                  $q->whereIn('id',$array)->orWhere('added_by','=',session()->get('user_id'));
               })->with('result','lead');
@@ -89,45 +91,45 @@ class CallsController extends Controller
 
             return DataTables::eloquent($calls)
                 ->addIndexColumn()
-                ->addColumn('result', function (Call $request) {
-                    $data = $request->result->name ?? '';
+                ->editColumn('result', function (Call $request) {
+                    $data =$request->result&& $request->result->name ? $request->result->name : '';
                     return $data;
                 })
-                ->addColumn('date', function (Call $request) {
+                ->editColumn('date', function (Call $request) {
                     $data = $request->date ?? '';
                     return $data;
                 })
-                ->addColumn('qualification', function (Call $request) {
+                ->editColumn('qualification', function (Call $request) {
                     $data =  $request->qualification ?? '';
                     return $data;
                 })
-                ->addColumn('note', function (Call $request) {
+                ->editColumn('note', function (Call $request) {
                     $data = $request->note ?? '';
                     return $data;
                 })
 
-                ->addColumn('next_action', function (Call $request) {
+                ->editColumn('next_action', function (Call $request) {
                     $data = $request->next_action ?? '';
                     return $data;
                 })
 
-                ->addColumn('next_action_date', function (Call $request) {
+                ->editColumn('next_action_date', function (Call $request) {
                     $data =  $request->next_action_date ?? '';
                     return $data;
                 })
-                ->addColumn('company', function (Call $request) {
+                ->editColumn('company', function (Call $request) {
                     $data = $request->lead->company ?? '';
                     return $data;
                 })
 
-                ->addColumn('call', function (Call $request) {
+                ->editColumn('call', function (Call $request) {
                     $data = $request->call ?? '';
                     return $data;
                 })
-                ->addColumn('actions', function(Call $request){
-                    $actions =' <form class="text-center" action="'.route('calls.destroy',$request->id).'" method="post">
-                      <a href="'.route('calls.edit',$request->id).'"><i class="fas fa-edit"></i></a>
-                       <a href="'.route('finalresults.create','id='.$request->lead->id).'"><i class="fas fa-sign-out-alt"></i></a>
+                ->editColumn('actions', function(Call $request){
+                    $actions =' <form class="text-center" action="'.route('sales.admin.calls.destroy',$request->id).'" method="post">
+                      <a href="'.route('sales.admin.calls.edit',$request->id).'"><i class="fas fa-edit"></i></a>
+                       <a href="'.route('sales.admin.finalresults.create','id='.$request->lead->id).'"><i class="fas fa-sign-out-alt"></i></a>
 
                         '.csrf_field().'
                         '.
@@ -151,7 +153,8 @@ class CallsController extends Controller
      */
     public function create()
     {
-      if(session()->get('role') == 'admin' || session()->get('user_id') == 44){
+    abort_if(Gate::denies('calls_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+      if (auth()->user()->hasrole(['Admin','Super Admin'])){
 
         $leads = Lead::all();
       }
@@ -179,7 +182,7 @@ class CallsController extends Controller
             $lead = Lead::findOrFail($request->lead_id);
 
 
-//            dd($lead->first_call_done);
+        //    dd($lead,$lead->first_call_done,$lead->second_call_done);
             if($lead->first_call_done == 0){
                 $request->call = 'first';
                 $lead->first_call_done = 1;
@@ -193,14 +196,15 @@ class CallsController extends Controller
                 $lead->save();
             }
             else{
-                return redirect()->route('sales.admin.calls');
+
+                return redirect()->route('sales.admin.calls.index')->with(['message' => 'all Calls is already done','alert-type' => 'success']);
             }
 
             Call::create($request->all());
 
 
             DB::commit();
-            return redirect()->route('sales.admin.calls');
+            return redirect()->route('sales.admin.calls.index');
 
         } catch (\Exception $e) {
             echo 'Process Failed';
@@ -226,7 +230,8 @@ class CallsController extends Controller
      */
     public function edit($id)
     {
-      if(session()->get('role') == 'admin' || session()->get('user_id') == 44){
+        abort_if(Gate::denies('calls_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+      if (auth()->user()->hasrole(['Admin','Super Admin'])){
 
         $leads = Lead::all();
       }
@@ -272,7 +277,7 @@ class CallsController extends Controller
 
 
             DB::commit();
-            return redirect()->route('sales.admin.calls');
+            return redirect()->route('sales.admin.calls.index');
 
         } catch (\Exception $e) {
             echo 'Process Failed';
@@ -287,14 +292,22 @@ class CallsController extends Controller
      */
     public function destroy($id)
     {
+        abort_if(Gate::denies('calls_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         DB::beginTransaction();
 
         try {
             Call::where('id', $id)->delete();
             DB::commit();
-            return redirect()->route('sales.admin.calls');
+            return redirect()->route('sales.admin.calls.index');
         } catch (\Exception $e) {
             echo 'Process Failed';
         }
+    }
+
+    public function massDestroy(MassCallRequest $request)
+    {
+        Call::whereIn('id', request('ids'))->delete();
+
+        return response(null, Response::HTTP_NO_CONTENT);
     }
 }

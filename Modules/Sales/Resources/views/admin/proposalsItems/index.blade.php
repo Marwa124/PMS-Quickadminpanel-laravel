@@ -9,12 +9,14 @@
         </div>
     </div>
 @endcan
+
 <div class="card">
     <div class="card-header">
         {{ trans('cruds.proposalsItem.title_singular') }} {{ trans('global.list') }}
     </div>
 
     <div class="card-body">
+
         <div class="table-responsive">
             <table class=" table table-bordered table-striped table-hover datatable datatable-ProposalsItem">
                 <thead>
@@ -144,7 +146,9 @@
                 </tbody>
             </table>
         </div>
+
     </div>
+
 </div>
 
 
@@ -153,6 +157,11 @@
 @section('scripts')
 @parent
 <script>
+//  let table = $('.datatable-CustomerGroup').DataTable()
+// $('a[data-toggle="tab"]').on('shown.bs.tab', function(e){
+//    $($.fn.dataTable.tables(true)).DataTable()
+//       .scroller.measure();
+// });
     $(function () {
   let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
 @can('proposals_item_delete')
@@ -188,12 +197,15 @@
   $.extend(true, $.fn.dataTable.defaults, {
     orderCellsTop: true,
     order: [[ 1, 'desc' ]],
-    pageLength: 25,
+    pageLength: 25, 
+     responsive: true,
   });
-  let table = $('.datatable-ProposalsItem:not(.ajaxTable)').DataTable({ buttons: dtButtons })
+  let table = $('.datatable-ProposalsItem').DataTable({ buttons: dtButtons })
   $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e){
-      $($.fn.dataTable.tables(true)).DataTable()
-          .columns.adjust();
+    $($.fn.dataTable.tables(true)).DataTable()
+         .columns.adjust()
+         .responsive.recalc()
+         .scroller.measure();
   });
   $('.datatable thead').on('input', '.search', function () {
       let strict = $(this).attr('strict') || false
@@ -206,4 +218,5 @@
 })
 
 </script>
+
 @endsection

@@ -1,9 +1,12 @@
 @extends('layouts.admin')
 @section('content')
 
+<div class="card">
+    <div class="card-header">
+        {{ trans('global.edit') }} {{ trans('cruds.calls.title_singular') }}
+    </div>
 
-    <div class="display" style="width:100%">
-        <div class="main">
+    <div class="card-body">
             <form class="d-flex justify-content-start" action="{{route('sales.admin.calls.update',$call->id)}}" method="post">
                 @csrf
                 @method("PUT")
@@ -95,17 +98,11 @@
                         </div>
 
             </form>
-        </div>
-
-    </div>
-
-
+ </div>
+</div>
 
 @endsection
 @section('scripts')
 @parent
-
-
 @endsection
-
 

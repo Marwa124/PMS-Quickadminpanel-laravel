@@ -15,7 +15,7 @@ class CreateLeadUsersTable extends Migration
     {
         Schema::create('lead_users', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('lead_id')->unsigned()->nullable();
+            $table->unsignedBigInteger('lead_id')->unsigned()->nullable();
             $table->foreign('lead_id')->references('id')->on('leads')->onDelete('cascade');
             $table->unsignedInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

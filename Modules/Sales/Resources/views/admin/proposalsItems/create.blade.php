@@ -9,13 +9,20 @@
     <div class="card-body">
         <form method="POST" action="{{ route("sales.admin.proposals-items.store") }}" enctype="multipart/form-data">
             @csrf
-            <div class="form-group">
-                <label class="required" for="proposals_id">{{ trans('cruds.proposalsItem.fields.proposals') }}</label>
-                <select class="form-control select2 {{ $errors->has('proposals') ? 'is-invalid' : '' }}" name="proposals_id" id="proposals_id" required>
-                    @foreach($proposals as $id => $proposals)
-                        <option value="{{ $id }}" {{ old('proposals_id') == $id ? 'selected' : '' }}>{{ $proposals }}</option>
+            <div class="input-group">
+                <select class="form-control  {{ $errors->has('proposals') ? 'is-invalid' : '' }}" name="customer_group_id" id="customer_group_id" required>
+                    @foreach($customerGroups as $id => $customerGroup)
+                        <option value="{{ $id }}" {{ old('customer_group_id') == $id ? 'selected' : '' }}>{{ $customerGroup }}</option>
                     @endforeach
                 </select>
+                <span class="input-group-append">
+                  <button type="button" class="btn btn-primary"   data-toggle="modal" data-target="#primaryModal" ><i class="fa fa-plus"></i></button>
+                </span>
+              </div>
+            <div class="input-group form-group">
+                {{-- <label class="required" for="proposals_id">{{ trans('cruds.proposalsItem.fields.group_name') }}</label> --}}
+                
+           
                 @if($errors->has('proposals'))
                     <div class="invalid-feedback">
                         {{ $errors->first('proposals') }}
@@ -43,7 +50,7 @@
                 @endif
                 <span class="help-block">{{ trans('cruds.proposalsItem.fields.description_helper') }}</span>
             </div>
-            <div class="form-group">
+            {{-- <div class="form-group">
                 <label for="group_name">{{ trans('cruds.proposalsItem.fields.group_name') }}</label>
                 <input class="form-control {{ $errors->has('group_name') ? 'is-invalid' : '' }}" type="text" name="group_name" id="group_name" value="{{ old('group_name', '') }}">
                 @if($errors->has('group_name'))
@@ -52,7 +59,7 @@
                     </div>
                 @endif
                 <span class="help-block">{{ trans('cruds.proposalsItem.fields.group_name_helper') }}</span>
-            </div>
+            </div> --}}
             <div class="form-group">
                 <label for="brand">{{ trans('cruds.proposalsItem.fields.brand') }}</label>
                 <input class="form-control {{ $errors->has('brand') ? 'is-invalid' : '' }}" type="text" name="brand" id="brand" value="{{ old('brand', '') }}">
@@ -212,7 +219,48 @@
     </div>
 </div>
 
+    <!-- /.modal -->
 
+    <div class="modal fade" id="primaryModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-primary" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title"> {{ trans('global.create') }} {{ trans('cruds.customerGroup.title_singular') }}</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
+
+            <div class="modal-body">
+              <form method="POST" action="#" id="form2">
+               @csrf
+                <div class="form-group">
+                    <label class="required" for="type">{{ trans('cruds.customerGroup.fields.type') }}</label>
+                    <input class="form-control {{ $errors->has('type') ? 'is-invalid' : '' }}" type="text" name="type" id="type" value="{{ old('type', '') }}" required>
+                   
+                </div>
+                <div class="form-group">
+                    <label class="required" for="name">{{ trans('cruds.customerGroup.fields.name') }}</label>
+                    <input class="form-control" type="text" name="namecustomgroup" id="namecustomgroup" value="{{ old('name', '') }}" required>
+                   
+                </div>
+                <div class="form-group">
+                    <label for="description">{{ trans('cruds.customerGroup.fields.description') }}</label>
+                    <textarea class="form-control" name="descriptioncustomgroup" id="descriptioncustomgroup"></textarea>
+                  
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" id="customgroupsubmit">  {{ trans('global.save') }}</button>
+            </div>
+           </form>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
 
 @endsection
 
@@ -228,7 +276,7 @@
               return new Promise(function(resolve, reject) {
                 // Init request
                 var xhr = new XMLHttpRequest();
-                xhr.open('POST', '/admin/proposals-items/ckmedia', true);
+                xhr.open('POST', '/admin/sales/proposals-items/ckmedia', true);
                 xhr.setRequestHeader('x-csrf-token', window._token);
                 xhr.setRequestHeader('Accept', 'application/json');
                 xhr.responseType = 'json';
@@ -245,7 +293,6 @@
                   }
 
                   $('form').append('<input type="hidden" name="ck-media[]" value="' + response.id + '">');
-
                   resolve({ default: response.url });
                 });
 
@@ -279,6 +326,44 @@
     );
   }
 });
+
+//add new custom group 
+// 
+$.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    $("#customgroupsubmit").click(function(e){
+
+        // e.preventDefault();
+
+        var type = $("input[name=type]").val();
+        var name = $("input[name=namecustomgroup]").val();
+        var description = $("textarea[name=descriptioncustomgroup]").val();
+        var url = '{{ route("materialssuppliers.admin.customer-groups.store") }}';
+
+        $.ajax({
+           url:url,
+           method:'POST',
+           data:{type:type, name:name, description:description }})
+           .done(function (response) {
+            $('#customer_group_id').append('<option value="'+response.id+'" selected="selected">'+response.name+'</option>');
+            // $("#primaryModal").modal("hide");
+            $('.modal').each(function(){$(this).modal('hide');});
+            // $("#primaryModal").removeAttr("style");
+            // $(".modal-backdrop").remove();
+            $('#primaryModal').find('#form2')[0].reset();
+           
+            });
+            // .error(function(error){
+            //   console.log(error)
+            // });
+         
+      
+	});
+
 </script>
 
 @endsection

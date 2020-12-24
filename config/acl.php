@@ -265,6 +265,13 @@
                 'opportunity_delete',
                 'opportunity_access',
             ],
+            'calls' => [
+                'calls_create',
+                'calls_edit',
+                'calls_show',
+                'calls_delete',
+                'calls_access',
+            ],
 
             'work_tracking' => [
                 'work_tracking_create',

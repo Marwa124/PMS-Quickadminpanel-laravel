@@ -1,9 +1,12 @@
 @extends('layouts.admin')
 @section('content')
 
+<div class="card">
+    <div class="card-header">
+        {{ trans('global.create') }} {{ trans('cruds.calls.title_singular') }}
+    </div>
 
-<div class="display" style="width:100%">
-    <div class="main">
+    <div class="card-body">
         <form class="d-flex justify-content-start" action="{{route('sales.admin.calls.store')}}" method="post">
             @csrf
             <div class="container">
@@ -92,15 +95,9 @@
                     </div>
 
         </form>
-    </div>
-
+   </div>
 </div>
-
-
-
-
 @endsection
 @section('scripts')
 @parent
-
 @endsection

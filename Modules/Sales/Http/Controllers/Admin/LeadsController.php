@@ -521,7 +521,7 @@ class LeadsController extends Controller
 
           public function massDestroy(MassDestroyInterestedInRequest $request)
           {
-              Lead::whereIn('id', request('ids'))->delete();
+              Call::whereIn('id', request('ids'))->delete();
       
               return response(null, Response::HTTP_NO_CONTENT);
           }

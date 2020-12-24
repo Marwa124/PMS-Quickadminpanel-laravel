@@ -18,4 +18,6 @@ class Call extends Model
     {
         return $this->belongsTo(Lead::class,'lead_id','id');
     }
+
+   
 }

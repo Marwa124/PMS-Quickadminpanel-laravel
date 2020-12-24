@@ -11,6 +11,7 @@ use Modules\Sales\Http\Requests\Update\UpdateProposalsItemRequest;
 use Modules\Sales\Entities\Proposal;
 use Modules\Sales\Entities\ProposalsItem;
 use Gate;
+use Modules\MaterialsSuppliers\Entities\CustomerGroup;
 use Illuminate\Http\Request;
 use Spatie\MediaLibrary\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,21 +23,22 @@ class ProposalsItemsController extends Controller
     public function index()
     {
         abort_if(Gate::denies('proposals_item_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
+       
+        $customerGroups = CustomerGroup::all();
         $proposalsItems = ProposalsItem::all();
 
         $proposals = Proposal::get();
 
-        return view('sales::admin.proposalsItems.index', compact('proposalsItems', 'proposals'));
+        return view('sales::admin.proposalsItems.index', compact('proposalsItems', 'proposals','customerGroups'));
     }
 
     public function create()
     {
         abort_if(Gate::denies('proposals_item_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        $customerGroups = CustomerGroup::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        // $proposals = Proposal::all()->pluck('reference_no', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $proposals = Proposal::all()->pluck('reference_no', 'id')->prepend(trans('global.pleaseSelect'), '');
-
-        return view('sales::admin.proposalsItems.create', compact('proposals'));
+        return view('sales::admin.proposalsItems.create', compact('customerGroups'));
     }
 
     public function store(StoreProposalsItemRequest $request)
@@ -102,6 +104,6 @@ class ProposalsItemsController extends Controller
         $model->exists = true;
         $media         = $model->addMediaFromRequest('upload')->toMediaCollection('ck-media');
 
-        return response()->json(['id' => $media->id, 'url' => $media->getUrl()], Response::HTTP_CREATED);
+        return response()->json(['id' => $media->id, 'url' => $media->getUrl(),'media'=>$media], Response::HTTP_CREATED);
     }
 }

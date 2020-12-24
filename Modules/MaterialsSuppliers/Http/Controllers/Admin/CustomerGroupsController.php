@@ -35,13 +35,22 @@ class CustomerGroupsController extends Controller
 
     public function store(StoreCustomerGroupRequest $request)
     {
-        $customerGroup = CustomerGroup::create($request->all());
+        
+        if($request->ajax()) // This is what i am needing.
+        {
+          
+          $customerGroup = CustomerGroup::create($request->all());
+          return response()->json(['id'=>$customerGroup->id,'name'=>$customerGroup->name], 200);
+        }else{
+            
 
-        if ($media = $request->input('ck-media', false)) {
-            Media::whereIn('id', $media)->update(['model_id' => $customerGroup->id]);
+            $customerGroup = CustomerGroup::create($request->all());
+
+            if ($media = $request->input('ck-media', false)) {
+                Media::whereIn('id', $media)->update(['model_id' => $customerGroup->id]);
+            }
+            return redirect()->route('materialssuppliers.admin.customer-groups.index');
         }
-
-        return redirect()->route('materialssuppliers.admin.customer-groups.index');
     }
 
     public function edit(CustomerGroup $customerGroup)

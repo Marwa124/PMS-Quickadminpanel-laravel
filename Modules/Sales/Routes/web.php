@@ -53,6 +53,8 @@ Route::group(['as' => 'sales.admin.', 'prefix' => 'admin/sales', 'namespace' => 
     //calls
     Route::get('calls/getdata', 'CallsController@getData')->name('calls.getdata');
     Route::resource('calls', 'CallsController');
+    Route::delete('calls_destroy', 'CallsController@massDestroy')->name('calls.massDestroy');
+
     //Finalresults
     Route::get('finalresult/getdata', 'FinalresultsController@getData')->name('finalresult.getdata');
     Route::resource('finalresults', 'FinalresultsController');

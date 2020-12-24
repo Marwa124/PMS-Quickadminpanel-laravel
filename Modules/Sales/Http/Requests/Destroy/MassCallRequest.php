@@ -1,12 +1,12 @@
 <?php
 
 namespace Modules\Sales\Http\Requests\Destroy;
-use Modules\Sales\Entities\Lead;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Modules\Sales\Entities\Calls;
 use Gate;
-use Symfony\Component\HttpFoundation\Response;
-class MassDestroyLeadRequest extends FormRequest
+use Symfony\Component\HttpFoundation\Response;                        
+class MassCallRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -15,9 +15,9 @@ class MassDestroyLeadRequest extends FormRequest
      */
     public function rules()
     {
-        return [
+         return [
             'ids'   => 'required|array',
-            'ids.*' => 'exists:leads,id',
+            'ids.*' => 'exists:calls,id',
         ];
     }
 
@@ -28,9 +28,7 @@ class MassDestroyLeadRequest extends FormRequest
      */
     public function authorize()
     {
-        abort_if(Gate::denies('lead_in_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
+        abort_if(Gate::denies('calls_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         return true;
-
     }
 }
