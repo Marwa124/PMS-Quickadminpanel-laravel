@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace Modules\MaterialsSuppliers\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\MediaUploadingTrait;
-use App\Http\Requests\MassDestroyPurchasePaymentRequest;
-use App\Http\Requests\StorePurchasePaymentRequest;
-use App\Http\Requests\UpdatePurchasePaymentRequest;
-use App\Models\Account;
+use Modules\MaterialsSuppliers\Http\Requests\Destroy\MassDestroyPurchasePaymentRequest;
+use Modules\MaterialsSuppliers\Http\Requests\Store\StorePurchasePaymentRequest;
+use Modules\MaterialsSuppliers\Http\Requests\Update\UpdatePurchasePaymentRequest;
+use Modules\HR\Entities\Account;
 use App\Models\Purchase;
-use App\Models\PurchasePayment;
+use Modules\MaterialsSuppliers\Entities\PurchasePayment;
 use App\Models\Transaction;
 use Gate;
 use Illuminate\Http\Request;
@@ -26,7 +26,7 @@ class PurchasePaymentsController extends Controller
 
         $purchasePayments = PurchasePayment::all();
 
-        return view('admin.purchasePayments.index', compact('purchasePayments'));
+        return view('materialssuppliers::admin.purchasePayments.index', compact('purchasePayments'));
     }
 
     public function create()
@@ -39,7 +39,7 @@ class PurchasePaymentsController extends Controller
 
         $transactions = Transaction::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        return view('admin.purchasePayments.create', compact('purchases', 'accounts', 'transactions'));
+        return view('materialssuppliers::admin.purchasePayments.create', compact('purchases', 'accounts', 'transactions'));
     }
 
     public function store(StorePurchasePaymentRequest $request)
@@ -50,7 +50,7 @@ class PurchasePaymentsController extends Controller
             Media::whereIn('id', $media)->update(['model_id' => $purchasePayment->id]);
         }
 
-        return redirect()->route('admin.purchase-payments.index');
+        return redirect()->route('materialssuppliers.admin.purchase-payments.index');
     }
 
     public function edit(PurchasePayment $purchasePayment)
@@ -65,14 +65,14 @@ class PurchasePaymentsController extends Controller
 
         $purchasePayment->load('purchase', 'account', 'transaction');
 
-        return view('admin.purchasePayments.edit', compact('purchases', 'accounts', 'transactions', 'purchasePayment'));
+        return view('materialssuppliers::admin.purchasePayments.edit', compact('purchases', 'accounts', 'transactions', 'purchasePayment'));
     }
 
     public function update(UpdatePurchasePaymentRequest $request, PurchasePayment $purchasePayment)
     {
         $purchasePayment->update($request->all());
 
-        return redirect()->route('admin.purchase-payments.index');
+        return redirect()->route('materialssuppliers.admin.purchase-payments.index');
     }
 
     public function show(PurchasePayment $purchasePayment)
@@ -81,7 +81,7 @@ class PurchasePaymentsController extends Controller
 
         $purchasePayment->load('purchase', 'account', 'transaction');
 
-        return view('admin.purchasePayments.show', compact('purchasePayment'));
+        return view('materialssuppliers::admin.purchasePayments.show', compact('purchasePayment'));
     }
 
     public function destroy(PurchasePayment $purchasePayment)

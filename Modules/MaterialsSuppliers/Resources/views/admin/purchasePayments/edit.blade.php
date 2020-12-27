@@ -3,17 +3,18 @@
 
 <div class="card">
     <div class="card-header">
-        {{ trans('global.create') }} {{ trans('cruds.purchasePayment.title_singular') }}
+        {{ trans('global.edit') }} {{ trans('cruds.purchasePayment.title_singular') }}
     </div>
 
     <div class="card-body">
-        <form method="POST" action="{{ route("admin.purchase-payments.store") }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ route("materialssuppliers.admin.purchase-payments.update", [$purchasePayment->id]) }}" enctype="multipart/form-data">
+            @method('PUT')
             @csrf
             <div class="form-group">
                 <label for="purchase_id">{{ trans('cruds.purchasePayment.fields.purchase') }}</label>
                 <select class="form-control select2 {{ $errors->has('purchase') ? 'is-invalid' : '' }}" name="purchase_id" id="purchase_id">
                     @foreach($purchases as $id => $purchase)
-                        <option value="{{ $id }}" {{ old('purchase_id') == $id ? 'selected' : '' }}>{{ $purchase }}</option>
+                        <option value="{{ $id }}" {{ (old('purchase_id') ? old('purchase_id') : $purchasePayment->purchase->id ?? '') == $id ? 'selected' : '' }}>{{ $purchase }}</option>
                     @endforeach
                 </select>
                 @if($errors->has('purchase'))
@@ -25,7 +26,7 @@
             </div>
             <div class="form-group">
                 <label for="payment_method">{{ trans('cruds.purchasePayment.fields.payment_method') }}</label>
-                <input class="form-control {{ $errors->has('payment_method') ? 'is-invalid' : '' }}" type="text" name="payment_method" id="payment_method" value="{{ old('payment_method', '') }}">
+                <input class="form-control {{ $errors->has('payment_method') ? 'is-invalid' : '' }}" type="text" name="payment_method" id="payment_method" value="{{ old('payment_method', $purchasePayment->payment_method) }}">
                 @if($errors->has('payment_method'))
                     <div class="invalid-feedback">
                         {{ $errors->first('payment_method') }}
@@ -35,7 +36,7 @@
             </div>
             <div class="form-group">
                 <label for="amount">{{ trans('cruds.purchasePayment.fields.amount') }}</label>
-                <input class="form-control {{ $errors->has('amount') ? 'is-invalid' : '' }}" type="text" name="amount" id="amount" value="{{ old('amount', '') }}">
+                <input class="form-control {{ $errors->has('amount') ? 'is-invalid' : '' }}" type="text" name="amount" id="amount" value="{{ old('amount', $purchasePayment->amount) }}">
                 @if($errors->has('amount'))
                     <div class="invalid-feedback">
                         {{ $errors->first('amount') }}
@@ -45,7 +46,7 @@
             </div>
             <div class="form-group">
                 <label for="currency">{{ trans('cruds.purchasePayment.fields.currency') }}</label>
-                <input class="form-control {{ $errors->has('currency') ? 'is-invalid' : '' }}" type="text" name="currency" id="currency" value="{{ old('currency', 'USD') }}">
+                <input class="form-control {{ $errors->has('currency') ? 'is-invalid' : '' }}" type="text" name="currency" id="currency" value="{{ old('currency', $purchasePayment->currency) }}">
                 @if($errors->has('currency'))
                     <div class="invalid-feedback">
                         {{ $errors->first('currency') }}
@@ -55,7 +56,7 @@
             </div>
             <div class="form-group">
                 <label for="notes">{{ trans('cruds.purchasePayment.fields.notes') }}</label>
-                <textarea class="form-control ckeditor {{ $errors->has('notes') ? 'is-invalid' : '' }}" name="notes" id="notes">{!! old('notes') !!}</textarea>
+                <textarea class="form-control ckeditor {{ $errors->has('notes') ? 'is-invalid' : '' }}" name="notes" id="notes">{!! old('notes', $purchasePayment->notes) !!}</textarea>
                 @if($errors->has('notes'))
                     <div class="invalid-feedback">
                         {{ $errors->first('notes') }}
@@ -65,7 +66,7 @@
             </div>
             <div class="form-group">
                 <label for="payment_date">{{ trans('cruds.purchasePayment.fields.payment_date') }}</label>
-                <input class="form-control date {{ $errors->has('payment_date') ? 'is-invalid' : '' }}" type="text" name="payment_date" id="payment_date" value="{{ old('payment_date') }}">
+                <input class="form-control date {{ $errors->has('payment_date') ? 'is-invalid' : '' }}" type="text" name="payment_date" id="payment_date" value="{{ old('payment_date', $purchasePayment->payment_date) }}">
                 @if($errors->has('payment_date'))
                     <div class="invalid-feedback">
                         {{ $errors->first('payment_date') }}
@@ -75,7 +76,7 @@
             </div>
             <div class="form-group">
                 <label for="paid_to">{{ trans('cruds.purchasePayment.fields.paid_to') }}</label>
-                <input class="form-control {{ $errors->has('paid_to') ? 'is-invalid' : '' }}" type="number" name="paid_to" id="paid_to" value="{{ old('paid_to', '') }}" step="1">
+                <input class="form-control {{ $errors->has('paid_to') ? 'is-invalid' : '' }}" type="number" name="paid_to" id="paid_to" value="{{ old('paid_to', $purchasePayment->paid_to) }}" step="1">
                 @if($errors->has('paid_to'))
                     <div class="invalid-feedback">
                         {{ $errors->first('paid_to') }}
@@ -85,7 +86,7 @@
             </div>
             <div class="form-group">
                 <label for="paid_by">{{ trans('cruds.purchasePayment.fields.paid_by') }}</label>
-                <input class="form-control {{ $errors->has('paid_by') ? 'is-invalid' : '' }}" type="number" name="paid_by" id="paid_by" value="{{ old('paid_by', '') }}" step="1">
+                <input class="form-control {{ $errors->has('paid_by') ? 'is-invalid' : '' }}" type="number" name="paid_by" id="paid_by" value="{{ old('paid_by', $purchasePayment->paid_by) }}" step="1">
                 @if($errors->has('paid_by'))
                     <div class="invalid-feedback">
                         {{ $errors->first('paid_by') }}
@@ -97,7 +98,7 @@
                 <label for="account_id">{{ trans('cruds.purchasePayment.fields.account') }}</label>
                 <select class="form-control select2 {{ $errors->has('account') ? 'is-invalid' : '' }}" name="account_id" id="account_id">
                     @foreach($accounts as $id => $account)
-                        <option value="{{ $id }}" {{ old('account_id') == $id ? 'selected' : '' }}>{{ $account }}</option>
+                        <option value="{{ $id }}" {{ (old('account_id') ? old('account_id') : $purchasePayment->account->id ?? '') == $id ? 'selected' : '' }}>{{ $account }}</option>
                     @endforeach
                 </select>
                 @if($errors->has('account'))
@@ -111,7 +112,7 @@
                 <label for="transaction_id">{{ trans('cruds.purchasePayment.fields.transaction') }}</label>
                 <select class="form-control select2 {{ $errors->has('transaction') ? 'is-invalid' : '' }}" name="transaction_id" id="transaction_id">
                     @foreach($transactions as $id => $transaction)
-                        <option value="{{ $id }}" {{ old('transaction_id') == $id ? 'selected' : '' }}>{{ $transaction }}</option>
+                        <option value="{{ $id }}" {{ (old('transaction_id') ? old('transaction_id') : $purchasePayment->transaction->id ?? '') == $id ? 'selected' : '' }}>{{ $transaction }}</option>
                     @endforeach
                 </select>
                 @if($errors->has('transaction'))

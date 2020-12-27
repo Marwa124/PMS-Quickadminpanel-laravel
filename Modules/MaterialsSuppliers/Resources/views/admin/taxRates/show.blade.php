@@ -9,7 +9,7 @@
     <div class="card-body">
         <div class="form-group">
             <div class="form-group">
-                <a class="btn btn-default" href="{{ route('admin.tax-rates.index') }}">
+                <a class="btn btn-default" href="{{ route('materialssuppliers.admin.tax-rates.index') }}">
                     {{ trans('global.back_to_list') }}
                 </a>
             </div>
@@ -39,20 +39,11 @@
                             {{ $taxRate->rate_percent }}
                         </td>
                     </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.taxRate.fields.permissions') }}
-                        </th>
-                        <td>
-                            @foreach($taxRate->permissions as $key => $permissions)
-                                <span class="label label-info">{{ $permissions->title }}</span>
-                            @endforeach
-                        </td>
-                    </tr>
+                   
                 </tbody>
             </table>
             <div class="form-group">
-                <a class="btn btn-default" href="{{ route('admin.tax-rates.index') }}">
+                <a class="btn btn-default" href="{{ route('materialssuppliers.admin.tax-rates.index') }}">
                     {{ trans('global.back_to_list') }}
                 </a>
             </div>

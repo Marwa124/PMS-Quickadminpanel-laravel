@@ -871,6 +871,16 @@
                             </a>
                         </li>
                     {{-- @endcan --}}
+                    {{-- @can('tax_rate_access') --}}
+                    <li class="c-sidebar-nav-item">
+                        <a href="{{ route("materialssuppliers.admin.tax-rates.index") }}" class="c-sidebar-nav-link {{ request()->is("materialssuppliers/admin/tax-rates") || request()->is("materialssuppliers/admin/tax-rates/*") ? "active" : "" }}">
+                            <i class="fa-fw far fa-circle c-sidebar-nav-icon">
+
+                            </i>
+                            {{ trans('cruds.taxRate.title') }}
+                        </a>
+                    </li>
+                   {{-- @endcan --}}
                     @can('purchase_access')
                         <li class="c-sidebar-nav-item">
                             <a href="{{ route("admin.purchases.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/purchases") || request()->is("admin/purchases/*") ? "active" : "" }}">
@@ -893,7 +903,7 @@
                     @endcan
                     @can('purchase_payment_access')
                         <li class="c-sidebar-nav-item">
-                            <a href="{{ route("admin.purchase-payments.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/purchase-payments") || request()->is("admin/purchase-payments/*") ? "active" : "" }}">
+                            <a href="{{ route("materialssuppliers.admin.purchase-payments.index") }}" class="c-sidebar-nav-link {{ request()->is("materialssuppliers/admin/purchase-payments") || request()->is("materialssuppliers/admin/purchase-payments/*") ? "active" : "" }}">
                                 <i class="fa-fw far fa-credit-card c-sidebar-nav-icon">
 
                                 </i>
@@ -973,16 +983,7 @@
                             </a>
                         </li>
                     @endcan
-                    @can('tax_rate_access')
-                        <li class="c-sidebar-nav-item">
-                            <a href="{{ route("admin.tax-rates.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/tax-rates") || request()->is("admin/tax-rates/*") ? "active" : "" }}">
-                                <i class="fa-fw far fa-circle c-sidebar-nav-icon">
-
-                                </i>
-                                {{ trans('cruds.taxRate.title') }}
-                            </a>
-                        </li>
-                    @endcan
+                  
                     @can('office_asset_access')
                         <li class="c-sidebar-nav-dropdown">
                             <a class="c-sidebar-nav-dropdown-toggle" href="#">

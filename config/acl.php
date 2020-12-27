@@ -505,7 +505,15 @@
                 'supplier_restore',
                 'supplier_force_delete',
             ],
-
+            'tax_rate' => [
+                'tax_rate_access',
+                'tax_rate_access',
+                'tax_rate_index',
+                'tax_rate_create',
+                'tax_rate_edit',
+                'tax_rate_delete',
+            ],
+          
             'customer_group' => [
                 'customer_group_access',
                 'customer_group_index',
@@ -513,7 +521,15 @@
                 'customer_group_edit',
                 'customer_group_delete',
             ],
-
+            'purchase_payment' => [
+                'purchase_payment_access',
+                'purchase_payment_access',
+                'purchase_payment_index',
+                'purchase_payment_create',
+                'purchase_payment_edit',
+                'purchase_payment_delete',
+            ],
+            
             // 'expenses' => [
             //     'index-expenses',
             //     'create-expenses',

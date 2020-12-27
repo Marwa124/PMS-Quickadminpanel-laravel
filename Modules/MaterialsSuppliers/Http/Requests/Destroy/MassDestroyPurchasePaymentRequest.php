@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Requests;
+namespace Modules\MaterialsSuppliers\Http\Requests\Destroy;
 
-use App\Models\PurchasePayment;
+use Modules\MaterialsSuppliers\Entities\PurchasePayment;
 use Gate;
 use Illuminate\Foundation\Http\FormRequest;
 use Symfony\Component\HttpFoundation\Response;

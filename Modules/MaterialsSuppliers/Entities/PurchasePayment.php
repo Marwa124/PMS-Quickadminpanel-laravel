@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace Modules\MaterialsSuppliers\Entities;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -52,7 +52,7 @@ class PurchasePayment extends Model implements HasMedia
 
     public function purchase()
     {
-        return $this->belongsTo(Purchase::class, 'purchase_id');
+        return $this->belongsTo(\App\Models\Purchase::class, 'purchase_id');
     }
 
     public function getPaymentDateAttribute($value)
@@ -67,11 +67,11 @@ class PurchasePayment extends Model implements HasMedia
 
     public function account()
     {
-        return $this->belongsTo(Account::class, 'account_id');
+        return $this->belongsTo(\Modules\HR\Entities\Account::class, 'account_id');
     }
 
     public function transaction()
     {
-        return $this->belongsTo(Transaction::class, 'transaction_id');
+        return $this->belongsTo(\App\Models\Transaction::class, 'transaction_id');
     }
 }

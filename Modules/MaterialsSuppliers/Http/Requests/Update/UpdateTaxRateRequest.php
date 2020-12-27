@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Requests;
+namespace Modules\MaterialsSuppliers\Http\Requests\Update;
 
-use App\Models\TaxRate;
+use Modules\MaterialsSuppliers\Entities\TaxRate;
 use Gate;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Response;

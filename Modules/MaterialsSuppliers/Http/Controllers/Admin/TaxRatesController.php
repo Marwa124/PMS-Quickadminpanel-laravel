@@ -1,13 +1,13 @@
 <?php
+namespace Modules\MaterialsSuppliers\Http\Controllers\Admin;
 
-namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\MassDestroyTaxRateRequest;
-use App\Http\Requests\StoreTaxRateRequest;
-use App\Http\Requests\UpdateTaxRateRequest;
-use App\Models\Permission;
-use App\Models\TaxRate;
+use Modules\MaterialsSuppliers\Http\Requests\Destroy\MassDestroyTaxRateRequest;
+use Modules\MaterialsSuppliers\Http\Requests\Store\StoreTaxRateRequest;
+use Modules\MaterialsSuppliers\Http\Requests\Update\UpdateTaxRateRequest;
+// use App\Models\Permission;
+use Modules\MaterialsSuppliers\Entities\TaxRate;
 use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,24 +20,33 @@ class TaxRatesController extends Controller
 
         $taxRates = TaxRate::all();
 
-        return view('admin.taxRates.index', compact('taxRates'));
+        return view('materialssuppliers::admin.taxRates.index', compact('taxRates'));
     }
 
     public function create()
     {
         abort_if(Gate::denies('tax_rate_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $permissions = Permission::all()->pluck('title', 'id');
+        // $permissions = Permission::all()->pluck('title', 'id');
 
-        return view('admin.taxRates.create', compact('permissions'));
+        return view('materialssuppliers::admin.taxRates.create');
     }
 
     public function store(StoreTaxRateRequest $request)
     {
-        $taxRate = TaxRate::create($request->all());
-        $taxRate->permissions()->sync($request->input('permissions', []));
+        if($request->ajax()) 
+        {
+          
+          $taxRate = TaxRate::create($request->all());
+          return response()->json(['id'=>$taxRate->id,'name'=>$taxRate->rate_percent], 200);
 
-        return redirect()->route('admin.tax-rates.index');
+        }else{
+        $taxRate = TaxRate::create($request->all());
+        // $taxRate->permissions()->sync($request->input('permissions', []));
+        return redirect()->route('materialssuppliers.admin.tax-rates.index');
+        
+       }
+
     }
 
     public function edit(TaxRate $taxRate)
@@ -46,26 +55,26 @@ class TaxRatesController extends Controller
 
         $permissions = Permission::all()->pluck('title', 'id');
 
-        $taxRate->load('permissions');
+        // $taxRate->load('permissions');
 
-        return view('admin.taxRates.edit', compact('permissions', 'taxRate'));
+        return view('materialssuppliers::admin.taxRates.edit', compact('taxRate'));
     }
 
     public function update(UpdateTaxRateRequest $request, TaxRate $taxRate)
     {
         $taxRate->update($request->all());
-        $taxRate->permissions()->sync($request->input('permissions', []));
+        // $taxRate->permissions()->sync($request->input('permissions', []));
 
-        return redirect()->route('admin.tax-rates.index');
+        return redirect()->route('materialssuppliers.admin.tax-rates.index');
     }
 
     public function show(TaxRate $taxRate)
     {
         abort_if(Gate::denies('tax_rate_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $taxRate->load('permissions');
+        // $taxRate->load('permissions');
 
-        return view('admin.taxRates.show', compact('taxRate'));
+        return view('materialssuppliers::admin.taxRates.show',compact('taxRate'));
     }
 
     public function destroy(TaxRate $taxRate)

@@ -204,9 +204,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::post('transfers/ckmedia', 'TransfersController@storeCKEditorImages')->name('transfers.storeCKEditorImages');
     Route::resource('transfers', 'TransfersController');
 
-    // Tax Rates
-    Route::delete('tax-rates/destroy', 'TaxRatesController@massDestroy')->name('tax-rates.massDestroy');
-    Route::resource('tax-rates', 'TaxRatesController');
+
 
     // Stock Categories
     Route::delete('stock-categories/destroy', 'StockCategoriesController@massDestroy')->name('stock-categories.massDestroy');

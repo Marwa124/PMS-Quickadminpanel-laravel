@@ -28,14 +28,12 @@
                             {{ trans('cruds.proposalsItem.fields.id') }}
                         </th>
                         <th>
-                            {{ trans('cruds.proposalsItem.fields.proposals') }}
+                            {{ trans('cruds.proposalsItem.fields.group_name') }}
                         </th>
                         <th>
                             {{ trans('cruds.proposalsItem.fields.name') }}
                         </th>
-                        <th>
-                            {{ trans('cruds.proposalsItem.fields.group_name') }}
-                        </th>
+                       
                         <th>
                             {{ trans('cruds.proposalsItem.fields.brand') }}
                         </th>
@@ -44,6 +42,9 @@
                         </th>
                         <th>
                             {{ trans('cruds.proposalsItem.fields.tax_name') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.proposalsItem.fields.tax_cost') }}
                         </th>
                         <th>
                             {{ trans('cruds.proposalsItem.fields.unit') }}
@@ -61,8 +62,8 @@
                         <td>
                             <select class="search">
                                 <option value>{{ trans('global.all') }}</option>
-                                @foreach($proposals as $key => $item)
-                                    <option value="{{ $item->reference_no }}">{{ $item->reference_no }}</option>
+                                @foreach($customerGroups as $key => $item)
+                                    <option value="{{ $item->name }}">{{ $item->name }}</option>
                                 @endforeach
                             </select>
                         </td>
@@ -98,14 +99,12 @@
                                 {{ $proposalsItem->id ?? '' }}
                             </td>
                             <td>
-                                {{ $proposalsItem->proposals->reference_no ?? '' }}
+                                {{ $proposalsItem->customer_group->name ?? '' }}
                             </td>
                             <td>
                                 {{ $proposalsItem->name ?? '' }}
                             </td>
-                            <td>
-                                {{ $proposalsItem->group_name ?? '' }}
-                            </td>
+                           
                             <td>
                                 {{ $proposalsItem->brand ?? '' }}
                             </td>
@@ -113,7 +112,10 @@
                                 {{ $proposalsItem->part ?? '' }}
                             </td>
                             <td>
-                                {{ $proposalsItem->tax_name ?? '' }}
+                                {{ $proposalsItem->taxes->name ?? '' }}
+                            </td>
+                            <td>
+                                {{ $proposalsItem->taxes->rate_percent .'%'?? '' }}
                             </td>
                             <td>
                                 {{ $proposalsItem->unit ?? '' }}

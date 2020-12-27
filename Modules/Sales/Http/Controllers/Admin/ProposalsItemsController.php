@@ -10,6 +10,7 @@ use Modules\Sales\Http\Requests\Store\StoreProposalsItemRequest;
 use Modules\Sales\Http\Requests\Update\UpdateProposalsItemRequest;
 use Modules\Sales\Entities\Proposal;
 use Modules\Sales\Entities\ProposalsItem;
+use Modules\MaterialsSuppliers\Entities\TaxRate;
 use Gate;
 use Modules\MaterialsSuppliers\Entities\CustomerGroup;
 use Illuminate\Http\Request;
@@ -27,22 +28,22 @@ class ProposalsItemsController extends Controller
         $customerGroups = CustomerGroup::all();
         $proposalsItems = ProposalsItem::all();
 
-        $proposals = Proposal::get();
+        // $proposals = Proposal::get();
 
-        return view('sales::admin.proposalsItems.index', compact('proposalsItems', 'proposals','customerGroups'));
+        return view('sales::admin.proposalsItems.index', compact('proposalsItems', 'customerGroups'));
     }
 
     public function create()
     {
         abort_if(Gate::denies('proposals_item_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $customerGroups = CustomerGroup::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
-        // $proposals = Proposal::all()->pluck('reference_no', 'id')->prepend(trans('global.pleaseSelect'), '');
-
-        return view('sales::admin.proposalsItems.create', compact('customerGroups'));
+        $taxRates = TaxRate::all()->pluck('rate_percent', 'id')->prepend(trans('global.pleaseSelect'), '');
+        return view('sales::admin.proposalsItems.create', compact('customerGroups','taxRates'));
     }
 
     public function store(StoreProposalsItemRequest $request)
     {
+        // dd($request);
         $proposalsItem = ProposalsItem::create($request->all());
 
         if ($media = $request->input('ck-media', false)) {
@@ -56,11 +57,11 @@ class ProposalsItemsController extends Controller
     {
         abort_if(Gate::denies('proposals_item_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $proposals = Proposal::all()->pluck('reference_no', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $customerGroups = CustomerGroup::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         $proposalsItem->load('proposals');
-
-        return view('sales::admin.proposalsItems.edit', compact('proposals', 'proposalsItem'));
+        $taxRates = TaxRate::all()->pluck('rate_percent', 'id')->prepend(trans('global.pleaseSelect'), '');
+        return view('sales::admin.proposalsItems.edit', compact('customerGroups', 'proposalsItem','taxRates'));
     }
 
     public function update(UpdateProposalsItemRequest $request, ProposalsItem $proposalsItem)
