@@ -7,11 +7,13 @@
 require('./bootstrap');
 import AssignPermissionsToUser from './components/AssignPermissionsToUser.vue';
 import RolesIndex from './components/roles/Index.vue';
+import DepartmentList from './components/departments/Index.vue';
 import i18n from './plugins/i18n' // localization
 import './filter';
+import DepartmentCreate from './components/departments/Create.vue';
+import DepartmentForm from './components/departments/Form.vue';
 
 window.Vue = require('vue');
-
 
 // import router from './router'
 
@@ -19,11 +21,18 @@ window.Vue = require('vue');
 import BtnCreate from './components/form/BtnCreate'
 Vue.component('BtnCreate', BtnCreate)
 
+import DataTables from './components/dataTables/Filter.vue'; /// Data Tables
+Vue.component('DataTables', DataTables)
+import Pagination from './components/dataTables/Pagination.vue'; /// Data Tables
+Vue.component('Pagination', Pagination)
+import TableHead from './components/dataTables/TableHead.vue'; /// Data Tables
+Vue.component('TableHead', TableHead)
+
+
 import BtnUpdate from './components/form/BtnUpdate'
 Vue.component('BtnUpdate', BtnUpdate)
 
-// const files = require.context('./', true, /\.vue$/i)
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
+
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('assign-permissions-to-user', require('./components/AssignPermissionsToUser.vue'));
 
@@ -38,7 +47,11 @@ const app = new Vue({
     i18n,
     components: {
         AssignPermissionsToUser,
-        RolesIndex
+        RolesIndex,
+        DepartmentList,
+        DepartmentCreate,
+        DepartmentForm,
+        DataTables, // Data Tables
     },
     // router
 });

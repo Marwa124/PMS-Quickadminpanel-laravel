@@ -2,7 +2,8 @@
 
 namespace Modules\HR\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use Modules\HR\Http\Controllers\Controller;
+
 use Modules\HR\Entities\AccountDetail;
 use Modules\HR\Entities\Department;
 use App\Models\User;
@@ -33,15 +34,20 @@ class DepartmentsController extends Controller
 
         }
         return view('hr::admin.departments.index');
-
-        return view('hr::admin.departments.index', compact('result', 'department', 'department_head', 'designationId', 'designationName'));
     }
-
+    
     public function designationsDepartment(Request $request)
     {
         $designations =  Designation::where('department_id', $request->department_id)->pluck('designation_name', 'id');
 
         return response()->json(json_decode($designations));
+    }
+
+    public function departmentList()
+    {
+        abort_if(Gate::denies('department_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        return view('hr::admin.departments.list');
     }
 
     public function create()

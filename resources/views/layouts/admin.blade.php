@@ -465,7 +465,6 @@
 
     {{-- Social Media Share Links --}}
     <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5fa91eb31c6d29d3"></script>
-
 </body>
 
 </html>

@@ -345,6 +345,36 @@
                             </a>
                         </li>
                     @endcan
+
+
+
+                    {{-- @can('settings') --}}
+                        <li class="c-sidebar-nav-dropdown">
+                            <a class="c-sidebar-nav-dropdown-toggle" href="#">
+                                <i class="fa-fw fas fa-globe-africa c-sidebar-nav-icon">
+                                </i>
+                                Settings
+                            </a>
+                            <ul class="c-sidebar-nav-dropdown-items">
+                                @can('department_access')
+                                    <li class="c-sidebar-nav-item">
+                                        <a href="{{ route("hr.admin.departments.list") }}" class="c-sidebar-nav-link {{ request()->is("admin/departments") || request()->is("admin/departments/*") ? "active" : "" }}">
+                                            <i class="fa-fw fas fa-ticket-alt c-sidebar-nav-icon">
+                                            </i>
+                                            Department List
+                                        </a>
+                                    </li>
+                                @endcan
+                            </ul>
+                        </li>
+                    {{-- @endcan --}}
+
+
+
+
+
+
+
                 </ul>
             </li>
         @endcan
@@ -377,46 +407,6 @@
                             </a>
                         </li>
                     @endcan
-                    {{-- @can('salary_allowance_access')
-                        <li class="c-sidebar-nav-item">
-                            <a href="{{ route("payroll.admin.salary-allowances.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/salary-allowances") || request()->is("admin/salary-allowances/*") ? "active" : "" }}">
-                                <i class="fa-fw far fa-circle c-sidebar-nav-icon">
-
-                                </i>
-                                {{ trans('cruds.salaryAllowance.title') }}
-                            </a>
-                        </li>
-                    @endcan
-                    @can('salary_deduction_access')
-                        <li class="c-sidebar-nav-item">
-                            <a href="{{ route("payroll.admin.salary-deductions.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/salary-deductions") || request()->is("admin/salary-deductions/*") ? "active" : "" }}">
-                                <i class="fa-fw far fa-circle c-sidebar-nav-icon">
-
-                                </i>
-                                {{ trans('cruds.salaryDeduction.title') }}
-                            </a>
-                        </li>
-                    @endcan --}}
-{{--<<<<<<< HEAD--}}
-{{--<<<<<<< HEAD--}}
-{{--=======--}}
-{{-->>>>>>> aa652cf4ba0582a41789ba280011a914311f4fbe--}}
-                    {{--
-                    @can('salary_payment_allowance_access')
-                        <li class="c-sidebar-nav-item">
-                            <a href="{{ route("payroll.admin.salary-payment-allowances.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/salary-payment-allowances") || request()->is("admin/salary-payment-allowances/*") ? "active" : "" }}">
-                                <i class="fa-fw fas fa-circle c-sidebar-nav-icon">
-
-                                </i>
-                                {{ trans('cruds.salaryPaymentAllowance.title') }}
-                            </a>
-                        </li>
-                    @endcan --}}
-{{--<<<<<<< HEAD--}}
-{{--=======--}}
-{{-->>>>>>> 02ab76f1501d64e5276394715ca635f94cd52bff--}}
-{{--=======--}}
-{{-->>>>>>> aa652cf4ba0582a41789ba280011a914311f4fbe--}}
                     @can('salary_payment_detail_access')
                         <li class="c-sidebar-nav-item">
                             <a href="{{ route("payroll.admin.salary-payment-details.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/salary-payment-details") || request()->is("admin/salary-payment-details/*") ? "active" : "" }}">

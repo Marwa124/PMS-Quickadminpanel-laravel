@@ -14,13 +14,9 @@
                 <label class="required" for="user_id">{{ trans('cruds.leaveApplication.fields.user') }}</label>
                 <select class="form-control select2 {{ $errors->has('user') ? 'is-invalid' : '' }}" name="user_id" id="user_id" required>
                     @foreach( $users as $key => $user)
-                        @if (is_array($user))
-                            @foreach( $user as $id => $val)
-                                <option value="{{ $id }}" {{ old('user_id') == $id ? 'selected' : '' }}>{{ $val }}</option>
-                            @endforeach
-                        @else
-                            <option value="{{ $key }}" {{ old('user_id') == $key ? 'selected' : '' }}>{{ $user }}</option>
-                        @endif
+                        @foreach( $user as $id => $val)
+                            <option value="{{ $id }}" {{ old('user_id') == $id ? 'selected' : '' }}>{{ $val }}</option>
+                        @endforeach
                     @endforeach
                 </select>
                 @if($errors->has('user'))

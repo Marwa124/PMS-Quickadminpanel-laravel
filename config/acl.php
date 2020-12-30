@@ -90,6 +90,7 @@
                 'employee_show', // done
                 'employee_delete', // done
                 'employee_access', // done
+                'settings', // done
             ],
 
             'time_management' => [
