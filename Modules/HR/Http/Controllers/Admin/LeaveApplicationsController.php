@@ -103,6 +103,7 @@ class LeaveApplicationsController extends Controller
                     $editGate      = '';
                     $approveReject = 'approve_reject';
                     $deleteGate    = 'leave_application_delete';
+                    $deleteRestore = '';
                     $modalId       = 'hr.';
                     $crudRoutePart = 'leave-applications';
                 }

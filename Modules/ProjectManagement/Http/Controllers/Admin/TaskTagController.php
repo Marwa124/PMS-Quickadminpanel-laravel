@@ -3,8 +3,8 @@
 namespace Modules\ProjectManagement\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Modules\ProjectManagement\Http\Requests\MassDestroySubDepartmentRequest;
-use Modules\ProjectManagement\Http\Requests\StoreSubDepartmentRequest;
+use Modules\ProjectManagement\Http\Requests\MassDestroyTaskTagRequest;
+use Modules\ProjectManagement\Http\Requests\StoreTaskTagRequest;
 use Modules\ProjectManagement\Http\Requests\UpdateTaskTagRequest;
 use Modules\ProjectManagement\Entities\TaskTag;
 use Gate;
@@ -29,7 +29,7 @@ class TaskTagController extends Controller
         return view('projectmanagement::admin.taskTags.create');
     }
 
-    public function store(StoreSubDepartmentRequest $request)
+    public function store(StoreTaskTagRequest $request)
     {
         $taskTag = TaskTag::create($request->all());
 
@@ -66,7 +66,7 @@ class TaskTagController extends Controller
         return back();
     }
 
-    public function massDestroy(MassDestroySubDepartmentRequest $request)
+    public function massDestroy(MassDestroyTaskTagRequest $request)
     {
         TaskTag::whereIn('id', request('ids'))->delete();
 

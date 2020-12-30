@@ -52,7 +52,7 @@
                             {{ trans('cruds.project.fields.calculate_progress') }}
                         </th>
                         <td>
-                            {{ $project->calculate_progress }}
+                            {{ $project->calculate_progress ? $project->calculate_progress.'%' : '' }}
                         </td>
                     </tr>
                     <tr>

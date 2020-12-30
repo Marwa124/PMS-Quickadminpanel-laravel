@@ -2,22 +2,34 @@
 @extends('layouts.admin')
 @section('content')
 
-<div class="main" style="width:100%">
-    <div >
-        <form class="" action="{{route('sales.admin.results.store')}}" method="post">
+
+
+<div class="card">
+    <div class="card-header">
+        {{ trans('global.create') }} {{ trans('cruds.Results.title_singular') }}
+    </div>
+
+    <div class="card-body">
+        <form method="POST" action="{{route('sales.admin.results.store')}}" enctype="multipart/form-data">
             @csrf
-            <div class="form-group mr-5">
-                <label for="exampleFormControlInput1">Name</label>
-                <input type="text" name="name" class="form-control w-50" id="exampleFormControlInput1" placeholder="Type Name">
+            <div class="form-group">
+                <label class="required" for="name">{{ trans('cruds.Results.fields.name') }}</label>
+                <input class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" type="text" name="name" id="name" value="{{ old('name', '') }}" required>
+                @if($errors->has('name'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('name') }}
+                    </div>
+                @endif
+                <span class="help-block">{{ trans('cruds.Results.fields.name_helper') }}</span>
             </div>
-            <div class="form-group mr-5">
-            <button   type="submit" class="btn btn-info" ><i></i>Save Changes</button>
+            <div class="form-group">
+                <button class="btn btn-danger" type="submit">
+                    {{ trans('global.save') }}
+                </button>
             </div>
         </form>
     </div>
-
 </div>
-
 
 
 

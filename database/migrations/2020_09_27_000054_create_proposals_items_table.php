@@ -14,14 +14,14 @@ class CreateProposalsItemsTable extends Migration
             $table->longText('description')->nullable();
             $table->string('group_name')->nullable();
             $table->string('brand')->nullable();
-            $table->string('delivery');
+            $table->string('delivery')->nullable();
             $table->string('part');
             $table->float('quantity', 15, 2)->nullable();
             $table->float('unit_cost', 15, 2)->nullable();
             $table->integer('margin')->nullable();
             $table->decimal('selling_price', 15, 2)->nullable();
-            $table->decimal('total_cost_price', 15, 2);
-            $table->float('tax_rate', 15, 2);
+            $table->decimal('total_cost_price', 15, 2)->nullable();
+            $table->float('tax_rate', 15, 2)->nullable();
             $table->string('tax_name')->nullable();
             $table->decimal('tax_total', 15, 2)->nullable();
             $table->decimal('tax_cost', 15, 2)->nullable();

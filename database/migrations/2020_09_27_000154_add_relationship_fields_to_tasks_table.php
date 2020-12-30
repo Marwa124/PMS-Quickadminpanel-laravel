@@ -21,7 +21,7 @@ class AddRelationshipFieldsToTasksTable extends Migration
             $table->foreign('opportunities_id', 'opportunities_fk_2176618')->references('id')->on('opportunities');
             $table->unsignedInteger('work_tracking_id')->nullable();
             $table->foreign('work_tracking_id', 'work_tracking_fk_2176619')->references('id')->on('work_trackings');
-            $table->unsignedInteger('lead_id')->nullable();
+            $table->unsignedBigInteger('lead_id')->nullable();
             $table->foreign('lead_id', 'lead_fk_2176628')->references('id')->on('leads');
         });
     }

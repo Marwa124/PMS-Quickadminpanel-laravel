@@ -17,27 +17,27 @@ class UpdateProposalsItemRequest extends FormRequest
     public function rules()
     {
         return [
-            'proposals_id'     => [
-                'required',
-                'integer',
-            ],
+            // 'proposals_id'     => [
+            //     'required',
+            //     'integer',
+            // ],
             'name'             => [
                 'string',
                 'required',
                 'unique:proposals_items,name,' . request()->route('proposals_item')->id,
             ],
-            'group_name'       => [
-                'string',
+            'customer_group_id'       => [
+                'integer',
                 'nullable',
             ],
             'brand'            => [
                 'string',
                 'nullable',
             ],
-            'delivery'         => [
-                'string',
-                'required',
-            ],
+            // 'delivery'         => [
+            //     'string',
+            //     'required',
+            // ],
             'part'             => [
                 'string',
                 'required',
@@ -54,31 +54,31 @@ class UpdateProposalsItemRequest extends FormRequest
                 'min:-2147483648',
                 'max:2147483647',
             ],
-            'total_cost_price' => [
-                'required',
-            ],
-            'tax_rate'         => [
-                'numeric',
-                'required',
-            ],
-            'tax_name'         => [
-                'string',
-                'nullable',
-            ],
-            'order'            => [
-                'nullable',
-                'integer',
-                'min:-2147483648',
-                'max:2147483647',
-            ],
+            // 'total_cost_price' => [
+            //     'required',
+            // ],
+            // 'tax_rate'         => [
+            //     'numeric',
+            //     'required',
+            // ],
+            // 'tax_name'         => [
+            //     'string',
+            //     'nullable',
+            // ],
+            // 'order'            => [
+            //     'nullable',
+            //     'integer',
+            //     'min:-2147483648',
+            //     'max:2147483647',
+            // ],
             'unit'             => [
                 'string',
                 'required',
             ],
-            'hsn_code'         => [
-                'string',
-                'nullable',
-            ],
+            // 'hsn_code'         => [
+            //     'string',
+            //     'nullable',
+            // ],
         ];
     }
 }

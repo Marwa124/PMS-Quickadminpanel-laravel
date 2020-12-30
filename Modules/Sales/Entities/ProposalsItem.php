@@ -25,7 +25,8 @@ class ProposalsItem extends Model implements HasMedia
         'proposals_id',
         'name',
         'description',
-        'group_name',
+        'customer_group_id',
+        // 'group_name',
         'brand',
         'delivery',
         'part',
@@ -34,13 +35,14 @@ class ProposalsItem extends Model implements HasMedia
         'margin',
         'selling_price',
         'total_cost_price',
-        'tax_rate',
-        'tax_name',
-        'tax_total',
-        'tax_cost',
+        'tax_id',
+        // 'tax_rate',
+        // 'tax_name',
+        // 'tax_total',
+        // 'tax_cost',
         'order',
         'unit',
-        'hsn_code',
+        // 'hsn_code',
         'created_at',
         'updated_at',
         'deleted_at',
@@ -56,9 +58,16 @@ class ProposalsItem extends Model implements HasMedia
         $this->addMediaConversion('thumb')->fit('crop', 50, 50);
         $this->addMediaConversion('preview')->fit('crop', 120, 120);
     }
-
     public function proposals()
     {
         return $this->belongsTo(Proposal::class, 'proposals_id');
+    }
+    public function customer_group()
+    {
+        return $this->belongsTo(\Modules\MaterialsSuppliers\Entities\CustomerGroup::class,'customer_group_id');
+    }
+    public function taxes()
+    {
+        return $this->belongsTo(\Modules\MaterialsSuppliers\Entities\TaxRate::class, 'tax_id');
     }
 }

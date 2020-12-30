@@ -29,6 +29,8 @@ class MassDestroyCountryRequest extends FormRequest
      */
     public function authorize()
     {
+        abort_if(Gate::denies('countries_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         return true;
     }
 }
