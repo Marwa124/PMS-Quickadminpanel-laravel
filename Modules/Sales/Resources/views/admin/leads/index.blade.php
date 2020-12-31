@@ -329,9 +329,9 @@
 @section('scripts')
 @parent
    <script>
-            $('#exampleModal').on('show.bs.modal', function (event) {
+            $('#exampleModal').on('click', function (event) {
                 var button = $(event.relatedTarget) // Button that triggered the modal
-                var client_id_on_pms = button.data('client_id_on_pms') // Extract info from data-* attributes
+                var client_id_on_pms = $('#sara').data('client_id_on_pms') // Extract info from data-* attributes
                 var type_id = button.data('type_id') // Extract info from data-* attributes
                 var product = button.data('product') // Extract info from data-* attributes
                 var company = button.data('company') // Extract info from data-* attributes

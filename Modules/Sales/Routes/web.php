@@ -18,6 +18,8 @@
 Route::group(['as' => 'sales.admin.', 'prefix' => 'admin/sales', 'namespace' => 'Admin', 'middleware' => ['auth']],function() {
      // Proposals
     Route::delete('proposals/destroy', 'ProposalsController@massDestroy')->name('proposals.massDestroy');
+    Route::post('proposals/getmodule', 'ProposalsController@getmodule')->name('proposals.getmodule');
+    Route::post('proposals/getproposalitem', 'ProposalsController@get_item_by_id')->name('proposals.getproposalitem');
     Route::post('proposals/media', 'ProposalsController@storeMedia')->name('proposals.storeMedia');
     Route::post('proposals/ckmedia', 'ProposalsController@storeCKEditorImages')->name('proposals.storeCKEditorImages');
     Route::resource('proposals', 'ProposalsController');
