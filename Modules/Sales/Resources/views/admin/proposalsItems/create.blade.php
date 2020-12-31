@@ -164,10 +164,10 @@
             <label class="required" for="tax_rate">{{ trans('cruds.proposalsItem.fields.tax_rate') }}</label>
             <div class="input-group">
                 <select class="form-control  {{ $errors->has('tax_rate') ? 'is-invalid' : '' }}"
-                    name="tax_id" id="tax_id" required>
+                    name="tax_id" id="tax_id" required >
                     @foreach($taxRates as $id => $taxRate)
                     <option value="{{ $id }}" {{ old('tax_id') == $id ? 'selected' : '' }}>
-                        {{ $taxRate }} {{ $loop->iteration != 1 ? '%' : '' }}</option>
+                        {{ $taxRate }} {{ $loop->iteration != 1 ? '%' : '%' }}</option>
                     @endforeach
                 </select>
                

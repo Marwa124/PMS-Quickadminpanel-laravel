@@ -37,13 +37,28 @@ class ProposalsItemsController extends Controller
     {
         abort_if(Gate::denies('proposals_item_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $customerGroups = CustomerGroup::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
-        $taxRates = TaxRate::all()->pluck('rate_percent', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $taxRates = TaxRate::all()->pluck('rate_percent', 'id');
         return view('sales::admin.proposalsItems.create', compact('customerGroups','taxRates'));
     }
 
     public function store(StoreProposalsItemRequest $request)
     {
         // dd($request);
+        //convert taxes to json
+        // $total_tax="";
+        // if (!empty($request->tax_id)) {
+
+        //         $tax_info = TaxRate::whereIn('id', $request->tax_id)->pluck('rate_percent');
+        //         $total_tax =$tax_info;
+        // }
+        // if (!empty($total_tax)) {
+
+        //     $request['tax_id'] = null;
+        //     $request['tax_rate'] = json_encode($total_tax);
+        // } else {
+        //     $request['tax_rate'] = null;
+        // }
+        // dd($request->all());
         $proposalsItem = ProposalsItem::create($request->all());
 
         if ($media = $request->input('ck-media', false)) {

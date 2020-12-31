@@ -115,7 +115,7 @@
                                 {{ $proposalsItem->taxes->name ?? '' }}
                             </td>
                             <td>
-                                {{ $proposalsItem->taxes->rate_percent .'%'?? '' }}
+                                {{ @$proposalsItem->taxes->rate_percent .'%'?? '' }}
                             </td>
                             <td>
                                 {{ $proposalsItem->unit ?? '' }}
