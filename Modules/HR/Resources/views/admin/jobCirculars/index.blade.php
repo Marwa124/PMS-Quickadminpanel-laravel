@@ -158,11 +158,11 @@
                                         Details & Apply
                                     </a>
                                 @endif
-                                @can('job_circular_edit')
+                                {{-- @can('job_circular_edit')
                                     <a class="btn btn-xs btn-info" href="{{ route('hr.admin.job-circulars.edit', $jobCircular->id) }}">
                                         {{ trans('global.edit') }}
                                     </a>
-                                @endcan
+                                @endcan --}}
 
                                 @can('job_circular_delete')
                                     <form action="{{ route('hr.admin.job-circulars.destroy', $jobCircular->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">

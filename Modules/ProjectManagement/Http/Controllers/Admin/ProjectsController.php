@@ -104,10 +104,6 @@ class ProjectsController extends Controller
     {
         abort_if(Gate::denies('project_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-<<<<<<< HEAD
-        // dd($project->deleted_at);
-=======
->>>>>>> 41879e27b16f03b2061e194d02f49964f5b58a79
         if($project->deleted_at == 0){
             $project->update(['deleted_at' => 1]);
         }else{

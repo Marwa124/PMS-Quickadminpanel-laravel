@@ -4,6 +4,7 @@ namespace Modules\HR\Http\Controllers\Admin;
 
 use Modules\HR\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\MediaUploadingTrait;
+use App\Models\User;
 use Modules\HR\Http\Requests\Destroy\MassDestroyJobApplicationRequest;
 use Modules\HR\Http\Requests\Store\StoreJobApplicationRequest;
 use Modules\HR\Http\Requests\Update\UpdateJobApplicationRequest;
@@ -11,6 +12,8 @@ use Modules\HR\Entities\JobApplication;
 use Modules\HR\Entities\JobCircular;
 use Gate;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Modules\HR\Entities\AccountDetail;
 use Spatie\MediaLibrary\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -70,24 +73,58 @@ class JobApplicationController extends Controller
     //     return view('hr::admin.jobApplications.edit', compact('job_circulars', 'jobApplication'));
     // }
 
-    // public function update(UpdateJobApplicationRequest $request, JobApplication $jobApplication)
-    // {
-    //     $jobApplication->update($request->all());
+    // Update Application Status
+    public function update(JobApplication $jobApplication)
+    {
+        $application_color = $jobApplication::STATUS_COLOR[Request()->application_status];
+        $application_text  = $jobApplication::APPLICATION_STATUS_SELECT[Request()->application_status];
 
-    //     if ($request->input('resume', false)) {
-    //         if (!$jobApplication->resume || $request->input('resume') !== $jobApplication->resume->file_name) {
-    //             if ($jobApplication->resume) {
-    //                 $jobApplication->resume->delete();
-    //             }
+        $jobApplication->update(['application_status' => Request()->application_status]);
+        if(Request()->application_status == 'is_employee'){
+            DB::beginTransaction();
 
-    //             $jobApplication->addMedia(storage_path('tmp/uploads/' . $request->input('resume')))->toMediaCollection('resume');
-    //         }
-    //     } elseif ($jobApplication->resume) {
-    //         $jobApplication->resume->delete();
-    //     }
+            try {
+                $userObject = User::create([
+                    'name' => explode(' ', $jobApplication->name)[0],
+                    'email' => $jobApplication->email,
+                    'password' => explode(' ', $jobApplication->name)[0] . '@123',
+                ]);
+    
+                AccountDetail::create([
+                    'fullname' => $jobApplication->name,
+                    'mobile'   => $jobApplication->mobile,
+                    'user_id'  => $userObject->id,
+                    'designation_id' => $jobApplication->job_circular()->first()->designation_id,
+                ]);
+                DB::commit();
 
-    //     return redirect()->route('hr.admin.job-applications.index');
-    // }
+            } catch (\Exception $e) {
+                DB::rollBack();
+                return response()->json(['error' => $e->getMessage()]);
+            }
+        }
+
+
+        return response()->json([
+            'application_color' => $application_color,
+            'application_text'  => $application_text,
+        ]);
+        // $jobApplication->update($request->all());
+
+        // if ($request->input('resume', false)) {
+        //     if (!$jobApplication->resume || $request->input('resume') !== $jobApplication->resume->file_name) {
+        //         if ($jobApplication->resume) {
+        //             $jobApplication->resume->delete();
+        //         }
+
+        //         $jobApplication->addMedia(storage_path('tmp/uploads/' . $request->input('resume')))->toMediaCollection('resume');
+        //     }
+        // } elseif ($jobApplication->resume) {
+        //     $jobApplication->resume->delete();
+        // }
+
+        // return redirect()->route('hr.admin.job-applications.index');
+    }
 
     // public function show(JobApplication $jobApplication)
     // {

@@ -1,7 +1,7 @@
 <?php
+namespace Modules\Sales\Http\Controllers\Admin;
 
-namespace App\Http\Controllers;
-
+use App\Http\Controllers\Controller;
 use App\Finalresult;
 use App\Imports\FinalresultssImport;
 use App\Lead;

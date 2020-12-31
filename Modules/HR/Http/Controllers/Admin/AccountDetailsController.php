@@ -37,6 +37,7 @@ class AccountDetailsController extends Controller
         foreach ($users as $key => $value) {
             $accountDetails[] = $value->accountDetail()->first();
         }
+
         return view('hr::admin.accountDetails.index', compact('accountDetails'));
     }
 

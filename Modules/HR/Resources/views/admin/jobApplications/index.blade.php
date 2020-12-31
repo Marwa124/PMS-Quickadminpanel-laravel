@@ -68,7 +68,7 @@
                             <select class="search">
                                 <option value>{{ trans('global.all') }}</option>
                                 @foreach($jobApplicationModel::APPLICATION_STATUS_SELECT as $key => $item)
-                                    <option value="{{ $key }}">{{ $item }}</option>
+                                    <option value="{{ $item }}">{{ $item }}</option>
                                 @endforeach
                             </select>
                         </td>
@@ -97,7 +97,7 @@
                             <td>
                                 {{ $jobApplication->mobile ?? '' }}
                             </td>
-                            <td class="text-center" style="color:#fff; background-color: {{ $jobApplicationModel::STATUS_COLOR[$jobApplication->application_status] ?? 'none' }};">
+                            <td class="text-center applicationColor" style="color:#fff; background-color: {{ $jobApplicationModel::STATUS_COLOR[$jobApplication->application_status] ?? 'none' }};">
                                 {{ $jobApplicationModel::APPLICATION_STATUS_SELECT[$jobApplication->application_status] ?? '' }}
                             </td>
                             <td>
@@ -114,7 +114,7 @@
 
                                 @can('job_application_edit')
                                     <!-- Button trigger modal -->
-                                    <button type="button" class="btn-xs btn-success changeStatusBtn" data-toggle="modal" data-target="#changeStatus">
+                                    <button type="button" class="btn-xs btn-success changeStatusBtn" data-toggle="modal" data-target="#changeStatus{{$jobApplication->id}}">
                                         Change Status
                                     </button>
 
@@ -122,7 +122,7 @@
                                     <div class="modal-sm fade"
                                         style="z-index: 9999; position: absolute; margin: auto;
                                         width: 100%; left: calc(100% - 70%);"
-                                    id="changeStatus" tabindex="-1" role="dialog" aria-labelledby="changeStatusLabel" aria-hidden="true">
+                                    id="changeStatus{{$jobApplication->id}}" tabindex="-1" role="dialog" aria-labelledby="changeStatus{{$jobApplication->id}}Label" aria-hidden="true">
                                         <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -141,7 +141,7 @@
                                             </div>
                                             <div class="modal-footer">
                                             {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
-                                            <button type="button" class="btn-sm btn-primary">Update</button>
+                                            <button type="button" class="btn-sm btn-primary updateStatusBtn">Update</button>
                                             </div>
                                         </div>
                                         </div>
@@ -242,6 +242,31 @@
   $('#changeStatusBtn').click(function() {
       $('.changeStatus').css('display', 'block');
   })
+
+
+
+  $('.updateStatusBtn').click(function(){
+    let selectedStatus = $(this).closest('td').find('select[name="application_status"]').val();
+   
+    let applicationId = $(this).closest('tr').attr('data-entry-id');
+    let applicationColor = $(this).closest('tr').find('.applicationColor');
+
+    $.ajax({
+        url: 'job-applications/'+applicationId,
+        method: 'put',
+        data: {
+            _token: '{{csrf_token()}}',
+            id: applicationId,
+            application_status: selectedStatus,
+        },
+        success: function(response) {
+            applicationColor.css('backgroundColor', response.application_color);
+            applicationColor.html(response.application_text);
+            // console.log(result);
+        }
+    })
+});
+
 
 })
 
