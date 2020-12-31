@@ -200,12 +200,13 @@ class LeaveApplicationsController extends Controller
         // $users = AccountDetail::all()->pluck('fullname', 'user_id')->prepend(trans('global.pleaseSelect'), '');
         $users = [];
         $activeUsers = User::where('banned', 0)->get();
-        foreach ($activeUsers as $key => $value) {
-            if (auth()->user()->hasAnyRole(['Admin', 'Board Members'])) {
+        if (auth()->user()->hasAnyRole(['Admin', 'Board Members'])) {
+            foreach ($activeUsers as $key => $value) {
                 $users[] = $value->accountDetail()->pluck('fullname', 'user_id');
-            }else{
-                $users = auth()->user()->accountDetail()->pluck('fullname', 'user_id');
             }
+
+        }else{
+            $users[] = auth()->user()->accountDetail()->pluck('fullname', 'user_id');
         }
 
         $categoryDetails = [];

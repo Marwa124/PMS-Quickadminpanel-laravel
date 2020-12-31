@@ -1,36 +1,38 @@
-// import Vue from 'vue';
-// import VueRouter from 'vue-router';
-// import Roles from './components/roles/Index'
-// import RolesCreate from './components/roles/Create'
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+import Departments from './components/departments/Index'
+import DepartmentsCreate from './components/departments/Create'
+import DepartmentsForm from './components/departments/Form'
 
-// Vue.use(VueRouter);
+Vue.use(VueRouter);
 
-// export default new VueRouter({
-//     routes: [
-//         {
-//             path: '/admin/',
-//             name: 'admin',
-//             meta: {
-//                 permission: 'index-roles'
-//             },
-//             // component: Roles
-//         },
-//         {
-//             path: '/admin/roles',
-//             name: 'roles',
-//             meta: {
-//                 // permission: 'index-roles'
-//             },
-//             component: Roles
-//         },
-//         {
-//             path: '/admin/roles/create',
-//             name: 'roles-create',
-//             meta: {
-//                 // permission: 'create-roles'
-//             },
-//             component: RolesCreate
-//         },
-//     ],
-//     mode: 'history',
-// })
+export default new VueRouter({
+    routes: [
+        {
+            path: '/admin/hr/departments/list',
+            name: 'departments-list',
+            meta: {
+                // permission: 'index-roles'
+            },
+            component: Departments
+        },
+        {
+            path: '/admin/hr/departments/create',
+            name: 'departments-create',
+            meta: {
+                // permission: 'index-roles'
+            },
+            component: DepartmentsCreate
+        },
+        {
+            path: '/admin/hr/departments/:id/edit',
+            name: 'departments-edit',
+            meta: {
+                // permission: 'index-roles'
+            },
+            component: DepartmentsForm,
+            props: true
+        },
+    ],
+    mode: 'history',
+})

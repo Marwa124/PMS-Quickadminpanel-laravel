@@ -1,12 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Api\V1\Admin;
+namespace Modules\HR\Http\Controllers\Api\V1\Admin;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreDesignationRequest;
-use App\Http\Requests\UpdateDesignationRequest;
-use App\Http\Resources\Admin\DesignationResource;
-use App\Models\Designation;
+use Modules\HR\Http\Controllers\Controller;
+use Modules\HR\Http\Resources\Admin\DesignationResource;
+
+use Modules\HR\Entities\Designation;
+use Modules\HR\Http\Request\Update\UpdateDesignationRequest;
+use Modules\HR\Http\Requests\Store\StoreDesignationRequest;
+
 use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -40,7 +42,7 @@ class DesignationsApiController extends Controller
     public function update(UpdateDesignationRequest $request, Designation $designation)
     {
         $designation->update($request->all());
-        $designation->permissions()->sync($request->input('permissions', []));
+        // $designation->permissions()->sync($request->input('permissions', []));
 
         return (new DesignationResource($designation))
             ->response()

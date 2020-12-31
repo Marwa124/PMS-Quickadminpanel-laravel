@@ -52,7 +52,7 @@ class DesignationsController extends Controller
         $departments = Department::all()->pluck('department_name', 'id')->prepend(trans('global.pleaseSelect'), '');
         $designation = Designation::find($id);
         $users = AccountDetail::all()->pluck('fullname', 'user_id')->prepend(trans('global.pleaseSelect'), '');
-        $permissions = PermissionGroup::with('permissions')->get();
+        // $permissions = PermissionGroup::with('permissions')->get();
         // dd($permissions);
         // $permissions = Permission::all()->pluck('name', 'id');
         $permissions = Permission::get()->groupBy('permission_group_id');
@@ -66,7 +66,6 @@ class DesignationsController extends Controller
     public function update(UpdateDesignationRequest $request, Designation $designation)
     {
         $designation->syncPermissions(request()->permission_name);
-        // dd($request->all());
         $designation->update($request->all());
 
         return redirect()->route('hr.admin.designations.index');

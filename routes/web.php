@@ -19,9 +19,9 @@ Auth::routes(['register' => false]);
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'middleware' => ['auth']], function () {
     Route::get('/', 'HomeController@index')->name('home');
+    Route::delete('permissions/destroy', 'PermissionsController@massDestroy')->name('permissions.massDestroy');
     Route::get('user-alerts/read', 'UserAlertsController@read');
     // Permissions
-    Route::delete('permissions/destroy', 'PermissionsController@massDestroy')->name('permissions.massDestroy');
     Route::get('permissions/{id}', 'PermissionsController@index')->name('permissions.index');
     // Route::resource('permissions', 'PermissionsController');
 
@@ -314,7 +314,3 @@ Route::group(['prefix' => 'profile', 'as' => 'profile.', 'namespace' => 'Auth', 
         Route::post('password', 'ChangePasswordController@update')->name('password.update');
     }
 });
-
-
-
-// Route::get('/{any}', 'PermissionsController@index')->where('any', '.*');

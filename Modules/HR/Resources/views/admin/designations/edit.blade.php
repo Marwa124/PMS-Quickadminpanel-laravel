@@ -2,49 +2,49 @@
 @section('styles')
 <style>
  .switch{
-                width:30px;
-                height:17px;
-                background:#E5E5E5;
-                z-index:0;
-                margin:0;
-                padding:0;
-                appearance:none;
-                border:none;
-                cursor:pointer;
-                position:relative;
-                border-radius:100px;
-           }
-           .switch:before{
-                content: '';
-                position: absolute;
-                left: 4px;
-                top: 3px;
-                width: 11px;
-                height: 11px;
-                background: #FFFFFF;
-                z-index: 1;
-                border-radius: 95px;
-           }
-           .switch:after{
-                content: '';
-                width: 11px;
-                height: 11px;
-                border-radius: 86px;
-                z-index: 2;
-                background: #FFFFFF;
-                position: absolute;
-                transition-duration: 400ms;
-                top: 3px;
-                left: 4px;
-                box-shadow: 0 2px 5px #999999;
-           }
-           .switchOn, .switchOn:before{
-                background:#4cd964; !important;
-           }
-           .switchOn:after{
-                left:15px;
-           }
-           </style>
+    width:30px;
+    height:17px;
+    background:#E5E5E5;
+    z-index:0;
+    margin:0;
+    padding:0;
+    appearance:none;
+    border:none;
+    cursor:pointer;
+    position:relative;
+    border-radius:100px;
+}
+.switch:before{
+    content: '';
+    position: absolute;
+    left: 4px;
+    top: 3px;
+    width: 11px;
+    height: 11px;
+    background: #FFFFFF;
+    z-index: 1;
+    border-radius: 95px;
+}
+.switch:after{
+    content: '';
+    width: 11px;
+    height: 11px;
+    border-radius: 86px;
+    z-index: 2;
+    background: #FFFFFF;
+    position: absolute;
+    transition-duration: 400ms;
+    top: 3px;
+    left: 4px;
+    box-shadow: 0 2px 5px #999999;
+}
+.switchOn, .switchOn:before{
+    background:#4cd964; !important;
+}
+.switchOn:after{
+    left:15px;
+}
+</style>
 @endsection
 @section('content')
 
@@ -98,75 +98,36 @@
                 <span class="help-block">{{ trans('cruds.designation.fields.department_helper') }}</span>
             </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             <div class="pt-2">
                 <button type="button" class="btn btn-dark waves-effect btn-sm btn-toggle-all-permissions">toggle</button>
                 <button type="button" class="btn btn-dark waves-effect btn-sm">add_all</button>
             </div>
 
-
-
                 @foreach ($permissions as $index => $group)
-                {{-- {{dd($group)}} --}}
                 <?php
                     $permissionsGroup = $permissionGroupModel::find($index);
                 ?>
                 <div class="wrapper-group">
                     <label for="">{{$permissionsGroup->name}}</label> <br>
 
-
-
-
-
-
                     <div class="actions mb-2">
                         <button
                             type="button"
                             class="btn btn-dark waves-effect btn-sm btn-toggle-permissions-in-group"
-                            {{-- @if ($designation->getPermissionNames())
-
-                            @endif --}}
-                            {{-- v-if="modeEdit && roleForm.id == role.id" --}}
                         >{{trans('toggle')}}</button>
                         <button
                             type="button"
                             class="btn btn-dark waves-effect btn-sm add_all_btn"
                             data-group='{{$group}}'
-                            {{-- @click="addAllPermisssionsInGroup($group)" --}}
-                            {{-- v-if="modeEdit && roleForm.id == role.id" --}}
                         >{{trans('add_all')}}</button>
                     </div>
-
-
-
-
-
 
                     <div class="row">
                         @foreach ($group as $key => $item)
                         <div class="col-md-3">
                             <div class="custom-control custom-switch">
                                 <label>
-                                {{-- <label class="switch"> --}}
                                     <input
-                                    {{-- hidden --}}
                                     type="checkbox"
                                     class="checkbox"
                                     value="{{$item->id}}"
@@ -183,20 +144,6 @@
                     </div> <br> <!-- End Row -->
                 </div>
                 @endforeach
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
             <div class="form-group">
                 <label for="permissions">{{ trans('cruds.designation.fields.permissions') }}</label>
@@ -222,20 +169,12 @@
 <script>
     $(document).ready(function () {
 
-    //     $.ajax({
-    //         url: '{{url('permissions')}}',
-    //         success: (res) => {
-    //             console.log(res);
-    //         }
-    //     });
-
         $('.switch').click(function(){
             $(this).toggleClass("switchOn");
         });
 
         $('.btn-toggle-permissions-in-group').click(function(){
             $(this).closest('.wrapper-group').find('.switch').toggleClass("switchOn");
-            // $(this).closest('.wrapper-group').find('.checkbox').attr("checked", true);
             var $inputCheck = $(this).closest('.wrapper-group').find('.checkbox');
             if ($inputCheck.attr('checked')) {
                 $inputCheck.removeAttr('checked');
@@ -247,8 +186,7 @@
             $(this).closest('.wrapper-group').find('.switch').addClass("switchOn");
             $(this).closest('.wrapper-group').find('.checkbox').attr("checked", true);
 
-            console.log($(this).data('group'));
-            // console.log($(this).attr("data-group"));
+            // console.log($(this).data('group'));
             $(this).data('group');
         });
 

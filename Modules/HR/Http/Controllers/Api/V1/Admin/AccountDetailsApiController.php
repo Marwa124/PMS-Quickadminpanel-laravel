@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\Api\V1\Admin;
+namespace Modules\HR\Http\Controllers\Api\V1\Admin;
 
-use App\Http\Controllers\Controller;
+use Modules\HR\Http\Controllers\Controller;
+
 use App\Http\Controllers\Traits\MediaUploadingTrait;
-use App\Http\Requests\StoreAccountDetailRequest;
-use App\Http\Requests\UpdateAccountDetailRequest;
-use App\Http\Resources\Admin\AccountDetailResource;
+use Modules\HR\Http\Requests\Update\UpdateAccountDetailRequest;
+use Modules\HR\Http\Resources\Admin\AccountDetailResource;
 use Modules\HR\Entities\AccountDetail;
 use Gate;
 use Illuminate\Http\Request;
+use Modules\HR\Http\Requests\Store\StoreAccountDetailRequest;
 use Symfony\Component\HttpFoundation\Response;
 
 class AccountDetailsApiController extends Controller

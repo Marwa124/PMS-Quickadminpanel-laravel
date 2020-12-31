@@ -149,6 +149,16 @@ class AccountDetailsController extends Controller
         return view('hr::admin.accountDetails.edit', compact('users', 'designations', 'accountDetail', 'set_times'));
     }
 
+    // Single Colunm update in dataTables
+    public function singleColumnUpdate($id)
+    {
+        abort_if(Gate::denies('account_detail_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        AccountDetail::where('user_id', $id)->update(request()->only(['fullname']));
+        return response()->json(AccountDetail::where('user_id', $id)->first());
+
+    }
+
     public function update(UpdateAccountDetailRequest $request, AccountDetail $accountDetail)
     {
         // Give the user the same permission for selected designation
