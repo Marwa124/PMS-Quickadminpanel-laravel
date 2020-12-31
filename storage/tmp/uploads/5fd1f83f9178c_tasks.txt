@@ -1,0 +1,70 @@
+
+creately --->>  email : mabrouk@onetecgroup.com
+		pass : Onetec123   
+////////////////////////////////////////////////////////////
+
+
+Mail status not working in api (leave_management "set Action")
+
+rejected Mail status not working in api
+
+all pettycashList ===> check date in database (return false)			==> done
+
+
+
+
+all api return array as key => value 						==> done
+
+
+pagination to pettycash and leaves
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+controller/admin/Invoice.php 
+
+send_email_invoice 		to send mail  ////  I will use it in send mail before date of payment the invoice
+
+
+
+add new invoice and send mail to client 
+
+
+
+///////////tasks in 17-11-2020 ////////////////
+
+
+vat amount in pdf contact 						-->done
+
+if recurring
+
+hidden first chooice 
+
+if not recurring
+
+hidden second chooice 							-->done
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+to update code of recurring in server
+
+
+add tbl_recurring_invoices
+
+invoice.php 
+
+propsals.php
+
+in view 
+
+proposals_pdf_contract.php 
+
+payment ---> in invoice.php --->> get_payment() && update_payemnt()  
+
+
+
+biostall.com/codeigniter-google-maps-v3-api-library/
+
+

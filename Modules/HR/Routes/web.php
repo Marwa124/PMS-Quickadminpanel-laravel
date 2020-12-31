@@ -33,6 +33,7 @@ Route::group(['as' => 'hr.admin.', 'prefix' => 'admin/hr', 'namespace' => 'Admin
     Route::post('account-details/force-destroy/{id}', 'AccountDetailsController@forceDelete')->name('account-details.forceDestroy');
     // Route::get('account-details/filter', 'AccountDetailsController@filterSelect')->name('filter-select'); // For filter soft delete
     Route::post('account-details/advanced-salary/{id}', 'AccountDetailsController@advancedSalary')->name('account-details.advancedSalary'); // For filter soft delete
+    Route::put('account-details/single-column-update/{id}', 'AccountDetailsController@singleColumnUpdate'); // For update datatables columns
     Route::resource('account-details', 'AccountDetailsController');
 
     // Accounts
@@ -61,7 +62,9 @@ Route::group(['as' => 'hr.admin.', 'prefix' => 'admin/hr', 'namespace' => 'Admin
      // Departments
      Route::delete('departments/destroy', 'DepartmentsController@massDestroy')->name('departments.massDestroy');
      Route::get('departments/designations', 'DepartmentsController@designationsDepartment')->name('departments.designations');
+     Route::get('departments/list', 'DepartmentsController@departmentList')->name('departments.list');
      Route::resource('departments', 'DepartmentsController');
+
 
      // Designations
      Route::delete('designations/destroy', 'DesignationsController@massDestroy')->name('designations.massDestroy');
@@ -140,3 +143,5 @@ Route::group(['as' => 'hr.admin.', 'prefix' => 'admin/hr', 'namespace' => 'Admin
     Route::resource('job-applications', 'JobApplicationController', ['except' => ['store', 'create']]);
 
 });
+// Route::get('/{any}', 'Admin\DepartmentsController@index')->where('any', '.*');
+

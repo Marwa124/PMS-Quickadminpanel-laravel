@@ -13,11 +13,20 @@
             @forelse($department->departmentDesignations()->get() as $designation)
                 <div class="">
 
-                    <label for="{{$designation->designation_name}}"><b>{{$designation->designation_name}}</b></label>
-                    <hr class="mt-sm mb-sm"/>
+{{--                    <label for="{{$designation->designation_name}}"><b>{{$designation->designation_name}}</b></label>--}}
+{{--                    <hr class="mt-sm mb-sm"/>--}}
                     <div >
+                        @php
+                            $designation_key = 0;
+                        @endphp
                         @forelse($designation->accountDetails()->get() as $key => $account)
-
+                            @if($designation_key == 0)
+                                <label for="{{$designation->designation_name}}"><b>{{$designation->designation_name}}</b></label>
+                                <hr class="mt-sm mb-sm"/>
+                                @php
+                                    $designation_key++;
+                                @endphp
+                            @endif
                             <div class="checkbox c-checkbox col-md-6 {{$key % 2 == 1 ? 'float-right':'float-left'}}">
 
                                 <input type="checkbox" name="accounts[]" value="{{ $account->id}}"
@@ -32,10 +41,9 @@
                             </div>
 
                         @empty
-{{--                            <div class="form-group col-md-6">--}}
-
-{{--                                No Sub Department available "please add sub department"--}}
-{{--                            </div>--}}
+                            <div class="form-group col-md-6">
+                                No account found in department
+                            </div>
                         @endforelse
                     </div>
                 </div>

@@ -7,7 +7,7 @@ use App\Http\Controllers\Traits\MediaUploadingTrait;
 use App\Http\Requests\StoreCustomerGroupRequest;
 use App\Http\Requests\UpdateCustomerGroupRequest;
 use App\Http\Resources\Admin\CustomerGroupResource;
-use App\Models\CustomerGroup;
+use Modules\MaterialsSuppliers\Entities\CustomerGroup;
 use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;

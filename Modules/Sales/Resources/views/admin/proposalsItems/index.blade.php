@@ -9,12 +9,14 @@
         </div>
     </div>
 @endcan
+
 <div class="card">
     <div class="card-header">
         {{ trans('cruds.proposalsItem.title_singular') }} {{ trans('global.list') }}
     </div>
 
     <div class="card-body">
+
         <div class="table-responsive">
             <table class=" table table-bordered table-striped table-hover datatable datatable-ProposalsItem">
                 <thead>
@@ -26,14 +28,12 @@
                             {{ trans('cruds.proposalsItem.fields.id') }}
                         </th>
                         <th>
-                            {{ trans('cruds.proposalsItem.fields.proposals') }}
+                            {{ trans('cruds.proposalsItem.fields.group_name') }}
                         </th>
                         <th>
                             {{ trans('cruds.proposalsItem.fields.name') }}
                         </th>
-                        <th>
-                            {{ trans('cruds.proposalsItem.fields.group_name') }}
-                        </th>
+                       
                         <th>
                             {{ trans('cruds.proposalsItem.fields.brand') }}
                         </th>
@@ -42,6 +42,9 @@
                         </th>
                         <th>
                             {{ trans('cruds.proposalsItem.fields.tax_name') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.proposalsItem.fields.tax_cost') }}
                         </th>
                         <th>
                             {{ trans('cruds.proposalsItem.fields.unit') }}
@@ -59,8 +62,8 @@
                         <td>
                             <select class="search">
                                 <option value>{{ trans('global.all') }}</option>
-                                @foreach($proposals as $key => $item)
-                                    <option value="{{ $item->reference_no }}">{{ $item->reference_no }}</option>
+                                @foreach($customerGroups as $key => $item)
+                                    <option value="{{ $item->name }}">{{ $item->name }}</option>
                                 @endforeach
                             </select>
                         </td>
@@ -96,14 +99,12 @@
                                 {{ $proposalsItem->id ?? '' }}
                             </td>
                             <td>
-                                {{ $proposalsItem->proposals->reference_no ?? '' }}
+                                {{ $proposalsItem->customer_group->name ?? '' }}
                             </td>
                             <td>
                                 {{ $proposalsItem->name ?? '' }}
                             </td>
-                            <td>
-                                {{ $proposalsItem->group_name ?? '' }}
-                            </td>
+                           
                             <td>
                                 {{ $proposalsItem->brand ?? '' }}
                             </td>
@@ -111,7 +112,10 @@
                                 {{ $proposalsItem->part ?? '' }}
                             </td>
                             <td>
-                                {{ $proposalsItem->tax_name ?? '' }}
+                                {{ $proposalsItem->taxes->name ?? '' }}
+                            </td>
+                            <td>
+                                {{ $proposalsItem->taxes->rate_percent .'%'?? '' }}
                             </td>
                             <td>
                                 {{ $proposalsItem->unit ?? '' }}
@@ -144,7 +148,9 @@
                 </tbody>
             </table>
         </div>
+
     </div>
+
 </div>
 
 
@@ -153,6 +159,11 @@
 @section('scripts')
 @parent
 <script>
+//  let table = $('.datatable-CustomerGroup').DataTable()
+// $('a[data-toggle="tab"]').on('shown.bs.tab', function(e){
+//    $($.fn.dataTable.tables(true)).DataTable()
+//       .scroller.measure();
+// });
     $(function () {
   let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
 @can('proposals_item_delete')
@@ -188,12 +199,15 @@
   $.extend(true, $.fn.dataTable.defaults, {
     orderCellsTop: true,
     order: [[ 1, 'desc' ]],
-    pageLength: 25,
+    pageLength: 25, 
+     responsive: true,
   });
-  let table = $('.datatable-ProposalsItem:not(.ajaxTable)').DataTable({ buttons: dtButtons })
+  let table = $('.datatable-ProposalsItem').DataTable({ buttons: dtButtons })
   $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e){
-      $($.fn.dataTable.tables(true)).DataTable()
-          .columns.adjust();
+    $($.fn.dataTable.tables(true)).DataTable()
+         .columns.adjust()
+         .responsive.recalc()
+         .scroller.measure();
   });
   $('.datatable thead').on('input', '.search', function () {
       let strict = $(this).attr('strict') || false
@@ -206,4 +220,5 @@
 })
 
 </script>
+
 @endsection

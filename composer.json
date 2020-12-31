@@ -23,6 +23,7 @@
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.0",
         "laraveldaily/laravel-charts": "^0.1.14",
+        "livewire/livewire": "^2.3",
         "maatwebsite/excel": "^3.1",
         "nwidart/laravel-modules": "^7.2",
         "pusher/pusher-php-server": "~4.0",

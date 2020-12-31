@@ -41,7 +41,6 @@ class AclController extends Controller
         return resHandel(Acl::listRole());
     }
 
-
     public function destroy($id)
     {
         Role::destroy($id);
@@ -72,7 +71,6 @@ class AclController extends Controller
             'permissions' => $permissions,
         ]);
     }
-
 
     public function assignToUser($id, Request $request)
     {

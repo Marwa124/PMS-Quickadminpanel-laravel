@@ -6,7 +6,11 @@
         {{ trans('global.edit') }} {{ trans('cruds.department.title_singular') }}
     </div>
 
-    <div class="card-body">
+
+    <department-form :department-id="{{$department->id}}" :lang-key={{json_encode(app()->getLocale())}}>
+    </department-form>
+
+    {{-- <div class="card-body">
         <form method="POST" action="{{ route("hr.admin.departments.update", [$department->id]) }}" enctype="multipart/form-data">
             @method('PUT')
             @csrf
@@ -100,7 +104,7 @@
                 </button>
             </div>
         </form>
-    </div>
+    </div> --}}
 </div>
 
 

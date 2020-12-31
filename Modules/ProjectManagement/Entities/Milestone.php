@@ -2,6 +2,7 @@
 
 namespace Modules\ProjectManagement\Entities;
 
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -74,6 +75,10 @@ class Milestone extends Model
         return $this->belongsToMany('Modules\HR\Entities\AccountDetail',
             'milestone_account_details_pivot','milestone_id','account_details_id');
 
+    }
+
+    public function tasks(){
+        return $this->hasMany(Task::class,'milestone_id');
     }
 
 }

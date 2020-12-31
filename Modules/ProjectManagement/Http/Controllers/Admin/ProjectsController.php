@@ -9,6 +9,7 @@ use App\Models\User;
 use Modules\HR\Entities\AccountDetail;
 use Modules\HR\Entities\Department;
 use Modules\ProjectManagement\Entities\ProjectSpecification;
+use Modules\ProjectManagement\Http\Controllers\Traits\PermissionHelperTrait;
 use Modules\ProjectManagement\Http\Requests\MassDestroyProjectRequest;
 use Modules\ProjectManagement\Http\Requests\StoreProjectRequest;
 use Modules\ProjectManagement\Http\Requests\UpdateProjectRequest;
@@ -22,7 +23,12 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ProjectsController extends Controller
 {
-    use MediaUploadingTrait;
+    use MediaUploadingTrait,PermissionHelperTrait;
+
+    public function __construct()
+    {
+        $this->middleware('AllowAccessShowAndEditPages:Project',['only' => ['show','edit','getAssignTo']]);
+    }
 
     public function index()
     {
@@ -40,13 +46,9 @@ class ProjectsController extends Controller
 
         $clients = Client::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $permissions = Permission::all()->pluck('title', 'id');
-
-        //$project_settings = ProjectSetting::all();
-
         $departments = Department::all();
 
-        return view('projectmanagement::admin.projects.create', compact('clients', 'permissions','departments'));
+        return view('projectmanagement::admin.projects.create', compact('clients','departments'));
     }
 
     public function store(StoreProjectRequest $request)
@@ -101,9 +103,11 @@ class ProjectsController extends Controller
     public function destroy(Project $project)
     {
         abort_if(Gate::denies('project_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        //$project = Project::where('id',$id)->with('accountDetails.user.permissions')->first();
 
+<<<<<<< HEAD
         // dd($project->deleted_at);
+=======
+>>>>>>> 41879e27b16f03b2061e194d02f49964f5b58a79
         if($project->deleted_at == 0){
             $project->update(['deleted_at' => 1]);
         }else{
@@ -143,7 +147,6 @@ class ProjectsController extends Controller
 
         abort_if(Gate::denies('project_assign_to'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $project = Project::findOrFail($id);
-        //$project = Project::where('id',$id)->with('department','accountDetails')->first();
         $department = $project->department()->first();
 
         if (!$department){
@@ -154,52 +157,58 @@ class ProjectsController extends Controller
 
     public function storeAssignTo(Request $request){
 
-        $project = Project::where('id',$request->project_id)->first();
+        $project = Project::where('id', $request->project_id)->first();
+        if ($request->accounts) {
 
-        $project->accountDetails()->sync($request->accounts);
-        //$project->accountDetails()->syncWithoutDetaching($request->accounts);
 
-        // set permission to users
-        $accounts = AccountDetail::whereIn('id',$request->accounts)->with('user.department')->get();
+            $project->accountDetails()->sync($request->accounts);
+            //$project->accountDetails()->syncWithoutDetaching($request->accounts);
 
-        $project_permissions_head_names = ['project_management_access','project_access','project_create', 'project_show','project_edit','project_assign_to'];
-        $project_permissions_notToMember_names = ['project_create','project_edit','project_assign_to'];
-        $project_permissions_toMember_names = ['project_management_access','project_access', 'project_show'];
+            // set permission to users
+            $accounts = AccountDetail::whereIn('id', $request->accounts)->with('user.department')->get();
 
-        $project_permissions_head = $this->getPermissionID($project_permissions_head_names);
-        $project_permissions_notToMember = $this->getPermissionID($project_permissions_notToMember_names);
-        $project_permissions_toMember = $this->getPermissionID($project_permissions_toMember_names);
+            $project_permissions_head_names = ['project_management_access', 'project_access', 'project_create', 'project_show', 'project_edit', 'project_assign_to'];
+            $project_permissions_notToMember_names = ['project_create', 'project_edit', 'project_assign_to'];
+            $project_permissions_toMember_names = ['project_management_access', 'project_access', 'project_show'];
 
-        foreach ($accounts as $account){
+            $project_permissions_head = $this->getPermissionID($project_permissions_head_names);
+            $project_permissions_notToMember = $this->getPermissionID($project_permissions_notToMember_names);
+            $project_permissions_toMember = $this->getPermissionID($project_permissions_toMember_names);
 
-            foreach ($account->user->permissions as $permission){
+            foreach ($accounts as $account) {
 
-                if (in_array($permission->name,$project_permissions_notToMember_names)){
-                    $account->user->permissions()->detach($project_permissions_notToMember);
+                foreach ($account->user->permissions as $permission) {
+
+                    if (in_array($permission->name, $project_permissions_notToMember_names)) {
+                        $account->user->permissions()->detach($project_permissions_notToMember);
+                    }
+                }
+                $account->user->permissions()->syncWithoutDetaching($project_permissions_toMember);
+
+                foreach ($account->user->department as $department) {
+                    if ($department->department_name == $project->department->department_name) {
+                        $account->user->permissions()->syncWithoutDetaching($project_permissions_head);
+
+
+                        break;
+                    }
                 }
             }
-            $account->user->permissions()->syncWithoutDetaching($project_permissions_toMember);
-
-            foreach ($account->user->department as $department){
-                if ($department->department_name == $project->department->department_name){
-                    $account->user->permissions()->syncWithoutDetaching($project_permissions_head);
-
-
-                    break;
-                }
-            }
+        }else{
+            $project->accountDetails()->detach();
         }
+
         return redirect()->route('projectmanagement.admin.projects.index');
     }
 
-    public function getPermissionID($permissions){
-        $permissions_id =[];
-        foreach ($permissions as $permission_name){
-
-            $permission = Permission::where('name',$permission_name)->first();
-            array_push($permissions_id,$permission->id);
-        }
-        return $permissions_id;
-    }
+//    public function getPermissionID($permissions){
+//        $permissions_id =[];
+//        foreach ($permissions as $permission_name){
+//
+//            $permission = Permission::where('name',$permission_name)->first();
+//            array_push($permissions_id,$permission->id);
+//        }
+//        return $permissions_id;
+//    }
 
 }

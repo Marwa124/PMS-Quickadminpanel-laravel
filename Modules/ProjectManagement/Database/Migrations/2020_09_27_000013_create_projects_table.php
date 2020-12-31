@@ -33,7 +33,8 @@ class CreateProjectsTable extends Migration
             $table->string('with_tasks')->default('no');
             $table->string('estimate_hours')->nullable();
             $table->timestamps();
-            $table->softDeletes();
+            $table->boolean('deleted_at')->default(0)->nullable();
+            // $table->softDeletes();
         });
     }
 }

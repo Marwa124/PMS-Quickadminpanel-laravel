@@ -1,7 +1,12 @@
 @extends('layouts.admin')
 @section('content')
 
-<div class="card">
+{{-- <department-create></department-create> --}}
+
+<department-form :lang-key={{json_encode(app()->getLocale())}}>
+</department-form>
+
+{{-- <div class="card">
     <div class="card-header">
         {{ trans('global.create') }} {{ trans('cruds.department.title_singular') }}
     </div>
@@ -100,7 +105,7 @@
             </div>
         </form>
     </div>
-</div>
+</div> --}}
 
 
 

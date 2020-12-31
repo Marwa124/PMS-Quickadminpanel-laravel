@@ -3,6 +3,8 @@
 namespace Modules\HR\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\PermissionGroup;
+use App\Models\User;
 use Modules\HR\Http\Requests\Destroy\MassDestroyDesignationRequest;
 use Modules\HR\Http\Requests\Store\StoreDesignationRequest;
 use Modules\HR\Http\Requests\Update\UpdateDesignationRequest;
@@ -10,6 +12,8 @@ use Modules\HR\Entities\Department;
 use Modules\HR\Entities\Designation;
 use Gate;
 use Illuminate\Http\Request;
+use Modules\HR\Entities\AccountDetail;
+use Spatie\Permission\Models\Permission;
 use Symfony\Component\HttpFoundation\Response;
 
 class DesignationsController extends Controller
@@ -41,20 +45,27 @@ class DesignationsController extends Controller
         return redirect()->route('hr.admin.designations.index');
     }
 
-    public function edit(Designation $designation)
+    public function edit($id)
     {
         abort_if(Gate::denies('designation_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $departments = Department::all()->pluck('department_name', 'id')->prepend(trans('global.pleaseSelect'), '');
-        $designations = Designation::all()->pluck('designation_name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $designation = Designation::find($id);
+        $users = AccountDetail::all()->pluck('fullname', 'user_id')->prepend(trans('global.pleaseSelect'), '');
+        // $permissions = PermissionGroup::with('permissions')->get();
+        // dd($permissions);
+        // $permissions = Permission::all()->pluck('name', 'id');
+        $permissions = Permission::get()->groupBy('permission_group_id');
 
-        $designation->load('department');
 
-        return view('hr::admin.designations.edit', compact('departments', 'designation', 'designations'));
+
+        return view('hr::admin.designations.edit', compact('departments', 'users', 'designation', 'permissions'));
     }
 
+    // public function update(Request $request, Designation $designation)
     public function update(UpdateDesignationRequest $request, Designation $designation)
     {
+        $designation->syncPermissions(request()->permission_name);
         $designation->update($request->all());
 
         return redirect()->route('hr.admin.designations.index');

@@ -34,6 +34,8 @@ Route::group(['prefix' => 'admin/projectmanagement', 'as' => 'projectmanagement.
     Route::post('tasks/media', 'TaskController@storeMedia')->name('tasks.storeMedia');
     Route::post('tasks/ckmedia', 'TaskController@storeCKEditorImages')->name('tasks.storeCKEditorImages');
     Route::resource('tasks', 'TaskController');
+    Route::get('tasks/{id}/assign_to','TaskController@getAssignTo')->name('tasks.getAssignTo');
+    Route::post('tasks/assign_to','TaskController@storeAssignTo')->name('tasks.storeAssignTo');
 
     // Tasks Calendars
     Route::resource('tasks-calendars', 'TasksCalendarController', ['except' => ['create', 'store', 'edit', 'update', 'show', 'destroy']]);
@@ -43,14 +45,23 @@ Route::group(['prefix' => 'admin/projectmanagement', 'as' => 'projectmanagement.
     Route::post('projects/media', 'ProjectsController@storeMedia')->name('projects.storeMedia');
     Route::post('projects/ckmedia', 'ProjectsController@storeCKEditorImages')->name('projects.storeCKEditorImages');
     Route::resource('projects', 'ProjectsController');
-    Route::get('projects/assign_to/{id}','ProjectsController@getAssignTo')->name('projects.getAssignTo');
+    Route::get('projects/{id}/assign_to','ProjectsController@getAssignTo')->name('projects.getAssignTo');
     Route::post('projects/assign_to','ProjectsController@storeAssignTo')->name('projects.storeAssignTo');
 
     // Milestones
     Route::delete('milestones/destroy', 'MilestonesController@massDestroy')->name('milestones.massDestroy');
     Route::resource('milestones', 'MilestonesController');
-    Route::get('milestones/assign_to/{id}','MilestonesController@getAssignTo')->name('milestones.getAssignTo');
+    Route::get('milestones/{id}/assign_to','MilestonesController@getAssignTo')->name('milestones.getAssignTo');
     Route::post('milestones/assign_to','MilestonesController@storeAssignTo')->name('milestones.storeAssignTo');
+
+    // Bugs
+    Route::delete('bugs/destroy', 'BugsController@massDestroy')->name('bugs.massDestroy');
+    Route::post('bugs/media', 'BugsController@storeMedia')->name('bugs.storeMedia');
+    Route::post('bugs/ckmedia', 'BugsController@storeCKEditorImages')->name('bugs.storeCKEditorImages');
+    Route::resource('bugs', 'BugsController');
+    Route::get('bugs/{id}/assign_to','BugsController@getAssignTo')->name('bugs.getAssignTo');
+    Route::post('bugs/assign_to','BugsController@storeAssignTo')->name('bugs.storeAssignTo');
+
 
     // Task Uploaded Files
     Route::delete('task-uploaded-files/destroy', 'TaskUploadedFilesController@massDestroy')->name('task-uploaded-files.massDestroy');

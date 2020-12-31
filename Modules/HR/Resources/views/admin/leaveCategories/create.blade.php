@@ -7,7 +7,7 @@
     </div>
 
     <div class="card-body">
-        <form method="POST" action="{{ route("admin.leave-categories.store") }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ route("hr.admin.leave-categories.store") }}" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
                 <label class="required" for="name">{{ trans('cruds.leaveCategory.fields.name') }}</label>

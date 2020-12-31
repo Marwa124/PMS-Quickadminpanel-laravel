@@ -5,5 +5,6 @@
     "PAYROLL": true,
     "Payroll": true,
     "Sales": true,
-    "ProjectManagement": true
+    "ProjectManagement": true,
+    "MaterialsSuppliers": true
 }
