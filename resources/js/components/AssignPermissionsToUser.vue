@@ -203,13 +203,18 @@ export default {
         },
         async getUserPermissions() {
             await axios.get(this.urlGetUserPermissions + this.userId).then(response => {
-                console.log(this.userId +'   xxxxx');
-                console.log(response);
+                // console.log(this.userId +'   xxxxx');
                 if (response.status === 200) {
                     const data = response.data
                     if (typeof data === 'object') {
                         const userData = data.data
+                        if (userData == 404) {
+                            window.location.href = "/admin/hr/account-details"
+                        } // No User With Owns this userid
                         if (userData.user != null) {
+                            this.getPermissions(); // Load only if there is a user found
+                            this.getRoles();       // Load only if there is a user found
+
                             this.userData = userData
                             this.form.roles = userData.roles
                             this.form.permissions = userData.permissions
@@ -228,11 +233,15 @@ export default {
                     this.getRoles()
                 }, 500)
             })
+
         },
         assignToUser() {
             // loadReq(this.$Progress)
             this.form.put(this.urlAssignToUser + this.userId).then(response => {
                 if (response.status === 200) {
+
+                    window.location.href = "/admin/hr/account-details";
+
                     // ToastReq.fire({
                     //     text: this.success_msg
                     // })
@@ -269,9 +278,11 @@ export default {
         },
     },
     mounted() {
-        this.getPermissions();
-        this.getRoles();
+        // this.getPermissions();
+        // this.getRoles();
+
         this.getUserPermissions();
+
         $('.assign-roles-permissions').on('click', '.btn-toggle-all-permissions', function () {
             $('.assign-roles-permissions .permissions .label-permission').click()
         })

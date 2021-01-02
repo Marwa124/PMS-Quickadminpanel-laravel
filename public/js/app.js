@@ -2278,16 +2278,25 @@ var id = window.location.href.split('/').pop(); // import MixinChangeLocaleMessa
               case 0:
                 _context.next = 2;
                 return axios.get(_this3.urlGetUserPermissions + _this3.userId).then(function (response) {
-                  console.log(_this3.userId + '   xxxxx');
-                  console.log(response);
-
+                  // console.log(this.userId +'   xxxxx');
                   if (response.status === 200) {
                     var data = response.data;
 
                     if (_typeof(data) === 'object') {
                       var userData = data.data;
 
+                      if (userData == 404) {
+                        window.location.href = "/admin/hr/account-details";
+                      } // No User With Owns this userid
+
+
                       if (userData.user != null) {
+                        _this3.getPermissions(); // Load only if there is a user found
+
+
+                        _this3.getRoles(); // Load only if there is a user found
+
+
                         _this3.userData = userData;
                         _this3.form.roles = userData.roles;
                         _this3.form.permissions = userData.permissions;
@@ -2316,7 +2325,8 @@ var id = window.location.href.split('/').pop(); // import MixinChangeLocaleMessa
     assignToUser: function assignToUser() {
       // loadReq(this.$Progress)
       this.form.put(this.urlAssignToUser + this.userId).then(function (response) {
-        if (response.status === 200) {// ToastReq.fire({
+        if (response.status === 200) {
+          window.location.href = "/admin/hr/account-details"; // ToastReq.fire({
           //     text: this.success_msg
           // })
           // setTimeout(() => {
@@ -2352,8 +2362,8 @@ var id = window.location.href.split('/').pop(); // import MixinChangeLocaleMessa
     }
   },
   mounted: function mounted() {
-    this.getPermissions();
-    this.getRoles();
+    // this.getPermissions();
+    // this.getRoles();
     this.getUserPermissions();
     $('.assign-roles-permissions').on('click', '.btn-toggle-all-permissions', function () {
       $('.assign-roles-permissions .permissions .label-permission').click();
@@ -69921,8 +69931,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_i18n__WEBPACK_IMPORTED_MODULE
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\laragon\www\01-Test-Permission-PMS\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\laragon\www\01-Test-Permission-PMS\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! F:\laragon\www\01-Test-Permission-PMS\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! F:\laragon\www\01-Test-Permission-PMS\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

@@ -9,6 +9,7 @@ use App\Models\User;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Modules\HR\Entities\AccountDetail;
 
 class AclController extends Controller
@@ -60,7 +61,9 @@ class AclController extends Controller
     public function getRolesAndPermissionsForUser($id)
     {
         $userAccount = AccountDetail::select('fullname', 'user_id')->find($id);
-        // $user = User::find($id);
+        if (!$userAccount) {
+            return resHandel(Response::HTTP_NOT_FOUND, 'error');
+        }
         $user = User::find($userAccount->user_id);
         $permissions = $id ? $user->getPermissionNames() : [];
         $roles = $id ? $user->getRoleNames() : [];

@@ -1,4 +1,5 @@
 @extends('layouts.admin')
+@inject('attendanceModel', 'Modules\HR\Entities\Attendance')
 @section('content')
 @can('attendances_create')
     <div style="margin-bottom: 10px;" class="row">
@@ -23,14 +24,11 @@
 
                         </th>
                         <th>
-                            {{ trans('cruds.attendances.fields.id') }}
-                        </th>
-                        <th>
                             {{ trans('cruds.attendances.fields.user') }}
                         </th>
-                        <th>
+                        {{-- <th>
                             {{ trans('cruds.attendances.fields.leave_application') }}
-                        </th>
+                        </th> --}}
                         <th>
                             {{ trans('cruds.attendances.fields.date_in') }}
                         </th>
@@ -38,52 +36,67 @@
                             {{ trans('cruds.attendances.fields.date_out') }}
                         </th>
                         <th>
-                            {{ trans('cruds.attendances.fields.attendance_status') }}
+                            Day
                         </th>
+                        {{-- <th>
+                            {{ trans('cruds.attendances.fields.attendance_status') }}
+                        </th> --}}
                         <th>
                             &nbsp;
                         </th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($attendances as $key => $attendances)
-                        <tr data-entry-id="{{ $attendances->id }}">
+                    @foreach($attendances as $key => $attendance)
+                    {{-- Get attendance Day --}}
+                        @foreach ($attendance as $index => $item)
+                        {{-- Get the min and max time clock  --}}
+                        <?php
+                            $clockIn = '';
+                            $clockOut = '';
+                            $idClockIn = '';
+                            $idClockOut = '';
+                            foreach ($item as $val => $timeObject) {
+                                if (date($clockIn) > date($clockOut) ) {
+                                    $clockOut = $timeObject->time;
+                                    $idClockOut = $timeObject->id;
+                                } else {
+                                    $clockIn = $timeObject->time;
+                                    $idClockIn = $timeObject->id;
+                                }
+                            }
+                        ?>
+                        {{-- <tr data-entry-id="{{ $idClockIn.'-'.$idClockOut }}"> --}}
+                        <tr data-entry-id="{{ $key.'_'.$index }}" data-userId="{{$index}}">
                             <td>
-
                             </td>
                             <td>
-                                {{ $attendances->id ?? '' }}
+                                {{ $item[0]->user->accountDetail->fullname ?? '' }}
+                            </td>
+                            <td class="attendance_clockIn clock_attendance">
+                                {{ $clockIn ?? '' }}
+                            </td>
+                            <td class="attendance_clockOut clock_attendance">
+                                {{ $clockOut ?? '' }}
+                            </td>
+                            <td class="attendance_day">
+                                {{ $key ?? '' }}
                             </td>
                             <td>
-                                {{ $attendances->user->name ?? '' }}
-                            </td>
-                            <td>
-                                {{ $attendances->leave_application->leave_type ?? '' }}
-                            </td>
-                            <td>
-                                {{ $attendances->date_in ?? '' }}
-                            </td>
-                            <td>
-                                {{ $attendances->date_out ?? '' }}
-                            </td>
-                            <td>
-                                {{ App\Models\attendances::ATTENDANCE_STATUS_SELECT[$attendances->attendance_status] ?? '' }}
-                            </td>
-                            <td>
-                                @can('attendances_show')
+                                {{-- @can('attendances_show')
                                     <a class="btn btn-xs btn-primary" href="{{ route('admin.attendances.show', $attendances->id) }}">
                                         {{ trans('global.view') }}
                                     </a>
-                                @endcan
+                                @endcan --}}
 
-                                @can('attendances_edit')
-                                    <a class="btn btn-xs btn-info" href="{{ route('admin.attendances.edit', $attendances->id) }}">
+                                {{-- @can('attendances_edit')
+                                    <a class="btn btn-xs btn-info" href="{{ route('hr.admin.attendances.edit', $attendances->id) }}">
                                         {{ trans('global.edit') }}
                                     </a>
-                                @endcan
+                                @endcan --}}
 
                                 @can('attendances_delete')
-                                    <form action="{{ route('hr.admin.attendances.destroy', $attendances->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                    <form action="{{ route('hr.admin.attendances.destroy', [$idClockIn ?? ''.'.'.$idClockOut ?? '']) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
                                         <input type="hidden" name="_method" value="DELETE">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                         <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
@@ -92,7 +105,36 @@
 
                             </td>
 
+                            {{-- Edit Clock in Modal --}}
+                            @can('attendances_edit')
+                            <!-- Modal -->
+                            <div class="modal fade" id="fullName{{$idClockIn.'_'.$idClockOut}}" tabindex="-1" role="dialog" aria-labelledby="fullNameTitle{{$idClockIn.'_'.$idClockOut}}" aria-hidden="true">
+                               <div class="modal-dialog modal-dialog-centered" role="document">
+                                   <div class="modal-content">
+                                       <div class="modal-body">
+                                           <div class="form-group">
+                                               <input type="text" class="form-control timepiker"
+                                               value="" name="date">
+                                           </div>
+
+                                           <input type="button" class="btn btn-xs btn-primary updateUserFullname" value="Update"
+                                           data-dismiss="" aria-label="Close">
+                                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                               <span aria-hidden="true">&times;</span>
+                                           </button>
+                                       </div>
+                                   </div>
+                               </div>
+                           </div>
+                           @endcan
+                           {{-- End Edit Clock in Modal --}}
+
                         </tr>
+
+                        {{-- End Get the min and max time clock  --}}
+                        @endforeach
+
+                    {{-- End Get attendance Day --}}
                     @endforeach
                 </tbody>
             </table>
@@ -150,6 +192,18 @@
   });
 
 })
+
+
+
+// Edit Clock Attendance Modal
+$('.clock_attendance').click(function() {
+    let day = $(this).closest('tr').find('.attendance_day').text();
+    // let userId = $(this).closest('tr').attr('data-entry-id');
+    let userId = $(this).closest('tr').attr('data-userId');
+    // console.log(day.trim());
+    console.log(userId);
+})
+
 
 </script>
 @endsection

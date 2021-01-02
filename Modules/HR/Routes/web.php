@@ -117,7 +117,7 @@ Route::group(['as' => 'hr.admin.', 'prefix' => 'admin/hr', 'namespace' => 'Admin
 
      // attendances
      Route::delete('attendances/destroy', 'AttendancesController@massDestroy')->name('attendances.massDestroy');
-     Route::resource('attendances', 'AttendancesController');
+     Route::resource('attendances', 'AttendancesController', ['except' => ['show']]);
 
      // Employee Banks
      Route::delete('employee-banks/destroy', 'EmployeeBankController@massDestroy')->name('employee-banks.massDestroy');

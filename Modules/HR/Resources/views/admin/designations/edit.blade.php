@@ -98,6 +98,15 @@
                 <span class="help-block">{{ trans('cruds.designation.fields.department_helper') }}</span>
             </div>
 
+            <div class="form-group">
+                <button class="btn btn-danger" type="submit">
+                    {{ trans('global.save') }}
+                </button>
+                <a class="btn btn-secondary" href="{{url()->previous()}}">
+                    {{ trans('global.back') }}
+                </a>
+            </div>
+
             <div class="pt-2">
                 <button type="button" class="btn btn-dark waves-effect btn-sm btn-toggle-all-permissions">toggle</button>
                 <button type="button" class="btn btn-dark waves-effect btn-sm">add_all</button>
@@ -127,12 +136,12 @@
                         <div class="col-md-3">
                             <div class="custom-control custom-switch">
                                 <label>
-                                    <input
+                                    {{-- <input
                                     type="checkbox"
                                     class="checkbox"
                                     value="{{$item->id}}"
                                     name="permission_name[]"
-                                    >
+                                    > --}}
                                     <div class="d-flex align-items-center">
                                         <div class="switch"></div>
                                         <div class="pl-1" style="cursor: pointer !important;">{{$item->name}}</div>
@@ -145,19 +154,6 @@
                 </div>
                 @endforeach
 
-            <div class="form-group">
-                <label for="permissions">{{ trans('cruds.designation.fields.permissions') }}</label>
-                <div style="padding-bottom: 4px">
-                    <span class="btn btn-info btn-xs select-all" style="border-radius: 0">{{ trans('global.select_all') }}</span>
-                    <span class="btn btn-info btn-xs deselect-all" style="border-radius: 0">{{ trans('global.deselect_all') }}</span>
-                </div>
-                <span class="help-block">{{ trans('cruds.designation.fields.permissions_helper') }}</span>
-            </div>
-            <div class="form-group">
-                <button class="btn btn-danger" type="submit">
-                    {{ trans('global.save') }}
-                </button>
-            </div>
         </form>
     </div>
 </div>
