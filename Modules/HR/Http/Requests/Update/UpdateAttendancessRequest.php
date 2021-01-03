@@ -21,19 +21,13 @@ class UpdateAttendancesRequest extends FormRequest
                 'required',
                 'integer',
             ],
-            'date_in'         => [
-                'date_format:' . config('panel.date_format'),
+            'time'         => [
+                'date_format:' . config('panel.time_format'),
                 'nullable',
             ],
-            'date_out'        => [
+            'date' => [
                 'date_format:' . config('panel.date_format'),
-                'nullable',
-            ],
-            'clocking_status' => [
-                'nullable',
-                'integer',
-                'min:-2147483648',
-                'max:2147483647',
+                'required',
             ],
         ];
     }

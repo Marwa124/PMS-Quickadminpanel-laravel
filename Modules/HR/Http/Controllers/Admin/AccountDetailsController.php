@@ -37,6 +37,7 @@ class AccountDetailsController extends Controller
         foreach ($users as $key => $value) {
             $accountDetails[] = $value->accountDetail()->first();
         }
+
         return view('hr::admin.accountDetails.index', compact('accountDetails'));
     }
 
@@ -105,7 +106,7 @@ class AccountDetailsController extends Controller
     {
         abort_if(Gate::denies('account_detail_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $users = AccountDetail::all()->pluck('fullname', 'user_id')->prepend(trans('global.pleaseSelect'), '');
 
         $designations = Designation::all()->pluck('designation_name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
@@ -138,7 +139,7 @@ class AccountDetailsController extends Controller
     {
         abort_if(Gate::denies('account_detail_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $users = AccountDetail::all()->pluck('fullname', 'user_id')->prepend(trans('global.pleaseSelect'), '');
 
         $designations = Designation::all()->pluck('designation_name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
@@ -149,11 +150,23 @@ class AccountDetailsController extends Controller
         return view('hr::admin.accountDetails.edit', compact('users', 'designations', 'accountDetail', 'set_times'));
     }
 
+    // Single Colunm update in dataTables
+    public function singleColumnUpdate($id)
+    {
+        abort_if(Gate::denies('account_detail_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        AccountDetail::where('user_id', $id)->update(request()->only(['fullname']));
+        return response()->json(AccountDetail::where('user_id', $id)->first());
+
+    }
+
     public function update(UpdateAccountDetailRequest $request, AccountDetail $accountDetail)
     {
         // Give the user the same permission for selected designation
-        $designationPermissions = Designation::find($request->designation_id)->permissions()->pluck('name', 'id')->toArray();
-        User::find($accountDetail->user_id)->syncPermissions($designationPermissions);
+        if ($request->designation_id) {
+            $designationPermissions = Designation::find($request->designation_id)->permissions()->pluck('name', 'id')->toArray();
+            User::find($accountDetail->user_id)->syncPermissions($designationPermissions);
+        }
 
         $accountDetail->update($request->all());
 

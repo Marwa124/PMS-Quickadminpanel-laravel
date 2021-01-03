@@ -6,7 +6,8 @@ use App\Http\Controllers\Controller;
 use Modules\Sales\Entities\Result;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use Modules\Sales\Http\Requests\Destroy\MassDestroyResultRequest;
+use Symfony\Component\HttpFoundation\Response;
 class ResultsController extends Controller
 {
     /**
@@ -45,7 +46,7 @@ class ResultsController extends Controller
             Result::create($request->all());
 
             DB::commit();
-            return redirect()->route('sales.admin.results');
+            return redirect()->route('sales.admin.results.index');
 
 
         } catch (\Exception $e) {
@@ -117,5 +118,12 @@ class ResultsController extends Controller
         } catch (\Exception $e) {
             echo 'Process Failed';
         }
+    }
+
+    public function massDestroy(MassDestroyResultRequest $request)
+    {
+        Result::whereIn('id', request('ids'))->delete();
+
+        return response(null, Response::HTTP_NO_CONTENT);
     }
 }

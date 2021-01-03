@@ -129,3 +129,15 @@ table.dataTable thead .sorting_desc {
 .c-sidebar .c-active.c-sidebar-nav-dropdown-toggle, .c-sidebar .c-sidebar-nav-link.c-active{
     background-color: blue !important;
 }
+
+.sub-dropdown{
+    margin-left: -22px !important;
+}
+
+.self-item-link{
+    margin-left: -40px !important;
+}
+
+.sub-parent-dropdown{
+    margin-left: -36px !important;
+}

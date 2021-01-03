@@ -21,11 +21,11 @@ class Attendance extends Model
         'deleted_at',
     ];
 
-    const ATTENDANCE_STATUS_SELECT = [
-        'absent'  => 'Absent',
-        'present' => 'Present',
-        'onleave' => 'Onleave',
-    ];
+    // const ATTENDANCE_STATUS_SELECT = [
+    //     'absent'  => 'Absent',
+    //     'present' => 'Present',
+    //     'onleave' => 'Onleave',
+    // ];
 
     protected $fillable = [
         'user_id',

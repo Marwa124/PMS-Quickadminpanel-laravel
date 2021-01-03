@@ -3,7 +3,8 @@
 namespace Modules\Sales\Http\Requests\Destroy;
 
 use Illuminate\Foundation\Http\FormRequest;
-
+use Gate;
+use Symfony\Component\HttpFoundation\Response;
 class MassDestroyResultRequest extends FormRequest
 {
     /**
@@ -14,7 +15,8 @@ class MassDestroyResultRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'ids'   => 'required|array',
+            'ids.*' => 'exists:results,id',
         ];
     }
 
@@ -25,6 +27,8 @@ class MassDestroyResultRequest extends FormRequest
      */
     public function authorize()
     {
+        abort_if(Gate::denies('result_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         return true;
     }
 }

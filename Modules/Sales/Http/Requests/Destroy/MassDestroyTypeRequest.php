@@ -29,6 +29,8 @@ class MassDestroyTypeRequest extends FormRequest
      */
     public function authorize()
     {
+        abort_if(Gate::denies('types_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         return true;
     }
 }

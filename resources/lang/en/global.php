@@ -62,6 +62,7 @@ return [
         'print'         => 'Print',
         'colvis'        => 'Columns',
         'delete'        => 'Delete selected',
+        'assgin'        => 'Assgin selected',
         'zero_selected' => 'No rows selected',
     ],
     'billing'                              => [

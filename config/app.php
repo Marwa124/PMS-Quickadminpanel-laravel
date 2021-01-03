@@ -179,7 +179,7 @@ return [
         Barryvdh\DomPDF\ServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
         LaravelFCM\FCMServiceProvider::class,
-
+        Maatwebsite\Excel\ExcelServiceProvider::class,
         App\Providers\ViewServiceProvider::class,
     ],
 
@@ -236,7 +236,8 @@ return [
         'Share' => Jorenvh\Share\ShareFacade::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
         'FCM'      => LaravelFCM\Facades\FCM::class,
-	    'FCMGroup' => LaravelFCM\Facades\FCMGroup::class, // Optional
+        'FCMGroup' => LaravelFCM\Facades\FCMGroup::class, // Optional
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
     ],
 
 ];

@@ -137,8 +137,8 @@
                 <span class="help-block">{{ trans('cruds.accountDetail.fields.language_helper') }}</span>
             </div>
             <div class="form-group">
-                <label for="designation_id">{{ trans('cruds.accountDetail.fields.designation') }}</label>
-                <select class="form-control select2 {{ $errors->has('designation') ? 'is-invalid' : '' }}" name="designation_id" id="designation_id">
+                <label class="required" for="designation_id">{{ trans('cruds.accountDetail.fields.designation') }}</label>
+                <select class="form-control select2 {{ $errors->has('designation') ? 'is-invalid' : '' }}" name="designation_id" id="designation_id" required>
                     @foreach($designations as $id => $designation)
                         <option value="{{ $id }}" {{ (old('designation_id') ? old('designation_id') : $accountDetail->designation->id ?? '') == $id ? 'selected' : '' }}>{{ $designation }}</option>
                     @endforeach

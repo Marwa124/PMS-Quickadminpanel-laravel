@@ -89,8 +89,10 @@
                         <td>
                             <select class="search">
                                 <option value>{{ trans('global.all') }}</option>
-                                @foreach($roles as $key => $item)
-                                    <option value="{{ $item->title }}">{{ $item->title }}</option>
+                                @forelse($roles as $key => $item)
+                                    @if ($item)
+                                        <option value="{{ $item }}">{{ $item }}</option>
+                                    @endif
                                 @endforeach
                             </select>
                         </td>

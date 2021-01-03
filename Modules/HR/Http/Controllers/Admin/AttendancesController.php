@@ -11,6 +11,9 @@ use Modules\HR\Entities\LeaveApplication;
 use App\Models\User;
 use Gate;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Modules\HR\Entities\AccountDetail;
+use Modules\HR\Entities\FingerprintAttendance;
 use Symfony\Component\HttpFoundation\Response;
 
 class AttendancesController extends Controller
@@ -19,7 +22,9 @@ class AttendancesController extends Controller
     {
         abort_if(Gate::denies('attendances_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $attendances = Attendance::all();
+        // $attendances = FingerprintAttendance::get()->groupBy('date');
+        $attendances = FingerprintAttendance::orderBy('date', 'desc')->get()->groupBy(['date', 'user_id']);
+        // dd($attendances);
 
         return view('hr::admin.attendances.index', compact('attendances'));
     }
@@ -28,50 +33,55 @@ class AttendancesController extends Controller
     {
         abort_if(Gate::denies('attendances_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $users = AccountDetail::all()->pluck('fullname', 'user_id')->prepend(trans('global.pleaseSelect'), '');
 
-        $leave_applications = LeaveApplication::all()->pluck('leave_type', 'id')->prepend(trans('global.pleaseSelect'), '');
-
-        return view('hr::admin.attendances.create', compact('users', 'leave_applications'));
+        return view('hr::admin.attendances.create', compact('users'));
     }
 
     public function store(StoreAttendancesRequest $request)
     {
-        $attendances = attendances::create($request->all());
+        if ($request->date_in) {
+            $attendances = FingerprintAttendance::create($request->except('date_out', 'date_in'));
+            $attendances->update(['time' => $request->date_in]);
+        }
+        if ($request->date_out) {
+            $attendances = FingerprintAttendance::create($request->except('date_out', 'date_in'));
+            $attendances->update(['time' => $request->date_out]);
+        }
 
-        return redirect()->route('admin.attendances.index');
+        return redirect()->route('hr.admin.attendances.index');
     }
 
-    public function edit(attendances $attendances)
+    public function edit(FingerprintAttendance $attendances)
     {
         abort_if(Gate::denies('attendances_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
-
-        $leave_applications = LeaveApplication::all()->pluck('leave_type', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $users = AccountDetail::all()->pluck('fullname', 'user_id')->prepend(trans('global.pleaseSelect'), '');
 
         $attendances->load('user', 'leave_application');
 
-        return view('admin.attendances.edit', compact('users', 'leave_applications', 'attendances'));
+        return view('hr::admin.attendances.edit', compact('users', 'attendances'));
     }
 
-    public function update(UpdateAttendancesRequest $request, attendances $attendances)
+    public function update(UpdateAttendancesRequest $request, FingerprintAttendance $attendances)
     {
-        $attendances->update($request->all());
+        if ($request->time) {
+            $attendances->update($request->time);
+        }
 
-        return redirect()->route('admin.attendances.index');
+        return redirect()->route('hr.admin.attendances.index');
     }
 
-    public function show(attendances $attendances)
-    {
-        abort_if(Gate::denies('attendances_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+    // public function show(Attendance $attendances)
+    // {
+    //     abort_if(Gate::denies('attendances_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $attendances->load('user', 'leave_application');
+    //     $attendances->load('user', 'leave_application');
 
-        return view('admin.attendances.show', compact('attendances'));
-    }
+    //     return view('hr::admin.attendances.show', compact('attendances'));
+    // }
 
-    public function destroy(attendances $attendances)
+    public function destroy(FingerprintAttendance $attendances)
     {
         abort_if(Gate::denies('attendances_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
@@ -82,7 +92,7 @@ class AttendancesController extends Controller
 
     public function massDestroy(MassDestroyAttendancesRequest $request)
     {
-        attendances::whereIn('id', request('ids'))->delete();
+        Attendance::whereIn('id', request('ids'))->delete();
 
         return response(null, Response::HTTP_NO_CONTENT);
     }

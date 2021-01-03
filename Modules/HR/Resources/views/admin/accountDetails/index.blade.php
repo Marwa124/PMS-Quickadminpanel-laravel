@@ -79,7 +79,7 @@
                             {{ trans('cruds.accountDetail.fields.salary') }}
                         </th>
                         <th>
-                            Actions
+
                         </th>
                     </tr>
                 </thead>
@@ -92,10 +92,6 @@
 
                             </td>
                             <td>
-                                @if ($accountDetail->user_id == 36)
-
-                                    {{-- {{$accountDetail->getMedia('avatar')->first()->getUrl('thumb')}} --}}
-                                    @endif
                                 @if($accountDetail->avatar)
                                     {{-- <a href="{{ str_replace('storage', 'public/storage', $accountDetail->avatar->getUrl()) }}" target="_blank">
                                         <img class="rounded-circle img-thumbnail d-flex m-auto"
@@ -122,7 +118,39 @@
                                 @endif
                             </td>
                             <td>
-                                {{ $accountDetail->fullname ?? '' }}
+                            {{-- <td  contenteditable="true"> --}}
+                                {{-- <a>
+                                    {{ $accountDetail->fullname ?? '' }}
+                                </a> --}}
+                                <a type="button" class="fullname" data-toggle="modal" data-target="#fullName{{$accountDetail->user_id}}">
+                                    {{ $accountDetail->fullname ?? '' }}
+                                </a>
+
+
+                                @can('account_detail_edit')
+                                 <!-- Modal -->
+                                 <div class="modal fade" id="fullName{{$accountDetail->user_id}}" tabindex="-1" role="dialog" aria-labelledby="fullNameTitle{{$accountDetail->user_id}}" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-body">
+                                                <input type="integer" hidden value="{{$accountDetail->user_id}}" name="user_id">
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control"
+                                                    value="{{$accountDetail->fullname}}" name="fullname">
+                                                </div>
+
+                                                <input type="button" class="btn btn-xs btn-primary updateUserFullname" value="Update"
+                                                data-dismiss="" aria-label="Close">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                @endcan
+
+
                             </td>
                             <td>
                                 {{ $accountDetail->user->email ?? '' }}
@@ -150,122 +178,154 @@
                                 {{  $salary ? 'EGY ' .number_format($salary->basic_salary, 0, ',', '.') : ''}}
                             </td>
                             <td>
-                                <div class="defaultBtns">
-                                    @can('account_detail_show')
-                                        <a class="btn btn-xs btn-primary" href="{{ route('hr.admin.account-details.show', $accountDetail->id) }}">
-                                            {{ trans('global.view') }}
-                                        </a>
-                                    @endcan
-
-                                    @can('account_detail_edit')
-                                        <a class="btn btn-xs btn-info" href="{{ route('hr.admin.account-details.edit', $accountDetail->id) }}">
-                                            {{ trans('global.edit') }}
-                                        </a>
-                                    @endcan
-
-                                    {{-- Adjust User Salary --}}
-                                    @can('employee_award_access')
-                                        <button type="button" class="btn btn-xs btn-secondary" data-toggle="modal" data-target="#advancedSalary{{$accountDetail->user_id}}">
-                                            Edit Salary
-                                        </button>
-
-                                        <?php
-                                            $advancedUserSalaray = $advanceSalaryModel::where('user_id', $accountDetail->user_id)->first();
-                                        ?>
-
-                                        <!-- Modal -->
-                                        <div class="modal fade" id="advancedSalary{{$accountDetail->user_id}}" tabindex="-1" role="dialog" aria-labelledby="advancedSalaryTitle{{$accountDetail->user_id}}" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                <h5 class="modal-title" id="advancedSalaryTitle{{$accountDetail->user_id}}">Adjust User Salary for {{date('F')}} Month</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                                </div>
-                                                {{-- <form action="{{route('hr.admin.account-details.advancedSalary', $accountDetail->user_id)}}" method="post"></form> --}}
-                                                <div class="modal-body">
-                                                    <div class="displayMsg">
-                                                        <ul class="alert alert-danger" role="alert">
-                                                        </ul>
-                                                    </div>
-                                                    <input type="integer" hidden value="{{$accountDetail->user_id}}" name="user_id">
-                                                    <input type="text" hidden value="{{date('Y-m')}}" name="month">
-                                                    <div class="form-group">
-                                                        <label class="required">Type</label>
-                                                        <select class="form-control {{ $errors->has('type') ? 'is-invalid' : '' }}" name="type" required>
-                                                            <option value disabled {{ old('type', null) === null ? 'selected' : '' }}>{{ trans('global.pleaseSelect') }}</option>
-                                                            @foreach($advanceSalaryModel::TYPE_SELECT as $key => $label)
-                                                                <option value="{{ $key }}"
-                                                                @if ($advancedUserSalaray && (date('Y-m') == $advancedUserSalaray->month))
-                                                                    {{($advancedUserSalaray->type == $label) ? 'selected' : ''}}
-                                                                @endif
-                                                                >{{ $label }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="required" for="">Amount</label>
-                                                        <input name="amount" type="integer" class="form-control" placeholder="ex:1000 EGY" required
-                                                        value="{{$advancedUserSalaray ? ((date('Y-m') == $advancedUserSalaray->month) ? $advancedUserSalaray->amount : '') : ''}}"
-                                                        >
-                                                        <span class="text-danger fa-xs amountTextAlert">Enter amount as days for this type</span>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="">Reason</label>
-                                                        <textarea name="reason" class="form-control" id=""
-                                                        value="{{$advancedUserSalaray ? ((date('Y-m') == $advancedUserSalaray->month) ? $advancedUserSalaray->reason : '') : ''}}"
-                                                        ></textarea>
-                                                    </div>
-                                                </div>
-
-                                                <div class="modal-footer">
-                                                {{-- <input type="button" class="btn btn-primary updateUserSalary" data-dismiss="modal" aria-label="Close" value="Update"> --}}
-            {{-- // class="close" data-dismiss="modal" aria-label="Close" --}}
-
-                                                <input type="button" class="btn btn-primary updateUserSalary" value="Update"
-                                                data-dismiss="" aria-label="Close">
-                                                </div>
-                                            </div>
-                                            </div>
-                                        </div>
-                                    @endcan
-                                    {{-- Adjust User Salary --}}
 
 
-                                    @can('permission_access')
-                                        {{-- <a href="{{ route("admin.permissions.index", $accountDetail->user_id) }}" class="btn btn-xs btn-warning"> --}}
-                                        <a href="{{ route("admin.permissions.index", $accountDetail->id) }}" class="btn btn-xs btn-warning">
-                                            {{ trans('cruds.permission.title') }}
-                                        </a>
-                                    @endcan
 
-                                    @can('account_detail_delete')
-                                        <form action="{{ route('hr.admin.account-details.destroy', $accountDetail->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
-                                            <input type="hidden" name="_method" value="DELETE">
+
+
+
+
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton{{$accountDetail->user_id}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                      Actions
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton{{$accountDetail->user_id}}">
+
+
+
+
+
+
+
+
+
+                                      <div class="defaultBtns mx-2" style="display: grid;">
+                                        @can('account_detail_show')
+                                            <a class="btn btn-xs btn-primary" href="{{ route('hr.admin.account-details.show', $accountDetail->id) }}">
+                                                {{ trans('global.view') }}
+                                            </a>
+                                        @endcan
+
+                                        @can('account_detail_edit')
+                                            <a class="btn btn-xs btn-info my-1" href="{{ route('hr.admin.account-details.edit', $accountDetail->id) }}">
+                                                {{ trans('global.edit') }}
+                                            </a>
+                                        @endcan
+
+                                        {{-- Adjust User Salary --}}
+                                        @can('employee_award_access')
+                                            <button type="button" class="btn btn-xs btn-secondary" data-toggle="modal" data-target="#advancedSalary{{$accountDetail->user_id}}">
+                                                Edit Salary
+                                            </button>
+
+                                            <?php
+                                                $advancedUserSalaray = $advanceSalaryModel::where('user_id', $accountDetail->user_id)->first();
+                                            ?>
+                                            {{-- Outer Modal --}}
+                                        @endcan
+                                        {{-- Adjust User Salary --}}
+
+
+                                        @can('permission_access')
+                                            {{-- <a href="{{ route("admin.permissions.index", $accountDetail->user_id) }}" class="btn btn-xs btn-warning"> --}}
+                                            <a href="{{ route("admin.permissions.index", $accountDetail->id) }}" class="btn btn-xs btn-warning my-1">
+                                                {{ trans('cruds.permission.title') }}
+                                            </a>
+                                        @endcan
+
+                                        @can('account_detail_delete')
+                                            <form action="{{ route('hr.admin.account-details.destroy', $accountDetail->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                                <input type="hidden" name="_method" value="DELETE">
+                                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                <input type="submit" class="btn btn-xs btn-danger" style="padding: 1px 3.2rem;" value="{{ trans('global.delete') }}">
+                                            </form>
+                                        @endcan
+                                    </div>
+                                    <div class="restoreDelete">
+                                        @can('account_detail_delete')
+                                        <form action="{{ route('hr.admin.account-details.forceDestroy', $accountDetail->id) }}" method="POST" style="display: inline-block;">
+                                            <input type="hidden" name="_method" value="POST">
                                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                            <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
+                                            <input type="hidden" name="id" value="{{$accountDetail->id}}">
+                                            <input type="hidden" name="action" value="restore">
+                                            <input type="submit" class="btn btn-xs btn-success restore" value="Restore">
                                         </form>
-                                    @endcan
-                                </div>
-                                <div class="restoreDelete">
-                                    @can('account_detail_delete')
-                                    <form action="{{ route('hr.admin.account-details.forceDestroy', $accountDetail->id) }}" method="POST" style="display: inline-block;">
-                                        <input type="hidden" name="_method" value="POST">
-                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                        <input type="hidden" name="id" value="{{$accountDetail->id}}">
-                                        <input type="hidden" name="action" value="restore">
-                                        <input type="submit" class="btn btn-xs btn-success restore" value="Restore">
-                                    </form>
-                                    <form action="{{ route('hr.admin.account-details.forceDestroy', $accountDetail->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
-                                        <input type="hidden" name="_method" value="POST">
-                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                        <input type="hidden" name="id" value="{{$accountDetail->id}}">
-                                        <input type="hidden" name="action" value="force_delete">
-                                        <input type="submit" class="btn btn-xs btn-danger forceDestroy" value="Force Delete">
-                                    </form>
-                                    @endcan
-                                </div>
+                                        <form action="{{ route('hr.admin.account-details.forceDestroy', $accountDetail->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                            <input type="hidden" name="_method" value="POST">
+                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                            <input type="hidden" name="id" value="{{$accountDetail->id}}">
+                                            <input type="hidden" name="action" value="force_delete">
+                                            <input type="submit" class="btn btn-xs btn-danger forceDestroy" value="Force Delete">
+                                        </form>
+                                        @endcan
+                                    </div>
+
+
+                                    </div>
+                                  </div>
+
+
+
+
+
+
+
+{{-- Adjust User Salary  --}}
+<!-- Modal -->
+<div class="modal fade" id="advancedSalary{{$accountDetail->user_id}}" tabindex="-1" role="dialog" aria-labelledby="advancedSalaryTitle{{$accountDetail->user_id}}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="advancedSalaryTitle{{$accountDetail->user_id}}">Adjust User Salary for {{date('F')}} Month</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        {{-- <form action="{{route('hr.admin.account-details.advancedSalary', $accountDetail->user_id)}}" method="post"></form> --}}
+        <div class="modal-body">
+            <div class="displayMsg">
+                <ul class="alert alert-danger" role="alert">
+                </ul>
+            </div>
+            <input type="integer" hidden value="{{$accountDetail->user_id}}" name="user_id">
+            <input type="text" hidden value="{{date('Y-m')}}" name="month">
+            <div class="form-group">
+                <label class="required">Type</label>
+                <select class="form-control {{ $errors->has('type') ? 'is-invalid' : '' }}" name="type" required>
+                    <option value disabled {{ old('type', null) === null ? 'selected' : '' }}>{{ trans('global.pleaseSelect') }}</option>
+                    @foreach($advanceSalaryModel::TYPE_SELECT as $key => $label)
+                        <option value="{{ $key }}"
+                        @if ($advancedUserSalaray && (date('Y-m') == $advancedUserSalaray->month))
+                            {{($advancedUserSalaray->type == $label) ? 'selected' : ''}}
+                        @endif
+                        >{{ $label }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="required" for="">Amount</label>
+                <input name="amount" type="integer" class="form-control" placeholder="ex:1000 EGY" required
+                value="{{$advancedUserSalaray ? ((date('Y-m') == $advancedUserSalaray->month) ? $advancedUserSalaray->amount : '') : ''}}"
+                >
+                <span class="text-danger fa-xs amountTextAlert">Enter amount as days for this type</span>
+            </div>
+            <div class="form-group">
+                <label for="">Reason</label>
+                <textarea name="reason" class="form-control" id=""
+                value="{{$advancedUserSalaray ? ((date('Y-m') == $advancedUserSalaray->month) ? $advancedUserSalaray->reason : '') : ''}}"
+                ></textarea>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <input type="button" class="btn btn-primary updateUserSalary" value="Update"
+            data-dismiss="" aria-label="Close">
+        </div>
+    </div>
+    </div>
+</div>
+{{-- Adjust User Salary  --}}
+
 
 
 
@@ -281,8 +341,6 @@
     </div>
 </div>
 
-
-
 @endsection
 @section('scripts')
 @parent
@@ -294,116 +352,86 @@
 </script>
 
 <script>
-    $(function () {
-        $('.restoreDelete').css('display', 'none');
 
-  let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-// @can('account_detail_delete')
-//   let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
-//   let deleteButton = {
-//     text: deleteButtonTrans,
-//     url: "{{ route('hr.admin.account-details.massDestroy') }}",
-//     className: 'btn-danger',
-//     action: function (e, dt, node, config) {
-//       var ids = $.map(dt.rows({ selected: true }).nodes(), function (entry) {
-//           return $(entry).data('entry-id')
-//       });
+$(function () {
+    $('.restoreDelete').css('display', 'none');
 
-//       if (ids.length === 0) {
-//         alert('{{ trans('global.datatables.zero_selected') }}')
+let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
 
-//         return
-//       }
+$.extend(true, $.fn.dataTable.defaults, {
+orderCellsTop: true,
+order: [[ 1, 'desc' ]],
+pageLength: 25,
+scrollX : false,
+});
+let table = $('.datatable-AccountDetail:not(.ajaxTable)').DataTable({
+    buttons: [dtButtons, 'colvis'],
+})
 
-//       if (confirm('{{ trans('global.areYouSure') }}')) {
-//         $.ajax({
-//           headers: {'x-csrf-token': _token},
-//           method: 'POST',
-//           url: config.url,
-//           data: { ids: ids, _method: 'DELETE' }})
-//           .done(function () { location.reload() })
-//       }
-//     }
-//   }
-//   dtButtons.push(deleteButton)
-// @endcan
-
-  $.extend(true, $.fn.dataTable.defaults, {
-    orderCellsTop: true,
-    order: [[ 1, 'desc' ]],
-    pageLength: 25,
-    scrollX : false,
-  });
-  let table = $('.datatable-AccountDetail:not(.ajaxTable)').DataTable({
-        buttons: [dtButtons, 'colvis'],
-    })
-
-    // Hide columns
-    table.columns( [5] ).visible( false );
-    table.columns([5]).search( 0 ).draw(); // set a default load in datatable column (Active Users)
+// Hide columns
+table.columns( [5] ).visible( false );
+table.columns([5]).search( 0 ).draw(); // set a default load in datatable column (Active Users)
 
 
-  $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e){
-      $($.fn.dataTable.tables(true)).DataTable()
-          .columns.adjust();
-  });
+$('a[data-toggle="tab"]').on('shown.bs.tab click', function(e){
+  $($.fn.dataTable.tables(true)).DataTable()
+      .columns.adjust();
+});
 
-  $('.filter-select').on('change', function () {
-    table
-        .column(5)
-        .search($(this).val())
-        .draw()
-    });
-
-
-    // $('.filter-deleted').on('change', function () {
-
-    //   $('.defaultBtns').css('display', 'none');
-    //   console.log($('.filter-deleted').val());
-
-    //   if ($('.filter-deleted').val() != 1) {
-    //     $('.restoreDelete').css('display', 'block');
-    //     $('.defaultBtns').css('display', 'none');
-    //   }else{
-    //     $('.restoreDelete').css('display', 'none');
-    //     $('.defaultBtns').css('display', 'block');
-    //   }
-    // table
-    //     .column(8)
-    //     .search($(this).val())
-    //     .draw()
-    // });
-//   $(".filter-select").change(function(){
-// // console.log($(this).val());
-//     $.ajax({
-//         type: 'GET',
-//         url: "{{route('hr.admin.account-details.index')}}",
-//         dataType: 'html',
-//         data: {
-//             selectFilter: $(this).val(),
-//         },
-//         success: function(data){
-//             // console.log(data);
-//             $('body').html(data);
-//         }
-//     })
-
-//   })
-
+$('.filter-select').on('change', function () {
+table
+    .column(5)
+    .search($(this).val())
+    .draw()
+});
 
 $('select[name="type"]').change(function(){
-    let selectedType = $(this).closest('.modal').find('select[name="type"]').val();
-    if (selectedType == 'Penalty') {
-        $('.amountTextAlert').css('display', 'block');
-        $('input[name="amount"]').attr('placeholder', 'ex:0.5 day/s');
-    }else{
-        $('.amountTextAlert').css('display', 'none');
-        $('input[name="amount"]').attr('placeholder', 'ex:1000 EGY');
-    }
+let selectedType = $(this).closest('.modal').find('select[name="type"]').val();
+if (selectedType == 'Penalty') {
+    $('.amountTextAlert').css('display', 'block');
+    $('input[name="amount"]').attr('placeholder', 'ex:0.5 day/s');
+}else{
+    $('.amountTextAlert').css('display', 'none');
+    $('input[name="amount"]').attr('placeholder', 'ex:1000 EGY');
+}
 })
+
+// Update Column Fullname in datatables
+$('.fullname').click(function() {
+var userId     = $(this).closest('td').find('input[name="user_id"]').val();
+$('#fullName'+userId).modal('show');
+$('div.modal-backdrop').toggleClass('fade show modal-backdrop');
+})
+
+$('.updateUserFullname').on('click', function(){
+var userId     = $(this).closest('.modal').find('input[name="user_id"]').val();
+var fullname   = $(this).closest('.modal').find('input[name="fullname"]').val();
+var textName   = $(this).closest('td').find('.fullname');
+if (fullname != '') {
+
+$.ajax({
+    url: '{{url('admin/hr/account-details/single-column-update')}}/' + userId,
+    type: 'put',
+    data: {
+        _token: '{{csrf_token()}}',
+        user_id: userId,
+        fullname:  fullname
+    },
+    success: function(res) {
+        textName.html(res.fullname);
+        $('#fullName'+userId).modal('toggle');
+        $('div.modal-backdrop').toggleClass('fade show modal-backdrop');
+    },
+})
+}
+});
+
+// End Update Column Fullname in datatables
+
 
 $('.updateUserSalary').on('click', function(){
     var userId = $(this).closest('.modal').find('input[name="user_id"]').val();
+    var type   = $(this).closest('.modal').find('select[name="type"]').val();
     var type   = $(this).closest('.modal').find('select[name="type"]').val();
     var amount = $(this).closest('.modal').find('input[name="amount"]').val();
     var month  = $(this).closest('.modal').find('input[name="month"]').val();
@@ -422,13 +450,6 @@ $('.updateUserSalary').on('click', function(){
             reason:  reason
         },
         success: function(res) {
-            // $('#advancedSalary' + userId).modal('hide');
-
-            // $("input[type='button']").addClass("close");
-            // $("input[type='button']").attr("data-dismiss", "modal");
-            // $("input[type='button']").closest('div').find('.modal').hide();
-
-
             $('#advancedSalary'+userId).modal('toggle');
 
             $('div.modal-backdrop').removeClass('fade show modal-backdrop');
@@ -436,13 +457,10 @@ $('.updateUserSalary').on('click', function(){
             $('.displayMsg').css('display', 'block');
             $('.displayMsg .alert-success').html('Updated Salary Successfully');
             $('.displayMsg').delay(2000).slideUp(1000);
-            // $(this).closest('.modal').
-            console.log(res);
+            // console.log(res);
         },
         error: function(error) {
             $('.displayMsg .alert-danger').html(``);
-
-            console.log(error.responseJSON.errors);
 
             $.each( error.responseJSON.errors, function( index, value ){
                 value.forEach(err => {
@@ -453,9 +471,11 @@ $('.updateUserSalary').on('click', function(){
         }
 
     })
+
 });
 
 })
+
 
 </script>
 @endsection

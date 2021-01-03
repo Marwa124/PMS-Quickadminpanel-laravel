@@ -25,10 +25,10 @@
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.proposalsItem.fields.proposals') }}
+                            {{ trans('cruds.proposalsItem.fields.group_name') }}
                         </th>
                         <td>
-                            {{ $proposalsItem->proposals->reference_no ?? '' }}
+                            {{ $proposalsItem->customer_group->name ?? '' }}
                         </td>
                     </tr>
                     <tr>
@@ -47,14 +47,14 @@
                             {!! $proposalsItem->description !!}
                         </td>
                     </tr>
-                    <tr>
+                    {{-- <tr>
                         <th>
                             {{ trans('cruds.proposalsItem.fields.group_name') }}
                         </th>
                         <td>
                             {{ $proposalsItem->group_name }}
                         </td>
-                    </tr>
+                    </tr> --}}
                     <tr>
                         <th>
                             {{ trans('cruds.proposalsItem.fields.brand') }}
@@ -63,14 +63,14 @@
                             {{ $proposalsItem->brand }}
                         </td>
                     </tr>
-                    <tr>
+                    {{-- <tr>
                         <th>
                             {{ trans('cruds.proposalsItem.fields.delivery') }}
                         </th>
                         <td>
                             {{ $proposalsItem->delivery }}
                         </td>
-                    </tr>
+                    </tr> --}}
                     <tr>
                         <th>
                             {{ trans('cruds.proposalsItem.fields.part') }}
@@ -103,28 +103,28 @@
                             {{ $proposalsItem->margin }}
                         </td>
                     </tr>
-                    <tr>
+                    {{-- <tr>
                         <th>
                             {{ trans('cruds.proposalsItem.fields.selling_price') }}
                         </th>
                         <td>
                             {{ $proposalsItem->selling_price }}
                         </td>
-                    </tr>
-                    <tr>
+                    </tr> --}}
+                    {{-- <tr>
                         <th>
                             {{ trans('cruds.proposalsItem.fields.total_cost_price') }}
                         </th>
                         <td>
                             {{ $proposalsItem->total_cost_price }}
                         </td>
-                    </tr>
+                    </tr> --}}
                     <tr>
                         <th>
                             {{ trans('cruds.proposalsItem.fields.tax_rate') }}
                         </th>
                         <td>
-                            {{ $proposalsItem->tax_rate }}
+                            {{ $proposalsItem->taxes->rate_percent .'%'?? '' }}
                         </td>
                     </tr>
                     <tr>
@@ -132,33 +132,33 @@
                             {{ trans('cruds.proposalsItem.fields.tax_name') }}
                         </th>
                         <td>
-                            {{ $proposalsItem->tax_name }}
+                            {{ $proposalsItem->taxes->name ?? '' }}
                         </td>
                     </tr>
-                    <tr>
+                    {{-- <tr>
                         <th>
                             {{ trans('cruds.proposalsItem.fields.tax_total') }}
                         </th>
                         <td>
                             {{ $proposalsItem->tax_total }}
                         </td>
-                    </tr>
-                    <tr>
+                    </tr> --}}
+                    {{-- <tr>
                         <th>
                             {{ trans('cruds.proposalsItem.fields.tax_cost') }}
                         </th>
                         <td>
                             {{ $proposalsItem->tax_cost }}
                         </td>
-                    </tr>
-                    <tr>
+                    </tr> --}}
+                    {{-- <tr>
                         <th>
                             {{ trans('cruds.proposalsItem.fields.order') }}
                         </th>
                         <td>
                             {{ $proposalsItem->order }}
                         </td>
-                    </tr>
+                    </tr> --}}
                     <tr>
                         <th>
                             {{ trans('cruds.proposalsItem.fields.unit') }}
@@ -167,14 +167,14 @@
                             {{ $proposalsItem->unit }}
                         </td>
                     </tr>
-                    <tr>
+                    {{-- <tr>
                         <th>
                             {{ trans('cruds.proposalsItem.fields.hsn_code') }}
                         </th>
                         <td>
                             {{ $proposalsItem->hsn_code }}
                         </td>
-                    </tr>
+                    </tr> --}}
                 </tbody>
             </table>
             <div class="form-group">

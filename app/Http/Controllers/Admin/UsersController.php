@@ -7,12 +7,12 @@ use App\Http\Controllers\Traits\MediaUploadingTrait;
 use App\Http\Requests\MassDestroyUserRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
-use App\Models\Permission;
-use App\Models\Role;
 use App\Models\User;
 use Gate;
 use Illuminate\Http\Request;
 use Spatie\MediaLibrary\Models\Media;
+use Spatie\Permission\Contracts\Permission;
+use Spatie\Permission\Contracts\Role;
 use Symfony\Component\HttpFoundation\Response;
 
 class UsersController extends Controller
@@ -25,11 +25,15 @@ class UsersController extends Controller
 
         $users = User::all();
 
-        $roles = Role::get();
+        $roles = [];
+        foreach($users as $user){
+            array_push($roles, $user->getRoleNames()[0] ?? '');
+        }
 
-        $permissions = Permission::get();
+        // $permissions = Permission::all();
 
-        return view('admin.users.index', compact('users', 'roles', 'permissions'));
+        return view('admin.users.index', compact('users', 'roles'));
+        // return view('admin.users.index', compact('users', 'roles', 'permissions'));
     }
 
     public function create()

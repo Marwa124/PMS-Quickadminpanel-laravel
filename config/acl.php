@@ -65,12 +65,36 @@
                 'crm_document_access',
             ],
 
-            // 'settings' => [
-            //     'index-general-settings', // done
-            //     'edit-general-settings', // done
-            //     'edit-lead-statuses', // done
-            //     'edit-sales-commissions' // done
-            // ],
+            'website_settings' => [
+                'setting_access',
+                'client_menu_access',
+                'menu_access',
+                'local_access',
+                'performance_indicator_access',
+                'technical_category_access',
+                'quotation_form_access',
+                'quotation_access',
+                'quotation_detail_access',
+                'dashboard_setting_access',
+
+
+
+
+
+
+                'private_chat_access',
+                'todo_access',
+                'outgoing_email_access',
+                'expense_management_access',
+                'expense_category_access',
+                'income_category_access',
+                'expense_access',
+                'income_access',
+                'expense_report_access',
+                'profile_password_edit',
+            ],
+
+
 
 
             // permissions
@@ -90,7 +114,31 @@
                 'employee_show', // done
                 'employee_delete', // done
                 'employee_access', // done
+                'settings', // done
+
+                'evaluations',
+
             ],
+
+            'penalty_category' => [
+                'penalty_category_access',
+                'penalty_category_create',
+                'penalty_category_delete',
+
+            ],
+
+            // Evaluations
+            'manager_evaluation' => [
+                'manager_evaluation_access',
+            ],
+
+            'employee_evaluation' => [
+                'employee_evaluation_access',
+            ],
+            // End Evaluations
+
+
+
 
             'time_management' => [
                 'time_management_access',
@@ -250,6 +298,13 @@
                 'interested_in_delete',
                 'interested_in_access',
             ],
+            'proposals_item' => [
+                'proposals_item_access',
+                'proposals_item_create',
+                'proposals_item_edit',
+                'proposals_item_show',
+                'proposals_item_delete',
+            ],
 
             'opportunity' => [
                 'opportunity_create',
@@ -258,7 +313,6 @@
                 'opportunity_delete',
                 'opportunity_access',
             ],
-
             'work_tracking' => [
                 'work_tracking_create',
                 'work_tracking_edit',
@@ -345,29 +399,32 @@
                 'set_time_access',
             ],
 
-            '' => [
-                '',
-            ],
+            // '' => [
+            //     '',
+            // ],
 
-            '' => [
-                '',
-            ],
+            // '' => [
+            //     '',
+            // ],
             // crm
             'leads' => [
                 'countries_create', // done
                 'countries_edit', // done
                 'countries_show', // done
                 'countries_delete', // done
-                // 'lead_category_access', // done
-                // 'lead_source_create', // done
-                // 'lead_source_delete', // done
-                // 'lead_source_access',
-                // 'lead_status_create',
-                // 'lead_status_delete',
-                // 'lead_status_access',
-                // 'salutation_create',
-                // 'salutation_delete',
-                // 'salutation_access',
+                'countries_access', // done
+                'types_create', // done
+                'types_delete', // done
+                'types_access',
+                'result_create',
+                'result_delete',
+                'result_access',
+                'calls_create',
+                'calls_delete',
+                'calls_access',
+                'Finalresults_create',
+                'Finalresults_delete',
+                'Finalresults_access',
                 'lead_create',
                 'lead_edit',
                 'lead_show',
@@ -385,7 +442,6 @@
                 'client_menu_edit', // done
                 'client_menu_show',
                 'client_menu_delete',
-                'client_menu_access',
             ],
 
             'meetings' => [
@@ -423,14 +479,14 @@
 
 
             // accounting
-            // 'banks' => [
-            //     'account_create',
-            //     'account_edit',
-            //     'account_show',
-            //     'account_delete',
-            //     'account_access',
-            //     'force-delete-banks',
-            // ],
+            'banks' => [
+                'account_create',
+                'account_edit',
+                'account_show',
+                'account_delete',
+                'account_access',
+                'force-delete-banks',
+            ],
 
             // 'cashs' => [
             //     'index-cashs',
@@ -477,15 +533,41 @@
             //     'index-purchase_returns'
             // ],
 
-            // 'suppliers' => [
-            //     'index-suppliers',
-            //     'create-suppliers',
-            //     'edit-suppliers',
-            //     'profile-suppliers',
-            //     'delete-suppliers',
-            //     'restore-suppliers',
-            //     'force-delete-suppliers',
-            // ],
+            'suppliers' => [
+                'materials_supplier_access',
+                'supplier_access',
+                'supplier_index',
+                'supplier_create',
+                'supplier_edit',
+                'supplier_profile',
+                'supplier_delete',
+                'supplier_restore',
+                'supplier_force_delete',
+            ],
+            'tax_rate' => [
+                'tax_rate_access',
+                'tax_rate_access',
+                'tax_rate_index',
+                'tax_rate_create',
+                'tax_rate_edit',
+                'tax_rate_delete',
+            ],
+
+            'customer_group' => [
+                'customer_group_access',
+                'customer_group_index',
+                'customer_group_create',
+                'customer_group_edit',
+                'customer_group_delete',
+            ],
+            'purchase_payment' => [
+                'purchase_payment_access',
+                'purchase_payment_access',
+                'purchase_payment_index',
+                'purchase_payment_create',
+                'purchase_payment_edit',
+                'purchase_payment_delete',
+            ],
 
             // 'expenses' => [
             //     'index-expenses',

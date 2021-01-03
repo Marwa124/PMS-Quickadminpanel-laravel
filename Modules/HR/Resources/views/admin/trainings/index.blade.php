@@ -1,4 +1,5 @@
 @extends('layouts.admin')
+@inject('trainingModel', 'Modules\HR\Entities\Training')
 @section('content')
 @can('training_create')
     <div style="margin-bottom: 10px;" class="row">
@@ -79,7 +80,7 @@
                                 {{ $training->training_cost ?? '' }}
                             </td>
                             <td>
-                                {{ App\Models\Training::STATUS_SELECT[$training->status] ?? '' }}
+                                {{ $trainingModel::STATUS_SELECT[$training->status] ?? '' }}
                             </td>
                             <td>
                                 @can('training_show')

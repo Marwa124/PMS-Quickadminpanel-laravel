@@ -39,7 +39,9 @@ class JobApplicationRequest extends Mailable
         // $account = JobApplication::where('user_id', $this->user_id)->select('user_id', 'fullname')->first();
         $jobApplicationDetail = $this->details;
 
-        $attachment = str_replace('public/storage', 'storage/app/public', $this->details->resume->getUrl());
+        // $attachment = str_replace('public/storage', 'storage/app/public', $this->details->resume->getUrl());
+        // dd($this->details);
+        $attachment = asset($this->details->resume->getUrl());
         $array = explode('.', $this->details->resume->getUrl());
         $extension = strtolower(end($array));
 

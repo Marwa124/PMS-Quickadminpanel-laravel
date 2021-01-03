@@ -9,8 +9,13 @@ use Modules\Sales\Http\Requests\Destroy\MassDestroyProposalRequest;
 use Modules\Sales\Http\Requests\Store\StoreProposalRequest;
 use Modules\Sales\Http\Requests\Update\UpdateProposalRequest;
 use Modules\Sales\Http\Requests;
-use App\Models\Permission;
+use Modules\Sales\Entities\ProposalsItem;
+use App\Models\Opportunity;
+use App\Models\Client;
+use App\Models\User;
+use Spatie\Permission\Models\Permission;
 use Modules\Sales\Entities\Proposal;
+use Modules\MaterialsSuppliers\Entities\TaxRate;
 use Gate;
 use Illuminate\Http\Request;
 use Spatie\MediaLibrary\Models\Media;
@@ -35,9 +40,10 @@ class ProposalsController extends Controller
     {
         abort_if(Gate::denies('proposal_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $permissions = Permission::all()->pluck('title', 'id');
-
-        return view('sales::admin.proposals.create', compact('permissions'));
+        $users = User::whereHas('accountDetail')->get()->pluck('accountDetail.fullname', 'id');
+        $ProposalsItem = ProposalsItem::all();
+        $taxRates = TaxRate::all();
+        return view('sales::admin.proposals.create', compact('users','ProposalsItem','taxRates'));
     }
 
     public function store(StoreProposalRequest $request)
@@ -106,5 +112,39 @@ class ProposalsController extends Controller
         $media         = $model->addMediaFromRequest('upload')->toMediaCollection('ck-media');
 
         return response()->json(['id' => $media->id, 'url' => $media->getUrl()], Response::HTTP_CREATED);
+    }
+
+    public function getmodule(Request $request)
+    {
+        $ajaxrequest="getmodule";
+        if($request->id=="opportunities"){
+          $data=Opportunity::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+          $datataype=$request->id;
+        }elseif ($request->id=="client") {
+            $data=Client::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+            $datataype=$request->id;
+        }
+        if($request->id != null){
+
+            $loadview=view('sales::admin.proposals.ajaxload', compact('data','datataype','ajaxrequest'))->render();
+        }else{
+            $loadview="";
+        }
+        return response()->json($loadview, Response::HTTP_CREATED);
+
+        
+    }
+    /**
+     * get proposal item by id
+     * **/ 
+    public function get_item_by_id(Request $request)
+    {
+         $item = ProposalsItem::find($request->id);
+         $item->setAttribute('group_name', (!empty($item->customer_group) ? $item->customer_group->name : null));
+         $item->setAttribute('taxname' , (!empty($item->taxes) ? $item->taxes->name : null));
+         $item->setAttribute('taxrate' , (!empty($item->taxes) ? $item->taxes->rate_percent : null));
+         $item->setAttribute('description' , strip_tags($item->description));
+
+          return response()->json($item, Response::HTTP_CREATED);
     }
 }

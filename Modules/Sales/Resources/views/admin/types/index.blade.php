@@ -104,7 +104,7 @@
           url: config.url,
           data: { ids: ids, _method: 'DELETE' }})
           .done(function () { 
-            //   location.reload()
+              location.reload()
                })
       }
     }

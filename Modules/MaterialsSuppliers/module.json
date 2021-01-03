@@ -1,0 +1,13 @@
+{
+    "name": "MaterialsSuppliers",
+    "alias": "materialssuppliers",
+    "description": "",
+    "keywords": [],
+    "order": 0,
+    "providers": [
+        "Modules\\MaterialsSuppliers\\Providers\\MaterialsSuppliersServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

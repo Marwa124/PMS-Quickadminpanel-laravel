@@ -9,7 +9,7 @@
     <div class="card-body">
         <div class="form-group">
             <div class="form-group">
-                <a class="btn btn-default" href="{{ route('admin.departments.index') }}">
+                <a class="btn btn-default" href="{{ route('hr.admin.departments.index') }}">
                     {{ trans('global.back_to_list') }}
                 </a>
             </div>
@@ -106,7 +106,7 @@
                 </tbody>
             </table>
             <div class="form-group">
-                <a class="btn btn-default" href="{{ route('admin.departments.index') }}">
+                <a class="btn btn-default" href="{{ route('hr.admin.departments.index') }}">
                     {{ trans('global.back_to_list') }}
                 </a>
             </div>
@@ -127,7 +127,7 @@
     </ul>
     <div class="tab-content">
         <div class="tab-pane" role="tabpanel" id="department_designations">
-            @includeIf('admin.departments.relationships.departmentDesignations', ['designations' => $department->departmentDesignations])
+            @includeIf('hr.admin.departments.relationships.departmentDesignations', ['designations' => $department->departmentDesignations])
         </div>
     </div>
 </div>

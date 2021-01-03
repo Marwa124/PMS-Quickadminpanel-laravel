@@ -19,9 +19,9 @@ Auth::routes(['register' => false]);
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'middleware' => ['auth']], function () {
     Route::get('/', 'HomeController@index')->name('home');
+    Route::delete('permissions/destroy', 'PermissionsController@massDestroy')->name('permissions.massDestroy');
     Route::get('user-alerts/read', 'UserAlertsController@read');
     // Permissions
-    Route::delete('permissions/destroy', 'PermissionsController@massDestroy')->name('permissions.massDestroy');
     Route::get('permissions/{id}', 'PermissionsController@index')->name('permissions.index');
     // Route::resource('permissions', 'PermissionsController');
 
@@ -165,21 +165,14 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::post('kb-categories/ckmedia', 'KbCategoriesController@storeCKEditorImages')->name('kb-categories.storeCKEditorImages');
     Route::resource('kb-categories', 'KbCategoriesController', ['except' => ['edit', 'update', 'show']]);
 
-    // Customer Groups
-    Route::delete('customer-groups/destroy', 'CustomerGroupsController@massDestroy')->name('customer-groups.massDestroy');
-    Route::post('customer-groups/media', 'CustomerGroupsController@storeMedia')->name('customer-groups.storeMedia');
-    Route::post('customer-groups/ckmedia', 'CustomerGroupsController@storeCKEditorImages')->name('customer-groups.storeCKEditorImages');
-    Route::resource('customer-groups', 'CustomerGroupsController');
-
+ 
     // Invoices
     Route::delete('invoices/destroy', 'InvoicesController@massDestroy')->name('invoices.massDestroy');
     Route::post('invoices/media', 'InvoicesController@storeMedia')->name('invoices.storeMedia');
     Route::post('invoices/ckmedia', 'InvoicesController@storeCKEditorImages')->name('invoices.storeCKEditorImages');
     Route::resource('invoices', 'InvoicesController');
 
-    // Suppliers
-    Route::delete('suppliers/destroy', 'SuppliersController@massDestroy')->name('suppliers.massDestroy');
-    Route::resource('suppliers', 'SuppliersController');
+   
 
     // Purchases
     Route::delete('purchases/destroy', 'PurchaseController@massDestroy')->name('purchases.massDestroy');
@@ -205,9 +198,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::post('transfers/ckmedia', 'TransfersController@storeCKEditorImages')->name('transfers.storeCKEditorImages');
     Route::resource('transfers', 'TransfersController');
 
-    // Tax Rates
-    Route::delete('tax-rates/destroy', 'TaxRatesController@massDestroy')->name('tax-rates.massDestroy');
-    Route::resource('tax-rates', 'TaxRatesController');
+
 
     // Stock Categories
     Route::delete('stock-categories/destroy', 'StockCategoriesController@massDestroy')->name('stock-categories.massDestroy');
@@ -317,7 +308,3 @@ Route::group(['prefix' => 'profile', 'as' => 'profile.', 'namespace' => 'Auth', 
         Route::post('password', 'ChangePasswordController@update')->name('password.update');
     }
 });
-
-
-
-// Route::get('/{any}', 'PermissionsController@index')->where('any', '.*');
