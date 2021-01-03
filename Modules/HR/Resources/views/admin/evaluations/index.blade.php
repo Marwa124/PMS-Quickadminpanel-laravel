@@ -53,7 +53,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($trainings as $key => $training)
+                    @foreach($evaluations as $key => $evaluation)
                         <tr data-entry-id="{{ $training->id }}">
                             <td>
 

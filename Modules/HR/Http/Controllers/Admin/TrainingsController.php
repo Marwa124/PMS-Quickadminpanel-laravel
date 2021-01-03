@@ -41,7 +41,7 @@ class TrainingsController extends Controller
     public function store(StoreTrainingRequest $request)
     {
         $training = Training::create($request->all());
-        $training->permissions()->sync($request->input('permissions', []));
+        // $training->permissions()->sync($request->input('permissions', []));
 
         if ($request->input('uploaded_file', false)) {
             $training->addMedia(storage_path('tmp/uploads/' . $request->input('uploaded_file')))->toMediaCollection('uploaded_file');

@@ -29,6 +29,8 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
+        "@inertiajs/inertia": "^0.8.2",
+        "@inertiajs/inertia-vue": "^0.5.4",
         "@syncfusion/ej2-base": "^18.3.52",
         "@syncfusion/ej2-vue-buttons": "^18.3.47",
         "@syncfusion/ej2-vue-grids": "^18.3.53",

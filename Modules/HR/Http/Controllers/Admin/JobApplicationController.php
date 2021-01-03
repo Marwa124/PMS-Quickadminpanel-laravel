@@ -13,6 +13,7 @@ use Modules\HR\Entities\JobCircular;
 use Gate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Modules\HR\Entities\AccountDetail;
 use Spatie\MediaLibrary\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
@@ -87,7 +88,7 @@ class JobApplicationController extends Controller
                 $userObject = User::create([
                     'name' => explode(' ', $jobApplication->name)[0],
                     'email' => $jobApplication->email,
-                    'password' => explode(' ', $jobApplication->name)[0] . '@123',
+                    'password' => Hash::make(explode(' ', $jobApplication->name)[0] . '@123'),
                 ]);
     
                 AccountDetail::create([
