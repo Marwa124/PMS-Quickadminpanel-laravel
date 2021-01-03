@@ -151,4 +151,28 @@ class Invoice extends Model implements HasMedia
     {
         $this->attributes['date_sent'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
     }
+
+    ///////////////////
+
+    public function get_invoice_paid_amount($invoice_id)
+    {
+
+//        $this->db->select_sum('amount');
+//        $this->db->where('invoices_id', $invoice_id);
+//        $this->db->from('tbl_payments');
+//        $query_result = $this->db->get();
+//        $amount = $query_result->row();
+//        $tax = $this->get_invoice_tax_amount($invoice_id);
+
+        $amount = DB::table('payments')
+            ->where('invoices_id', $invoice_id)
+            ->sum('amount');
+
+//        if (!empty($amount)) {
+//            $result = $amount;
+//        } else {
+//            $result = '0';
+//        }
+        return $amount;
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace Modules\ProjectManagement\Http\Requests;
 
+use Illuminate\Validation\Rule;
 use Modules\ProjectManagement\Entities\Task;
 use Gate;
 use Illuminate\Foundation\Http\FormRequest;
@@ -20,6 +21,11 @@ class StoreTaskRequest extends FormRequest
             'name'               => [
                 'string',
                 'required',
+                Rule::unique('tasks','name')->where(function($query) {
+
+                    $query->where('milestone_id', '=', request()->milestone_id);
+
+                }),
             ],
             'status_id'          => [
                 'required',

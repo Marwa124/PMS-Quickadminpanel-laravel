@@ -15,6 +15,7 @@ use Modules\HR\Entities\Training;
 use Modules\ProjectManagement\Entities\Bug;
 use Modules\ProjectManagement\Entities\Milestone;
 use Modules\ProjectManagement\Entities\Project;
+use Modules\ProjectManagement\Entities\ProjectTimer;
 use Modules\ProjectManagement\Entities\Task;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
@@ -206,6 +207,15 @@ class User extends Authenticatable implements HasMedia
         $this->attributes['date_of_insurance'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
     }
 
+    public function projectTimer()
+    {
+        return $this->hasMany(ProjectTimer::class,'user_id');
+    }
+
+    public function projectTimerEdited()
+    {
+        return $this->hasMany(ProjectTimer::class,'edited_by');
+    }
 
     // get Project management details to specific User
 
@@ -225,11 +235,15 @@ class User extends Authenticatable implements HasMedia
         return $projects;
     }
 
-    public function getUserMilestonesByUserID($user_id)
+    public function getUserMilestonesByUserID($user_id,$trashed=null)
     {
         $user = User::findOrFail($user_id);
 
         if ($user->hasrole(['Admin','Super Admin'])){
+
+            if ($trashed){
+                return Milestone::onlyTrashed()->get();
+            }
 
             $milestones = Milestone::all();
 
@@ -237,6 +251,7 @@ class User extends Authenticatable implements HasMedia
 
             $milestones = $user->accountDetail->milestones;
         }
+
 
         return $milestones;
     }
@@ -247,11 +262,11 @@ class User extends Authenticatable implements HasMedia
 
         if ($user->hasrole(['Admin','Super Admin'])){
 
-            $tasks = Task::all();
+            $tasks = Task::all()->where('parent_task_id','=',null);
 
         }else{
 
-            $tasks = $user->accountDetail->tasks;
+            $tasks = $user->accountDetail->tasks->where('parent_task_id',null);
         }
 
         return $tasks;

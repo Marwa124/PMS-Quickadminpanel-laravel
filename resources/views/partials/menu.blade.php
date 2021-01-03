@@ -548,16 +548,6 @@
                             </a>
                         </li>
                     @endcan
-                    @can('ticket_access')
-                        <li class="c-sidebar-nav-item">
-                            <a href="{{ route("admin.tickets.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/tickets") || request()->is("admin/tickets/*") ? "active" : "" }}">
-                                <i class="fa-fw fas fa-ticket-alt c-sidebar-nav-icon">
-
-                                </i>
-                                {{ trans('cruds.ticket.title') }}
-                            </a>
-                        </li>
-                    @endcan
                     @can('file_access')
                         <li class="c-sidebar-nav-item">
                             <a href="{{ route("admin.files.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/files") || request()->is("admin/files/*") ? "active" : "" }}">
@@ -648,6 +638,16 @@
 
                                 </i>
                                 {{ trans('cruds.bug.title') }}
+                            </a>
+                        </li>
+                    @endcan
+                    @can('ticket_access')
+                        <li class="c-sidebar-nav-item">
+                            <a href="{{ route("projectmanagement.admin.tickets.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/projectmanagement/tickets") || request()->is("admin/projectmanagement/tickets/*") ? "active" : "" }}">
+                                <i class="fa-fw fas fa-ticket-alt c-sidebar-nav-icon">
+
+                                </i>
+                                {{ trans('cruds.ticket.title') }}
                             </a>
                         </li>
                     @endcan

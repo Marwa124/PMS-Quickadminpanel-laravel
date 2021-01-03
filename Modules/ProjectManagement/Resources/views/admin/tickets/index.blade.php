@@ -3,7 +3,7 @@
 @can('ticket_create')
     <div style="margin-bottom: 10px;" class="row">
         <div class="col-lg-12">
-            <a class="btn btn-success" href="{{ route('admin.tickets.create') }}">
+            <a class="btn btn-success" href="{{ route('projectmanagement.admin.tickets.create') }}">
                 {{ trans('global.add') }} {{ trans('cruds.ticket.title_singular') }}
             </a>
         </div>
@@ -26,51 +26,20 @@
                             {{ trans('cruds.ticket.fields.id') }}
                         </th>
                         <th>
-                            {{ trans('cruds.ticket.fields.project') }}
+                            {{ trans('cruds.ticket.fields.ticket_code') }}
                         </th>
                         <th>
                             {{ trans('cruds.ticket.fields.subject') }}
                         </th>
                         <th>
-                            {{ trans('cruds.ticket.fields.status') }}
+                            {{ trans('cruds.ticket.fields.project') }}
                         </th>
                         <th>
-                            {{ trans('cruds.ticket.fields.permissions') }}
+                            {{ trans('cruds.ticket.fields.status') }}
                         </th>
                         <th>
                             &nbsp;
                         </th>
-                    </tr>
-                    <tr>
-                        <td>
-                        </td>
-                        <td>
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                        </td>
-                        <td>
-                            <select class="search">
-                                <option value>{{ trans('global.all') }}</option>
-                                @foreach($projects as $key => $item)
-                                    <option value="{{ $item->name }}">{{ $item->name }}</option>
-                                @endforeach
-                            </select>
-                        </td>
-                        <td>
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                        </td>
-                        <td>
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                        </td>
-                        <td>
-                            <select class="search">
-                                <option value>{{ trans('global.all') }}</option>
-                                @foreach($permissions as $key => $item)
-                                    <option value="{{ $item->title }}">{{ $item->title }}</option>
-                                @endforeach
-                            </select>
-                        </td>
-                        <td>
-                        </td>
                     </tr>
                 </thead>
                 <tbody>
@@ -83,34 +52,33 @@
                                 {{ $ticket->id ?? '' }}
                             </td>
                             <td>
-                                {{ $ticket->project->name ?? '' }}
+                                {{ $ticket->ticket_code ?? '' }}
                             </td>
                             <td>
                                 {{ $ticket->subject ?? '' }}
                             </td>
                             <td>
+                                {{ $ticket->project->name ?? '' }}
+                            </td>
+                            <td>
                                 {{ $ticket->status ?? '' }}
                             </td>
-                            <td>
-                                @foreach($ticket->permissions as $key => $item)
-                                    <span class="badge badge-info">{{ $item->title }}</span>
-                                @endforeach
-                            </td>
+
                             <td>
                                 @can('ticket_show')
-                                    <a class="btn btn-xs btn-primary" href="{{ route('admin.tickets.show', $ticket->id) }}">
+                                    <a class="btn btn-xs btn-primary" href="{{ route('projectmanagement.admin.tickets.show', $ticket->id) }}">
                                         {{ trans('global.view') }}
                                     </a>
                                 @endcan
 
                                 @can('ticket_edit')
-                                    <a class="btn btn-xs btn-info" href="{{ route('admin.tickets.edit', $ticket->id) }}">
+                                    <a class="btn btn-xs btn-info" href="{{ route('projectmanagement.admin.tickets.edit', $ticket->id) }}">
                                         {{ trans('global.edit') }}
                                     </a>
                                 @endcan
 
                                 @can('ticket_delete')
-                                    <form action="{{ route('admin.tickets.destroy', $ticket->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                    <form action="{{ route('projectmanagement.admin.tickets.destroy', $ticket->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
                                         <input type="hidden" name="_method" value="DELETE">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                         <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
@@ -139,7 +107,7 @@
   let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
   let deleteButton = {
     text: deleteButtonTrans,
-    url: "{{ route('admin.tickets.massDestroy') }}",
+    url: "{{ route('projectmanagement.admin.tickets.massDestroy') }}",
     className: 'btn-danger',
     action: function (e, dt, node, config) {
       var ids = $.map(dt.rows({ selected: true }).nodes(), function (entry) {

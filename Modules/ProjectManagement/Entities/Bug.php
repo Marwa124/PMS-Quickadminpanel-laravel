@@ -3,7 +3,6 @@
 namespace Modules\ProjectManagement\Entities;
 
 use App\Models\Opportunity;
-use App\Models\Permission;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -75,7 +74,6 @@ class Bug extends Model implements HasMedia
         return $this->belongsTo(Task::class, 'task_id');
     }
 
-
     public function reporterBy(){
         return $this->belongsTo(User::class,'reporter');
     }
@@ -85,5 +83,10 @@ class Bug extends Model implements HasMedia
         return $this->belongsToMany('Modules\HR\Entities\AccountDetail',
             'bug_account_details_pivot','bug_id','account_details_id');
 
+    }
+
+    public function activities()
+    {
+        return $this->hasMany(Activity::class,'module_field_id')->where('module','=','bug')->orderBy('id','desc');
     }
 }

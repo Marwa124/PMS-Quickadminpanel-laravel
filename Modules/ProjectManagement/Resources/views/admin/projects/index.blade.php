@@ -36,30 +36,23 @@
                         <th>
                             {{ trans('cruds.project.fields.name') }}
                         </th>
-                        <th style="display: none;"></th>
                         <th>
                             {{ trans('cruds.project.fields.client') }}
                         </th>
-{{--                        <th>--}}
-{{--                            {{ trans('cruds.project.fields.progress') }}--}}
-{{--                        </th>--}}
-{{--                        <th>--}}
-{{--                            {{ trans('cruds.project.fields.calculate_progress') }}--}}
-{{--                        </th>--}}
                         <th>
                             {{ trans('cruds.project.fields.start_date') }}
                         </th>
                         <th>
                             {{ trans('cruds.project.fields.end_date') }}
                         </th>
-{{--                        <th>--}}
-{{--                            {{ trans('cruds.project.fields.actual_completion') }}--}}
-{{--                        </th>--}}
+                        <th>
+                            {{ trans('cruds.milestone.title_singular') }}
+                        </th>
                         <th>
                             {{ trans('cruds.task.title_singular') }}
                         </th>
                         <th>
-                            {{ trans('cruds.milestone.title_singular') }}
+                            {{ trans('cruds.ticket.title_singular') }}
                         </th>
                         <th>
                             {{ trans('cruds.project.fields.project_status') }}
@@ -70,42 +63,6 @@
                         <th>
                             &nbsp;
                         </th>
-                    </tr>
-                    <tr>
-                        <td>
-                        </td>
-                        <td>
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}" style="width: 110px;">
-                        </td>
-                        <td>
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}" >
-                        </td>
-                        <td style="display: none;">
-                        </td>
-                        <td>
-                            <select class="search">
-                                <option value>{{ trans('global.all') }}</option>
-                                @foreach($clients as $key => $item)
-                                    <option value="{{ $item->name }}">{{ $item->name }}</option>
-                                @endforeach
-                            </select>
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}" style="width: 110px;">
-                        </td>
-                        <td>
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}" >
-                        </td>
-                        <td>
-                        </td>
                     </tr>
                 </thead>
                 <tbody>
@@ -119,26 +76,18 @@
                                     {{ $project->id ?? '' }}
                                 </td>
                                 <td>
-                                    {{ ucwords($project->name ?? '') }}<br>
-                                    <div class="progress" >
+                                    <a  href="{{ route('projectmanagement.admin.projects.show', $project->id) }}" title=" {{ trans('global.view') }}">
+                                        {{ $project->name ?? '' }}<br>
+                                    </a>
+                                    <div class="progress" style="width: 150px" >
                                         <div class="progress-bar {{$project->calculate_progress < 50 ? 'bg-danger':'bg-success'}}" role="progressbar" style="width: {{$project->calculate_progress}}%; display: {{$project->calculate_progress?:'none'}}" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
                                             {{$project->calculate_progress}}%
                                         </div>
                                     </div>
                                 </td>
-                                <td style="display: none;">{{$project->deleted_at ?? ''}}</td>
                                 <td>
                                     {{ $project->client->name ?? '' }}
                                 </td>
-    {{--                            <td>--}}
-
-    {{--                                {{ $project->progress == 'through_tasks' ? 'Through Tasks' : '' }}--}}
-    {{--                                {{ $project->progress == 'project_hours' ? 'Project Hours' : '' }}--}}
-    {{--                            </td>--}}
-    {{--                                {{ $project->progress == 'through_tasks' ? 'Through Tasks' :  $project->progress == 'project_hours' ? 'Project Hours' : ''  }}--}}
-    {{--                            <td>--}}
-    {{--                                {{ $project->calculate_progress ? $project->calculate_progress .'%' : '' }}--}}
-    {{--                            </td>--}}
                                 <td>
                                     {{ $project->start_date ?? '' }}
                                 </td>
@@ -147,11 +96,18 @@
                                 </td>
 
                                 <td>
-    {{--                                {{ $project->with_tasks ?? 'No' }}--}}
+                                     <a href="#milestonesModal" data-toggle="modal" data-target="#milestonesModal" data-project="{{$project}}" onclick="milestonesModal('{{$project->id}}')" class="btn btn-info {{$project->milestones && $project->milestones->count()>0 ? '':'disabled'}}" >
+                                         {{$project->milestones && $project->milestones->count()>0 ? $project->milestones->count():'No Milestone'}}
+                                     </a>
+                                </td>
+                                <td>
                                     @if($project->with_tasks || $project->tasks)
-                                        <a href="{{route('projectmanagement.admin.tasks.index')}}" class="btn btn-info {{$project->tasks && $project->tasks->count()>0 ? '':'disabled'}}" >
+                                        <a href="#tasksModal" data-toggle="modal" data-target="#tasksModal" data-project="{{$project}}" onclick="tasksModal('{{$project->id}}')" class="btn btn-info {{$project->tasks && $project->tasks->count()>0 ? '':'disabled'}}" >
                                             {{$project->tasks->count()>0 ? $project->tasks->count():'No Tasks'}}
                                         </a>
+{{--                                        <a href="{{route('projectmanagement.admin.tasks.index')}}" class="btn btn-info {{$project->tasks && $project->tasks->count()>0 ? '':'disabled'}}" >--}}
+{{--                                            {{$project->tasks->count()>0 ? $project->tasks->count():'No Tasks'}}--}}
+{{--                                        </a>--}}
                                     @else
                                         <a class="btn btn-info disabled" >
                                             No Tasks
@@ -159,32 +115,26 @@
                                     @endif
                                 </td>
                                 <td>
-                                     <a href="{{route('projectmanagement.admin.milestones.index')}}" class="btn btn-info {{$project->milestones && $project->milestones->count()>0 ? '':'disabled'}}" >
-                                         {{$project->milestones && $project->milestones->count()>0 ? $project->milestones->count():'No Milestone'}}
-                                     </a>
+                                    <a href="#ticketsModal" data-toggle="modal" data-target="#ticketsModal" data-project="{{$project}}" onclick="ticketsModal('{{$project->id}}')" class="btn btn-info {{$project->tickets && $project->tickets->count()>0 ? '':'disabled'}}" >
+                                        {{$project->tickets && $project->tickets->count()>0 ? $project->tickets->count():'No Ticket'}}
+                                    </a>
                                 </td>
+
                                 <td>
                                     {{ $project->project_status ?? '' }}
                                 </td>
                                 <td>
                                     {{ $project->department->department_name ?? '' }}
                                 </td>
-    {{--                            <td>--}}
-    {{--                                @forelse($project->accountDetails as $accountDetail)--}}
-    {{--                                    {{ $accountDetail->fullname ?? '' }},--}}
-    {{--                                @empty--}}
-    {{--                                @endforelse--}}
-    {{--                            </td>--}}
+
                                 <td>
                                     @can('project_show')
                                         <a class="btn btn-xs btn-primary" href="{{ route('projectmanagement.admin.projects.show', $project->id) }}" title=" {{ trans('global.view') }}">
-    {{--                                        {{ trans('global.view') }}--}}
                                             <span class="fa fa-eye"></span>
                                         </a>
                                     @endcan
                                     @can('project_edit')
                                         <a class="btn btn-xs btn-info" href="{{ route('projectmanagement.admin.projects.edit', $project->id) }}" title="{{ trans('global.edit') }}">
-    {{--                                        {{ trans('global.edit') }}--}}
                                             <span class="fa fa-pencil-square-o"></span>
                                         </a>
                                     @endcan
@@ -217,6 +167,136 @@
     </div>
 </div>
 
+{{-- Modal tasks Pop up to display all tasks in project by project_id--}}
+
+<input type="hidden" id="projects" value="{{$projects}}">
+<input type="hidden" id="status" value="{{$status}}">
+<!-- Modal -->
+<div class="modal fade" id="tasksModal" tabindex="-1" role="dialog" aria-labelledby="tasksModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style=" width: max-content;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="tasksModalTitle">{{ trans('cruds.task.title_singular') }} </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class=" table table-bordered table-striped table-hover datatable datatable-Task">
+                        <thead>
+                        <tr>
+                            <th>
+                                {{ trans('cruds.task.fields.id') }}
+                            </th>
+                            <th width="150">
+                                {{ trans('cruds.task.fields.name') }}
+                            </th>
+                            <th>
+                                {{ trans('cruds.task.fields.status') }}
+                            </th>
+                            <th width="200">
+                                {{ trans('cruds.task.fields.progress') }}
+                            </th>
+                            <th width="150">
+                                {{ trans('cruds.task.fields.due_date') }}
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody id="taskModelTBody">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{{-- Modal milestones Pop up to display all milestones in project by project_id--}}
+
+<!-- Modal -->
+<div class="modal fade" id="milestonesModal" tabindex="-1" role="dialog" aria-labelledby="milestonesModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style=" width: max-content;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="milestonesModalTitle">{{ trans('cruds.milestone.title_singular') }} </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class=" table table-bordered table-striped table-hover datatable datatable-Milestone">
+                        <thead>
+                        <tr>
+                            <th>
+                                {{ trans('cruds.milestone.fields.id') }}
+                            </th>
+                            <th width="150">
+                                {{ trans('cruds.milestone.fields.name') }}
+                            </th>
+                            <th width="150">
+                                {{ trans('cruds.milestone.fields.end_date') }}
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody id="milestoneModelTBody">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{-- Modal milestones Pop up to display all milestones in project by project_id--}}
+
+<!-- Modal -->
+<div class="modal fade" id="ticketsModal" tabindex="-1" role="dialog" aria-labelledby="ticketsModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style=" width: max-content;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ticketsModalTitle">{{ trans('cruds.ticket.title_singular') }} </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class=" table table-bordered table-striped table-hover datatable datatable-Ticket">
+                        <thead>
+                        <tr>
+                            <th>
+                                {{ trans('cruds.ticket.fields.id') }}
+                            </th>
+                            <th width="150">
+                                {{ trans('cruds.ticket.fields.subject') }}
+                            </th>
+                            <th width="100">
+                                {{ trans('cruds.ticket.fields.status') }}
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody id="ticketsModelTBody">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 @endsection
@@ -279,23 +359,83 @@ $.extend(true, $.fn.dataTable.defaults, {
           .columns.adjust();
   });
 
-  $('.filter-select').on('change', function () {
-      console.log("dgsdf");
-    table
-        .column(3)
-        .search($(this).val())
-        .draw()
-    });
+  // $('.filter-select').on('change', function () {
+  //     console.log("dgsdf");
+  //   table
+  //       .column(3)
+  //       .search($(this).val())
+  //       .draw()
+  //   });
 
-  $('.datatable thead').on('input', '.search', function () {
-      let strict = $(this).attr('strict') || false
-      let value = strict && this.value ? "^" + this.value + "$" : this.value
-      table
-        .column($(this).parent().index())
-        .search(value, strict)
-        .draw()
-  });
+  // $('.datatable thead').on('input', '.search', function () {
+  //     let strict = $(this).attr('strict') || false
+  //     let value = strict && this.value ? "^" + this.value + "$" : this.value
+  //     table
+  //       .column($(this).parent().index())
+  //       .search(value, strict)
+  //       .draw()
+  // });
 })
+
+
+    function tasksModal(project_id){
+        var allprojects = document.getElementById('projects').value;
+        var projects = JSON.parse(allprojects);
+        var allstatus = document.getElementById('status').value;
+        var status = JSON.parse(allstatus);
+
+        var innerHtmlTasks = '';
+        projects.filter(function (value,key) {
+            if (value.id == project_id) {
+                const tasks = value.tasks;
+
+                tasks.forEach(function (value,key) {
+
+                    status.forEach(function (stat,key) {
+                        if (stat.id == value.status_id){
+
+                            innerHtmlTasks += "<tr data-entry-id='"+value.id+"'><td>"+ value.id+"</td><td>"+ value.name+"</td><td>"+ stat.name+"</td><td><div class='progress'> <div class='progress-bar ' role='progressbar' style='width:"+value.calculate_progress +"%;  aria-valuenow='25' aria-valuemin='0' aria-valuemax='100'>"+value.calculate_progress +"%</div></div></td><td>"+ value.due_date+"</td></tr>"
+                        }
+                    })
+                })
+                document.getElementById('taskModelTBody').innerHTML = innerHtmlTasks;
+                //console.log(value)
+            }
+        })
+    }
+
+    function milestonesModal(project_id){
+        var allprojects = document.getElementById('projects').value;
+        var projects = JSON.parse(allprojects);
+        var innerHtmlTasks = '';
+        projects.filter(function (value,key) {
+            if (value.id == project_id) {
+                const milestones = value.milestones;
+
+                milestones.forEach(function (value,key) {
+                    innerHtmlTasks += "<tr data-entry-id='"+value.id+"'><td>"+ value.id+"</td><td>"+ value.name+"</td><td>"+ value.end_date+"</td></tr>"
+                })
+                document.getElementById('milestoneModelTBody').innerHTML = innerHtmlTasks;
+            }
+        })
+    }
+
+
+    function ticketsModal(project_id){
+        var allprojects = document.getElementById('projects').value;
+        var projects = JSON.parse(allprojects);
+        var innerHtmlTickets = '';
+        projects.filter(function (value,key) {
+            if (value.id == project_id) {
+                const tickets = value.tickets;
+
+                tickets.forEach(function (value,key) {
+                    innerHtmlTickets += "<tr data-entry-id='"+value.id+"'><td>"+ value.id+"</td><td>"+ value.subject+"</td><td>"+ value.status+"</td></tr>"
+                })
+                document.getElementById('ticketsModelTBody').innerHTML = innerHtmlTickets;
+            }
+        })
+    }
 
 
 </script>

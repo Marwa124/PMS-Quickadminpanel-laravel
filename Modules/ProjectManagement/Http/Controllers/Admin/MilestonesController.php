@@ -3,7 +3,6 @@
 namespace Modules\ProjectManagement\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Permission;
 use Modules\HR\Entities\AccountDetail;
 use Modules\ProjectManagement\Http\Controllers\Traits\PermissionHelperTrait;
 use Modules\ProjectManagement\Http\Requests\MassDestroyMilestoneRequest;
@@ -28,19 +27,35 @@ class MilestonesController extends Controller
     public function index()
     {
         abort_if(Gate::denies('milestone_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        //(request()->segment(count(request()->segments())));
 
-        $milestones = auth()->user()->getUserMilestonesByUserID(auth()->user()->id);
+        $milestones = auth()->user()->getUserMilestonesByUserID(auth()->user()->id,false);
+
+        if (request()->segment(count(request()->segments())) == 'trashed'){
+
+            $milestones = auth()->user()->getUserMilestonesByUserID(auth()->user()->id,true);
+
+        }
 
         return view('projectmanagement::admin.milestones.index', compact('milestones'));
     }
 
-    public function create()
+    public function create($id = null)
     {
+
+        // $id refer to project_id in this case
+
         abort_if(Gate::denies('milestone_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $projects = Project::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $projects = Project::all()->pluck('name', 'id');
+        $project = null;
 
-        return view('projectmanagement::admin.milestones.create', compact('projects'));
+        if (request()->segment(count(request()->segments())-1) == 'project-milestone' || $id)
+        {
+            $project = Project::findOrFail($id);
+        }
+
+        return view('projectmanagement::admin.milestones.create', compact('projects','project'));
     }
 
     public function store(StoreMilestoneRequest $request)
@@ -173,4 +188,34 @@ class MilestonesController extends Controller
 //        }
 //        return $permissions_id;
 //    }
+
+    public function forceDelete(Request $request,$id)
+    {
+        //dd($request->all(),$id);
+        $action = $request->action;
+
+        if ($action == 'force_delete') {
+                Milestone::onlyTrashed()->where('id', $id)->forceDelete();
+        } else if ($action == 'restore') {
+            Milestone::onlyTrashed()->where('id', $id)->restore();
+        }
+
+        return back();
+
+
+    }
+    public function massforceDelete(Request $request)
+    {
+        //dd($request->all());
+        $ids = request('ids');
+
+//        foreach ($ids as $id){
+//            $milestone = Milestone::where('id',$id)->first();
+//            $milestone->accountDetails()->detach();
+//        }
+
+        Milestone::onlyTrashed()->whereIn('id', request('ids'))->forceDelete();
+
+        return response(null, Response::HTTP_NO_CONTENT);
+    }
 }

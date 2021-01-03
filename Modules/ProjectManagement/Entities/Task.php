@@ -4,7 +4,6 @@ namespace Modules\ProjectManagement\Entities;
 
 use App\Models\Lead;
 use App\Models\Opportunity;
-use App\Models\Permission;
 use App\Models\User;
 use App\Models\WorkTracking;
 use Carbon\Carbon;
@@ -67,6 +66,7 @@ class Task extends Model implements HasMedia
         'created_at',
         'updated_at',
         'deleted_at',
+        'parent_task_id',
     ];
 
     protected function serializeDate(DateTimeInterface $date)
@@ -154,5 +154,30 @@ class Task extends Model implements HasMedia
         return $this->belongsToMany('Modules\HR\Entities\AccountDetail',
             'task_account_details_pivot','task_id','account_details_id');
 
+    }
+
+    public function subTasks(){
+        return $this->hasMany(Task::class,'parent_task_id');
+    }
+
+    public function bugs(){
+        return $this->hasMany(Bug::class,'task_id');
+    }
+
+    public function TimeSheet()
+    {
+        return $this->hasMany(TimeSheet::class,'module_field_id')->where('module','=','task')
+            ->where('end_time','!=',null)->orderBy('id','desc');
+    }
+
+    public function TimeSheetOn()
+    {
+        return $this->hasMany(TimeSheet::class,'module_field_id')->where('module','=','task')
+            ->where('user_id',auth()->user()->id)->where('end_time','=',null);
+    }
+
+    public function activities()
+    {
+        return $this->hasMany(Activity::class,'module_field_id')->where('module','=','task')->orderBy('id','desc');
     }
 }

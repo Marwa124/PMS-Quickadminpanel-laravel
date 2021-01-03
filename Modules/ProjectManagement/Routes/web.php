@@ -36,6 +36,12 @@ Route::group(['prefix' => 'admin/projectmanagement', 'as' => 'projectmanagement.
     Route::resource('tasks', 'TaskController');
     Route::get('tasks/{id}/assign_to','TaskController@getAssignTo')->name('tasks.getAssignTo');
     Route::post('tasks/assign_to','TaskController@storeAssignTo')->name('tasks.storeAssignTo');
+    Route::put('tasks/{id}/update_note','TaskController@update_note')->name('tasks.update_note');
+    Route::get('tasks/create/sub-task/{id}','TaskController@create')->name('tasks.create_sub_task');
+    Route::get('tasks/create/milestone-task/{id}','TaskController@create')->name('tasks.create_milestone_task');
+    Route::get('tasks/create/project-task/{id}','TaskController@create')->name('tasks.create_project_task');
+    Route::get('tasks/{id}/task_timer','TaskController@update_task_timer')->name('tasks.update_task_timer');
+
 
     // Tasks Calendars
     Route::resource('tasks-calendars', 'TasksCalendarController', ['except' => ['create', 'store', 'edit', 'update', 'show', 'destroy']]);
@@ -47,12 +53,18 @@ Route::group(['prefix' => 'admin/projectmanagement', 'as' => 'projectmanagement.
     Route::resource('projects', 'ProjectsController');
     Route::get('projects/{id}/assign_to','ProjectsController@getAssignTo')->name('projects.getAssignTo');
     Route::post('projects/assign_to','ProjectsController@storeAssignTo')->name('projects.storeAssignTo');
+    Route::put('projects/{id}/update_note','ProjectsController@update_note')->name('projects.update_note');
+    Route::get('projects/{id}/project_timer','ProjectsController@update_project_timer')->name('projects.update_project_timer');
 
     // Milestones
     Route::delete('milestones/destroy', 'MilestonesController@massDestroy')->name('milestones.massDestroy');
     Route::resource('milestones', 'MilestonesController');
+    Route::get('milestones/index/trashed','MilestonesController@index')->name('milestones.trashed.index');
     Route::get('milestones/{id}/assign_to','MilestonesController@getAssignTo')->name('milestones.getAssignTo');
     Route::post('milestones/assign_to','MilestonesController@storeAssignTo')->name('milestones.storeAssignTo');
+    Route::post('milestones/{id}/force-destroy', 'MilestonesController@forceDelete')->name('milestones.forceDestroy');
+    Route::delete('milestones/force-destroy', 'MilestonesController@massforceDelete')->name('milestones.massForceDestroy');
+    Route::get('milestones/create/project-milestone/{id}','MilestonesController@create')->name('milestones.create_project_milestone');
 
     // Bugs
     Route::delete('bugs/destroy', 'BugsController@massDestroy')->name('bugs.massDestroy');
@@ -61,7 +73,20 @@ Route::group(['prefix' => 'admin/projectmanagement', 'as' => 'projectmanagement.
     Route::resource('bugs', 'BugsController');
     Route::get('bugs/{id}/assign_to','BugsController@getAssignTo')->name('bugs.getAssignTo');
     Route::post('bugs/assign_to','BugsController@storeAssignTo')->name('bugs.storeAssignTo');
+    Route::put('bugs/{id}/update_note','BugsController@update_note')->name('bugs.update_note');
+    Route::get('bugs/create/project-bug/{id}','BugsController@create')->name('bugs.create_project_bug');
+    Route::get('bugs/create/task-bug/{id}','BugsController@create')->name('bugs.create_task_bug');
 
+    // Tickets
+    Route::delete('tickets/destroy', 'TicketsController@massDestroy')->name('tickets.massDestroy');
+    Route::post('tickets/media', 'TicketsController@storeMedia')->name('tickets.storeMedia');
+    Route::post('tickets/ckmedia', 'TicketsController@storeCKEditorImages')->name('tickets.storeCKEditorImages');
+    Route::resource('tickets', 'TicketsController');
+    Route::get('tickets/create/project-ticket/{id}','TicketsController@create')->name('tickets.create_project_ticket');
+    Route::post('tickets/add_replay','TicketsController@replay')->name('tickets.replay');
+    Route::post('tickets/change_status','TicketsController@change_status')->name('tickets.change_status');
+    //Route::post('close_ticket','TicketsController@close')->name('tickets.close');
+    //Route::get('changestatus/{status}/{id}','TicketController@change_status')->name('tickets.change_status');
 
     // Task Uploaded Files
     Route::delete('task-uploaded-files/destroy', 'TaskUploadedFilesController@massDestroy')->name('task-uploaded-files.massDestroy');
@@ -76,7 +101,9 @@ Route::group(['prefix' => 'admin/projectmanagement', 'as' => 'projectmanagement.
     Route::resource('task-attachments', 'TaskAttachmentsController');
 
 
+    // Time Sheet
 
+    Route::resource('time-sheets', 'TimeSheetController')->only(['store','destroy']);
 //    Route::get('employees','SubDepartmentController@get_employees')->name('sub-department.get_employees');
 
 //    //Project Specifications sub-department (values)

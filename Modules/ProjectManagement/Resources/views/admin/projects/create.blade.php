@@ -133,18 +133,6 @@
                     @endif
                     <span class="help-block">{{ trans('cruds.project.fields.client_helper') }}</span>
                 </div>
-{{--                <div class="form-group">--}}
-{{--                    <label for="progress">{{ trans('cruds.project.fields.progress') }}</label>--}}
-{{--                    <input type="checkbox" id="progress_hours" name="progress" value="project_hours" {{ old('progress') == 'project_hours' ? 'checked' : '' }} onclick="ProgressInput1()" />  Project Hours--}}
-{{--                    <input type="checkbox" id="progress_tasks" name="progress" value="through_tasks" {{ old('progress') == 'through_tasks' ? 'checked' : '' }} onclick="ProgressInput2()" />  Through tasks--}}
-{{--                    --}}
-{{--                    @if($errors->has('progress'))--}}
-{{--                        <div class="invalid-feedback">--}}
-{{--                            {{ $errors->first('progress') }}--}}
-{{--                        </div>--}}
-{{--                    @endif--}}
-{{--                    <span class="help-block">{{ trans('cruds.project.fields.progress_helper') }}</span>--}}
-{{--                </div>--}}
 
                 <div class="form-group w3-light-grey w3-xlarge" id="div_progress_input" style="display:block;">
                     <label for="calculate_progress">{{ trans('cruds.project.fields.calculate_progress') }}</label>
@@ -230,7 +218,7 @@
                 </div>
                 <div class="form-group">
                     <label for="estimate_hours">{{ trans('cruds.project.fields.estimate_hours') }}</label>
-                    <input class="form-control {{ $errors->has('estimate_hours') ? 'is-invalid' : '' }}" type="text" name="estimate_hours" id="estimate_hours" value="{{ old('estimate_hours', '') }}">
+                    <input class="form-control {{ $errors->has('estimate_hours') ? 'is-invalid' : '' }}" type="text" name="estimate_hours" id="estimate_hours" value="{{ old('estimate_hours', '') }}" placeholder="Ex: 20">
                     @if($errors->has('estimate_hours'))
                         <div class="invalid-feedback">
                             {{ $errors->first('estimate_hours') }}
