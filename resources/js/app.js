@@ -47,22 +47,22 @@ Vue.component('assign-permissions-to-user', require('./components/AssignPermissi
 
 
 // Inertia Installation
-import { App, plugin } from '@inertiajs/inertia-vue'
+// import { App, plugin } from '@inertiajs/inertia-vue'
 
-Vue.use(plugin)
+// Vue.use(plugin)
 
-const el = document.getElementById('app')
+// const el = document.getElementById('app')
 
-new Vue({
-  render: h => h(App, {
-    props: {
-      initialPage: JSON.parse(el.dataset.page),
-      resolveComponent: name => {
-        require(`./${name}`).default
-      },
-    },
-  }),
-}).$mount(el)
+// new Vue({
+//   render: h => h(App, {
+//     props: {
+//       initialPage: JSON.parse(el.dataset.page),
+//       resolveComponent: name => {
+//         require(`./${name}`).default
+//       },
+//     },
+//   }),
+// }).$mount(el)
 // ... Inertia Installation
 
 
