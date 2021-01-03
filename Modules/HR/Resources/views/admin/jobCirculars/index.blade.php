@@ -112,8 +112,8 @@
 
 
                                     <!-- Modal -->
+                                    {{-- style="z-index: 9999; position: absolute; top: 4%;" --}}
                                     <div class="modal fade"
-                                        style="z-index: 9999; position: absolute; top: 4%;"
                                     id="shareLinksHtml{{$jobCircular->id}}" tabindex="-1" role="dialog" aria-labelledby="shareLinksHtmlLabel" aria-hidden="true">
                                         <div class="modal-dialog" role="document">
                                         <div class="modal-content">
@@ -125,7 +125,12 @@
                                             </div>
                                             <div class="modal-body">
                                                 <div id="social-links">
-                                                    <ul style="list-style:none" class="p-3 inputShares d-flex justify-content-between fa-2x"></ul>
+                                                    <ul style="list-style:none" class="p-3 inputShares d-flex justify-content-between fa-2x">
+                                                        {{-- <li><a href="https://www.facebook.com/sharer/sharer.php?u=http://jorenvanhocht.be" class="social-button " id=""><span class="fa fa-facebook-official"></span></a></li>
+                                                        <li><a href="https://twitter.com/intent/tweet?text=my share text&amp;url=http://jorenvanhocht.be" class="social-button " id=""><span class="fa fa-twitter"></span></a></li>
+                                                        <li><a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://jorenvanhocht.be&amp;title=my share text&amp;summary=dit is de linkedin summary" class="social-button " id=""><span class="fa fa-linkedin"></span></a></li>
+                                                        <li><a href="https://wa.me/?text=http://jorenvanhocht.be" class="social-button " id=""><span class="fa fa-whatsapp"></span></a></li>    --}}
+                                                    </ul>
                                                 </div>
                                             </div>
                                         </div>
@@ -236,8 +241,29 @@ $('.social-links').on('click', function(){
     $('.inputShares').html(shareHtml);
 });
 
-
 })
 
 </script>
+
+<script scoped>
+    $(document).ready(function(){
+        $('span.fa').addClass('fab');
+        $('.modal-body #social-links .social-button').removeClass('fa');
+        $('.modal-body #social-links .social-button').html("flahdkj");
+        
+        $('.fa-facebook-official').addClass('fa-facebook');
+        console.log("sdaf");
+
+    });
+</script>
+@endsection
+
+
+
+@section('styles')
+    <style>
+        .fa, .fas{
+            width: 1.25rem;
+        }
+    </style>    
 @endsection

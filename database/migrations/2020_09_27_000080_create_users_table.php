@@ -20,7 +20,7 @@ class CreateUsersTable extends Migration
             $table->integer('set_time_id')->unsigned()->nullable();
             $table->enum('job_type', ['full_time', 'part_time', 'freelance'])->default('full_time')->nullable();
             $table->string('activated')->nullable();
-            $table->string('banned')->nullable();
+            $table->string('banned')->default(0)->nullable();
             $table->longText('ban_reason')->nullable();
             $table->string('last_ip')->nullable();
             $table->date('last_login')->nullable();

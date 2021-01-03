@@ -142,6 +142,11 @@ Route::group(['as' => 'hr.admin.', 'prefix' => 'admin/hr', 'namespace' => 'Admin
     // Route::post('job-applications/ckmedia', 'JobApplicationController@storeCKEditorImages')->name('job-applications.storeCKEditorImages');
     Route::resource('job-applications', 'JobApplicationController', ['except' => ['store', 'create']]);
 
+
+    // Evaluations
+    Route::resource('evaluations', 'EvaluationController');
+
+
 });
 // Route::get('/{any}', 'Admin\DepartmentsController@index')->where('any', '.*');
 

@@ -116,13 +116,29 @@
                 'employee_access', // done
                 'settings', // done
 
+                'evaluations',
+
             ],
 
-            'penalty_category_access' => [
+            'penalty_category' => [
+                'penalty_category_access',
                 'penalty_category_create',
                 'penalty_category_delete',
 
             ],
+
+            // Evaluations
+            'manager_evaluation' => [
+                'manager_evaluation_access',
+            ],
+
+            'employee_evaluation' => [
+                'employee_evaluation_access',
+            ],
+            // End Evaluations
+
+
+
 
             'time_management' => [
                 'time_management_access',

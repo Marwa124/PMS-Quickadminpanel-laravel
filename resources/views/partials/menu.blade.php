@@ -335,7 +335,7 @@
                             </a>
                         </li>
                     @endcan
-                    @can('penalty_category_access')
+                    @can('penalty_category')
                         <li class="c-sidebar-nav-item">
                             <a href="{{ route("admin.penalty-categories.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/penalty-categories") || request()->is("admin/penalty-categories/*") ? "active" : "" }}">
                                 <i class="fa-fw far fa-edit c-sidebar-nav-icon self-item-link">
@@ -365,6 +365,24 @@
                                         </a>
                                     </li>
                                 @endcan
+
+
+
+
+                                {{-- Evaluations --}}
+                            {{-- @can('evaluations') --}}
+
+                            <li class="c-sidebar-nav-item">
+                                <a href="{{ route("hr.admin.evaluations.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/departments") || request()->is("admin/departments/*") ? "active" : "" }}">
+                                    <i class="fa-fw fas fa-ticket-alt c-sidebar-nav-icon sub-dropdown">
+                                    </i>
+                                    Evaluations
+                                </a>
+                            </li>
+                           
+                            {{-- @endcan --}}
+
+
                             </ul>
                         </li>
                     @endcan

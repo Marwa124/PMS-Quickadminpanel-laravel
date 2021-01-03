@@ -251,6 +251,9 @@
     let applicationId = $(this).closest('tr').attr('data-entry-id');
     let applicationColor = $(this).closest('tr').find('.applicationColor');
 
+    $('#changeStatus'+applicationId).modal('toggle');
+    $('div.modal-backdrop').removeClass('fade show modal-backdrop');
+
     $.ajax({
         url: 'job-applications/'+applicationId,
         method: 'put',

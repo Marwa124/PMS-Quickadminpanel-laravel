@@ -26,6 +26,7 @@
 
     <link href="{{ asset('css/app.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet" />
+
     @yield('styles')
 
 <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
@@ -255,6 +256,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.js"></script>
 
     <script src="https://cdn.datatables.net/fixedheader/3.1.7/js/dataTables.fixedHeader.min.js"></script>
+
+    {{-- Publish job application on social medias  --}}
+    <script src="{{ asset('js/share.js') }}"></script> 
+
     <script src="{{ asset('js/main.js') }}"></script>
     <script>
         $(function() {

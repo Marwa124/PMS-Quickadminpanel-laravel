@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import VueRouter from 'vue-router';
+// import VueRouter from 'vue-router';
 import Departments from './components/departments/Index'
 import DepartmentsCreate from './components/departments/Create'
 import DepartmentsForm from './components/departments/Form'
