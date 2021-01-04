@@ -236,7 +236,7 @@
 
                 <div class="form-group">
                     <label for="estimate_hours">{{ trans('cruds.project.fields.estimate_hours') }}</label>
-                    <input class="form-control {{ $errors->has('estimate_hours') ? 'is-invalid' : '' }}" type="text" name="estimate_hours" id="estimate_hours" value="{{ old('estimate_hours', $project->estimate_hours) }}">
+                    <input class="form-control {{ $errors->has('estimate_hours') ? 'is-invalid' : '' }}" type="text" name="estimate_hours" id="estimate_hours" value="{{ old('estimate_hours', $project->estimate_hours) }}" placeholder="Ex: 20">
                     @if($errors->has('estimate_hours'))
                         <div class="invalid-feedback">
                             {{ $errors->first('estimate_hours') }}
@@ -267,7 +267,7 @@
 
             <div class="form-group col-md-12">
                 <label for="description">{{ trans('cruds.project.fields.description') }}</label>
-                <textarea class="form-control ckeditor {{ $errors->has('description') ? 'is-invalid' : '' }}" name="description" id="description">{!! old('description') !!}</textarea>
+                <textarea class="form-control ckeditor {{ $errors->has('description') ? 'is-invalid' : '' }}" name="description" id="description">{!! old('description',$project->description) !!}</textarea>
                 @if($errors->has('description'))
                     <div class="invalid-feedback">
                         {{ $errors->first('description') }}
@@ -301,7 +301,7 @@
               return new Promise(function(resolve, reject) {
                 // Init request
                 var xhr = new XMLHttpRequest();
-                xhr.open('POST', '/admin/projects/ckmedia', true);
+                xhr.open('POST', '/admin/projectmanagement/projects/ckmedia', true);
                 xhr.setRequestHeader('x-csrf-token', window._token);
                 xhr.setRequestHeader('Accept', 'application/json');
                 xhr.responseType = 'json';

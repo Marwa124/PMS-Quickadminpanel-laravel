@@ -6,13 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\MediaUploadingTrait;
 use Modules\HR\Entities\AccountDetail;
 use Modules\ProjectManagement\Entities\Milestone;
+use Modules\ProjectManagement\Entities\TimeSheet;
 use Modules\ProjectManagement\Http\Controllers\Traits\PermissionHelperTrait;
 use Modules\ProjectManagement\Http\Requests\MassDestroyTaskRequest;
 use Modules\ProjectManagement\Http\Requests\StoreTaskRequest;
 use Modules\ProjectManagement\Http\Requests\UpdateTaskRequest;
 use App\Models\Lead;
 use App\Models\Opportunity;
-use App\Models\Permission;
 use Modules\ProjectManagement\Entities\Project;
 use Modules\ProjectManagement\Entities\Task;
 use Modules\ProjectManagement\Entities\TaskStatus;
@@ -30,7 +30,7 @@ class TaskController extends Controller
 
     public function __construct()
     {
-        $this->middleware('AllowAccessShowAndEditPages:Task',['only' => ['show','edit','getAssignTo']]);
+        $this->middleware('AllowAccessShowAndEditPages:Task',['only' => ['show','edit','getAssignTo','update_task_timer']]);
     }
 
     public function index()
@@ -50,8 +50,10 @@ class TaskController extends Controller
         return view('projectmanagement::admin.tasks.index', compact('tasks', 'task_statuses', 'task_tags', 'projects', 'milestones'));
     }
 
-    public function create()
+    public function create($id = null)
     {
+        // $id refer to task_id in case and refer to milestone id in anther case depend on route
+
         abort_if(Gate::denies('task_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $statuses = TaskStatus::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
@@ -62,7 +64,41 @@ class TaskController extends Controller
 
         $milestones = Milestone::with('project')->get();
 
-        return view('projectmanagement::admin.tasks.create', compact('statuses', 'tags', 'projects', 'milestones'));
+        $tasks = Task::all()->pluck('name', 'id');
+
+        $task       = null;
+        $milestone  = null;
+        $project    = null;
+
+        if (request()->segment(count(request()->segments())-1) == 'milestone-task')
+        {
+
+            $milestone = Milestone::findOrFail($id);
+            $milestones = Milestone::where('project_id',$milestone->project->id)->pluck('name', 'id');
+
+            //return view('projectmanagement::admin.tasks.create', compact('statuses', 'tags', 'projects', 'milestones','task','tasks','milestone','project'));
+        }
+
+        if (request()->segment(count(request()->segments())-1) == 'project-task')
+        {
+            $project = Project::findOrFail($id);
+//            return view('projectmanagement::admin.tasks.create', compact('statuses', 'tags', 'projects', 'milestones','task','tasks','milestone'));
+        }
+
+        if (request()->segment(count(request()->segments())-1) == 'sub-task')
+        {
+            $task = Task::findOrFail($id);
+            $tasks = Task::where('milestone_id',$task->milestone->id)->pluck('name', 'id');
+        }
+
+//        if (!$tasks)
+//        {
+//
+//            $tasks = null;
+//
+//        }
+//        dd($projects,$project);
+        return view('projectmanagement::admin.tasks.create', compact('statuses', 'tags', 'projects', 'milestones','task','tasks','milestone','project'));
     }
 
     public function store(StoreTaskRequest $request)
@@ -81,6 +117,8 @@ class TaskController extends Controller
             Media::whereIn('id', $media)->update(['model_id' => $task->id]);
         }
 
+        setActivity('task',$task->id,'Save Task Details',$task->name);
+
         return redirect()->route('projectmanagement.admin.tasks.index');
     }
 
@@ -96,9 +134,11 @@ class TaskController extends Controller
 
         $milestones = Milestone::with('project')->get();
 
+        $tasks = Task::with('milestone')->get();
+
         $task->load('status', 'tags', 'assigned_to', 'project', 'milestone');
 
-        return view('projectmanagement::admin.tasks.edit', compact('statuses', 'tags', 'projects', 'milestones', 'task'));
+        return view('projectmanagement::admin.tasks.edit', compact('statuses', 'tags', 'projects', 'milestones', 'task','tasks'));
     }
 
     public function update(UpdateTaskRequest $request, Task $task)
@@ -117,6 +157,7 @@ class TaskController extends Controller
         } elseif ($task->attachment) {
             $task->attachment->delete();
         }
+        setActivity('task',$task->id,'Update Task Details',$task->name);
 
         return redirect()->route('projectmanagement.admin.tasks.index');
     }
@@ -125,7 +166,7 @@ class TaskController extends Controller
     {
         abort_if(Gate::denies('task_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $task->load('status', 'tags', 'project', 'milestone','createBy');
+        $task->load('status', 'tags', 'project', 'milestone','createBy','TimeSheetOn','TimeSheet');
 
         return view('projectmanagement::admin.tasks.show', compact('task'));
     }
@@ -135,6 +176,8 @@ class TaskController extends Controller
         abort_if(Gate::denies('task_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $task->delete();
+
+        //setActivity('task',$task->id,'Delete Task',$task->name);
 
         return back();
     }
@@ -215,6 +258,47 @@ class TaskController extends Controller
             $task->accountDetails()->detach();
         }
 
+        setActivity('task',$task->id,'Update Assign to',$task->name);
+
         return redirect()->route('projectmanagement.admin.tasks.index');
+    }
+
+    public function update_note(Request $request)
+    {
+        $task = Task::findOrFail($request->task_id);
+        //$project->notes = $request->notes;
+        $task->update($request->all());
+
+        setActivity('task',$task->id,'Update Note ',$task->name);
+
+        return redirect()->back();
+    }
+
+    public function update_task_timer($task_id)
+    {
+        $user_id = auth()->user()->id;
+        $taskTimer = TimeSheet::where('module','=','task')->where('module_field_id',$task_id)->where('user_id',$user_id)->where('timer_status','on')->first();
+
+        if (!$taskTimer)
+        {
+            $Timer = [
+                'user_id'       => $user_id,
+                'module'            => 'task',
+                'module_field_id'    => $task_id,
+                'timer_status'  => 'on',
+                'start_time'    => time(),
+            ];
+
+            $taskTimer = TimeSheet::create($Timer);
+
+        }else{
+
+            $taskTimer->update(['timer_status' => 'off','end_time' => time()]);
+        }
+
+        setActivity('task',$task_id,'Timer '.ucfirst($taskTimer->timer_status),$taskTimer->task->name);
+
+
+        return redirect()->back();
     }
 }

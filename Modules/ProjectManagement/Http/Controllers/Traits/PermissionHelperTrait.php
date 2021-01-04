@@ -1,7 +1,8 @@
 <?php
 namespace Modules\ProjectManagement\Http\Controllers\Traits;
 
-use App\Models\Permission;
+//use App\Models\Permission;
+use Spatie\Permission\Models\Permission;
 
 trait PermissionHelperTrait
 {

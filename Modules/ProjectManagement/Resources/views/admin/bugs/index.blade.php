@@ -26,13 +26,10 @@
                             {{ trans('cruds.bug.fields.id') }}
                         </th>
                         <th>
-                            {{ trans('cruds.bug.fields.project') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.bug.fields.task') }}
-                        </th>
-                        <th>
                             {{ trans('cruds.bug.title_singular') }} {{ trans('cruds.bug.fields.name') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.bug.fields.project') }}
                         </th>
                         <th>
                             {{ trans('cruds.bug.title_singular') }} {{ trans('cruds.bug.fields.status') }}
@@ -50,59 +47,6 @@
                             &nbsp;
                         </th>
                     </tr>
-                    <tr>
-                        <td>
-                        </td>
-                        <td >
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}" >
-                        </td>
-                        <td>
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}" >
-
-
-                        </td>
-                        <td >
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}" >
-
-                        </td>
-                        <td>
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-
-                        </td>
-                        <td>
-                            <select class="search">
-                                <option value>{{ trans('global.all') }}</option>
-                                <option value="unconfirmed">Unconfirmed</option>
-                                <option value="confirmed"  >Confirmed</option>
-                                <option value="in progress">In Progress</option>
-                                <option value="resolved"   >Resolved</option>
-                                <option value="verified"   >Verified</option>
-                            </select>
-                        </td>
-                        <td>
-                            <select class="search">
-                                <option value>{{ trans('global.all') }}</option>
-                                <option value="low"   >Low</option>
-                                <option value="medium">Medium</option>
-                                <option value="high"  >High</option>
-                            </select>
-                        </td>
-                        <td>
-                            <select class="search">
-                                <option value>{{ trans('global.all') }}</option>
-                                <option value="minor"        >Minor</option>
-                                <option value="major"        >Major</option>
-                                <option value="show stopper" >Show Stopper</option>
-                                <option value="must be fixed">Must be Fixed</option>
-                            </select>
-                        </td>
-                        <td>
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}" >
-
-                        </td>
-                        <td>
-                        </td>
-                    </tr>
                 </thead>
                 <tbody>
                     @if($bugs)
@@ -115,13 +59,13 @@
                                     {{ $bug->id ?? '' }}
                                 </td>
                                 <td>
+                                    <a  href="{{ route('projectmanagement.admin.bugs.show', $bug->id) }}">
+                                        {{ $bug->name ?? '' }}
+                                    </a>
+
+                                </td>
+                                <td>
                                     {{ $bug->project->name ?? '' }}
-                                </td>
-                                <td>
-                                    {{ $bug->task->name ?? '' }}
-                                </td>
-                                <td>
-                                    {{ $bug->name ?? '' }}
                                 </td>
                                 <td>
                                     {{ $bug->status ?? '' }}

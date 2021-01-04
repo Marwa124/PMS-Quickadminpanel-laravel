@@ -282,5 +282,6 @@ return [
     'Saturday'                             => 'Saturday',
 
     ////////
-    'assign_to'                            => 'Assign To'
+    'assign_to'                            => 'Assign To',
+    'forcedelete'                          => 'Force Delete'
 ];

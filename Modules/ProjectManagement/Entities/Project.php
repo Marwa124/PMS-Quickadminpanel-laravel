@@ -3,8 +3,9 @@
 namespace Modules\ProjectManagement\Entities;
 
 use App\Models\Client;
+use App\Models\Invoice;
+use App\Models\Transaction;
 use Modules\ProjectManagement\Entities\Milestone;
-use App\Models\Permission;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -16,8 +17,7 @@ use \DateTimeInterface;
 class Project extends Model implements HasMedia
 {
     use
-    // SoftDeletes,
-    HasMediaTrait;
+    SoftDeletes, HasMediaTrait;
 
     public $table = 'projects';
 
@@ -45,13 +45,12 @@ class Project extends Model implements HasMedia
         'end_date',
         'created_at',
         'updated_at',
-        // 'deleted_at',
+        'deleted_at',
     ];
 
     protected $fillable = [
         'name',
         'client_id',
-        'project_specification_id',
         'department_id',
         'progress',
         'calculate_progress',
@@ -115,40 +114,69 @@ class Project extends Model implements HasMedia
         $this->attributes['end_date'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
     }
 
-//    public function permissions()
-//    {
-//        return $this->belongsToMany(Permission::class);
-//    }
-
-    public function department(){
+    public function department()
+    {
 
         return $this->belongsTo('Modules\HR\Entities\Department', 'department_id');
     }
 
-    public function accountDetails(){
+    public function accountDetails()
+    {
 
         return $this->belongsToMany('Modules\HR\Entities\AccountDetail',
             'project_account_details_pivot','project_id','account_details_id');
 
     }
 
-    public function milestones(){
+    public function milestones()
+    {
         return $this->hasMany(Milestone::class,'project_id');
     }
 
-    public function tasks(){
+    public function tasks()
+    {
+        return $this->hasMany(Task::class,'project_id')->where('parent_task_id','=',null);
+    }
+
+    public function allTasks()
+    {
         return $this->hasMany(Task::class,'project_id');
     }
 
-    public function getProjects(){
+    public function bugs()
+    {
+        return $this->hasMany(Bug::class,'project_id');
+    }
 
-        if (auth()->user()->hasrole(['Admin','Super Admin'])){
-            $projects = $this->all();
-//            $clients = Client::get();
-        }else{
-            $projects = auth()->user()->accountDetail->projects;
-        }
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class,'project_id');
+    }
 
-        return $projects;
+    public function invoices()
+    {
+        return $this->hasMany(Invoice::class,'project_id');
+    }
+
+    public function tickets()
+    {
+        return $this->hasMany(Ticket::class,'project_id');
+    }
+
+    public function TimeSheet()
+    {
+        return $this->hasMany(TimeSheet::class,'module_field_id')->where('module','=','project')
+            ->where('end_time','!=',null)->orderBy('id','desc');
+    }
+
+    public function TimeSheetOn()
+    {
+        return $this->hasMany(TimeSheet::class,'module_field_id')->where('module','=','project')
+            ->where('user_id',auth()->user()->id)->where('end_time','=',null);
+    }
+
+    public function activities()
+    {
+        return $this->hasMany(Activity::class,'module_field_id')->where('module','=','project')->orderBy('id','desc');
     }
 }

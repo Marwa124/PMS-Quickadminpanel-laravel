@@ -27,15 +27,16 @@
             $('#calendar').fullCalendar({
                 // put your options and callbacks here
                 events : [
-@foreach($events as $event)
-@if($event->due_date)
-                            {
-                                title : '{{ $event->name }}',
-                                start : '{{ \Carbon\Carbon::createFromFormat(config('panel.date_format'),$event->due_date)->format('Y-m-d') }}',
-                                url : '{{ url('admin/tasks').'/'.$event->id.'/edit' }}'
-                            },
-@endif
-@endforeach
+                        @foreach($events as $event)
+                            @if($event->due_date && $event->start_date)
+                                {
+                                    title : '{{ $event->name }}',
+                                    start : '{{ \Carbon\Carbon::createFromFormat(config('panel.date_format'),$event->start_date)->format('Y-m-d') }}',
+                                    end   : '{{ \Carbon\Carbon::createFromFormat(config('panel.date_format'),$event->due_date)->format('Y-m-d') }}',
+                                    url   : '{{ route('projectmanagement.admin.tasks.show',$event->id) }}'
+                                },
+                            @endif
+                        @endforeach
                 ]
             })
         });

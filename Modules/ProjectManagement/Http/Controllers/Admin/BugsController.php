@@ -39,15 +39,30 @@ class BugsController extends Controller
         return view('projectmanagement::admin.bugs.index', compact('bugs', 'projects', 'tasks'));
     }
 
-    public function create()
+    public function create($id =null)
     {
+        // $id refer to task_id in case and refer to project id in anther case depend on route
+
         abort_if(Gate::denies('bug_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $projects = Project::all()->pluck('name', 'id');
 
         $tasks = Task::with('project')->get();
 
-        return view('projectmanagement::admin.bugs.create', compact('projects','tasks'));
+        $project    = null;
+        $task       = null;
+
+        if (request()->segment(count(request()->segments())-1) == 'project-bug')
+        {
+            $project = Project::findOrFail($id);
+        }
+
+        if (request()->segment(count(request()->segments())-1) == 'task-bug')
+        {
+            $task = Task::findOrFail($id);
+        }
+
+        return view('projectmanagement::admin.bugs.create', compact('projects','tasks','project','task'));
     }
 
     public function store(StoreBugRequest $request)
@@ -60,6 +75,9 @@ class BugsController extends Controller
         if ($media = $request->input('ck-media', false)) {
             Media::whereIn('id', $media)->update(['model_id' => $bug->id]);
         }
+
+        setActivity('bug',$bug->id,'New Bug Added',$bug->name);
+
 
         return redirect()->route('projectmanagement.admin.bugs.index');
     }
@@ -80,6 +98,8 @@ class BugsController extends Controller
     public function update(UpdateBugRequest $request, Bug $bug)
     {
         $bug->update($request->all());
+
+        setActivity('bug',$bug->id,'Update Bug',$bug->status);
 
         return redirect()->route('projectmanagement.admin.bugs.index');
     }
@@ -178,6 +198,19 @@ class BugsController extends Controller
             $bug->accountDetails()->detach();
         }
 
+        setActivity('bug',$bug->id,'Update Assign to',$bug->name);
+
         return redirect()->route('projectmanagement.admin.bugs.index');
+    }
+
+    public function update_note(Request $request)
+    {
+        $bug = Bug::findOrFail($request->bug_id);
+        //$project->notes = $request->notes;
+        $bug->update($request->all());
+
+        setActivity('bug',$bug->id,'Update Note ',$bug->name);
+
+        return redirect()->back();
     }
 }
