@@ -1,0 +1,201 @@
+<template>
+    <div>
+        <!-- info -->
+        <div class="card">
+            <h5 class="card-header bg-dark text-white">Employee Information</h5>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="d-flex justify-content-flex-end">
+                                <label for="designation_id" v-text="$t('cruds.evaluation.fields.name')"></label>
+                                <input class="form-control w-75 d-flex ml-auto" type="text" name="user_name" disabled :value="user.fullname">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="d-flex justify-content-flex-end">
+                                <label for="designation_id" v-text="$t('cruds.evaluation.fields.job_title')"></label>
+                                <input class="form-control w-75 d-flex ml-auto" type="text" name="designation" disabled :value="designation.designation_name">
+                             </div>
+                        </div>
+
+                        
+                        <div class="form-group">
+                            <div class="d-flex justify-content-flex-end">
+                                <label for="designation_id" v-text="$t('cruds.evaluation.fields.department')"></label>
+                                <input class="form-control w-75 d-flex ml-auto" type="text" name="department" disabled :value="departmentTitle.department_name">
+                             </div>
+                        </div>
+
+                        
+                        <div class="form-group">
+                            <div class="d-flex justify-content-flex-end">
+                                <label for="designation_id" v-text="$t('cruds.evaluation.fields.period')"></label>
+                                <input class="form-control w-75 d-flex ml-auto" type="text" name="period" required :placeholder="$t('cruds.evaluation.fields.review_period')">
+                             </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="d-flex justify-content-flex-end">
+                                <label for="designation_id" v-text="$t('cruds.evaluation.fields.employee_id')"></label>
+                                <input class="form-control w-75 d-flex ml-auto" type="text" name="date" :value="user.employment_id">
+                             </div>
+
+                        </div>
+
+                        <div class="form-group">
+                            <div class="d-flex justify-content-flex-end">
+                                <label for="designation_id" v-text="$t('cruds.evaluation.fields.date')"></label>
+                                <input class="form-control w-75 d-flex ml-auto" type="text" name="date" disabled :value="month+'-'+year">
+                             </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="d-flex justify-content-flex-end">
+                                <label for="designation_id" v-text="$t('cruds.evaluation.fields.manager')"></label>
+                                <input class="form-control w-75 d-flex ml-auto" type="text" name="manager" disabled :value="departmentHead.fullname">
+                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>  
+        </div>   
+        <!-- ...info -->
+
+
+        <!-- Ratings -->
+        <div class="card">
+            <h5 class="card-header bg-dark text-white">Ratings</h5>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                        <th scope="col">
+                            <span class="addRating">
+                                <i class="fas fa-plus-square" style="cursor:pointer;"></i>
+                            </span>
+                        </th>
+                        <th scope="col">1 = Poor</th>
+                        <th scope="col">2 = Fair </th>
+                        <th scope="col">3 = Satisfaction</th>
+                        <th scope="col">4 = Good</th>
+                        <th scope="col">5 = Excelent</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-row-id="">
+                            <td>
+
+                            </td>
+                            <td>
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                    <input type="checkbox" aria-label="Checkbox for following text input">
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                    <input type="checkbox" aria-label="Checkbox for following text input">
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                    <input type="checkbox" aria-label="Checkbox for following text input">
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                    <input type="checkbox" aria-label="Checkbox for following text input">
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                    <input type="checkbox" aria-label="Checkbox for following text input">
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">2</th>
+                            <td>Jacob</td>
+                            <td>Thornton</td>
+                            <td>@fat</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- ...Ratings -->
+
+        <!-- Evaluation -->
+        <div class="card">
+            <h5 class="card-header bg-dark text-white">Evaluation</h5>
+            <div class="card-body">
+                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+        </div>
+        <!-- ...Evaluation -->
+
+        <!-- Review -->
+        <div class="card">
+            <h5 class="card-header bg-dark text-white">Verification of Review</h5>
+            <div class="card-body">
+                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+        </div>
+        <!-- ...Review -->
+
+    </div>
+</template>
+
+<script>
+
+import { Form, HasError, AlertErrors, AlertSuccess } from 'vform'
+import i18n from '../../plugins/i18n';
+
+export default {
+    props: ['langKey', 'user', 'designation', 'departmentTitle', 'departmentHead'],
+    data(){
+        return {
+            
+            year: '',
+            month: '',
+        }
+    },
+    methods: {
+        onSubmit(){
+            this.form.post('/api/v1/admin/hr/evaluations').then(data => {
+                if (data.status === 201) {
+                    const result = data.data.data
+                    this.form.fill(result);
+                }
+            }).catch(error => {
+                console.log(error.response);
+            })
+        },
+        getDate(){
+            var d = new Date();
+            this.month = d.getMonth() + 1;
+            this.year  = d.getFullYear();
+        },
+    },
+    mounted() {
+        i18n.locale = this.langKey;
+        
+        this.getDate()
+
+    }
+}
+</script>

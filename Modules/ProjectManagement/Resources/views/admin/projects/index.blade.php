@@ -9,14 +9,14 @@
         </div>
     </div>
 @endcan
-{{--<div class="row">--}}
-{{--    <div class="col-lg-3">--}}
-{{--        <select data-column="0" class="form-control filter-select" name="" id="">--}}
-{{--            <option value="0">Active Projects</option>--}}
-{{--            <option value="1">Trashed Projects</option>--}}
-{{--        </select>--}}
-{{--    </div>--}}
-{{--</div>--}}
+<div class="row">
+   <div class="col-lg-3">
+       <select data-column="0" class="form-control filter-select" name="" id="">
+           <option value="0">Active Projects</option>
+           <option value="1">Trashed Projects</option>
+       </select>
+   </div>
+</div>
 <div class="card">
     <div class="card-header">
         {{ trans('cruds.project.title_singular') }} {{ trans('global.list') }}
@@ -270,8 +270,8 @@ $.extend(true, $.fn.dataTable.defaults, {
     })
 
     // Hide columns
-    // table.columns([3]).visible( true );
-    //table.columns([3]).search( 0 ).draw(); // set a default load in datatable column (Active Users)
+    table.columns([3]).visible( true );
+    table.columns([3]).search( 0 ).draw(); // set a default load in datatable column (Active Users)
 
 
   $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e){

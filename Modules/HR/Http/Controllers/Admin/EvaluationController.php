@@ -10,11 +10,12 @@ use Modules\HR\Http\Requests\Update\UpdateVacationRequest;
 use App\Models\User;
 use Gate;
 use Illuminate\Http\Request;
+use Modules\HR\Entities\AccountDetail;
+use Modules\HR\Entities\Department;
+use Modules\HR\Entities\Designation;
 use Modules\HR\Entities\Evaluation;
 use Spatie\MediaLibrary\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
-
-use Inertia\Inertia;
 
 class EvaluationController extends Controller
 {
@@ -22,22 +23,17 @@ class EvaluationController extends Controller
 
     public function index()
     {
-        abort_if(Gate::denies('set_time_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        // abort_if(Gate::denies('evaluation_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $evaluations = Evaluation::all();
-        return Inertia::render('pages/Evaluation', $evaluations);
-        // return inertia('pages/Evaluation', $evaluations);
-
-        // return view('hr::admin.evaluations.index', compact('evaluations'));
+        return view('hr::admin.evaluations.index', compact('evaluations'));
     }
 
     public function create()
     {
-        abort_if(Gate::denies('set_time_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        // abort_if(Gate::denies('evaluation_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
-
-        return view('hr::admin.setTimes.create', compact('users'));
+        return view('hr::admin.evaluations.create');
     }
 
     public function store(StoreSetTimeRequest $request)
@@ -51,15 +47,17 @@ class EvaluationController extends Controller
         return redirect()->route('hr.admin.set-times.index');
     }
 
-    public function edit(SetTime $setTime)
+    public function edit($id)
     {
-        abort_if(Gate::denies('set_time_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        // abort_if(Gate::denies('evaluation_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        
+        $userAccount = AccountDetail::find($id);
+        // $userAccount = AccountDetail::find($id)->load('user');
+        $designation = $userAccount->designation()->first();
+        $departmentTitle = $designation->department()->select('department_name', 'department_head_id')->first();
+        $departmentHead = AccountDetail::where('user_id', $departmentTitle->department_head_id)->select('fullname')->first();
 
-        $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
-
-        $setTime->load('user');
-
-        return view('hr::admin.setTimes.edit', compact('users', 'setTime'));
+        return view('hr::admin.evaluations.edit', compact('userAccount', 'designation', 'departmentTitle', 'departmentHead'));
     }
 
     public function update(UpdateSetTimeRequest $request, SetTime $setTime)

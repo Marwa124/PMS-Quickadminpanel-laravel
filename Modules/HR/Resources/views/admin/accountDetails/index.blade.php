@@ -212,6 +212,12 @@
                                             </a>
                                         @endcan
 
+                                        {{-- @can('account_detail_evaluate') --}}
+                                            <a class="btn btn-xs btn-info my-1" href="{{ route('hr.admin.evaluations.edit', $accountDetail->id) }}">
+                                                Evaluate
+                                            </a>
+                                        {{-- @endcan --}}
+
                                         {{-- Adjust User Salary --}}
                                         @can('employee_award_access')
                                             <button type="button" class="btn btn-xs btn-secondary" data-toggle="modal" data-target="#advancedSalary{{$accountDetail->user_id}}">
