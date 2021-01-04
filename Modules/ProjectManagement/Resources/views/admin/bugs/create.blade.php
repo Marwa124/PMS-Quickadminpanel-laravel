@@ -33,53 +33,62 @@
                         @endif
                         <span class="help-block">{{ trans('cruds.bug.fields.name_helper') }}</span>
                     </div>
-                    <div class="form-group">
-                        <input type="hidden" name="old_project" id="old_project" value="{{old('project_id')}}"/>
-                        <label for="project_id">{{ trans('cruds.bug.fields.project') }}</label>
-                        <select class="form-control select2 {{ $errors->has('project') ? 'is-invalid' : '' }}" name="project_id" id="project_id" onchange="getProjectId()">
-                            <option value="" selected disabled>Please Select</option>
-                            @foreach($projects as $id => $project)
-                                <option value="{{ $id }}" {{ old('project_id') == $id ? 'selected' : '' }}>{{ $project }}</option>
-                            @endforeach
-                        </select>
-                        @if($errors->has('project'))
-                            <div class="invalid-feedback">
-                                {{ $errors->first('project') }}
-                            </div>
-                        @endif
-                        <span class="help-block">{{ trans('cruds.bug.fields.project_helper') }}</span>
-                    </div>
-        {{--            <div class="form-group">--}}
-        {{--                <label for="opportunities_id">{{ trans('cruds.bug.fields.opportunities') }}</label>--}}
-        {{--                <select class="form-control select2 {{ $errors->has('opportunities') ? 'is-invalid' : '' }}" name="opportunities_id" id="opportunities_id">--}}
-        {{--                    @foreach($opportunities as $id => $opportunities)--}}
-        {{--                        <option value="{{ $id }}" {{ old('opportunities_id') == $id ? 'selected' : '' }}>{{ $opportunities }}</option>--}}
-        {{--                    @endforeach--}}
-        {{--                </select>--}}
-        {{--                @if($errors->has('opportunities'))--}}
-        {{--                    <div class="invalid-feedback">--}}
-        {{--                        {{ $errors->first('opportunities') }}--}}
-        {{--                    </div>--}}
-        {{--                @endif--}}
-        {{--                <span class="help-block">{{ trans('cruds.bug.fields.opportunities_helper') }}</span>--}}
-        {{--            </div>--}}
-                    <div class="form-group {{old('task_id') ? 'visible':'invisible'}}" id="task_div">
-                        <label for="task_id">{{ trans('cruds.bug.fields.task') }}</label>
-                        <input type="hidden" name="old_task" id="old_task" value="{{old('task_id')}}"/>
-                        <input type="hidden" name="tasks" id="tasks" value="{{$tasks}}"/>
-                        <select class="form-control select2 {{ $errors->has('task') ? 'is-invalid' : '' }}" name="task_id" id="task_id">
-{{--                            @foreach($tasks as $key => $task)--}}
-{{--                                <option value="{{ $task->id }}" {{ old('task_id') == $task->id ? 'selected' : '' }}>{{ $task->name }}</option>--}}
-{{--                            @endforeach--}}
-                        </select>
-                        @if($errors->has('task'))
-                            <div class="invalid-feedback">
-                                {{ $errors->first('task') }}
-                            </div>
-                        @endif
-                        <span class="help-block">{{ trans('cruds.bug.fields.task_helper') }}</span>
-                    </div>
+                    @if($task)
 
+                        <div class="form-group ">
+                            <label for="task_id">{{ trans('cruds.bug.fields.task') }}</label>
+                            <input type="hidden" name="project_id" id="project_id" value="{{$task->project->id}}"/>
+{{--                            <input type="hidden" name="tasks" id="tasks" value="{{$tasks}}"/>--}}
+                            <select class="form-control select2 {{ $errors->has('task') ? 'is-invalid' : '' }}" name="task_id" id="task_id">
+                                    @foreach($tasks as $key => $v_task)
+                                        <option value="{{ $v_task->id }}" {{ old('task_id') == $v_task->id ? 'selected' : $task->id == $v_task->id ? 'selected' :'disabled' }}  >{{ $task->name }}</option>
+                                    @endforeach
+                            </select>
+                            @if($errors->has('task'))
+                                <div class="invalid-feedback">
+                                    {{ $errors->first('task') }}
+                                </div>
+                            @endif
+                            <span class="help-block">{{ trans('cruds.bug.fields.task_helper') }}</span>
+                        </div>
+                    @else
+                        <div class="form-group">
+                            <input type="hidden" name="old_project" id="old_project" value="{{old('project_id')}}"/>
+                            <input type="hidden" name="project_bug_id" id="project_bug_id" value="{{ $project ? $project->id : null}}"/>
+                            <label for="project_id">{{ trans('cruds.bug.fields.project') }}</label>
+                            <select class="form-control select2 {{ $errors->has('project') ? 'is-invalid' : '' }}" name="project_id" id="project_id" onchange="getProjectId()">
+                                <option value="" selected disabled>Please Select</option>
+                                @foreach($projects as $id => $v_project)
+                                    @if($project)
+                                        <option value="{{ $id }}" {{ old('project_id') == $id ? 'selected' : $project->id == $id ? 'selected' : '' }}>{{ $v_project }}</option>
+                                    @else
+                                        <option value="{{ $id }}" {{ old('project_id') == $id ? 'selected' : '' }}>{{ $v_project }}</option>
+                                    @endif
+                                @endforeach
+                            </select>
+                            @if($errors->has('project'))
+                                <div class="invalid-feedback">
+                                    {{ $errors->first('project') }}
+                                </div>
+                            @endif
+                            <span class="help-block">{{ trans('cruds.bug.fields.project_helper') }}</span>
+                        </div>
+
+{{--                        <div class="form-group {{old('task_id') ? 'visible':'invisible'}}" id="task_div">--}}
+{{--                            <label for="task_id">{{ trans('cruds.bug.fields.task') }}</label>--}}
+{{--                            <input type="hidden" name="old_task" id="old_task" value="{{old('task_id')}}"/>--}}
+{{--                            <input type="hidden" name="tasks" id="tasks" value="{{$tasks}}"/>--}}
+{{--                            <select class="form-control select2 {{ $errors->has('task') ? 'is-invalid' : '' }}" name="task_id" id="task_id">--}}
+
+{{--                            </select>--}}
+{{--                            @if($errors->has('task'))--}}
+{{--                                <div class="invalid-feedback">--}}
+{{--                                    {{ $errors->first('task') }}--}}
+{{--                                </div>--}}
+{{--                            @endif--}}
+{{--                            <span class="help-block">{{ trans('cruds.bug.fields.task_helper') }}</span>--}}
+{{--                        </div>--}}
+                    @endif
                     <div class="form-group">
                         <label for="description">{{ trans('cruds.bug.fields.description') }}</label>
                         <textarea class="form-control ckeditor {{ $errors->has('description') ? 'is-invalid' : '' }}" name="description" id="description">{!! old('description') !!}</textarea>
@@ -152,45 +161,6 @@
                         @endif
                         <span class="help-block">{{ trans('cruds.bug.fields.reproducibility_helper') }}</span>
                     </div>
-
-        {{--            <div class="form-group">--}}
-        {{--                <label for="reporter">{{ trans('cruds.bug.fields.reporter') }}</label>--}}
-        {{--                <input class="form-control {{ $errors->has('reporter') ? 'is-invalid' : '' }}" type="number" name="reporter" id="reporter" value="{{ old('reporter', '') }}" step="1">--}}
-        {{--                @if($errors->has('reporter'))--}}
-        {{--                    <div class="invalid-feedback">--}}
-        {{--                        {{ $errors->first('reporter') }}--}}
-        {{--                    </div>--}}
-        {{--                @endif--}}
-        {{--                <span class="help-block">{{ trans('cruds.bug.fields.reporter_helper') }}</span>--}}
-        {{--            </div>--}}
-        {{--            <div class="form-group">--}}
-        {{--                <label for="permissions">{{ trans('cruds.bug.fields.permissions') }}</label>--}}
-        {{--                <div style="padding-bottom: 4px">--}}
-        {{--                    <span class="btn btn-info btn-xs select-all" style="border-radius: 0">{{ trans('global.select_all') }}</span>--}}
-        {{--                    <span class="btn btn-info btn-xs deselect-all" style="border-radius: 0">{{ trans('global.deselect_all') }}</span>--}}
-        {{--                </div>--}}
-        {{--                <select class="form-control select2 {{ $errors->has('permissions') ? 'is-invalid' : '' }}" name="permissions[]" id="permissions" multiple>--}}
-        {{--                    @foreach($permissions as $id => $permissions)--}}
-        {{--                        <option value="{{ $id }}" {{ in_array($id, old('permissions', [])) ? 'selected' : '' }}>{{ $permissions }}</option>--}}
-        {{--                    @endforeach--}}
-        {{--                </select>--}}
-        {{--                @if($errors->has('permissions'))--}}
-        {{--                    <div class="invalid-feedback">--}}
-        {{--                        {{ $errors->first('permissions') }}--}}
-        {{--                    </div>--}}
-        {{--                @endif--}}
-        {{--                <span class="help-block">{{ trans('cruds.bug.fields.permissions_helper') }}</span>--}}
-        {{--            </div>--}}
-        {{--            <div class="form-group">--}}
-        {{--                <label for="client_visible">{{ trans('cruds.bug.fields.client_visible') }}</label>--}}
-        {{--                <input class="form-control {{ $errors->has('client_visible') ? 'is-invalid' : '' }}" type="text" name="client_visible" id="client_visible" value="{{ old('client_visible', '') }}">--}}
-        {{--                @if($errors->has('client_visible'))--}}
-        {{--                    <div class="invalid-feedback">--}}
-        {{--                        {{ $errors->first('client_visible') }}--}}
-        {{--                    </div>--}}
-        {{--                @endif--}}
-        {{--                <span class="help-block">{{ trans('cruds.bug.fields.client_visible_helper') }}</span>--}}
-        {{--            </div>--}}
                 </div>
             </div>
             <div class="clearfix"></div>
@@ -220,10 +190,12 @@
 @section('scripts')
 <script>
     var old_task = document.getElementById("old_task").value;
+    var project_bug_id = document.getElementById("project_bug_id").value;
+
     $(document).ready(function () {
 
         var old_project = document.getElementById("old_project").value;
-        if(old_project || old_task){
+        if(old_project || old_task || project_bug_id){
             getProjectId();
         }
 

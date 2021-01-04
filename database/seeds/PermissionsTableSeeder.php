@@ -16,7 +16,9 @@ class PermissionsTableSeeder extends Seeder
     {
         // remove all permissions
         // Permission::query()->delete();
-        //PermissionGroup::query()->delete();
+        // PermissionGroup::query()->delete();
+        // PermissionGroup::truncate();
+        // Permission::truncate();
 
         $group_permissions = config('acl.group-permissions');
         foreach($group_permissions as $group => $permissions) {

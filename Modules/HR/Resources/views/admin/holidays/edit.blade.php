@@ -7,7 +7,7 @@
     </div>
 
     <div class="card-body">
-        <form method="POST" action="{{ route("admin.holidays.update", [$holiday->id]) }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ route("hr.admin.holidays.update", [$holiday->id]) }}" enctype="multipart/form-data">
             @method('PUT')
             @csrf
             <div class="form-group">
@@ -50,7 +50,7 @@
                 @endif
                 <span class="help-block">{{ trans('cruds.holiday.fields.end_date_helper') }}</span>
             </div>
-            <div class="form-group">
+            {{-- <div class="form-group">
                 <label for="color">{{ trans('cruds.vacation.fields.color') }}</label>
                 <input class="form-control {{ $errors->has('color') ? 'is-invalid' : '' }}" type="text" name="color" id="color" value="{{ old('color', $vacation->color) }}">
                 @if($errors->has('color'))
@@ -59,7 +59,7 @@
                     </div>
                 @endif
                 <span class="help-block">{{ trans('cruds.vacation.fields.color_helper') }}</span>
-            </div>
+            </div> --}}
             <div class="form-group">
                 <button class="btn btn-danger" type="submit">
                     {{ trans('global.save') }}

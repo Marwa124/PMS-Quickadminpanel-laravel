@@ -3,13 +3,13 @@
 
 <div class="card">
     <div class="card-header">
-        {{ trans('global.show') }} {{ trans('cruds.ticket.title') }}
+        {{ trans('global.show') }} {{ trans('cruds.training.title') }}
     </div>
 
     <div class="card-body">
         <div class="form-group">
             <div class="form-group">
-                <a class="btn btn-default" href="{{ route('admin.tickets.index') }}">
+                <a class="btn btn-default" href="{{ route('hr.admin.trainings.index') }}">
                     {{ trans('global.back_to_list') }}
                 </a>
             </div>
@@ -17,91 +17,99 @@
                 <tbody>
                     <tr>
                         <th>
-                            {{ trans('cruds.ticket.fields.id') }}
+                            {{ trans('cruds.training.fields.id') }}
                         </th>
                         <td>
-                            {{ $ticket->id }}
+                            {{ $training->id }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.ticket.fields.project') }}
+                            {{ trans('cruds.training.fields.user') }}
                         </th>
                         <td>
-                            {{ $ticket->project->name ?? '' }}
+                            {{ $training->user->name ?? '' }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.ticket.fields.ticket_code') }}
+                            {{ trans('cruds.training.fields.assigned_by') }}
                         </th>
                         <td>
-                            {{ $ticket->ticket_code }}
+                            {{ App\Models\Training::ASSIGNED_BY_SELECT[$training->assigned_by] ?? '' }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.ticket.fields.email') }}
+                            {{ trans('cruds.training.fields.training_name') }}
                         </th>
                         <td>
-                            {{ $ticket->email }}
+                            {{ $training->training_name }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.ticket.fields.subject') }}
+                            {{ trans('cruds.training.fields.vendor_name') }}
                         </th>
                         <td>
-                            {{ $ticket->subject }}
+                            {{ $training->vendor_name }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.ticket.fields.body') }}
+                            {{ trans('cruds.training.fields.start_date') }}
                         </th>
                         <td>
-                            {!! $ticket->body !!}
+                            {{ $training->start_date }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.ticket.fields.status') }}
+                            {{ trans('cruds.training.fields.finish_date') }}
                         </th>
                         <td>
-                            {{ $ticket->status }}
+                            {{ $training->finish_date }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.ticket.fields.department') }}
+                            {{ trans('cruds.training.fields.training_cost') }}
                         </th>
                         <td>
-                            {{ $ticket->department->department_name ?? '' }}
+                            {{ $training->training_cost }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.ticket.fields.reporter') }}
+                            {{ trans('cruds.training.fields.status') }}
                         </th>
                         <td>
-                            {{ $ticket->reporter }}
+                            {{ App\Models\Training::STATUS_SELECT[$training->status] ?? '' }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.ticket.fields.priority') }}
+                            {{ trans('cruds.training.fields.performance') }}
                         </th>
                         <td>
-                            {{ $ticket->priority }}
+                            {{ App\Models\Training::Performance_SELECT[$training->performance] ?? '' }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.ticket.fields.file') }}
+                            {{ trans('cruds.training.fields.remarks') }}
                         </th>
                         <td>
-                            @if($ticket->file)
-                                <a href="{{ $ticket->file->getUrl() }}" target="_blank">
+                            {{ $training->remarks }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.training.fields.uploaded_file') }}
+                        </th>
+                        <td>
+                            @if($training->uploaded_file)
+                                <a href="{{ $training->uploaded_file->getUrl() }}" target="_blank">
                                     {{ trans('global.view_file') }}
                                 </a>
                             @endif
@@ -109,34 +117,18 @@
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.ticket.fields.comment') }}
+                            {{ trans('cruds.training.fields.permission') }}
                         </th>
                         <td>
-                            {!! $ticket->comment !!}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.ticket.fields.last_reply') }}
-                        </th>
-                        <td>
-                            {{ $ticket->last_reply }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.ticket.fields.permissions') }}
-                        </th>
-                        <td>
-                            @foreach($ticket->permissions as $key => $permissions)
-                                <span class="label label-info">{{ $permissions->title }}</span>
+                            @foreach($training->permissions as $key => $permission)
+                                <span class="label label-info">{{ $permission->title }}</span>
                             @endforeach
                         </td>
                     </tr>
                 </tbody>
             </table>
             <div class="form-group">
-                <a class="btn btn-default" href="{{ route('admin.tickets.index') }}">
+                <a class="btn btn-default" href="{{ route('hr.admin.trainings.index') }}">
                     {{ trans('global.back_to_list') }}
                 </a>
             </div>

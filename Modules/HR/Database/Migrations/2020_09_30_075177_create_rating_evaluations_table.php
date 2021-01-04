@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSubDepartmentTable extends Migration
+class CreateRatingEvaluationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,11 @@ class CreateSubDepartmentTable extends Migration
      */
     public function up()
     {
-        Schema::create('sub_department', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
+        Schema::create('rating_evaluations', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name')->nullable();
+            $table->boolean('rate')->default(0)->nullable();
+            $table->text('comment')->nullable();
             $table->timestamps();
         });
     }
@@ -27,6 +29,6 @@ class CreateSubDepartmentTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sub_department');
+        Schema::dropIfExists('fingerprint_attendances');
     }
 }

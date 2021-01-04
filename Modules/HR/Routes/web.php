@@ -117,7 +117,7 @@ Route::group(['as' => 'hr.admin.', 'prefix' => 'admin/hr', 'namespace' => 'Admin
 
      // attendances
      Route::delete('attendances/destroy', 'AttendancesController@massDestroy')->name('attendances.massDestroy');
-     Route::resource('attendances', 'AttendancesController');
+     Route::resource('attendances', 'AttendancesController', ['except' => ['show']]);
 
      // Employee Banks
      Route::delete('employee-banks/destroy', 'EmployeeBankController@massDestroy')->name('employee-banks.massDestroy');
@@ -141,6 +141,11 @@ Route::group(['as' => 'hr.admin.', 'prefix' => 'admin/hr', 'namespace' => 'Admin
     // Route::post('job-applications/media', 'JobApplicationController@storeMedia')->name('job-applications.storeMedia');
     // Route::post('job-applications/ckmedia', 'JobApplicationController@storeCKEditorImages')->name('job-applications.storeCKEditorImages');
     Route::resource('job-applications', 'JobApplicationController', ['except' => ['store', 'create']]);
+
+
+    // Evaluations
+    Route::resource('evaluations', 'EvaluationController');
+
 
 });
 // Route::get('/{any}', 'Admin\DepartmentsController@index')->where('any', '.*');

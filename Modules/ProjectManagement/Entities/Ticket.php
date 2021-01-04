@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace Modules\ProjectManagement\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -70,8 +70,9 @@ class Ticket extends Model implements HasMedia
         return $this->getMedia('file')->last();
     }
 
-    public function permissions()
+    public function replies()
     {
-        return $this->belongsToMany(Permission::class);
+        return $this->hasMany(TicketReplay::class,'ticket_id');
     }
+
 }

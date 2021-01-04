@@ -63,22 +63,20 @@
         {{--                @endif--}}
         {{--                <span class="help-block">{{ trans('cruds.bug.fields.opportunities_helper') }}</span>--}}
         {{--            </div>--}}
-                    <div class="form-group"  id="task_div">
-                        <label for="task_id">{{ trans('cruds.bug.fields.task') }}</label>
-                        <input type="hidden" name="old_task" id="old_task" value="{{old('task_id') ?? $bug->task->id}}"/>
-                        <input type="hidden" name="tasks" id="tasks" value="{{$tasks}}"/>
-                        <select class="form-control select2 {{ $errors->has('task') ? 'is-invalid' : '' }}" name="task_id" id="task_id">
-        {{--                    @foreach($tasks as $id => $task)--}}
-        {{--                        <option value="{{ $id }}" {{ (old('task_id') ? old('task_id') : $bug->task->id ?? '') == $id ? 'selected' : '' }}>{{ $task }}</option>--}}
-        {{--                    @endforeach--}}
-                        </select>
-                        @if($errors->has('task'))
-                            <div class="invalid-feedback">
-                                {{ $errors->first('task') }}
-                            </div>
-                        @endif
-                        <span class="help-block">{{ trans('cruds.bug.fields.task_helper') }}</span>
-                    </div>
+{{--                    <div class="form-group"  id="task_div">--}}
+{{--                        <label for="task_id">{{ trans('cruds.bug.fields.task') }}</label>--}}
+{{--                        <input type="hidden" name="old_task" id="old_task" value="{{old('task_id') ?? $bug->task->id}}"/>--}}
+{{--                        <input type="hidden" name="tasks" id="tasks" value="{{$tasks}}"/>--}}
+{{--                        <select class="form-control select2 {{ $errors->has('task') ? 'is-invalid' : '' }}" name="task_id" id="task_id">--}}
+
+{{--                        </select>--}}
+{{--                        @if($errors->has('task'))--}}
+{{--                            <div class="invalid-feedback">--}}
+{{--                                {{ $errors->first('task') }}--}}
+{{--                            </div>--}}
+{{--                        @endif--}}
+{{--                        <span class="help-block">{{ trans('cruds.bug.fields.task_helper') }}</span>--}}
+{{--                    </div>--}}
 
                     <div class="form-group">
                         <label for="description">{{ trans('cruds.bug.fields.description') }}</label>
@@ -236,7 +234,7 @@
               return new Promise(function(resolve, reject) {
                 // Init request
                 var xhr = new XMLHttpRequest();
-                xhr.open('POST', '/admin/bugs/ckmedia', true);
+                xhr.open('POST', '/admin/projectmanagement/bugs/ckmedia', true);
                 xhr.setRequestHeader('x-csrf-token', window._token);
                 xhr.setRequestHeader('Accept', 'application/json');
                 xhr.responseType = 'json';

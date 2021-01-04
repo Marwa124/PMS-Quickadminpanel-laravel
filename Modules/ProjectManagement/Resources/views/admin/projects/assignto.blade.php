@@ -41,9 +41,9 @@
                             </div>
 
                         @empty
-                            <div class="form-group col-md-6">
-                                No account found in department
-                            </div>
+{{--                            <div class="form-group col-md-6">--}}
+{{--                                No account found in department--}}
+{{--                            </div>--}}
                         @endforelse
                     </div>
                 </div>

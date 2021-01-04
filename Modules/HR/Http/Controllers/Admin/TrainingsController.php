@@ -12,6 +12,7 @@ use Modules\HR\Entities\Training;
 use App\Models\User;
 use Gate;
 use Illuminate\Http\Request;
+use Modules\HR\Entities\AccountDetail;
 use Spatie\MediaLibrary\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -32,17 +33,15 @@ class TrainingsController extends Controller
     {
         abort_if(Gate::denies('training_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $users = AccountDetail::all()->pluck('fullname', 'user_id')->prepend(trans('global.pleaseSelect'), '');
 
-        $permissions = Permission::all()->pluck('title', 'id');
-
-        return view('hr::admin.trainings.create', compact('users', 'permissions'));
+        return view('hr::admin.trainings.create', compact('users'));
     }
 
     public function store(StoreTrainingRequest $request)
     {
         $training = Training::create($request->all());
-        $training->permissions()->sync($request->input('permissions', []));
+        // $training->permissions()->sync($request->input('permissions', []));
 
         if ($request->input('uploaded_file', false)) {
             $training->addMedia(storage_path('tmp/uploads/' . $request->input('uploaded_file')))->toMediaCollection('uploaded_file');
@@ -61,11 +60,9 @@ class TrainingsController extends Controller
 
         $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $permissions = Permission::all()->pluck('title', 'id');
-
         $training->load('user', 'permissions');
 
-        return view('hr::admin.trainings.edit', compact('users', 'permissions', 'training'));
+        return view('hr::admin.trainings.edit', compact('users', 'training'));
     }
 
     public function update(UpdateTrainingRequest $request, Training $training)

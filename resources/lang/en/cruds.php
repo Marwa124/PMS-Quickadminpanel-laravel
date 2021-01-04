@@ -484,6 +484,8 @@ return [
             'billable_helper'           => ' ',
             'index_no'                  => 'Index No',
             'index_no_helper'           => ' ',
+            'parent_task'               => 'Parent Task',
+            'parent_task_helper'        => ' ',
         ],
     ],
     'tasksCalendar'          => [
@@ -1600,6 +1602,10 @@ return [
             'timer_started_by_helper'   => ' ',
             'start_time'                => 'Start Time',
             'start_time_helper'         => ' ',
+            'stop_time'                 => 'Stop Time',
+            'stop_time_helper'          => ' ',
+            'time_sheet'                => 'Time Sheet',
+            'time_sheet_helper'         => ' ',
             'logged_time'               => 'Logged Time',
             'logged_time_helper'        => ' ',
             'permissions'               => 'Permissions',
@@ -1622,6 +1628,8 @@ return [
             'updated_at_helper'         => ' ',
             'deleted_at'                => 'Deleted at',
             'deleted_at_helper'         => ' ',
+            'time_spend'                => 'Time Spend',
+            'time_spend_helper'         => ' ',
         ],
     ],
     'projectSetting'         => [
@@ -1804,6 +1812,14 @@ return [
             'updated_at_helper'  => ' ',
             'deleted_at'         => 'Deleted at',
             'deleted_at_helper'  => ' ',
+            'replay'             => 'Replay',
+            'replay_helper'      => ' ',
+            'close_ticket'       => 'Close Ticket',
+            'close_ticket_helper'=> ' ',
+            'reopen_replay'       => 'Reopen Replay',
+            'reopen_replay_helper'=> ' ',
+            'attachments'        => 'Attachments',
+            'attachments_helper' => ' ',
         ],
     ],
     'adminstration'          => [
@@ -3211,52 +3227,30 @@ return [
 
     /********** project management****************/
 
-    'projectSpecification'   => [
-        'title'          => 'Project Specifications',
-        'title_singular' => 'project specification',
-        'fields'         => [
-            'id'                => 'ID',
-            'id_helper'         => ' ',
-            'name'              => 'Name',
-            'name_helper'       => ' ',
-            'created_at'        => 'Created at',
-            'created_at_helper' => ' ',
-            'updated_at'        => 'Updated at',
-            'updated_at_helper' => ' ',
-            'deleted_at'        => 'Deleted at',
-            'deleted_at_helper' => ' ',
-        ],
+    'activities'   => [
+        'title'             => 'Activities',
+        'title_singular'    => 'activities',
+        'fields'            => [
+            # Time ago function translate
+
+            'time_ago_just_now'     => 'Just now',
+            'time_ago_minute'       => 'one minute ago',
+            'time_ago_minutes'      => ':minute minutes ago',
+            'time_ago_hour'         => 'an hour ago',
+            'time_ago_hours'        => ':hour hrs ago',
+            'time_ago_yesterday'    => 'yesterday',
+            'time_ago_days'         => ':day days ago',
+            'time_ago_week'         => 'a week ago',
+            'time_ago_weeks'        => ':week weeks ago',
+            'time_ago_month'        => 'a month ago',
+            'time_ago_months'       => ':month months ago',
+            'time_ago_year'         => 'one year ago',
+            'time_ago_years'        => ':year years ago',
+
+
+        ]
     ],
-    'sub_department'   => [
-        'title'          => 'Sub Departments',
-        'title_singular' => 'Sub Department',
-        'fields'         => [
-            'id'                => 'ID',
-            'id_helper'         => ' ',
-            'name'              => 'Name',
-            'name_helper'       => ' ',
-            'created_at'        => 'Created at',
-            'created_at_helper' => ' ',
-            'updated_at'        => 'Updated at',
-            'updated_at_helper' => ' ',
-            'deleted_at'        => 'Deleted at',
-            'deleted_at_helper' => ' ',
-        ],
-    ],
-//    'projectSpecificationDepartment'   => [
-//        'title'          => 'Project Specification Departs',
-//        'title_singular' => 'Project Specification Department',
-//        'fields'         => [
-//            'id'                => 'ID',
-//            'id_helper'         => ' ',
-//            'name'              => 'Name',
-//            'name_helper'       => ' ',
-//            'created_at'        => 'Created at',
-//            'created_at_helper' => ' ',
-//            'updated_at'        => 'Updated at',
-//            'updated_at_helper' => ' ',
-//            'deleted_at'        => 'Deleted at',
-//            'deleted_at_helper' => ' ',
-//        ],
-//    ],
+
+
+
 ];

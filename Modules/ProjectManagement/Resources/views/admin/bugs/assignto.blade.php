@@ -3,7 +3,7 @@
 
 <div class="card">
     <div class="card-header">
-        {{ trans('cruds.milestone.title_singular') }} {{ trans('global.assign_to') }} {{ trans('cruds.employee.title_singular') }}
+        {{ trans('cruds.bug.title_singular') }} {{ trans('global.assign_to') }} {{ trans('cruds.employee.title_singular') }}
     </div>
 
     <div class="card-body">
@@ -29,9 +29,9 @@
                             $key = 0;
                             //$designation_key = 0;
                             @endphp
-                            @forelse($bug->task->accountDetails as $task_account)
+                            @forelse($bug->project->accountDetails as $project_account)
 {{--                                @forelse($task->milestone->accountDetails as $milestone_account)--}}
-                                @if($task_account->id == $account->id)
+                                @if($project_account->id == $account->id)
                                     @if($designation_key == 0)
                                         <label for="{{$designation->designation_name}}"><b>{{$designation->designation_name}}</b></label>
                                         <hr class="mt-sm mb-sm"/>
@@ -59,7 +59,7 @@
                                 @if($keydes == 0)
                                     <div class="form-group col-md-6">
 
-                                        No accounts assign to task of bug
+                                        No accounts assign to Project of bug
                                         @php
                                             $keydes++;
                                         @endphp

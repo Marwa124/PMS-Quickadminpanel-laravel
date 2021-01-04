@@ -53,9 +53,9 @@ class JobCircularsController extends Controller
 
         $designations = Designation::all()->pluck('designation_name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $permissions = Permission::all()->pluck('title', 'id');
+        // $permissions = Permission::all()->pluck('title', 'id');
 
-        return view('hr::admin.jobCirculars.create', compact('designations', 'permissions'));
+        return view('hr::admin.jobCirculars.create', compact('designations'));
     }
 
     public function store(StoreJobCircularRequest $request)
@@ -88,17 +88,17 @@ class JobCircularsController extends Controller
 
         $designations = Designation::all()->pluck('designation_name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $permissions = Permission::all()->pluck('title', 'id');
+        // $permissions = Permission::all()->pluck('title', 'id');
 
         $jobCircular->load('designation', 'permissions');
 
-        return view('hr::admin.jobCirculars.edit', compact('designations', 'permissions', 'jobCircular'));
+        return view('hr::admin.jobCirculars.edit', compact('designations', 'jobCircular'));
     }
 
     public function update(UpdateJobCircularRequest $request, JobCircular $jobCircular)
     {
         $jobCircular->update($request->all());
-        $jobCircular->permissions()->sync($request->input('permissions', []));
+        // $jobCircular->permissions()->sync($request->input('permissions', []));
 
         if ($request->status == 'published') {
             $sharingLinks = ShareFacade::page('http://01-pms-adminquickpanel.test/circular_details/'. $jobCircular->id, 'A New Job Vacancy')
@@ -117,7 +117,7 @@ class JobCircularsController extends Controller
     {
         abort_if(Gate::denies('job_circular_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $jobCircular->load('designation', 'permissions');
+        $jobCircular->load('designation');
 
         return view('hr::admin.jobCirculars.show', compact('jobCircular'));
     }

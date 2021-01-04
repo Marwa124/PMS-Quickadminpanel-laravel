@@ -38,6 +38,7 @@ class JobApplication extends Model implements HasMedia
         'call_for_interview'   => '#ccc',
         'approved'   => 'green',
         'rejected'   => 'red',
+        'is_employee' => 'blue',
     ];
 
     const APPLICATION_STATUS_SELECT = [
@@ -46,6 +47,7 @@ class JobApplication extends Model implements HasMedia
         'call_for_interview'  => 'Call For Interview',
         'approved' => 'Approved',
         'rejected' => 'Rejected',
+        'is_employee' => 'Convert to an Employee',
     ];
 
     protected $fillable = [

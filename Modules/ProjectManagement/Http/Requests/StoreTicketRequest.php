@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace Modules\ProjectManagement\Http\Requests;
 
 use App\Models\Ticket;
 use Gate;
@@ -17,10 +17,10 @@ class StoreTicketRequest extends FormRequest
     public function rules()
     {
         return [
-            'ticket_code'   => [
-                'string',
-                'nullable',
-            ],
+//            'ticket_code'   => [
+//                'string',
+//                'nullable',
+//            ],
             'subject'       => [
                 'string',
                 'nullable',
@@ -29,26 +29,30 @@ class StoreTicketRequest extends FormRequest
                 'string',
                 'nullable',
             ],
-            'reporter'      => [
-                'nullable',
-                'integer',
-                'min:-2147483648',
-                'max:2147483647',
-            ],
+//            'reporter'      => [
+//                'nullable',
+//                'integer',
+//                'min:-2147483648',
+//                'max:2147483647',
+//            ],
             'priority'      => [
                 'string',
                 'nullable',
             ],
-            'last_reply'    => [
-                'string',
+            'email'      => [
+                'email',
                 'nullable',
             ],
-            'permissions.*' => [
-                'integer',
-            ],
-            'permissions'   => [
-                'array',
-            ],
+//            'last_reply'    => [
+//                'string',
+//                'nullable',
+//            ],
+//            'permissions.*' => [
+//                'integer',
+//            ],
+//            'permissions'   => [
+//                'array',
+//            ],
         ];
     }
 }

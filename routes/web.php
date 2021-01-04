@@ -153,12 +153,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::delete('work-trackings/destroy', 'WorkTrackingController@massDestroy')->name('work-trackings.massDestroy');
     Route::resource('work-trackings', 'WorkTrackingController');
 
-    // Tickets
-    Route::delete('tickets/destroy', 'TicketsController@massDestroy')->name('tickets.massDestroy');
-    Route::post('tickets/media', 'TicketsController@storeMedia')->name('tickets.storeMedia');
-    Route::post('tickets/ckmedia', 'TicketsController@storeCKEditorImages')->name('tickets.storeCKEditorImages');
-    Route::resource('tickets', 'TicketsController');
-
     // Announcements
     Route::delete('announcements/destroy', 'AnnouncementsController@massDestroy')->name('announcements.massDestroy');
     Route::post('announcements/media', 'AnnouncementsController@storeMedia')->name('announcements.storeMedia');

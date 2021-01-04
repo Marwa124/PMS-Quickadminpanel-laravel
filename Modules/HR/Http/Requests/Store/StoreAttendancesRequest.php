@@ -21,18 +21,16 @@ class StoreAttendancesRequest extends FormRequest
                 'integer',
             ],
             'date_in'         => [
-                'date_format:' . config('panel.date_format'),
+                'date_format:' . config('panel.time_format'),
                 'nullable',
             ],
             'date_out'        => [
-                'date_format:' . config('panel.date_format'),
+                'date_format:' . config('panel.time_format'),
                 'nullable',
             ],
-            'clocking_status' => [
-                'nullable',
-                'integer',
-                'min:-2147483648',
-                'max:2147483647',
+            'date' => [
+                'date_format:' . config('panel.date_format'),
+                'required',
             ],
         ];
     }

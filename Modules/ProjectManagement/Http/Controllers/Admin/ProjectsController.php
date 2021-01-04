@@ -4,17 +4,20 @@ namespace Modules\ProjectManagement\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\MediaUploadingTrait;
+use App\Models\Invoice;
 use App\Models\ProjectSetting;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Modules\HR\Entities\AccountDetail;
 use Modules\HR\Entities\Department;
 use Modules\ProjectManagement\Entities\ProjectSpecification;
+use Modules\ProjectManagement\Entities\TaskStatus;
+use Modules\ProjectManagement\Entities\TimeSheet;
 use Modules\ProjectManagement\Http\Controllers\Traits\PermissionHelperTrait;
 use Modules\ProjectManagement\Http\Requests\MassDestroyProjectRequest;
 use Modules\ProjectManagement\Http\Requests\StoreProjectRequest;
 use Modules\ProjectManagement\Http\Requests\UpdateProjectRequest;
 use App\Models\Client;
-use App\Models\Permission;
 use Modules\ProjectManagement\Entities\Project;
 use Gate;
 use Illuminate\Http\Request;
@@ -27,7 +30,7 @@ class ProjectsController extends Controller
 
     public function __construct()
     {
-        $this->middleware('AllowAccessShowAndEditPages:Project',['only' => ['show','edit','getAssignTo']]);
+        $this->middleware('AllowAccessShowAndEditPages:Project',['only' => ['show','edit','getAssignTo','update_project_timer']]);
     }
 
     public function index()
@@ -37,7 +40,9 @@ class ProjectsController extends Controller
         $projects = auth()->user()->getUserProjectsByUserID(auth()->user()->id);
         $clients = Client::get();
 
-        return view('projectmanagement::admin.projects.index', compact('projects', 'clients'));
+        $status =TaskStatus::all();
+
+        return view('projectmanagement::admin.projects.index', compact('projects', 'clients','status'));
     }
 
     public function create()
@@ -58,6 +63,8 @@ class ProjectsController extends Controller
         if ($media = $request->input('ck-media', false)) {
             Media::whereIn('id', $media)->update(['model_id' => $project->id]);
         }
+
+        setActivity('project',$project->id,'Save Project Details',$project->name);
 
         return redirect()->route('projectmanagement.admin.projects.index');
     }
@@ -88,32 +95,45 @@ class ProjectsController extends Controller
 
         $project->update($request->all());
 
+        setActivity('project',$project->id,'Update Project Details',$project->name);
+
         return redirect()->route('projectmanagement.admin.projects.index');
     }
 
     public function show(Project $project)
     {
         abort_if(Gate::denies('project_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        $project->load('client','department','TimeSheetOn','TimeSheet');
 
-        $project->load('client','department');
+        $total_expense = $project->transactions->where('type' , 'Expense')->sum('amount');
+        $billable_expense = $project->transactions->where(array('type' => 'Expense', 'billable' => 'Yes'))->sum('amount');
+        $not_billable_expense = $project->transactions->where(array('type' => 'Expense', 'billable' => 'No'))->sum('amount');
 
-        return view('projectmanagement::admin.projects.show', compact('project'));
+        $all_expense_info =  $project->transactions->where('type', 'Expense');
+
+        $paid_expense = 0;
+        foreach ($all_expense_info as $v_expenses){
+            if ($v_expenses->invoices_id != 0) {
+                $paid_expense += Invoice::get_invoice_paid_amount($v_expenses->invoices_id);
+            }
+        }
+
+        return view('projectmanagement::admin.projects.show', compact('project','total_expense','billable_expense','not_billable_expense','paid_expense'));
     }
 
     public function destroy(Project $project)
     {
         abort_if(Gate::denies('project_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-<<<<<<< HEAD
-        // dd($project->deleted_at);
-=======
->>>>>>> 41879e27b16f03b2061e194d02f49964f5b58a79
-        if($project->deleted_at == 0){
-            $project->update(['deleted_at' => 1]);
-        }else{
-            $project->accountDetails()->detach();
+//        if($project->deleted_at == 0){
+//            $project->update(['deleted_at' => 1]);
+//        }else{
+//            $project->accountDetails()->detach();
             $project->delete();
-        }
+
+//        }
+        setActivity('project',$project->id,'Delete Project Details',$project->name);
+
         return back();
     }
 
@@ -123,10 +143,19 @@ class ProjectsController extends Controller
 
         foreach ($ids as $id){
             $project = Project::where('id',$id)->first();
-            $project->accountDetails()->detach();
+
+            if($project->deleted_at == 0){
+                $project->update(['deleted_at' => 1]);
+            }else{
+                $project->accountDetails()->detach();
+                $project->delete();
+
+            }
+            //$project->accountDetails()->detach();
+            setActivity('project',$project->id,'Delete Project Details',$project->name);
         }
 
-        Project::whereIn('id', request('ids'))->delete();
+        //Project::whereIn('id', request('ids'))->delete();
 
         return response(null, Response::HTTP_NO_CONTENT);
     }
@@ -189,7 +218,6 @@ class ProjectsController extends Controller
                     if ($department->department_name == $project->department->department_name) {
                         $account->user->permissions()->syncWithoutDetaching($project_permissions_head);
 
-
                         break;
                     }
                 }
@@ -198,17 +226,49 @@ class ProjectsController extends Controller
             $project->accountDetails()->detach();
         }
 
+        setActivity('project',$project->id,'Update Assign to ',$project->name);
+
         return redirect()->route('projectmanagement.admin.projects.index');
     }
 
-//    public function getPermissionID($permissions){
-//        $permissions_id =[];
-//        foreach ($permissions as $permission_name){
-//
-//            $permission = Permission::where('name',$permission_name)->first();
-//            array_push($permissions_id,$permission->id);
-//        }
-//        return $permissions_id;
-//    }
+    public function update_note(Request $request)
+    {
+        $project = Project::findOrFail($request->project_id);
+        //$project->notes = $request->notes;
+        $project->update($request->all());
+
+        setActivity('project',$project->id,'Update Note ',$project->name);
+
+        return redirect()->back();
+    }
+
+    public function update_project_timer($project_id)
+    {
+        $user_id = auth()->user()->id;
+        $projectTimer = TimeSheet::where('module','=','project')->where('module_field_id',$project_id)->where('user_id',$user_id)->where('timer_status','on')->first();
+
+        if (!$projectTimer)
+        {
+            $Timer = [
+                'user_id'       => $user_id,
+                'module'            => 'project',
+                'module_field_id'    => $project_id,
+                'timer_status'  => 'on',
+                'start_time'    => time(),
+            ];
+
+            $projectTimer = TimeSheet::create($Timer);
+
+        }else{
+
+            $projectTimer->update(['timer_status' => 'off','end_time' => time()]);
+        }
+
+        setActivity('project',$project_id,'Timer '.ucfirst($projectTimer->timer_status),$projectTimer->project->name);
+
+
+        return redirect()->back();
+    }
+
 
 }

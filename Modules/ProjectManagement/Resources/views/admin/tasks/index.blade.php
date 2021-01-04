@@ -29,16 +29,10 @@
                             {{ trans('cruds.task.fields.name') }}
                         </th>
                         <th>
-                            {{ trans('cruds.task.fields.description') }}
-                        </th>
-                        <th>
                             {{ trans('cruds.task.fields.status') }}
                         </th>
                         <th>
                             {{ trans('cruds.task.fields.tag') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.task.fields.attachment') }}
                         </th>
                         <th>
                             {{ trans('cruds.task.fields.start_date') }}
@@ -51,57 +45,8 @@
                             {{ trans('cruds.task.fields.project') }}
                         </th>
                         <th>
-                            {{ trans('cruds.task.fields.milestone') }}
-                        </th>
-                        <th>
                             &nbsp;
                         </th>
-                    </tr>
-                    <tr>
-                        <td>
-                        </td>
-                        <td>
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}" style="width: 100px">
-                        </td>
-                        <td>
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                        </td>
-                        <td>
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                        </td>
-                        <td>
-                            <select class="search">
-                                <option value>{{ trans('global.all') }}</option>
-                                @forelse($task_statuses as $key => $item)
-                                    <option value="{{ $item->name }}">{{ $item->name }}</option>
-                                @empty
-                                @endforelse
-                            </select>
-                        </td>
-                        <td>
-                            <select class="search">
-                                <option value>{{ trans('global.all') }}</option>
-                                @forelse($task_tags as $key => $item)
-                                    <option value="{{ $item->name }}">{{ $item->name }}</option>
-                                @empty
-                                @endforelse
-                            </select>
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                        </td>
-                        <td>
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                        </td>
-                        <td>
-                        </td>
                     </tr>
                 </thead>
                 <tbody>
@@ -115,15 +60,15 @@
                                     {{ $task->id ?? '' }}
                                 </td>
                                 <td>
-                                    {{ $task->name ?? '' }}
-                                    <div class="progress" >
+                                    <a href="{{ route('projectmanagement.admin.tasks.show', $task->id) }}">
+
+                                        {{ $task->name ?? '' }}
+                                    </a>
+                                    <div class="progress">
                                         <div class="progress-bar {{$task->calculate_progress < 50 ? 'bg-danger':'bg-success'}}" role="progressbar" style="width: {{$task->calculate_progress}}%; display: {{$task->calculate_progress?:'none'}}" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
                                             {{$task->calculate_progress}}%
                                         </div>
                                     </div>
-                                </td>
-                                <td>
-                                    {{ $task->description ?? '' }}
                                 </td>
                                 <td>
                                     {{ $task->status->name ?? '' }}
@@ -135,13 +80,6 @@
                                     @endforelse
                                 </td>
                                 <td>
-                                    @if($task->attachment)
-                                        <a href="{{ $task->attachment->getUrl() }}" target="_blank">
-                                            {{ trans('global.view_file') }}
-                                        </a>
-                                    @endif
-                                </td>
-                                <td>
                                     {{ $task->start_date ?? '' }}
                                 </td>
                                 <td>
@@ -151,10 +89,6 @@
                                 <td>
                                     {{ $task->project->name ?? '' }}
                                 </td>
-                                <td>
-                                    {{ $task->milestone->name ?? '' }}
-                                </td>
-
                                 <td>
                                     @can('task_show')
                                         <a class="btn btn-xs btn-primary" href="{{ route('projectmanagement.admin.tasks.show', $task->id) }}">

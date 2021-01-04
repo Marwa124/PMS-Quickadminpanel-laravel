@@ -9,20 +9,20 @@ class SystemCalendarController extends Controller
 {
     public $sources = [
         [
-            'model'      => '\\App\\Models\\Holiday',
+            'model'      => '\\Modules\\HR\\Entities\\Holiday',
             'date_field' => 'start_date',
             'field'      => 'name',
             'prefix'     => '',
             'suffix'     => '',
-            'route'      => 'admin.holidays.edit',
+            'route'      => 'hr.admin.holidays.edit',
         ],
         [
-            'model'      => '\\App\\Models\\LeaveApplication',
+            'model'      => '\\Modules\\HR\\Entities\\LeaveApplication',
             'date_field' => 'leave_start_date',
             'field'      => 'leave_type',
             'prefix'     => 'User',
             'suffix'     => '',
-            'route'      => 'admin.leave-applications.edit',
+            'route'      => 'hr.admin.leave-applications.store',
         ],
     ];
 

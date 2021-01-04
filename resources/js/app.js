@@ -32,6 +32,15 @@ Vue.component('TableHead', TableHead)
 import BtnUpdate from './components/form/BtnUpdate'
 Vue.component('BtnUpdate', BtnUpdate)
 
+// Evaluations
+import Evaluation from './components/evaluations/Index'
+Vue.component('Evaluation', Evaluation)
+
+import EvaluationForm from './components/evaluations/Form'
+Vue.component('EvaluationForm', EvaluationForm)
+
+
+
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('assign-permissions-to-user', require('./components/AssignPermissionsToUser.vue'));
@@ -52,7 +61,9 @@ const app = new Vue({
         DepartmentCreate,
         DepartmentForm,
         DataTables, // Data Tables
+        
+        // Evaluation,
     },
-    // router
+    // router,
 });
 
