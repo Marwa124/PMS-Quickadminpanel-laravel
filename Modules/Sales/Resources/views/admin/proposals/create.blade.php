@@ -325,16 +325,17 @@
                                             <span class="bold">Discount (%)</span>
                                         </div>
                                         <div class="col-md-5">
-                                                                                                                <input type="text" data-parsley-type="number" value="0" class="form-control pull-left" min="0" max="100" name="discount_percent" data-parsley-id="224">
+                                            <input type="text" data-parsley-type="number" value="0" class="form-control pull-left" min="0" max="100" name="discount_percent" data-parsley-id="224">
                                         </div>
                                     </div>
                                 </td>
                                 <td class="discount_percent">-0.00<input type="hidden" name="discount_percent" value="0"><input type="hidden" name="discount_total" value="0.00"></td>
                             </tr>
-                            <tr class="total_after_discount hide">
+                            <tr class="total_after_discount d-none">
                                 <td><span class="bold">Total After Discount :</span>  </td>
-                                <td class="after_discount">20000.00<input type="hidden" name="after_discount" value="20000.00"></td>
-                            </tr><tr class="tax-area"><td>sara(12.00%)</td><td id="tax_id_sara1200">2400.00<input type="hidden" name="total_tax_name[]" value="sara|12.00"><input type="hidden" name="total_tax[]" value="2400.00"></td></tr>
+                                <td class="after_discount"></td>
+                            </tr>
+                            <tr class="tax-area"></tr>
                             <tr>
                                 <td>
                                     <div class="row">
