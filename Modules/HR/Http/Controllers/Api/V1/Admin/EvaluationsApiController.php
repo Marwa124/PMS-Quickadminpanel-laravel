@@ -13,6 +13,7 @@ use Modules\HR\Http\Requests\Store\StoreDepartmentRequest;
 use Gate;
 use Illuminate\Http\Request;
 use Modules\HR\Entities\Designation;
+use Modules\HR\Entities\RatingEvaluation;
 use Modules\HR\Http\Controllers\Services\DepartmentExportServices;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -22,7 +23,10 @@ class EvaluationsApiController extends Controller
     {
         // abort_if(Gate::denies('department_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return new DepartmentResource(Department::with(['department_head'])->get());
+        return response()->json([
+            'data' => RatingEvaluation::all(),
+        ]);
+        // return new DepartmentResource(Department::with(['department_head'])->get());
     }
 
     public function departmentListVue()
