@@ -15,7 +15,7 @@
                     <option value="" selected disabled>{{trans('global.pleaseSelect')}}</option>
                     @foreach($projects as $id => $v_project)
                         @if($project)
-                            <option value="{{ $id }}" {{ old('project_id') == $id ? 'selected' : $project->id == $id ? 'selected' : 'disabled' }}>{{ $v_project }}</option>
+                            <option value="{{ $id }}" {{ old('project_id') == $id ? 'selected' : ($project->id == $id ? 'selected' : 'disabled') }}>{{ $v_project }}</option>
                         @else
                             <option value="{{ $id }}" {{ old('project_id') == $id ? 'selected' : '' }}>{{ $v_project }}</option>
                         @endif
