@@ -72,65 +72,93 @@
                 <table class="table">
                     <thead>
                         <tr>
-                        <th scope="col">
-                            <span class="addRating">
-                                <i class="fas fa-plus-square" style="cursor:pointer;"></i>
-                            </span>
-                        </th>
-                        <th scope="col">1 = Poor</th>
-                        <th scope="col">2 = Fair </th>
-                        <th scope="col">3 = Satisfaction</th>
-                        <th scope="col">4 = Good</th>
-                        <th scope="col">5 = Excelent</th>
+                            <th scope="col">
+                                <span class="addRating">
+                                    <i class="fas fa-plus-square" style="cursor:pointer;" @click="addRow()"></i>
+                                </span>
+                            </th>
+                            <th scope="col">1 = Poor</th>
+                            <th scope="col">2 = Fair </th>
+                            <th scope="col">3 = Satisfactory</th>
+                            <th scope="col">4 = Good</th>
+                            <th scope="col">5 = Excelent</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr data-row-id="">
+                        <tr data-row-id="" v-for="(item, index) in rates" :key="index">
+                            {{item}}
+                            <!-- <th scope="col">
+                                <span class="addRating">
+                                    <i class="fas fa-plus-square" style="cursor:pointer;" @click="addRow(item)"></i>
+                                </span>
+                            </th> -->
                             <td>
+                                <div class="d-flex">
+                                    <span class="text-white bg-danger d-flex align-self-center p-1 mr-2" style="border-radius:2px">
+                                        <i class="fas fa-trash-alt" @click="removeRow(index)"></i>
+                                    </span>
+                                    <input v-model="item.name" type="text" class="form-control d-bock">
+                                </div>
+                                <div class="d-flex mt-1">
+                                     <td>Comments</td>
+                                    <!-- <td> -->
+                                        <input v-model="item.comment" type="text" class="form-control d-block">
+                                    <!-- </td> -->
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                    <input value="1" :name="'rate['+index+']'" v-model="item.rate" type="radio" aria-label="Radio button for following text input">
+                                    {{item.rate}}
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                    <input value="2" :name="'rate['+index+']'" v-model="item.rate" type="radio" aria-label="Radio button for following text input">
+                                    {{item.rate}}
 
-                            </td>
-                            <td>
-                                <div class="input-group-prepend">
-                                    <div class="input-group-text">
-                                    <input type="checkbox" aria-label="Checkbox for following text input">
                                     </div>
                                 </div>
                             </td>
                             <td>
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">
-                                    <input type="checkbox" aria-label="Checkbox for following text input">
+                                    <input value="3" :name="'rate['+index+']'" v-model="item.rate" type="radio" aria-label="Radio button for following text input">
+                                    {{item.rate}}
+
                                     </div>
                                 </div>
                             </td>
                             <td>
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">
-                                    <input type="checkbox" aria-label="Checkbox for following text input">
+                                    <input value="4" :name="'rate['+index+']'" v-model="item.rate" type="radio" aria-label="Radio button for following text input">
+                                    {{item.rate}}
+
                                     </div>
                                 </div>
                             </td>
                             <td>
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">
-                                    <input type="checkbox" aria-label="Checkbox for following text input">
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="input-group-prepend">
-                                    <div class="input-group-text">
-                                    <input type="checkbox" aria-label="Checkbox for following text input">
+                                    <input value="5" :name="'rate['+index+']'" v-model="item.rate" type="radio" aria-label="Radio button for following text input">
                                     </div>
                                 </div>
                             </td>
                         </tr>
                         <tr>
-                            <th scope="row">2</th>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
+                            <td>Overall Rating</td>
+                            <td colspan="5">
+                                <!-- <input type="text" class="form-control" v-model="overallAvg"> -->
+                                <input type="text" class="form-control" :value="overallAvg">
+                            </td>
                         </tr>
+                        <!-- <tr v-for="(rate, index) in rates" :key="index">
+
+                        </tr> -->
                     </tbody>
                 </table>
             </div>
@@ -169,12 +197,77 @@ export default {
     props: ['langKey', 'user', 'designation', 'departmentTitle', 'departmentHead'],
     data(){
         return {
-            
+            urlGetEvaluationRatings: '/api/v1/admin/hr/evaluations',
+
+            // Row Data
+            rates: {},
+
+            // Form Data
+            form: new Form({
+                id: '',
+                name: '', // user
+                rate: '',
+                comment: '',
+            }),
+
+            overallAvg: '',
+            computeRate: '',
             year: '',
             month: '',
         }
     },
+    watch: {
+        'rates': {
+            handler: function(items) {
+                var rateVals = [];
+                items.forEach(item => {
+                    console.log('xxxxxx' + item.rate)
+                    var count = 0;
+                    if(item.rate != '') {
+                        count += 1;
+                        console.log('The list of colours has changed!');
+                        rateVals.push(item.rate);
+    
+                        var sumRates = rateVals.reduce((current, previous) => {
+                            return parseInt(current) + parseInt(previous);
+                        }, 0)
+                        console.log(rateVals)
+                        console.log(sumRates)
+                        // console.log(items.length);
+                        console.log(count);
+                        return this.overallAvg = sumRates / count; 
+                    }
+                });
+            },
+            deep: true
+        },
+    },
     methods: {
+        //Fetch Ratings From db
+        getRatings(){
+            axios.get(this.urlGetEvaluationRatings).then(response => {
+                const data = response.data.data
+                this.rates = data;
+            });
+        },
+
+        addRow(){
+            this.rates.push({
+                name: '',
+                rate: '',
+                comment: '',
+                // poor: '', 
+                // fair: '',
+                // satisfactory: '',
+                // good: '',
+                // excellent: '', 
+            });
+        },
+        removeRow(index){
+            this.rates.splice(index,1); 
+            // this.rates.splice(index + 1, 0, {});
+
+        },
         onSubmit(){
             this.form.post('/api/v1/admin/hr/evaluations').then(data => {
                 if (data.status === 201) {
@@ -194,7 +287,8 @@ export default {
     mounted() {
         i18n.locale = this.langKey;
         
-        this.getDate()
+        this.getDate();
+        this.getRatings();
 
     }
 }

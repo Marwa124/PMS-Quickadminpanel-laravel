@@ -27,4 +27,7 @@ Route::group(['as' => 'api.', 'prefix' => 'v1/admin/hr', 'namespace' => 'Api\V1\
     Route::apiResource('departments', 'DepartmentsApiController');
     
     Route::apiResource('designations', 'DesignationsApiController');
+
+    // Evaluations
+    Route::apiResource('evaluations', 'EvaluationsApiController');
 });
