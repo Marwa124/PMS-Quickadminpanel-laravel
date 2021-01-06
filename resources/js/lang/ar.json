@@ -109,6 +109,12 @@
         "currency": "جنية"
     },
 
+
+    "evaluation": {
+        "evaluation_comments": "تعليقات اضافية",
+        "evaluation_goals": "الهدف"
+    },
+
     "messages": {
         "delete_msg": "هل أنت متأكد من حذف هذا العنصر ؟",
         "delete_success_msg": "تم حذف العنصر.",

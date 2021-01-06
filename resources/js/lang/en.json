@@ -159,6 +159,15 @@
 
 
 
+
+
+    "evaluation": {
+        "evaluation_comments": "ADDITIONAL COMMENTS",
+        "evaluation_goals": "GOALS"
+    },
+
+
+
     "messages": {
         "delete_msg": "Are you sure to delete this element?",
         "delete_success_msg": "The element has been deleted.",

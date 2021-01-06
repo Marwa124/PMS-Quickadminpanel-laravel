@@ -17,6 +17,8 @@ class CreateEvaluationsRatingEvaluationsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('rating_evaluation_id')->nullable();
             $table->unsignedInteger('evaluation_id')->nullable();
+            $table->float('rate')->nullable();
+            $table->text('comment')->nullable();
         });
     }
 
