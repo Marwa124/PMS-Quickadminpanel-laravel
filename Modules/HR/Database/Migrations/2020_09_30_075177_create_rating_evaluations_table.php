@@ -16,8 +16,6 @@ class CreateRatingEvaluationsTable extends Migration
         Schema::create('rating_evaluations', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->nullable();
-            $table->boolean('rate')->default(0)->nullable();
-            $table->text('comment')->nullable();
             $table->timestamps();
         });
     }

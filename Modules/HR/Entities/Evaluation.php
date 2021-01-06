@@ -8,8 +8,14 @@ class Evaluation extends Model {
     
     protected $guarded = [];
 
+    // public function ratingEvaluation()
+    // {
+    //     return $this->belongsToMany(RatingEvaluation::class, 'rating_evaluation_id', 'id');
+    // }
+
+    
     public function ratingEvaluation()
     {
-        return $this->belongsToMany(RatingEvaluation::class, 'rating_evaluation_id', 'id');
+        return $this->belongsToMany(RatingEvaluation::class, 'rating_evaluation_id', 'id')->withPivot(["rate", "comment"]);
     }
 }

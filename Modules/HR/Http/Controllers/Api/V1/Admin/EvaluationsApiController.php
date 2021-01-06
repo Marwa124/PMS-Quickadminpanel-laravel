@@ -2,6 +2,7 @@
 
 namespace Modules\HR\Http\Controllers\Api\V1\Admin;
 
+use App\Models\User;
 use Modules\HR\Http\Controllers\Controller;
 
 use Modules\HR\Http\Resources\Admin\DepartmentResource;
@@ -12,6 +13,7 @@ use Modules\HR\Http\Requests\Store\StoreDepartmentRequest;
 
 use Gate;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Modules\HR\Entities\Designation;
 use Modules\HR\Entities\RatingEvaluation;
 use Modules\HR\Http\Controllers\Services\DepartmentExportServices;
@@ -29,42 +31,29 @@ class EvaluationsApiController extends Controller
         // return new DepartmentResource(Department::with(['department_head'])->get());
     }
 
-    public function departmentListVue()
+    public function store(Request $request)
+    // public function store(StoreDepartmentRequest $request)
     {
-        $model   = Department::select('id', 'department_name', 'department_head_id')
-                        ->with('departmentDesignations')
-                        ->with('department_head_account')
-                        ->searchPaginateOrder();
-        $columns = Department::$columns;
-        $searchable = Department::$searchable;
+        DB::beginTransaction();
 
-        $constructDataExport = (new DepartmentExportServices())->dataExportedConstruct($model);
+        try {
 
-        return response()->json([
-            'model'   => $model,
-            'columns' => $columns,
-            'searchable' => $searchable,
-            'dataExport' => $constructDataExport
-        ]);
-    }
-
-    public function store(StoreDepartmentRequest $request)
-    {
-        $department = Department::create([
-            'department_name' => $request->department_name,
-            'department_head_id' => $request->user_head_department ? $request->user_head_department['user_id'] : null,
-        ]);
-
-        if ($request->designations) {
-            foreach ($request->designations as $key => $designation) {
-                $designation = Designation::find($designation['id']);
-                $designation->update(['department_id' => $department->id]);
-            }
+        } catch(\Exception $e) {
+            return response()->json($e->getMessage());
         }
-
-        return (new DepartmentResource($department))
-            ->response()
+        if(gettype($request->data) == 'array' && !empty($request->data)){
+            dd($request->all());
+            $user = User::find($request->user_id);
+            // $user->activities()->attach($activityIdOrModel, ['product_id' => $productId]);
+            DB::commit();
+        }
+       
+        return response()
             ->setStatusCode(Response::HTTP_CREATED);
+
+        // return (new DepartmentResource($department))
+        //     ->response()
+        //     ->setStatusCode(Response::HTTP_CREATED);
     }
 
     public function show(Department $department)
