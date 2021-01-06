@@ -127,7 +127,7 @@
                         <select class="form-control select2 {{ $errors->has('parent_task_id') ? 'is-invalid' : '' }}" name="parent_task_id" id="parent_task_id">
                             @if($tasks)
                                 @forelse($tasks as $id => $v_task)
-                                    <option value="{{ $id }}" {{ old('parent_task_id') == $id ? 'selected' : $task->id == $id ? 'selected' : 'disabled' }} >{{ $v_task }}</option>
+                                    <option value="{{ $id }}" {{ old('parent_task_id') == $id ? 'selected' : ($task->id == $id ? 'selected' : '') }} >{{ $v_task }}</option>
                                 @empty
                                 @endforelse
                             @endif
@@ -147,7 +147,7 @@
                             <select class="form-control select2 {{ $errors->has('milestone_id') ? 'is-invalid' : '' }}" name="milestone_id" id="milestone_id_task">
                                 @if($milestones)
                                     @forelse($milestones as $id => $v_milestone)
-                                        <option value="{{ $id }}" {{ old('milestone_id') == $id ? 'selected' : $milestone->id == $id ? 'selected' : 'disabled' }} >{{ $v_milestone }}</option>
+                                        <option value="{{ $id }}" {{ old('milestone_id') == $id ? 'selected' : ($milestone->id == $id ? 'selected' : 'disabled') }} >{{ $v_milestone }}</option>
                                     @empty
                                     @endforelse
                                 @endif
@@ -257,7 +257,7 @@
 
                             @foreach($projects as $id => $v_project)
                                 @if($project)
-                                    <option value="{{ $id }}" {{ old('project_id') == $id ? 'selected' : $project->id == $id ? 'selected' : 'disabled' }}>{{ $v_project }}</option>
+                                    <option value="{{ $id }}" {{ old('project_id') == $id ? 'selected' : ($project->id == $id ? 'selected' : 'disabled') }}>{{ $v_project }}</option>
                                 @else
                                     <option value="{{ $id }}" {{ old('project_id') == $id ? 'selected' : '' }}>{{ $v_project }}</option>
                                 @endif

@@ -45,20 +45,12 @@ class ProposalsItemsController extends Controller
     {
         // dd($request);
         //convert taxes to json
-        // $total_tax="";
-        // if (!empty($request->tax_id)) {
+        $sub_total = $request['unit_cost'] * $request['quantity'];
+        $request['total_cost_price'] = $sub_total;
+        if(!empty($request->margin)){
 
-        //         $tax_info = TaxRate::whereIn('id', $request->tax_id)->pluck('rate_percent');
-        //         $total_tax =$tax_info;
-        // }
-        // if (!empty($total_tax)) {
-
-        //     $request['tax_id'] = null;
-        //     $request['tax_rate'] = json_encode($total_tax);
-        // } else {
-        //     $request['tax_rate'] = null;
-        // }
-        // dd($request->all());
+            $request['selling_price'] = $sub_total + ($sub_total * ($request->margin/100));
+        }
         $proposalsItem = ProposalsItem::create($request->all());
 
         if ($media = $request->input('ck-media', false)) {
@@ -81,6 +73,12 @@ class ProposalsItemsController extends Controller
 
     public function update(UpdateProposalsItemRequest $request, ProposalsItem $proposalsItem)
     {
+        $sub_total = $request['unit_cost'] * $request['quantity'];
+        $request['total_cost_price'] = $sub_total;
+        if(!empty($request->margin)){
+
+            $request['selling_price'] = $sub_total + ($sub_total * ($request->margin/100));
+        }
         $proposalsItem->update($request->all());
 
         return redirect()->route('sales.admin.proposals-items.index');
