@@ -2,6 +2,7 @@
 
 use App\Models\User;
 use Modules\ProjectManagement\Entities\Activity;
+use Modules\Sales\Entities\Proposal;
 
 //get global user notify
 if (!function_exists('globalNotificationId')) {
@@ -124,13 +125,30 @@ if (!function_exists('setActivity')) {
             'module'            =>  $module,
             'module_field_id'   =>  $module_field_id,
             'activity'          =>  $activity,
-//        'activity_date',
-//        'icon',
-//        'link',
+            //        'activity_date',
+            //        'icon',
+            //        'link',
             'value1'            =>  $module_value,
-//        'value2'
+            //        'value2'
         ];
 
         Activity::create($activityData);
+    }
+}
+if (!function_exists('generate_proposal_number')) {
+
+    function generate_proposal_number()
+    {
+      
+        $lastrecorder=Proposal::max('id');
+        $date = \Carbon\Carbon::now();
+        if ($lastrecorder == null){
+            $nextPoNumber = 'PRO-'.$date->isoFormat('D/MMM/Y').'/'.'0001';
+        } else {
+            //increase 1 with last invoice number
+            $incr=$lastrecorde+1;
+            $nextPoNumber = 'PRO-'.date('Y').'-'.date('m').'-'.date('d').'-'.'000'.$incr;
+        }
+       return $nextPoNumber;
     }
 }

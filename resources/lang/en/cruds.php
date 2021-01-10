@@ -1100,6 +1100,8 @@ return [
             'reference_no_helper'     => ' ',
             'subject'                 => 'Subject',
             'subject_helper'          => ' ',
+            'Related_To'                  => 'Related To',
+            'Related_To_helper'           => ' ',
             'module'                  => 'Module',
             'module_helper'           => ' ',
             'client'                  => 'Client',

@@ -27,7 +27,7 @@ class StoreProposalRequest extends FormRequest
             ],
             'module'         => [
                 'string',
-                'nullable',
+                'required',
             ],
             'proposal_date'  => [
                 'required',
@@ -42,11 +42,11 @@ class StoreProposalRequest extends FormRequest
                 'nullable',
             ],
             'total_tax'      => [
-                'string',
+                // 'string',
                 'nullable',
             ],
             'status'         => [
-                'string',
+                // 'string',
                 'nullable',
             ],
             'date_sent'      => [
@@ -57,12 +57,12 @@ class StoreProposalRequest extends FormRequest
                 'string',
                 'nullable',
             ],
-            'permissions.*'  => [
-                'integer',
-            ],
-            'permissions'    => [
-                'array',
-            ],
+            // 'permissions.*'  => [
+            //     'integer',
+            // ],
+            // 'permissions'    => [
+            //     'array',
+            // ],
         ];
     }
 }

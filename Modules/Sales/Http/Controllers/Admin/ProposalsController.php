@@ -49,6 +49,7 @@ class ProposalsController extends Controller
     public function store(StoreProposalRequest $request)
     {
         $proposal = Proposal::create($request->all());
+        dd($proposal,$request->all());
         $proposal->permissions()->sync($request->input('permissions', []));
 
         if ($media = $request->input('ck-media', false)) {
@@ -118,10 +119,10 @@ class ProposalsController extends Controller
     {
         $ajaxrequest="getmodule";
         if($request->id=="opportunities"){
-          $data=Opportunity::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+          $data=Opportunity::all()->pluck('name', 'id');
           $datataype=$request->id;
         }elseif ($request->id=="client") {
-            $data=Client::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+            $data=Client::all()->pluck('name', 'id');
             $datataype=$request->id;
         }
         if($request->id != null){
