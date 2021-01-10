@@ -28,6 +28,6 @@ class CreateMilestoneAccountDetailsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('milestone_account_details');
+        Schema::dropIfExists('milestone_account_details_pivot');
     }
 }

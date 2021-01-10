@@ -6,6 +6,7 @@ use App\Models\Ticket;
 use Gate;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Response;
+use Illuminate\Validation\Rule;
 
 class StoreTicketRequest extends FormRequest
 {
@@ -22,12 +23,19 @@ class StoreTicketRequest extends FormRequest
 //                'nullable',
 //            ],
             'subject'       => [
+                'required',
                 'string',
-                'nullable',
+//                'nullable',
+                Rule::unique('tickets','subject')->where(function($query) {
+
+                    $query->where('project_id', '=', request()->project_id);
+
+                }),
             ],
             'status'        => [
+                'required',
                 'string',
-                'nullable',
+//                'nullable',
             ],
 //            'reporter'      => [
 //                'nullable',
@@ -36,12 +44,19 @@ class StoreTicketRequest extends FormRequest
 //                'max:2147483647',
 //            ],
             'priority'      => [
+                'required',
                 'string',
-                'nullable',
+//                'nullable',
             ],
             'email'      => [
                 'email',
                 'nullable',
+            ],
+            'body'      => [
+                'required',
+            ],
+            'project_id'      => [
+                'required',
             ],
 //            'last_reply'    => [
 //                'string',

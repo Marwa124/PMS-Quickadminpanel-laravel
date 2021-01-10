@@ -345,6 +345,7 @@
                 'ticket_show',
                 'ticket_delete',
                 'ticket_access',
+                'ticket_assign_to',
             ],
 
             'payroll' => [
@@ -594,6 +595,15 @@
             // 'todos' => [
             //     'index-todos'
             // ],
+
+            // time sheets
+            'time_sheet' => [
+                        'time_sheet_access',
+                        'time_sheet_index',
+                        'time_sheet_create',
+                        'time_sheet_edit',
+                        'time_sheet_delete',
+                    ],
         ]
 
     ];

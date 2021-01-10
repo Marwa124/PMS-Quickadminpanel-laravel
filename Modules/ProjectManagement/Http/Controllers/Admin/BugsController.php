@@ -2,8 +2,10 @@
 
 namespace Modules\ProjectManagement\Http\Controllers\Admin;
 
+use App\Events\NewNotification;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\MediaUploadingTrait;
+use App\Notifications\ProjectManagementNotification;
 use Modules\HR\Entities\AccountDetail;
 use Modules\ProjectManagement\Entities\Bug;
 use Modules\ProjectManagement\Http\Controllers\Traits\PermissionHelperTrait;
@@ -98,6 +100,26 @@ class BugsController extends Controller
     public function update(UpdateBugRequest $request, Bug $bug)
     {
         $bug->update($request->all());
+
+        // Notify User
+        foreach ($bug->accountDetails as $accountUser)
+        {
+            $user = $accountUser->user;
+            $dataMail = [
+                'subjectMail'    => 'Update Bug '.$bug->name,
+                'bodyMail'       => 'Update The Bug '.$bug->name,
+                'action'         => route("projectmanagement.admin.bugs.show", $bug->id)
+            ];
+
+            $dataNotification = [
+                'message'       => 'Update The Bug '.$bug->name,
+                'route_path'    => 'admin/projectmanagement/bugs',
+            ];
+
+            $user->notify(new ProjectManagementNotification($bug,$user,$dataMail,$dataNotification));
+            $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
+            event(new NewNotification($userNotify));
+        }
 
         setActivity('bug',$bug->id,'Update Bug',$bug->status);
 
@@ -198,6 +220,26 @@ class BugsController extends Controller
             $bug->accountDetails()->detach();
         }
 
+        // Notify User
+        foreach ($bug->accountDetails as $accountUser)
+        {
+            $user = $accountUser->user;
+            $dataMail = [
+                'subjectMail'    => 'New Bug Assign To You',
+                'bodyMail'       => 'Assign The Bug '.$bug->name.' To '.$user->name,
+                'action'         => route("projectmanagement.admin.bugs.show", $bug->id)
+            ];
+
+            $dataNotification = [
+                'message'       => 'Assign The Bug '.$bug->name.' To '.$user->name,
+                'route_path'    => 'admin/projectmanagement/bugs',
+            ];
+
+            $user->notify(new ProjectManagementNotification($bug,$user,$dataMail,$dataNotification));
+            $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
+            event(new NewNotification($userNotify));
+        }
+
         setActivity('bug',$bug->id,'Update Assign to',$bug->name);
 
         return redirect()->route('projectmanagement.admin.bugs.index');
@@ -208,6 +250,26 @@ class BugsController extends Controller
         $bug = Bug::findOrFail($request->bug_id);
         //$project->notes = $request->notes;
         $bug->update($request->all());
+
+        // Notify User
+        foreach ($bug->accountDetails as $accountUser)
+        {
+            $user = $accountUser->user;
+            $dataMail = [
+                'subjectMail'    => 'Update Bug '.$bug->name,
+                'bodyMail'       => 'Update Note Of Bug '.$bug->name,
+                'action'         => route("projectmanagement.admin.bugs.show", $bug->id)
+            ];
+
+            $dataNotification = [
+                'message'       => 'Update Note Of Bug '.$bug->name,
+                'route_path'    => 'admin/projectmanagement/bugs',
+            ];
+
+            $user->notify(new ProjectManagementNotification($bug,$user,$dataMail,$dataNotification));
+            $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
+            event(new NewNotification($userNotify));
+        }
 
         setActivity('bug',$bug->id,'Update Note ',$bug->name);
 

@@ -2,11 +2,13 @@
 
 namespace Modules\ProjectManagement\Http\Controllers\Admin;
 
+use App\Events\NewNotification;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\MediaUploadingTrait;
 use App\Models\Invoice;
 use App\Models\ProjectSetting;
 use App\Models\User;
+use App\Notifications\ProjectManagementNotification;
 use Illuminate\Support\Facades\DB;
 use Modules\HR\Entities\AccountDetail;
 use Modules\HR\Entities\Department;
@@ -94,6 +96,28 @@ class ProjectsController extends Controller
         }
 
         $project->update($request->all());
+
+        // Notify User
+        foreach ($project->accountDetails as $accountUser)
+        {
+//            dd($project->accountDetails());
+            $user = $accountUser->user;
+            //dd($user);
+            $dataMail = [
+                'subjectMail'    => 'Update Project '.$project->name,
+                'bodyMail'       => 'Update The Project '.$project->name,
+                'action'         => route("projectmanagement.admin.projects.show", $project->id)
+            ];
+
+            $dataNotification = [
+                'message'       => 'Update The Project '.$project->name,
+                'route_path'    => 'admin/projectmanagement/projects',
+            ];
+
+            $user->notify(new ProjectManagementNotification($project,$user,$dataMail,$dataNotification));
+            $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
+            event(new NewNotification($userNotify));
+        }
 
         setActivity('project',$project->id,'Update Project Details',$project->name);
 
@@ -206,24 +230,49 @@ class ProjectsController extends Controller
 
             foreach ($accounts as $account) {
 
-                foreach ($account->user->permissions as $permission) {
+                if (!$account->user->hasrole(['Admin','Super Admin'])) {
 
-                    if (in_array($permission->name, $project_permissions_notToMember_names)) {
-                        $account->user->permissions()->detach($project_permissions_notToMember);
+                    foreach ($account->user->permissions as $permission) {
+
+                        if (in_array($permission->name, $project_permissions_notToMember_names)) {
+                            $account->user->permissions()->detach($project_permissions_notToMember);
+                        }
                     }
-                }
-                $account->user->permissions()->syncWithoutDetaching($project_permissions_toMember);
+                    $account->user->permissions()->syncWithoutDetaching($project_permissions_toMember);
 
-                foreach ($account->user->department as $department) {
-                    if ($department->department_name == $project->department->department_name) {
-                        $account->user->permissions()->syncWithoutDetaching($project_permissions_head);
+                    foreach ($account->user->department as $department) {
+                        if ($department->department_name == $project->department->department_name) {
+                            $account->user->permissions()->syncWithoutDetaching($project_permissions_head);
 
-                        break;
+                            break;
+                        }
                     }
                 }
             }
         }else{
             $project->accountDetails()->detach();
+        }
+
+        // Notify User
+        foreach ($project->accountDetails as $accountUser)
+        {
+//            dd($project->accountDetails());
+            $user = $accountUser->user;
+            //dd($user);
+            $dataMail = [
+                    'subjectMail'    => 'New Project Assign To You',
+                    'bodyMail'       => 'Assign The Project '.$project->name.' To '.$user->name,
+                    'action'         => route("projectmanagement.admin.projects.show", $project->id)
+            ];
+
+            $dataNotification = [
+                    'message'       => 'Assign The Project '.$project->name.' To '.$user->name,
+                    'route_path'    => 'admin/projectmanagement/projects',
+            ];
+
+            $user->notify(new ProjectManagementNotification($project,$user,$dataMail,$dataNotification));
+            $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
+            event(new NewNotification($userNotify));
         }
 
         setActivity('project',$project->id,'Update Assign to ',$project->name);
@@ -236,6 +285,28 @@ class ProjectsController extends Controller
         $project = Project::findOrFail($request->project_id);
         //$project->notes = $request->notes;
         $project->update($request->all());
+
+        // Notify User
+        foreach ($project->accountDetails as $accountUser)
+        {
+//            dd($project->accountDetails());
+            $user = $accountUser->user;
+            //dd($user);
+            $dataMail = [
+                'subjectMail'    => 'Update Project '.$project->name,
+                'bodyMail'       => 'Update Note Of Project '.$project->name,
+                'action'         => route("projectmanagement.admin.projects.show", $project->id)
+            ];
+
+            $dataNotification = [
+                'message'       => 'Update Note Of Project '.$project->name,
+                'route_path'    => 'admin/projectmanagement/projects',
+            ];
+
+            $user->notify(new ProjectManagementNotification($project,$user,$dataMail,$dataNotification));
+            $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
+            event(new NewNotification($userNotify));
+        }
 
         setActivity('project',$project->id,'Update Note ',$project->name);
 

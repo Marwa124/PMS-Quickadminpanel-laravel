@@ -438,7 +438,7 @@ $('.updateUserSalary').on('click', function(){
     var reason = $(this).closest('.modal').find('input[name="reason"]').val();
     console.log(type);
     console.log(userId);
-    $.ajax({
+        $.ajax({
         url: '{{url('admin/hr/account-details/advanced-salary')}}/' + userId,
         type: 'post',
         data: {

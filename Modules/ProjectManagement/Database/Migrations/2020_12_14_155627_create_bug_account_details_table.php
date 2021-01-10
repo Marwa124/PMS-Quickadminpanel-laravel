@@ -28,6 +28,6 @@ class CreateBugAccountDetailsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('bug_account_details');
+        Schema::dropIfExists('bug_account_details_pivot');
     }
 }

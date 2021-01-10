@@ -1,6 +1,88 @@
 @extends('layouts.admin')
 @section('content')
-@can('ticket_create')
+
+    <div class=" card">
+    <div class=" d-flex">
+
+{{--        <div class=" col-sm-2 pb-3">--}}
+{{--            <div class="card-body ">--}}
+{{--                <span >{{$tickets->count()}}</span><br>--}}
+{{--                <a class="float-left" id="all" type="button" >--}}
+{{--                    All--}}
+{{--                </a>--}}
+
+{{--            </div>--}}
+{{--        </div>--}}
+
+        <div class=" col-sm-2 pb-3">
+            <div class="card-body ">
+                <span >{{$tickets->where('status','answered')->count()}}</span><br>
+                <a class="float-left" id="answered" type="button" >
+                    Answered Tickets
+                </a>
+
+            </div>
+        </div>
+
+        <div class=" col-sm-2 pb-3">
+            <div class="card-body ">
+                <span >{{$tickets->where('status','in_progress')->count()}}</span><br>
+                <a class="float-left" id="in_progress" type="button" >
+                    In Progress Tickets
+                </a>
+
+            </div>
+        </div>
+
+        <div class=" col-sm-2 pb-3">
+            <div class="card-body ">
+                <span >{{$tickets->where('status','opened')->count()}}</span><br>
+                <a class="float-left" id="opened" type="button" >
+                    Open Tickets
+                </a>
+
+            </div>
+        </div>
+
+        <div class=" col-sm-2 pb-3">
+            <div class="card-body ">
+                <span >{{$tickets->where('status','closed')->count()}}</span><br>
+                <a class="float-left" id="closed" type="button" >
+                    Close Tickets
+                </a>
+
+            </div>
+        </div>
+
+        <div class=" col-sm-2 pb-3">
+            <div class="card-body ">
+                <span >{{$tickets->where('status','reopen')->count()}}</span><br>
+                <a class="float-left" id="reopen" type="button" >
+                    Reopen Tickets
+                </a>
+
+            </div>
+        </div>
+{{--        <div class="card col-sm-2 ">--}}
+{{--            <div class="card-body">--}}
+
+{{--                <a class="float-left" id="in_progress" type="button" >--}}
+{{--                    In Progress--}}
+{{--                </a>--}}
+{{--                <span class="float-right">{{$projects->where('project_status','in_progress')->count().'/'.$projects->count()}}</span><br>--}}
+{{--                <div class="progress" style="width: auto" >--}}
+{{--                    <div class="progress-bar bg-warning" role="progressbar" style="width: {{$projects->where('project_status','in_progress')->count()/$projects->count()*100}}%; " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">--}}
+
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+
+
+    </div>
+    </div>
+
+    @can('ticket_create')
     <div style="margin-bottom: 10px;" class="row">
         <div class="col-lg-12">
             <a class="btn btn-success" href="{{ route('projectmanagement.admin.tickets.create') }}">
@@ -52,28 +134,36 @@
                                 {{ $ticket->id ?? '' }}
                             </td>
                             <td>
-                                {{ $ticket->ticket_code ?? '' }}
+                                <a href="{{ route('projectmanagement.admin.tickets.show', $ticket->id) }}">
+
+                                    {{ $ticket->ticket_code ?? '' }}
+                                </a>
                             </td>
                             <td>
-                                {{ $ticket->subject ?? '' }}
+                                <a href="{{ route('projectmanagement.admin.tickets.show', $ticket->id) }}">
+                                    {{ $ticket->subject ?? '' }}
+
+                                </a>
                             </td>
                             <td>
                                 {{ $ticket->project->name ?? '' }}
                             </td>
                             <td>
-                                {{ $ticket->status ?? '' }}
+                                {{ $ticket->status ? ucfirst($ticket->status) : '' }}
                             </td>
 
                             <td>
                                 @can('ticket_show')
                                     <a class="btn btn-xs btn-primary" href="{{ route('projectmanagement.admin.tickets.show', $ticket->id) }}">
-                                        {{ trans('global.view') }}
+{{--                                        {{ trans('global.view') }}--}}
+                                        <span class="fa fa-eye"></span>
                                     </a>
                                 @endcan
 
                                 @can('ticket_edit')
                                     <a class="btn btn-xs btn-info" href="{{ route('projectmanagement.admin.tickets.edit', $ticket->id) }}">
-                                        {{ trans('global.edit') }}
+                                        <span class="fa fa-pencil-square-o"></span>
+{{--                                        {{ trans('global.edit') }}--}}
                                     </a>
                                 @endcan
 
@@ -151,6 +241,48 @@
         .search(value, strict)
         .draw()
   });
+
+        $('#all').on('click',function () {
+            table
+                .columns( 5 )
+                .search( '' )
+                .draw()
+        })
+
+        $('#answered').on('click',function () {
+            table
+                .columns( 5 )
+                .search( 'answered' )
+                .draw()
+        })
+
+        $('#in_progress').on('click',function () {
+            table
+                .columns( 5 )
+                .search( 'in progress' )
+                .draw()
+        })
+
+        $('#opened').on('click',function () {
+            table
+                .columns( 5 )
+                .search( 'opened' )
+                .draw()
+        })
+
+        $('#closed').on('click',function () {
+            table
+                .columns( 5 )
+                .search( 'closed' )
+                .draw()
+        })
+
+        $('#reopen').on('click',function () {
+            table
+                .columns( 5 )
+                .search( 'reopen' )
+                .draw()
+        })
 })
 
 </script>

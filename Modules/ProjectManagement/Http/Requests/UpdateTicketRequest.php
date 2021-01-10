@@ -22,16 +22,20 @@ class UpdateTicketRequest extends FormRequest
 //                'nullable',
 //            ],
             'subject'       => [
+                'required',
                 'string',
-                'nullable',
+                //'nullable',
+                'unique:tickets,subject,'. request()->route('ticket')->id.',id,project_id,'.request()->project_id,
             ],
             'status'        => [
+                'required',
                 'string',
-                'nullable',
+                //'nullable',
             ],
             'email'      => [
+                'required',
                 'email',
-                'nullable',
+                //'nullable',
             ],
 //            'reporter'      => [
 //                'nullable',
@@ -40,8 +44,15 @@ class UpdateTicketRequest extends FormRequest
 //                'max:2147483647',
 //            ],
             'priority'      => [
+                'required',
                 'string',
-                'nullable',
+                //'nullable',
+            ],
+            'body'      => [
+                'required',
+            ],
+            'project_id'      => [
+                'required',
             ],
 //            'last_reply'    => [
 //                'string',

@@ -82,6 +82,8 @@ Route::group(['prefix' => 'admin/projectmanagement', 'as' => 'projectmanagement.
     Route::post('tickets/media', 'TicketsController@storeMedia')->name('tickets.storeMedia');
     Route::post('tickets/ckmedia', 'TicketsController@storeCKEditorImages')->name('tickets.storeCKEditorImages');
     Route::resource('tickets', 'TicketsController');
+    Route::get('tickets/{id}/assign_to','TicketsController@getAssignTo')->name('tickets.getAssignTo');
+    Route::post('tickets/assign_to','TicketsController@storeAssignTo')->name('tickets.storeAssignTo');
     Route::get('tickets/create/project-ticket/{id}','TicketsController@create')->name('tickets.create_project_ticket');
     Route::post('tickets/add_replay','TicketsController@replay')->name('tickets.replay');
     Route::post('tickets/change_status','TicketsController@change_status')->name('tickets.change_status');
