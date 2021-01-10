@@ -23,15 +23,15 @@
                 </div>
                 <div class="form-group">
                     <label for="project_id">{{ trans('cruds.ticket.fields.project') }}</label>
-                    <select class="form-control select2 {{ $errors->has('project') ? 'is-invalid' : '' }}" name="project_id" id="project_id">
+                    <select class="form-control select2 {{ $errors->has('project_id') ? 'is-invalid' : '' }}" name="project_id" id="project_id">
                         <option value="" selected disabled>{{trans('global.pleaseSelect')}}</option>
                         @foreach($projects as $id => $project)
                             <option value="{{ $id }}" {{ (old('project_id') ? old('project_id') : $ticket->project->id ?? '') == $id ? 'selected' : '' }}>{{ $project }}</option>
                         @endforeach
                     </select>
-                    @if($errors->has('project'))
+                    @if($errors->has('project_id'))
                         <div class="invalid-feedback">
-                            {{ $errors->first('project') }}
+                            {{ $errors->first('project_id') }}
                         </div>
                     @endif
                     <span class="help-block">{{ trans('cruds.ticket.fields.project_helper') }}</span>
@@ -62,7 +62,7 @@
                     <label for="status">{{ trans('cruds.ticket.fields.status') }}</label>
                     <select class="form-control select2 {{ $errors->has('status') ? 'is-invalid' : '' }}" name="status" id="status">
                         <option value="" selected disabled>Please Select</option>
-                        <option value="open"        {{ old('status', $ticket->status) == 'open'         ? 'selected' : '' }}>Open</option>
+                        <option value="opened"      {{ old('status', $ticket->status) == 'opened'       ? 'selected' : '' }}>Open</option>
                         <option value="answered"    {{ old('status', $ticket->status) == 'answered'     ? 'selected' : '' }}>Answered</option>
                         <option value="in_progress" {{ old('status', $ticket->status) == 'in_progress'  ? 'selected' : '' }}>In Progress</option>
                         <option value="closed"      {{ old('status', $ticket->status) == 'closed'       ? 'selected' : '' }}>Closed</option>

@@ -23,7 +23,7 @@ class CreateLeadsTable extends Migration
             $table->string('phone1')->nullable();
             $table->string('phone2')->nullable();
             $table->string('email')->nullable();
-            
+
             $table->string('way_of_communication')->nullable();
             $table->string('contacted_date')->nullable();
             $table->text('notes')->nullable();
@@ -32,19 +32,19 @@ class CreateLeadsTable extends Migration
             $table->boolean('second_call_done')->nullable();
             $table->enum('priority',['URGENT','NORMAL','LOW','VIP'])->nullable();
             $table->enum('contracted',['Busy','Call Later','No Answer','Not Interested','Out Of Service','Product Not Available','Switched OFF','Undefined','Whatsapp','Wrong Number','YES - INTERESTED','YES - Not Qualified'])->nullable();
-            
-            
-            
+
+
+
             $table->bigInteger('type_id')->unsigned()->nullable();
             $table->foreign('type_id')->references('id')->on('types')->onDelete('cascade');
-            
-            
-            $table->bigInteger('first_call_result_id')->unsigned()->nullable();
+
+
+                $table->bigInteger('first_call_result_id')->unsigned()->nullable();
             $table->foreign('first_call_result_id')->references('id')->on('results')->onDelete('cascade');
-            
+
             $table->bigInteger('second_call_result_id')->unsigned()->nullable();
             $table->foreign('second_call_result_id')->references('id')->on('results')->onDelete('cascade');
-            
+
             $table->integer('added_by')->nullable();
 
             $table->timestamps();

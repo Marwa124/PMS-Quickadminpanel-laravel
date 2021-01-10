@@ -365,9 +365,11 @@
                                                 <th>
                                                     {{ trans('cruds.milestone.fields.end_date') }}
                                                 </th>
-                                                <th>
-                                                    &nbsp;
-                                                </th>
+                                                @canany(['milestone_edit' , 'milestone_assign_to','milestone_delete'])
+                                                    <th>
+                                                        &nbsp;
+                                                    </th>
+                                                @endcanany
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -391,30 +393,32 @@
                                                         <td>
                                                             {{ $milestone->end_date ?? '' }}
                                                         </td>
-                                                        <td>
-                                                            @can('milestone_edit')
-                                                                <a class="btn btn-xs btn-info" href="{{ route('projectmanagement.admin.milestones.edit', $milestone->id) }}">
-                                                                    {{--                                        {{ trans('global.edit') }}--}}
-                                                                    <span class="fa fa-pencil-square-o"></span>
-                                                                </a>
-                                                            @endcan
+                                                        @canany(['milestone_edit' , 'milestone_assign_to','milestone_delete'])
+                                                            <td>
+                                                                @can('milestone_edit')
+                                                                    <a class="btn btn-xs btn-info" href="{{ route('projectmanagement.admin.milestones.edit', $milestone->id) }}">
+                                                                        {{--                                        {{ trans('global.edit') }}--}}
+                                                                        <span class="fa fa-pencil-square-o"></span>
+                                                                    </a>
+                                                                @endcan
 
-                                                            @can('milestone_assign_to')
+                                                                @can('milestone_assign_to')
 
-                                                                <a class="btn btn-xs btn-success" href="{{ route('projectmanagement.admin.milestones.getAssignTo', $milestone->id) }}" >
-                                                                    {{ trans('global.assign_to') }}
-                                                                </a>
+                                                                    <a class="btn btn-xs btn-success" href="{{ route('projectmanagement.admin.milestones.getAssignTo', $milestone->id) }}" >
+                                                                        {{ trans('global.assign_to') }}
+                                                                    </a>
 
-                                                            @endcan
+                                                                @endcan
 
-                                                            @can('milestone_delete')
-                                                                <form action="{{ route('projectmanagement.admin.milestones.destroy', $milestone->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
-                                                                    <input type="hidden" name="_method" value="DELETE">
-                                                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                                    <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
-                                                                </form>
-                                                            @endcan
-                                                        </td>
+                                                                @can('milestone_delete')
+                                                                    <form action="{{ route('projectmanagement.admin.milestones.destroy', $milestone->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                                                        <input type="hidden" name="_method" value="DELETE">
+                                                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                                        <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
+                                                                    </form>
+                                                                @endcan
+                                                            </td>
+                                                        @endcanany
 
                                                     </tr>
                                                 @empty
@@ -478,9 +482,11 @@
                                                 <th>
                                                     {{ trans('cruds.task.fields.milestone') }}
                                                 </th>
-                                                <th>
-                                                    &nbsp;
-                                                </th>
+                                                @canany(['task_edit' , 'task_assign_to' , 'task_delete'])
+                                                    <th>
+
+                                                    </th>
+                                                @endcanany
                                             </tr>
                                             </thead>
                                             <tbody >
@@ -514,30 +520,33 @@
                                                             {{ $task->milestone->name ?? '' }}
                                                         </td>
 
-                                                        <td>
-                                                            @can('task_edit')
-                                                                <a class="btn btn-xs btn-info" href="{{ route('projectmanagement.admin.tasks.edit', $task->id) }}">
-                                                                    <span class="fa fa-pencil-square-o"></span>
-                                                                </a>
-                                                            @endcan
+                                                        @canany(['task_edit' , 'task_assign_to' , 'task_delete'])
 
-                                                            @can('task_assign_to')
+                                                            <td>
+                                                                @can('task_edit')
+                                                                    <a class="btn btn-xs btn-info" href="{{ route('projectmanagement.admin.tasks.edit', $task->id) }}">
+                                                                        <span class="fa fa-pencil-square-o"></span>
+                                                                    </a>
+                                                                @endcan
 
-                                                                <a class="btn btn-xs btn-success {{$task->project->department ? '' : 'disabled'}}" href="{{ route('projectmanagement.admin.tasks.getAssignTo', $task->id) }}" title="{{$task->project->department ? '' : 'add department to project'}}" >
-                                                                    {{ trans('global.assign_to') }}
-                                                                </a>
+                                                                @can('task_assign_to')
 
-                                                            @endcan
+                                                                    <a class="btn btn-xs btn-success {{$task->project->department ? '' : 'disabled'}}" href="{{ route('projectmanagement.admin.tasks.getAssignTo', $task->id) }}" title="{{$task->project->department ? '' : 'add department to project'}}" >
+                                                                        {{ trans('global.assign_to') }}
+                                                                    </a>
 
-                                                            @can('task_delete')
-                                                                <form action="{{ route('projectmanagement.admin.tasks.destroy', $task->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
-                                                                    <input type="hidden" name="_method" value="DELETE">
-                                                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                                    <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
-                                                                </form>
-                                                            @endcan
+                                                                @endcan
 
-                                                        </td>
+                                                                @can('task_delete')
+                                                                    <form action="{{ route('projectmanagement.admin.tasks.destroy', $task->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                                                        <input type="hidden" name="_method" value="DELETE">
+                                                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                                        <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
+                                                                    </form>
+                                                                @endcan
+
+                                                            </td>
+                                                        @endcanany
 
                                                     </tr>
                                                 @empty
@@ -603,9 +612,11 @@
                                                 <th>
                                                     {{ trans('cruds.bug.fields.reporter') }}
                                                 </th>
-                                                <th>
-                                                    &nbsp;
-                                                </th>
+                                                @canany(['bug_edit' , 'bug_assign_to' , 'bug_delete'])
+                                                    <th>
+                                                        &nbsp;
+                                                    </th>
+                                                @endcanany
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -635,7 +646,8 @@
                                                             <td>
                                                                 {{ $bug->reporterBy->name ?? '' }}
                                                             </td>
-                                                            <td>
+                                                            @canany(['bug_edit' , 'bug_assign_to' , 'bug_delete'])
+                                                                <td>
                                                                 @can('bug_edit')
                                                                     <a class="btn btn-xs btn-info" href="{{ route('projectmanagement.admin.bugs.edit', $bug->id) }}">
                                                                         <span class="fa fa-pencil-square-o"></span>
@@ -657,6 +669,7 @@
                                                                 @endcan
 
                                                             </td>
+                                                            @endcanany
 
                                                         </tr>
                                                     @empty
@@ -739,9 +752,11 @@
                                                 <th>
                                                     {{ trans('cruds.ticket.fields.status') }}
                                                 </th>
-                                                <th>
-                                                    &nbsp;
-                                                </th>
+                                                @canany(['ticket_show' , 'ticket_edit' , 'ticket_delete'])
+                                                    <th>
+                                                        &nbsp;
+                                                    </th>
+                                                @endcanany
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -766,28 +781,32 @@
                                                             <td>
                                                                 {{ $ticket->status ?? '' }}
                                                             </td>
-                                                            <td>
-                                                                @can('ticket_show')
-                                                                    <a class="btn btn-xs btn-primary" href="{{ route('projectmanagement.admin.tickets.show', $ticket->id) }}">
-                                                                        {{ trans('global.view') }}
-                                                                    </a>
-                                                                @endcan
+                                                            @canany(['ticket_show' , 'ticket_edit' , 'ticket_delete'])
+                                                                <td>
+                                                                    @can('ticket_show')
+                                                                        <a class="btn btn-xs btn-primary" href="{{ route('projectmanagement.admin.tickets.show', $ticket->id) }}">
 
-                                                                @can('ticket_edit')
-                                                                    <a class="btn btn-xs btn-info" href="{{ route('projectmanagement.admin.tickets.edit', $ticket->id) }}">
-                                                                        {{ trans('global.edit') }}
-                                                                    </a>
-                                                                @endcan
+                                                                            <span class="fa fa-eye"></span>
+                                                                        </a>
+                                                                    @endcan
 
-                                                                @can('ticket_delete')
-                                                                    <form action="{{ route('projectmanagement.admin.tickets.destroy', $ticket->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
-                                                                        <input type="hidden" name="_method" value="DELETE">
-                                                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                                        <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
-                                                                    </form>
-                                                                @endcan
+                                                                    @can('ticket_edit')
+                                                                        <a class="btn btn-xs btn-info" href="{{ route('projectmanagement.admin.tickets.edit', $ticket->id) }}">
+                                                                            <span class="fa fa-pencil-square-o"></span>
 
-                                                            </td>
+                                                                        </a>
+                                                                    @endcan
+
+                                                                    @can('ticket_delete')
+                                                                        <form action="{{ route('projectmanagement.admin.tickets.destroy', $ticket->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                                                            <input type="hidden" name="_method" value="DELETE">
+                                                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                                            <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
+                                                                        </form>
+                                                                    @endcan
+
+                                                                </td>
+                                                            @endcanany
 
                                                         </tr>
                                                     @empty
@@ -853,9 +872,11 @@
                                                 <th>
                                                     {{ trans('cruds.invoice.fields.status') }}
                                                 </th>
-                                                <th>
-                                                    &nbsp;
-                                                </th>
+                                                @canany(['invoice_show' , 'invoice_edit' , 'invoice_delete'])
+                                                    <th>
+                                                        &nbsp;
+                                                    </th>
+                                                @endcanany
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -886,28 +907,30 @@
                                                             <td>
                                                                 {{ App\Models\Invoice::STATUS_SELECT[$invoice->status] ?? '' }}
                                                             </td>
-                                                            <td>
-                                                                @can('invoice_show')
-                                                                    <a class="btn btn-xs btn-primary" href="{{ route('admin.invoices.show', $invoice->id) }}">
-                                                                        {{ trans('global.view') }}
-                                                                    </a>
-                                                                @endcan
+                                                            @canany(['invoice_show' , 'invoice_edit' , 'invoice_delete'])
+                                                                <td>
+                                                                    @can('invoice_show')
+                                                                        <a class="btn btn-xs btn-primary" href="{{ route('admin.invoices.show', $invoice->id) }}">
+                                                                            {{ trans('global.view') }}
+                                                                        </a>
+                                                                    @endcan
 
-                                                                @can('invoice_edit')
-                                                                    <a class="btn btn-xs btn-info" href="{{ route('admin.invoices.edit', $invoice->id) }}">
-                                                                        {{ trans('global.edit') }}
-                                                                    </a>
-                                                                @endcan
+                                                                    @can('invoice_edit')
+                                                                        <a class="btn btn-xs btn-info" href="{{ route('admin.invoices.edit', $invoice->id) }}">
+                                                                            {{ trans('global.edit') }}
+                                                                        </a>
+                                                                    @endcan
 
-                                                                @can('invoice_delete')
-                                                                    <form action="{{ route('admin.invoices.destroy', $invoice->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
-                                                                        <input type="hidden" name="_method" value="DELETE">
-                                                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                                        <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
-                                                                    </form>
-                                                                @endcan
+                                                                    @can('invoice_delete')
+                                                                        <form action="{{ route('admin.invoices.destroy', $invoice->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                                                            <input type="hidden" name="_method" value="DELETE">
+                                                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                                            <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
+                                                                        </form>
+                                                                    @endcan
 
-                                                            </td>
+                                                                </td>
+                                                            @endcanany
 
                                                         </tr>
 
@@ -931,7 +954,9 @@
                         <div class="card-body">
                             <div class="nav flex-row nav-pills" id="v-pills-tab" role="tablist" aria-orientation="horizontal">
                                 <a class="nav-link active" id="v-pills-time_sheet-tab" data-toggle="pill" href="#v-pills-time_sheet" role="tab" aria-controls="v-pills-time_sheet" aria-selected="true" onclick="displayTimesheet('time_sheet')">{{ trans('cruds.project.fields.time_sheet') }}</a>
-                                <a class="nav-link " id="v-pills-new_time_sheet-tab" data-toggle="pill" href="#v-pills-new_time_sheet" role="tab" aria-controls="v-pills-new_time_sheet" aria-selected="true" onclick="displayTimesheet('new_time_sheet')">New {{ trans('cruds.project.fields.time_sheet') }}</a>
+                                @canany(['time_sheet_create' , 'time_sheet_edit'])
+                                    <a class="nav-link " id="v-pills-new_time_sheet-tab" data-toggle="pill" href="#v-pills-new_time_sheet" role="tab" aria-controls="v-pills-new_time_sheet" aria-selected="true" onclick="displayTimesheet('new_time_sheet')">New {{ trans('cruds.project.fields.time_sheet') }}</a>
+                                @endcanany
                             </div>
                         </div>
                     </div>
@@ -962,9 +987,11 @@
                                                 <th>
                                                     {{ trans('cruds.project.fields.time_spend') }}
                                                 </th>
-                                                <th>
-                                                    &nbsp;
-                                                </th>
+                                                @canany(['time_sheet_create' , 'time_sheet_edit'])
+                                                    <th>
+                                                        &nbsp;
+                                                    </th>
+                                                @endcanany
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -997,23 +1024,25 @@
 {{--                                                                get_time_spent_result in file global_helper --}}
                                                                 {{ get_time_spent_result($timer->end_time - $timer->start_time) }}
                                                             </td>
-                                                            <td>
-{{--                                                                @can('timesheet_edit')--}}
-                                                                    <input type="hidden" name="timesheets" id="timesheets" value="{{$project->TimeSheet}}">
-                                                                    <a class="btn btn-xs btn-info tablinks"  onclick="showEditTime(event, '{{$timer->id}}')" data-id="{{$timer->id}}"  id="edit_timesheet" >
-                                                                        <span class="fa fa-pencil-square-o"></span>
-                                                                    </a>
-{{--                                                                @endcan--}}
+                                                            @canany(['time_sheet_create' , 'time_sheet_edit'])
+                                                                <td>
+                                                                    @can('time_sheet_edit')
+                                                                        <input type="hidden" name="timesheets" id="timesheets" value="{{$project->TimeSheet}}">
+                                                                        <a class="btn btn-xs btn-info tablinks"  onclick="showEditTime(event, '{{$timer->id}}')" data-id="{{$timer->id}}"  id="edit_timesheet" >
+                                                                            <span class="fa fa-pencil-square-o"></span>
+                                                                        </a>
+                                                                    @endcan
 
-{{--                                                                @can('timesheet_delete')--}}
-                                                                    <form action="{{route('projectmanagement.admin.time-sheets.destroy',$timer->id)}}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
-                                                                        <input type="hidden" name="_method" value="DELETE">
-                                                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                                        <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
-                                                                    </form>
-{{--                                                                @endcan--}}
+                                                                    @can('time_sheet_delete')
+                                                                        <form action="{{route('projectmanagement.admin.time-sheets.destroy',$timer->id)}}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                                                            <input type="hidden" name="_method" value="DELETE">
+                                                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                                            <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
+                                                                        </form>
+                                                                    @endcan
 
-                                                            </td>
+                                                                </td>
+                                                            @endcanany
 
                                                         </tr>
                                                     @empty
@@ -1034,7 +1063,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane fade " id="v-pills-new_time_sheet" role="tabpanel" aria-labelledby="v-pills-new_time_sheet-tab" >
+                    @canany(['time_sheet_create' , 'time_sheet_edit'])
+                        <div class="tab-pane fade " id="v-pills-new_time_sheet" role="tabpanel" aria-labelledby="v-pills-new_time_sheet-tab" >
                         <div class="card">
                             <div>
                                 <div class="card-header">
@@ -1107,6 +1137,7 @@
                             </div>
                         </div>
                     </div>
+                    @endcanany
                 </div>
                 <div class="tab-pane fade" id="v-pills-calendar" role="tabpanel" aria-labelledby="v-pills-calendar-tab">
 

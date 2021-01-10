@@ -22,6 +22,10 @@ class StoreProjectRequest extends FormRequest
                 'required',
                 'unique:projects',
             ],
+            'client_id'          => [
+                'required',
+                'exists:projects,id'
+            ],
             'progress'           => [
                 'string',
                 'nullable',

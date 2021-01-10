@@ -72,7 +72,14 @@ class Ticket extends Model implements HasMedia
 
     public function replies()
     {
-        return $this->hasMany(TicketReplay::class,'ticket_id');
+        return $this->hasMany(TicketReplay::class,'ticket_id')->where('ticket_replay_id','=',null);
+    }
+
+    public function accountDetails(){
+
+        return $this->belongsToMany('Modules\HR\Entities\AccountDetail',
+            'ticket_account_details_pivot','ticket_id','account_details_id');
+
     }
 
 }

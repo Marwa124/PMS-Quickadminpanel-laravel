@@ -1,6 +1,129 @@
 @extends('layouts.admin')
 @section('content')
-@can('task_create')
+
+    <div class=" row">
+
+{{--            <div class="card col-sm-2 ">--}}
+{{--                <div class="card-body ">--}}
+{{--                    <a class="float-left" id="all" type="button" >--}}
+{{--                        All--}}
+{{--                    </a>--}}
+{{--                    <span class="float-right">{{$tasks->count()}}</span><br>--}}
+{{--                    <div class="progress" style="width: auto" >--}}
+{{--                        <div class="progress-bar bg-success" role="progressbar" style="width: 100%; " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">--}}
+
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+        <input type="hidden" id="status" value="{{$task_statuses}}">
+        @if($task_statuses)
+            @forelse($task_statuses as $status)
+
+                <div class="card col-sm-2">
+                    <div class="card-body ">
+                        <a class="float-left" id="{{$status->id}}" type="button" >
+                            {{ucwords($status->name)}}
+                        </a>
+                        <span class="float-right">{{$tasks->where('status_id',$status->id)->count().'/'.$tasks->count()}}</span><br>
+                        <div class="progress" style="width: auto" >
+                            <div class="progress-bar bg-info" role="progressbar" style="width: {{$tasks->where('status_id',$status->id)->count()/$tasks->count()*100}}%; " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @empty
+            @endforelse
+        @endif
+
+{{--        <div class="card col-sm-2 ">--}}
+{{--            <div class="card-body ">--}}
+{{--                <a class="float-left" id="started" type="button" >--}}
+{{--                    Started--}}
+{{--                </a>--}}
+{{--                <span class="float-right">{{$projects->where('project_status','started')->count().'/'.$projects->count()}}</span><br>--}}
+{{--                <div class="progress" style="width: auto" >--}}
+{{--                    <div class="progress-bar bg-info" role="progressbar" style="width: {{$projects->where('project_status','started')->count()/$projects->count()*100}}%; " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">--}}
+
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+
+{{--        <div class="card col-sm-2 ">--}}
+{{--            <div class="card-body">--}}
+
+{{--                <a class="float-left" id="in_progress" type="button" >--}}
+{{--                    In Progress--}}
+{{--                </a>--}}
+{{--                <span class="float-right">{{$projects->where('project_status','in_progress')->count().'/'.$projects->count()}}</span><br>--}}
+{{--                <div class="progress" style="width: auto" >--}}
+{{--                    <div class="progress-bar bg-warning" role="progressbar" style="width: {{$projects->where('project_status','in_progress')->count()/$projects->count()*100}}%; " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">--}}
+
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--        <div class="card col-sm-2 ">--}}
+{{--            <div class="card-body">--}}
+{{--                <a class="float-left" id="on_hold" type="button" >--}}
+{{--                    On Hold--}}
+{{--                </a>--}}
+{{--                <span class="float-right">{{$projects->where('project_status','on_hold')->count().'/'.$projects->count()}}</span><br>--}}
+{{--                <div class="progress" style="width: auto" >--}}
+{{--                    <div class="progress-bar bg-dark" role="progressbar" style="width: {{$projects->where('project_status','on_hold')->count()/$projects->count()*100}}%; " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">--}}
+
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--        <div class="card col-sm-2 ">--}}
+{{--            <div class="card-body">--}}
+
+{{--                <a class="float-left" id="cancel" type="button" >--}}
+{{--                    Cancel--}}
+{{--                </a>--}}
+{{--                <span class="float-right">{{$projects->where('project_status','cancel')->count().'/'.$projects->count()}}</span><br>--}}
+{{--                <div class="progress" style="width: auto" >--}}
+{{--                    <div class="progress-bar bg-danger" role="progressbar" style="width: {{$projects->where('project_status','cancel')->count()/$projects->count()*100}}%; " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">--}}
+
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--        <div class="card col-sm-2 ">--}}
+{{--            <div class="card-body">--}}
+
+{{--                <a class="float-left" id="completed" type="button" >--}}
+{{--                    Completed--}}
+{{--                </a>--}}
+{{--                <span class="float-right">{{$projects->where('project_status','completed')->count().'/'.$projects->count()}}</span><br>--}}
+{{--                <div class="progress" style="width: auto" >--}}
+{{--                    <div class="progress-bar bg-success" role="progressbar" style="width: {{$projects->where('project_status','completed')->count()/$projects->count()*100}}%; " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">--}}
+
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--        <div class="card col-sm-2 ">--}}
+{{--            <div class="card-body">--}}
+
+{{--                <a class="float-left" id="overdue" type="button" >--}}
+{{--                    Overdue--}}
+{{--                </a>--}}
+{{--                <span class="float-right">{{$projects->where('project_status','overdue')->count().'/'.$projects->count()}}</span><br>--}}
+{{--                <div class="progress" style="width: auto" >--}}
+{{--                    <div class="progress-bar bg-danger" role="progressbar" style="width:{{$projects->where('project_status','overdue')->count()/$projects->count()*100}}%; " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">--}}
+
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+
+    </div>
+
+    @can('task_create')
     <div style="margin-bottom: 10px;" class="row">
         <div class="col-lg-12">
             <a class="btn btn-success" href="{{ route('projectmanagement.admin.tasks.create') }}">
@@ -171,7 +294,7 @@
   $.extend(true, $.fn.dataTable.defaults, {
     orderCellsTop: true,
     order: [[ 1, 'desc' ]],
-    pageLength: 100,
+    pageLength: 25,
   });
   let table = $('.datatable-Task:not(.ajaxTable)').DataTable({ buttons: dtButtons })
   $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e){
@@ -186,6 +309,30 @@
         .search(value, strict)
         .draw()
   });
+
+        //statistics
+
+        var allstatus = document.getElementById('status').value;
+        var status = JSON.parse(allstatus);
+
+        status.filter(function (value,key) {
+            $('#'+value.id).on('click',function () {
+                table
+                    .columns( 3 )
+                    .search( value.name)
+                    .draw()
+            })
+        })
+
+        $('#all').on('click',function () {
+            table
+                .columns( 3 )
+                .search( '' )
+                .draw()
+        })
+
+
+
 })
 
 </script>

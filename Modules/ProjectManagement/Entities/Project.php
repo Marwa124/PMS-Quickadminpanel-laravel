@@ -5,6 +5,7 @@ namespace Modules\ProjectManagement\Entities;
 use App\Models\Client;
 use App\Models\Invoice;
 use App\Models\Transaction;
+use Illuminate\Notifications\Notifiable;
 use Modules\ProjectManagement\Entities\Milestone;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -17,7 +18,7 @@ use \DateTimeInterface;
 class Project extends Model implements HasMedia
 {
     use
-    SoftDeletes, HasMediaTrait;
+    SoftDeletes, HasMediaTrait, Notifiable;
 
     public $table = 'projects';
 

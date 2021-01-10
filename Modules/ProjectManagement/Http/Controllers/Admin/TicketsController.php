@@ -2,9 +2,12 @@
 
 namespace Modules\ProjectManagement\Http\Controllers\Admin;
 
+use App\Events\NewNotification;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\MediaUploadingTrait;
-use Modules\ProjectManagement\Entities\Ticket;
+use App\Notifications\ProjectManagementNotification;
+use Modules\HR\Entities\AccountDetail;
+use Modules\ProjectManagement\Entities\ticket;
 use Modules\ProjectManagement\Entities\TicketReplay;
 use Modules\ProjectManagement\Http\Requests\MassDestroyTicketRequest;
 use Modules\ProjectManagement\Http\Requests\StoreTicketRequest;
@@ -108,6 +111,26 @@ class TicketsController extends Controller
             $ticket->file->delete();
         }
 
+        // Notify User
+        foreach ($ticket->accountDetails as $accountUser)
+        {
+            $user = $accountUser->user;
+            $dataMail = [
+                'subjectMail'    => 'Update Ticket '.$ticket->name,
+                'bodyMail'       => 'Update The Ticket '.$ticket->name,
+                'action'         => route("projectmanagement.admin.tickets.show", $ticket->id)
+            ];
+
+            $dataNotification = [
+                'message'       => 'Update The Ticket '.$ticket->name,
+                'route_path'    => 'admin/projectmanagement/tickets',
+            ];
+
+            $user->notify(new ProjectManagementNotification($ticket,$user,$dataMail,$dataNotification));
+            $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
+            event(new NewNotification($userNotify));
+        }
+
         return redirect()->route('projectmanagement.admin.tickets.index');
     }
 
@@ -148,15 +171,131 @@ class TicketsController extends Controller
         return response()->json(['id' => $media->id, 'url' => $media->getUrl()], Response::HTTP_CREATED);
     }
 
+    public function getAssignTo($id){
+
+        abort_if(Gate::denies('ticket_assign_to'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        $ticket = Ticket::findOrFail($id);
+
+        if (!$ticket->project){
+
+            abort(404,"this Ticket don't have project ");
+        }
+
+        $department = $ticket->project->department;
+
+        if (!$department){
+            abort(404,"this Ticket project don't have Department ");
+
+        }
+
+        return view('projectmanagement::admin.tickets.assignto',compact('ticket','department'));
+    }
+
+
+    public function storeAssignTo(Request $request)
+    {
+        $ticket = Ticket::findOrFail($request->ticket_id);
+        if ($request->accounts){
+
+
+            $ticket->accountDetails()->sync($request->accounts);
+            // set permission to users
+            $accounts = AccountDetail::whereIn('id',$request->accounts)->with('user.department')->get();
+
+            $ticket_permissions_head_names = ['project_management_access','ticket_access','ticket_create', 'ticket_show','ticket_edit','ticket_assign_to'];
+            $ticket_permissions_notToMember_names = ['ticket_create','ticket_assign_to'];
+//            $ticket_permissions_head_names = ['project_management_access','ticket_access','ticket_create', 'ticket_show','ticket_edit'];
+//            $ticket_permissions_notToMember_names = ['ticket_create'];
+            $ticket_permissions_toMember_names = ['project_management_access','ticket_access','ticket_show','ticket_edit'];
+
+            $ticket_permissions_head = $this->getPermissionID($ticket_permissions_head_names);
+            $ticket_permissions_notToMember = $this->getPermissionID($ticket_permissions_notToMember_names);
+            $ticket_permissions_toMember = $this->getPermissionID($ticket_permissions_toMember_names);
+
+            foreach ($accounts as $account){
+
+                foreach ($account->user->permissions as $permission){
+
+                    if (in_array($permission->name,$ticket_permissions_notToMember_names)){
+                        $account->user->permissions()->detach($ticket_permissions_notToMember);
+                    }
+                }
+                $account->user->permissions()->syncWithoutDetaching($ticket_permissions_toMember);
+
+                foreach ($account->user->department as $department){
+                    if ($department->department_name == $ticket->project->department->department_name){
+                        $account->user->permissions()->syncWithoutDetaching($ticket_permissions_head);
+
+                        break;
+                    }
+                }
+            }
+        }else{
+            $ticket->accountDetails()->detach();
+        }
+
+        // Notify User
+        foreach ($ticket->accountDetails as $accountUser)
+        {
+            $user = $accountUser->user;
+            $dataMail = [
+                'subjectMail'    => 'New Ticket Assign To You',
+                'bodyMail'       => 'Assign The Ticket '.$ticket->name.' To '.$user->name,
+                'action'         => route("projectmanagement.admin.tickets.show", $ticket->id)
+            ];
+
+            $dataNotification = [
+                'message'       => 'Assign The Ticket '.$ticket->name.' To '.$user->name,
+                'route_path'    => 'admin/projectmanagement/tickets',
+            ];
+
+            $user->notify(new ProjectManagementNotification($ticket,$user,$dataMail,$dataNotification));
+            $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
+            event(new NewNotification($userNotify));
+        }
+
+        return redirect()->route('projectmanagement.admin.tickets.index');
+    }
+
     public function replay(Request $request)
     {
-        //dd($request->all());
-        $replay = TicketReplay::create([
-            'ticket_id' => $request->ticket_id,
-            'body' => $request->body,
-            'replier_id' => auth()->user()->id,
 
-        ]);
+        if ($request->ticket_replay_id){
+
+            $validator = $request->validate([
+                'replay_body' => 'required',
+            ]);
+//            if ($validator->fails()) {
+//                return redirect()->back()->withErrors($validator)->withInput();
+//            }
+
+
+            $replay = TicketReplay::create([
+                'ticket_id'         => $request->ticket_id,
+                'body'              => $request->replay_body,
+                'replier_id'        => auth()->user()->id,
+                'ticket_replay_id'  => $request->ticket_replay_id,
+            ]);
+        }else{
+
+            $validator = $request->validate([
+                'body' => 'required',
+            ]);
+
+//            if ($validator->fails()) {
+//                return redirect()->back()->withErrors($validator)->withInput();
+//            }
+
+            $replay = TicketReplay::create([
+                'ticket_id'         => $request->ticket_id,
+                'body'              => $request->body,
+                'replier_id'        => auth()->user()->id,
+
+            ]);
+
+        }
+
         //save attachment
         return redirect()->back();
     }
@@ -165,9 +304,29 @@ class TicketsController extends Controller
     {
         //dd($request->all());
 
-        $ticket = Ticket::findOrFaIL($request->ticket_id);
+        $ticket = Ticket::findOrFaiL($request->ticket_id);
 
         $ticket->update($request->all());
+
+        // Notify User
+        foreach ($ticket->accountDetails as $accountUser)
+        {
+            $user = $accountUser->user;
+            $dataMail = [
+                'subjectMail'    => 'Update Ticket '.$ticket->name ,
+                'bodyMail'       => 'Update The Ticket '.$ticket->name .' status to '.$ticket->status,
+                'action'         => route("projectmanagement.admin.tickets.show", $ticket->id)
+            ];
+
+            $dataNotification = [
+                'message'       => 'Update Ticket '.$ticket->name .' status to '.$ticket->status,
+                'route_path'    => 'admin/projectmanagement/tickets',
+            ];
+
+            $user->notify(new ProjectManagementNotification($ticket,$user,$dataMail,$dataNotification));
+            $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
+            event(new NewNotification($userNotify));
+        }
 
         return redirect()->back();
 

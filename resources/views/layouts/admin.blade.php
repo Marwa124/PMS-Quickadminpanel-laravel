@@ -259,7 +259,7 @@
     <script src="https://cdn.datatables.net/fixedheader/3.1.7/js/dataTables.fixedHeader.min.js"></script>
 
     {{-- Publish job application on social medias  --}}
-    <script src="{{ asset('js/share.js') }}"></script> 
+    <script src="{{ asset('js/share.js') }}"></script>
 
     <script src="{{ asset('js/main.js') }}"></script>
     <script>

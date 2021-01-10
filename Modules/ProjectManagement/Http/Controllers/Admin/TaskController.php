@@ -2,8 +2,10 @@
 
 namespace Modules\ProjectManagement\Http\Controllers\Admin;
 
+use App\Events\NewNotification;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\MediaUploadingTrait;
+use App\Notifications\ProjectManagementNotification;
 use Modules\HR\Entities\AccountDetail;
 use Modules\ProjectManagement\Entities\Milestone;
 use Modules\ProjectManagement\Entities\TimeSheet;
@@ -91,13 +93,6 @@ class TaskController extends Controller
             $tasks = Task::where('milestone_id',$task->milestone->id)->pluck('name', 'id');
         }
 
-//        if (!$tasks)
-//        {
-//
-//            $tasks = null;
-//
-//        }
-//        dd($projects,$project);
         return view('projectmanagement::admin.tasks.create', compact('statuses', 'tags', 'projects', 'milestones','task','tasks','milestone','project'));
     }
 
@@ -157,6 +152,27 @@ class TaskController extends Controller
         } elseif ($task->attachment) {
             $task->attachment->delete();
         }
+
+        // Notify User
+        foreach ($task->accountDetails as $accountUser)
+        {
+            $user = $accountUser->user;
+            $dataMail = [
+                'subjectMail'    => 'Update Task '.$task->name,
+                'bodyMail'       => 'Update The Task '.$task->name,
+                'action'         => route("projectmanagement.admin.tasks.show", $task->id)
+            ];
+
+            $dataNotification = [
+                'message'       => 'Update The Task '.$task->name,
+                'route_path'    => 'admin/projectmanagement/tasks',
+            ];
+
+            $user->notify(new ProjectManagementNotification($task,$user,$dataMail,$dataNotification));
+            $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
+            event(new NewNotification($userNotify));
+        }
+
         setActivity('task',$task->id,'Update Task Details',$task->name);
 
         return redirect()->route('projectmanagement.admin.tasks.index');
@@ -258,6 +274,26 @@ class TaskController extends Controller
             $task->accountDetails()->detach();
         }
 
+        // Notify User
+        foreach ($task->accountDetails as $accountUser)
+        {
+            $user = $accountUser->user;
+            $dataMail = [
+                'subjectMail'    => 'New Task Assign To You',
+                'bodyMail'       => 'Assign The Task '.$task->name.' To '.$user->name,
+                'action'         => route("projectmanagement.admin.tasks.show", $task->id)
+            ];
+
+            $dataNotification = [
+                'message'       => 'Assign The Task '.$task->name.' To '.$user->name,
+                'route_path'    => 'admin/projectmanagement/tasks',
+            ];
+
+            $user->notify(new ProjectManagementNotification($task,$user,$dataMail,$dataNotification));
+            $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
+            event(new NewNotification($userNotify));
+        }
+
         setActivity('task',$task->id,'Update Assign to',$task->name);
 
         return redirect()->route('projectmanagement.admin.tasks.index');
@@ -268,6 +304,26 @@ class TaskController extends Controller
         $task = Task::findOrFail($request->task_id);
         //$project->notes = $request->notes;
         $task->update($request->all());
+
+        // Notify User
+        foreach ($task->accountDetails as $accountUser)
+        {
+            $user = $accountUser->user;
+            $dataMail = [
+                'subjectMail'    => 'Update Task '.$task->name,
+                'bodyMail'       => 'Update Note Of Task '.$task->name,
+                'action'         => route("projectmanagement.admin.tasks.show", $task->id)
+            ];
+
+            $dataNotification = [
+                'message'       => 'Update Note Of Task '.$task->name,
+                'route_path'    => 'admin/projectmanagement/tasks',
+            ];
+
+            $user->notify(new ProjectManagementNotification($task,$user,$dataMail,$dataNotification));
+            $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
+            event(new NewNotification($userNotify));
+        }
 
         setActivity('task',$task->id,'Update Note ',$task->name);
 

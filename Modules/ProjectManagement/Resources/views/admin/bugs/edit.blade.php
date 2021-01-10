@@ -94,9 +94,9 @@
                         <label for="status">{{ trans('cruds.bug.fields.status') }}</label>
                         <select class="form-control select2 {{ $errors->has('status') ? 'is-invalid' : '' }}" name="status" id="status">
                             <option value="" selected disabled>Please Select</option>
-                            <option value="unconfirmed" {{ old('status', $bug->status) == 'unconfirmed' ? 'selected' : '' }}>Unconfirmed</option>
+                            <option value="unconfirm"   {{ old('status', $bug->status) == 'unconfirm'   ? 'selected' : '' }}>Unconfirm</option>
                             <option value="confirmed"   {{ old('status', $bug->status) == 'confirmed'   ? 'selected' : '' }}>Confirmed</option>
-                            <option value="in progress" {{ old('status', $bug->status) == 'in progress' ? 'selected' : '' }}>In Progress</option>
+                            <option value="in_progress" {{ old('status', $bug->status) == 'in_progress' ? 'selected' : '' }}>In Progress</option>
                             <option value="resolved"    {{ old('status', $bug->status) == 'resolved'    ? 'selected' : '' }}>Resolved</option>
                             <option value="verified"    {{ old('status', $bug->status) == 'verified'    ? 'selected' : '' }}>Verified</option>
                         </select>

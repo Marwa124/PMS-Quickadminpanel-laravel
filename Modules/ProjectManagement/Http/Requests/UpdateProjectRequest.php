@@ -22,6 +22,10 @@ class UpdateProjectRequest extends FormRequest
                 'required',
                 'unique:projects,name,' . request()->route('project')->id,
             ],
+            'client_id'          => [
+                'required',
+                'exists:projects,id'
+            ],
             'progress'           => [
                 'string',
                 'nullable',

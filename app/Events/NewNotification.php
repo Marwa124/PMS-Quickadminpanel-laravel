@@ -25,6 +25,7 @@ class NewNotification implements ShouldBroadcast
      */
     public function __construct($data)
     {
+        //dd($data['data'],$data);
         $this->title      = $data['data']['title'];
         $this->leave_id   = $data['data']['leave_id'];
         $this->show_path  = $data['data']['route_path'];

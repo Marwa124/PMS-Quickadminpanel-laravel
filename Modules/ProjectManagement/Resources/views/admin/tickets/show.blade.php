@@ -43,7 +43,7 @@
                                 </div>
                             @endif
                             <div class='col-md-6 mt-3'>
-                                <button type="button" style="border-radius: 0;margin-left: 7px ;margin-top: 55px;" class="btn btn-secondary" data-toggle="modal" data-target="#info">
+                                <button type="button" style="margin-left: 7px ;margin-top: 55px;" class="btn btn-secondary" data-toggle="modal" data-target="#info">
                                     {{ trans('cruds.ticket.fields.attachments') }}
                                 </button></div>
 
@@ -126,7 +126,7 @@
                     </div>
                     <div class="card-body">
                         @if($ticket->status != 'closed')
-                            <button id="btn-replay" onclick="replayForm()" type="button" style="border-radius: 0;" class="btn btn-primary mb-5 replay_submit" >
+                            <button id="btn-replay" onclick="replayForm()" type="button"class="btn btn-primary mb-5 replay_submit" >
 
                                 {{ trans('cruds.ticket.fields.replay') }}
                             </button>
@@ -136,7 +136,7 @@
                                 <input type="hidden" name="ticket_id" value="{{ $ticket->id }}">
                                 <input type="hidden" name="status" value="closed">
 
-                                <button type="submit" style="border-radius: 0;" class="btn btn-danger mb-5" >
+                                <button type="submit"  class="btn btn-danger mb-5" >
                                     {{ trans('cruds.ticket.fields.close_ticket') }}
                                 </button>
 
@@ -148,7 +148,7 @@
                                 <input type="hidden" name="ticket_id" value="{{ $ticket->id }}">
                                 <input type="hidden" name="status" value="reopen">
 
-                                <button type="submit" style="border-radius: 0;" class="btn btn-success mb-5" >
+                                <button type="submit" class="btn btn-success mb-5" >
                                     {{ trans('cruds.ticket.fields.reopen_replay') }}
 
                                 </button>
@@ -156,19 +156,21 @@
                             </form>
                         @endif
 
-                        <div style="clear: both; padding: 20px;"></div>
+                        <div style="clear: both; "></div>
 
-                        <div class="replay {{$errors->any() ? 'visible': 'invisible'}}" id="replay">
+{{--                        <div class="replay {{$errors->any() ? 'visible': 'invisible'}}" id="replay">--}}
 
-                            @if ($errors->any())
-                                <div class="alert alert-danger col-md-5">
-                                    <ul>
-                                        @foreach ($errors->all() as $error)
-                                            <li class="float-right">{{ $error }}</li><br>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            @endif
+                        <div class="replay_ticket" id="replay_ticket" style="display: {{$errors->has('body') ? 'block': 'none'}}" >
+
+{{--                            @if ($errors->any())--}}
+{{--                                <div class="alert alert-danger col-md-5">--}}
+{{--                                    <ul>--}}
+{{--                                        @foreach ($errors->all() as $error)--}}
+{{--                                            <li class="float-left">{{ $error }}</li><br>--}}
+{{--                                        @endforeach--}}
+{{--                                    </ul>--}}
+{{--                                </div>--}}
+{{--                            @endif--}}
                             <div style="clear: both; "></div>
 
                             <form action="{{ route('projectmanagement.admin.tickets.replay') }}" method="post" class="" enctype="multipart/form-data">
@@ -191,55 +193,65 @@
 {{--                                </div>--}}
 
 
-                                <div class="col-12 d-flex flex-sm-row flex-column  mt-1">
-                                    <button type="submit" style="border-radius: 0;" class="btn btn-primary glow mb-1 mb-sm-0 mr-0 mr-sm-1">{{ trans('global.save') }}</button>
+                                <div class="col-12 ">
+                                    <button type="submit" class="btn btn-primary float-right" >{{ trans('global.save') }}</button>
                                 </div>
                             </form>
                         </div>
                     </div>
-
-
-
-
-
-
-
+                    <hr class="col-md-11 ml-3">
                     @foreach($ticket->replies as $replay)
-                        <div class="col-md-12" style="margin-bottom: 40px;margin-top:30px;">
-                            <p style=";
-                            /*background: #3b3b3b;*/
-                            /*color: white;*/
-                            /*height: 45px;*/
-                            /*font-size: 17px;*/
-                            /*padding: 10px;*/
-                            /*border-radius: 5px;*/
-                            /*font-weight: 500;*/
-                            width: 100px;
-                            "
-                            >
-                            <div>
+                        <div class="col-md-12 ml-1" style="margin-bottom: 40px;">
+                            <div class="col-md-12">
                                 <img  class="img-thumbnail rounded-circle" title="{{ $replay->user->name }}" width="5%" src="{{ $replay->user->accountDetail->avatar ? str_replace('storage', 'storage', $replay->user->accountDetail->avatar->getUrl()) : asset('images/default.png') }}" alt="{{ $replay->user->accountDetail->fullname }}">
 
                                 {{$replay->user->name}}
+
                                 <strong> {!! $replay->body !!}</strong>
-                            </div>
-{{--                                @if($replay->sender == 'tec')--}}
-{{--                                    From Technical To You  Posted on : {{ $replay->created_at->isoformat('lll') }}--}}
-{{--                                @else--}}
-{{--                                    From You To Technical  Posted on : {{ $replay->created_at->isoformat('lll') }}--}}
-
-{{--                                @endif--}}
-                            </p>
-
-                            <div style="
-                       margin-left: 10px;
-                       font-size: 17px;
-                       font-family: cursive;
-                      ">
-
-                                {!! $replay->body !!}
+                                <a id="add-replay" onclick="addReplay('{{$replay->id}}','{{$ticket->status}}')" type="button" class="mb-5" >
+                                    <i class="fa fa-reply"></i>
+                                    {{ trans('cruds.ticket.fields.replay') }}
+                                </a>
                             </div>
 
+{{--                            replies of replay--}}
+                            @if(isset($replay->replay))
+
+                                @foreach($replay->replay as $replay_of_replay)
+                                    <div class="col-md-10 ml-5">
+                                        <img  class="img-thumbnail rounded-circle" title="{{ $replay_of_replay->user->name }}" width="5%" src="{{ $replay_of_replay->user->accountDetail->avatar ? str_replace('storage', 'storage', $replay_of_replay->user->accountDetail->avatar->getUrl()) : asset('images/default.png') }}" alt="{{ $replay_of_replay->user->accountDetail->fullname }}">
+
+                                        {{$replay_of_replay->user->name}}
+
+                                        <strong> {!! $replay_of_replay->body !!}</strong>
+                                    </div>
+                                    <hr class="col-md-10">
+                                @endforeach
+                            @endif
+
+
+                            <div class="replay" id="replay_{{$replay->id}}" style="display:{{$errors->has('replay_body') ? 'block': 'none'}}" >
+
+                                <form action="{{ route('projectmanagement.admin.tickets.replay') }}" method="post" enctype="multipart/form-data">
+                                    @csrf
+                                    <input type="hidden" name="ticket_id" value="{{ $ticket->id }}">
+                                    <input type="hidden" name="ticket_replay_id" value="{{ $replay->id }}">
+
+                                    <div class="col-lg-12 col-md-12" style="padding-bottom: 20px;">
+
+                                        <label class="form-group " for="replay_body">{{ trans('cruds.ticket.fields.replay') }}</label>
+                                        <textarea class="form-control ckeditor {{ $errors->has('replay_body') ? 'is-invalid' : '' }}"  name="replay_body" id="replay_body">{!! old('replay_body')!!}</textarea>
+
+                                    </div>
+
+                                    <div class="col-12 pb-5">
+                                        <button type="submit" id="replaySubmitBtn" class="btn btn-primary float-right" >{{ trans('global.save') }}</button>
+                                    </div>
+                                </form>
+                            </div>
+
+
+                            <hr class="col-md-11">
 
 
 
@@ -259,11 +271,7 @@
 
 
                         <div class="modal-info mr-1 mb-1 d-inline-block">
-                             Button trigger modal
-
-
-                             Modal
-                            <div class="modal fade text-left" id="replay_{{ $replay->id }}" tabindex="-1" role="dialog"
+                            <div class="modal fade text-left" id="replay_attach_{{ $replay->id }}" tabindex="-1" role="dialog"
                                  aria-labelledby="myModalLabel130" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
                                     <div class="modal-content" style="height:500px;width:700px;">
@@ -323,42 +331,49 @@
             if (count % 2 == 0){
 
 
-                document.getElementById("replay").classList.add('visible');
-                document.getElementById("replay").classList.remove('invisible');
+                // document.getElementById("replay").classList.add('visible');
+                // document.getElementById("replay").classList.remove('invisible');
+                document.getElementById("replay_ticket").style.display = 'block';
 
                 count++;
             }else {
-                document.getElementById("replay").classList.add('invisible');
-
-                document.getElementById("replay").classList.remove('visible');
+                // document.getElementById("replay").classList.add('invisible');
+                //
+                // document.getElementById("replay").classList.remove('visible');
+                document.getElementById("replay_ticket").style.display = 'none';
                 count++;
             }
 
-
         }
-
 
          // CKEDITOR.replace('body');
 
         $('.replay_submit').click(function(){
 
-            $('.replay').removeClass('hidden');
-            //$('.replay_submit').addClass('disabled');
-            //$('.replay_submit').style('disabled');
-            //document.querySelector('.replay_submit').disabled = 'true';
-
+            $('.replay_ticket').removeClass('hidden');
         })
 
         $('.replay_submit').dblclick(function(){
 
-            $('.replay').addClass('hidden');
+            $('.replay_ticket').addClass('hidden');
             $('.replay_submit').removeClass('disabled');
-
         })
 
+        var i = 0;
+        function addReplay(replay_id,status) {
+            if(status != 'closed'){
 
+                if (i % 2 == 0){
 
+                    document.getElementById("replay_"+replay_id).style.display = 'block';
+                    i++;
+                }else {
 
+                    document.getElementById("replay_"+replay_id).style.display = 'none';
+                    i++;
+                }
+            }
+        }
 
     </script>
 

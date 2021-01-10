@@ -25,6 +25,6 @@ class TicketReplay extends Model
 
     public function replay()
     {
-        return $this->belongsTo(TicketReplay::class,'ticket_replay_id');
+        return $this->hasMany(TicketReplay::class,'ticket_replay_id');
     }
 }
