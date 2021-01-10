@@ -14,8 +14,9 @@ class Evaluation extends Model {
     // }
 
     
-    public function ratingEvaluation()
+    public function ratingEvaluations()
     {
-        return $this->belongsToMany(RatingEvaluation::class, 'rating_evaluation_id', 'id')->withPivot(["rate", "comment"]);
+        return $this->belongsToMany(RatingEvaluation::class)->withPivot(["rate", "comment"]);
+        // return $this->belongsToMany(RatingEvaluation::class, 'rating_evaluation_id')->withPivot(["rate", "comment"]);
     }
 }

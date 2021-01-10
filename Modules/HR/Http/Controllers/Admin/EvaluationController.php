@@ -55,9 +55,14 @@ class EvaluationController extends Controller
         // $userAccount = AccountDetail::find($id)->load('user');
         $designation = $userAccount->designation()->first();
         $departmentTitle = $designation->department()->select('department_name', 'department_head_id')->first();
-        $departmentHead = AccountDetail::where('user_id', $departmentTitle->department_head_id)->select('fullname')->first();
+        $departmentHead = AccountDetail::where('user_id', $departmentTitle->department_head_id)->select('fullname', 'user_id')->first();
 
-        return view('hr::admin.evaluations.edit', compact('userAccount', 'designation', 'departmentTitle', 'departmentHead'));
+        $manager = 'false';
+        if($departmentTitle->department_head_id == $userAccount->user_id) {
+            $manager = 'true';
+        }
+
+        return view('hr::admin.evaluations.edit', compact('userAccount', 'designation', 'departmentTitle', 'departmentHead', 'manager'));
     }
 
     public function update(UpdateSetTimeRequest $request, SetTime $setTime)
