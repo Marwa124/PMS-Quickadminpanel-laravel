@@ -255,8 +255,8 @@
             <div class="row">
 
                 <div class="table-responsive">
-                    <table class="table invoice-items-table items">
-                        <thead style="background: #e8e8e8">
+                    <table class="table table-responsive invoice-items-table items">
+                        <thead style="background: #e7e4e4">
                             <tr>
                                 <th class="">Item Name</th>
                                 <th class="">Description</th>
@@ -276,22 +276,22 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="main ">
+                            <tr class="main">
                                 <td class=""><input class="form-control" type="text" name="item_name" id=""></td>
-                                <td class=""><textarea class="form-control" name="item_desc" id="" cols="50" rows="2"></textarea></td>
+                                <td class=""><textarea class="form-control" name="item_desc" id="" cols="20" rows="2"></textarea></td>
                                 <td class=""><input class="form-control" type="text" name="group_name" id=""></td>
                                 <td class=""><input class="form-control" type="text" name="quantity" id=""></td>
                                 <td class=""><input class="form-control" type="number" name="unit" id=""></td>
                                 <td class=""><input class="form-control" type="text" name="brand" id=""></td>
                                 <td class=""><input class="form-control" type="text" name="part" id=""></td>
-                                <td class=""><input class="form-control" type="number" name="unit_cost" id=""></td>
+                                <td class=""><input class="form-control " type="number" name="unit_cost" id=""></td>
                                 <td class=""><input class="form-control" type="number" name="total_cost_price" id=""></td>
                                 <td class=""><input class="form-control" type="number" name="margin" id=""></td>
                                 <td class=""><input class="form-control" type="number" name="selling_Price" id="" disabled> </td>
                                 <td class=""><input class="form-control" type="number" name="delivery" id=""></td>
-                                <td class="form-group"><select class="custom-select w-auto" name="tax" id=""> 
+                                <td class="form-group"><select class="custom-select w-auto tax" name="tax[]" multiple id="" > 
                                     @foreach($taxRates as $id => $taxRate)
-                                    <option value="{{ $taxRate->id }}">
+                                    <option value=" {{ $taxRate->rate_percent.'|'.$taxRate->name }}"  data-taxrate="{{ $taxRate->rate_percent }}" data-taxname="{{ $taxRate->name }}" data-subtext="{{ $taxRate->name }}">
                                         {{ $taxRate->rate_percent.'% | '.$taxRate->name }}</option>
                                     @endforeach 
                                 </td>
@@ -316,7 +316,7 @@
                         <tbody>
                             <tr id="subtotal">
                                 <td><span class="bold">Sub Total Without VAT :</span>  </td>
-                                <td class="subtotal">20000.00<input type="hidden" name="subtotal" value="20000.00"></td>
+                                <td class="subtotal"></td>
                             </tr>
                             <tr id="discount_percent">
                                 <td>
@@ -325,16 +325,17 @@
                                             <span class="bold">Discount (%)</span>
                                         </div>
                                         <div class="col-md-5">
-                                                                                                                <input type="text" data-parsley-type="number" value="0" class="form-control pull-left" min="0" max="100" name="discount_percent" data-parsley-id="224">
+                                            <input type="text" data-parsley-type="number" value="0" class="form-control pull-left" min="0" max="100" name="discount_percent" >
                                         </div>
                                     </div>
                                 </td>
-                                <td class="discount_percent">-0.00<input type="hidden" name="discount_percent" value="0"><input type="hidden" name="discount_total" value="0.00"></td>
+                                <td class="discount_percent"></td>
                             </tr>
-                            <tr class="total_after_discount hide">
+                            <tr class="total_after_discount d-none">
                                 <td><span class="bold">Total After Discount :</span>  </td>
-                                <td class="after_discount">20000.00<input type="hidden" name="after_discount" value="20000.00"></td>
-                            </tr><tr class="tax-area"><td>sara(12.00%)</td><td id="tax_id_sara1200">2400.00<input type="hidden" name="total_tax_name[]" value="sara|12.00"><input type="hidden" name="total_tax[]" value="2400.00"></td></tr>
+                                <td class="after_discount"></td>
+                            </tr>
+                            <tr class="tax-area"></tr>
                             <tr>
                                 <td>
                                     <div class="row">
@@ -342,23 +343,23 @@
                                             <span class="bold">Adjustment</span>
                                         </div>
                                         <div class="col-md-5">
-                                            <input type="text" data-parsley-type="number" value="0" class="form-control pull-left" name="adjustment" data-parsley-id="226">
+                                            <input type="text" data-parsley-type="number" value="0" class="form-control pull-left" name="adjustment" >
                                         </div>
                                     </div>
                                 </td>
-                                <td class="adjustment">0.00<input type="hidden" name="adjustment" value="0.00"></td>
+                                <td class="adjustment"></td>
                             </tr>
                             <tr>
                                 <td><span class="bold" style="background-color:#e8e8e8;color:#6d6d6d;">Total :</span> </td>
-                                <td class="total">22400.00<input type="hidden" name="total" value="22400.00"></td>
+                                <td class="total"></td>
                             </tr>
                             <tr>
                                 <td><span class="bold" style="background-color:#e8e8e8;color:#6d6d6d;">Total Cost Price ( Without Margin / Tax ) :</span> </td>
-                                <td class="total_without_margin">20000.00<input type="hidden" name="total_without_margin" value="20000.00"></td>
+                                <td class="total_without_margin"></td>
                             </tr>
                             <tr>
                                 <td><span class="bold" style="background-color:#e8e8e8;color:#6d6d6d;">Profit :</span> </td>
-                                <td class="profit">0.00 (0.00 %)<input type="hidden" name="profit" value="0.00"></td>
+                                <td class="profit"></td>
                             </tr>
                         </tbody>
                     </table>

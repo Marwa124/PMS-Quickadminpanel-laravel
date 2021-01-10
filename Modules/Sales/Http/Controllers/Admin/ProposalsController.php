@@ -139,12 +139,25 @@ class ProposalsController extends Controller
      * **/ 
     public function get_item_by_id(Request $request)
     {
-         $item = ProposalsItem::find($request->id);
-         $item->setAttribute('group_name', (!empty($item->customer_group) ? $item->customer_group->name : null));
-         $item->setAttribute('taxname' , (!empty($item->taxes) ? $item->taxes->name : null));
-         $item->setAttribute('taxrate' , (!empty($item->taxes) ? $item->taxes->rate_percent : null));
-         $item->setAttribute('description' , strip_tags($item->description));
+        if($request->id != null){
 
-          return response()->json($item, Response::HTTP_CREATED);
+            $item = ProposalsItem::find($request->id);
+            $item->setAttribute('group_name', (!empty($item->customer_group) ? $item->customer_group->name : null));
+            $item->setAttribute('taxname' , (!empty($item->taxes) ? $item->taxes->name : null));
+            $item->setAttribute('taxrate' , (!empty($item->taxes) ? $item->taxes->rate_percent : null));
+            $item->setAttribute('description' , strip_tags($item->description));
+   
+             return response()->json($item, Response::HTTP_CREATED);
+        }else{
+            
+            return response()->json(null,500); 
+        }
+    }
+     /**
+     * get taxes 
+     * **/ 
+    public function get_taxes_ajax(Request $request){
+        $taxRates = TaxRate::all();
+        return response()->json($taxRates, Response::HTTP_CREATED);
     }
 }

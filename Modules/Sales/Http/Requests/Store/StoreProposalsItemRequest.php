@@ -45,6 +45,7 @@ class StoreProposalsItemRequest extends FormRequest
             ],
             'quantity'         => [
                 'numeric',
+                'required',
             ],
             'unit_cost'        => [
                 'numeric',

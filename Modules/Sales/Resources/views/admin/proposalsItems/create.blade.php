@@ -104,9 +104,9 @@
                 <span class="help-block">{{ trans('cruds.proposalsItem.fields.part_helper') }}</span>
             </div>
             <div class="form-group">
-                <label for="quantity">{{ trans('cruds.proposalsItem.fields.quantity') }}</label>
+                <label class="required"  for="quantity">{{ trans('cruds.proposalsItem.fields.quantity') }}</label>
                 <input class="form-control {{ $errors->has('quantity') ? 'is-invalid' : '' }}" type="number" name="quantity"
-                    id="quantity" value="{{ old('quantity', '') }}" step="0.01">
+                    id="quantity" value="{{ old('quantity', '') }}" step="1" min="1" required>
                 @if($errors->has('quantity'))
                 <div class="invalid-feedback">
                     {{ $errors->first('quantity') }}

@@ -32,8 +32,14 @@ Vue.component('TableHead', TableHead)
 import BtnUpdate from './components/form/BtnUpdate'
 Vue.component('BtnUpdate', BtnUpdate)
 
-import Evaluation from './pages/Evaluation'
+// Evaluations
+import Evaluation from './components/evaluations/Index'
 Vue.component('Evaluation', Evaluation)
+
+import EvaluationForm from './components/evaluations/Form'
+Vue.component('EvaluationForm', EvaluationForm)
+
+
 
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
@@ -45,32 +51,6 @@ Vue.component('assign-permissions-to-user', require('./components/AssignPermissi
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-
-// Inertia Installation
-// import { App, plugin } from '@inertiajs/inertia-vue'
-
-// Vue.use(plugin)
-
-// const el = document.getElementById('app')
-
-// new Vue({
-//   render: h => h(App, {
-//     props: {
-//       initialPage: JSON.parse(el.dataset.page),
-//       resolveComponent: name => {
-//         require(`./${name}`).default
-//       },
-//     },
-//   }),
-// }).$mount(el)
-// ... Inertia Installation
-
-
-// return this.resolveComponent(page.component).then(component => { 
-
-
-
-
 const app = new Vue({
     el: '#app',
     i18n,
@@ -81,6 +61,8 @@ const app = new Vue({
         DepartmentCreate,
         DepartmentForm,
         DataTables, // Data Tables
+        
+        // Evaluation,
     },
     // router,
 });

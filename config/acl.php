@@ -128,8 +128,9 @@
             ],
 
             // Evaluations
-            'manager_evaluation' => [
-                'manager_evaluation_access',
+            'evaluation' => [
+                'evaluation_access',
+                'evaluation_create',
             ],
 
             'employee_evaluation' => [
