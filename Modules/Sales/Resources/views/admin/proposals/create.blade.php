@@ -13,7 +13,7 @@
                 <div class="col-md-6">
                     <label for="reference_no" class="required">{{ trans('cruds.proposal.fields.reference_no') }} </label>
                     <input class="form-control {{ $errors->has('reference_no') ? 'is-invalid' : '' }}" type="text"
-                        name="reference_no" id="reference_no" value="{{ old('reference_no', '') }}">
+                        name="reference_no" id="reference_no" value="{{ generate_proposal_number() }}" readonly>
                     @if($errors->has('reference_no'))
                     <div class="invalid-feedback">
                         {{ $errors->first('reference_no') }}
@@ -35,9 +35,9 @@
             </div>
             <div class="form-group row">
                 <div class="col-md-6">
-                    <label for="module">{{ trans('cruds.proposal.fields.module') }}</label>
+                    <label class="required" for="module ">{{ trans('cruds.proposal.fields.Related_To') }}</label>
                     <select class="form-control  {{ $errors->has('module') ? 'is-invalid' : '' }}" name="module"
-                        onchange="get_related_moduleName(this.value, true)" id="module">
+                        onchange="get_related_moduleName(this.value, true)" id="module" required>
                         <option value="" selected="">{{trans('global.pleaseSelect')}}</option>
                         <option value="client">{{trans('cruds.proposal.fields.client')}}</option>
                         <option value="opportunities">{{trans('cruds.proposal.fields.opportunities')}}</option>
@@ -47,7 +47,7 @@
                         {{ $errors->first('module') }}
                     </div>
                     @endif
-                    <span class="help-block">{{ trans('cruds.proposal.fields.module_helper') }}</span>
+                    <span class="help-block">{{ trans('cruds.proposal.fields.Related_To_helper') }}</span>
                 </div>
                 <div class="col-md-6">
                     <label for="currency">{{ trans('cruds.proposal.fields.currency') }}</label>
@@ -83,17 +83,18 @@
                         <option value="accepted">{{trans('cruds.proposal.fields.accepted')}}</option>
 
                     </select>
-                    @if($errors->has('permissions'))
+                    @if($errors->has('status'))
                     <div class="invalid-feedback">
-                        {{ $errors->first('permissions') }}
+                        {{ $errors->first('status') }}
                     </div>
                     @endif
-                    <span class="help-block">{{ trans('cruds.proposal.fields.permissions_helper') }}</span>
+                    <span class="help-block">{{ trans('cruds.proposal.fields.status_helper') }}</span>
                 </div>
 
                 <div class="col-md-6">
+                  <div class="form-group">
                     <label for="assigneduser">{{ trans('cruds.proposal.fields.assigneduser') }}</label>
-                    <select class="form-control  {{ $errors->has('assigneduser') ? 'is-invalid' : '' }}" name="user_id" id="user_id">
+                    <select class="form-control  {{ $errors->has('assigneduser') ? 'is-invalid' : '' }}" name="user_id" id="user_id" >
                         <option value="" selected="">{{trans('global.pleaseSelect')}}</option>
                         @foreach($users as $id => $item)
                         <option value="{{ $id }}" {{ old('user_id') == $id ? 'selected' : '' }}>{{ $item }}</option>
@@ -105,6 +106,7 @@
                     </div>
                     @endif
                     <span class="help-block">{{ trans('cruds.proposal.fields.assigneduser_helper') }}</span>
+                 </div>
                 </div>
             </div>
             <hr>
@@ -289,7 +291,7 @@
                                 <td class=""><input class="form-control" type="number" name="margin" id=""></td>
                                 <td class=""><input class="form-control" type="number" name="selling_Price" id="" disabled> </td>
                                 <td class=""><input class="form-control" type="number" name="delivery" id=""></td>
-                                <td class="form-group"><select class="custom-select w-auto tax" name="tax[]" multiple id="" > 
+                                <td class="form-group"><select class="selectpicker tax" multiple  name="tax[]" id="" > 
                                     @foreach($taxRates as $id => $taxRate)
                                     <option value=" {{ $taxRate->rate_percent.'|'.$taxRate->name }}"  data-taxrate="{{ $taxRate->rate_percent }}" data-taxname="{{ $taxRate->name }}" data-subtext="{{ $taxRate->name }}">
                                         {{ $taxRate->rate_percent.'% | '.$taxRate->name }}</option>
