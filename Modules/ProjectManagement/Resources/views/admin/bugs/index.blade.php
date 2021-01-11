@@ -23,11 +23,13 @@
                     Unconfirm
                 </a>
                 <span class="float-right">{{$bugs->where('status','unconfirm')->count().'/'.$bugs->count()}}</span><br>
-                <div class="progress" style="width: auto" >
-                    <div class="progress-bar bg-danger" role="progressbar" style="width: {{$bugs->where('status','unconfirm')->count()/$bugs->count()*100}}%; " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                @if($bugs->count() > 0)
+                    <div class="progress" style="width: auto" >
+                        <div class="progress-bar bg-danger" role="progressbar" style="width: {{$bugs->where('status','unconfirm')->count()/$bugs->count()*100}}%; " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
 
+                        </div>
                     </div>
-                </div>
+                @endif
             </div>
         </div>
         <div class="card col-sm-2 ">
@@ -36,11 +38,13 @@
                     Confirmed
                 </a>
                 <span class="float-right">{{$bugs->where('status','confirmed')->count().'/'.$bugs->count()}}</span><br>
-                <div class="progress" style="width: auto" >
-                    <div class="progress-bar bg-info" role="progressbar" style="width: {{$bugs->where('status','confirmed')->count()/$bugs->count()*100}}%; " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                @if($bugs->count() > 0)
+                    <div class="progress" style="width: auto" >
+                        <div class="progress-bar bg-info" role="progressbar" style="width: {{$bugs->where('status','confirmed')->count()/$bugs->count()*100}}%; " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
 
+                        </div>
                     </div>
-                </div>
+                @endif
             </div>
         </div>
         <div class="card col-sm-2 ">
@@ -50,11 +54,13 @@
                     In Progress
                 </a>
                 <span class="float-right">{{$bugs->where('status','in_progress')->count().'/'.$bugs->count()}}</span><br>
-                <div class="progress" style="width: auto" >
-                    <div class="progress-bar bg-warning" role="progressbar" style="width: {{$bugs->where('status','in_progress')->count()/$bugs->count()*100}}%; " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                @if($bugs->count() > 0)
+                    <div class="progress" style="width: auto" >
+                        <div class="progress-bar bg-warning" role="progressbar" style="width: {{$bugs->where('status','in_progress')->count()/$bugs->count()*100}}%; " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
 
+                        </div>
                     </div>
-                </div>
+                @endif
             </div>
         </div>
 
@@ -65,11 +71,13 @@
                     Resolved
                 </a>
                 <span class="float-right">{{$bugs->where('status','resolved')->count().'/'.$bugs->count()}}</span><br>
-                <div class="progress" style="width: auto" >
-                    <div class="progress-bar bg-cover" role="progressbar" style="width: {{$bugs->where('status','resolved')->count()/$bugs->count()*100}}%; " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                @if($bugs->count() > 0)
+                    <div class="progress" style="width: auto" >
+                        <div class="progress-bar bg-cover" role="progressbar" style="width: {{$bugs->where('status','resolved')->count()/$bugs->count()*100}}%; " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
 
+                        </div>
                     </div>
-                </div>
+                @endif
             </div>
         </div>
         <div class="card col-sm-2 ">
@@ -79,25 +87,27 @@
                     Verified
                 </a>
                 <span class="float-right">{{$bugs->where('status','verified')->count().'/'.$bugs->count()}}</span><br>
-                <div class="progress" style="width: auto" >
-                    <div class="progress-bar bg-success" role="progressbar" style="width: {{$bugs->where('status','verified')->count()/$bugs->count()*100}}%; " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                @if($bugs->count() > 0)
+                    <div class="progress" style="width: auto" >
+                        <div class="progress-bar bg-success" role="progressbar" style="width: {{$bugs->where('status','verified')->count()/$bugs->count()*100}}%; " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
 
+                        </div>
                     </div>
-                </div>
+                @endif
             </div>
         </div>
 
     </div>
 
     @can('bug_create')
-    <div style="margin-bottom: 10px;" class="row">
-        <div class="col-lg-12">
-            <a class="btn btn-success" href="{{ route('projectmanagement.admin.bugs.create') }}">
-                {{ trans('global.add') }} {{ trans('cruds.bug.title_singular') }}
-            </a>
+        <div style="margin-bottom: 10px;" class="row">
+            <div class="col-lg-12">
+                <a class="btn btn-success" href="{{ route('projectmanagement.admin.bugs.create') }}">
+                    {{ trans('global.add') }} {{ trans('cruds.bug.title_singular') }}
+                </a>
+            </div>
         </div>
-    </div>
-@endcan
+    @endcan
 <div class="card">
     <div class="card-header">
         {{ trans('cruds.bug.title_singular') }} {{ trans('global.list') }}

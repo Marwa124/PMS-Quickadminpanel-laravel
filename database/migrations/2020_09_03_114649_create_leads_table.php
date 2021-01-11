@@ -39,7 +39,7 @@ class CreateLeadsTable extends Migration
             $table->foreign('type_id')->references('id')->on('types')->onDelete('cascade');
 
 
-                $table->bigInteger('first_call_result_id')->unsigned()->nullable();
+            $table->bigInteger('first_call_result_id')->unsigned()->nullable();
             $table->foreign('first_call_result_id')->references('id')->on('results')->onDelete('cascade');
 
             $table->bigInteger('second_call_result_id')->unsigned()->nullable();

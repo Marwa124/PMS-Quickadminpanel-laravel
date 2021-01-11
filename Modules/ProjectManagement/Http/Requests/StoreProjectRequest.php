@@ -24,7 +24,7 @@ class StoreProjectRequest extends FormRequest
             ],
             'client_id'          => [
                 'required',
-                'exists:projects,id'
+                'exists:clients,id'
             ],
             'progress'           => [
                 'string',

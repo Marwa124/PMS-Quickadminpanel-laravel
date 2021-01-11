@@ -112,7 +112,7 @@ class BugsController extends Controller
             ];
 
             $dataNotification = [
-                'message'       => 'Update The Bug '.$bug->name,
+                'message'       => 'Update The Bug : '.$bug->name,
                 'route_path'    => 'admin/projectmanagement/bugs',
             ];
 
@@ -231,7 +231,7 @@ class BugsController extends Controller
             ];
 
             $dataNotification = [
-                'message'       => 'Assign The Bug '.$bug->name.' To '.$user->name,
+                'message'       => 'Assign The Bug : '.$bug->name.' To '.$user->name,
                 'route_path'    => 'admin/projectmanagement/bugs',
             ];
 
@@ -262,7 +262,7 @@ class BugsController extends Controller
             ];
 
             $dataNotification = [
-                'message'       => 'Update Note Of Bug '.$bug->name,
+                'message'       => 'Update Note Of Bug : '.$bug->name,
                 'route_path'    => 'admin/projectmanagement/bugs',
             ];
 

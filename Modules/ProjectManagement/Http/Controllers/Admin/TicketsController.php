@@ -9,6 +9,7 @@ use App\Notifications\ProjectManagementNotification;
 use Modules\HR\Entities\AccountDetail;
 use Modules\ProjectManagement\Entities\ticket;
 use Modules\ProjectManagement\Entities\TicketReplay;
+use Modules\ProjectManagement\Http\Controllers\Traits\PermissionHelperTrait;
 use Modules\ProjectManagement\Http\Requests\MassDestroyTicketRequest;
 use Modules\ProjectManagement\Http\Requests\StoreTicketRequest;
 use Modules\ProjectManagement\Http\Requests\UpdateTicketRequest;
@@ -22,7 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class TicketsController extends Controller
 {
-    use MediaUploadingTrait;
+    use MediaUploadingTrait , PermissionHelperTrait;
 
     public function index()
     {
@@ -116,13 +117,13 @@ class TicketsController extends Controller
         {
             $user = $accountUser->user;
             $dataMail = [
-                'subjectMail'    => 'Update Ticket '.$ticket->name,
-                'bodyMail'       => 'Update The Ticket '.$ticket->name,
+                'subjectMail'    => 'Update Ticket : '.$ticket->ticket_code,
+                'bodyMail'       => 'Update The Ticket : '.$ticket->ticket_code,
                 'action'         => route("projectmanagement.admin.tickets.show", $ticket->id)
             ];
 
             $dataNotification = [
-                'message'       => 'Update The Ticket '.$ticket->name,
+                'message'       => 'Update The Ticket : '.$ticket->ticket_code,
                 'route_path'    => 'admin/projectmanagement/tickets',
             ];
 
@@ -241,12 +242,12 @@ class TicketsController extends Controller
             $user = $accountUser->user;
             $dataMail = [
                 'subjectMail'    => 'New Ticket Assign To You',
-                'bodyMail'       => 'Assign The Ticket '.$ticket->name.' To '.$user->name,
+                'bodyMail'       => 'Assign The Ticket : '.$ticket->ticket_code.' To '.$user->name,
                 'action'         => route("projectmanagement.admin.tickets.show", $ticket->id)
             ];
 
             $dataNotification = [
-                'message'       => 'Assign The Ticket '.$ticket->name.' To '.$user->name,
+                'message'       => 'Assign The Ticket : '.$ticket->ticket_code.' To '.$user->name,
                 'route_path'    => 'admin/projectmanagement/tickets',
             ];
 
@@ -313,13 +314,13 @@ class TicketsController extends Controller
         {
             $user = $accountUser->user;
             $dataMail = [
-                'subjectMail'    => 'Update Ticket '.$ticket->name ,
-                'bodyMail'       => 'Update The Ticket '.$ticket->name .' status to '.$ticket->status,
+                'subjectMail'    => 'Update Ticket : '.$ticket->ticket_code ,
+                'bodyMail'       => 'Update The Ticket : '.$ticket->ticket_code .' status to '.$ticket->status,
                 'action'         => route("projectmanagement.admin.tickets.show", $ticket->id)
             ];
 
             $dataNotification = [
-                'message'       => 'Update Ticket '.$ticket->name .' status to '.$ticket->status,
+                'message'       => 'Update Ticket : '.$ticket->ticket_code .' status to '.$ticket->status,
                 'route_path'    => 'admin/projectmanagement/tickets',
             ];
 
