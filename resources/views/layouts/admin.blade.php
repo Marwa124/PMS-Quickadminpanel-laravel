@@ -24,6 +24,22 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/1.5.0/css/perfect-scrollbar.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.1.7/css/fixedHeader.dataTables.min.css">
 
+    {{--<script src="{{ asset('jquery_cdn/jquery.js') }}"></script>--}}
+    {{--<link href="{{ asset('jquery_cdn/bootstrap.min.css') }}" rel="stylesheet" />--}}
+    {{--<link href="{{ asset('jquery_cdn/font-awesome.css') }}" rel="stylesheet" />--}}
+    {{--<link href="{{ asset('jquery_cdn/all.css') }}" rel="stylesheet" />--}}
+    {{--<link href="{{ asset('jquery_cdn/jquery.dataTables.min.css') }}" rel="stylesheet" />--}}
+    {{--<link rel="stylesheet" href="{{ asset('jquery_cdn/responsive.dataTables.min.css') }}">--}}
+    {{--<link href="{{ asset('jquery_cdn/dataTables.bootstrap4.min.css') }}" rel="stylesheet" />--}}
+    {{--<link href="{{ asset('jquery_cdn/buttons.dataTables.min.css') }}" rel="stylesheet" />--}}
+    {{--<link href="{{ asset('jquery_cdn/select.dataTables.min.css') }}" rel="stylesheet" />--}}
+    {{--<link href="{{ asset('jquery_cdn/select2.min.css') }}" rel="stylesheet" />--}}
+    {{--<link href="{{ asset('jquery_cdn/bootstrap-datetimepicker.min.css') }}" rel="stylesheet" />--}}
+    {{--<link href="{{ asset('jquery_cdn/coreui.min.css') }}" rel="stylesheet" />--}}
+    {{--<link href="{{ asset('jquery_cdn/dropzone.min.css') }}" rel="stylesheet" />--}}
+    {{--<link href="{{ asset('jquery_cdn/perfect-scrollbar.min.css') }}" rel="stylesheet" />--}}
+    {{--<link rel="stylesheet" href="{{ asset('jquery_cdn/fixedHeader.dataTables.min.css') }}">--}}
+
     <link href="{{ asset('css/app.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.min.css">
@@ -31,7 +47,9 @@
     @yield('styles')
 
 <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
-<script>
+    {{--<script src="{{ asset('jquery_cdn/pusher.min.js') }}"></script>--}}
+
+    <script>
 
     // Enable pusher logging - don't include this in production
     Pusher.logToConsole = true;

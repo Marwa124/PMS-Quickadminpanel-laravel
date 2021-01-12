@@ -29,47 +29,44 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="12c5590f-20f1-441a-b116-7f3f712f734a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/tickets/assignto.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Notifications/ProjectManagementNotification.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/projects/project_pdf.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/jquery_cdn/all.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/jquery_cdn/bootstrap-datetimepicker.min.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/jquery_cdn/bootstrap.min.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/jquery_cdn/buttons.dataTables.min.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/jquery_cdn/coreui.min.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/jquery_cdn/dataTables.bootstrap4.min.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/jquery_cdn/dropzone.min.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/jquery_cdn/fixedHeader.dataTables.min.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/jquery_cdn/font-awesome.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/jquery_cdn/jquery.dataTables.min.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/jquery_cdn/jquery.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/jquery_cdn/perfect-scrollbar.min.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/jquery_cdn/pusher.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/jquery_cdn/responsive.dataTables.min.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/jquery_cdn/select.dataTables.min.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/jquery_cdn/select2.min.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/webServers.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/HR/Http/Controllers/Admin/LeaveApplicationsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/HR/Http/Controllers/Admin/LeaveApplicationsController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/HR/Resources/views/admin/accountDetails/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/HR/Resources/views/admin/accountDetails/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/ProjectManagement/Database/Migrations/2020_12_07_122119_create_milestone_account_details_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Database/Migrations/2020_12_07_122119_create_milestone_account_details_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/ProjectManagement/Database/Migrations/2020_12_13_130435_create_task_account_details_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Database/Migrations/2020_12_13_130435_create_task_account_details_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/ProjectManagement/Database/Migrations/2020_12_14_155627_create_bug_account_details_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Database/Migrations/2020_12_14_155627_create_bug_account_details_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/ProjectManagement/Entities/BugAccountDetails.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Entities/BugAccountDetails.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/ProjectManagement/Entities/Project.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Entities/Project.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/ProjectManagement/Entities/Ticket.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Entities/Ticket.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/ProjectManagement/Entities/TicketReplay.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Entities/TicketReplay.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modules/ProjectManagement/Database/Migrations/2020_09_27_000013_create_projects_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Database/Migrations/2020_09_27_000013_create_projects_table.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Controllers/Admin/BugsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Controllers/Admin/BugsController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Controllers/Admin/ProjectsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Controllers/Admin/ProjectsController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Controllers/Admin/TaskController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Controllers/Admin/TaskController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Controllers/Admin/TicketsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Controllers/Admin/TicketsController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Requests/StoreProjectRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Requests/StoreProjectRequest.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Requests/StoreTicketRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Requests/StoreTicketRequest.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Requests/UpdateProjectRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Requests/UpdateProjectRequest.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Requests/UpdateTicketRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Requests/UpdateTicketRequest.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/bugs/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/bugs/create.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/bugs/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/bugs/edit.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/bugs/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/bugs/index.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/projects/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/projects/index.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/projects/show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/projects/show.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/tasks/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/tasks/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/tickets/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/tickets/create.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/tickets/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/tickets/edit.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/tickets/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/tickets/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/tickets/show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/tickets/show.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Modules/ProjectManagement/Routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Routes/web.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Events/NewNotification.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Events/NewNotification.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/acl.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/acl.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2020_09_03_113731_create_results_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_09_03_113731_create_results_table.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/database/migrations/2020_09_03_114649_create_leads_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_09_03_114649_create_leads_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2020_09_03_114750_create_calls_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_09_03_114750_create_calls_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2020_09_03_122418_create_countries_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_09_03_122418_create_countries_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2020_09_03_133002_create_final_results_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_09_03_133002_create_final_results_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/seeds/RolesTableSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/seeds/RolesTableSeeder.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/lang/en/cruds.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/lang/en/cruds.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/lang/en/global.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/lang/en/global.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/layouts/admin.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/layouts/admin.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/partials/menu.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/partials/menu.blade.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -79,12 +76,247 @@
   </component>
   <component name="ComposerSettings" doNotAsk="true" synchronizationState="SYNCHRONIZE">
     <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
-    <execution>
-      <executable />
-    </execution>
+  </component>
+  <component name="FUSProjectUsageTrigger">
+    <session id="1186742160">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.closed" value="4" />
+          <entry key="project.open.time.2" value="1" />
+          <entry key="project.open.time.5" value="1" />
+          <entry key="project.open.time.6" value="2" />
+          <entry key="project.open.time.7" value="1" />
+          <entry key="project.opened" value="5" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.open">
+        <counts>
+          <entry key="css" value="15" />
+          <entry key="js" value="4" />
+          <entry key="json" value="1" />
+          <entry key="php" value="31" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key="Blade" value="14" />
+          <entry key="CSS" value="15" />
+          <entry key="JSON" value="1" />
+          <entry key="JavaScript" value="4" />
+          <entry key="PHP" value="17" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.edit">
+        <counts>
+          <entry key="css" value="1" />
+          <entry key="php" value="1495" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="Blade" value="958" />
+          <entry key="CSS" value="1" />
+          <entry key="PHP" value="537" />
+        </counts>
+      </usages-collector>
+    </session>
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/projects/show.blade.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="136">
+              <caret line="254" column="220" selection-start-line="254" selection-start-column="135" selection-end-line="254" selection-end-column="220" />
+              <folding>
+                <element signature="e#0#92885#0#Blade" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/projects/index.blade.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="136">
+              <caret line="310" column="32" selection-start-line="310" selection-start-column="32" selection-end-line="310" selection-end-column="32" />
+              <folding>
+                <element signature="e#13980#14010#0#HTML" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#div#0;n#td#3;n#tr#0;n#!!top" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/resources/views/layouts/admin.blade.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="595">
+              <caret line="35" column="52" selection-start-line="35" selection-start-column="52" selection-end-line="35" selection-end-column="52" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/public/jquery_cdn/pusher.min.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="119">
+              <caret line="7" column="65690" selection-end-line="7" selection-end-column="65810" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Modules/ProjectManagement/Http/Controllers/Admin/ProjectsController.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="425">
+              <caret line="368" column="48" lean-forward="true" selection-start-line="368" selection-start-column="48" selection-end-line="368" selection-end-column="48" />
+              <folding>
+                <element signature="e#68#99#0#PHP" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Modules/ProjectManagement/Entities/Milestone.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-499">
+              <caret line="11" column="6" selection-start-line="11" selection-start-column="6" selection-end-line="11" selection-end-column="6" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Modules/ProjectManagement/Entities/Project.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="612">
+              <caret line="143" column="56" selection-start-line="143" selection-start-column="56" selection-end-line="143" selection-end-column="56" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="true" current-in-tab="false">
+        <entry file="remoteDeploymentFS://&lt;aab68891-d2c4-4f3e-bb21-b9fb154e0664&gt;/public_html/pms/application/views/admin/projects/export_project.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="254">
+              <caret line="364" column="63" selection-start-line="364" selection-start-column="43" selection-end-line="364" selection-end-column="63" />
+              <folding>
+                <element signature="n#head#0;n#html#0;n#!!top" />
+                <element signature="n#style#0;n#storng#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#storng#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#strong#0;n#div#0;n#td#2;n#tr#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#span#0;n#!!top" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="true" current-in-tab="false">
+        <entry file="remoteDeploymentFS://&lt;aab68891-d2c4-4f3e-bb21-b9fb154e0664&gt;/public_html/pms/application/views/admin/proposals/proposals_pdf_contract.php">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="CSS File" />
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>generateCalendar</find>
+      <find>calendar</find>
+      <find>$RTL</find>
+      <find>status</find>
+      <find>client</find>
+      <find>$comment_details</find>
+      <find>total</find>
+      <find>'total'</find>
+      <find>project</find>
+      <find>miles</find>
+      <find>projects</find>
+      <find>pdf</find>
+      <find>sheet</find>
+      <find>inc</find>
+      <find>fa fa-copy</find>
+      <find>show</find>
+      <find>html5</find>
+      <find>show(</find>
+      <find>confirm</find>
+      <find>getElementsById</find>
+      <find>getElement</find>
+      <find>confir</find>
+      <find>clone</find>
+    </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/resources/lang/en/cruds.php" />
+        <option value="$PROJECT_DIR$/config/dompdf.php" />
+        <option value="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/projects/project_pdf_layout.blade.php" />
+        <option value="$PROJECT_DIR$/Modules/Sales/Resources/views/admin/leads/index.blade.php" />
+        <option value="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/projects/project_pdf.blade.php" />
+        <option value="$PROJECT_DIR$/Modules/ProjectManagement/Routes/web.php" />
+        <option value="$PROJECT_DIR$/resources/lang/en/global.php" />
+        <option value="$PROJECT_DIR$/database/seeds/AccountDetailsTableSeeder.php" />
+        <option value="$PROJECT_DIR$/database/seeds/UsersTableSeeder.php" />
+        <option value="$PROJECT_DIR$/Modules/ProjectManagement/Http/Controllers/Admin/ProjectsController.php" />
+        <option value="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/projects/show.blade.php" />
+        <option value="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/projects/index.blade.php" />
+        <option value="$PROJECT_DIR$/public/jquery_cdn/jquery.js" />
+        <option value="$PROJECT_DIR$/public/jquery_cdn/bootstrap.min.css" />
+        <option value="$PROJECT_DIR$/public/jquery_cdn/all.css" />
+        <option value="$PROJECT_DIR$/public/jquery_cdn/font-awesome.css" />
+        <option value="$PROJECT_DIR$/public/jquery_cdn/dataTables.min.css" />
+        <option value="$PROJECT_DIR$/public/jquery_cdn/responsive.dataTables.min.css" />
+        <option value="$PROJECT_DIR$/public/jquery_cdn/dataTables.bootstrap4.min.css" />
+        <option value="$PROJECT_DIR$/public/jquery_cdn/buttons.dataTables.min.css" />
+        <option value="$PROJECT_DIR$/public/jquery_cdn/select.dataTables.min.css" />
+        <option value="$PROJECT_DIR$/public/jquery_cdn/select2.min.css" />
+        <option value="$PROJECT_DIR$/public/jquery_cdn/bootstrap-datetimepicker.min.css" />
+        <option value="$PROJECT_DIR$/public/jquery_cdn/coreui.min.css" />
+        <option value="$PROJECT_DIR$/public/jquery_cdn/dropzone.min.css" />
+        <option value="$PROJECT_DIR$/public/jquery_cdn/perfect-scrollbar.min.css" />
+        <option value="$PROJECT_DIR$/public/jquery_cdn/fixedHeader.dataTables.min.css" />
+        <option value="$PROJECT_DIR$/public/jquery_cdn/pusher.min.js" />
+        <option value="$PROJECT_DIR$/public/jquery_cdn/pusher.min1.js" />
+        <option value="$PROJECT_DIR$/resources/views/layouts/admin.blade.php" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER">
+    <package-json value="$PROJECT_DIR$/package.json" />
+  </component>
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="NodeModulesDirectoryManager">
+    <handled-path value="$PROJECT_DIR$/node_modules" />
+  </component>
+  <component name="NodePackageJsonFileManager">
+    <packageJsonPaths>
+      <path value="$PROJECT_DIR$/Modules/HR/package.json" />
+      <path value="$PROJECT_DIR$/Modules/MaterialsSuppliers/package.json" />
+      <path value="$PROJECT_DIR$/Modules/Payroll/package.json" />
+      <path value="$PROJECT_DIR$/Modules/ProjectManagement/package.json" />
+      <path value="$PROJECT_DIR$/Modules/SETTING/package.json" />
+      <path value="$PROJECT_DIR$/Modules/Sales/package.json" />
+      <path value="$PROJECT_DIR$/package.json" />
+    </packageJsonPaths>
   </component>
   <component name="PhpWorkspaceProjectConfiguration">
     <include_path>
@@ -248,37 +480,185 @@
       </list>
     </option>
   </component>
+  <component name="ProjectFrameBounds" extendedState="7">
+    <option name="x" value="140" />
+    <option name="y" value="20" />
+    <option name="width" value="1400" />
+    <option name="height" value="970" />
+  </component>
   <component name="ProjectId" id="1khEgRSk9dPk83k7KPysVXYMDp1" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="PMS-Quickadminpanel-laravel" type="b2602c69:ProjectViewProjectNode" />
+              <item name="PMS-Quickadminpanel-laravel" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="PMS-Quickadminpanel-laravel" type="b2602c69:ProjectViewProjectNode" />
+              <item name="PMS-Quickadminpanel-laravel" type="462c0819:PsiDirectoryNode" />
+              <item name="Modules" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="PMS-Quickadminpanel-laravel" type="b2602c69:ProjectViewProjectNode" />
+              <item name="PMS-Quickadminpanel-laravel" type="462c0819:PsiDirectoryNode" />
+              <item name="Modules" type="462c0819:PsiDirectoryNode" />
+              <item name="ProjectManagement" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="PMS-Quickadminpanel-laravel" type="b2602c69:ProjectViewProjectNode" />
+              <item name="PMS-Quickadminpanel-laravel" type="462c0819:PsiDirectoryNode" />
+              <item name="Modules" type="462c0819:PsiDirectoryNode" />
+              <item name="ProjectManagement" type="462c0819:PsiDirectoryNode" />
+              <item name="Http" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="PMS-Quickadminpanel-laravel" type="b2602c69:ProjectViewProjectNode" />
+              <item name="PMS-Quickadminpanel-laravel" type="462c0819:PsiDirectoryNode" />
+              <item name="Modules" type="462c0819:PsiDirectoryNode" />
+              <item name="ProjectManagement" type="462c0819:PsiDirectoryNode" />
+              <item name="Http" type="462c0819:PsiDirectoryNode" />
+              <item name="Controllers" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="PMS-Quickadminpanel-laravel" type="b2602c69:ProjectViewProjectNode" />
+              <item name="PMS-Quickadminpanel-laravel" type="462c0819:PsiDirectoryNode" />
+              <item name="Modules" type="462c0819:PsiDirectoryNode" />
+              <item name="ProjectManagement" type="462c0819:PsiDirectoryNode" />
+              <item name="Http" type="462c0819:PsiDirectoryNode" />
+              <item name="Controllers" type="462c0819:PsiDirectoryNode" />
+              <item name="Admin" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="PMS-Quickadminpanel-laravel" type="b2602c69:ProjectViewProjectNode" />
+              <item name="PMS-Quickadminpanel-laravel" type="462c0819:PsiDirectoryNode" />
+              <item name="Modules" type="462c0819:PsiDirectoryNode" />
+              <item name="ProjectManagement" type="462c0819:PsiDirectoryNode" />
+              <item name="Resources" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="PMS-Quickadminpanel-laravel" type="b2602c69:ProjectViewProjectNode" />
+              <item name="PMS-Quickadminpanel-laravel" type="462c0819:PsiDirectoryNode" />
+              <item name="Modules" type="462c0819:PsiDirectoryNode" />
+              <item name="ProjectManagement" type="462c0819:PsiDirectoryNode" />
+              <item name="Resources" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="PMS-Quickadminpanel-laravel" type="b2602c69:ProjectViewProjectNode" />
+              <item name="PMS-Quickadminpanel-laravel" type="462c0819:PsiDirectoryNode" />
+              <item name="Modules" type="462c0819:PsiDirectoryNode" />
+              <item name="ProjectManagement" type="462c0819:PsiDirectoryNode" />
+              <item name="Resources" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
+              <item name="admin" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="PMS-Quickadminpanel-laravel" type="b2602c69:ProjectViewProjectNode" />
+              <item name="PMS-Quickadminpanel-laravel" type="462c0819:PsiDirectoryNode" />
+              <item name="Modules" type="462c0819:PsiDirectoryNode" />
+              <item name="ProjectManagement" type="462c0819:PsiDirectoryNode" />
+              <item name="Resources" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
+              <item name="admin" type="462c0819:PsiDirectoryNode" />
+              <item name="projects" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="PMS-Quickadminpanel-laravel" type="b2602c69:ProjectViewProjectNode" />
+              <item name="PMS-Quickadminpanel-laravel" type="462c0819:PsiDirectoryNode" />
+              <item name="Modules" type="462c0819:PsiDirectoryNode" />
+              <item name="ProjectManagement" type="462c0819:PsiDirectoryNode" />
+              <item name="Routes" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="PMS-Quickadminpanel-laravel" type="b2602c69:ProjectViewProjectNode" />
+              <item name="PMS-Quickadminpanel-laravel" type="462c0819:PsiDirectoryNode" />
+              <item name="public" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="PMS-Quickadminpanel-laravel" type="b2602c69:ProjectViewProjectNode" />
+              <item name="PMS-Quickadminpanel-laravel" type="462c0819:PsiDirectoryNode" />
+              <item name="public" type="462c0819:PsiDirectoryNode" />
+              <item name="jquery_cdn" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="PMS-Quickadminpanel-laravel" type="b2602c69:ProjectViewProjectNode" />
+              <item name="PMS-Quickadminpanel-laravel" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="PMS-Quickadminpanel-laravel" type="b2602c69:ProjectViewProjectNode" />
+              <item name="PMS-Quickadminpanel-laravel" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+              <item name="lang" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="PMS-Quickadminpanel-laravel" type="b2602c69:ProjectViewProjectNode" />
+              <item name="PMS-Quickadminpanel-laravel" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+              <item name="lang" type="462c0819:PsiDirectoryNode" />
+              <item name="en" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="PMS-Quickadminpanel-laravel" type="b2602c69:ProjectViewProjectNode" />
+              <item name="PMS-Quickadminpanel-laravel" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="PMS-Quickadminpanel-laravel" type="b2602c69:ProjectViewProjectNode" />
+              <item name="PMS-Quickadminpanel-laravel" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
+              <item name="layouts" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+    </panes>
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="SearchEverywhereHistoryKey" value="css/app&#9;FILE&#9;file://C:/Users/DEV-Back/Desktop/pms_laravel/PMS-Quickadminpanel-laravel/public/css/app.css&#10;Mil&#9;null&#9;null&#10;font&#9;FILE&#9;file://C:/Users/DEV-Back/Desktop/pms_laravel/PMS-Quickadminpanel-laravel/vendor/dompdf/dompdf/lib/fonts&#10;fonts&#9;FILE&#9;file://C:/Users/DEV-Back/Desktop/pms_laravel/PMS-Quickadminpanel-laravel/vendor/phenx/php-font-lib/sample-fonts&#10;remote&#9;ACTION&#9;ActivateRemoteHostToolWindow" />
     <property name="WebServerToolWindowFactoryState" value="true" />
     <property name="WebServerToolWindowPanel.toolwindow.highlight.mappings" value="true" />
     <property name="WebServerToolWindowPanel.toolwindow.highlight.symlinks" value="true" />
     <property name="WebServerToolWindowPanel.toolwindow.show.date" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
     <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/tickets" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="preferences.editor" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\Modules\ProjectManagement\Resources\views\admin\tickets" />
-      <recent name="C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\app\Notifications" />
-      <recent name="C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\Modules\ProjectManagement\Resources\views\admin\bugs" />
-      <recent name="C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\Modules\ProjectManagement\Resources\views\admin\tasks" />
-      <recent name="C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\Modules\ProjectManagement\Resources\views\admin\milestones" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\Modules\ProjectManagement\Database\Migrations" />
       <recent name="C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\Modules\ProjectManagement\Entities" />
       <recent name="C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\Modules\ProjectManagement\Http\Controllers\Admin" />
       <recent name="C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\app\Models" />
       <recent name="C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\database\migrations" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\Modules\ProjectManagement\Resources\views\admin\projects" />
+      <recent name="C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\Modules\ProjectManagement\Resources\views\admin\tickets" />
+      <recent name="C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\app\Notifications" />
+      <recent name="C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\Modules\ProjectManagement\Resources\views\admin\bugs" />
+      <recent name="C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\Modules\ProjectManagement\Resources\views\admin\tasks" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -353,9 +733,44 @@
       <workItem from="1609839375068" duration="20270000" />
       <workItem from="1609865549809" duration="17000" />
       <workItem from="1609925761927" duration="17133000" />
-      <workItem from="1610270140654" duration="13429000" />
+      <workItem from="1610270140654" duration="22895000" />
+      <workItem from="1610296752642" duration="45000" />
+      <workItem from="1610296820538" duration="180000" />
+      <workItem from="1610297044023" duration="1090000" />
+      <workItem from="1610359154959" duration="1235000" />
+      <workItem from="1610360877952" duration="20475000" />
     </task>
     <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="23025000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-8" y="-8" width="1696" height="1026" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1680929" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="npm" order="2" side_tool="true" />
+      <window_info id="Favorites" order="3" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.3295964" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="8" />
+      <window_info anchor="bottom" id="Terminal" order="9" weight="0.27914798" />
+      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
+      <window_info anchor="bottom" id="Docker" order="11" show_stripe_button="false" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Remote Host" order="3" visible="true" weight="0.12591687" />
+      <window_info anchor="right" id="Database" order="4" />
+    </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
@@ -366,6 +781,12 @@
         <entry key="MAIN">
           <value>
             <State>
+              <option name="RECENTLY_FILTERED_USER_GROUPS">
+                <collection />
+              </option>
+              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+                <collection />
+              </option>
               <option name="FILTERS">
                 <map>
                   <entry key="branch">
@@ -383,6 +804,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
   </component>
   <component name="WindowStateProjectService">
     <state x="570" y="259" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1608460050932">
@@ -477,5 +901,320 @@
       <screen x="0" y="0" width="1680" height="1010" />
     </state>
     <state x="496" y="158" width="672" height="678" key="search.everywhere.popup/0.0.1680.1010@0.0.1680.1010" timestamp="1608461208246" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/config/modules.php">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/composer.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="203">
+          <caret line="12" column="32" selection-start-line="12" selection-start-column="18" selection-end-line="12" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/app.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="378">
+          <caret line="236" column="12" selection-start-line="236" selection-start-column="9" selection-end-line="236" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/lang/en/cruds.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="352">
+          <caret line="1606" column="23" selection-start-line="1606" selection-start-column="13" selection-end-line="1606" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Modules/Sales/Resources/views/admin/leads/index.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="188">
+          <caret line="279" column="96" lean-forward="true" selection-start-line="279" selection-start-column="24" selection-end-line="279" selection-end-column="96" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/projects/project_pdf_layout.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="33" selection-start-line="6" selection-start-column="33" selection-end-line="6" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/lang/en/global.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="13" column="54" selection-start-line="13" selection-start-column="54" selection-end-line="13" selection-end-column="54" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Modules/ProjectManagement/Routes/web.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="527">
+          <caret line="58" column="97" selection-start-line="58" selection-start-column="97" selection-end-line="58" selection-end-column="97" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/projects/project_pdf.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="578">
+          <caret line="292" column="52" selection-start-line="292" selection-start-column="52" selection-end-line="292" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/dompdf.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="626">
+          <caret line="239" column="38" selection-start-line="239" selection-start-column="38" selection-end-line="239" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/database/seeds/DepartmentsTableSeeder.php">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/database/seeds/UsersTableSeeder.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="266">
+          <caret line="235" column="36" lean-forward="true" selection-start-line="235" selection-start-column="36" selection-end-line="235" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/database/seeds/AccountDetailsTableSeeder.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="640">
+          <caret line="319" column="13" lean-forward="true" selection-start-line="309" selection-start-column="11" selection-end-line="319" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Modules/ProjectManagement/Http/Controllers/Admin/TicketsController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="527">
+          <caret line="66" column="58" selection-start-line="66" selection-start-column="41" selection-end-line="66" selection-end-column="58" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Modules/ProjectManagement/Entities/Project.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="612">
+          <caret line="143" column="56" selection-start-line="143" selection-start-column="56" selection-end-line="143" selection-end-column="56" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Modules/ProjectManagement/Entities/Milestone.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-499">
+          <caret line="11" column="6" selection-start-line="11" selection-start-column="6" selection-end-line="11" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Modules/ProjectManagement/Http/Controllers/Admin/ProjectsController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="368" column="48" lean-forward="true" selection-start-line="368" selection-start-column="48" selection-end-line="368" selection-end-column="48" />
+          <folding>
+            <element signature="e#68#99#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/css/app.css">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/projects/show.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="254" column="220" selection-start-line="254" selection-start-column="135" selection-end-line="254" selection-end-column="220" />
+          <folding>
+            <element signature="e#0#92885#0#Blade" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/jquery_cdn/bootstrap.min.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="37" lean-forward="true" selection-start-line="6" selection-start-column="37" selection-end-line="6" selection-end-column="37" />
+          <folding>
+            <element signature="e#57526#57726#2" expanded="true" />
+            <element signature="e#57934#58083#2" expanded="true" />
+            <element signature="e#58585#58731#2" expanded="true" />
+            <element signature="e#59032#59198#1" expanded="true" />
+            <element signature="e#70814#71057#2" expanded="true" />
+            <element signature="e#71924#72173#2" expanded="true" />
+            <element signature="e#99236#99426#2" expanded="true" />
+            <element signature="e#99472#99662#2" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/jquery_cdn/font-awesome.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="810">
+          <caret line="2337" selection-start-line="2337" selection-end-line="2337" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/jquery_cdn/all.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="102" lean-forward="true" selection-start-line="2" selection-start-column="102" selection-end-line="2" selection-end-column="102" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/jquery_cdn/jquery.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="810">
+          <caret line="9597" lean-forward="true" selection-start-line="9597" selection-end-line="9597" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/jquery_cdn/jquery.dataTables.min.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" selection-start-line="1" selection-end-line="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/jquery_cdn/responsive.dataTables.min.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" selection-start-line="1" selection-end-line="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/jquery_cdn/dataTables.bootstrap4.min.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" selection-start-line="1" selection-end-line="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/jquery_cdn/buttons.dataTables.min.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" selection-start-line="1" selection-end-line="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/jquery_cdn/bootstrap-datetimepicker.min.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="7669" selection-start-line="4" selection-start-column="7669" selection-end-line="4" selection-end-column="7669" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/jquery_cdn/select2.min.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" selection-start-line="1" selection-end-line="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/jquery_cdn/select.dataTables.min.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" lean-forward="true" selection-start-line="1" selection-end-line="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/jquery_cdn/coreui.min.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="42" selection-start-line="7" selection-start-column="42" selection-end-line="7" selection-end-column="42" />
+          <folding>
+            <element signature="e#69471#69667#2" expanded="true" />
+            <element signature="e#69713#69910#2" expanded="true" />
+            <element signature="e#73655#73863#2" expanded="true" />
+            <element signature="e#74092#74249#2" expanded="true" />
+            <element signature="e#74652#74808#2" expanded="true" />
+            <element signature="e#76772#76946#1" expanded="true" />
+            <element signature="e#94485#94740#2" expanded="true" />
+            <element signature="e#95845#96019#1" expanded="true" />
+            <element signature="e#96059#96314#1" expanded="true" />
+            <element signature="e#98834#99148#2" expanded="true" />
+            <element signature="e#100277#100451#1" expanded="true" />
+            <element signature="e#100491#100805#1" expanded="true" />
+            <element signature="e#125548#125801#2" expanded="true" />
+            <element signature="e#125872#126124#2" expanded="true" />
+            <element signature="e#127294#127541#2" expanded="true" />
+            <element signature="e#127598#127845#2" expanded="true" />
+            <element signature="e#162240#162503#2" expanded="true" />
+            <element signature="e#163457#163715#2" expanded="true" />
+            <element signature="e#208492#208908#2" expanded="true" />
+            <element signature="e#209659#210075#2" expanded="true" />
+            <element signature="e#210202#210636#2" expanded="true" />
+            <element signature="e#211879#212298#2" expanded="true" />
+            <element signature="e#212520#212936#2" expanded="true" />
+            <element signature="e#216487#216903#2" expanded="true" />
+            <element signature="e#217804#218220#2" expanded="true" />
+            <element signature="e#218379#218808#2" expanded="true" />
+            <element signature="e#220233#220652#2" expanded="true" />
+            <element signature="e#220938#221357#2" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/jquery_cdn/dropzone.min.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" selection-start-line="1" selection-end-line="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/jquery_cdn/perfect-scrollbar.min.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" column="51" selection-start-line="1" selection-start-column="51" selection-end-line="1" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/jquery_cdn/fixedHeader.dataTables.min.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" lean-forward="true" selection-start-line="1" selection-end-line="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/jquery_cdn/pusher.min.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="65690" selection-end-line="7" selection-end-column="65810" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/jquery_cdn/pusher.min1.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="65810" selection-start-line="7" selection-start-column="65810" selection-end-line="7" selection-end-column="65810" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/projects/index.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="310" column="32" selection-start-line="310" selection-start-column="32" selection-end-line="310" selection-end-column="32" />
+          <folding>
+            <element signature="e#13980#14010#0#HTML" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#0;n#td#3;n#tr#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/layouts/admin.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="595">
+          <caret line="35" column="52" selection-start-line="35" selection-start-column="52" selection-end-line="35" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
   </component>
 </project>

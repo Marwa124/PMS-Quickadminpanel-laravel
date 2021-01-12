@@ -55,6 +55,8 @@ Route::group(['prefix' => 'admin/projectmanagement', 'as' => 'projectmanagement.
     Route::post('projects/assign_to','ProjectsController@storeAssignTo')->name('projects.storeAssignTo');
     Route::put('projects/{id}/update_note','ProjectsController@update_note')->name('projects.update_note');
     Route::get('projects/{id}/project_timer','ProjectsController@update_project_timer')->name('projects.update_project_timer');
+    Route::get('projects/{id}/project_pdf','ProjectsController@project_pdf')->name('projects.project_pdf');
+    Route::get('projects/{id}/clone','ProjectsController@project_clone')->name('projects.clone');
 
     // Milestones
     Route::delete('milestones/destroy', 'MilestonesController@massDestroy')->name('milestones.massDestroy');

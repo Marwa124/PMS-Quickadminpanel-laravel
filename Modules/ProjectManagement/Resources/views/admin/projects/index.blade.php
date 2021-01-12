@@ -23,11 +23,13 @@
                Started
            </a>
             <span class="float-right">{{$projects->where('project_status','started')->count().'/'.$projects->count()}}</span><br>
-            <div class="progress" style="width: auto" >
-                <div class="progress-bar bg-info" role="progressbar" style="width: {{$projects->where('project_status','started')->count()/$projects->count()*100}}%; " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+            @if($projects->count() >0)
+                <div class="progress" style="width: auto" >
+                    <div class="progress-bar bg-info" role="progressbar" style="width: {{$projects->where('project_status','started')->count()/$projects->count()*100}}%; " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
 
+                    </div>
                 </div>
-            </div>
+            @endif
         </div>
     </div>
     <div class="card col-sm-2 ">
@@ -37,11 +39,13 @@
                 In Progress
             </a>
             <span class="float-right">{{$projects->where('project_status','in_progress')->count().'/'.$projects->count()}}</span><br>
-            <div class="progress" style="width: auto" >
-                <div class="progress-bar bg-warning" role="progressbar" style="width: {{$projects->where('project_status','in_progress')->count()/$projects->count()*100}}%; " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+            @if($projects->count() >0)
+                <div class="progress" style="width: auto" >
+                    <div class="progress-bar bg-warning" role="progressbar" style="width: {{$projects->where('project_status','in_progress')->count()/$projects->count()*100}}%; " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
 
+                    </div>
                 </div>
-            </div>
+            @endif
         </div>
     </div>
     <div class="card col-sm-2 ">
@@ -50,11 +54,13 @@
                 On Hold
             </a>
             <span class="float-right">{{$projects->where('project_status','on_hold')->count().'/'.$projects->count()}}</span><br>
-            <div class="progress" style="width: auto" >
-                <div class="progress-bar bg-dark" role="progressbar" style="width: {{$projects->where('project_status','on_hold')->count()/$projects->count()*100}}%; " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+            @if($projects->count() >0)
+                <div class="progress" style="width: auto" >
+                    <div class="progress-bar bg-dark" role="progressbar" style="width: {{$projects->where('project_status','on_hold')->count()/$projects->count()*100}}%; " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
 
+                    </div>
                 </div>
-            </div>
+            @endif
         </div>
     </div>
     <div class="card col-sm-2 ">
@@ -64,11 +70,13 @@
                 Cancel
             </a>
             <span class="float-right">{{$projects->where('project_status','cancel')->count().'/'.$projects->count()}}</span><br>
-            <div class="progress" style="width: auto" >
-                <div class="progress-bar bg-danger" role="progressbar" style="width: {{$projects->where('project_status','cancel')->count()/$projects->count()*100}}%; " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+            @if($projects->count() >0)
+                <div class="progress" style="width: auto" >
+                    <div class="progress-bar bg-danger" role="progressbar" style="width: {{$projects->where('project_status','cancel')->count()/$projects->count()*100}}%; " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
 
+                    </div>
                 </div>
-            </div>
+            @endif
         </div>
     </div>
     <div class="card col-sm-2 ">
@@ -78,11 +86,13 @@
                 Completed
             </a>
             <span class="float-right">{{$projects->where('project_status','completed')->count().'/'.$projects->count()}}</span><br>
-            <div class="progress" style="width: auto" >
-                <div class="progress-bar bg-success" role="progressbar" style="width: {{$projects->where('project_status','completed')->count()/$projects->count()*100}}%; " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+            @if($projects->count() >0)
+                <div class="progress" style="width: auto" >
+                    <div class="progress-bar bg-success" role="progressbar" style="width: {{$projects->where('project_status','completed')->count()/$projects->count()*100}}%; " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
 
+                    </div>
                 </div>
-            </div>
+            @endif
         </div>
     </div>
     <div class="card col-sm-2 ">
@@ -92,11 +102,13 @@
                 Overdue
             </a>
             <span class="float-right">{{$projects->where('project_status','overdue')->count().'/'.$projects->count()}}</span><br>
-            <div class="progress" style="width: auto" >
-                <div class="progress-bar bg-danger" role="progressbar" style="width:{{$projects->where('project_status','overdue')->count()/$projects->count()*100}}%; " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+            @if($projects->count() >0)
+                <div class="progress" style="width: auto" >
+                    <div class="progress-bar bg-danger" role="progressbar" style="width:{{$projects->where('project_status','overdue')->count()/$projects->count()*100}}%; " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
 
+                    </div>
                 </div>
-            </div>
+            @endif
         </div>
     </div>
 
@@ -240,6 +252,11 @@
                                             <span class="fa fa-pencil-square-o"></span>
                                         </a>
                                     @endcan
+                                    @can('project_create')
+                                        <a class="btn btn-xs btn-info" href="{{ route('projectmanagement.admin.projects.clone', $project->id) }}"  onclick="return confirm('Are you sure to clone Project with milestone and tasks ?');" title="{{ trans('global.clone') }}">
+                                            <span class="fa fa-copy"></span>
+                                        </a>
+                                    @endcan
 
                                     @can('project_assign_to')
 
@@ -291,7 +308,7 @@
                             <th>
                                 {{ trans('cruds.task.fields.id') }}
                             </th>
-                            <th width="150">
+                            <th >
                                 {{ trans('cruds.task.fields.name') }}
                             </th>
                             <th>
@@ -339,7 +356,7 @@
                             <th>
                                 {{ trans('cruds.milestone.fields.id') }}
                             </th>
-                            <th width="150">
+                            <th >
                                 {{ trans('cruds.milestone.fields.name') }}
                             </th>
                             <th width="150">
@@ -379,7 +396,7 @@
                             <th>
                                 {{ trans('cruds.ticket.fields.id') }}
                             </th>
-                            <th width="150">
+                            <th >
                                 {{ trans('cruds.ticket.fields.subject') }}
                             </th>
                             <th width="100">
@@ -435,7 +452,7 @@
     }
   }
   dtButtons.push(deleteButton)
-@endcan
+@endcangi
 
 
 
@@ -454,6 +471,7 @@ $.extend(true, $.fn.dataTable.defaults, {
     // Hide columns
     // table.columns([3]).visible( true );
     // table.columns([3]).search( 0 ).draw(); // set a default load in datatable column (Active Users)
+    // table.columns([3]).search( 0 ).draw();  // set a default load in datatable column (Active Users)
 
 
   $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e){

@@ -164,7 +164,7 @@ class TaskController extends Controller
             ];
 
             $dataNotification = [
-                'message'       => 'Update The Task '.$task->name,
+                'message'       => 'Update The Task : '.$task->name,
                 'route_path'    => 'admin/projectmanagement/tasks',
             ];
 
@@ -280,12 +280,12 @@ class TaskController extends Controller
             $user = $accountUser->user;
             $dataMail = [
                 'subjectMail'    => 'New Task Assign To You',
-                'bodyMail'       => 'Assign The Task '.$task->name.' To '.$user->name,
+                'bodyMail'       => 'Assign The Task : '.$task->name.' To '.$user->name,
                 'action'         => route("projectmanagement.admin.tasks.show", $task->id)
             ];
 
             $dataNotification = [
-                'message'       => 'Assign The Task '.$task->name.' To '.$user->name,
+                'message'       => 'Assign The Task : '.$task->name.' To '.$user->name,
                 'route_path'    => 'admin/projectmanagement/tasks',
             ];
 
@@ -316,7 +316,7 @@ class TaskController extends Controller
             ];
 
             $dataNotification = [
-                'message'       => 'Update Note Of Task '.$task->name,
+                'message'       => 'Update Note Of Task : '.$task->name,
                 'route_path'    => 'admin/projectmanagement/tasks',
             ];
 

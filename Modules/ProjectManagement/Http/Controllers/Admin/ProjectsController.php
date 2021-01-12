@@ -25,6 +25,8 @@ use Gate;
 use Illuminate\Http\Request;
 use Spatie\MediaLibrary\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
+use PDF;
+use Modules\ProjectManagement\Entities\Milestone;
 
 class ProjectsController extends Controller
 {
@@ -110,7 +112,7 @@ class ProjectsController extends Controller
             ];
 
             $dataNotification = [
-                'message'       => 'Update The Project '.$project->name,
+                'message'       => 'Update The Project : '.$project->name,
                 'route_path'    => 'admin/projectmanagement/projects',
             ];
 
@@ -266,7 +268,7 @@ class ProjectsController extends Controller
             ];
 
             $dataNotification = [
-                    'message'       => 'Assign The Project '.$project->name.' To '.$user->name,
+                    'message'       => 'Assign The Project : '.$project->name.' To '.$user->name,
                     'route_path'    => 'admin/projectmanagement/projects',
             ];
 
@@ -299,7 +301,7 @@ class ProjectsController extends Controller
             ];
 
             $dataNotification = [
-                'message'       => 'Update Note Of Project '.$project->name,
+                'message'       => 'Update Note Of Project : '.$project->name,
                 'route_path'    => 'admin/projectmanagement/projects',
             ];
 
@@ -341,5 +343,78 @@ class ProjectsController extends Controller
         return redirect()->back();
     }
 
+    public function project_clone($project_id)
+    {
 
+        $project            = Project::findOrFail($project_id);
+
+        $newproject         = $project->replicate();
+        $newproject->name   = $project->name.'-copy'.substr(time(),-4);
+        $newproject->push();
+
+        $newproject = Project::findOrFail($newproject->id);
+        //dd($newproject->id);
+
+
+        foreach ($project->milestones as $milestone)
+        {
+            $new_milestone              = $milestone->replicate();
+            $new_milestone->name        = $milestone->name.'-copy'.substr(time(),-4);
+            $new_milestone->project_id  = $newproject->id;
+
+            $new_milestone->push();
+            $new_milestone = Milestone::findOrFail($new_milestone->id);
+
+
+            foreach ($milestone->tasks as $task)
+            {
+                $new_task                   = $task->replicate();
+                $new_task->name             = $task->name.'-copy'.substr(time(),-4);
+                $new_task->project_id       = $newproject->id;
+                $new_task->milestone_id     = $new_milestone->id;
+
+                $new_task->push();
+            }
+
+           // dd($new_milestone,'dsd');
+        }
+
+//        dd($newproject);
+        return redirect()->route('projectmanagement.admin.projects.show',$newproject->id);
+
+    }
+
+    public function project_pdf($project_id)
+    {
+        $project = Project::findOrFail($project_id);
+
+
+        $project->load('client','department','TimeSheetOn','TimeSheet');
+
+        $total_expense = $project->transactions->where('type' , 'Expense')->sum('amount');
+        $billable_expense = $project->transactions->where(array('type' => 'Expense', 'billable' => 'Yes'))->sum('amount');
+        $not_billable_expense = $project->transactions->where(array('type' => 'Expense', 'billable' => 'No'))->sum('amount');
+
+        $all_expense_info =  $project->transactions->where('type', 'Expense');
+
+        $paid_expense = 0;
+        foreach ($all_expense_info as $v_expenses){
+            if ($v_expenses->invoices_id != 0) {
+                $paid_expense += Invoice::get_invoice_paid_amount($v_expenses->invoices_id);
+            }
+        }
+
+
+       //return view('projectmanagement::admin.projects.project_pdf',compact('project','total_expense','billable_expense','not_billable_expense','paid_expense'));
+
+        //view()->share('project',$project);
+
+        $pdf = PDF::loadView('projectmanagement::admin.projects.project_pdf',compact('project','total_expense','billable_expense','not_billable_expense','paid_expense'));
+//        $pdf = PDF::loadView('projectmanagement::admin.projects.project_pdf',[
+//            'project' => $project
+//        ]);
+
+        return $pdf->download('project.pdf');
+
+    }
 }

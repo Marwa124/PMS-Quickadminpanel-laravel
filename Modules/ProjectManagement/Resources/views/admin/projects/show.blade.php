@@ -248,6 +248,22 @@
 @endsection
 @section('content')
     <div class="row">
+        <div class="col-12 pb-1">
+            <div class="col-3">
+                <span class="float-right ">
+                    @can('project_create')
+                        <a class="btn btn-info " href="{{ route('projectmanagement.admin.projects.clone', $project->id) }}" id="clone" onclick="return confirm('Are you sure to clone Project with milestone and tasks ?');" title="{{ trans('global.clone') }}">
+                            <span class="fa fa-copy"  aria-hidden="true"></span>
+                        </a>
+                    @endcan
+                    <a class="btn btn-danger mr-3" href="{{route('projectmanagement.admin.projects.project_pdf',$project->id)}}" title="pdf">
+                        <i class="fa fa-file-pdf  " aria-hidden="true" ></i>
+
+                    </a>
+                </span>
+            </div>
+
+        </div>
         <div class="col-3">
             <div class="card">
 
@@ -288,7 +304,7 @@
                                         <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.start_date') }} :</p> <span class="col-md-6">{{ $project->start_date }}</span> </div>
                                         <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.end_date') }} :</p> <span class="col-md-6">{{ $project->end_date }}</span> </div>
                                         <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.demo_url') }} :</p> <span class="col-md-6">{{ $project->demo_url }}</span> </div>
-                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.project_status') }} : </p><span class="col-md-6">{{ $project->project_status }}</span> </div>
+                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.project_status') }} : </p><span class="col-md-6">{{ ucwords(str_replace('_',' ',$project->project_status)) }}</span> </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-4 border-right ">
@@ -1352,6 +1368,7 @@
 
         function generateCalendar() {
 
+
                 $('#calendar').fullCalendar({
                     // put your options and callbacks here
                     events : [
@@ -1364,12 +1381,15 @@
                             color : '#f05050',
                             dispaly: 'auto',
                             timeZone: 'UTC',
-                            initialDate: new Date(Date.UTC(2018, 8, 1))
+                            // initialDate: new Date(Date.UTC(2018, 8, 1))
                         },
                         @endif
                     ],
                 })
         }
+
+
+
 
         function displayTimesheet (tab)
         {
@@ -1468,6 +1488,17 @@
             })
 
         }
+
+        // confirm clone project
+
+        // $('#clone').onclick(function(){
+        //     if (!confirm('Are you sure to clone Project with milestone and tasks ?')) e.preventDefault();
+        // })
+        //
+        // var elems = document.getElementById('clone');
+        // var confirmIt = function (e) {
+        //     if (!confirm('Are you sure to clone Project?')) e.preventDefault();
+        // };
 
     </script>
 

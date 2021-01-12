@@ -1632,6 +1632,7 @@ return [
             'deleted_at_helper'         => ' ',
             'time_spend'                => 'Time Spend',
             'time_spend_helper'         => ' ',
+            'total'                     => 'Total',
         ],
     ],
     'projectSetting'         => [

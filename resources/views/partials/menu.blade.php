@@ -379,7 +379,7 @@
                                     Evaluations
                                 </a>
                             </li>
-                           
+
                             {{-- @endcan --}}
 
 
@@ -651,8 +651,8 @@
                     @endcan
                     @can('ticket_access')
                         <li class="c-sidebar-nav-item">
-                            <a href="" class="c-sidebar-nav-link {{ request()->is("admin/projectmanagement/tickets") || request()->is("admin/projectmanagement/tickets/*") ? "active" : "" }}">
-                            {{-- <a href="{{ route("projectmanagement.admin.tickets.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/projectmanagement/tickets") || request()->is("admin/projectmanagement/tickets/*") ? "active" : "" }}"> --}}
+{{--                            <a href="" class="c-sidebar-nav-link {{ request()->is("admin/projectmanagement/tickets") || request()->is("admin/projectmanagement/tickets/*") ? "active" : "" }}">--}}
+                             <a href="{{ route("projectmanagement.admin.tickets.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/projectmanagement/tickets") || request()->is("admin/projectmanagement/tickets/*") ? "active" : "" }}">
                                 <i class="fa-fw fas fa-ticket-alt c-sidebar-nav-icon">
 
                                 </i>

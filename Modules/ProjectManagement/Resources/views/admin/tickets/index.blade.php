@@ -166,6 +166,13 @@
 {{--                                        {{ trans('global.edit') }}--}}
                                     </a>
                                 @endcan
+                                @can('ticket_assign_to')
+
+                                    <a class="btn btn-xs btn-success {{$ticket->project->department ? '' : 'disabled'}}" href="{{ route('projectmanagement.admin.tickets.getAssignTo', $ticket->id) }}" title="{{$ticket->project->department ? '' : 'add department to project'}}" >
+                                        {{ trans('global.assign_to') }}
+                                    </a>
+
+                                @endcan
 
                                 @can('ticket_delete')
                                     <form action="{{ route('projectmanagement.admin.tickets.destroy', $ticket->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">

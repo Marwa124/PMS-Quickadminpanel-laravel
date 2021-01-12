@@ -11,6 +11,7 @@ return [
     'delete'                               => 'Delete',
     'downloadFile'                         => 'Download file',
     'edit'                                 => 'Edit',
+    'clone'                                => 'Clone',
     'emailVerificationSuccess'             => 'User email verified successfully',
     'entries'                              => 'Entries',
     'filterDate'                           => 'Filter by date',
