@@ -223,6 +223,10 @@ return [
         'title'          => 'Hr',
         'title_singular' => 'Hr',
     ],
+    'evaluation'             => [
+        'period'         => 'حدد مده التقييم',
+    ],
+    
     'employee'               => [
         'title'          => 'Employees',
         'title_singular' => 'Employee',

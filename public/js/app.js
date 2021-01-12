@@ -3180,6 +3180,12 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3188,7 +3194,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     AlertErrors: vform__WEBPACK_IMPORTED_MODULE_0__["AlertErrors"],
     AlertSuccess: vform__WEBPACK_IMPORTED_MODULE_0__["AlertSuccess"]
   },
-  props: ['langKey', 'user', 'designation', 'departmentTitle', 'departmentHead'],
+  props: ['langKey', 'user', 'designation', 'departmentTitle', 'departmentHead', 'manager', 'auth'],
   data: function data() {
     return {
       urlGetEvaluationRatings: '/api/v1/admin/hr/evaluations',
@@ -3201,7 +3207,11 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         // user
         goal: '',
         comment: '',
-        user_id: this.user.user_id
+        period: '',
+        type: this.manager,
+        auth: this.auth,
+        user_id: this.user.user_id,
+        avg_rate: this.overallAvg
       }),
       overallAvg: 0,
       computeRate: '',
@@ -3214,25 +3224,29 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       handler: function handler(items) {
         var _this = this;
 
-        // console.log(items);
+        console.log(items);
         var rateVals = [];
         var count = 0;
         items.data.forEach(function (item) {
           if (item.rate) {
-            count++;
-            console.log('The list of colours has changed!');
+            count++; // console.log('The list of colours has changed!');
+
             rateVals.push(item.rate);
             var sumRates = rateVals.reduce(function (current, previous) {
               return parseInt(current) + parseInt(previous);
-            }, 0);
-            console.log(rateVals);
-            console.log(sumRates);
-            console.log(count);
+            }, 0); // console.log(rateVals)
+            // console.log(sumRates)
+            // console.log(count);
+
             return _this.overallAvg = (sumRates / count).toFixed(1);
           }
         });
       },
       deep: true
+    },
+    overallAvg: function overallAvg(val) {
+      console.log(val);
+      this.rates.avg_rate = val;
     }
   },
   methods: {
@@ -3245,9 +3259,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
         var data = response.data.data; // this.rates = data;
 
-        (_this2$rates$data = _this2.rates.data).push.apply(_this2$rates$data, _toConsumableArray(data));
+        (_this2$rates$data = _this2.rates.data).push.apply(_this2$rates$data, _toConsumableArray(data)); // console.log(this.rates);
 
-        console.log(_this2.rates);
       });
     },
     addRow: function addRow() {
@@ -3261,8 +3274,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       this.rates.data.splice(index, 1); // this.rates.splice(index + 1, 0, {});
     },
     rateUserSubmission: function rateUserSubmission() {
-      console.log('data');
-      console.log(this.rates);
+      // console.log(this.rates);
+      this.spinnerUpdateDepart = true;
       $.ajax({
         url: this.urlGetEvaluationRatings,
         type: "post",
@@ -3271,10 +3284,35 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         },
         data: this.rates,
         success: function success(data) {
-          console.info(data);
+          console.info(data); // Reset the alert values if exists
+
+          document.querySelector(".alert-danger") ? document.querySelector(".alert-danger").remove() : ''; // **** Reset the alert values
+
+          this.spinnerUpdateDepart = false;
+
+          if (data == '201') {
+            window.location.href = '/admin/hr/account-details';
+          }
         },
-        error: function error() {
-          this.isValid = false;
+        error: function error(_error) {
+          console.log(_error.responseJSON.errors);
+          this.spinnerUpdateDepart = false;
+          var errorObj = _error.responseJSON.errors;
+          var result = Object.keys(errorObj).map(function (key) {
+            return [key, errorObj[key]];
+          });
+          result.forEach(function (elem) {
+            var appentToInput = document.querySelector('input[name="' + elem[0] + '"]'); // Reset the alert values if exists
+
+            document.querySelector(".alert-danger") ? document.querySelector(".alert-danger").remove() : ''; // **** Reset the alert values
+
+            var error = document.createElement("div");
+            error.className = "form-group alert alert-danger";
+            appentToInput.closest('.form-group').before(error);
+            elem.forEach(function (val) {
+              error.innerHTML = val;
+            });
+          });
         }
       }); // this.rates.post(this.urlGetEvaluationRatings).then(data => {
       //     console.log(data);
@@ -56752,14 +56790,30 @@ var render = function() {
                         }),
                         _vm._v(" "),
                         _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.rates.period,
+                              expression: "rates.period"
+                            }
+                          ],
                           staticClass: "form-control w-75 d-flex ml-auto",
                           attrs: {
                             type: "text",
                             name: "period",
-                            required: "",
                             placeholder: _vm.$t(
                               "cruds.evaluation.fields.review_period"
                             )
+                          },
+                          domProps: { value: _vm.rates.period },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(_vm.rates, "period", $event.target.value)
+                            }
                           }
                         })
                       ]
@@ -56784,7 +56838,7 @@ var render = function() {
                         _vm._v(" "),
                         _c("input", {
                           staticClass: "form-control w-75 d-flex ml-auto",
-                          attrs: { type: "text", name: "date" },
+                          attrs: { type: "text", name: "date", disabled: "" },
                           domProps: { value: _vm.user.employment_id }
                         })
                       ]
@@ -56828,15 +56882,28 @@ var render = function() {
                           }
                         }),
                         _vm._v(" "),
-                        _c("input", {
-                          staticClass: "form-control w-75 d-flex ml-auto",
-                          attrs: {
-                            type: "text",
-                            name: "manager",
-                            disabled: ""
-                          },
-                          domProps: { value: _vm.departmentHead.fullname }
-                        })
+                        _vm.departmentHead.fullname == _vm.user.fullname
+                          ? _c("input", {
+                              staticClass: "form-control w-75 d-flex ml-auto",
+                              attrs: {
+                                type: "text",
+                                name: "manager",
+                                disabled: ""
+                              },
+                              domProps: { value: "CEO" }
+                            })
+                          : _c("input", {
+                              staticClass: "form-control w-75 d-flex ml-auto",
+                              attrs: {
+                                type: "text",
+                                name: "manager",
+                                disabled: ""
+                              },
+                              domProps: {
+                                value: _vm.departmentHead.fullname,
+                                textContent: _vm._s(_vm.departmentHead.user_id)
+                              }
+                            })
                       ]
                     )
                   ])
@@ -56925,7 +56992,7 @@ var render = function() {
                                   }
                                 ],
                                 staticClass: "form-control d-bock",
-                                attrs: { type: "text" },
+                                attrs: { type: "text", required: "" },
                                 domProps: { value: item.name },
                                 on: {
                                   input: function($event) {

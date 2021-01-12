@@ -335,7 +335,7 @@
                             </a>
                         </li>
                     @endcan
-                    @can('penalty_category')
+                    @can('penalty_category_access')
                         <li class="c-sidebar-nav-item">
                             <a href="{{ route("admin.penalty-categories.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/penalty-categories") || request()->is("admin/penalty-categories/*") ? "active" : "" }}">
                                 <i class="fa-fw far fa-edit c-sidebar-nav-icon self-item-link">

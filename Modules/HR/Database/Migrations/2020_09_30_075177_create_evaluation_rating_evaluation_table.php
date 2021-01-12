@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateEvaluationsRatingEvaluationsTable extends Migration
+class CreateEvaluationRatingEvaluationTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateEvaluationsRatingEvaluationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('evaluations_rating_evaluations', function (Blueprint $table) {
+        Schema::create('evaluation_rating_evaluation', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('rating_evaluation_id')->nullable();
             $table->unsignedInteger('evaluation_id')->nullable();

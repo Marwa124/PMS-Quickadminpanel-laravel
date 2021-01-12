@@ -40,7 +40,10 @@
                                 <div class="form-group">
                                     <div class="d-flex justify-content-flex-end">
                                         <label for="designation_id" v-text="$t('cruds.evaluation.fields.period')"></label>
-                                        <input class="form-control w-75 d-flex ml-auto" type="text" name="period" required :placeholder="$t('cruds.evaluation.fields.review_period')">
+                                        <!-- required  -->
+                                        <input class="form-control w-75 d-flex ml-auto" type="text" name="period" 
+                                        v-model="rates.period"
+                                        :placeholder="$t('cruds.evaluation.fields.review_period')">
                                     </div>
                                 </div>
                             </div>
@@ -48,7 +51,7 @@
                                 <div class="form-group">
                                     <div class="d-flex justify-content-flex-end">
                                         <label for="designation_id" v-text="$t('cruds.evaluation.fields.employee_id')"></label>
-                                        <input class="form-control w-75 d-flex ml-auto" type="text" name="date" :value="user.employment_id">
+                                        <input class="form-control w-75 d-flex ml-auto" type="text" name="date" :value="user.employment_id" disabled>
                                     </div>
 
                                 </div>
@@ -63,7 +66,10 @@
                                 <div class="form-group">
                                     <div class="d-flex justify-content-flex-end">
                                         <label for="designation_id" v-text="$t('cruds.evaluation.fields.manager')"></label>
-                                        <input class="form-control w-75 d-flex ml-auto" type="text" name="manager" disabled :value="departmentHead.fullname">
+                                        <input v-if="departmentHead.fullname == user.fullname" class="form-control w-75 d-flex ml-auto" 
+                                             type="text" name="manager" disabled :value="'CEO'">
+                                        <input v-else class="form-control w-75 d-flex ml-auto" type="text" name="manager" 
+                                             v-text="departmentHead.user_id" disabled :value="departmentHead.fullname">
                                     </div>
                                 </div>
                             </div>
@@ -99,7 +105,7 @@
                                             <span class="text-white bg-danger d-flex align-self-center p-1 mr-2" style="border-radius:2px">
                                                 <i class="fas fa-trash-alt" @click="removeRow(index)"></i>
                                             </span>
-                                            <input v-model="item.name" type="text" class="form-control d-bock">
+                                            <input v-model="item.name" type="text" class="form-control d-bock" required>
                                         </div>
                                         <div class="d-flex mt-1">
                                             <td>Comments</td>
@@ -191,7 +197,7 @@ import i18n from '../../plugins/i18n';
 export default {
     components: {HasError, AlertErrors, AlertSuccess},
 
-    props: ['langKey', 'user', 'designation', 'departmentTitle', 'departmentHead'],
+    props: ['langKey', 'user', 'designation', 'departmentTitle', 'departmentHead', 'manager', 'auth'],
     data(){
         return {
             urlGetEvaluationRatings: '/api/v1/admin/hr/evaluations',
@@ -204,7 +210,11 @@ export default {
                 data: [], // user
                 goal: '',
                 comment: '',
-                user_id: this.user.user_id
+                period: '',
+                type: this.manager,
+                auth: this.auth,
+                user_id: this.user.user_id,
+                avg_rate: this.overallAvg,
             }),
 
             overallAvg: 0,
@@ -216,27 +226,31 @@ export default {
     watch: {
         'rates': {
             handler: function(items) {
-                // console.log(items);
+                console.log(items);
                 var rateVals = [];
                 var count = 0;
                 items.data.forEach(item => {
                     if(item.rate) {
                         count ++;
-                        console.log('The list of colours has changed!');
+                        // console.log('The list of colours has changed!');
                         rateVals.push(item.rate);
     
                         var sumRates = rateVals.reduce((current, previous) => {
                             return parseInt(current) + parseInt(previous);
                         }, 0)
-                        console.log(rateVals)
-                        console.log(sumRates)
-                        console.log(count);
+                        // console.log(rateVals)
+                        // console.log(sumRates)
+                        // console.log(count);
                         return this.overallAvg = (sumRates / count).toFixed(1); 
                     }
                 });
             },
             deep: true
         },
+        overallAvg: function(val) {
+            console.log(val);
+            this.rates.avg_rate = val;
+        }
     },
     methods: {
         //Fetch Ratings From db
@@ -245,7 +259,7 @@ export default {
                 const data = response.data.data
                 // this.rates = data;
                 this.rates.data.push(...data);
-                console.log(this.rates);
+                // console.log(this.rates);
             });
         },
 
@@ -262,9 +276,8 @@ export default {
 
         },
         rateUserSubmission(){
-                console.log('data');
-                console.log(this.rates);
-
+                // console.log(this.rates);
+            this.spinnerUpdateDepart = true;
             $.ajax({
                 url: this.urlGetEvaluationRatings,
                 type: "post",
@@ -274,9 +287,35 @@ export default {
                 data: this.rates,
                 success: function (data) {
                     console.info(data);
+                    // Reset the alert values if exists
+                     document.querySelector(".alert-danger") ? document.querySelector(".alert-danger").remove() : '';
+                    // **** Reset the alert values
+                    this.spinnerUpdateDepart = false;
+
+                    if(data == '201')
+                    {
+                        window.location.href = '/admin/hr/account-details'
+                    }
                 },
-                error: function() {
-                    this.isValid = false;
+                error: function(error) {
+                    console.log(error.responseJSON.errors);
+                    this.spinnerUpdateDepart = false;
+                    var errorObj = error.responseJSON.errors;
+                    var result = Object.keys(errorObj).map((key) => [(key), errorObj[key]]);
+
+                    result.forEach(elem => {
+                        let appentToInput = document.querySelector('input[name="'+elem[0]+'"]')
+                         // Reset the alert values if exists
+                        document.querySelector(".alert-danger") ? document.querySelector(".alert-danger").remove() : '';
+                         // **** Reset the alert values
+
+                        var error = document.createElement("div");
+                        error.className = "form-group alert alert-danger"
+                        appentToInput.closest('.form-group').before(error)
+                        elem.forEach(val => {
+                            error.innerHTML = val           
+                        });         
+                    });
                 }
             });
             // this.rates.post(this.urlGetEvaluationRatings).then(data => {

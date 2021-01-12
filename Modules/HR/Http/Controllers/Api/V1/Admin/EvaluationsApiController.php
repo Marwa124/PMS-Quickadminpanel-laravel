@@ -15,8 +15,10 @@ use Gate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Modules\HR\Entities\Designation;
+use Modules\HR\Entities\Evaluation;
 use Modules\HR\Entities\RatingEvaluation;
 use Modules\HR\Http\Controllers\Services\DepartmentExportServices;
+use Modules\HR\Http\Requests\Store\StoreEvaluationRequest;
 use Symfony\Component\HttpFoundation\Response;
 
 class EvaluationsApiController extends Controller
@@ -31,29 +33,51 @@ class EvaluationsApiController extends Controller
         // return new DepartmentResource(Department::with(['department_head'])->get());
     }
 
-    public function store(Request $request)
+    public function store(StoreEvaluationRequest $request)
     // public function store(StoreDepartmentRequest $request)
     {
         DB::beginTransaction();
+        // dd($request->all());
 
         try {
+            if(gettype($request->data) == 'array' && !empty($request->data)){
+                
+                $evaluation = Evaluation::create([
+                    'user_id' => $request->user_id,
+                    'manager_id' => $request->auth,
+                    'type'    => $request->type ? 'manager' : 'employee',
+                    'period'  => $request->period,
+                    'comment' => $request->comment,
+                    'goal'    => $request->goal,
+                    'avg_rate' => $request->avg_rate
+                ]);
+                
+                foreach ($request->data as $item) {
+                    $ratings = RatingEvaluation::where('name', $item['name'])->first();
+                    if(!$ratings && $item['name'] != '') {
+                        $ratings = RatingEvaluation::create([
+                            'name' => $item['name']
+                        ]); 
+                    }
+                    if(isset($item['rate'])){
+                        $evaluation->ratingEvaluations()->attach($ratings, [
+                            'rate'    => $item['rate'],
+                            'comment' => $item['comment'] ?? ''
+                        ]);
+                    }
+                }
 
+    
+                // $user->activities()->attach($activityIdOrModel, ['product_id' => $productId]);
+                DB::commit();
+            }
+           
         } catch(\Exception $e) {
             return response()->json($e->getMessage());
         }
-        if(gettype($request->data) == 'array' && !empty($request->data)){
-            dd($request->all());
-            $user = User::find($request->user_id);
-            // $user->activities()->attach($activityIdOrModel, ['product_id' => $productId]);
-            DB::commit();
-        }
-       
-        return response()
-            ->setStatusCode(Response::HTTP_CREATED);
 
-        // return (new DepartmentResource($department))
-        //     ->response()
-        //     ->setStatusCode(Response::HTTP_CREATED);
+        return response(Response::HTTP_CREATED);
+
     }
 
     public function show(Department $department)
