@@ -287,6 +287,7 @@
                 'job_application_show',
                 'job_application_delete',
                 'job_application_access',
+                'generate_hr_letter',
             ],
 
             'proposals' => [

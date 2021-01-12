@@ -26,6 +26,7 @@
         "livewire/livewire": "^2.3",
         "maatwebsite/excel": "^3.1",
         "nwidart/laravel-modules": "^7.2",
+        "pdfanonymous/phpanonymous": "dev-master",
         "pusher/pusher-php-server": "~4.0",
         "spatie/laravel-medialibrary": "^7.19",
         "spatie/laravel-permission": "^3.17",

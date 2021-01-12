@@ -97,13 +97,9 @@
                                                 <div class="row">
                                                     <div class="col-md-5 d-flex justify-content-center align-self-center">
                                                         @if($detail->avatar )
-                                                            {{-- <a href="{{ str_replace('storage', 'public/storage', $detail->avatar->getUrl()) }}" target="_blank">
+                                                            <a href="{{ $detail->avatar->getUrl() }}" target="_blank">
                                                                 <img class="rounded-circle img-thumbnail d-flex m-auto"
-                                                                src="{{ str_replace('storage', 'public/storage', $detail->avatar->getUrl('thumb')) }}">
-                                                            </a> --}}
-                                                            <a href="{{ str_replace('storage', 'storage/app/public', $detail->avatar->getUrl()) }}" target="_blank">
-                                                                <img class="rounded-circle img-thumbnail d-flex m-auto"
-                                                                src="{{ str_replace('storage', 'storage/app/public', $detail->avatar->getUrl('thumb')) }}">
+                                                                src="{{ $detail->avatar->getUrl('thumb') }}">
                                                             </a>
                                                         @else
                                                             <a href="javascript:void(0)" style="display: inline-block">

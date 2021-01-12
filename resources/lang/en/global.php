@@ -284,5 +284,10 @@ return [
 
     ////////
     'assign_to'                            => 'Assign To',
-    'forcedelete'                          => 'Force Delete'
+    'forcedelete'                          => 'Force Delete',
+
+    // 'pdf_hr_letter'   => [
+    //     'title' => 'مفردات المرتب',
+    //     'salute' => 'السادة',
+    // ],
 ];

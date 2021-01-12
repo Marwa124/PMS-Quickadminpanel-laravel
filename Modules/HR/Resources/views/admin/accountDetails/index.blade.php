@@ -212,8 +212,14 @@
                                             </a>
                                         @endcan
 
+                                        {{-- @can('appointment_letter') --}}
+                                            <a class="btn btn-xs btn-dark my-1" href="{{ route('hr.admin.evaluations.edit', $accountDetail->id) }}">
+                                                PDF Appointment Letter
+                                            </a>
+                                        {{-- @endcan --}}
+
                                         {{-- @can('account_detail_evaluate') --}}
-                                            <a class="btn btn-xs btn-info my-1" href="{{ route('hr.admin.evaluations.edit', $accountDetail->id) }}">
+                                            <a class="btn btn-xs btn-success my-1" href="{{ route('hr.admin.evaluations.edit', $accountDetail->id) }}">
                                                 Evaluate
                                             </a>
                                         {{-- @endcan --}}

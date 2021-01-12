@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Hash;
 use Modules\HR\Entities\LeaveCategory;
 use Modules\Payroll\Entities\AdvanceSalary;
 use Modules\Payroll\Http\Requests\Store\StoreAdvanceSalaryRequest;
+use PDF;
 
 class AccountDetailsController extends Controller
 {
@@ -158,6 +159,14 @@ class AccountDetailsController extends Controller
         AccountDetail::where('user_id', $id)->update(request()->only(['fullname']));
         return response()->json(AccountDetail::where('user_id', $id)->first());
 
+    }
+
+    public function generatePDF($user_id)
+    {
+        $detail['detail'] = AccountDetail::where('user_id', $user_id)->first();
+        $pdf = PDF::loadView('hr::admin.accountDetails.pdf', $detail);
+
+        return $pdf->download('Salary Details '.$detail['detail']->fullname.'.pdf');
     }
 
     public function update(UpdateAccountDetailRequest $request, AccountDetail $accountDetail)
