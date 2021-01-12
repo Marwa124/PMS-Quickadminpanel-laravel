@@ -452,7 +452,7 @@
     }
   }
   dtButtons.push(deleteButton)
-@endcan
+@endcangi
 
 
 
@@ -470,6 +470,7 @@ $.extend(true, $.fn.dataTable.defaults, {
 
     // Hide columns
     // table.columns([3]).visible( true );
+    // table.columns([3]).search( 0 ).draw(); // set a default load in datatable column (Active Users)
     // table.columns([3]).search( 0 ).draw();  // set a default load in datatable column (Active Users)
 
 
