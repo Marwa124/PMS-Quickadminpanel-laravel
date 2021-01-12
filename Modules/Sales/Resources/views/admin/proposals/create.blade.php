@@ -69,7 +69,7 @@
             <div class="form-group row">
                 <div class="col-md-6">
                     <label for="permissions">{{ trans('cruds.proposal.fields.status') }}</label>
-                    <select class="form-control  {{ $errors->has('status') ? 'is-invalid' : '' }}" name="status[]"
+                    <select class="form-control  {{ $errors->has('status') ? 'is-invalid' : '' }}" name="status"
                         id="status">
 
                         <option value="Waiting_approval">{{trans('cruds.proposal.fields.Waiting_approval')}}</option>
@@ -124,9 +124,8 @@
                     <span class="help-block">{{ trans('cruds.proposal.fields.proposal_validity_helper') }}</span>
                 </div>
                 <div class="col-md-6">
-                    <label
-                        for="materials_supply_delivery">{{ trans('cruds.proposal.fields.materials_supply_delivery') }}
-                        *</label>
+                    <label class="required"
+                        for="materials_supply_delivery">{{ trans('cruds.proposal.fields.materials_supply_delivery') }}</label>
                     <input class="form-control {{ $errors->has('materials_supply_delivery') ? 'is-invalid' : '' }}"
                         type="text" name="materials_supply_delivery" id="materials_supply_delivery"
                         value="{{ old('materials_supply_delivery', '') }}" required>
@@ -141,9 +140,9 @@
             </div>
             <div class="form-group row">
                 <div class="col-md-6">
-                    <label for="warranty">{{ trans('cruds.proposal.fields.warranty') }}*</label>
-                    <input class="form-control {{ $errors->has('warranty') ? 'is-invalid' : '' }}" type="number"
-                        name="warranty" id="warranty" value="{{ old('warranty', '') }}" step="0.01">
+                    <label for="warranty" class="required">{{ trans('cruds.proposal.fields.warranty') }}</label>
+                    <input class="form-control {{ $errors->has('warranty') ? 'is-invalid' : '' }}" type="text"
+                        name="warranty" id="warranty" value="{{ old('warranty', '') }}" >
                     @if($errors->has('warranty'))
                     <div class="invalid-feedback">
                         {{ $errors->first('warranty') }}
@@ -152,9 +151,9 @@
                     <span class="help-block">{{ trans('cruds.proposal.fields.warranty_helper') }} </span>
                 </div>
                 <div class="col-md-6">
-                    <label for="prices">{{ trans('cruds.proposal.fields.prices') }}*</label>
-                    <input class="form-control {{ $errors->has('prices') ? 'is-invalid' : '' }}" type="number"
-                        name="prices" id="prices" value="{{ old('prices', '') }}" step="0.01">
+                    <label for="prices" class="required" >{{ trans('cruds.proposal.fields.prices') }}</label>
+                    <input class="form-control {{ $errors->has('prices') ? 'is-invalid' : '' }}" type="text"
+                        name="prices" id="prices" value="{{ old('prices', '') }}" >
                     @if($errors->has('prices'))
                     <div class="invalid-feedback">
                         {{ $errors->first('prices') }}
@@ -165,9 +164,9 @@
             </div>
             <div class="form-group row">
                 <div class="col-md-6">
-                    <label
+                    <label class="required"
                         for="maintenance_service_contract">{{ trans('cruds.proposal.fields.maintenance_service_contract') }}
-                        *</label>
+                        </label>
                     <input class="form-control {{ $errors->has('maintenance_service_contract') ? 'is-invalid' : '' }}"
                         type="text" name="maintenance_service_contract" id="maintenance_service_contract"
                         value="{{ old('maintenance_service_contract', '') }}">
@@ -180,7 +179,7 @@
                         class="help-block">{{ trans('cruds.proposal.fields.maintenance_service_contract_helper') }}</span>
                 </div>
                 <div class="col-md-6">
-                    <label for="payment_terms">{{ trans('cruds.proposal.fields.payment_terms') }}*</label>
+                    <label for="payment_terms" class="required">{{ trans('cruds.proposal.fields.payment_terms') }} </label>
                     <textarea class="form-control {{ $errors->has('payment_terms') ? 'is-invalid' : '' }}"
                         name="payment_terms" id="payment_terms">{!! old('payment_terms') !!}</textarea>
                     @if($errors->has('payment_terms'))
@@ -287,7 +286,7 @@
                                 <td class=""><input class="form-control" type="text" name="brand" id=""></td>
                                 <td class=""><input class="form-control" type="text" name="part" id=""></td>
                                 <td class=""><input class="form-control " type="number" name="unit_cost" id=""></td>
-                                <td class=""><input class="form-control" type="number" name="total_cost_price" id=""></td>
+                                <td class=""><input class="form-control" type="number" name="total_cost_price" id="total_cost_price"></td>
                                 <td class=""><input class="form-control" type="number" name="margin" id=""></td>
                                 <td class=""><input class="form-control" type="number" name="selling_Price" id="" disabled> </td>
                                 <td class=""><input class="form-control" type="number" name="delivery" id=""></td>
@@ -297,7 +296,7 @@
                                         {{ $taxRate->rate_percent.'% | '.$taxRate->name }}</option>
                                     @endforeach 
                                 </td>
-                                <td class=""><input class="form-control" type="number" name="" id=""></td>
+                                <td class="amount"></td>
                                 <input type="hidden" name="new_itmes_id">
                                 <td class=" hidden-print"><button type="button"
                                         onclick="add_item_to_table('undefined', 'undefined',1); return false;"

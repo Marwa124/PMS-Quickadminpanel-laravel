@@ -20,6 +20,7 @@ use Gate;
 use Illuminate\Http\Request;
 use Spatie\MediaLibrary\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\DB;
 
 class ProposalsController extends Controller
 {
@@ -48,8 +49,93 @@ class ProposalsController extends Controller
 
     public function store(StoreProposalRequest $request)
     {
-        $proposal = Proposal::create($request->all());
-        dd($proposal,$request->all());
+        // DB::beginTransaction();
+
+        // try {
+            
+        //     DB::commit();
+        //     return redirect()->route('sales.admin.leads.index');
+
+        // } catch (\Exception $e) {
+        //     DB::rollback();
+        //     return redirect()->back();
+        // }
+        // dd($request->all());
+//   "porposal_item" => "1"
+//   "item_name" => null
+//   "item_desc" => null
+//   "group_name" => null
+//   "quantity" => null
+//   "unit" => null
+//   "brand" => null
+//   "part" => null
+//   "unit_cost" => null
+//   "total_cost_price" => null
+//   "margin" => null
+//   "delivery" => null
+//   "new_itmes_id" => null
+//   "" => "0"
+//   "adjustment" => "0"
+
+
+// 'total_tax',
+// 'total_cost_price',
+// 'tax',
+
+// 'date_sent',
+// 'proposal_deleted',
+// 'emailed',
+// 'show_client',
+// 'convert',
+// 'convert_module',
+// 'module_id',
+
+// 'discount_type',
+// 'discount_percent',
+// 'after_discount',
+// 'discount_total',
+// 'adjustment',
+// 'show_quantity_as',
+// 'allowed_cmments',
+// 'proposal_validity',
+// 'materials_supply_delivery',
+// 'warranty',
+// 'prices',
+// 'user_id',
+// 'payment_terms',
+        $tax=$request->tax ? json_encode($request->tax) : '';
+        $total_tax=$request->total_tax ? array_sum($request->total_tax) : 0;
+        $after_discount=$request->after_discount ? $request->after_discount : 0;
+        $total=$request->total ? $request->total : 0;
+        $discount_percent=$request->discount_percent ? $request->discount_percent : 0;
+        $request->merge(['tax'=>$tax,'total_tax'=>$total_tax,'after_discount'=>$after_discount,'total'=>$total,'discount_percent'=>$discount_percent]);
+
+        dd($request->all());
+        $proposal = Proposal::create($request->only([
+        'reference_no',
+        'subject',
+        'module',
+        'currency',
+        'module_id',
+        // 'status',
+        'user_id',
+        'proposal_validity',
+        'materials_supply_delivery',
+        'warranty',
+        'prices',
+        'maintenance_service_contract',
+        'payment_terms',
+        'notes',
+        'expire_date',
+        'proposal_date',
+        'total_tax',
+        'total_cost_price',
+        'tax',
+        'adjustment',
+        'discount_percent',
+        ])->all());
+        // $request->only('username', 'password')
+        
         $proposal->permissions()->sync($request->input('permissions', []));
 
         if ($media = $request->input('ck-media', false)) {

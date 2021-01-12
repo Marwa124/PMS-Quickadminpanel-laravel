@@ -75,6 +75,16 @@ function getitem(val) {
             $('.main input[name="hsn_code"]').val(response.hsn_code);
             $('.main input[name="new_itmes_id"]').val(val);
             $('.main input[name="quantity"]').val(response.quantity);
+            $('.main input[name="total_qty"]').val(Math.round(response.quantity));
+            if(response.margin != 0){
+                var selling_Price= (response.unit_cost * response.quantity)*(response.margin/100) +(response.unit_cost * response.quantity);
+
+            }else{
+                var selling_Price= response.unit_cost * response.quantity;
+                
+            }
+
+            $('.main input[name="selling_Price"]').val(selling_Price);
             var taxname = response.taxname;
             var taxrate = response.taxrate;
             if (taxname != null) {
@@ -157,18 +167,19 @@ function calculate_total_edit() {
     } else {
         $('.total_after_discount').removeClass('d-none');
     }
-
+    // console.log(quantity,'outside',quantity == '');
     $.each(rows, function () {
         quantity = $(this).find('[data-quantity]').val();
         margina = $(this).find('[data-edit-margin]').val();
         var total_qty = Math.round($(this).find('[data-total-qty]').val());
         var saved_items_id = Math.round($(this).find('[data-saved-items-id]').val());
+        // console.log(quantity,'inside',quantity == '',quantity > total_qty,total_qty,saved_items_id,saved_items_id != null,saved_items_id != '');
         if (quantity == '') {
             quantity = 1;
         }
-        if (saved_items_id != '' && quantity > total_qty) {
-            quantity = total_qty;
-        }
+        // if (saved_items_id != null) {
+        //     quantity = total_qty;
+        // }
 
         $(this).find('[data-quantity]').val(quantity);
         _amount2 = parseFloat($(this).find('td.rate input').val()) * quantity;
@@ -254,8 +265,11 @@ function calculate_total_edit() {
     $('.total').html(total.toFixed(2) + hidden_input('total', total.toFixed(2)));
 
     $('.total_without_margin').html(total_without_margin.toFixed(2) + hidden_input('total_without_margin', total_without_margin.toFixed(2)));
-
-    $('.profit').html(profit.toFixed(2) + " (" + ((profit * 100) / after_discount).toFixed(2) + " %)" + hidden_input('profit', profit.toFixed(2)));
+    var profitrate=((profit * 100) / after_discount).toFixed(2);
+    if (isNaN(profitrate)) {
+            profitrate = 0;
+        }
+    $('.profit').html(profit.toFixed(2) + " (" + profitrate + " %)" + hidden_input('profit', profit.toFixed(2)));
 }
 
 /*
@@ -290,10 +304,11 @@ function add_item_to_table(data, itemid, merge_invoice) {
             data.unit = '';
         }
         // Check if rate is number
-        if (!data.selling_price || typeof (data.selling_price) == 'undefined') {
-            data.selling_price = 0;
+        // console.log(data,data.selling_price,data.selling_price == null || typeof (data.selling_price) == 'undefined',"data.selling_price == null ",data.selling_price == null ,"typeof (data.selling_price) == 'undefined'",typeof (data.selling_price) == 'undefined');
+        if (!data.selling_Price || typeof (data.selling_Price) == 'undefined') {
+            data.selling_Price = 0;
         }
-
+        // console.log(data.selling_Price);
         var amount = data.rate * data.qty;
         amount = amount;
 
@@ -308,7 +323,7 @@ function add_item_to_table(data, itemid, merge_invoice) {
             table_row += '<td class="item_name"><input  name="items[' + item_key + '][item_name]" class="form-control " value="' + data.name + '"></td>';
             table_row += '<td><textarea  name="items[' + item_key + '][item_desc]" class="form-control item_item_desc" >' + data.description.replace(regex, "\n") + '</textarea></td>';
             table_row += '<td class="group_name"><input class="form-control " type="text" name="items[' + item_key + '][group_name]" id="" value="' + data.group_name + '"></td>';
-            table_row += '<td><input type="text" data-parsley-type="number" min="0" onblur="calculate_total_edit();" onchange="calculate_total_edit();" data-quantity name="items[' + item_key + '][quantity]" value="' + data.qty + '" class="form-control " >';
+            table_row += '<td><input type="number" data-parsley-type="number" min="0" onblur="calculate_total_edit();" onchange="calculate_total_edit();" data-quantity name="items[' + item_key + '][quantity]" value="' + data.qty + '" class="form-control " >';
 
 
             table_row += '</td>';
@@ -316,19 +331,19 @@ function add_item_to_table(data, itemid, merge_invoice) {
             table_row += '<td class="ratex"><input type="text" data-parsley-type="text" name="items[' + item_key + '][brand]" value="' + data.brand + '" class="form-control " ></td>';
             table_row += '<td class="ratex"><input type="text" data-parsley-type="text" name="items[' + item_key + '][part]" value="' + data.part + '" class="form-control " ></td>';
 
-            if (data.selling_price != 0) {
+            if (data.selling_Price != 0) {
 
                 table_row += '<td class="rate"><input type="number" data-parsley-type="number" value="' + data.unit_cost + '" class="form-control  w-auto" onblur="calculate_total_edit();" onchange="calculate_total_edit();" name="items[' + item_key + '][unit_cost]"></td>';
                 table_row += '<td class="total_cost_price"><input type="text" name="items[' + item_key + '][total_cost_price]" value="' + data.total_cost_price + '" onblur="calculate_total_edit();" onchange="calculate_total_edit();" total_cost_price placeholder="Total Cost Price" class="form-control " readonly/></td>';
                 table_row += '<td class="margin"><input type="text" name="items[' + item_key + '][margin]" value="' + data.margin + '" onblur="calculate_total_edit();" onchange="calculate_total_edit();" data-edit-margin placeholder="Margin" class="form-control "/></td>';
-                table_row += '<td class="rateee"> <input type="text" data-parsley-type="number"  onblur="calculate_total_edit();" onchange="calculate_total_edit();" name="items[' + item_key + '][selling_price]" value="' + data.selling_price + '" class="form-control " readonly> </td>';
+                table_row += '<td class="rateee"> <input type="text" data-parsley-type="number"  onblur="calculate_total_edit();" onchange="calculate_total_edit();" name="items[' + item_key + '][selling_price]" value="' + data.selling_Price + '" class="form-control " readonly> </td>';
                 table_row += '<td class="ratex"><input type="text" data-parsley-type="text" name="items[' + item_key + '][delivery]" value="' + data.delivery + '" class="form-control " ></td>';
             } else {
                 //  table_row += '<td class="ratex"><input type="text" data-parsley-type="number" onblur="calculate_total();" onchange="calculate_total();" name="items[' + item_key + '][unit_cost]" value="' + data.rate + '" class="form-control " ></td>';
                 table_row += '<td class="rate"> <input type="number" data-parsley-type="number" onblur="calculate_total();" onchange="calculate_total();" name="items[' + item_key + '][unit_cost]" value="' + data.unit_cost + '" class="form-control "/> </td>';
                 table_row += '<td class="total_cost_price"><input type="text" name="items[' + item_key + '][total_cost_price]" value="' + data.total_cost_price + '" onblur="calculate_total_edit();" onchange="calculate_total_edit();" total_cost_price placeholder="Total Cost Price" class="form-control " readonly/></td>';
                 table_row += '<td class="margin"><input type="text" name="items[' + item_key + '][margin]" value="' + data.margin + '" onblur="calculate_total_edit();" onchange="calculate_total_edit();" data-edit-margin placeholder="Margin" class="form-control "/></td>';
-                table_row += '<td class="rateee"> <input type="text" data-parsley-type="number"  onblur="calculate_total_edit();" onchange="calculate_total_edit();" name="items[' + item_key + '][selling_price]" value="" class="form-control " readonly> </td>';
+                table_row += '<td class="rateee"> <input type="text" data-parsley-type="number"  onblur="calculate_total_edit();" onchange="calculate_total_edit();" name="items[' + item_key + '][selling_price]" value="' + data.selling_Price + '" class="form-control " readonly> </td>';
                 // table_row += '<td class="rate"> <input type="text" data-parsley-type="number"  onblur="calculate_total();" onchange="calculate_total();" name="items[' + item_key + '][unit_cost]" value="' +  data.unit_cost + '" class="form-control "> </td>';
                 table_row += '<td class="ratex"><input type="text" data-parsley-type="text" name="items[' + item_key + '][delivery]" value="' + data.delivery + '" class="form-control " ></td>';
             }
@@ -433,7 +448,7 @@ function get_main_values() {
     response.rate = $('.main select[name="tax[]"] option:selected').data('taxrate');
     // console.log(response.rate);
     response.unit_cost = $('.main input[name="unit_cost"]').val();
-    response.total_qty = Math.round($('.main input[name="quantity"]').val());
+    response.total_qty =$('.main input[name="quantity"]').val();
     return response;
 }
 
@@ -466,7 +481,7 @@ $('body').on('change', 'input[name="discount_percent"]', function () {
         }, 3000);
         return false;
     }
-    console.log(this);
+    // console.log(this);
     // if ($(this).valid() == true) {
         calculate_total_edit();
     // }

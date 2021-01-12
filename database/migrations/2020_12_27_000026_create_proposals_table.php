@@ -18,9 +18,9 @@ class CreateProposalsTable extends Migration
             $table->integer('alert_overdue')->nullable();
             $table->string('currency')->nullable();
             $table->longText('notes')->nullable();
-            $table->string('total_tax')->nullable();
+            $table->decimal('total_tax', 15, 2)->nullable();
             $table->decimal('total_cost_price', 15, 2)->nullable();
-            $table->decimal('tax', 15, 2)->nullable();
+            $table->string('tax')->nullable();
             $table->string('status')->nullable();
             $table->date('date_sent')->nullable();
             $table->string('proposal_deleted')->nullable();
