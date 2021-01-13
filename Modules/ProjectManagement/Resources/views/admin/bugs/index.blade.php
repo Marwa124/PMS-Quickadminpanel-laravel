@@ -99,18 +99,33 @@
 
     </div>
 
-    @can('bug_create')
-        <div style="margin-bottom: 10px;" class="row">
-            <div class="col-lg-12">
+    <div style="margin-bottom: 10px;" class="row">
+        @can('bug_create')
+            <div class="col-lg-8">
                 <a class="btn btn-success" href="{{ route('projectmanagement.admin.bugs.create') }}">
                     {{ trans('global.add') }} {{ trans('cruds.bug.title_singular') }}
                 </a>
             </div>
-        </div>
-    @endcan
+        @endcan
+        @can('bug_delete')
+            <div style="margin: 10px;" class="row d-flex ml-auto">
+                <div class="col-lg-6 ">
+                    <a class="btn btn-{{$trashed ? 'info' : 'danger'}}"
+                       href="{{$trashed ? route('projectmanagement.admin.bugs.index') : route('projectmanagement.admin.bugs.trashed.index')}}">
+
+                        {{ $trashed ? 'Active ' : 'Trashed ' }} {{ trans('cruds.bug.title') }}
+
+                    </a>
+
+                </div>
+            </div>
+        @endcan
+    </div>
 <div class="card">
     <div class="card-header">
-        {{ trans('cruds.bug.title_singular') }} {{ trans('global.list') }}
+        <a class="float-left" id="all" type="button" >
+             {{ trans('cruds.bug.title') }} {{ trans('global.list') }}
+        </a>
     </div>
 
     <div class="card-body">
@@ -179,32 +194,47 @@
                                     {{ $bug->reporterBy->name ?? '' }}
                                 </td>
                                 <td>
-                                    @can('bug_show')
-                                        <a class="btn btn-xs btn-primary" href="{{ route('projectmanagement.admin.bugs.show', $bug->id) }}">
-                                            <span class="fa fa-eye"></span>
-                                        </a>
-                                    @endcan
+                                    @if(!$trashed)
+                                        @can('bug_show')
+                                            <a class="btn btn-xs btn-primary" href="{{ route('projectmanagement.admin.bugs.show', $bug->id) }}">
+                                                <span class="fa fa-eye"></span>
+                                            </a>
+                                        @endcan
 
-                                    @can('bug_edit')
-                                        <a class="btn btn-xs btn-info" href="{{ route('projectmanagement.admin.bugs.edit', $bug->id) }}">
-                                            <span class="fa fa-pencil-square-o"></span>
-                                        </a>
-                                    @endcan
-                                    @can('bug_assign_to')
+                                        @can('bug_edit')
+                                            <a class="btn btn-xs btn-info" href="{{ route('projectmanagement.admin.bugs.edit', $bug->id) }}">
+                                                <span class="fa fa-pencil-square-o"></span>
+                                            </a>
+                                        @endcan
+                                        @can('bug_assign_to')
 
-                                        <a class="btn btn-xs btn-success {{$bug->project->department ? '' : 'disabled'}}" href="{{ route('projectmanagement.admin.bugs.getAssignTo', $bug->id) }}" title="{{$bug->project->department ? '' : 'add department to project'}}" >
-                                            {{ trans('global.assign_to') }}
-                                        </a>
+                                            <a class="btn btn-xs btn-success {{$bug->project->department ? '' : 'disabled'}}" href="{{ route('projectmanagement.admin.bugs.getAssignTo', $bug->id) }}" title="{{$bug->project->department ? '' : 'add department to project'}}" >
+                                                {{ trans('global.assign_to') }}
+                                            </a>
 
-                                    @endcan
+                                        @endcan
 
-                                    @can('bug_delete')
-                                        <form action="{{ route('projectmanagement.admin.bugs.destroy', $bug->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
-                                            <input type="hidden" name="_method" value="DELETE">
-                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                            <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
-                                        </form>
-                                    @endcan
+                                        @can('bug_delete')
+                                            <form action="{{ route('projectmanagement.admin.bugs.destroy', $bug->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                                <input type="hidden" name="_method" value="DELETE">
+                                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
+                                            </form>
+                                        @endcan
+                                    @else
+                                        @can('bug_delete')
+                                            <form action="{{ route('projectmanagement.admin.bugs.forceDestroy', $bug->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                <input type="hidden" name="action" value="restore">
+                                                <input type="submit" class="btn btn-xs btn-success" value="{{ trans('global.restore') }}">
+                                            </form>
+                                            <form action="{{ route('projectmanagement.admin.bugs.forceDestroy', $bug->id) }}" method="POST" onsubmit="return confirm('Bug Will Force Delete ..! \n{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                <input type="hidden" name="action" value="force_delete">
+                                                <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.forcedelete') }}">
+                                            </form>
+                                        @endcan
+                                    @endif
 
                                 </td>
 
@@ -226,7 +256,9 @@
 <script>
     $(function () {
   let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-@can('bug_delete')
+
+@if(!$trashed)
+    @can('bug_delete')
   let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
   let deleteButton = {
     text: deleteButtonTrans,
@@ -255,7 +287,7 @@
   }
   dtButtons.push(deleteButton)
 @endcan
-
+@endif
   $.extend(true, $.fn.dataTable.defaults, {
     orderCellsTop: true,
     order: [[ 1, 'desc' ]],

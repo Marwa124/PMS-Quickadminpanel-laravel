@@ -17,9 +17,22 @@ class TaskStatusController extends Controller
     {
         abort_if(Gate::denies('task_status_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
+        if (request()->segment(count(request()->segments())) == 'trashed'){
+
+            abort_if(Gate::denies('task_status_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+            $trashed = true;
+
+            $taskStatuses = TaskStatus::onlyTrashed()->get();
+
+            return view('projectmanagement::admin.taskStatuses.index', compact('taskStatuses','trashed'));
+
+        }
+
+        $trashed = false;
         $taskStatuses = TaskStatus::all();
 
-        return view('projectmanagement::admin.taskStatuses.index', compact('taskStatuses'));
+        return view('projectmanagement::admin.taskStatuses.index', compact('taskStatuses','trashed'));
     }
 
     public function create()
@@ -71,5 +84,26 @@ class TaskStatusController extends Controller
         TaskStatus::whereIn('id', request('ids'))->delete();
 
         return response(null, Response::HTTP_NO_CONTENT);
+    }
+
+    public function forceDelete(Request $request,$id)
+    {
+        //dd($request->all(),$id);
+        $action = $request->action;
+
+        if ($action == 'force_delete') {
+
+            $taskStatus = TaskStatus::onlyTrashed()->where('id', $id)->first();
+
+            //force Delete Task
+            $taskStatus->forceDelete();
+
+        } else if ($action == 'restore') {
+            //restore Task
+            TaskStatus::onlyTrashed()->where('id', $id)->restore();
+        }
+
+        return back();
+
     }
 }
