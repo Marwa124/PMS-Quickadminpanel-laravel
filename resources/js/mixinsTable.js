@@ -34,10 +34,12 @@ export default {
 
                 // 2D array
                 let resultObject = response.data.dataExport;
-                resultObject.forEach(element => {
-                    const propertyValues = Object.values(element); // Object to Array
-                    this.dataExport.push(propertyValues);
-                });
+                if (resultObject) {
+                    resultObject.forEach(element => {
+                        const propertyValues = Object.values(element); // Object to Array
+                        this.dataExport.push(propertyValues);
+                    });
+                }
                 // --- 2D array
 
                 // Columns Adjust for CSV File Export

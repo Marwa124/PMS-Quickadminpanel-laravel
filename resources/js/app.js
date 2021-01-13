@@ -61,8 +61,8 @@ const app = new Vue({
         DepartmentCreate,
         DepartmentForm,
         DataTables, // Data Tables
-        
-        // Evaluation,
+
+        Evaluation,
     },
     // router,
 });

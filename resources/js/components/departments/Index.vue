@@ -49,13 +49,13 @@
                     </td>
                 </tr>
             </tbody>
-            <pagination
-                :query="query"
-                :model="model"
-                @getAllDepartments="getAllDepartments()"
-            >
-            </pagination>
         </table>
+        <pagination
+            :query="query"
+            :model="model"
+            @getAllDepartments="getAllDepartments()"
+        >
+        </pagination>
     </div>
 </template>
 
@@ -72,7 +72,7 @@ export default {
             urlDepartmentsList: '/api/v1/admin/hr/departments/list-vue',
             urlDepartments: '/admin/hr/departments',
             dataResult: {},
-            
+
             departmentRows: [],
             excelData: '',
 
@@ -95,9 +95,13 @@ export default {
     },
     mounted() {
         this.refActions = this.$refs._vmAction;
+
+        document.getElementById('_vm').style.width = "1px";
     },
 }
 </script>
 <style scoped>
-
+    .table-responsive{
+        display: table !important;
+    }
 </style>

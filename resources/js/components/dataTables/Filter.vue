@@ -14,7 +14,7 @@
                 enteries
             </div>
 
-            <div>
+            <div class="pdfLinkBtn">
                 <button class="btn btn-link" @click="generatePdf">PDF</button>
             </div>
 
@@ -92,7 +92,7 @@ export default {
                 head: [this.removeActionsColumn()],
                 body: [...this.dataTable],
             })
-            doc.save('test.pdf');
+            doc.save('preview.pdf');
         },
     },
     watch: {

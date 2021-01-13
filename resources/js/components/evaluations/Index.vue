@@ -21,41 +21,24 @@
             </table-head>
             <tbody>
                 <tr v-for="row in model.data" :key="row.id">
-                    <td>
-                        <input type="checkbox" v-model="departmentRows"
-                        :id="row.id"
-                        :value="row.department_name"
-                        @click="selectedItems(row.id)">
-                    </td>
+                    <!-- {{model.data}} -->
                     <td v-for="(item, index) in row" :key="index">
-                        <span v-if="index != 'department_head_account'">
-                            <span v-if="index == 'department_head_id'">
-                                {{row.department_head_account ? row.department_head_account.fullname : ''}}
-                            </span>
-                            <span v-else-if="index == 'department_designations'">
-                                {{row.department_designations[0] ?
-                                    row.department_designations[0].designation_name : ''}}
-                            </span>
-                            <span v-else>
-                                {{item}}
-                            </span>
-                        </span>
-                        <span v-else>
-                            <div>
-                                <a :href="`${urlDepartments}/${row.id}/edit`" v-text="$t('global.dit')"
-                                    class="btn btn-primary btn-sm"></a>
-                            </div>
-                        </span>
+                        {{item}}
+                    </td>
+                    <td>
+                        <a :href="urlEvaluation+'/'+row.id" class="btn btn-sm btn-danger text-white">
+                            <i class="fas fa-file-pdf"></i>
+                        </a>
                     </td>
                 </tr>
             </tbody>
-            <pagination
-                :query="query"
-                :model="model"
-                @getAllDepartments="getAllDepartments()"
-            >
-            </pagination>
-        </table> 
+        </table>
+        <pagination
+            :query="query"
+            :model="model"
+            @getAllDepartments="getAllDepartments()"
+        >
+        </pagination>
     </div>
 </template>
 
@@ -69,10 +52,10 @@ export default {
 
     data() {
         return {
-            urlDepartmentsList: '/api/v1/admin/hr/departments/list-vue',
-            urlDepartments: '/admin/hr/departments',
+            urlDepartmentsList: '/api/v1/admin/hr/evaluations/list',
+            urlEvaluation: '/admin/hr/evaluations',
             dataResult: {},
-            
+
             departmentRows: [],
             excelData: '',
 
@@ -80,24 +63,18 @@ export default {
         }
     },
     methods: {
-        fireEditBtn(val){
-            this.editDepartment = true;
-            this.$router.push({name: 'departments-edit', params: {id: val}})
-            console.log(this.$router);
-            console.log(this.editDepartment);
-        },
-
-        // Multi Select
-        selectedItems(data){
-            console.log(data);
-            console.log(this.departmentRows);
-        },
+        //
     },
     mounted() {
         this.refActions = this.$refs._vmAction;
+
+        document.querySelector('.pdfLinkBtn').style.display = "none";
+        document.getElementById('_vmid').style.width = "5%";
     },
 }
 </script>
 <style scoped>
-
+    .table-responsive{
+        display: table !important;
+    }
 </style>

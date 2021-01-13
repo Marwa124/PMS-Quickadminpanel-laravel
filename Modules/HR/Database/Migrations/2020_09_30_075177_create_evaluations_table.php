@@ -21,7 +21,7 @@ class CreateEvaluationsTable extends Migration
             $table->string('type')->nullable();
             $table->string('period')->nullable();
             $table->integer('manager_id')->nullable();
-            // $table->date('date')->nullable();
+            $table->string('date')->nullable();
             $table->float('avg_rate')->nullable();
             $table->text('comment')->nullable();
             $table->text('goal')->nullable();
