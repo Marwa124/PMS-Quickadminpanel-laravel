@@ -29,6 +29,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="12c5590f-20f1-441a-b116-7f3f712f734a" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/webServers.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Controllers/Traits/ProjectManagementHelperTrait.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/PMS-Quickadminpanel-laravel.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/PMS-Quickadminpanel-laravel.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/deployment.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
@@ -46,7 +48,7 @@
       <change beforePath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Controllers/Admin/TaskTagController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Controllers/Admin/TaskTagController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Controllers/Admin/TicketsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Controllers/Admin/TicketsController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Controllers/Admin/TimeSheetController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Controllers/Admin/TimeSheetController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Controllers/Traits/PermissionHelperTrait.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Controllers/Traits/ProjectManagementHelperTrait.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modules/ProjectManagement/Http/Controllers/Traits/PermissionHelperTrait.php" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/bugs/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/bugs/index.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/bugs/show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/bugs/show.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/milestones/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/milestones/index.blade.php" afterDir="false" />
@@ -60,12 +62,7 @@
       <change beforePath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/tickets/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/tickets/index.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Modules/ProjectManagement/Routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/ProjectManagement/Routes/web.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Models/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/User.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/0.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/0.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/1.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/1.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/2.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/2.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/css/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/app.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/mix-manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/public/mix-manifest.json" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -375,7 +372,7 @@
       <workItem from="1610444000792" duration="1793000" />
       <workItem from="1610445861586" duration="7152000" />
       <workItem from="1610460554802" duration="11338000" />
-      <workItem from="1610531572706" duration="20057000" />
+      <workItem from="1610531572706" duration="20301000" />
     </task>
     <servers />
   </component>
