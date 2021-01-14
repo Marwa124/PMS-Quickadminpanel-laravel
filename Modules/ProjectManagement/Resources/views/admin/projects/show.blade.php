@@ -252,7 +252,7 @@
             <div class="col-3">
                 <span class="float-right ">
                     @can('project_create')
-                        <a class="btn btn-info " href="{{ route('projectmanagement.admin.projects.clone', $project->id) }}" id="clone" onclick="return confirm('Are you sure to clone Project with milestone and tasks ?');" title="{{ trans('global.clone') }}">
+                        <a class="btn btn-secondary " href="{{ route('projectmanagement.admin.projects.clone', $project->id) }}" id="clone" onclick="return confirm('Are you sure to clone Project with milestone and tasks ?');" title="{{ trans('global.clone') }}">
                             <span class="fa fa-copy"  aria-hidden="true"></span>
                         </a>
                     @endcan
@@ -299,12 +299,12 @@
 
                                     <div class="pl-1 ">
 
-                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.name') }} :</p> <span class="col-md-6">{{ $project->name }}</span> </div>
-                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.client') }} : </p><span class="col-md-6">{{ $project->client->name }}</span> </div>
-                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.start_date') }} :</p> <span class="col-md-6">{{ $project->start_date }}</span> </div>
-                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.end_date') }} :</p> <span class="col-md-6">{{ $project->end_date }}</span> </div>
-                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.demo_url') }} :</p> <span class="col-md-6">{{ $project->demo_url }}</span> </div>
-                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.project_status') }} : </p><span class="col-md-6">{{ ucwords(str_replace('_',' ',$project->project_status)) }}</span> </div>
+                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.name') }} :</p> <span class="col-md-6">{{ $project->name ?? ''  }}</span> </div>
+                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.client') }} : </p><span class="col-md-6">{{ $project->client->name ?? '' }}</span> </div>
+                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.start_date') }} :</p> <span class="col-md-6">{{ $project->start_date ?? '' }}</span> </div>
+                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.end_date') }} :</p> <span class="col-md-6">{{ $project->end_date ?? '' }}</span> </div>
+                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.demo_url') }} :</p> <span class="col-md-6">{{ $project->demo_url ?? '' }}</span> </div>
+                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.project_status') }} : </p><span class="col-md-6">{{ ucwords(str_replace('_',' ',$project->project_status ?? '' )) }}</span> </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-4 border-right ">
@@ -315,7 +315,7 @@
                                             <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.timer_status') }} :</p> <span class="col-md-6"><a class="btn-sm btn-danger" style="color: #ffffff">Off</a> <a href="{{route('projectmanagement.admin.projects.update_project_timer',$project->id)}}" class="btn btn-sm btn-success"> {{trans('cruds.project.fields.start_time')}}</a></span> </div>
                                         @endif
                                         <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.estimate_hours') }} :</p> <span class="col-md-6">{{ $project->estimate_hours ? $project->estimate_hours.' Hour' : '' }} </span> </div>
-                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.department.title_singular') }} {{ trans('cruds.project.fields.name') }} :</p> <span class="col-md-6">{{ $project->department->department_name }}</span> </div>
+                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.department.title_singular') }} {{ trans('cruds.project.fields.name') }} :</p> <span class="col-md-6">{{ $project->department->department_name ?? '' }}</span> </div>
                                         <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.project_cost') }} :</p> <span class="col-md-6">{{ $project->project_cost?? 0 }} EGP</span> </div>
                                         <div class="row"> <p class="font-bold col-md-5">{{ trans('global.assign_to') }} :</p> <span class="col-md-6">
                                                 @if($project->accountDetails)
@@ -332,13 +332,13 @@
                                 </div>
                                 <div class="col-sm-4  ">
                                     <div class=" pl-1">
-                                        <div class="row"> <p class="font-bold col-md-8">Total Expense :</p> <span class="col-md-4"> {{$total_expense}} EGP</span> </div>
-                                        <div class="row"> <p class="font-bold col-md-8">Billable Expense :</p> <span class="col-md-4"> {{$billable_expense}} EGP</span> </div>
-                                        <div class="row"> <p class="font-bold col-md-8">Non Billable Expense :</p> <span class="col-md-4"> {{$not_billable_expense}} EGP</span> </div>
-                                        <div class="row"> <p class="font-bold col-md-8">Billed Expense :</p> <span class="col-md-4"> {{$paid_expense}} EGP</span> </div>
-                                        <div class="row"> <p class="font-bold col-md-8">Unbilled Expense :</p> <span class="col-md-4"> {{$billable_expense - $paid_expense}} EGP</span> </div>
+                                        <div class="row"> <p class="font-bold col-md-8">Total Expense :</p> <span class="col-md-4"> {{$total_expense ? $total_expense.' EGP': '' }} </span> </div>
+                                        <div class="row"> <p class="font-bold col-md-8">Billable Expense :</p> <span class="col-md-4"> {{$billable_expense ? $billable_expense.' EGP': '' }} </span> </div>
+                                        <div class="row"> <p class="font-bold col-md-8">Non Billable Expense :</p> <span class="col-md-4"> {{$not_billable_expense ? $not_billable_expense.' EGP': '' }} </span> </div>
+                                        <div class="row"> <p class="font-bold col-md-8">Billed Expense :</p> <span class="col-md-4"> {{$paid_expense ? $paid_expense.' EGP': '' }} </span> </div>
+                                        <div class="row"> <p class="font-bold col-md-8">Unbilled Expense :</p> <span class="col-md-4"> {{($billable_expense - $paid_expense) ? ($billable_expense - $paid_expense).' EGP': '' }} </span> </div>
 
-                                        <h3 class="row"> <p class="font-bold col-md-6">Total Bill :</p> <span class="col-md-6">  {{$project->project_cost}} EGP</span> </h3>
+                                        <h3 class="row"> <p class="font-bold col-md-6">Total Bill :</p> <span class="col-md-6">  {{$project->project_cost ? $project->project_cost.' EGP': '' }} </span> </h3>
 
                                     </div>
                                 </div>
@@ -690,12 +690,12 @@
                                                         </tr>
                                                     @empty
                                                         <tr>
-                                                            <td colspan="9"> No bug  Found In This Project</td>
+                                                            <td colspan="8"> No bug  Found In This Project</td>
                                                         </tr>
                                                     @endforelse
                                                 @else
                                                     <tr>
-                                                        <td colspan="9"> No bug  Found In This Project</td>
+                                                        <td colspan="8"> No bug  Found In This Project</td>
                                                     </tr>
                                                 @endif
                                             </tbody>
@@ -827,12 +827,12 @@
                                                         </tr>
                                                     @empty
                                                         <tr>
-                                                            <td colspan="5"> No Tickets Found In This Project</td>
+                                                            <td colspan="6"> No Tickets Found In This Project</td>
                                                         </tr>
                                                     @endforelse
                                                 @else
                                                     <tr>
-                                                        <td colspan="5"> No Tickets Found In This Project</td>
+                                                        <td colspan="6"> No Tickets Found In This Project</td>
                                                     </tr>
                                                 @endif
                                             </tbody>
@@ -1003,7 +1003,7 @@
                                                 <th>
                                                     {{ trans('cruds.project.fields.time_spend') }}
                                                 </th>
-                                                @canany(['time_sheet_create' , 'time_sheet_edit'])
+                                                @canany(['time_sheet_edit','time_sheet_delete'])
                                                     <th>
                                                         &nbsp;
                                                     </th>
@@ -1019,8 +1019,13 @@
                                                             </td>
                                                             <td>
 {{--                                                                {{ $timer->user->accountDetail->fullname ?? '' }}--}}
-                                                                <img class="img-thumbnail rounded-circle" title="{{ $timer->user->accountDetail->fullname }}" width="50%" src="{{ $timer->user->accountDetail->avatar ? str_replace('storage', 'storage', $timer->user->accountDetail->avatar->getUrl()) : asset('images/default.png') }}" alt="{{ $timer->user->accountDetail->fullname }}">
+                                                                @if($timer->user->accountDetail)
 
+                                                                    <img class="img-thumbnail rounded-circle" title="{{ $timer->user->accountDetail->fullname ?? $timer->user->name}}" width="50%" src="{{ $timer->user->accountDetail->avatar ? str_replace('storage', 'storage', $timer->user->accountDetail->avatar->getUrl()) : asset('images/default.png') }}" alt="{{ $timer->user->accountDetail->fullname ?? $timer->user->name }}">
+                                                                @else
+                                                                    <img class="img-thumbnail rounded-circle" title="{{ $timer->user->name ?? ''}}" width="50%" src="{{ asset('images/default.png') }}" alt="{{ $timer->user->name ?? '' }}">
+
+                                                                @endif
                                                             </td>
                                                             <td>
                                                                 <span class="btn-success btn-sm">{{ $timer->start_time ? date("F j, Y, g:i a",$timer->start_time): '' }}</span>
@@ -1038,9 +1043,11 @@
                                                             </td>
                                                             <td>
 {{--                                                                get_time_spent_result in file global_helper --}}
-                                                                {{ get_time_spent_result($timer->end_time - $timer->start_time) }}
+                                                                @if($timer->end_time && $timer->start_time)
+                                                                    {{ get_time_spent_result($timer->end_time - $timer->start_time)  }}
+                                                                @endif
                                                             </td>
-                                                            @canany(['time_sheet_create' , 'time_sheet_edit'])
+                                                            @canany(['time_sheet_edit','time_sheet_delete'])
                                                                 <td>
                                                                     @can('time_sheet_edit')
                                                                         <input type="hidden" name="timesheets" id="timesheets" value="{{$project->TimeSheet}}">
@@ -1081,78 +1088,78 @@
                     </div>
                     @canany(['time_sheet_create' , 'time_sheet_edit'])
                         <div class="tab-pane fade " id="v-pills-new_time_sheet" role="tabpanel" aria-labelledby="v-pills-new_time_sheet-tab" >
-                        <div class="card">
-                            <div>
-                                <div class="card-header">
-                                    <form method="POST" action="{{ route("projectmanagement.admin.time-sheets.store") }}" enctype="multipart/form-data">
-                                        @csrf
-                                        <input type="hidden" name="module_field_id" value="{{$project->id}}">
-                                        <input type="hidden" name="timesheet_id" value="">
-                                        <input type="hidden" name="module" value="project">
+                            <div class="card">
+                                <div>
+                                    <div class="card-header">
+                                        <form method="POST" action="{{ route("projectmanagement.admin.time-sheets.store") }}" enctype="multipart/form-data">
+                                            @csrf
+                                            <input type="hidden" name="module_field_id" value="{{$project->id}}">
+                                            <input type="hidden" name="timesheet_id" value="">
+                                            <input type="hidden" name="module" value="project">
 
-                                        <div class="col-12">
-                                            <div class="col-6 float-left">
-                                                <div class="form-group">
-                                                    <label class="required" for="start_date">{{ trans('cruds.project.fields.start_date') }}</label>
-                                                    <input class="form-control {{ $errors->has('start_date') ? 'is-invalid' : '' }}" type="date" name="start_date" id="start_date" value="{{ old('start_date', '') }}" required>
-                                                    @if($errors->has('start_date'))
-                                                        <div class="invalid-feedback">
-                                                            {{ $errors->first('start_date') }}
-                                                        </div>
-                                                    @endif
+                                            <div class="col-12">
+                                                <div class="col-6 float-left">
+                                                    <div class="form-group">
+                                                        <label class="required" for="start_date">{{ trans('cruds.project.fields.start_date') }}</label>
+                                                        <input class="form-control {{ $errors->has('start_date') ? 'is-invalid' : '' }}" type="date" name="start_date" id="start_date" value="{{ old('start_date', '') }}" required>
+                                                        @if($errors->has('start_date'))
+                                                            <div class="invalid-feedback">
+                                                                {{ $errors->first('start_date') }}
+                                                            </div>
+                                                        @endif
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="required" for="end_date">{{ trans('cruds.project.fields.end_date') }}</label>
+                                                        <input class="form-control {{ $errors->has('end_time') ? 'is-invalid' : '' }}" type="date" name="end_date" id="end_date" value="{{ old('end_date', '') }}" required>
+                                                        @if($errors->has('end_date'))
+                                                            <div class="invalid-feedback">
+                                                                {{ $errors->first('end_date') }}
+                                                            </div>
+                                                        @endif
+                                                    </div>
                                                 </div>
-                                                <div class="form-group">
-                                                    <label class="required" for="end_date">{{ trans('cruds.project.fields.end_date') }}</label>
-                                                    <input class="form-control {{ $errors->has('end_time') ? 'is-invalid' : '' }}" type="date" name="end_date" id="end_date" value="{{ old('end_date', '') }}" required>
-                                                    @if($errors->has('end_date'))
-                                                        <div class="invalid-feedback">
-                                                            {{ $errors->first('end_date') }}
-                                                        </div>
-                                                    @endif
+                                                <div class="col-6 float-right">
+                                                    <div class="form-group">
+                                                        <label class="required" for="start_time">{{ trans('cruds.project.fields.start_time') }}</label>
+                                                        <input class="form-control {{ $errors->has('start_time') ? 'is-invalid' : '' }}" type="time" name="start_time" id="start_time" value="{{ old('start_time', '') }}" required>
+                                                        @if($errors->has('start_time'))
+                                                            <div class="invalid-feedback">
+                                                                {{ $errors->first('start_time') }}
+                                                            </div>
+                                                        @endif
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="required" for="end_time">{{ trans('cruds.project.fields.stop_time') }}</label>
+                                                        <input class="form-control {{ $errors->has('end_time') ? 'is-invalid' : '' }}" type="time" name="end_time" id="end_time" value="{{ old('end_time', '') }}" required>
+                                                        @if($errors->has('end_time'))
+                                                            <div class="invalid-feedback">
+                                                                {{ $errors->first('end_time') }}
+                                                            </div>
+                                                        @endif
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="col-6 float-right">
-                                                <div class="form-group">
-                                                    <label class="required" for="start_time">{{ trans('cruds.project.fields.start_time') }}</label>
-                                                    <input class="form-control {{ $errors->has('start_time') ? 'is-invalid' : '' }}" type="time" name="start_time" id="start_time" value="{{ old('start_time', '') }}" required>
-                                                    @if($errors->has('start_time'))
-                                                        <div class="invalid-feedback">
-                                                            {{ $errors->first('start_time') }}
-                                                        </div>
-                                                    @endif
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="required" for="end_time">{{ trans('cruds.project.fields.stop_time') }}</label>
-                                                    <input class="form-control {{ $errors->has('end_time') ? 'is-invalid' : '' }}" type="time" name="end_time" id="end_time" value="{{ old('end_time', '') }}" required>
-                                                    @if($errors->has('end_time'))
-                                                        <div class="invalid-feedback">
-                                                            {{ $errors->first('end_time') }}
-                                                        </div>
-                                                    @endif
-                                                </div>
+
+                                            <div class="form-group">
+                                                <label class="required" for="reason">{{ trans('cruds.leaveApplication.fields.reason') }}</label>
+                                                <textarea class="form-control  {{ $errors->has('reason') ? 'is-invalid' : '' }}" name="reason" id="reason">{!! old('reason') !!}</textarea>
+                                                @if($errors->has('reason'))
+                                                    <div class="invalid-feedback">
+                                                        {{ $errors->first('reason') }}
+                                                    </div>
+                                                @endif
                                             </div>
-                                        </div>
+                                            <div class="form-group col-12 pb-4 ">
+                                                <button class="btn btn-danger float-right" type="submit">
+                                                    {{ trans('global.save') }}
+                                                </button>
+                                            </div>
+                                        </form>
 
-                                        <div class="form-group">
-                                            <label class="required" for="reason">{{ trans('cruds.leaveApplication.fields.reason') }}</label>
-                                            <textarea class="form-control  {{ $errors->has('reason') ? 'is-invalid' : '' }}" name="reason" id="reason">{!! old('reason') !!}</textarea>
-                                            @if($errors->has('reason'))
-                                                <div class="invalid-feedback">
-                                                    {{ $errors->first('reason') }}
-                                                </div>
-                                            @endif
-                                        </div>
-                                        <div class="form-group col-12 pb-4 ">
-                                            <button class="btn btn-danger float-right" type="submit">
-                                                {{ trans('global.save') }}
-                                            </button>
-                                        </div>
-                                    </form>
-
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
                     @endcanany
                 </div>
                 <div class="tab-pane fade" id="v-pills-calendar" role="tabpanel" aria-labelledby="v-pills-calendar-tab">
@@ -1190,8 +1197,8 @@
     {{--                                                   time_ago in file global_helper --}}
                                                 <section>
                                                     <ul>
-                                                        <small title="{{$activity->activity_date}}">{{time_ago($activity->activity_date)}}</small>
-                                                        <li><a href="{{route('admin.users.show',$activity->user->id)}}">{{$activity->user->name}}</a> {{$activity->activity}} <strong> {{$activity->value1}} </strong></li>
+                                                        <small title="{{$activity->activity_date ?? ''}}">{{time_ago($activity->activity_date ?? '')}}</small>
+                                                        <li><a href="{{route('admin.users.show',$activity->user->id)}}">{{$activity->user->name ?? ''}}</a> {{$activity->activity ?? ''}} <strong> {{$activity->value1 ?? ''}} </strong></li>
                                                     </ul>
                                                 </section>
                                             </section>
@@ -1488,17 +1495,6 @@
             })
 
         }
-
-        // confirm clone project
-
-        // $('#clone').onclick(function(){
-        //     if (!confirm('Are you sure to clone Project with milestone and tasks ?')) e.preventDefault();
-        // })
-        //
-        // var elems = document.getElementById('clone');
-        // var confirmIt = function (e) {
-        //     if (!confirm('Are you sure to clone Project?')) e.preventDefault();
-        // };
 
     </script>
 

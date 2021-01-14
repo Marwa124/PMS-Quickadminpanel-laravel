@@ -1,14 +1,27 @@
 @extends('layouts.admin')
 @section('content')
-@can('task_tag_create')
     <div style="margin-bottom: 10px;" class="row">
-        <div class="col-lg-12">
-            <a class="btn btn-success" href="{{ route('projectmanagement.admin.task-tags.create') }}">
-                {{ trans('global.add') }} {{ trans('cruds.taskTag.title_singular') }}
-            </a>
-        </div>
+        @can('task_tag_create')
+            <div class="col-lg-6">
+                <a class="btn btn-success" href="{{ route('projectmanagement.admin.task-tags.create') }}">
+                    {{ trans('global.add') }} {{ trans('cruds.taskTag.title_singular') }}
+                </a>
+            </div>
+        @endcan
+        @can('task_tag_delete')
+            <div style="margin: 10px;" class="row d-flex ml-auto">
+                <div class="col-lg-6 ">
+                    <a class="btn btn-{{$trashed ? 'info' : 'danger'}}"
+                       href="{{$trashed ? route('projectmanagement.admin.task-tags.index') : route('projectmanagement.admin.task-tags.trashed.index')}}">
+
+                        {{ $trashed ? 'Active ' : 'Trashed ' }} {{ trans('cruds.taskTag.title') }}
+
+                    </a>
+
+                </div>
+            </div>
+        @endcan
     </div>
-@endcan
 <div class="card">
     <div class="card-header">
         {{ trans('cruds.taskTag.title_singular') }} {{ trans('global.list') }}
@@ -46,26 +59,40 @@
                                 {{ $taskTag->name ?? '' }}
                             </td>
                             <td>
-                                @can('task_tag_show')
-                                    <a class="btn btn-xs btn-primary" href="{{ route('projectmanagement.admin.task-tags.show', $taskTag->id) }}">
-                                        {{ trans('global.view') }}
-                                    </a>
-                                @endcan
+                                @if(!$trashed)
+                                    @can('task_tag_show')
+                                        <a class="btn btn-xs btn-primary" href="{{ route('projectmanagement.admin.task-tags.show', $taskTag->id) }}">
+                                            <span class="fa fa-eye"></span>
+                                        </a>
+                                    @endcan
 
-                                @can('task_tag_edit')
-                                    <a class="btn btn-xs btn-info" href="{{ route('projectmanagement.admin.task-tags.edit', $taskTag->id) }}">
-                                        {{ trans('global.edit') }}
-                                    </a>
-                                @endcan
+                                    @can('task_tag_edit')
+                                        <a class="btn btn-xs btn-info" href="{{ route('projectmanagement.admin.task-tags.edit', $taskTag->id) }}">
+                                            <span class="fa fa-pencil-square-o"></span>
+                                        </a>
+                                    @endcan
 
-                                @can('task_tag_delete')
-                                    <form action="{{ route('projectmanagement.admin.task-tags.destroy', $taskTag->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
-                                        <input type="hidden" name="_method" value="DELETE">
-                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                        <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
-                                    </form>
-                                @endcan
-
+                                    @can('task_tag_delete')
+                                        <form action="{{ route('projectmanagement.admin.task-tags.destroy', $taskTag->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                            <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
+                                        </form>
+                                    @endcan
+                                @else
+                                    @can('task_tag_delete')
+                                        <form action="{{ route('projectmanagement.admin.task-tags.forceDestroy', $taskTag->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                            <input type="hidden" name="action" value="restore">
+                                            <input type="submit" class="btn btn-xs btn-success" value="{{ trans('global.restore') }}">
+                                        </form>
+                                        <form action="{{ route('projectmanagement.admin.task-tags.forceDestroy', $taskTag->id) }}" method="POST" onsubmit="return confirm('Task Tag Will Force Delete ..! \n{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                            <input type="hidden" name="action" value="force_delete">
+                                            <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.forcedelete') }}">
+                                        </form>
+                                    @endcan
+                                @endif
                             </td>
 
                         </tr>
@@ -84,7 +111,8 @@
 <script>
     $(function () {
   let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-@can('task_tag_delete')
+    @if(!$trashed)
+        @can('task_tag_delete')
   let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
   let deleteButton = {
     text: deleteButtonTrans,
@@ -113,7 +141,7 @@
   }
   dtButtons.push(deleteButton)
 @endcan
-
+    @endif
   $.extend(true, $.fn.dataTable.defaults, {
     orderCellsTop: true,
     order: [[ 1, 'desc' ]],

@@ -71,7 +71,7 @@ class TimeSheetController extends Controller
             $timer = [
                 'user_id'           => $user_id,
                 'module'            => $request->module,
-                'module_field_id'   => $request->project_id,
+                'module_field_id'   => $request->module_field_id,
                 'timer_status'      => 'off',
                 'start_time'        => $start,
                 'end_time'          => $end,
@@ -79,7 +79,7 @@ class TimeSheetController extends Controller
             ];
 
             $timeSheet = TimeSheet::create($timer);
-
+            //dd( $timeSheet,'dd');
             if($request->module == 'project'){
 
                 $module_name =  $timeSheet->project->name ;

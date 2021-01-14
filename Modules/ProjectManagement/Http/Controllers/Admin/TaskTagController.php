@@ -17,9 +17,23 @@ class TaskTagController extends Controller
     {
         abort_if(Gate::denies('task_tag_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
+        if (request()->segment(count(request()->segments())) == 'trashed'){
+
+            abort_if(Gate::denies('task_tag_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+            $trashed = true;
+
+            $taskTags = TaskTag::onlyTrashed()->get();
+
+            return view('projectmanagement::admin.taskTags.index', compact('taskTags','trashed'));
+
+        }
+
+        $trashed = false;
+
         $taskTags = TaskTag::all();
 
-        return view('projectmanagement::admin.taskTags.index', compact('taskTags'));
+        return view('projectmanagement::admin.taskTags.index', compact('taskTags','trashed'));
     }
 
     public function create()
@@ -71,5 +85,25 @@ class TaskTagController extends Controller
         TaskTag::whereIn('id', request('ids'))->delete();
 
         return response(null, Response::HTTP_NO_CONTENT);
+    }
+
+    public function forceDelete(Request $request,$id)
+    {
+
+        $action = $request->action;
+
+        if ($action == 'force_delete') {
+
+            $taskTag = TaskTag::onlyTrashed()->where('id', $id)->first();
+
+            //force Delete Task
+            $taskTag->forceDelete();
+
+        } else if ($action == 'restore') {
+            //restore Task
+            TaskTag::onlyTrashed()->where('id', $id)->restore();
+        }
+
+        return back();
     }
 }
