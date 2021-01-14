@@ -19,8 +19,8 @@
         <div class="table-responsive">
           
             <evaluation
-              :can-print="{{auth()->user()->can('evaluation_print') ? 'true' : '1'}}"
-              :can-delete="{{auth()->user()->can('evaluation_delete') ? 'true' : '1'}}"
+              :can-print="{{auth()->user()->can('evaluation_print') ? 'true' : 'false'}}"
+              :can-delete="{{auth()->user()->can('evaluation_delete') ? 'true' : 'false'}}"
             >
             </evaluation>
 

@@ -579,6 +579,7 @@ return [
     'accountDetail'          => [
         'title'          => 'Account Details',
         'title_singular' => 'Account Detail',
+        'user_salary_error' => 'Set the user salary first',
         'fields'         => [
             'id'                     => 'ID',
             'id_helper'              => ' ',

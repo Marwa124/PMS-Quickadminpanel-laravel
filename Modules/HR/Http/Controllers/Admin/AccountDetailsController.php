@@ -103,6 +103,19 @@ class AccountDetailsController extends Controller
         }
     }
 
+    public function generateAppointmentLetterPDF($id, $designation, $salary)
+    {
+        if($salary == 'null') {
+            return back()->withError(trans('cruds.accountDetail.user_salary_error'));
+        }
+        $accountDetail = AccountDetail::find($id);
+        $designation = Designation::where('designation_name', $designation)->first();
+        // $net_salary = $designation->salaryTemplate()
+        // https://stackoverflow.com/questions/35672718/javascript-slideup-slidedown-one-button
+        // dd($designation);
+        // dd($id);
+    }
+
     public function create()
     {
         abort_if(Gate::denies('account_detail_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');

@@ -10,6 +10,13 @@
         </div>
     </div>
 </div>
+
+@if(Session::has('error'))
+<div class="alert alert-danger error_session_response">
+  {{ Session::get('error')}}
+</div>
+@endif
+
 <div class="row">
     @can('account_detail_create')
         <div style="margin-bottom: 10px;" class="row">
@@ -43,6 +50,7 @@
     <div class="card-header">
         {{ trans('cruds.accountDetail.title_singular') }} {{ trans('global.list') }}
     </div>
+
     <div class="card-body">
         <div class="table-responsive" style="overflow-x: hidden !important;">
             <table class="display responsive nowrap table table-bordered table-striped table-hover datatable datatable-AccountDetail" style="width:100%">
@@ -213,9 +221,25 @@
                                         @endcan
 
                                         {{-- @can('appointment_letter') --}}
-                                            <a class="btn btn-xs btn-dark my-1" href="{{ route('hr.admin.evaluations.edit', $accountDetail->id) }}">
-                                                PDF Appointment Letter
-                                            </a>
+                                            @if ($accountDetail->user_id != auth()->user()->id)
+                                                @php
+                                                    $dep = auth()->user()->accountDetail->designation ? auth()->user()->accountDetail->designation->department->id : '';
+                                                @endphp
+                                                @if ($dep)
+                                                    @php
+                                                        $designationIds = Modules\HR\Entities\Department::find($dep)->departmentDesignations()->pluck('id');
+                                                    @endphp
+                                                    @if ($designationIds->contains($accountDetail->designation_id))
+                                                        <a class="btn btn-xs btn-dark my-1" href="{{ route('hr.admin.appointment-letter-pdf', [
+                                                            $accountDetail->id,
+                                                            $accountDetail->designation->designation_name,
+                                                            $salary ? $salary->basic_salary : 'null'
+                                                        ]) }}">
+                                                            PDF Appointment Letter
+                                                        </a>
+                                                    @endif
+                                                @endif
+                                            @endif
                                         {{-- @endcan --}}
 
                                         {{-- @can('account_detail_evaluate') --}}
@@ -485,6 +509,10 @@ $('.updateUserSalary').on('click', function(){
     })
 
 });
+
+setTimeout(() => {
+    document.querySelector('.error_session_response').classList.toggle('slideUp');
+}, 3000);
 
 })
 
