@@ -7,9 +7,9 @@ use Modules\HR\Http\Requests\Destroy\MassDestroyAccountRequest;
 use Modules\HR\Http\Requests\Store\StoreAccountRequest;
 use Modules\HR\Http\Requests\Update\UpdateAccountRequest;
 use Modules\HR\Entities\Account;
-use App\Models\Permission;
 use Gate;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Permission;
 use Symfony\Component\HttpFoundation\Response;
 
 class AccountsController extends Controller
@@ -20,24 +20,26 @@ class AccountsController extends Controller
 
         $accounts = Account::all();
 
-        $permissions = Permission::get();
+//        $permissions = Permission::get();
 
-        return view('hr::admin.accounts.index', compact('accounts', 'permissions'));
+
+
+        return view('hr::admin.accounts.index', compact('accounts'));
     }
 
     public function create()
     {
         abort_if(Gate::denies('account_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $permissions = Permission::all()->pluck('title', 'id');
+//        $permissions = Permission::all()->pluck('title', 'id');
 
-        return view('hr::admin.accounts.create', compact('permissions'));
+        return view('hr::admin.accounts.create');
     }
 
     public function store(StoreAccountRequest $request)
     {
         $account = Account::create($request->all());
-        $account->permissions()->sync($request->input('permissions', []));
+//        $account->permissions()->sync($request->input('permissions', []));
 
         return redirect()->route('hr.admin.accounts.index');
     }
@@ -46,17 +48,17 @@ class AccountsController extends Controller
     {
         abort_if(Gate::denies('account_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $permissions = Permission::all()->pluck('title', 'id');
+//        $permissions = Permission::all()->pluck('title', 'id');
+//
+//        $account->load('permissions');
 
-        $account->load('permissions');
-
-        return view('hr::admin.accounts.edit', compact('permissions', 'account'));
+        return view('hr::admin.accounts.edit', compact( 'account'));
     }
 
     public function update(UpdateAccountRequest $request, Account $account)
     {
         $account->update($request->all());
-        $account->permissions()->sync($request->input('permissions', []));
+//        $account->permissions()->sync($request->input('permissions', []));
 
         return redirect()->route('hr.admin.accounts.index');
     }
@@ -65,7 +67,7 @@ class AccountsController extends Controller
     {
         abort_if(Gate::denies('account_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $account->load('permissions');
+//        $account->load('permissions');
 
         return view('hr::admin.accounts.show', compact('account'));
     }

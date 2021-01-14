@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'total'                                => 'المجموع',
     'actions'                              => 'الأحداث',
     'add'                                  => 'إضافة',
     'allRightsReserved'                    => 'جميع الحقوق محفوظة',

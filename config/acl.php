@@ -119,6 +119,15 @@
                 'evaluations',
 
             ],
+            // finance
+            'finance' => [
+                'finance_access', // done
+                'bank_cash', // done
+                'balance_sheet', // done
+                'payment_method', // done
+
+
+            ],
 
             'penalty_category' => [
                 'penalty_category_access',

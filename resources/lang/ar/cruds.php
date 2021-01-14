@@ -1,6 +1,13 @@
 <?php
 
 return [
+    'finance'                => [
+        'title'          => 'الحسابات المالية',
+        'title_singular' => 'الحسابات المالية',
+        'balance_sheet' => 'بيان الميزانية',
+        'payment_method' => 'وسائل الدفع',
+    ],
+
     'userManagement'         => [
         'title'          => 'إدارة المستخدمين',
         'title_singular' => 'إدارة المستخدمين',
@@ -1731,10 +1738,7 @@ return [
             'deleted_at_helper'  => ' ',
         ],
     ],
-    'finance'                => [
-        'title'          => 'Finance',
-        'title_singular' => 'Finance',
-    ],
+
     'invoice'                => [
         'title'          => 'Invoices',
         'title_singular' => 'Invoice',

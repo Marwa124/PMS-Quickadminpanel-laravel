@@ -1,6 +1,14 @@
 <?php
 
 return [
+
+    'finance'                => [
+        'title'          => 'Finance',
+        'title_singular' => 'Finance',
+        'balance_sheet' => 'Balance Sheet',
+        'payment_method' => 'Payment Methods',
+    ],
+
     'userManagement'         => [
         'title'          => 'User management',
         'title_singular' => 'User management',
@@ -1909,10 +1917,7 @@ return [
             'deleted_at_helper'  => ' ',
         ],
     ],
-    'finance'                => [
-        'title'          => 'Finance',
-        'title_singular' => 'Finance',
-    ],
+
     'invoice'                => [
         'title'          => 'Invoices',
         'title_singular' => 'Invoice',

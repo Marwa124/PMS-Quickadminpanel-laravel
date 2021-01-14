@@ -6,5 +6,6 @@
     "Payroll": true,
     "Sales": true,
     "ProjectManagement": true,
-    "MaterialsSuppliers": true
+    "MaterialsSuppliers": true,
+    "Finance": true
 }

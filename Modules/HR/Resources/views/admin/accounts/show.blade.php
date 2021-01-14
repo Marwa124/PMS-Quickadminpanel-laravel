@@ -48,14 +48,14 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>
-                            {{ trans('cruds.account.fields.permissions') }}
-                        </th>
-                        <td>
-                            @foreach($account->permissions as $key => $permissions)
-                                <span class="label label-info">{{ $permissions->title }}</span>
-                            @endforeach
-                        </td>
+                        {{--<th>--}}
+                            {{--{{ trans('cruds.account.fields.permissions') }}--}}
+                        {{--</th>--}}
+                        {{--<td>--}}
+                            {{--@foreach($account->permissions as $key => $permissions)--}}
+                                {{--<span class="label label-info">{{ $permissions->title }}</span>--}}
+                            {{--@endforeach--}}
+                        {{--</td>--}}
                     </tr>
                 </tbody>
             </table>

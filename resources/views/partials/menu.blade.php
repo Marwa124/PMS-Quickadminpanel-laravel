@@ -114,6 +114,57 @@
                 </ul>
             </li>
         @endcan
+        @can('finance_access')
+            <li class="c-sidebar-nav-dropdown">
+                <a class="c-sidebar-nav-dropdown-toggle" href="#">
+                    <i class="fa-fw fas fa-money c-sidebar-nav-icon">
+
+                    </i>
+                    {{ trans('cruds.finance.title') }}
+                </a>
+                <ul class="c-sidebar-nav-dropdown-items">
+
+                    @can('account_access')
+                        <li class="c-sidebar-nav-item">
+                            <a href="{{ route("hr.admin.accounts.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/accounts") || request()->is("admin/accounts/*") ? "active" : "" }}">
+                                <i class="fa-fw fas fa-money-check-alt c-sidebar-nav-icon self-item-link">
+
+                                </i>
+                                {{ trans('cruds.account.title') }}
+                            </a>
+                        </li>
+                    @endcan
+                    @can('balance_sheet')
+                        <li class="c-sidebar-nav-item">
+                            <a href="{{ route("finance.admin.balance_sheet") }}" class="c-sidebar-nav-link {{ request()->is("admin/balance_sheet") || request()->is("admin/finance/*") ? "active" : "" }}">
+                                <i class="fa-fw fas fa-file-invoice-dollar c-sidebar-nav-icon self-item-link">
+
+                                </i>
+                                {{ trans('cruds.finance.balance_sheet') }}
+                            </a>
+                        </li>
+                    @endcan
+                    {{--@can('payment_method')--}}
+                        <li class="c-sidebar-nav-item">
+                            <a href="{{ route("finance.admin.payment_method.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/payment_method") || request()->is("admin/finance/*") ? "active" : "" }}">
+                                <i class="fa-fw fas fa-credit-card c-sidebar-nav-icon self-item-link">
+
+                                </i>
+                                {{ trans('cruds.finance.payment_method') }}
+                            </a>
+                        </li>
+                    {{--@endcan--}}
+
+
+
+
+
+
+
+
+                </ul>
+            </li>
+        @endcan
         @can('hr_access')
             <li class="c-sidebar-nav-dropdown">
                 <a class="c-sidebar-nav-dropdown-toggle" href="#">
@@ -396,6 +447,7 @@
                 </ul>
             </li>
         @endcan
+
         @can('payroll_access')
             <li class="c-sidebar-nav-dropdown">
                 <a class="c-sidebar-nav-dropdown-toggle" href="#">
