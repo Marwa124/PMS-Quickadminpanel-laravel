@@ -2932,13 +2932,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   mixins: [_mixinsTable__WEBPACK_IMPORTED_MODULE_1__["default"]],
+  props: ['canEdit', 'canDelete', 'langKey'],
   data: function data() {
     return {
       urlDepartmentsList: '/api/v1/admin/hr/departments/list-vue',
+      urlModelLink: '/api/v1/admin/hr/departments',
       urlDepartments: '/admin/hr/departments',
       dataResult: {},
       departmentRows: [],
@@ -2954,9 +2964,8 @@ __webpack_require__.r(__webpack_exports__);
         params: {
           id: val
         }
-      });
-      console.log(this.$router);
-      console.log(this.editDepartment);
+      }); // console.log(this.$router);
+      // console.log(this.editDepartment);
     },
     // Multi Select
     selectedItems: function selectedItems(data) {
@@ -2966,7 +2975,6 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     this.refActions = this.$refs._vmAction;
-    document.getElementById('_vm').style.width = "1px";
   }
 });
 
@@ -3397,6 +3405,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _mixinsTable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../mixinsTable */ "./resources/js/mixinsTable.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
 //
 //
 //
@@ -3443,13 +3453,25 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   mixins: [_mixinsTable__WEBPACK_IMPORTED_MODULE_1__["default"]],
+  props: ['canPrint', 'canDelete'],
   data: function data() {
     return {
       urlDepartmentsList: '/api/v1/admin/hr/evaluations/list',
+      urlModelLink: '/api/v1/admin/hr/evaluations',
       urlEvaluation: '/admin/hr/evaluations',
       dataResult: {},
       departmentRows: [],
@@ -3462,7 +3484,6 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     this.refActions = this.$refs._vmAction;
     document.querySelector('.pdfLinkBtn').style.display = "none";
-    document.getElementById('_vmid').style.width = "5%";
   }
 });
 
@@ -4102,6 +4123,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         _this6.spinnerAction = false;
         console.log(error);
       });
+    },
+    backLocation: function backLocation() {
+      window.location.href = "/admin/hr/departments/list";
     }
   },
   mounted: function mounted() {
@@ -56250,28 +56274,45 @@ var render = function() {
                       1
                     ),
                     _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-primary btn-sm buttonload",
-                        attrs: { type: "submit", disabled: _vm.form.busy }
-                      },
-                      [
-                        _vm.spinnerUpdateDepart
-                          ? _c("i", { staticClass: "fa fa-spinner fa-spin" })
-                          : _vm._e(),
-                        _vm._v(" "),
-                        _c("span", {
-                          domProps: {
-                            textContent: _vm._s(
-                              _vm.departmentId
-                                ? _vm.$t("global.update")
-                                : _vm.$t("global.create")
-                            )
-                          }
-                        })
-                      ]
-                    )
+                    _c("div", { staticClass: "d-flex" }, [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-primary btn-sm buttonload",
+                          attrs: { type: "submit", disabled: _vm.form.busy }
+                        },
+                        [
+                          _vm.spinnerUpdateDepart
+                            ? _c("i", { staticClass: "fa fa-spinner fa-spin" })
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _c("span", {
+                            domProps: {
+                              textContent: _vm._s(
+                                _vm.departmentId
+                                  ? _vm.$t("global.update")
+                                  : _vm.$t("global.create")
+                              )
+                            }
+                          })
+                        ]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-secondary btn-sm ml-1",
+                          on: { click: _vm.backLocation }
+                        },
+                        [
+                          _c("span", {
+                            domProps: {
+                              textContent: _vm._s(_vm.$t("global.back"))
+                            }
+                          })
+                        ]
+                      )
+                    ])
                   ]
                 ),
                 _vm._v(" "),
@@ -56643,6 +56684,13 @@ var render = function() {
         }
       }),
       _vm._v(" "),
+      _vm.errorResponse
+        ? _c("div", {
+            staticClass: "alert alert-danger error_response",
+            domProps: { textContent: _vm._s(_vm.errorResponse) }
+          })
+        : _vm._e(),
+      _vm._v(" "),
       _c(
         "table",
         {
@@ -56754,16 +56802,41 @@ var render = function() {
                           ])
                         : _c("span", [
                             _c("div", [
-                              _c("a", {
-                                staticClass: "btn btn-primary btn-sm",
-                                attrs: {
-                                  href:
-                                    _vm.urlDepartments + "/" + row.id + "/edit"
-                                },
-                                domProps: {
-                                  textContent: _vm._s(_vm.$t("global.dit"))
-                                }
-                              })
+                              _vm.canEdit
+                                ? _c("a", {
+                                    staticClass: "btn btn-primary btn-sm",
+                                    attrs: {
+                                      href:
+                                        _vm.urlDepartments +
+                                        "/" +
+                                        row.id +
+                                        "/edit"
+                                    },
+                                    domProps: {
+                                      textContent: _vm._s(_vm.$t("global.dit"))
+                                    }
+                                  })
+                                : _vm._e(),
+                              _vm._v(" "),
+                              _vm.canDelete
+                                ? _c(
+                                    "button",
+                                    {
+                                      staticClass:
+                                        "btn btn-sm btn-danger text-white delete_model_row",
+                                      on: {
+                                        click: function($event) {
+                                          return _vm.deleteModelRow(row.id)
+                                        }
+                                      }
+                                    },
+                                    [
+                                      _c("i", {
+                                        staticClass: "fas fa-trash-alt"
+                                      })
+                                    ]
+                                  )
+                                : _vm._e()
                             ])
                           ])
                     ])
@@ -57660,6 +57733,13 @@ var render = function() {
         }
       }),
       _vm._v(" "),
+      _vm.errorResponse
+        ? _c("div", {
+            staticClass: "alert alert-danger error_response",
+            domProps: { textContent: _vm._s(_vm.errorResponse) }
+          })
+        : _vm._e(),
+      _vm._v(" "),
       _c(
         "table",
         {
@@ -57698,14 +57778,35 @@ var render = function() {
                   }),
                   _vm._v(" "),
                   _c("td", [
-                    _c(
-                      "a",
-                      {
-                        staticClass: "btn btn-sm btn-danger text-white",
-                        attrs: { href: _vm.urlEvaluation + "/" + row.id }
-                      },
-                      [_c("i", { staticClass: "fas fa-file-pdf" })]
-                    )
+                    _c("div", { staticClass: "d-flex" }, [
+                      _vm.canPrint
+                        ? _c(
+                            "a",
+                            {
+                              staticClass:
+                                "btn btn-sm btn-secondary text-white mr-1",
+                              attrs: { href: _vm.urlEvaluation + "/" + row.id }
+                            },
+                            [_c("i", { staticClass: "fas fa-file-pdf" })]
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.canDelete
+                        ? _c(
+                            "button",
+                            {
+                              staticClass:
+                                "btn btn-sm btn-danger text-white delete_model_row",
+                              on: {
+                                click: function($event) {
+                                  return _vm.deleteModelRow(row.id)
+                                }
+                              }
+                            },
+                            [_c("i", { staticClass: "fas fa-trash-alt" })]
+                          )
+                        : _vm._e()
+                    ])
                   ])
                 ],
                 2
@@ -71588,7 +71689,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.filter("slug", function (value) {
 /*! exports provided: global, evaluation, messages, users_table, departments_table, job_titles_table, default */
 /***/ (function(module) {
 
-module.exports = JSON.parse("{\"global\":{\"home\":\"الرئيسية\",\"dashboard\":\"الرئيسية\",\"user\":\"مدير\",\"hotel\":\"فندق\",\"the_hotel\":\"الفندق\",\"the_price\":\"السعر\",\"the_travel\":\"الرحلة\",\"the_offers\":\"العروض\",\"room\":\"غرفة\",\"the_travel_program\":\"برنامج الرحلة\",\"the_travel_category\":\"قسم الرحلة\",\"the_images\":\"الصور\",\"type\":\"نوع\",\"comment\":\"تعليق\",\"winner\":\"فائز\",\"setting\":\"إعداد\",\"no_rooms\":\"لا يوجد غرف\",\"no_travels\":\"لا يوجد رحلات\",\"no_hotel_features\":\"لا توجد مميزات للفندق\",\"no_offers\":\"لا توجد عروض لهذه الرحلة\",\"no_bookings\":\"لا توجد حجوزات لهذه الرحلة\",\"no_gallery\":\"لا توجد صور\",\"no_location\":\"لا توجد خريطة\",\"show_map\":\"اعرض الخريطة\",\"days\":\"أيام\",\"day\":\"يوم\",\"profile\":\"بروفايل\",\"the_profile\":\"البروفايل\",\"edit_profile\":\"تعديل البيانات الشخصية\",\"view_profile\":\"عرض الصفحة الشخصية\",\"user_profile\":\"الصفحة الشخصية\",\"lead_profile\":\"صفحة العميل\",\"model_is_deleted\":\"محذوف\",\"logout\":\"تسجيل الخروج\",\"create\":\"إنشاء\",\"create_again\":\"إنشاء مرة أخرى\",\"edit\":\"تعديل\",\"update\":\"تحديث\",\"save\":\"حفظ\",\"read\":\"اقرأ\",\"all\":\"الكل\",\"n_all\":\"كل\",\"read_more\":\"اقرأ المزيد\",\"more_info\":\"معرفة المزيد\",\"choose_image\":\"اختر صورة\",\"drag_msg\":\"اسحب الصورة وضعها هنا أو اضغط للاختيار\",\"none_status\":\"بدون حالة\",\"active\":\"مفعل\",\"disactive\":\"غير مفعل\",\"available\":\"متاح\",\"unavailable\":\"غير متاح\",\"hidden\":\"مخفى\",\"visible\":\"ظاهر\",\"show\":\"عرض\",\"hide\":\"إخفاء\",\"view\":\"عرض\",\"close\":\"إغلاق\",\"display\":\"إظهار\",\"from\":\"من\",\"to\":\"إلى\",\"in\":\"فى\",\"on\":\"على\",\"or\":\"أو\",\"with\":\"مع\",\"delete\":\"حذف\",\"deleted\":\"تم الحذف\",\"force_delete\":\"إزالة نهائيا\",\"remove\":\"إزالة\",\"removed\":\"تمت الإزالة\",\"restore\":\"استرجاع\",\"restored\":\"تم الإسترجاع\",\"failed\":\"فشل\",\"cancel\":\"إلغاء\",\"yes_delete_it\":\"تأكيد الحذف\",\"yes_remove_it\":\"تأكيد الإزالة\",\"yes_restore_it\":\"تأكيد الإسترجاع\",\"settings_table\":\"إعدادات جدول {model} فى كل الشاشات\",\"notifications\":\"إشعارات\",\"the_notifications\":\"الإشعارات\",\"notification\":\"إشعار\",\"all_notifications\":\"كل الإشعارات\",\"the_messages\":\"الرسائل\",\"all_messages\":\"كل الرسائل\",\"latest_messages\":\"اخر الرسائل\",\"staff\":\"الموظفين\",\"clients\":\"العملاء\",\"vendors\":\"الموردين\",\"reports\":\"التقارير\",\"notif_create_user\":\"تم إنشاء موظف جديد بواسطة\",\"currency\":\"جنية\"},\"evaluation\":{\"evaluation_comments\":\"تعليقات اضافية\",\"evaluation_goals\":\"الهدف\"},\"messages\":{\"delete_msg\":\"هل أنت متأكد من حذف هذا العنصر ؟\",\"delete_success_msg\":\"تم حذف العنصر.\",\"delete_failed_msg\":\"لم يتم حذف العنصر.\",\"force_delete_msg\":\"هل أنت متأكد من إزالة هذا العنصر بشكل نهائى ؟\",\"force_delete_success_msg\":\"تم إزالة العنصر بشكل نهائى.\",\"force_delete_failed_msg\":\"لم يتم إزالة العنصر.\",\"restore_msg\":\"هل أنت متأكد من استرجاع هذا العنصر ؟\",\"restore_success_msg\":\"تم استرجاع العنصر.\",\"restore_failed_msg\":\"لم يتم استرجاع العنصر.\",\"multi_delete_msg\":\"هل أنت متأكد من حذف جميع العناصر المعلم عليها؟\",\"multi_delete_success_msg\":\"تم حذف جميع العناصر المعلم عليها.\",\"multi_delete_failed_msg\":\"لم يتم حذف جميع العناصر المعلم عليها.\",\"multi_force_delete_msg\":\"هل أنت متأكد من إزالة جميع العناصر المعلم عليها بشكل نهائى ؟\",\"multi_force_delete_success_msg\":\"تم إزالة جميع العناصر المعلم عليها بشكل نهائى.\",\"multi_force_delete_failed_msg\":\"لم يتم إزالة جميع العناصر المعلم عليها.\",\"multi_restore_msg\":\"هل أنت متأكد من استرجاع جميع العناصر المعلم عليها؟\",\"multi_restore_success_msg\":\"تم استرجاع جميع العناصر المعلم عليها.\",\"multi_restore_failed_msg\":\"لم يتم استرجاع جميع العناصر المعلم عليها.\",\"change_lead_status_success_msg\":\"تم تحديث حالة العميل بنجاح\",\"change_lead_status_failed_msg\":\"لم يتم تحديث حالة العميل\",\"change_meeting_status_success_msg\":\"تم تحديث حالة المقابلة بنجاح\",\"change_meeting_status_failed_msg\":\"لم يتم تحديث حالة المقابلة\",\"reason_status\":\"سبب تغيير الحالة\",\"change_meeting_status_to\":\"تغيير حالة المقابلة إلى\"},\"users_table\":{\"id\":\"المعرف\",\"name\":\"الاسم\",\"name_ar\":\"الاسم عربى\",\"email\":\"البريد الإليكتروني\",\"password\":\"كلمة السر\",\"repeat_password\":\"أعد كلمة السر\",\"phone\":\"الموبايل\",\"home_phone\":\"تليفون المنزل\",\"emergency_phone\":\"رقم الطوارئ\",\"country\":\"البلد\",\"city\":\"المدينة\",\"address\":\"عنوان المنزل\",\"photo\":\"الصورة الشخصية\",\"id_cart\":\"رقم البطاقة الشخصية\",\"nationality\":\"الجنسية\",\"marital_status\":\"الحالة الزوجية\",\"gender\":\"الجنس\",\"birth_date\":\"تاريخ الميلاد\",\"work_phone\":\"موبايل العمل\",\"work_email\":\"بريد العمل\",\"work_address\":\"عنوان العمل\",\"bank_account_number\":\"رقم حساب البنك\",\"visa_number\":\"رقم الفيزا\",\"visa_expire_date\":\"تاريخ انتهاء الفيزا\",\"certificate_level\":\"المستوى التعليمى\",\"school\":\"الجامعة / المدرسة\",\"job_title_id\":\"المسمى الوظيفى\",\"department_id\":\"القسم\",\"work_period_id\":\"فترة العمل\",\"hiring_date\":\"تاريخ التوظيف\",\"salary\":\"الراتب\",\"rule\":\"الصلاحية\",\"active\":\"التفعيل\",\"document_note\":\"ملحوظة\",\"updated_at\":\"أخر تعديل\",\"created_at\":\"تاريخ الإنشاء\",\"actions\":\"الإجراءات\",\"registration_data\":\"بيانات التسجيل\",\"personal_data\":\"البيانات الشخصية\",\"education\":\"التعليم\",\"word_data\":\"بيانات العمل\",\"job_data\":\"بيانات الوظيفة\",\"activate\":{\"on\":\"مفعل\",\"off\":\"غير مفعل\"},\"rules\":{\"super_admin\":\"مشرف سوبر\",\"admin\":\"مشرف\",\"user\":\"مستخدم\"},\"genders\":{\"male\":\"ذكر\",\"female\":\"أنثى\",\"others\":\"أخرى\"},\"marital_statuses\":{\"single\":\"أعزب\",\"engaged\":\"خاطب / مخطوبة\",\"married\":\"متزوج\",\"others\":\"حالة أخرى\"},\"p_create\":{\"success_msg\":\"تم إنشاء موظف جديد.\",\"failed_msg\":\"لم يتم إنشاء الموظف الجديد.\"},\"p_edit\":{\"success_msg\":\"تم تحديث الموظف.\",\"failed_msg\":\"لم يتم تحديث هذا الموظف.\"}},\"departments_table\":{\"id\":\"المعرف\",\"name\":\"اسم القسم\",\"updated_at\":\"أخر تعديل\",\"created_at\":\"تاريخ الإنشاء\",\"actions\":\"الإجراءات\",\"p_create\":{\"success_msg\":\"تم إنشاء قسم جديد.\",\"failed_msg\":\"لم يتم إنشاء القسم الجديد.\"},\"p_edit\":{\"success_msg\":\"تم تحديث القسم.\",\"failed_msg\":\"لم يتم تحديث هذا القسم.\"}},\"job_titles_table\":{\"id\":\"المعرف\",\"name\":\"اسم الوظيفة\",\"department_id\":\"القسم\",\"updated_at\":\"أخر تعديل\",\"created_at\":\"تاريخ الإنشاء\",\"actions\":\"الإجراءات\"}}");
+module.exports = JSON.parse("{\"global\":{\"home\":\"الرئيسية\",\"dashboard\":\"الرئيسية\",\"user\":\"مدير\",\"hotel\":\"فندق\",\"the_hotel\":\"الفندق\",\"the_price\":\"السعر\",\"the_travel\":\"الرحلة\",\"the_offers\":\"العروض\",\"room\":\"غرفة\",\"the_travel_program\":\"برنامج الرحلة\",\"the_travel_category\":\"قسم الرحلة\",\"the_images\":\"الصور\",\"type\":\"نوع\",\"comment\":\"تعليق\",\"winner\":\"فائز\",\"setting\":\"إعداد\",\"error_response\":\"لا يمكن حذف هذا العنصر\",\"back\":\"رجوع\",\"no_rooms\":\"لا يوجد غرف\",\"no_travels\":\"لا يوجد رحلات\",\"no_hotel_features\":\"لا توجد مميزات للفندق\",\"no_offers\":\"لا توجد عروض لهذه الرحلة\",\"no_bookings\":\"لا توجد حجوزات لهذه الرحلة\",\"no_gallery\":\"لا توجد صور\",\"no_location\":\"لا توجد خريطة\",\"show_map\":\"اعرض الخريطة\",\"days\":\"أيام\",\"day\":\"يوم\",\"profile\":\"بروفايل\",\"the_profile\":\"البروفايل\",\"edit_profile\":\"تعديل البيانات الشخصية\",\"view_profile\":\"عرض الصفحة الشخصية\",\"user_profile\":\"الصفحة الشخصية\",\"lead_profile\":\"صفحة العميل\",\"model_is_deleted\":\"محذوف\",\"logout\":\"تسجيل الخروج\",\"create\":\"إنشاء\",\"create_again\":\"إنشاء مرة أخرى\",\"edit\":\"تعديل\",\"update\":\"تحديث\",\"save\":\"حفظ\",\"read\":\"اقرأ\",\"all\":\"الكل\",\"n_all\":\"كل\",\"read_more\":\"اقرأ المزيد\",\"more_info\":\"معرفة المزيد\",\"choose_image\":\"اختر صورة\",\"drag_msg\":\"اسحب الصورة وضعها هنا أو اضغط للاختيار\",\"none_status\":\"بدون حالة\",\"active\":\"مفعل\",\"disactive\":\"غير مفعل\",\"available\":\"متاح\",\"unavailable\":\"غير متاح\",\"hidden\":\"مخفى\",\"visible\":\"ظاهر\",\"show\":\"عرض\",\"hide\":\"إخفاء\",\"view\":\"عرض\",\"close\":\"إغلاق\",\"display\":\"إظهار\",\"from\":\"من\",\"to\":\"إلى\",\"in\":\"فى\",\"on\":\"على\",\"or\":\"أو\",\"with\":\"مع\",\"delete\":\"حذف\",\"deleted\":\"تم الحذف\",\"force_delete\":\"إزالة نهائيا\",\"remove\":\"إزالة\",\"removed\":\"تمت الإزالة\",\"restore\":\"استرجاع\",\"restored\":\"تم الإسترجاع\",\"failed\":\"فشل\",\"cancel\":\"إلغاء\",\"yes_delete_it\":\"تأكيد الحذف\",\"yes_remove_it\":\"تأكيد الإزالة\",\"yes_restore_it\":\"تأكيد الإسترجاع\",\"settings_table\":\"إعدادات جدول {model} فى كل الشاشات\",\"notifications\":\"إشعارات\",\"the_notifications\":\"الإشعارات\",\"notification\":\"إشعار\",\"all_notifications\":\"كل الإشعارات\",\"the_messages\":\"الرسائل\",\"all_messages\":\"كل الرسائل\",\"latest_messages\":\"اخر الرسائل\",\"staff\":\"الموظفين\",\"clients\":\"العملاء\",\"vendors\":\"الموردين\",\"reports\":\"التقارير\",\"notif_create_user\":\"تم إنشاء موظف جديد بواسطة\",\"currency\":\"جنية\"},\"evaluation\":{\"evaluation_comments\":\"تعليقات اضافية\",\"evaluation_goals\":\"الهدف\"},\"messages\":{\"delete_msg\":\"هل أنت متأكد من حذف هذا العنصر ؟\",\"delete_success_msg\":\"تم حذف العنصر.\",\"delete_failed_msg\":\"لم يتم حذف العنصر.\",\"force_delete_msg\":\"هل أنت متأكد من إزالة هذا العنصر بشكل نهائى ؟\",\"force_delete_success_msg\":\"تم إزالة العنصر بشكل نهائى.\",\"force_delete_failed_msg\":\"لم يتم إزالة العنصر.\",\"restore_msg\":\"هل أنت متأكد من استرجاع هذا العنصر ؟\",\"restore_success_msg\":\"تم استرجاع العنصر.\",\"restore_failed_msg\":\"لم يتم استرجاع العنصر.\",\"multi_delete_msg\":\"هل أنت متأكد من حذف جميع العناصر المعلم عليها؟\",\"multi_delete_success_msg\":\"تم حذف جميع العناصر المعلم عليها.\",\"multi_delete_failed_msg\":\"لم يتم حذف جميع العناصر المعلم عليها.\",\"multi_force_delete_msg\":\"هل أنت متأكد من إزالة جميع العناصر المعلم عليها بشكل نهائى ؟\",\"multi_force_delete_success_msg\":\"تم إزالة جميع العناصر المعلم عليها بشكل نهائى.\",\"multi_force_delete_failed_msg\":\"لم يتم إزالة جميع العناصر المعلم عليها.\",\"multi_restore_msg\":\"هل أنت متأكد من استرجاع جميع العناصر المعلم عليها؟\",\"multi_restore_success_msg\":\"تم استرجاع جميع العناصر المعلم عليها.\",\"multi_restore_failed_msg\":\"لم يتم استرجاع جميع العناصر المعلم عليها.\",\"change_lead_status_success_msg\":\"تم تحديث حالة العميل بنجاح\",\"change_lead_status_failed_msg\":\"لم يتم تحديث حالة العميل\",\"change_meeting_status_success_msg\":\"تم تحديث حالة المقابلة بنجاح\",\"change_meeting_status_failed_msg\":\"لم يتم تحديث حالة المقابلة\",\"reason_status\":\"سبب تغيير الحالة\",\"change_meeting_status_to\":\"تغيير حالة المقابلة إلى\"},\"users_table\":{\"id\":\"المعرف\",\"name\":\"الاسم\",\"name_ar\":\"الاسم عربى\",\"email\":\"البريد الإليكتروني\",\"password\":\"كلمة السر\",\"repeat_password\":\"أعد كلمة السر\",\"phone\":\"الموبايل\",\"home_phone\":\"تليفون المنزل\",\"emergency_phone\":\"رقم الطوارئ\",\"country\":\"البلد\",\"city\":\"المدينة\",\"address\":\"عنوان المنزل\",\"photo\":\"الصورة الشخصية\",\"id_cart\":\"رقم البطاقة الشخصية\",\"nationality\":\"الجنسية\",\"marital_status\":\"الحالة الزوجية\",\"gender\":\"الجنس\",\"birth_date\":\"تاريخ الميلاد\",\"work_phone\":\"موبايل العمل\",\"work_email\":\"بريد العمل\",\"work_address\":\"عنوان العمل\",\"bank_account_number\":\"رقم حساب البنك\",\"visa_number\":\"رقم الفيزا\",\"visa_expire_date\":\"تاريخ انتهاء الفيزا\",\"certificate_level\":\"المستوى التعليمى\",\"school\":\"الجامعة / المدرسة\",\"job_title_id\":\"المسمى الوظيفى\",\"department_id\":\"القسم\",\"work_period_id\":\"فترة العمل\",\"hiring_date\":\"تاريخ التوظيف\",\"salary\":\"الراتب\",\"rule\":\"الصلاحية\",\"active\":\"التفعيل\",\"document_note\":\"ملحوظة\",\"updated_at\":\"أخر تعديل\",\"created_at\":\"تاريخ الإنشاء\",\"actions\":\"الإجراءات\",\"registration_data\":\"بيانات التسجيل\",\"personal_data\":\"البيانات الشخصية\",\"education\":\"التعليم\",\"word_data\":\"بيانات العمل\",\"job_data\":\"بيانات الوظيفة\",\"activate\":{\"on\":\"مفعل\",\"off\":\"غير مفعل\"},\"rules\":{\"super_admin\":\"مشرف سوبر\",\"admin\":\"مشرف\",\"user\":\"مستخدم\"},\"genders\":{\"male\":\"ذكر\",\"female\":\"أنثى\",\"others\":\"أخرى\"},\"marital_statuses\":{\"single\":\"أعزب\",\"engaged\":\"خاطب / مخطوبة\",\"married\":\"متزوج\",\"others\":\"حالة أخرى\"},\"p_create\":{\"success_msg\":\"تم إنشاء موظف جديد.\",\"failed_msg\":\"لم يتم إنشاء الموظف الجديد.\"},\"p_edit\":{\"success_msg\":\"تم تحديث الموظف.\",\"failed_msg\":\"لم يتم تحديث هذا الموظف.\"}},\"departments_table\":{\"id\":\"المعرف\",\"name\":\"اسم القسم\",\"updated_at\":\"أخر تعديل\",\"created_at\":\"تاريخ الإنشاء\",\"actions\":\"الإجراءات\",\"p_create\":{\"success_msg\":\"تم إنشاء قسم جديد.\",\"failed_msg\":\"لم يتم إنشاء القسم الجديد.\"},\"p_edit\":{\"success_msg\":\"تم تحديث القسم.\",\"failed_msg\":\"لم يتم تحديث هذا القسم.\"}},\"job_titles_table\":{\"id\":\"المعرف\",\"name\":\"اسم الوظيفة\",\"department_id\":\"القسم\",\"updated_at\":\"أخر تعديل\",\"created_at\":\"تاريخ الإنشاء\",\"actions\":\"الإجراءات\"}}");
 
 /***/ }),
 
@@ -71599,7 +71700,7 @@ module.exports = JSON.parse("{\"global\":{\"home\":\"الرئيسية\",\"dashbo
 /*! exports provided: global, evaluation, messages, default */
 /***/ (function(module) {
 
-module.exports = JSON.parse("{\"global\":{\"home\":\"Home\",\"dashboard\":\"Dashboard\",\"user\":\"user\",\"name\":\"Name\",\"total\":\"Total\",\"info\":\"Info\",\"infor\":\"Information\",\"infors\":\"Informations\",\"company\":\"Company\",\"type\":\"type\",\"setting\":\"setting\",\"button\":\"Button\",\"logout\":\"Logout\",\"create\":\"Create\",\"create_again\":\"Create Again\",\"edit\":\"Edit\",\"update\":\"update\",\"save\":\"Save\",\"read\":\"Read\",\"toggle\":\"Toggle\",\"actions\":\"Actions\",\"action\":\"Action\",\"add_all\":\"Add all\",\"all\":\"All\",\"n_all\":\"All\",\"read_more\":\"Read more\",\"more_info\":\"More info\",\"choose_image\":\"Choose image\",\"drag_msg\":\"Drag and drop file here\",\"choose_file\":\"Choose file\",\"download\":\"Download\",\"download_all\":\"Download all\",\"download_file\":\"Download file\",\"download_logo_src\":\"Download logo source\",\"download_image\":\"Download image\",\"to_mail\":\"to mail\",\"to_whatsapp\":\"to whatsapp\",\"renewal\":\"Renewal\",\"none_status\":\"None status\",\"items\":\"Items\",\"item\":\"Item\",\"left\":\"Left\",\"active\":\"Active\",\"completed\":\"Completed\",\"clear_completed\":\"Clear completed\",\"disactive\":\"Disactive\",\"activate\":\"Activate\",\"activation\":\"Activation\",\"activated_at\":\"Activated at\",\"accepted_at\":\"Accepted at\",\"accepte\":\"Accepte\",\"accepte_now\":\"Accepte now\",\"done_at\":\"Done at\",\"in_progress\":\"In progress\",\"available\":\"Available\",\"unavailable\":\"Unavailable\",\"hidden\":\"Hidden\",\"visible\":\"Visible\",\"show\":\"Show\",\"send\":\"Send\",\"hide\":\"Hide\",\"view\":\"View\",\"donwload\":\"Donwload\",\"close\":\"Close\",\"display\":\"Display\",\"from\":\"From\",\"to\":\"To\",\"in\":\"In\",\"on\":\"On\",\"or\":\"Or\",\"with\":\"With\",\"yes\":\"Yes\",\"no\":\"No\",\"delete\":\"Delete\",\"deleted\":\"Deleted\",\"force_delete\":\"Force delete\",\"remove\":\"Remove\",\"removed\":\"Removed\",\"restore\":\"Restore\",\"restored\":\"Restored\",\"failed\":\"Failed\",\"cancel\":\"Cancel\",\"undefined\":\"Undefined\",\"meeting\":\"Meeting\",\"next_meeting\":\"Next meeting\",\"contract\":\"Contract\",\"payments\":\"Payments\",\"view_payments\":\"View payments\",\"invoice\":\"Invoice\",\"lead\":\"Lead\",\"client\":\"Client\",\"yes_delete_it\":\"Yes, delete it\",\"yes_remove_it\":\"Yes, remove it\",\"yes_restore_it\":\"Yes, restore it\",\"settings_table\":\"Settings table {model} on all screens\",\"notifications\":\"Notifications\",\"the_notifications\":\"Notifications\",\"notification\":\"Notification\",\"all_notifications\":\"All notifications\",\"the_messages\":\"Messages\",\"all_messages\":\"All messages\",\"latest_messages\":\"Latest Messages\",\"staff\":\"staff\",\"clients\":\"Clients\",\"vendors\":\"Vendors\",\"notif_create_user\":\"A new employee was created by\",\"currency\":\"EGP\",\"payment_methods\":{\"cash\":\"Cash\",\"bank\":\"Bank\",\"partner_drawing\":\"Partner drawing\"},\"projects_posts_type\":{\"single\":\"single\",\"grouped\":\"grouped\",\"cover_post\":\"cover post\"},\"requests_types\":{\"1\":\"casual vacation\",\"2\":\"medical issues\",\"3\":\"travel\",\"4\":\"permission\",\"5\":\"check in\",\"6\":\"check out\"},\"accounts_types\":{\"saving\":\"Saving account\",\"current\":\"Current account\",\"joint\":\"Joint partner\",\"recom\":\"Recommended partner\"},\"logo_profile\":\"Logo Details\",\"hosting_profile\":\"Host profile\",\"website_profile\":\"Website Details\",\"\":\"\"},\"evaluation\":{\"evaluation_comments\":\"ADDITIONAL COMMENTS\",\"evaluation_goals\":\"GOALS\"},\"messages\":{\"delete_msg\":\"Are you sure to delete this element?\",\"delete_success_msg\":\"The element has been deleted.\",\"delete_failed_msg\":\"The element has not been deleted.\",\"force_delete_msg\":\"Are you sure to remove this element?\",\"force_delete_success_msg\":\"The element has been removed.\",\"force_delete_failed_msg\":\"The element has not been removed.\",\"restore_msg\":\"Are you sure to restore this element?\",\"restore_success_msg\":\"The element has been restored.\",\"restore_failed_msg\":\"The element has not been restored.\",\"multi_delete_msg\":\"Are you sure to delete all checked elements?\",\"multi_delete_success_msg\":\"All elements checked as deleted.\",\"multi_delete_failed_msg\":\"Not all checked elements have been deleted.\",\"multi_force_delete_msg\":\"Are you sure to permanently remove all checked elements?\",\"multi_force_delete_success_msg\":\"All checked elements have been permanently removed.\",\"multi_force_delete_failed_msg\":\"Not all checked elements have been removed.\",\"multi_restore_msg\":\"Are you sure to restore all checked elements?\",\"multi_restore_success_msg\":\"All elements checked as restored.\",\"multi_restore_failed_msg\":\"Not all checked elements have been restored.\",\"change_lead_status_success_msg\":\"Lead status has been successfully updated\",\"change_lead_status_failed_msg\":\"Lead status was not updated\",\"change_client_status_success_msg\":\"Client status has been successfully updated\",\"change_client_status_failed_msg\":\"Client status was not updated\",\"change_meeting_status_success_msg\":\"Meeting status has been successfully updated\",\"change_meeting_status_failed_msg\":\"Meeting status was not updated\",\"reason_status\":\"Reason change status\",\"change_meeting_status_to\":\"Change Meeting status to\",\"not_found_roles\":\"Not found roles\",\"msg_not_mail_lead_registerd\":\"This client does'nt have a registered email.\"}}");
+module.exports = JSON.parse("{\"global\":{\"home\":\"Home\",\"dashboard\":\"Dashboard\",\"user\":\"user\",\"name\":\"Name\",\"total\":\"Total\",\"info\":\"Info\",\"infor\":\"Information\",\"infors\":\"Informations\",\"company\":\"Company\",\"type\":\"type\",\"setting\":\"setting\",\"button\":\"Button\",\"error_response\":\"The selected item can't be deleted\",\"back\":\"Back\",\"logout\":\"Logout\",\"create\":\"Create\",\"create_again\":\"Create Again\",\"edit\":\"Edit\",\"update\":\"update\",\"save\":\"Save\",\"read\":\"Read\",\"toggle\":\"Toggle\",\"actions\":\"Actions\",\"action\":\"Action\",\"add_all\":\"Add all\",\"all\":\"All\",\"n_all\":\"All\",\"read_more\":\"Read more\",\"more_info\":\"More info\",\"choose_image\":\"Choose image\",\"drag_msg\":\"Drag and drop file here\",\"choose_file\":\"Choose file\",\"download\":\"Download\",\"download_all\":\"Download all\",\"download_file\":\"Download file\",\"download_logo_src\":\"Download logo source\",\"download_image\":\"Download image\",\"to_mail\":\"to mail\",\"to_whatsapp\":\"to whatsapp\",\"renewal\":\"Renewal\",\"none_status\":\"None status\",\"items\":\"Items\",\"item\":\"Item\",\"left\":\"Left\",\"active\":\"Active\",\"completed\":\"Completed\",\"clear_completed\":\"Clear completed\",\"disactive\":\"Disactive\",\"activate\":\"Activate\",\"activation\":\"Activation\",\"activated_at\":\"Activated at\",\"accepted_at\":\"Accepted at\",\"accepte\":\"Accepte\",\"accepte_now\":\"Accepte now\",\"done_at\":\"Done at\",\"in_progress\":\"In progress\",\"available\":\"Available\",\"unavailable\":\"Unavailable\",\"hidden\":\"Hidden\",\"visible\":\"Visible\",\"show\":\"Show\",\"send\":\"Send\",\"hide\":\"Hide\",\"view\":\"View\",\"donwload\":\"Donwload\",\"close\":\"Close\",\"display\":\"Display\",\"from\":\"From\",\"to\":\"To\",\"in\":\"In\",\"on\":\"On\",\"or\":\"Or\",\"with\":\"With\",\"yes\":\"Yes\",\"no\":\"No\",\"delete\":\"Delete\",\"deleted\":\"Deleted\",\"force_delete\":\"Force delete\",\"remove\":\"Remove\",\"removed\":\"Removed\",\"restore\":\"Restore\",\"restored\":\"Restored\",\"failed\":\"Failed\",\"cancel\":\"Cancel\",\"undefined\":\"Undefined\",\"meeting\":\"Meeting\",\"next_meeting\":\"Next meeting\",\"contract\":\"Contract\",\"payments\":\"Payments\",\"view_payments\":\"View payments\",\"invoice\":\"Invoice\",\"lead\":\"Lead\",\"client\":\"Client\",\"yes_delete_it\":\"Yes, delete it\",\"yes_remove_it\":\"Yes, remove it\",\"yes_restore_it\":\"Yes, restore it\",\"settings_table\":\"Settings table {model} on all screens\",\"notifications\":\"Notifications\",\"the_notifications\":\"Notifications\",\"notification\":\"Notification\",\"all_notifications\":\"All notifications\",\"the_messages\":\"Messages\",\"all_messages\":\"All messages\",\"latest_messages\":\"Latest Messages\",\"staff\":\"staff\",\"clients\":\"Clients\",\"vendors\":\"Vendors\",\"notif_create_user\":\"A new employee was created by\",\"currency\":\"EGP\",\"payment_methods\":{\"cash\":\"Cash\",\"bank\":\"Bank\",\"partner_drawing\":\"Partner drawing\"},\"projects_posts_type\":{\"single\":\"single\",\"grouped\":\"grouped\",\"cover_post\":\"cover post\"},\"requests_types\":{\"1\":\"casual vacation\",\"2\":\"medical issues\",\"3\":\"travel\",\"4\":\"permission\",\"5\":\"check in\",\"6\":\"check out\"},\"accounts_types\":{\"saving\":\"Saving account\",\"current\":\"Current account\",\"joint\":\"Joint partner\",\"recom\":\"Recommended partner\"},\"logo_profile\":\"Logo Details\",\"hosting_profile\":\"Host profile\",\"website_profile\":\"Website Details\",\"\":\"\"},\"evaluation\":{\"evaluation_comments\":\"ADDITIONAL COMMENTS\",\"evaluation_goals\":\"GOALS\"},\"messages\":{\"delete_msg\":\"Are you sure to delete this element?\",\"delete_success_msg\":\"The element has been deleted.\",\"delete_failed_msg\":\"The element has not been deleted.\",\"force_delete_msg\":\"Are you sure to remove this element?\",\"force_delete_success_msg\":\"The element has been removed.\",\"force_delete_failed_msg\":\"The element has not been removed.\",\"restore_msg\":\"Are you sure to restore this element?\",\"restore_success_msg\":\"The element has been restored.\",\"restore_failed_msg\":\"The element has not been restored.\",\"multi_delete_msg\":\"Are you sure to delete all checked elements?\",\"multi_delete_success_msg\":\"All elements checked as deleted.\",\"multi_delete_failed_msg\":\"Not all checked elements have been deleted.\",\"multi_force_delete_msg\":\"Are you sure to permanently remove all checked elements?\",\"multi_force_delete_success_msg\":\"All checked elements have been permanently removed.\",\"multi_force_delete_failed_msg\":\"Not all checked elements have been removed.\",\"multi_restore_msg\":\"Are you sure to restore all checked elements?\",\"multi_restore_success_msg\":\"All elements checked as restored.\",\"multi_restore_failed_msg\":\"Not all checked elements have been restored.\",\"change_lead_status_success_msg\":\"Lead status has been successfully updated\",\"change_lead_status_failed_msg\":\"Lead status was not updated\",\"change_client_status_success_msg\":\"Client status has been successfully updated\",\"change_client_status_failed_msg\":\"Client status was not updated\",\"change_meeting_status_success_msg\":\"Meeting status has been successfully updated\",\"change_meeting_status_failed_msg\":\"Meeting status was not updated\",\"reason_status\":\"Reason change status\",\"change_meeting_status_to\":\"Change Meeting status to\",\"not_found_roles\":\"Not found roles\",\"msg_not_mail_lead_registerd\":\"This client does'nt have a registered email.\"}}");
 
 /***/ }),
 
@@ -71612,6 +71713,8 @@ module.exports = JSON.parse("{\"global\":{\"home\":\"Home\",\"dashboard\":\"Dash
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _plugins_i18n__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./plugins/i18n */ "./resources/js/plugins/i18n.js");
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -71627,7 +71730,8 @@ __webpack_require__.r(__webpack_exports__);
       },
       columnExport: {},
       dataExport: [],
-      excelDataTables: []
+      excelDataTables: [],
+      errorResponse: ''
     };
   },
   methods: {
@@ -71670,9 +71774,30 @@ __webpack_require__.r(__webpack_exports__);
         } // -- Columns Adjust for CSV File Export
 
       });
+    },
+    // Delete Evaluation
+    deleteModelRow: function deleteModelRow(id) {
+      var _this2 = this;
+
+      var dom = document.querySelector('.delete_model_row').closest('tr');
+      var vm = this;
+      axios["delete"](this.urlModelLink + '/' + id).then(function (response) {
+        if (response.data.status == 406) {
+          _this2.errorResponse = vm.$t('global.error_response');
+        }
+
+        setTimeout(function () {
+          _this2.errorResponse = "";
+        }, 2000);
+        console.log(response);
+        if (response.status == 204) dom.remove();
+      })["catch"](function (error) {
+        console.log(error);
+      });
     }
   },
   mounted: function mounted() {
+    _plugins_i18n__WEBPACK_IMPORTED_MODULE_0__["default"].locale = this.langKey;
     this.getAllDepartments(); // console.log(this.$data);
   }
 });
@@ -71730,8 +71855,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_i18n__WEBPACK_IMPORTED_MODULE
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! F:\laragon\www\01-Test-Permission-PMS\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! F:\laragon\www\01-Test-Permission-PMS\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\laragon\www\01-Test-Permission-PMS\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\laragon\www\01-Test-Permission-PMS\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

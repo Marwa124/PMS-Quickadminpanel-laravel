@@ -13,6 +13,9 @@
         "setting": "setting",
         "button": "Button",
 
+        "error_response": "The selected item can't be deleted",
+        "back"          : "Back",
+
         "logout": "Logout",
         "create": "Create",
         "create_again": "Create Again",

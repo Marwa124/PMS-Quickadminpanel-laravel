@@ -1,3 +1,5 @@
+import i18n from './plugins/i18n';
+
 export default {
     data() {
         return {
@@ -15,6 +17,8 @@ export default {
             columnExport: {},
             dataExport: [],
             excelDataTables: [],
+
+            errorResponse: '',
         }
     },
     methods: {
@@ -58,8 +62,28 @@ export default {
                 // -- Columns Adjust for CSV File Export
             })
         },
+        // Delete Evaluation
+        deleteModelRow(id) {
+            let dom = document.querySelector('.delete_model_row').closest('tr');
+            let vm = this;
+            axios.delete(this.urlModelLink+'/'+id)
+                .then(response => {
+                    if(response.data.status == 406) {
+                        this.errorResponse = vm.$t('global.error_response')
+                    }
+                    setTimeout(() => {
+                        this.errorResponse = ""
+                    }, 2000);
+                    console.log(response);
+                    if(response.status == 204) dom.remove()
+                }).catch(error => {
+                    console.log(error);
+                })
+        },
     },
     mounted() {
+        i18n.locale = this.langKey;
+
         this.getAllDepartments()
         // console.log(this.$data);
     },

@@ -175,6 +175,10 @@ export default {
                     console.log(error); 
                 });
                 
+        },
+
+        backLocation() {
+            window.location.href = "/admin/hr/departments/list";
         }
     },
     mounted() {

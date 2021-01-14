@@ -17,10 +17,12 @@
 
     <div class="card-body">
         <div class="table-responsive">
-
-            <evaluation>
+          
+            <evaluation
+              :can-print="{{auth()->user()->can('evaluation_print') ? 'true' : '1'}}"
+              :can-delete="{{auth()->user()->can('evaluation_delete') ? 'true' : '1'}}"
+            >
             </evaluation>
-
 
         </div>
     </div>

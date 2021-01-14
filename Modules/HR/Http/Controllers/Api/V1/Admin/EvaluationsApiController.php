@@ -37,26 +37,15 @@ class EvaluationsApiController extends Controller
     public function evaluationList()
     {
         // abort_if(Gate::denies('evaluation_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        // $model = Evaluation::select(
-        //     'id',
-        //     'user_id',
-        //     'type',
-        //     'period',
-        //     'manager_id',
-        //     'avg_rate',
-        //     'updated_at',
-        //     'goal',
-        //     'comment'
-        // )->searchPaginateOrder();
 
         $model = Evaluation::searchPaginateOrder();
-// dd($model[0]->updated_at)->format('Y-m-d');
+
         $model->each(function($item) {
             unset($item->created_at);
             unset($item->updated_at);
             $item->user_id = AccountDetail::where('user_id', $item->user_id)->select('fullname')->first()->fullname;
             $item->manager_id = AccountDetail::where('user_id', $item->manager_id)->select('fullname')->first()->fullname;
-            // $item->updated_at =  $item->updated_at->toDateString();
+            
             return $item;
         });
 
@@ -76,10 +65,8 @@ class EvaluationsApiController extends Controller
     }
 
     public function store(StoreEvaluationRequest $request)
-    // public function store(StoreDepartmentRequest $request)
     {
         DB::beginTransaction();
-        // dd($request->all());
 
         try {
             if(gettype($request->data) == 'array' && !empty($request->data)){
@@ -120,11 +107,12 @@ class EvaluationsApiController extends Controller
         return response(Response::HTTP_CREATED);
     }
 
-    public function destroy(Department $department)
+    public function destroy(Evaluation $evaluation)
     {
-        abort_if(Gate::denies('department_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        // abort_if(Gate::denies('evaluation_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $department->delete();
+        $evaluation->ratingEvaluations()->detach();
+        $evaluation->delete();
 
         return response(null, Response::HTTP_NO_CONTENT);
     }

@@ -112,16 +112,19 @@ class DepartmentsApiController extends Controller
             $department->syncPermissions(request()->permissions);
 
         }
-        // dd();
-        // dd($request->all());
     }
 
     public function destroy(Department $department)
     {
         abort_if(Gate::denies('department_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $department->delete();
+        if($department->departmentDesignations()->get()->count() != 0) {
+            return response()->json(['status' => '406']);
+        }else{
+            $department->forceDelete();
+        }
 
+        // return response()->json(['status' => '200']);
         return response(null, Response::HTTP_NO_CONTENT);
     }
 }

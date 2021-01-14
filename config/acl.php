@@ -131,6 +131,8 @@
             'evaluation' => [
                 'evaluation_access',
                 'evaluation_create',
+                'evaluation_print',
+                'evaluation_delete',
             ],
 
             'employee_evaluation' => [

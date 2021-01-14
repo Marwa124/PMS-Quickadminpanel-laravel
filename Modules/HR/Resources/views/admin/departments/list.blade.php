@@ -13,7 +13,11 @@
     </div>
 @endcan
 
-<department-list>
+<department-list
+    :can-edit="{{auth()->user()->can('department_edit')}}"
+    :can-delete="{{auth()->user()->can('department_delete')}}"
+    :lang-key={{json_encode(app()->getLocale())}}
+>
 </department-list>
 
 

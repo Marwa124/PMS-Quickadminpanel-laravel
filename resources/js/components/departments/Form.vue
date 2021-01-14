@@ -59,12 +59,20 @@
                                         <has-error :form="form" field="user_head_department"></has-error>
                                     </div>
 
-                                    <button class="btn btn-primary btn-sm buttonload"
-                                        type="submit" :disabled="form.busy">
-                                        <i v-if="spinnerUpdateDepart" class="fa fa-spinner fa-spin"></i>
-                                        <span v-text="departmentId ? $t('global.update') : $t('global.create')"
-                                        ></span>
-                                    </button>
+                                    <div class="d-flex">
+                                        <button class="btn btn-primary btn-sm buttonload"
+                                            type="submit" :disabled="form.busy">
+                                            <i v-if="spinnerUpdateDepart" class="fa fa-spinner fa-spin"></i>
+                                            <span v-text="departmentId ? $t('global.update') : $t('global.create')"
+                                            ></span>
+                                        </button>
+
+                                        <button class="btn btn-secondary btn-sm ml-1" @click="backLocation">
+                                            <span v-text="$t('global.back')"></span>
+                                        </button>
+                                    </div>
+
+
 
                                 </form>
 

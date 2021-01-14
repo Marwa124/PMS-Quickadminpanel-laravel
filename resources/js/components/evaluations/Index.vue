@@ -11,6 +11,8 @@
             <!-- :dataTable="model.data" -->
         </data-tables>
 
+        <div v-if="errorResponse" class="alert alert-danger error_response" v-text="errorResponse"></div>
+
         <table class="table table-striped table-bordered table-responsive" ref="_vmAction">
             <table-head
                 :query="query"
@@ -26,9 +28,16 @@
                         {{item}}
                     </td>
                     <td>
-                        <a :href="urlEvaluation+'/'+row.id" class="btn btn-sm btn-danger text-white">
-                            <i class="fas fa-file-pdf"></i>
-                        </a>
+                        <div class="d-flex">
+                            <a v-if="canPrint" :href="urlEvaluation+'/'+row.id" class="btn btn-sm btn-secondary text-white mr-1">
+                                <i class="fas fa-file-pdf"></i>
+                            </a>
+
+                            <button v-if="canDelete" class="btn btn-sm btn-danger text-white delete_model_row" @click="deleteModelRow(row.id)">
+                                <!-- :href="urlEvaluation+'/'+row.id" -->
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
                     </td>
                 </tr>
             </tbody>
@@ -47,12 +56,16 @@
 <script>
 import Vue from 'vue';
 import MixinsTable from '../../mixinsTable'
+import Axios from 'axios';
 export default {
     mixins: [MixinsTable],
+    
+    props:  ['canPrint', 'canDelete'],
 
     data() {
         return {
             urlDepartmentsList: '/api/v1/admin/hr/evaluations/list',
+            urlModelLink: '/api/v1/admin/hr/evaluations',
             urlEvaluation: '/admin/hr/evaluations',
             dataResult: {},
 
@@ -69,7 +82,6 @@ export default {
         this.refActions = this.$refs._vmAction;
 
         document.querySelector('.pdfLinkBtn').style.display = "none";
-        document.getElementById('_vmid').style.width = "5%";
     },
 }
 </script>

@@ -17,6 +17,9 @@
         "winner": "فائز",
         "setting": "إعداد",
 
+        "error_response": "لا يمكن حذف هذا العنصر",
+        "back"          : "رجوع",
+
         "no_rooms": "لا يوجد غرف",
         "no_travels": "لا يوجد رحلات",
         "no_hotel_features": "لا توجد مميزات للفندق",
