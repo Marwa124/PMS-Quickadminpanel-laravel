@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 @section('content')
 
-    <div class=" card">
+<div class=" card">
     <div class=" d-flex">
 
 {{--        <div class=" col-sm-2 pb-3">--}}
@@ -63,37 +63,37 @@
 
             </div>
         </div>
-{{--        <div class="card col-sm-2 ">--}}
-{{--            <div class="card-body">--}}
-
-{{--                <a class="float-left" id="in_progress" type="button" >--}}
-{{--                    In Progress--}}
-{{--                </a>--}}
-{{--                <span class="float-right">{{$projects->where('project_status','in_progress')->count().'/'.$projects->count()}}</span><br>--}}
-{{--                <div class="progress" style="width: auto" >--}}
-{{--                    <div class="progress-bar bg-warning" role="progressbar" style="width: {{$projects->where('project_status','in_progress')->count()/$projects->count()*100}}%; " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">--}}
-
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-
 
     </div>
-    </div>
+</div>
 
-    @can('ticket_create')
     <div style="margin-bottom: 10px;" class="row">
-        <div class="col-lg-12">
-            <a class="btn btn-success" href="{{ route('projectmanagement.admin.tickets.create') }}">
-                {{ trans('global.add') }} {{ trans('cruds.ticket.title_singular') }}
-            </a>
-        </div>
+        @can('ticket_create')
+            <div class="col-lg-6">
+                <a class="btn btn-success" href="{{ route('projectmanagement.admin.tickets.create') }}">
+                    {{ trans('global.add') }} {{ trans('cruds.ticket.title_singular') }}
+                </a>
+            </div>
+        @endcan
+        @can('task_delete')
+            <div style="margin: 10px;" class="row d-flex ml-auto">
+                <div class="col-lg-6 ">
+                    <a class="btn btn-{{$trashed ? 'info' : 'danger'}}"
+                       href="{{$trashed ? route('projectmanagement.admin.tickets.index') : route('projectmanagement.admin.tickets.trashed.index')}}">
+
+                        {{ $trashed ? 'Active ' : 'Trashed ' }} {{ trans('cruds.ticket.title') }}
+
+                    </a>
+
+                </div>
+            </div>
+        @endcan
     </div>
-@endcan
 <div class="card">
     <div class="card-header">
-        {{ trans('cruds.ticket.title_singular') }} {{ trans('global.list') }}
+        <a class="float-left" id="all" type="button" >
+            {{ trans('cruds.ticket.title') }} {{ trans('global.list') }}
+        </a>
     </div>
 
     <div class="card-body">
@@ -118,6 +118,9 @@
                         </th>
                         <th>
                             {{ trans('cruds.ticket.fields.status') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.ticket.fields.reporter') }}
                         </th>
                         <th>
                             &nbsp;
@@ -151,36 +154,52 @@
                             <td>
                                 {{ $ticket->status ? ucfirst($ticket->status) : '' }}
                             </td>
+                            <td>
+                                {{ $ticket->reporterBy ? $ticket->reporterBy->name : '' }}
+                            </td>
 
                             <td>
-                                @can('ticket_show')
-                                    <a class="btn btn-xs btn-primary" href="{{ route('projectmanagement.admin.tickets.show', $ticket->id) }}">
-{{--                                        {{ trans('global.view') }}--}}
-                                        <span class="fa fa-eye"></span>
-                                    </a>
-                                @endcan
+                                @if(!$trashed)
+                                    @can('ticket_show')
+                                        <a class="btn btn-xs btn-primary" href="{{ route('projectmanagement.admin.tickets.show', $ticket->id) }}">
+                                            <span class="fa fa-eye"></span>
+                                        </a>
+                                    @endcan
 
-                                @can('ticket_edit')
-                                    <a class="btn btn-xs btn-info" href="{{ route('projectmanagement.admin.tickets.edit', $ticket->id) }}">
-                                        <span class="fa fa-pencil-square-o"></span>
-{{--                                        {{ trans('global.edit') }}--}}
-                                    </a>
-                                @endcan
-                                @can('ticket_assign_to')
+                                    @can('ticket_edit')
+                                        <a class="btn btn-xs btn-info" href="{{ route('projectmanagement.admin.tickets.edit', $ticket->id) }}">
+                                            <span class="fa fa-pencil-square-o"></span>
+                                        </a>
+                                    @endcan
+                                    @can('ticket_assign_to')
 
-                                    <a class="btn btn-xs btn-success {{$ticket->project->department ? '' : 'disabled'}}" href="{{ route('projectmanagement.admin.tickets.getAssignTo', $ticket->id) }}" title="{{$ticket->project->department ? '' : 'add department to project'}}" >
-                                        {{ trans('global.assign_to') }}
-                                    </a>
+                                        <a class="btn btn-xs btn-success {{$ticket->project->department ? '' : 'disabled'}}" href="{{ route('projectmanagement.admin.tickets.getAssignTo', $ticket->id) }}" title="{{$ticket->project->department ? '' : 'add department to project'}}" >
+                                            {{ trans('global.assign_to') }}
+                                        </a>
 
-                                @endcan
+                                    @endcan
 
-                                @can('ticket_delete')
-                                    <form action="{{ route('projectmanagement.admin.tickets.destroy', $ticket->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
-                                        <input type="hidden" name="_method" value="DELETE">
-                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                        <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
-                                    </form>
-                                @endcan
+                                    @can('ticket_delete')
+                                        <form action="{{ route('projectmanagement.admin.tickets.destroy', $ticket->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                            <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
+                                        </form>
+                                    @endcan
+                                @else
+                                    @can('ticket_delete')
+                                        <form action="{{ route('projectmanagement.admin.tickets.forceDestroy', $ticket->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                            <input type="hidden" name="action" value="restore">
+                                            <input type="submit" class="btn btn-xs btn-success" value="{{ trans('global.restore') }}">
+                                        </form>
+                                        <form action="{{ route('projectmanagement.admin.tickets.forceDestroy', $ticket->id) }}" method="POST" onsubmit="return confirm('Ticket and Replay Will Force Delete Too ..! \n{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                            <input type="hidden" name="action" value="force_delete">
+                                            <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.forcedelete') }}">
+                                        </form>
+                                    @endcan
+                                @endif
 
                             </td>
 
@@ -200,35 +219,37 @@
 <script>
     $(function () {
   let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-@can('ticket_delete')
-  let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
-  let deleteButton = {
-    text: deleteButtonTrans,
-    url: "{{ route('projectmanagement.admin.tickets.massDestroy') }}",
-    className: 'btn-danger',
-    action: function (e, dt, node, config) {
-      var ids = $.map(dt.rows({ selected: true }).nodes(), function (entry) {
-          return $(entry).data('entry-id')
-      });
+    @if(!$trashed)
+        @can('ticket_delete')
+            let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
+            let deleteButton = {
+            text: deleteButtonTrans,
+            url: "{{ route('projectmanagement.admin.tickets.massDestroy') }}",
+            className: 'btn-danger',
+            action: function (e, dt, node, config) {
+              var ids = $.map(dt.rows({ selected: true }).nodes(), function (entry) {
+                  return $(entry).data('entry-id')
+              });
 
-      if (ids.length === 0) {
-        alert('{{ trans('global.datatables.zero_selected') }}')
+              if (ids.length === 0) {
+                alert('{{ trans('global.datatables.zero_selected') }}')
 
-        return
-      }
+                return
+              }
 
-      if (confirm('{{ trans('global.areYouSure') }}')) {
-        $.ajax({
-          headers: {'x-csrf-token': _token},
-          method: 'POST',
-          url: config.url,
-          data: { ids: ids, _method: 'DELETE' }})
-          .done(function () { location.reload() })
-      }
-    }
-  }
-  dtButtons.push(deleteButton)
-@endcan
+              if (confirm('{{ trans('global.areYouSure') }}')) {
+                $.ajax({
+                  headers: {'x-csrf-token': _token},
+                  method: 'POST',
+                  url: config.url,
+                  data: { ids: ids, _method: 'DELETE' }})
+                  .done(function () { location.reload() })
+              }
+            }
+            }
+            dtButtons.push(deleteButton)
+        @endcan
+    @endif
 
   $.extend(true, $.fn.dataTable.defaults, {
     orderCellsTop: true,

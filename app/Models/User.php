@@ -30,6 +30,8 @@ use Modules\HR\Entities\LeaveApplication;
 use Modules\HR\Entities\SetTime;
 use Modules\HR\Entities\Vacation;
 use Spatie\Permission\Traits\HasRoles;
+use Symfony\Component\HttpFoundation\Response;
+use Gate;
 
 class User extends Authenticatable implements HasMedia
 {
@@ -219,15 +221,24 @@ class User extends Authenticatable implements HasMedia
 
     // get Project management details to specific User
 
-    public function getUserProjectsByUserID($user_id)
+    public function getUserProjectsByUserID($user_id,$trashed=null)
     {
         $user = User::findOrFail($user_id);
 
         if ($user->hasrole(['Admin','Super Admin'])){
 
+            if ($trashed){
+//            abort_if(Gate::denies('project_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+                return Project::onlyTrashed()->get();
+            }
+
             $projects = Project::all();
-            //            $clients = Client::get();
         }else{
+
+            if ($trashed){
+//            abort_if(Gate::denies('project_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+                return $user->accountDetail->trashProjects;
+            }
 
             $projects = $user->accountDetail->projects;
         }
@@ -242,12 +253,17 @@ class User extends Authenticatable implements HasMedia
         if ($user->hasrole(['Admin','Super Admin'])){
 
             if ($trashed){
+//            abort_if(Gate::denies('milestone_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
                 return Milestone::onlyTrashed()->get();
             }
 
             $milestones = Milestone::all();
 
         }else{
+            if ($trashed){
+//            abort_if(Gate::denies('milestone_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+                return $user->accountDetail->trashMilestones;
+            }
 
             $milestones = $user->accountDetail->milestones;
         }
@@ -256,15 +272,25 @@ class User extends Authenticatable implements HasMedia
         return $milestones;
     }
 
-    public function getUserTasksByUserID($user_id)
+    public function getUserTasksByUserID($user_id,$trashed=null)
     {
         $user = User::findOrFail($user_id);
 
         if ($user->hasrole(['Admin','Super Admin'])){
 
-            $tasks = Task::all()->where('parent_task_id','=',null);
+            if ($trashed){
+//            abort_if(Gate::denies('task_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+                return Task::onlyTrashed()->get();
+            }
+
+            $tasks = Task::where('parent_task_id',null)->get();
 
         }else{
+
+            if ($trashed){
+//            abort_if(Gate::denies('task_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+                return $user->accountDetail->trashTasks;
+            }
 
             $tasks = $user->accountDetail->tasks->where('parent_task_id',null);
         }
@@ -272,22 +298,39 @@ class User extends Authenticatable implements HasMedia
         return $tasks;
     }
 
-    public function getUserBugsByUserID($user_id)
+    public function getUserBugsByUserID($user_id,$trashed = null)
     {
         $user = User::findOrFail($user_id);
 
         if ($user->hasrole(['Admin','Super Admin'])){
 
+            if ($trashed){
+//            abort_if(Gate::denies('bug_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+                return Bug::onlyTrashed()->get();
+            }
+
             $bugs = Bug::all();
 
         }else{
 
+            if ($trashed){
+//            abort_if(Gate::denies('bug_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+                $bugs = $user->accountDetail->trashBugs;
+                if (!$bugs){
+                    $bugs = Bug::onlyTrashed()
+                        ->whereHas('reporterBy' , function ($query){
+                                $query->where('id',auth()->user()->id);
+                            })->with('reporterBy')->get();
+                }
+                return $bugs;
+            }
+
             $bugs = $user->accountDetail->bugs;
-            //dd($bugs);
-            if (!$bugs){
-                $bugs =Bug::whereHas('reporterBy' , function ($query){
+            if (!$bugs || $bugs->count() == 0){
+                $bugs = Bug::whereHas('reporterBy' , function ($query){
                     $query->where('id',auth()->user()->id);
                 })->with('reporterBy')->get();
+                //dd($bugs);
             }
         }
 
@@ -295,5 +338,5 @@ class User extends Authenticatable implements HasMedia
 
     }
 
-   
+
 }

@@ -2,6 +2,7 @@
 
 namespace Modules\ProjectManagement\Entities;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\HR\Entities\Department;
@@ -82,4 +83,8 @@ class Ticket extends Model implements HasMedia
 
     }
 
+    public function reporterBy()
+    {
+        return $this->belongsTo(User::class,'reporter');
+    }
 }

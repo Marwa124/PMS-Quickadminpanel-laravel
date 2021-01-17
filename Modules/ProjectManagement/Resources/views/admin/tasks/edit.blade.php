@@ -241,7 +241,7 @@
                 <div class="form-group w3-light-grey w3-xlarge" id="div_progress_input" style="display:block;">
                     <label for="calculate_progress">{{ trans('cruds.task.fields.calculate_progress') }}</label>
                     <input class="form-control w3-container w3-green {{ $errors->has('calculate_progress') ? 'is-invalid' : '' }}" type="range"
-                           min="0" max="100" name="calculate_progress" id="calculate_progress" value="{{ old('calculate_progress', '') }}" onchange="displayProgressValue()">
+                           min="0" max="100" name="calculate_progress" id="calculate_progress" value="{{ old('calculate_progress', $task->calculate_progress) }}" onchange="displayProgressValue()">
                     <span id="progress_value" class="invisible" style="margin-left: 40%;"></span>
                     @if($errors->has('calculate_progress'))
                         <div class="invalid-feedback">

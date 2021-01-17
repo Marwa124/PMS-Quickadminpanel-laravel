@@ -157,10 +157,24 @@ class AccountDetail extends Model implements HasMedia
 
     }
 
+    public function trashProjects(){
+
+        return $this->belongsToMany('Modules\ProjectManagement\Entities\Project',
+            'project_account_details_pivot','account_details_id','project_id')->onlyTrashed();
+
+    }
+
     public function milestones(){
 
         return $this->belongsToMany('Modules\ProjectManagement\Entities\Milestone',
             'milestone_account_details_pivot','account_details_id','milestone_id');
+
+    }
+
+    public function trashMilestones(){
+
+        return $this->belongsToMany('Modules\ProjectManagement\Entities\Milestone',
+            'milestone_account_details_pivot','account_details_id','milestone_id')->onlyTrashed();
 
     }
 
@@ -171,10 +185,25 @@ class AccountDetail extends Model implements HasMedia
 
     }
 
+    public function trashTasks(){
+
+        return $this->belongsToMany('Modules\ProjectManagement\Entities\Task',
+            'task_account_details_pivot','account_details_id','task_id')->onlyTrashed();
+
+    }
+
     public function bugs(){
 
         return $this->belongsToMany('Modules\ProjectManagement\Entities\Bug',
             'bug_account_details_pivot','account_details_id','bug_id');
+
+    }
+
+
+    public function trashBugs(){
+
+        return $this->belongsToMany('Modules\ProjectManagement\Entities\Bug',
+            'bug_account_details_pivot','account_details_id','bug_id')->onlyTrashed();
 
     }
 

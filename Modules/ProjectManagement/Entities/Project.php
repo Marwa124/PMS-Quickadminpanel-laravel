@@ -134,11 +134,13 @@ class Project extends Model implements HasMedia
         return $this->hasMany(Milestone::class,'project_id');
     }
 
+    // tasks without sub tasks
     public function tasks()
     {
         return $this->hasMany(Task::class,'project_id')->where('parent_task_id','=',null);
     }
 
+    // all tasks
     public function allTasks()
     {
         return $this->hasMany(Task::class,'project_id');
@@ -179,5 +181,27 @@ class Project extends Model implements HasMedia
     public function activities()
     {
         return $this->hasMany(Activity::class,'module_field_id')->where('module','=','project')->orderBy('id','desc');
+    }
+
+    public function cloneProject()
+    {
+        // clone project as new project
+        $newproject         = $this->replicate();
+        $newproject->name   = $this->name.'-copy'.substr(time(),-4);
+        $newproject->push();
+
+        $newproject = Project::findOrFail($newproject->id);
+
+        setActivity('project',$newproject->id,'Save Project Details',$newproject->name);
+
+        // clone milestones in project to add for new project
+        foreach ($this->milestones as $milestone)
+        {
+
+            $new_milestone = $milestone->cloneMilestone($newproject);
+
+        }
+
+        return $newproject;
     }
 }

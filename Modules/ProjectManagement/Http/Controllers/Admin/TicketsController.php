@@ -9,7 +9,7 @@ use App\Notifications\ProjectManagementNotification;
 use Modules\HR\Entities\AccountDetail;
 use Modules\ProjectManagement\Entities\ticket;
 use Modules\ProjectManagement\Entities\TicketReplay;
-use Modules\ProjectManagement\Http\Controllers\Traits\PermissionHelperTrait;
+use Modules\ProjectManagement\Http\Controllers\Traits\ProjectManagementHelperTrait;
 use Modules\ProjectManagement\Http\Requests\MassDestroyTicketRequest;
 use Modules\ProjectManagement\Http\Requests\StoreTicketRequest;
 use Modules\ProjectManagement\Http\Requests\UpdateTicketRequest;
@@ -23,21 +23,30 @@ use Symfony\Component\HttpFoundation\Response;
 
 class TicketsController extends Controller
 {
-    use MediaUploadingTrait , PermissionHelperTrait;
+    use MediaUploadingTrait , ProjectManagementHelperTrait;
 
     public function index()
     {
         abort_if(Gate::denies('ticket_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $tickets = Ticket::all();
-
         $projects = Project::get();
 
         $departments = Department::get();
 
-        //$permissions = Permission::get();
+        if (request()->segment(count(request()->segments())) == 'trashed'){
 
-        return view('projectmanagement::admin.tickets.index', compact('tickets', 'projects', 'departments'));
+            abort_if(Gate::denies('ticket_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+            $trashed = true;
+            $tickets = Ticket::onlyTrashed()->get();
+
+            return view('projectmanagement::admin.tickets.index', compact('tickets','trashed', 'projects', 'departments'));
+        }
+
+        $trashed = false;
+        $tickets = Ticket::all();
+
+        return view('projectmanagement::admin.tickets.index', compact('tickets','trashed', 'projects', 'departments'));
     }
 
     public function create($id = null)
@@ -330,6 +339,26 @@ class TicketsController extends Controller
         }
 
         return redirect()->back();
+
+    }
+
+    public function forceDelete(Request $request,$id)
+    {
+        //dd($request->all(),$id);
+        $action = $request->action;
+
+        if ($action == 'force_delete') {
+
+            $ticket = Ticket::onlyTrashed()->where('id', $id)->first();
+            //force Delete Task
+            $this->forceDeleteTicket($ticket);
+
+        } else if ($action == 'restore') {
+            //restore Task
+            Ticket::onlyTrashed()->where('id', $id)->restore();
+        }
+
+        return back();
 
     }
 }
