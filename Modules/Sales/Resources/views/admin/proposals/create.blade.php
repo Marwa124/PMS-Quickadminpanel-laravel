@@ -292,7 +292,7 @@
                                 <td class=""><input class="form-control" type="number" name="delivery" id=""></td>
                                 <td class="form-group"><select class="selectpicker tax" multiple  name="tax[]" id="" > 
                                     @foreach($taxRates as $id => $taxRate)
-                                    <option value=" {{ $taxRate->rate_percent.'|'.$taxRate->name }}"  data-taxrate="{{ $taxRate->rate_percent }}" data-taxname="{{ $taxRate->name }}" data-subtext="{{ $taxRate->name }}">
+                                    <option value=" {{ $taxRate->rate_percent.'|'.$taxRate->name }}"  data-taxrate="{{ $taxRate->rate_percent }}" data-taxname="{{ $taxRate->name }}" data-subtext="{{ $taxRate->name }}" >
                                         {{ $taxRate->rate_percent.'% | '.$taxRate->name }}</option>
                                     @endforeach 
                                 </td>

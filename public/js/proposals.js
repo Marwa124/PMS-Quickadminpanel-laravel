@@ -248,6 +248,7 @@ function calculate_total_edit() {
 
     //  profit = after_discount - total_cost_price;
 
+    
     if (after_discount > total_cost_price) {
         profit = after_discount - total_cost_price;
     } else {

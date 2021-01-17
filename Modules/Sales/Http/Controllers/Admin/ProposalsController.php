@@ -60,83 +60,95 @@ class ProposalsController extends Controller
         //     DB::rollback();
         //     return redirect()->back();
         // }
-        // dd($request->all());
-//   "porposal_item" => "1"
-//   "item_name" => null
-//   "item_desc" => null
-//   "group_name" => null
-//   "quantity" => null
-//   "unit" => null
-//   "brand" => null
-//   "part" => null
-//   "unit_cost" => null
-//   "total_cost_price" => null
-//   "margin" => null
-//   "delivery" => null
-//   "new_itmes_id" => null
-//   "" => "0"
-//   "adjustment" => "0"
+    
+        // dd($request->all(),$request->items);
 
-
-// 'total_tax',
-// 'total_cost_price',
-// 'tax',
-
-// 'date_sent',
-// 'proposal_deleted',
-// 'emailed',
-// 'show_client',
-// 'convert',
-// 'convert_module',
-// 'module_id',
-
-// 'discount_type',
-// 'discount_percent',
-// 'after_discount',
-// 'discount_total',
-// 'adjustment',
-// 'show_quantity_as',
-// 'allowed_cmments',
-// 'proposal_validity',
-// 'materials_supply_delivery',
-// 'warranty',
-// 'prices',
-// 'user_id',
-// 'payment_terms',
-        $tax=$request->tax ? json_encode($request->tax) : '';
+        // $tax=$request->tax ? json_encode($request->tax) : '';
         $total_tax=$request->total_tax ? array_sum($request->total_tax) : 0;
         $after_discount=$request->after_discount ? $request->after_discount : 0;
         $total=$request->total ? $request->total : 0;
         $discount_percent=$request->discount_percent ? $request->discount_percent : 0;
-        $request->merge(['tax'=>$tax,'total_tax'=>$total_tax,'after_discount'=>$after_discount,'total'=>$total,'discount_percent'=>$discount_percent]);
+        $request->merge(['total_tax'=>$total_tax,'after_discount'=>$after_discount,'total'=>$total,'discount_percent'=>$discount_percent]);
 
-        dd($request->all());
-        $proposal = Proposal::create($request->only([
-        'reference_no',
-        'subject',
-        'module',
-        'currency',
-        'module_id',
-        // 'status',
-        'user_id',
-        'proposal_validity',
-        'materials_supply_delivery',
-        'warranty',
-        'prices',
-        'maintenance_service_contract',
-        'payment_terms',
-        'notes',
-        'expire_date',
-        'proposal_date',
-        'total_tax',
-        'total_cost_price',
-        'tax',
-        'adjustment',
-        'discount_percent',
-        ])->all());
-        // $request->only('username', 'password')
+        // dd($request->all());
         
-        $proposal->permissions()->sync($request->input('permissions', []));
+        // $proposal = Proposal::create($request->only([
+        // 'reference_no',
+        // 'subject',
+        // 'module',
+        // 'currency',
+        // 'module_id',
+        // 'status',
+        // 'user_id',
+        // 'proposal_validity',
+        // 'materials_supply_delivery',
+        // 'warranty',
+        // 'prices',
+        // 'maintenance_service_contract',
+        // 'payment_terms',
+        // 'notes',
+        // 'expire_date',
+        // 'proposal_date',
+        // 'total_tax',
+        // 'total_cost_price',
+        // 'tax',
+        // 'adjustment',
+        // 'discount_percent',
+        // ]));
+        // item_porposal_relations
+        // 'name',
+        // 'description',
+        // 'group_name',
+        // 'brand',
+        // 'delivery',
+        // 'part', 
+        // 'quantity',
+        // 'unit_cost',
+        // 'margin',
+        // 'selling_price',
+        // 'total_cost_price',
+        // 'tax_rate',
+        // 'tax_name',
+        // 'tax_total', 
+        // 'tax_cost',
+        // 'order', 
+        // 'unit',
+        // 'hsn_code', 
+        // 'proposals_id',
+        // 'item_id',
+        // "order" => "1"
+        // "saved_items_id" => "2"
+        // "total_qty" => "1"
+        // "item_name" => "ipad"
+        // "item_desc" => null
+        // "group_name" => "software"
+        // "quantity" => "1"
+        // "unit" => null
+        // "brand" => null
+        // "part" => "2pices"
+        // "unit_cost" => "3000"
+        // "total_cost_price" => "3000"
+        // "margin" => "20"
+        // "selling_price" => "3600"
+        // "delivery" => null
+        // "tax" => array:2 [▶]
+       foreach ($request->items as $key => $value) {
+            $total_taxitem=0;
+            if ($value['tax']) {
+                # code...
+                $taxRates = TaxRate::whereIN('id',$value['tax'])->pluck('rate_percent');
+                if(!empty($taxRates)){
+                    foreach ($taxRates as $ratevalue) {
+                       $total_taxitem=$total_taxitem+($value['unit_cost']* $value['total_qty'] * ($ratevalue / 100));
+                    }
+                }
+            }
+            dd($value->marge(["key"=>"value"]));
+            // $request->request->add(['items' => [$key => ['tax_total'=>$total_taxitem] ]]);
+           
+        }
+        dd($request->all());
+        $proposal->permissions()->sync($request->input('items', []));
 
         if ($media = $request->input('ck-media', false)) {
             Media::whereIn('id', $media)->update(['model_id' => $proposal->id]);
