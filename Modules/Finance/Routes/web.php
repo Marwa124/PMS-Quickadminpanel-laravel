@@ -19,4 +19,5 @@ Route::prefix('finance')->group(function() {
 Route::group(['as' => 'finance.admin.', 'prefix' => 'admin/finance', 'namespace' => 'Admin', 'middleware' => ['auth']],function() {
     Route::get('balance_sheet','FinanceController@balance_sheet')->name('balance_sheet');
     Route::resource('payment_method','PaymentmethodController');
+    Route::delete('payment_method_mass_destroy','PaymentmethodController@massDestroy')->name('payment_method.massDestroy');
 });

@@ -125,6 +125,10 @@
                 'bank_cash', // done
                 'balance_sheet', // done
                 'payment_method', // done
+                'payment_method_delete', // done
+                'payment_method_edit', // done
+                'payment_method_create', // done
+                'payment_method', // done
 
 
             ],

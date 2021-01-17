@@ -8,6 +8,13 @@ return [
         'balance_sheet' => 'Balance Sheet',
         'payment_method' => 'Payment Methods',
     ],
+    'payment_method'                => [
+        'title'          => 'Payment Method',
+        'title_singular' => 'Payment Method',
+        'fields' => [
+            'name'  => 'Name'
+        ]
+    ],
 
     'userManagement'         => [
         'title'          => 'User management',

@@ -2,78 +2,77 @@
 
 namespace Modules\Finance\Http\Controllers\admin;
 
-use Illuminate\Contracts\Support\Renderable;
+use Gate;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Modules\Payroll\Entities\PaymentMethod;
+use Symfony\Component\HttpFoundation\Response;
 
 class PaymentmethodController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     * @return Renderable
-     */
     public function index()
     {
-        return view('finance::index');
+        abort_if(Gate::denies('payment_method'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        $payment_methods = PaymentMethod::all();
+        return view('finance::admin.payments.index',compact('payment_methods'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     * @return Renderable
-     */
+
     public function create()
     {
-        return view('finance::create');
+        abort_if(Gate::denies('payment_method_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        return view('finance::admin.payments.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     * @param Request $request
-     * @return Renderable
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name'  => 'required'
+        ]);
+         PaymentMethod::create($request->all());
+
+        return redirect()->route('finance.admin.payment_method.index');
     }
 
-    /**
-     * Show the specified resource.
-     * @param int $id
-     * @return Renderable
-     */
+    public function edit( $payment)
+    {
+        abort_if(Gate::denies('payment_method_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        $payment = PaymentMethod::findOrFail($payment);
+        return view('finance::admin.payments.edit', compact('payment'));
+    }
+
+    public function update(Request $request,$id)
+    {
+        $request->validate([
+            'name'  => 'required'
+        ]);
+        PaymentMethod::findOrFail($id)->update($request->all());
+
+        return redirect()->route('finance.admin.payment_method.index');
+    }
+
     public function show($id)
     {
-        return view('finance::show');
+
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     * @param int $id
-     * @return Renderable
-     */
-    public function edit($id)
-    {
-        return view('finance::edit');
-    }
 
-    /**
-     * Update the specified resource in storage.
-     * @param Request $request
-     * @param int $id
-     * @return Renderable
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     * @param int $id
-     * @return Renderable
-     */
     public function destroy($id)
     {
-        //
+        abort_if(Gate::denies('payment_method_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        PaymentMethod::findOrFail($id)->delete();
+
+        return back();
     }
+
+
+    public function massDestroy()
+    {
+        PaymentMethod::whereIn('id', request('ids'))->delete();
+
+        return response(null, Response::HTTP_NO_CONTENT);
+    }
+
 }
