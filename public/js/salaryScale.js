@@ -79,9 +79,14 @@ $(document).ready(function () {
         var deductionFund = parseInt($("input[name='deduction[provided_fund]']").val() ?? 0);
         var deductionTax = parseInt($("input[name='deduction[tax_deduction]']").val() ?? 0);
 
+        var sum = 0;
+        $('.deductionValue').each(() => {
+            sum += parseInt($('.deductionValue').val() ?? 0);
+        })
+
         var deductionMore = moreDeductions(deductionsLabels);
 
-        return deductionFund + deductionTax + deductionMore;
+        return deductionFund + deductionTax + deductionMore + sum;
     }
 
     function netSalary()

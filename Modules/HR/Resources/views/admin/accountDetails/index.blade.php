@@ -223,6 +223,7 @@
                                         {{-- @can('appointment_letter') --}}
                                             @if ($accountDetail->user_id != auth()->user()->id)
                                                 @php
+                                                // dd(auth()->user()->accountDetail()->get());
                                                     $dep = auth()->user()->accountDetail->designation ? auth()->user()->accountDetail->designation->department->id : '';
                                                 @endphp
                                                 @if ($dep)
