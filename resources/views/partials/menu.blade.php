@@ -1088,7 +1088,7 @@
                     @endcan
                     @can('local_access')
                         <li class="c-sidebar-nav-item">
-                            <a href="{{ route("admin.locals.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/locals") || request()->is("admin/locals/*") ? "active" : "" }}">
+                            <a href="{{ url("translations") }}" class="c-sidebar-nav-link {{ request()->is("admin/locals") || request()->is("admin/locals/*") ? "active" : "" }}">
                                 <i class="fa-fw fas fa-globe c-sidebar-nav-icon">
 
                                 </i>

@@ -26,6 +26,9 @@
                             {{ trans('cruds.designation.fields.department') }}
                         </th>
                         <th>
+                            {{ trans('cruds.designation.fields.designation_name_ar') }}
+                        </th>
+                        <th>
                             {{ trans('cruds.designation.fields.designation_name') }}
                         </th>
                         <th>
@@ -41,6 +44,9 @@
                             </td>
                             <td>
                                 {{ $designation->department->department_name ?? '' }}
+                            </td>
+                            <td>
+                                {{ $designation->designation_name_ar_ ?? '' }}
                             </td>
                             <td>
                                 {{ $designation->designation_name ?? '' }}

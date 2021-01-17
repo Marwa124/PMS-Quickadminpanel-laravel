@@ -32,16 +32,16 @@ class DesignationsController extends Controller
         abort_if(Gate::denies('designation_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $departments = Department::all()->pluck('department_name', 'id')->prepend(trans('global.pleaseSelect'), '');
-        $designations = Designation::all()->pluck('designation_name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $users = AccountDetail::all()->pluck('fullname', 'user_id')->prepend(trans('global.pleaseSelect'), '');
 
-        return view('hr::admin.designations.create', compact('departments', 'designations'));
+        return view('hr::admin.designations.create', compact('departments', 'users'));
     }
 
     public function store(StoreDesignationRequest $request)
     {
         // dd($request->all());
         $designation = Designation::create($request->all());
-
+        // dd($designation);
         return redirect()->route('hr.admin.designations.index');
     }
 
@@ -52,12 +52,8 @@ class DesignationsController extends Controller
         $departments = Department::all()->pluck('department_name', 'id')->prepend(trans('global.pleaseSelect'), '');
         $designation = Designation::find($id);
         $users = AccountDetail::all()->pluck('fullname', 'user_id')->prepend(trans('global.pleaseSelect'), '');
-        // $permissions = PermissionGroup::with('permissions')->get();
-        // dd($permissions);
-        // $permissions = Permission::all()->pluck('name', 'id');
+
         $permissions = Permission::get()->groupBy('permission_group_id');
-
-
 
         return view('hr::admin.designations.edit', compact('departments', 'users', 'designation', 'permissions'));
     }
