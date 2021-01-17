@@ -130,8 +130,37 @@ class Proposal extends Model implements HasMedia
         $this->attributes['date_sent'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
     }
 
+    // public function permissions()
+    // {
+    //     return $this->belongsToMany(Permission::class);
+    // }
     public function permissions()
     {
         return $this->belongsToMany(Permission::class);
+    }
+    public function items(){
+
+        return $this->belongsToMany('Modules\Sales\Entities\ProposalsItem',
+            'item_porposal_relations','proposals_id','item_id') ->withPivot(
+                'name',
+                'description',
+                'group_name',
+                'brand',
+                'delivery',
+                'part',
+                'quantity',
+                'unit_cost',
+                'margin',
+                'selling_price',
+                'total_cost_price',
+                'tax_rate',
+                'tax_name',
+                'tax_total',
+                'tax_cost',
+                'order',
+                'unit',
+                'hsn_code',
+            )->orderBy('id','asc');
+
     }
 }

@@ -10,6 +10,7 @@ use Modules\Sales\Http\Requests\Store\StoreProposalRequest;
 use Modules\Sales\Http\Requests\Update\UpdateProposalRequest;
 use Modules\Sales\Http\Requests;
 use Modules\Sales\Entities\ProposalsItem;
+use Modules\Sales\Entities\ItemPorposalRelations;
 use App\Models\Opportunity;
 use App\Models\Client;
 use App\Models\User;
@@ -32,9 +33,9 @@ class ProposalsController extends Controller
 
         $proposals = Proposal::all();
 
-        $permissions = Permission::get();
+        // $permissions = Permission::get();
 
-        return view('sales::admin.proposals.index', compact('proposals', 'permissions'));
+        return view('sales::admin.proposals.index', compact('proposals'));
     }
 
     public function create()
@@ -49,92 +50,43 @@ class ProposalsController extends Controller
 
     public function store(StoreProposalRequest $request)
     {
-        // DB::beginTransaction();
+        DB::beginTransaction();
 
-        // try {
-            
-        //     DB::commit();
-        //     return redirect()->route('sales.admin.leads.index');
-
-        // } catch (\Exception $e) {
-        //     DB::rollback();
-        //     return redirect()->back();
-        // }
-    
-        // dd($request->all(),$request->items);
-
-        // $tax=$request->tax ? json_encode($request->tax) : '';
+        try {
         $total_tax=$request->total_tax ? array_sum($request->total_tax) : 0;
         $after_discount=$request->after_discount ? $request->after_discount : 0;
         $total=$request->total ? $request->total : 0;
         $discount_percent=$request->discount_percent ? $request->discount_percent : 0;
-        $request->merge(['total_tax'=>$total_tax,'after_discount'=>$after_discount,'total'=>$total,'discount_percent'=>$discount_percent]);
+        $request->merge(['total_cost_price'=>$total,'total_tax'=>$total_tax,'after_discount'=>$after_discount,'discount_percent'=>$discount_percent]);
+        $proposal = Proposal::create($request->only([
+        'reference_no',
+        'subject',
+        'module',
+        'currency',
+        'module_id',
+        'status',
+        'user_id',
+        'proposal_validity',
+        'materials_supply_delivery',
+        'warranty',
+        'prices',
+        'maintenance_service_contract',
+        'payment_terms',
+        'notes',
+        'expire_date',
+        'proposal_date',
+        'total_tax',
+        'total_cost_price',
+        'adjustment',
+        'discount_percent',
+        'after_discount',
+        'discount_total',
+        ]));
 
-        // dd($request->all());
-        
-        // $proposal = Proposal::create($request->only([
-        // 'reference_no',
-        // 'subject',
-        // 'module',
-        // 'currency',
-        // 'module_id',
-        // 'status',
-        // 'user_id',
-        // 'proposal_validity',
-        // 'materials_supply_delivery',
-        // 'warranty',
-        // 'prices',
-        // 'maintenance_service_contract',
-        // 'payment_terms',
-        // 'notes',
-        // 'expire_date',
-        // 'proposal_date',
-        // 'total_tax',
-        // 'total_cost_price',
-        // 'tax',
-        // 'adjustment',
-        // 'discount_percent',
-        // ]));
-        // item_porposal_relations
-        // 'name',
-        // 'description',
-        // 'group_name',
-        // 'brand',
-        // 'delivery',
-        // 'part', 
-        // 'quantity',
-        // 'unit_cost',
-        // 'margin',
-        // 'selling_price',
-        // 'total_cost_price',
-        // 'tax_rate',
-        // 'tax_name',
-        // 'tax_total', 
-        // 'tax_cost',
-        // 'order', 
-        // 'unit',
-        // 'hsn_code', 
-        // 'proposals_id',
-        // 'item_id',
-        // "order" => "1"
-        // "saved_items_id" => "2"
-        // "total_qty" => "1"
-        // "item_name" => "ipad"
-        // "item_desc" => null
-        // "group_name" => "software"
-        // "quantity" => "1"
-        // "unit" => null
-        // "brand" => null
-        // "part" => "2pices"
-        // "unit_cost" => "3000"
-        // "total_cost_price" => "3000"
-        // "margin" => "20"
-        // "selling_price" => "3600"
-        // "delivery" => null
-        // "tax" => array:2 [▶]
+    
        foreach ($request->items as $key => $value) {
             $total_taxitem=0;
-            if ($value['tax']) {
+            if (isset($value['tax'])) {
                 # code...
                 $taxRates = TaxRate::whereIN('id',$value['tax'])->pluck('rate_percent');
                 if(!empty($taxRates)){
@@ -143,29 +95,53 @@ class ProposalsController extends Controller
                     }
                 }
             }
-            dd($value->marge(["key"=>"value"]));
-            // $request->request->add(['items' => [$key => ['tax_total'=>$total_taxitem] ]]);
-           
+
+            $newitem=new ItemPorposalRelations;
+            $newitem->name=$value['item_name'];
+            $newitem->description=$value['item_desc'];
+            $newitem->group_name=$value['group_name'];
+            $newitem->brand=$value['brand'];
+            $newitem->delivery=$value['delivery'];
+            $newitem->part=$value['part'];
+            $newitem->quantity=$value['quantity'];
+            $newitem->unit_cost=$value['unit_cost'];
+            $newitem->margin=$value['margin'];
+            $newitem->selling_price=$value['selling_price'];
+            $newitem->total_cost_price=$value['total_cost_price'];
+            $newitem->tax_name=isset($value['tax'])?json_encode($value['tax']):null;
+            $newitem->tax_total=$total_taxitem;
+            $newitem->order=$value['order'];
+            $newitem->unit=$value['unit'];
+            $newitem->proposals_id=$proposal['id'];
+            $newitem->item_id=$value['saved_items_id'];
+            $newitem->save();
+
         }
-        dd($request->all());
-        $proposal->permissions()->sync($request->input('items', []));
+
 
         if ($media = $request->input('ck-media', false)) {
             Media::whereIn('id', $media)->update(['model_id' => $proposal->id]);
         }
 
+        DB::commit();
         return redirect()->route('sales.admin.proposals.index');
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            dd($e);
+            return redirect()->back();
+        }
+
     }
 
     public function edit(Proposal $proposal)
     {
         abort_if(Gate::denies('proposal_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        $permissions = Permission::all()->pluck('title', 'id');
-
-        $proposal->load('permissions');
-
-        return view('sales::admin.proposals.edit', compact('permissions', 'proposal'));
+        $datamodule=$proposal->module=="opportunities" || $proposal->module=="client" ?($proposal->module=="opportunities" ? $data=Opportunity::all()->pluck('name', 'id') : $data=Client::all()->pluck('name', 'id')) : null;
+        $users = User::whereHas('accountDetail')->get()->pluck('accountDetail.fullname', 'id');
+        $ProposalsItem = ProposalsItem::all();
+        $taxRates = TaxRate::all();
+        return view('sales::admin.proposals.edit', compact('users','ProposalsItem','taxRates','proposal','datamodule'));
     }
 
     public function update(UpdateProposalRequest $request, Proposal $proposal)

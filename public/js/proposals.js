@@ -198,12 +198,13 @@ function calculate_total_edit() {
         if (item_taxes) {
             $.each(item_taxes, function (i, taxname) {
                 taxrate = row.find('select.tax [value="' + taxname + '"]').data('taxrate');
-
+                subtext = row.find('select.tax [value="' + taxname + '"]').data('taxname');
+                console.log(subtext,taxrate);
                 calculated_tax = (_amount2 / 100 * taxrate);
                 if (!taxes.hasOwnProperty(taxname)) {
                     if (taxrate != 0) {
                         _tax_name = taxname.split('|');
-                        tax_row = '<tr class="tax-area"><td>' + _tax_name[0] + '(' + taxrate + '%)</td><td id="tax_id_' + slugify(taxname) + '"></td></tr>';
+                        tax_row = '<tr class="tax-area"><td>' + subtext + '(' + taxrate + '%)</td><td id="tax_id_' + slugify(taxname) + '"></td></tr>';
                         $("tr.total_after_discount").after(tax_row);
                         taxes[taxname] = calculated_tax;
                     }
@@ -314,7 +315,7 @@ function add_item_to_table(data, itemid, merge_invoice) {
         amount = amount;
 
         var tax_name = 'items[' + item_key + '][taxname]';
-        $('body').append('<div class="spinner-border dt-loader" role="status"><span class="sr-only">Loading...</span></div>');
+        // $('body').append('<div class="spinner-border dt-loader" role="status"><span class="sr-only">Loading...</span></div>');
         var regex = /<br[^>]*>/gi;
 
         get_taxes_dropdown_template().done(function (tax_dropdown) {
@@ -360,18 +361,18 @@ function add_item_to_table(data, itemid, merge_invoice) {
 
                     if (taxnamearray.includes(tax_dropdown[i].rate_percent)) {
 
-                        $option = '<option value="' + tax_dropdown[i]['name'] + '" selected data-taxrate="' + tax_dropdown[i]['rate_percent'] + '" data-taxname="' + tax_dropdown[i]['name'] + '" data-subtext="' + tax_dropdown[i]['name'] + '">' + tax_dropdown[i]['rate_percent'] + '% |' + tax_dropdown[i]['name'] + '</option>'
+                        $option = '<option value="' + tax_dropdown[i]['id'] + '" selected data-taxrate="' + tax_dropdown[i]['rate_percent'] + '" data-taxname="' + tax_dropdown[i]['name'] + '" data-subtext="' + tax_dropdown[i]['name'] + '">' + tax_dropdown[i]['rate_percent'] + '% |' + tax_dropdown[i]['name'] + '</option>'
 
                     } else {
 
-                        $option = '<option value="' + tax_dropdown[i]['name'] + '"  data-taxrate="' + tax_dropdown[i]['rate_percent'] + '" data-taxname="' + tax_dropdown[i]['name'] + '" data-subtext="' + tax_dropdown[i]['name'] + '">' + tax_dropdown[i]['rate_percent'] + '% |' + tax_dropdown[i]['name'] + '</option>'
+                        $option = '<option value="' + tax_dropdown[i]['id'] + '"  data-taxrate="' + tax_dropdown[i]['rate_percent'] + '" data-taxname="' + tax_dropdown[i]['name'] + '" data-subtext="' + tax_dropdown[i]['name'] + '">' + tax_dropdown[i]['rate_percent'] + '% |' + tax_dropdown[i]['name'] + '</option>'
                     }
                     tax.push($option);
 
                 }
             }
 
-            table_row += '<td class="taxrate"><select class="selectpicker display-block tax" name="tax[]" multiple data-none-selected-text="no_tax" >' + tax + '</select></td>';
+            table_row += '<td class="taxrate"><select class="selectpicker display-block tax" name="items[' + item_key + '][tax][]" multiple data-none-selected-text="no_tax" >' + tax + '</select></td>';
 
             table_row += '<td class="amount">' + amount + '</td>';
             table_row += '<td><a href="#" class="btn-xs btn btn-danger pull-left" onclick="delete_item(this,' + itemid + '); return false;"><i class="fa fa-trash"></i></a></td>';
