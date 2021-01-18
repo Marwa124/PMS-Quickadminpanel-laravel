@@ -10,6 +10,7 @@ use Modules\Sales\Http\Requests\Store\StoreProposalRequest;
 use Modules\Sales\Http\Requests\Update\UpdateProposalRequest;
 use Modules\Sales\Http\Requests;
 use Modules\Sales\Entities\ProposalsItem;
+use Modules\Sales\Entities\ProposalItemTax;
 use Modules\Sales\Entities\ItemPorposalRelations;
 use App\Models\Opportunity;
 use App\Models\Client;
@@ -50,6 +51,7 @@ class ProposalsController extends Controller
 
     public function store(StoreProposalRequest $request)
     {
+        dd($request->all());
         DB::beginTransaction();
 
         try {
@@ -96,26 +98,23 @@ class ProposalsController extends Controller
                 }
             }
 
-            $newitem=new ItemPorposalRelations;
-            $newitem->name=$value['item_name'];
-            $newitem->description=$value['item_desc'];
-            $newitem->group_name=$value['group_name'];
-            $newitem->brand=$value['brand'];
-            $newitem->delivery=$value['delivery'];
-            $newitem->part=$value['part'];
-            $newitem->quantity=$value['quantity'];
-            $newitem->unit_cost=$value['unit_cost'];
-            $newitem->margin=$value['margin'];
-            $newitem->selling_price=$value['selling_price'];
-            $newitem->total_cost_price=$value['total_cost_price'];
-            $newitem->tax_name=isset($value['tax'])?json_encode($value['tax']):null;
-            $newitem->tax_total=$total_taxitem;
-            $newitem->order=$value['order'];
-            $newitem->unit=$value['unit'];
-            $newitem->proposals_id=$proposal['id'];
-            $newitem->item_id=$value['saved_items_id'];
-            $newitem->save();
+            $newitem=ItemPorposalRelations::create($value);
+            $newitem->update([
+                'proposals_id'=>$proposal['id'],
+                'item_id'=>$value['saved_items_id'],
+            ]);
+       
+            if($newitem && isset($value['tax'])){
+                foreach($value['tax'] as $newtax){
+                    $addtaxes=new ProposalItemTax;
+                    $addtaxes->tax_cost=$proposal['id'];
+                    $addtaxes->taxs_id=$newtax;
+                    $addtaxes->proposals_id=$proposal['id'];
+                    $addtaxes->item_id=$newitem->id;
+                    $addtaxes->save();
+                }
 
+            }
         }
 
 

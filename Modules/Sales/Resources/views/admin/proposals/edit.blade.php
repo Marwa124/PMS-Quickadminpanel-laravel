@@ -324,14 +324,14 @@
                                     </tr>
                                     @if($proposal->items->isEmpty() != true)
                                     @foreach($proposal->items as $key => $value)
-                                    
+                                    {{-- @dd($proposal->items, $key , $value) --}}
                                     <tr class="sortable item" data-merge-invoice="1">
                                         <input type="hidden" class="order" name="items[{{ $key }}][order]" value="{{ $value->pivot->order }}">
                                         <input type="hidden" name="items[{{ $key }}][saved_items_id]" value="{{ $value->pivot->saved_items_id }}">
                                         <input type="hidden"  data-total-qty="" name="items[{{ $key }}][total_qty]" value="{{ $value->pivot->total_qty }}">
                                         <input type="hidden"  data-saved-items-id="" name="new_itmes_id[]" value="{{ $value->pivot->saved_items_id }}">
-                                        <td class="item_name"><input name="items[{{ $key }}][item_name]" class="form-control "  value="{{ $value->pivot->name }}"></td>
-                                        <td><textarea name="items[{{ $key }}][item_desc]"  class="form-control item_item_desc">{{ $value->pivot->description }}</textarea></td>
+                                        <td class="item_name"><input name="items[{{ $key }}][item_name]" class="form-control "  value="{{ $value->pivot->item_name }}"></td>
+                                        <td><textarea name="items[{{ $key }}][item_desc]"  class="form-control item_item_desc">{{ $value->pivot->item_desc }}</textarea></td>
                                         <td class="group_name"><input class="form-control " type="text"  name="items[{{ $key }}][group_name]" id="" value="{{ $value->pivot->group_name }}"></td>
                                         <td><input type="number" data-parsley-type="number" min="0"  onblur="calculate_total_edit();" onchange="calculate_total_edit();"  data-quantity="" name="items[{{ $key }}][quantity]" value="{{ $value->pivot->quantity }}"  class="form-control "></td>
                                         <td class="ratex"><input type="text" data-parsley-type="number"  name="items[{{ $key }}][unit]" value="{{ $value->pivot->unit }}" class="form-control "></td>
@@ -339,7 +339,7 @@
                                         <td class="ratex"><input type="text" data-parsley-type="text"  name="items[{{ $key }}][part]" value="{{ $value->pivot->part }}" class="form-control "></td>
                                         <td class="rate"><input type="number" data-parsley-type="number" value="{{ $value->pivot->unit_cost }}"  class="form-control  w-auto" onblur="calculate_total_edit();" onchange="calculate_total_edit();" name="items[{{ $key }}][unit_cost]"></td>
                                         <td class="total_cost_price"><input type="text"   name="items[{{ $key }}][total_cost_price]" value="{{ $value->pivot->total_cost_price }}"   onblur="calculate_total_edit();" onchange="calculate_total_edit();"  total_cost_price="" placeholder="Total Cost Price" class="form-control "  readonly=""></td>
-                                        <td class="margin"><input type="text" name="items[{{ $key }}][margin]" value="10"  onblur="calculate_total_edit();" onchange="calculate_total_edit();"  value="{{ $value->pivot->Margin }}" data-edit-margin="" placeholder="Margin" class="form-control "></td>
+                                        <td class="margin"><input type="text" name="items[{{ $key }}][margin]"   onblur="calculate_total_edit();" onchange="calculate_total_edit();"  value="{{ $value->pivot->margin }}" data-edit-margin="" placeholder="Margin" class="form-control "></td>
                                         <td class="rateee"> <input type="text" data-parsley-type="number"  onblur="calculate_total_edit();" onchange="calculate_total_edit();" name="items[{{ $key }}][selling_price]"  value="{{ $value->pivot->selling_price }}" class="form-control "  readonly=""> </td>
                                         <td class="ratex"><input type="text" data-parsley-type="text" name="items[{{ $key }}][delivery]" value="{{ $value->pivot->delivery}}" class="form-control "></td>
                                         <td class="taxrate"> 
@@ -351,7 +351,7 @@
                                             @endforeach 
                                             </select>
                                          </td>
-                                        <td class="amount">{{ $value->pivot->total_cost_price }}</td>
+                                        <td class="amount">{{ $value->pivot->selling_price * $value->pivot->quantity   }}</td>
                                         <td><a href="#" class="btn-xs btn btn-danger pull-left"  onclick="delete_item(this,undefined); return false;"><i class="fa fa-trash"></i></a></td>
                                     </tr>
                                     @endforeach
@@ -380,16 +380,39 @@
                                                     <span class="bold">Discount (%)</span>
                                                 </div>
                                                 <div class="col-md-5">
-                                                    <input type="text" data-parsley-type="number" value="0" class="form-control pull-left" min="0" max="100" name="discount_percent" >
+                                                    <input type="text" data-parsley-type="number" value="{{ $proposal->discount_percent }}" class="form-control pull-left" min="0" max="100" name="discount_percent" >
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="discount_percent"></td>
+                                        <td class="discount_percent">{{ $proposal->discount_total }}
+                                            <input type="hidden" name="discount_percent" value="{{ $proposal->discount_percent }}">
+                                            <input type="hidden" name="discount_total" value="{{ $proposal->discount_total }}">
+                                        </td>
                                     </tr>
                                     <tr class="total_after_discount d-none">
                                         <td><span class="bold">Total After Discount :</span>  </td>
                                         <td class="after_discount"></td>
                                     </tr>
+                                    
+                                    @if (!empty($proposal->itemtaxs->pluck('taxs_id')) )
+                                    @foreach(array_count_values($proposal->itemtaxs->pluck('taxs_id')->toArray()) as $key=> $taxold)
+
+                                    <tr class="tax-area">
+                                     <td>{{get_taxes($key)->name }}({{ get_taxes($key)->rate_percent }}%)</td>
+                                     <td id="tax_id_12services">
+                                         361.08<input type="hidden" name="total_tax_name[]" value=" 12|services">
+                                         <input type="hidden" name="total_tax[]" value="361.08">
+                                     </td>
+                                    
+                                    </tr> 
+                                    
+                                     @endforeach
+                                    @endif
+                                      
+                                    
+                            
+                                   
+                                    
                                     <tr class="tax-area"></tr>
                                     <tr>
                                         <td>
@@ -398,7 +421,7 @@
                                                     <span class="bold">Adjustment</span>
                                                 </div>
                                                 <div class="col-md-5">
-                                                    <input type="text" data-parsley-type="number" value="0" class="form-control pull-left" name="adjustment" >
+                                                    <input type="text" data-parsley-type="number" value="{{ $proposal->adjustment }}" class="form-control pull-left" name="adjustment" >
                                                 </div>
                                             </div>
                                         </td>
@@ -406,7 +429,7 @@
                                     </tr>
                                     <tr>
                                         <td><span class="bold" style="background-color:#e8e8e8;color:#6d6d6d;">Total :</span> </td>
-                                        <td class="total"></td>
+                                        <td class="total">{{ $proposal->total_cost_price }}</td>
                                     </tr>
                                     <tr>
                                         <td><span class="bold" style="background-color:#e8e8e8;color:#6d6d6d;">Total Cost Price ( Without Margin / Tax ) :</span> </td>
