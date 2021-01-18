@@ -46,10 +46,10 @@
                                 {{ $designation->department->department_name ?? '' }}
                             </td>
                             <td>
-                                {{ $designation->designation_name_ar_ ?? '' }}
+                                {{ $designation->designation_name ?? '' }}
                             </td>
                             <td>
-                                {{ $designation->designation_name ?? '' }}
+                                {{ $designation->designation_name_ar ?? '' }}
                             </td>
                             <td>
                                 @can('designation_show')

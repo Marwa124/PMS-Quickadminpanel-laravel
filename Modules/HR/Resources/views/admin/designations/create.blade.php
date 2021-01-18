@@ -49,7 +49,7 @@
             </div>
             <div class="form-group">
                 <label class="required" for="designation_name_ar">{{ trans('cruds.designation.fields.designation_name_ar') }}</label>
-                <input class="form-control {{ $errors->has('designation_name_ar') ? 'is-invalid' : '' }}" type="text" name="designation_name_ar " id="designation_name_ar" value="{{ old('designation_name_ar', '') }}" required>
+                <input class="form-control {{ $errors->has('designation_name_ar') ? 'is-invalid' : '' }}" type="text" name="designation_name_ar" id="designation_name_ar" value="{{ old('designation_name_ar', '') }}" required>
                 @if($errors->has('designation_name_ar'))
                     <div class="invalid-feedback">
                         {{ $errors->first('designation_name_ar') }}

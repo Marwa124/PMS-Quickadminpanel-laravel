@@ -529,15 +529,7 @@
             // 'sales_returns' => [
             //     'index-sales_returns'
             // ],
-
-            // 'purchases' => [
-            //     'index-purchases'
-            // ],
-
-            // 'purchase_returns' => [
-            //     'index-purchase_returns'
-            // ],
-
+            
             'suppliers' => [
                 'materials_supplier_access',
                 'supplier_access',
@@ -573,6 +565,14 @@
                 'purchase_payment_edit',
                 'purchase_payment_delete',
             ],
+            
+            'purchase' => [
+                'purchase_access',
+                'purchase_create',
+                'purchase_edit',
+                'purchase_show',
+                'purchase_delete'
+            ],
 
             // 'expenses' => [
             //     'index-expenses',
@@ -586,14 +586,6 @@
             //     'create-fixed_assets',
             //     'edit-fixed_assets',
             //     'delete-fixed_assets',
-            // ],
-
-            // 'purchase_orders' => [
-            //     'index-purchase_orders',
-            //     'create-purchase_orders',
-            //     'edit-purchase_orders',
-            //     'profile-purchase_orders',
-            //     'delete-purchase_orders',
             // ],
 
             // 'todos' => [

@@ -880,6 +880,16 @@
                             </a>
                         </li>
                     {{-- @endcan --}}
+                    @can('purchase_access')
+                        <li class="c-sidebar-nav-item">
+                            <a href="{{ route("materialssuppliers.admin.purchases.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/purchases") || request()->is("admin/purchases/*") ? "active" : "" }}">
+                                <i class="fa-fw fas fa-shopping-bag c-sidebar-nav-icon">
+
+                                </i>
+                                {{ trans('cruds.purchase.title') }}
+                            </a>
+                        </li>
+                    @endcan
                     {{-- @can('tax_rate_access') --}}
                     <li class="c-sidebar-nav-item">
                         <a href="{{ route("materialssuppliers.admin.tax-rates.index") }}" class="c-sidebar-nav-link {{ request()->is("materialssuppliers/admin/tax-rates") || request()->is("materialssuppliers/admin/tax-rates/*") ? "active" : "" }}">
@@ -890,16 +900,6 @@
                         </a>
                     </li>
                    {{-- @endcan --}}
-                    @can('purchase_access')
-                        <li class="c-sidebar-nav-item">
-                            <a href="{{ route("admin.purchases.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/purchases") || request()->is("admin/purchases/*") ? "active" : "" }}">
-                                <i class="fa-fw fas fa-shopping-bag c-sidebar-nav-icon">
-
-                                </i>
-                                {{ trans('cruds.purchase.title') }}
-                            </a>
-                        </li>
-                    @endcan
                     @can('return_stock_access')
                         <li class="c-sidebar-nav-item">
                             <a href="{{ route("admin.return-stocks.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/return-stocks") || request()->is("admin/return-stocks/*") ? "active" : "" }}">

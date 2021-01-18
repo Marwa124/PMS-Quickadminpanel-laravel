@@ -1,16 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace Modules\MaterialsSuppliers\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\MediaUploadingTrait;
-use App\Http\Requests\MassDestroyPurchaseRequest;
-use App\Http\Requests\StorePurchaseRequest;
-use App\Http\Requests\UpdatePurchaseRequest;
-use App\Models\Permission;
-use App\Models\Purchase;
-use App\Models\Supplier;
+use Modules\MaterialsSuppliers\Http\Requests\Destroy\MassDestroyPurchaseRequest;
+use Modules\MaterialsSuppliers\Http\Requests\Store\StorePurchaseRequest;
+use Modules\MaterialsSuppliers\Http\Requests\Update\UpdatePurchaseRequest;
 use App\Models\User;
+use Modules\MaterialsSuppliers\Entities\Supplier;
+use App\Models\Purchase;
 use Gate;
 use Illuminate\Http\Request;
 use Spatie\MediaLibrary\Models\Media;
@@ -30,9 +29,7 @@ class PurchaseController extends Controller
 
         $users = User::get();
 
-        $permissions = Permission::get();
-
-        return view('admin.purchases.index', compact('purchases', 'suppliers', 'users', 'permissions'));
+        return view('materialssuppliers::admin.purchases.index', compact('purchases', 'suppliers', 'users'));
     }
 
     public function create()
@@ -43,9 +40,7 @@ class PurchaseController extends Controller
 
         $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $permissions = Permission::all()->pluck('title', 'id');
-
-        return view('admin.purchases.create', compact('suppliers', 'users', 'permissions'));
+        return view('materialssuppliers::admin.purchases.create', compact('suppliers', 'users'));
     }
 
     public function store(StorePurchaseRequest $request)
@@ -57,7 +52,7 @@ class PurchaseController extends Controller
             Media::whereIn('id', $media)->update(['model_id' => $purchase->id]);
         }
 
-        return redirect()->route('admin.purchases.index');
+        return redirect()->route('materialssuppliers.admin.purchases.index');
     }
 
     public function edit(Purchase $purchase)
@@ -72,7 +67,7 @@ class PurchaseController extends Controller
 
         $purchase->load('supplier', 'user', 'permissions');
 
-        return view('admin.purchases.edit', compact('suppliers', 'users', 'permissions', 'purchase'));
+        return view('materialssuppliers::admin.purchases.edit', compact('suppliers', 'users', 'permissions', 'purchase'));
     }
 
     public function update(UpdatePurchaseRequest $request, Purchase $purchase)
@@ -80,7 +75,7 @@ class PurchaseController extends Controller
         $purchase->update($request->all());
         $purchase->permissions()->sync($request->input('permissions', []));
 
-        return redirect()->route('admin.purchases.index');
+        return redirect()->route('materialssuppliers.admin.purchases.index');
     }
 
     public function show(Purchase $purchase)
@@ -89,7 +84,7 @@ class PurchaseController extends Controller
 
         $purchase->load('supplier', 'user', 'permissions');
 
-        return view('admin.purchases.show', compact('purchase'));
+        return view('materialssuppliers::admin.purchases.show', compact('purchase'));
     }
 
     public function destroy(Purchase $purchase)

@@ -27,6 +27,12 @@ Route::group(['as' => 'materialssuppliers.admin.', 'prefix' => 'admin/materialss
     Route::delete('tax-rates/destroy', 'TaxRatesController@massDestroy')->name('tax-rates.massDestroy');
     Route::resource('tax-rates', 'TaxRatesController');
 
+    // Purchases
+    Route::delete('purchases/destroy', 'PurchaseController@massDestroy')->name('purchases.massDestroy');
+    Route::post('purchases/media', 'PurchaseController@storeMedia')->name('purchases.storeMedia');
+    Route::post('purchases/ckmedia', 'PurchaseController@storeCKEditorImages')->name('purchases.storeCKEditorImages');
+    Route::resource('purchases', 'PurchaseController');
+
     // Purchase Payments
     Route::delete('purchase-payments/destroy', 'PurchasePaymentsController@massDestroy')->name('purchase-payments.massDestroy');
     Route::post('purchase-payments/ckmedia', 'PurchasePaymentsController@storeCKEditorImages')->name('purchase-payments.storeCKEditorImages');

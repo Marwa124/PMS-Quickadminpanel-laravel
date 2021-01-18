@@ -7,7 +7,7 @@
     </div>
 
     <div class="card-body">
-        <form method="POST" action="{{ route("admin.purchases.store") }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ route("materialssuppliers.admin.purchases.store") }}" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
                 <label for="supplier_id">{{ trans('cruds.purchase.fields.supplier') }}</label>
@@ -191,24 +191,6 @@
                     </div>
                 @endif
                 <span class="help-block">{{ trans('cruds.purchase.fields.show_quantity_as_helper') }}</span>
-            </div>
-            <div class="form-group">
-                <label for="permissions">{{ trans('cruds.purchase.fields.permission') }}</label>
-                <div style="padding-bottom: 4px">
-                    <span class="btn btn-info btn-xs select-all" style="border-radius: 0">{{ trans('global.select_all') }}</span>
-                    <span class="btn btn-info btn-xs deselect-all" style="border-radius: 0">{{ trans('global.deselect_all') }}</span>
-                </div>
-                <select class="form-control select2 {{ $errors->has('permissions') ? 'is-invalid' : '' }}" name="permissions[]" id="permissions" multiple>
-                    @foreach($permissions as $id => $permission)
-                        <option value="{{ $id }}" {{ in_array($id, old('permissions', [])) ? 'selected' : '' }}>{{ $permission }}</option>
-                    @endforeach
-                </select>
-                @if($errors->has('permissions'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('permissions') }}
-                    </div>
-                @endif
-                <span class="help-block">{{ trans('cruds.purchase.fields.permission_helper') }}</span>
             </div>
             <div class="form-group">
                 <label for="total_tax">{{ trans('cruds.purchase.fields.total_tax') }}</label>

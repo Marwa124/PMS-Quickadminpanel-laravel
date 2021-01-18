@@ -172,14 +172,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::post('invoices/ckmedia', 'InvoicesController@storeCKEditorImages')->name('invoices.storeCKEditorImages');
     Route::resource('invoices', 'InvoicesController');
 
-   
-
-    // Purchases
-    Route::delete('purchases/destroy', 'PurchaseController@massDestroy')->name('purchases.massDestroy');
-    Route::post('purchases/media', 'PurchaseController@storeMedia')->name('purchases.storeMedia');
-    Route::post('purchases/ckmedia', 'PurchaseController@storeCKEditorImages')->name('purchases.storeCKEditorImages');
-    Route::resource('purchases', 'PurchaseController');
-
     // Return Stocks
     Route::delete('return-stocks/destroy', 'ReturnStockController@massDestroy')->name('return-stocks.massDestroy');
     Route::post('return-stocks/media', 'ReturnStockController@storeMedia')->name('return-stocks.storeMedia');

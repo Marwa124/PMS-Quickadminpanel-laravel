@@ -19,13 +19,19 @@ class UpdateDesignationRequest extends FormRequest
             'designation_name' => [
                 'string',
                 'required',
+                // 'unique:designations,designation_name',
             ],
-            'permissions.*'    => [
-                'integer',
+            'designation_name_ar' => [
+                'string',
+                'nullable',
+                'unique:designations,designation_name_ar',
             ],
-            'permissions'      => [
-                'array',
-            ],
+            // 'permissions.*'    => [
+            //     'integer',
+            // ],
+            // 'permissions'      => [
+            //     'array',
+            // ],
         ];
     }
 }

@@ -19,6 +19,7 @@ class Designation extends Model
 
     public static $searchable = [
         'designation_name',
+        'designation_name_ar',
     ];
 
     protected $dates = [
@@ -27,14 +28,7 @@ class Designation extends Model
         'deleted_at',
     ];
 
-    protected $fillable = [
-        'department_id',
-        'designation_name',
-        'designation_leader_id',
-        'created_at',
-        'updated_at',
-        'deleted_at',
-    ];
+    protected $guarded = [];
 
     protected function serializeDate(DateTimeInterface $date)
     {

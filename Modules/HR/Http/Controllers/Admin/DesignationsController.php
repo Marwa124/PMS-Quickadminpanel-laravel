@@ -39,9 +39,7 @@ class DesignationsController extends Controller
 
     public function store(StoreDesignationRequest $request)
     {
-        // dd($request->all());
         $designation = Designation::create($request->all());
-        // dd($designation);
         return redirect()->route('hr.admin.designations.index');
     }
 

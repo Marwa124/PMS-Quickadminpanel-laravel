@@ -41,6 +41,10 @@ Vue.component('EvaluationForm', EvaluationForm)
 
 
 
+// Payments
+import PurchaseForm from './components/materialSupplier/purchase/Form'
+Vue.component('PurchaseForm', PurchaseForm)
+
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('assign-permissions-to-user', require('./components/AssignPermissionsToUser.vue'));

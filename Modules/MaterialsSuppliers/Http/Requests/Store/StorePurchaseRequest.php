@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace Modules\MaterialsSuppliers\Http\Requests\Store;
 
 use App\Models\Purchase;
 use Gate;
