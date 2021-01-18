@@ -154,6 +154,16 @@
                             </a>
                         </li>
                     @endcan
+                    {{--@can('transfer')--}}
+                        <li class="c-sidebar-nav-item">
+                            <a href="{{ route("finance.admin.transfers.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/transfers") || request()->is("admin/finance/*") ? "active" : "" }}">
+                                <i class="fa-fw fas fa-credit-card c-sidebar-nav-icon self-item-link">
+
+                                </i>
+                                {{ trans('cruds.finance.transfers') }}
+                            </a>
+                        </li>
+                    {{--@endcan--}}
 
 
 

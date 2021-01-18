@@ -43,13 +43,13 @@
                         </td>
                         <td>
                             <form class="text-center" id="delete_form"
-                                  action="{{route('finance.admin.payment_method.destroy',$method)}}" method="post">
+                                  action="{{route('finance.admin.payment_method.destroy',$method)}}" method="post" onsubmit="return confirm('Do you really want to delete this?');">
                                 <a href="{{route('finance.admin.payment_method.edit',$method->id)}}"><i
                                             class="fas fa-edit"></i></a>
                                 @csrf
                                 @method("DELETE")
-                                <button class="btn" type="submit" onsubmit="return confirm('dd');"><i
-                                            style="color:#cd0a0a" class="fas fa-trash" onclick="clicked()"></i></button>
+                                <button class="btn" type="submit"><i
+                                            style="color:#cd0a0a" class="fas fa-trash" ></i></button>
                             </form>
                         </td>
 
@@ -69,13 +69,6 @@
 @section('scripts')
     @parent
     <script>
-        function clicked() {
-            if (confirm('Do you want to delete this?')) {
-                $('#delete_form').submit();
-            } else {
-                return false;
-            }
-        }
 
         $(function () {
             var dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons);

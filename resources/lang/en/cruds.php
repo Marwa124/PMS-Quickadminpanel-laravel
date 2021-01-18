@@ -7,12 +7,24 @@ return [
         'title_singular' => 'Finance',
         'balance_sheet' => 'Balance Sheet',
         'payment_method' => 'Payment Methods',
+        'transfers'      => 'Transfers',
     ],
     'payment_method'                => [
         'title'          => 'Payment Method',
         'title_singular' => 'Payment Method',
         'fields' => [
             'name'  => 'Name'
+        ]
+    ],
+    'transfers'                => [
+        'title'          => 'Transfers',
+        'title_singular' => 'Transfers',
+        'fields' => [
+            'from_account'  => 'From Account',
+            'to_account'  => 'To Account',
+            'amount'  => 'Amount',
+            'date'  => 'Date',
+            'attachment'  => 'Attachment',
         ]
     ],
 

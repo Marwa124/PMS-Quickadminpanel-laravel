@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Models;
+namespace Modules\Finance\Entities;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Modules\HR\Entities\Account;
+use Modules\Payroll\Entities\PaymentMethod;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
@@ -56,13 +58,22 @@ class Transfer extends Model implements HasMedia
 
     public function registerMediaConversions(Media $media = null)
     {
-        $this->addMediaConversion('thumb')->fit('crop', 50, 50);
-        $this->addMediaConversion('preview')->fit('crop', 120, 120);
+//        $this->addMediaConversion('thumb')->fit('crop', 50, 50);
+//        $this->addMediaConversion('preview')->fit('crop', 120, 120);
     }
 
     public function payment_method()
     {
         return $this->belongsTo(PaymentMethod::class, 'payment_method_id');
+    }
+
+    public function from()
+    {
+        return $this->belongsTo(Account::class, 'from_account','id');
+    }
+    public function to()
+    {
+        return $this->belongsTo(Account::class, 'to_account','id');
     }
 
     public function getDateAttribute($value)

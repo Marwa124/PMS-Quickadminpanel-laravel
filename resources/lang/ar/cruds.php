@@ -6,6 +6,21 @@ return [
         'title_singular' => 'الحسابات المالية',
         'balance_sheet' => 'بيان الميزانية',
         'payment_method' => 'وسائل الدفع',
+        'transfers' => 'التحويلات',
+    ],
+    'payment_method'                => [
+        'title'          => 'Payment Method',
+        'title_singular' => 'Payment Method',
+        'fields' => [
+            'name'  => 'Name'
+        ]
+    ],
+    'transfers'                => [
+        'title'          => 'Transfers',
+        'title_singular' => 'Transfers',
+        'fields' => [
+            'name'  => 'Name'
+        ]
     ],
 
     'userManagement'         => [
