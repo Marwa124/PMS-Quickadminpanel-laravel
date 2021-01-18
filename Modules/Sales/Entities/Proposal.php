@@ -9,7 +9,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
-use App\Models\Permission;
+
+use  Modules\Sales\Entities\ProposalItemTax;
 use \DateTimeInterface;
 
 class Proposal extends Model implements HasMedia
@@ -130,8 +131,38 @@ class Proposal extends Model implements HasMedia
         $this->attributes['date_sent'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
     }
 
-    public function permissions()
-    {
-        return $this->belongsToMany(Permission::class);
+    // public function permissions()
+    // {
+    //     return $this->belongsToMany(Permission::class);
+    // }
+    public function items(){
+
+        return $this->belongsToMany('Modules\Sales\Entities\ProposalsItem',
+            'item_porposal_relations','proposals_id','item_id') ->withPivot(
+                'item_name',
+                'item_desc',
+                'group_name',
+                'brand',
+                'delivery',
+                'part',
+                'quantity',
+                'unit_cost',
+                'margin',
+                'selling_price',
+                'total_cost_price',
+                'tax_rate',
+                'tax_name',
+                'tax_total',
+                'tax_cost',
+                'order',
+                'unit',
+                'hsn_code',
+            )->orderBy('order','asc');
+
     }
+
+        public function itemtaxs()
+        {
+            return $this->hasMany(ProposalItemTax::class, 'proposals_id', 'id');
+        }
 }
