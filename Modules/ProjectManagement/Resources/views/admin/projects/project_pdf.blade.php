@@ -1,337 +1,534 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>{{$project->name}}</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+@extends('layouts.pdf_layout')
+@section('title'){{$project->name ?? '' }} @endsection
+@section('content')
+    <p >{{ trans('cruds.project.title_singular') }}  {{ trans('cruds.project.fields.name') }} : <span > {{ $project->name ?? ''  }}</span></p>
 
-    {{--<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" />--}}
-    {{--<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" />--}}
-    {{--<link href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" rel="stylesheet" />--}}
+    {{--project details--}}
+    <table>
+        <tr>
+            <td  >
+                <p >{{ trans('cruds.project.fields.start_date') }} : <span >{{ $project->start_date ?? '' }}</span></p>
+            </td>
+            <td  >
+                <p>{{ trans('cruds.project.fields.estimate_hours') }} : <span>{{ $project->estimate_hours ? $project->estimate_hours.' Hour' : '' }} </span></p>
+            </td>
+            <td  >
+                <b>{{ trans('cruds.project.fields.client') }} Info</b>
+                <p >{{ trans('cruds.project.fields.client') }} : <span >{{ $project->client->name ?? '' }}</span> </p>
+            </td>
+        </tr>
+        <tr>
+            <td  >
+                <p >{{ trans('cruds.project.fields.end_date') }} : <span >{{ $project->end_date ?? '' }}</span></p>
+            </td>
+            <td  >
+                <p >Total Expense : <span > {{$total_expense ? $total_expense.' EGP': '' }} </span></p>            </td>
+            <td  >
+                <p >{{ trans('cruds.client.fields.address') }} : <span >{{ $project->client->address ?? '' }}</span> </p>
+            </td>
 
-    {{--<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css" rel="stylesheet" />--}}
-    {{--<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />--}}
-    {{--<link href="https://unpkg.com/@coreui/coreui@3.2/dist/css/coreui.min.css" rel="stylesheet" />--}}
-    {{--<link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.css" rel="stylesheet" />--}}
-    {{--<link href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/1.5.0/css/perfect-scrollbar.min.css" rel="stylesheet" />--}}
+        </tr>
+        <tr>
+            <td  >
+                <p >{{ trans('cruds.department.title_singular') }} {{ trans('cruds.project.fields.name') }} :  <span>{{ $project->department->department_name ?? '' }} </span></p>
+            </td>
+            <td  >
+                <p >Billable Expense : <span > {{$billable_expense ? $billable_expense.' EGP': '' }} </span></p>
+            </td>
+            <td  >
+                <p >{{ trans('cruds.client.fields.city') }} : <span >{{ $project->client->city ?? '' }}</span> </p>
+            </td>
 
-    {{--<link href="{{ asset('css/app.css') }}" rel="stylesheet" />--}}
-    {{--<link href="{{ asset('css/custom.css') }}" rel="stylesheet" />--}}
+        </tr>
+        <tr>
+            <td  >
+                <p >{{ trans('cruds.project.fields.demo_url') }} : <span >{{ $project->demo_url ?? '' }}</span></p>
+            </td>
+            <td  >
+                <p >Non Billable Expense :  <span > {{$not_billable_expense ? $not_billable_expense.' EGP': '' }} </span></p>
+            </td>
 
-    <style>
-        @charset "UTF-8";
-        @import url(https://fonts.googleapis.com/css?family=Fira+Sans:200,400,500);
-        * {
-            border: 0;
-            margin: 0;
-            padding: 0;
-        }
+            <td  >
+                <p >{{ trans('cruds.client.fields.country') }} : <span >{{ $project->client->country ?? '' }}</span> </p>
+            </td>
 
-        html {
-            height: 100%;
-        }
+        </tr>
+        <tr>
+            <td  >
+                <p >{{ trans('cruds.project.fields.project_status') }} : <span >{{ ucwords(str_replace('_',' ',$project->project_status ?? '' )) }}</span></p>
+            </td>
+            <td  >
+                <p >Billed Expense :  <span > {{$paid_expense ? $paid_expense.' EGP': '' }} </span> </p>
+            </td>
+            <td  >
+                <p >{{ trans('cruds.client.fields.phone') }} : <span >{{ $project->client->phone ?? '' }}</span> </p>
+            </td>
 
-        /*body {*/
-        /*    height: inherit;*/
-        /*    display: -webkit-box;*/
-        /*    display: -ms-flexbox;*/
-        /*    display: flex;*/
-        /*    -webkit-box-orient: vertical;*/
-        /*    -webkit-box-direction: normal;*/
-        /*    -ms-flex-direction: column;*/
-        /*    flex-direction: column;*/
-        /*    font-family: 'Fira Sans', sans-serif;*/
-        /*    -webkit-font-smoothing: antialiased;*/
-        /*    -moz-osx-font-smoothing: grayscale;*/
-        /*    color: #79838c;*/
-        /*}*/
+        </tr>
+        <tr>
+            <td  >
+                <p >{{ trans('cruds.project.fields.calculate_progress') }} : <span > {{ $project->calculate_progress ? $project->calculate_progress.'%': ''  }}</span></p>
 
-        /*a {*/
-        /*    color: #50585f;*/
-        /*    text-decoration: none;*/
-        /*}*/
+            </td>
+            <td  >
+                <p >Unbilled Expense : <span > {{($billable_expense - $paid_expense) ? ($billable_expense - $paid_expense).' EGP': '' }} </span> </p>
+            </td>
 
-        a:hover {
-            color: #383e44;
-        }
+        </tr>
+        <tr>
+            <td >
+                <p >{{ trans('cruds.project.fields.project_cost') }} :  <span>{{ $project->project_cost?? 0 }} EGP</span></p>
 
-        div.container {
-            display: -webkit-box;
-            display: -ms-flexbox;
-            display: flex;
-            -webkit-box-flex: 1;
-            -ms-flex: auto;
-            flex: auto;
-            -webkit-box-orient: vertical;
-            -webkit-box-direction: normal;
-            -ms-flex-direction: column;
-            flex-direction: column;
-            max-height: 100%;
-        }
+            </td>
 
-        div.header {
-            height: auto;
-            text-align: center;
-            background: slategrey;
-            color: ghostwhite;
-            padding: 2.3rem 1rem 2.3rem 1rem;
-            position: relative;
-        }
+            <td >
+                <p >Total Bill : <span >  {{$project->project_cost ? $project->project_cost.' EGP': '' }} </span></p>
+            </td>
 
-        div.header:after {
-            content: '';
-            position: absolute;
-            bottom: -5rem;
-            left: 0rem;
-            height: 5.1rem;
-            display: block;
-            width: 100%;
-            z-index: 300;
-            /* FF3.6-15 */
-            /* Chrome10-25,Safari5.1-6 */
-            background: -webkit-gradient(linear, left top, left bottom, color-stop(20%, white), to(rgba(255, 255, 255, 0)));
-            background: linear-gradient(to bottom, white 20%, rgba(255, 255, 255, 0) 100%);
-            /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#00ffffff',GradientType=0 );
-            /* IE6-9 */
-        }
+        </tr>
 
-        div.header h1 {
-            margin-top: .8rem;
-            margin-bottom: .5rem;
-            font-weight: 200;
-            font-size: 1.6em;
-            letter-spacing: 0.1rem;
-            text-transform: uppercase;
-        }
+    </table>
+    <hr>
 
-        @media (min-width: 62em) {
-            div.header h1 {
-                font-size: 1.9em;
-                letter-spacing: 0.2rem;
-            }
-        }
+    {{-- Project Members Assign --}}
 
-        div.header h2 {
-            font-size: 1.1em;
-            font-weight: 400;
-            color: #cfd7de;
-            max-width: 30rem;
-            margin: auto;
-        }
+    <p >{{ trans('cruds.project.title_singular') }}  {{ trans('cruds.user.title') }} </p>
 
-        div.item {
-            display: -webkit-box;
-            display: -ms-flexbox;
-            display: flex;
-            -webkit-box-flex: 1;
-            -ms-flex: auto;
-            flex: auto;
-            overflow-y: auto;
-            padding: 0rem 1rem 0rem 1rem;
-        }
+    <table class="table table-bordered tbl_header">
+        <thead>
+        <tr>
+            <th>
+                {{ trans('cruds.user.fields.name') }}
+            </th>
+            <th>
+                {{ trans('cruds.project.fields.total_tasks_assign') }}
+            </th>
+            <th>
+                {{ trans('cruds.project.fields.total_bugs_assign') }}
+            </th>
+            <th>
+                {{ trans('cruds.project.fields.time_spend') }}
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        @if($project->accountDetails)
+            @forelse($project->accountDetails as $key => $account)
+                <tr data-entry-id="{{ $account->id }}">
 
-        #timeline {
-            position: relative;
-            display: table;
-            height: 100%;
-            margin-left: -2rem;
-            margin-right: 2rem;
-            margin-top: 3rem;
-            margin-bottom: 2rem;
-        }
+                    <td>
+                        {{ $account->fullname ?? '' }}
+                    </td>
+                    <td>
+                        {{ $account->tasks ? $account->tasks->where('project_id',$project->id)->count() : '' }}
+                    </td>
+                    <td>
+                        {{ $account->bugs ? $account->bugs->where('project_id',$project->id)->count() : '' }}
+                    </td>
+                    <td>
 
-        #timeline div:after {
-            content: '';
-            width: 2px;
-            position: absolute;
-            top: -1.2rem;
-            bottom: 0rem;
-            left: 58px;
-            z-index: 1;
-            background: #C5C5C5;
-        }
+                        @php
+                            $tasks = $project->tasks;
+                            $timeProject = $account->user->TimeSheet->where('module','project')
+                                    ->where("module_field_id",$project->id);
 
-        #timeline h3 {
-            position: -webkit-sticky;
-            position: sticky;
-            top: 5rem;
-            color: #888;
-            margin: 0;
-            font-size: 1em;
-            font-weight: 400;
-        }
+                            $timeTasks = $account->user->TimeSheet->where('module','task')
+                                    ->whereIn("module_field_id",$tasks->pluck('id'));
+                        @endphp
 
-        @media (min-width: 62em) {
-            #timeline h3 {
-                font-size: 1.1em;
-            }
-        }
+                        @php
+                            $total_spend = 0;
+                        @endphp
+                        {{--get user time spend in project--}}
+                        @forelse($timeProject as $timer)
 
-        #timeline section.year {
-            position: relative;
-        }
+                            @if($timer->end_time && $timer->start_time)
+                                @php
+                                    $total_spend += ($timer->end_time - $timer->start_time);
+                                @endphp
+                            @endif
+                        @empty
+                        @endforelse
 
-        #timeline section.year:first-child section {
-            margin-top: -1.3em;
-            padding-bottom: 0px;
-        }
+                        {{--get user time spend in tasks of project --}}
 
-        #timeline section.year section {
-            position: relative;
-            padding-bottom: 1.25em;
-            margin-bottom: 2.2em;
-        }
-
-        #timeline section.year section h4 {
-            position: absolute;
-            bottom: 0;
-            font-size: .9em;
-            font-weight: 400;
-            line-height: 1.2em;
-            margin: 0;
-            padding: 0 0 0 89px;
-            color: #C5C5C5;
-        }
-
-        @media (min-width: 62em) {
-            #timeline section.year section h4 {
-                font-size: 1em;
-            }
-        }
-
-        #timeline section.year section ul {
-            list-style-type: none;
-            padding: 0 0 0 75px;
-            margin: -1.35rem 0 1em;
-            max-width: 32rem;
-            font-size: 1em;
-        }
-
-        @media (min-width: 62em) {
-            #timeline section.year section ul {
-                font-size: 1.1em;
-                padding: 0 0 0 81px;
-            }
-        }
-
-        #timeline section.year section ul:last-child {
-            margin-bottom: 0;
-        }
-
-        #timeline section.year section ul:first-of-type:after {
-            content: '';
-            width: 10px;
-            height: 10px;
-            background: #C5C5C5;
-            border: 2px solid #FFFFFF;
-            border-radius: 50%;
-            position: absolute;
-            left: 54px;
-            top: 3px;
-            z-index: 2;
-        }
-
-        #timeline section.year section ul li {
-            margin-left: .5rem;
-        }
-
-        #timeline section.year section ul li:before {
-            content: '·';
-            margin-left: -.5rem;
-            padding-right: .3rem;
-        }
-
-        #timeline section.year section ul li:not(:first-child) {
-            margin-top: .5rem;
-        }
-
-        #timeline section.year section ul li span.price {
-            color: mediumturquoise;
-            font-weight: 500;
-        }
-
-        #price {
-            display: inline;
-        }
-
-        svg {
-            border: 3px solid white;
-            border-radius: 50%;
-            -webkit-box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-            box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-        }
-        /*# sourceMappingURL=index.css.map */
-    </style>
-</head>
-    <body>
-
-    <div class="row  p-5">
-        <div class="col-12 ">
-            <div class="card">
-        <h5 class="card-header"> {{ trans('cruds.project.title') }} {{ trans('cruds.project.fields.name') }} : {{ $project->name }}
-
-        </h5>
-        <div class="card-body">
-            <div class="d-flex justify-content-between">
-                <div class="col-sm-4 border-right ">
-
-                    <div class="pl-1 ">
-
-                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.start_date') }} :</p> <span class="col-md-6">{{ $project->start_date }}</span> </div>
-                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.end_date') }} :</p> <span class="col-md-6">{{ $project->end_date }}</span> </div>
-                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.demo_url') }} :</p> <span class="col-md-6">{{ $project->demo_url }}</span> </div>
-                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.project_status') }} : </p><span class="col-md-6">{{ ucwords(str_replace('_',' ',$project->project_status)) }}</span> </div>
-                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.estimate_hours') }} :</p> <span class="col-md-6">{{ $project->estimate_hours ? $project->estimate_hours.' Hour' : '' }} </span> </div>
-                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.department.title_singular') }} {{ trans('cruds.project.fields.name') }} :</p> <span class="col-md-6">{{ $project->department->department_name }}</span> </div>
-                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.project_cost') }} :</p> <span class="col-md-6">{{ $project->project_cost?? 0 }} EGP</span> </div>
-
-                    </div>
-                </div>
-                <div class="col-sm-4 border-right ">
-                    <div class=" pl-1">
-
-                        <div class="row"> <p class="font-bold col-md-8">Total Expense :</p> <span class="col-md-4"> {{$total_expense}} EGP</span> </div>
-                        <div class="row"> <p class="font-bold col-md-8">Billable Expense :</p> <span class="col-md-4"> {{$billable_expense}} EGP</span> </div>
-                        <div class="row"> <p class="font-bold col-md-8">Non Billable Expense :</p> <span class="col-md-4"> {{$not_billable_expense}} EGP</span> </div>
-                        <div class="row"> <p class="font-bold col-md-8">Billed Expense :</p> <span class="col-md-4"> {{$paid_expense}} EGP</span> </div>
-                        <div class="row"> <p class="font-bold col-md-8">Unbilled Expense :</p> <span class="col-md-4"> {{$billable_expense - $paid_expense}} EGP</span> </div>
-
-                        <h3 class="row"> <p class="font-bold col-md-6">Total Bill :</p> <span class="col-md-6">  {{$project->project_cost}} EGP</span> </h3>
-                    </div>
-                </div>
-                <div class="col-sm-4  ">
-                    <div class=" pl-1">
-                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.client') }} {{ trans('cruds.project.fields.name') }} : </p><span class="col-md-6">{{ $project->client->name }}</span> </div>
-                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.client') }} {{ trans('cruds.project.fields.name') }} : </p><span class="col-md-6">{{ $project->client->name }}</span> </div>
-                        @if($project->client->address)
-                            <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.client.fields.address') }}  : </p><span class="col-md-6">{{ $project->client->address }}</span> </div>
-                        @endif
-                        @if($project->client->city)
-                            <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.client.fields.city') }}  : </p><span class="col-md-6">{{ $project->client->city }}</span> </div>
-                        @endif
-                        @if($project->client->country)
-                            <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.client.fields.country') }}  : </p><span class="col-md-6">{{ $project->client->country }}</span> </div>
-                        @endif
-                        @if($project->client->phone)
-                            <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.client.fields.phone') }}  : </p><span class="col-md-6">{{ $project->client->phone }}</span> </div>
-                        @endif
+                        @forelse($timeTasks as $timer)
 
 
-                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.total') }} {{ trans('cruds.milestone.title') }} : </p><span class="col-md-6">{{ $project->milestones->count() }}</span> </div>
-                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.total') }} {{ trans('cruds.task.title') }} : </p><span class="col-md-6">{{ $project->tasks->count() }}</span> </div>
-                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.total') }} {{ trans('cruds.bug.title') }} : </p><span class="col-md-6">{{ $project->bugs->count() }}</span> </div>
-                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.total') }} {{ trans('cruds.ticket.title') }} : </p><span class="col-md-6">{{ $project->tickets->count() }}</span> </div>
-                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.total') }} {{ trans('cruds.project.fields.time_sheet') }} : </p><span class="col-md-6">{{ $project->TimeSheet->count() }}</span> </div>
+                            @if($timer->end_time && $timer->start_time)
+                                @php
+                                    $total_spend += ($timer->end_time - $timer->start_time);
+                                @endphp
+                            @endif
+                        @empty
+                        @endforelse
 
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-        </div>
-    </div>
-    </body>
-</html>
+                        {{--    get_time_spent_result in file global_helper     --}}
+                        {{ get_time_spent_result($total_spend)  }}
+                    </td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="5" >
+                        {{ucwords('Project not assign to anyone')}}
+                    </td>
+                </tr>
+            @endforelse
+        @else
+            <tr>
+                <td colspan="5" >
+                    {{ucwords('Project not assign to anyone')}}
+                </td>
+            </tr>
+        @endif
+        </tbody>
+
+    </table>
+
+    {{--project Milestones--}}
+
+    <p >{{ trans('cruds.project.title_singular') }}  {{ trans('cruds.milestone.title') }} </p>
+
+    <table class="table table-bordered tbl_header">
+        <thead>
+            <tr>
+                <th>
+                    {{ trans('cruds.milestone.fields.name') }}
+                </th>
+                <th>
+                    {{ trans('cruds.milestone.fields.start_date') }}
+                </th>
+                <th>
+                    {{ trans('cruds.milestone.fields.end_date') }}
+                </th>
+                <th>
+                    {{ trans('cruds.project.fields.total_member_assigned') }}
+                </th>
+                <th>
+                    {{ trans('cruds.task.title') }} Count
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @if($project->milestones)
+                @forelse($project->milestones as $key => $milestone)
+                    <tr data-entry-id="{{ $milestone->id }}">
+
+                        <td>
+                           {{ $milestone->name ?? '' }}
+                        </td>
+                        <td>
+                            {{ $milestone->start_date ?? '' }}
+                        </td>
+                        <td>
+                            {{ $milestone->end_date ?? '' }}
+                        </td>
+                        <td>
+                            {{ $milestone->accountDetails ? $milestone->accountDetails->count() : '' }}
+                        </td>
+                        <td>
+                            {{ $milestone->tasks ? $milestone->tasks->count() : '' }}
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="5" >
+                            No Milestone Found In This Project
+                        </td>
+                    </tr>
+                @endforelse
+            @else
+                <tr>
+                    <td colspan="5" >
+                        No Milestone Found In This Project
+                    </td>
+                </tr>
+            @endif
+        </tbody>
+
+    </table>
+
+    {{--project Tasks--}}
+
+    <p >{{ trans('cruds.project.title_singular') }}  {{ trans('cruds.task.title') }} </p>
+
+    <table class="table table-bordered tbl_header">
+        <thead>
+        <tr>
+            <th>
+                {{ trans('cruds.task.fields.name') }}
+            </th>
+            <th>
+                {{ trans('cruds.task.fields.status') }}
+            </th>
+            <th>
+                {{ trans('cruds.task.fields.start_date') }}
+            </th>
+            <th>
+                {{ trans('cruds.task.fields.due_date') }}
+            </th>
+            <th>
+                {{ trans('cruds.project.fields.total_member_assigned') }}
+            </th>
+            <th>
+                {{ trans('cruds.project.fields.time_spend') }}
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        @if($project->tasks)
+            @forelse($project->tasks as $key => $task)
+                <tr data-entry-id="{{ $task->id }}">
+
+                    <td>
+                        {{ $task->name ?? '' }}
+                    </td>
+                    <td>
+                        {{ $task->status->name ?? '' }}
+                    </td>
+                    <td>
+                        {{ $task->start_date ?? '' }}
+                    </td>
+                    <td>
+                        {{ $task->due_date ?? '' }}
+                    </td>
+                    <td>
+                        {{ $task->accountDetails ? $task->accountDetails->count() : '' }}
+                    </td>
+                    <td>
+                        @php
+                            $total_spend = 0;
+                        @endphp
+                        @forelse($task->TimeSheet as $timer)
+
+                            {{--    get_time_spent_result in file global_helper     --}}
+                            @if($timer->end_time && $timer->start_time)
+                                @php
+                                    $total_spend += ($timer->end_time - $timer->start_time);
+                                @endphp
+                            @endif
+                        @empty
+                        @endforelse
+                        {{ get_time_spent_result($total_spend)  }}
+                    </td>
+
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="6" >
+                        No Tasks Found In This Project
+                    </td>
+                </tr>
+            @endforelse
+        @else
+            <tr>
+                <td colspan="6" >
+                    No Tasks Found In This Project
+                </td>
+            </tr>
+        @endif
+        </tbody>
+
+    </table>
+
+    {{--project Bugs--}}
+
+    <p >{{ trans('cruds.project.title_singular') }}  {{ trans('cruds.bug.title') }} </p>
+
+    <table class="table table-bordered tbl_header">
+        <thead>
+            <tr>
+
+                <th>
+                   {{ trans('cruds.bug.fields.name') }}
+                </th>
+                <th>
+                    {{ trans('cruds.bug.fields.status') }}
+                </th>
+                <th>
+                    {{ trans('cruds.bug.fields.priority') }}
+                </th>
+                <th>
+                    {{ trans('cruds.bug.fields.severity') }}
+                </th>
+                <th>
+                    {{ trans('cruds.bug.fields.reporter') }}
+                </th>
+                <th>
+                    {{ trans('cruds.project.fields.total_member_assigned') }}
+                </th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @if($project->bugs)
+                @forelse($project->bugs as $key => $bug)
+                    <tr data-entry-id="{{ $bug->id }}">
+
+                        <td>
+                            {{ $bug->name ?? '' }}
+                        </td>
+                        <td>
+                            {{ $bug->status ?? '' }}
+                        </td>
+                        <td>
+                            {{ $bug->priority ?? '' }}
+                        </td>
+                        <td>
+                            {{ $bug->severity ?? '' }}
+                        </td>
+                        <td>
+                            {{ $bug->reporterBy->name ?? '' }}
+                        </td>
+                        <td>
+                            {{ $bug->accountDetails ? $bug->accountDetails->count() : '' }}
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="6"> No bug  Found In This Project</td>
+                    </tr>
+                @endforelse
+            @else
+                <tr>
+                    <td colspan="6"> No bug  Found In This Project</td>
+                </tr>
+            @endif
+        </tbody>
+
+    </table>
+
+    {{--project Time Sheet--}}
+
+    <p >{{ trans('cruds.project.title_singular') }}  {{ trans('cruds.project.fields.time_sheet') }} </p>
+
+    <table class="table table-bordered tbl_header">
+        <thead>
+            <tr>
+                <th>
+                    {{ trans('cruds.user.title_singular') }}
+                </th>
+                <th>
+                    {{ trans('cruds.project.fields.start_time') }}
+                </th>
+                <th>
+                    {{ trans('cruds.project.fields.stop_time') }}
+                </th>
+                <th>
+                    {{ trans('cruds.project.fields.reason') }}
+                </th>
+                <th>
+                    {{ trans('cruds.project.fields.time_spend') }}
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @if($project->TimeSheet)
+                @forelse($project->TimeSheet as $key => $timer)
+                    <tr data-entry-id="{{ $timer->id }}">
+
+                        <td>
+                            {{--                                                                {{ $timer->user->accountDetail->fullname ?? '' }}--}}
+                            @if($timer->user->accountDetail)
+                                {{ $timer->user->accountDetail->fullname ?? $timer->user->name}}
+                                {{--<img class="img-thumbnail rounded-circle" title="{{ $timer->user->accountDetail->fullname ?? $timer->user->name}}" width="50%" src="{{ $timer->user->accountDetail->avatar ? str_replace('storage', 'storage', $timer->user->accountDetail->avatar->getUrl()) : asset('images/default.png') }}" alt="{{ $timer->user->accountDetail->fullname ?? $timer->user->name }}">--}}
+                            @else
+                                {{ $timer->user->name ?? ''}}
+                                {{--<img class="img-thumbnail rounded-circle" title="{{ $timer->user->name ?? ''}}" width="50%" src="{{ asset('images/default.png') }}" alt="{{ $timer->user->name ?? '' }}">--}}
+
+                            @endif
+                        </td>
+                        <td>
+                            <span>{{ $timer->start_time ? date("F j, Y, g:i a",$timer->start_time): '' }}</span>
+                        </td>
+                        <td>
+                            <span >{{ $timer->end_time ? date("F j, Y, g:i a",$timer->end_time): '' }}</span>
+                        </td>
+                        <td>
+                           {{ $timer->reason ?? '' }}
+                        </td>
+                        <td>
+                            {{--     get_time_spent_result in file global_helper --}}
+                            @if($timer->end_time && $timer->start_time)
+                                {{ get_time_spent_result($timer->end_time - $timer->start_time)  }}
+                            @endif
+                        </td>
+
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="5"> No Time Sheet Found In This Project</td>
+                    </tr>
+                @endforelse
+            @else
+                <tr>
+                    <td colspan="5"> No Time Sheet Found In This Project</td>
+                </tr>
+            @endif
+        </tbody>
+
+    </table>
+
+    {{-- Project Tickets    --}}
+
+    <p >{{ trans('cruds.project.title_singular') }}  {{ trans('cruds.ticket.title_singular') }} </p>
+
+    <table class="table table-bordered tbl_header">
+        <thead>
+            <tr>
+
+                <th>
+                    {{ trans('cruds.ticket.fields.ticket_code') }}
+                </th>
+                <th>
+                    {{ trans('cruds.ticket.fields.subject') }}
+                </th>
+                <th>
+                    {{ trans('cruds.ticket.fields.created_at') }}
+                </th>
+                <th>
+                    {{ trans('cruds.ticket.fields.status') }}
+                </th>
+                <th>
+                    {{ trans('cruds.ticket.fields.reporter') }}
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @if($project->tickets)
+                @forelse($project->tickets as $key => $ticket)
+                    <tr data-entry-id="{{ $ticket->id }}">
+
+                        <td>
+                            {{ $ticket->ticket_code ?? '' }}
+                        </td>
+                        <td>
+                            {{ $ticket->subject ?? '' }}
+                        </td>
+                        <td>
+
+                            {{ $ticket->created_at ?? '' }}
+                        </td>
+                        <td>
+                            {{ $ticket->status ?? '' }}
+                        </td>
+                        <td>
+                            {{ $ticket->reporterBy ? $ticket->reporterBy->name : '' }}
+                        </td>
+
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="6"> No Tickets Found In This Project</td>
+                    </tr>
+                @endforelse
+            @else
+                <tr>
+                    <td colspan="6"> No Tickets Found In This Project</td>
+                </tr>
+            @endif
+        </tbody>
+
+    </table>
+@endsection
+

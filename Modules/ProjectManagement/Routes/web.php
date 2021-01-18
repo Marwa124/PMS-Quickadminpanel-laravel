@@ -128,4 +128,17 @@ Route::group(['prefix' => 'admin/projectmanagement', 'as' => 'projectmanagement.
 //    Route::delete('project_specification_departments/destroy', 'ProjectSpecificationDepartmentController@massDestroy')->name('project_specification_departments.massDestroy');
 //    Route::resource('project_specification_departments', 'ProjectSpecificationDepartmentController');
 
+    // Work Trackings
+    Route::delete('work-trackings/destroy', 'WorkTrackingController@massDestroy')->name('work-trackings.massDestroy');
+    Route::resource('work-trackings', 'WorkTrackingController');
+    Route::get('work-trackings/index/trashed','WorkTrackingController@index')->name('work-trackings.trashed.index');
+    Route::post('work-trackings/{id}/force-destroy', 'WorkTrackingController@forceDelete')->name('work-trackings.forceDestroy');
+
+    // Time Work Types
+    Route::delete('time-work-types/destroy', 'TimeWorkTypeController@massDestroy')->name('time-work-types.massDestroy');
+    Route::post('time-work-types/media', 'TimeWorkTypeController@storeMedia')->name('time-work-types.storeMedia');
+    Route::post('time-work-types/ckmedia', 'TimeWorkTypeController@storeCKEditorImages')->name('time-work-types.storeCKEditorImages');
+    Route::resource('time-work-types', 'TimeWorkTypeController');
+    Route::get('time-work-types/index/trashed','TimeWorkTypeController@index')->name('time-work-types.trashed.index');
+    Route::post('time-work-types/{id}/force-destroy', 'TimeWorkTypeController@forceDelete')->name('time-work-types.forceDestroy');
 });

@@ -3,26 +3,49 @@
 
 <div class="card">
     <div class="card-header">
-        {{ trans('global.edit') }} {{ trans('cruds.timeWorkType.title_singular') }}
+        {{ trans('global.create') }} {{ trans('cruds.timeWorkType.title_singular') }}
     </div>
 
     <div class="card-body">
-        <form method="POST" action="{{ route("admin.time-work-types.update", [$timeWorkType->id]) }}" enctype="multipart/form-data">
-            @method('PUT')
+        <form method="POST" action="{{ route("projectmanagement.admin.time-work-types.store") }}" enctype="multipart/form-data">
             @csrf
-            <div class="form-group">
-                <label class="required" for="name">{{ trans('cruds.timeWorkType.fields.name') }}</label>
-                <input class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" type="text" name="name" id="name" value="{{ old('name', $timeWorkType->name) }}" required>
-                @if($errors->has('name'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('name') }}
-                    </div>
-                @endif
-                <span class="help-block">{{ trans('cruds.timeWorkType.fields.name_helper') }}</span>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="required" for="name">{{ trans('cruds.timeWorkType.fields.name') }}</label>
+                    <input class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" type="text" name="name" id="name" value="{{ old('name', '') }}" required>
+                    @if($errors->has('name'))
+                        <div class="invalid-feedback">
+                            {{ $errors->first('name') }}
+                        </div>
+                    @endif
+                    <span class="help-block">{{ trans('cruds.timeWorkType.fields.name_helper') }}</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="tbl_name">{{ trans('cruds.timeWorkType.fields.tbl_name') }}</label>
+                    <input class="form-control {{ $errors->has('tbl_name') ? 'is-invalid' : '' }}" type="text" name="tbl_name" id="tbl_name" value="{{ old('tbl_name', '') }}">
+                    @if($errors->has('tbl_name'))
+                        <div class="invalid-feedback">
+                            {{ $errors->first('tbl_name') }}
+                        </div>
+                    @endif
+                    <span class="help-block">{{ trans('cruds.timeWorkType.fields.tbl_name_helper') }}</span>
+                </div>
+                <div class="form-group">
+                    <label for="query">{{ trans('cruds.timeWorkType.fields.query') }}</label>
+                    <input class="form-control {{ $errors->has('query') ? 'is-invalid' : '' }}" type="text" name="query" id="query" value="{{ old('query', '') }}">
+                    @if($errors->has('query'))
+                        <div class="invalid-feedback">
+                            {{ $errors->first('query') }}
+                        </div>
+                    @endif
+                    <span class="help-block">{{ trans('cruds.timeWorkType.fields.query_helper') }}</span>
+                </div>
             </div>
-            <div class="form-group">
+
+            <div class="form-group col-md-12">
                 <label for="description">{{ trans('cruds.timeWorkType.fields.description') }}</label>
-                <textarea class="form-control ckeditor {{ $errors->has('description') ? 'is-invalid' : '' }}" name="description" id="description">{!! old('description', $timeWorkType->description) !!}</textarea>
+                <textarea class="form-control ckeditor {{ $errors->has('description') ? 'is-invalid' : '' }}" name="description" id="description">{!! old('description') !!}</textarea>
                 @if($errors->has('description'))
                     <div class="invalid-feedback">
                         {{ $errors->first('description') }}
@@ -30,28 +53,8 @@
                 @endif
                 <span class="help-block">{{ trans('cruds.timeWorkType.fields.description_helper') }}</span>
             </div>
-            <div class="form-group">
-                <label for="tbl_name">{{ trans('cruds.timeWorkType.fields.tbl_name') }}</label>
-                <input class="form-control {{ $errors->has('tbl_name') ? 'is-invalid' : '' }}" type="text" name="tbl_name" id="tbl_name" value="{{ old('tbl_name', $timeWorkType->tbl_name) }}">
-                @if($errors->has('tbl_name'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('tbl_name') }}
-                    </div>
-                @endif
-                <span class="help-block">{{ trans('cruds.timeWorkType.fields.tbl_name_helper') }}</span>
-            </div>
-            <div class="form-group">
-                <label for="query">{{ trans('cruds.timeWorkType.fields.query') }}</label>
-                <input class="form-control {{ $errors->has('query') ? 'is-invalid' : '' }}" type="text" name="query" id="query" value="{{ old('query', $timeWorkType->query) }}">
-                @if($errors->has('query'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('query') }}
-                    </div>
-                @endif
-                <span class="help-block">{{ trans('cruds.timeWorkType.fields.query_helper') }}</span>
-            </div>
-            <div class="form-group">
-                <button class="btn btn-danger" type="submit">
+            <div class="form-group col-md-12">
+                <button class="btn btn-danger float-right" type="submit">
                     {{ trans('global.save') }}
                 </button>
             </div>
@@ -75,7 +78,7 @@
               return new Promise(function(resolve, reject) {
                 // Init request
                 var xhr = new XMLHttpRequest();
-                xhr.open('POST', '/admin/time-work-types/ckmedia', true);
+                xhr.open('POST', '/admin/projectmanagement/time-work-types/ckmedia', true);
                 xhr.setRequestHeader('x-csrf-token', window._token);
                 xhr.setRequestHeader('Accept', 'application/json');
                 xhr.responseType = 'json';

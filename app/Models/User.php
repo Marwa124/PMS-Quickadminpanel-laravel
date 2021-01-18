@@ -17,6 +17,7 @@ use Modules\ProjectManagement\Entities\Milestone;
 use Modules\ProjectManagement\Entities\Project;
 use Modules\ProjectManagement\Entities\ProjectTimer;
 use Modules\ProjectManagement\Entities\Task;
+use Modules\ProjectManagement\Entities\TimeSheet;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
@@ -209,14 +210,14 @@ class User extends Authenticatable implements HasMedia
         $this->attributes['date_of_insurance'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
     }
 
-    public function projectTimer()
+    public function TimeSheet()
     {
-        return $this->hasMany(ProjectTimer::class,'user_id');
+        return $this->hasMany(TimeSheet::class,'user_id');
     }
 
-    public function projectTimerEdited()
+    public function TimeSheetEdited()
     {
-        return $this->hasMany(ProjectTimer::class,'edited_by');
+        return $this->hasMany(TimeSheet::class,'edited_by');
     }
 
     // get Project management details to specific User

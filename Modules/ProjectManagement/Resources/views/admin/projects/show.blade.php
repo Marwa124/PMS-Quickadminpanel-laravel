@@ -342,6 +342,12 @@
 
                                     </div>
                                 </div>
+
+                            </div>
+                            <div class="progress" style="width: auto" >
+                                <div class="progress-bar {{$project->calculate_progress >= 50 ? 'bg-success' : 'bg-danger'}}" role="progressbar" style="width: {{$project->calculate_progress}}%; " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                                    {{$project->calculate_progress}}%
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -606,34 +612,34 @@
                                     <div class="table-responsive">
                                         <table class=" table table-bordered table-striped table-hover datatable datatable-Bug">
                                             <thead>
-                                            <tr>
-                                                <th >
-                                                    {{ trans('cruds.bug.fields.id') }}
-                                                </th>
-                                                <th>
-                                                    {{ trans('cruds.bug.title_singular') }} {{ trans('cruds.bug.fields.name') }}
-                                                </th>
-                                                <th>
-                                                    {{ trans('cruds.bug.fields.project') }}
-                                                </th>
-                                                <th>
-                                                    {{ trans('cruds.bug.title_singular') }} {{ trans('cruds.bug.fields.status') }}
-                                                </th>
-                                                <th>
-                                                    {{ trans('cruds.bug.fields.priority') }}
-                                                </th>
-                                                <th>
-                                                    {{ trans('cruds.bug.fields.severity') }}
-                                                </th>
-                                                <th>
-                                                    {{ trans('cruds.bug.fields.reporter') }}
-                                                </th>
-                                                @canany(['bug_edit' , 'bug_assign_to' , 'bug_delete'])
-                                                    <th>
-                                                        &nbsp;
+                                                <tr>
+                                                    <th >
+                                                        {{ trans('cruds.bug.fields.id') }}
                                                     </th>
-                                                @endcanany
-                                            </tr>
+                                                    <th>
+                                                        {{ trans('cruds.bug.title_singular') }} {{ trans('cruds.bug.fields.name') }}
+                                                    </th>
+                                                    <th>
+                                                        {{ trans('cruds.bug.fields.project') }}
+                                                    </th>
+                                                    <th>
+                                                        {{ trans('cruds.bug.title_singular') }} {{ trans('cruds.bug.fields.status') }}
+                                                    </th>
+                                                    <th>
+                                                        {{ trans('cruds.bug.fields.priority') }}
+                                                    </th>
+                                                    <th>
+                                                        {{ trans('cruds.bug.fields.severity') }}
+                                                    </th>
+                                                    <th>
+                                                        {{ trans('cruds.bug.fields.reporter') }}
+                                                    </th>
+                                                    @canany(['bug_edit' , 'bug_assign_to' , 'bug_delete'])
+                                                        <th>
+                                                            &nbsp;
+                                                        </th>
+                                                    @endcanany
+                                                </tr>
                                             </thead>
                                             <tbody>
                                                 @if($project->bugs)
@@ -664,27 +670,27 @@
                                                             </td>
                                                             @canany(['bug_edit' , 'bug_assign_to' , 'bug_delete'])
                                                                 <td>
-                                                                @can('bug_edit')
-                                                                    <a class="btn btn-xs btn-info" href="{{ route('projectmanagement.admin.bugs.edit', $bug->id) }}">
-                                                                        <span class="fa fa-pencil-square-o"></span>
-                                                                    </a>
-                                                                @endcan
-                                                                @can('bug_assign_to')
+                                                                    @can('bug_edit')
+                                                                        <a class="btn btn-xs btn-info" href="{{ route('projectmanagement.admin.bugs.edit', $bug->id) }}">
+                                                                            <span class="fa fa-pencil-square-o"></span>
+                                                                        </a>
+                                                                    @endcan
+                                                                    @can('bug_assign_to')
 
-                                                                    <a class="btn btn-xs btn-success {{$bug->project->department ? '' : 'disabled'}}" href="{{ route('projectmanagement.admin.bugs.getAssignTo', $bug->id) }}" title="{{$bug->project->department ? '' : 'add department to project'}}" >
-                                                                        {{ trans('global.assign_to') }}
-                                                                    </a>
+                                                                        <a class="btn btn-xs btn-success {{$bug->project->department ? '' : 'disabled'}}" href="{{ route('projectmanagement.admin.bugs.getAssignTo', $bug->id) }}" title="{{$bug->project->department ? '' : 'add department to project'}}" >
+                                                                            {{ trans('global.assign_to') }}
+                                                                        </a>
 
-                                                                @endcan
-                                                                @can('bug_delete')
-                                                                    <form action="{{ route('projectmanagement.admin.bugs.destroy', $bug->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
-                                                                        <input type="hidden" name="_method" value="DELETE">
-                                                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                                        <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
-                                                                    </form>
-                                                                @endcan
+                                                                    @endcan
+                                                                    @can('bug_delete')
+                                                                        <form action="{{ route('projectmanagement.admin.bugs.destroy', $bug->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                                                            <input type="hidden" name="_method" value="DELETE">
+                                                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                                            <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
+                                                                        </form>
+                                                                    @endcan
 
-                                                            </td>
+                                                                </td>
                                                             @endcanany
 
                                                         </tr>
@@ -752,28 +758,28 @@
                                     <div class="table-responsive">
                                         <table class=" table table-bordered table-striped table-hover datatable datatable-Ticket">
                                             <thead>
-                                            <tr>
-                                                <th>
-                                                    {{ trans('cruds.ticket.fields.id') }}
-                                                </th>
-                                                <th>
-                                                    {{ trans('cruds.ticket.fields.ticket_code') }}
-                                                </th>
-                                                <th>
-                                                    {{ trans('cruds.ticket.fields.subject') }}
-                                                </th>
-                                                <th>
-                                                    {{ trans('cruds.ticket.fields.project') }}
-                                                </th>
-                                                <th>
-                                                    {{ trans('cruds.ticket.fields.status') }}
-                                                </th>
-                                                @canany(['ticket_show' , 'ticket_edit' , 'ticket_delete'])
+                                                <tr>
                                                     <th>
-                                                        &nbsp;
+                                                        {{ trans('cruds.ticket.fields.id') }}
                                                     </th>
-                                                @endcanany
-                                            </tr>
+                                                    <th>
+                                                        {{ trans('cruds.ticket.fields.ticket_code') }}
+                                                    </th>
+                                                    <th>
+                                                        {{ trans('cruds.ticket.fields.subject') }}
+                                                    </th>
+                                                    <th>
+                                                        {{ trans('cruds.ticket.fields.project') }}
+                                                    </th>
+                                                    <th>
+                                                        {{ trans('cruds.ticket.fields.status') }}
+                                                    </th>
+                                                    @canany(['ticket_show' , 'ticket_edit' , 'ticket_delete'])
+                                                        <th>
+                                                            &nbsp;
+                                                        </th>
+                                                    @endcanany
+                                                </tr>
                                             </thead>
                                             <tbody>
                                                 @if($project->tickets)
@@ -984,31 +990,31 @@
                                     <div class="table-responsive">
                                         <table class=" table table-bordered table-striped table-hover datatable datatable-TimeSheet">
                                             <thead>
-                                            <tr>
-                                                <th>
-                                                    {{ trans('cruds.project.fields.id') }}
-                                                </th>
-                                                <th width="100">
-                                                    {{ trans('cruds.user.title_singular') }}
-                                                </th>
-                                                <th>
-                                                    {{ trans('cruds.project.fields.start_time') }}
-                                                </th>
-                                                <th>
-                                                    {{ trans('cruds.project.fields.stop_time') }}
-                                                </th>
-                                                <th>
-                                                    {{ trans('cruds.project.title_singular') }}
-                                                </th>
-                                                <th>
-                                                    {{ trans('cruds.project.fields.time_spend') }}
-                                                </th>
-                                                @canany(['time_sheet_edit','time_sheet_delete'])
+                                                <tr>
                                                     <th>
-                                                        &nbsp;
+                                                        {{ trans('cruds.project.fields.id') }}
                                                     </th>
-                                                @endcanany
-                                            </tr>
+                                                    <th width="100">
+                                                        {{ trans('cruds.user.title_singular') }}
+                                                    </th>
+                                                    <th>
+                                                        {{ trans('cruds.project.fields.start_time') }}
+                                                    </th>
+                                                    <th>
+                                                        {{ trans('cruds.project.fields.stop_time') }}
+                                                    </th>
+                                                    <th>
+                                                        {{ trans('cruds.project.title_singular') }}
+                                                    </th>
+                                                    <th>
+                                                        {{ trans('cruds.project.fields.time_spend') }}
+                                                    </th>
+                                                    @canany(['time_sheet_edit','time_sheet_delete'])
+                                                        <th>
+                                                            &nbsp;
+                                                        </th>
+                                                    @endcanany
+                                                </tr>
                                             </thead>
                                             <tbody>
                                                 @if($project->TimeSheet)
