@@ -20,7 +20,7 @@ class TransfersController extends Controller
 
     public function index()
     {
-//        abort_if(Gate::denies('payment_method'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('transfer'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         return view('finance::admin.transfers.index');
     }
 
@@ -34,9 +34,11 @@ class TransfersController extends Controller
 
             return DataTables::of($transfers)
                 ->addColumn('placeholder', '&nbsp;')
+
                 ->addColumn('from', function (Transfer $request) {
-                    $from_account = $request->from->name ?? '';
-                    return $from_account;
+//                    $from_account = $request->from->name ?? '';
+//                    return $from_account;
+                    return view('finance::partials.showModal', compact( 'request'));
                 })
                 ->addColumn('to', function (Transfer $request) {
                     $to_account = $request->to->name ?? '';
@@ -44,7 +46,7 @@ class TransfersController extends Controller
                     return $to_account;
                 })
                 ->addColumn('amount', function (Transfer $request) {
-                    $amount = $request->amount . ' ' . 'EGP' ?? '';
+                    $amount = round($request->amount) . ' ' . 'EGP' ?? '';
                     return $amount;
                 })
                 ->addColumn('attachment', function (Transfer $request) {
@@ -69,7 +71,7 @@ class TransfersController extends Controller
 
     public function create()
     {
-//        abort_if(Gate::denies('payment_method_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('transfer_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $accounts = Account::all();
         $payment_methods = PaymentMethod::all();
@@ -78,20 +80,82 @@ class TransfersController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->except('attachments');
 
-        $transfer = Transfer::create($data);
+            $from_account =  Account::findOrFail($request->from_account);
+            $to_account   =  Account::findOrFail($request->to_account);
 
-        $from_account =  Account::findOrFail($request->from_account);
-        $to_account   =  Account::findOrFail($request->to_account);
+            $request->validate([
+                'amount'   => 'numeric|min:1|max:'.$from_account->balance,
+                'from_account'   => 'integer|not_in:'.$request->to_account,
+                'to_account'   => 'integer|not_in:'.$request->from_account,
+            ]);
 
-        $from_account->update([
-            'balance' => $from_account->balance - $request->amount
+
+            $data = $request->except('attachments');
+
+            $transfer = Transfer::create($data);
+
+
+            $from_account->update([
+                'balance' => $from_account->balance - $request->amount
+            ]);
+
+            $to_account->update([
+                'balance' => $to_account->balance + $request->amount
+            ]);
+
+            if ($request->input('attachments', false)) {
+                foreach ($request->attachments as $attachment) {
+                    $transfer->addMedia(storage_path('tmp/uploads/' . $attachment))->toMediaCollection('attachments');
+                }
+            }
+
+            return redirect()->route('finance.admin.transfers.index');
+
+
+    }
+
+    public function edit($id)
+    {
+        abort_if(Gate::denies('transfer_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        $transfer = Transfer::findOrFail($id);
+        $accounts = Account::all();
+        $payment_methods = PaymentMethod::all();
+
+
+
+
+        $attachments = $transfer->getMedia('attachments') ?? null;
+
+
+        $data = trans('cruds.transfers.attach');
+
+        $attachments =view('finance::partials.editModal', compact('data','attachments','id','transfer'));
+
+        return view('finance::admin.transfers.edit', compact('accounts', 'payment_methods' ,'transfer','attachments'));
+    }
+
+    public function update(Request $request, $id)
+    {
+
+        $transfer = Transfer::findOrFail($id);
+
+
+
+        $from_account =  Account::findOrFail($transfer->from_account);
+
+        $request->validate([
+            'amount'   => 'numeric|min:1|max:'.$from_account->balance,
+            'from_account'   => 'integer|not_in:'.$transfer->to_account,
+            'to_account'   => 'integer|not_in:'.$transfer->from_account,
         ]);
 
-        $to_account->update([
-            'balance' => $to_account->balance + $request->amount
-        ]);
+
+        $data = $request->except(['attachments','amount','to_account','from_account']);
+
+        $transfer->update($data);
+
+
 
         if ($request->input('attachments', false)) {
             foreach ($request->attachments as $attachment) {
@@ -102,37 +166,53 @@ class TransfersController extends Controller
         return redirect()->route('finance.admin.transfers.index');
     }
 
-    public function edit($payment)
-    {
-//        abort_if(Gate::denies('payment_method_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        $payment = Transfer::findOrFail($payment);
-        return view('finance::admin.transfers.edit', compact('payment'));
-    }
-
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'name' => 'required'
-        ]);
-        Transfer::findOrFail($id)->update($request->all());
-
-        return redirect()->route('finance.admin.payment_method.index');
-    }
-
 
     public function destroy($id)
     {
-//        abort_if(Gate::denies('payment_method_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        Transfer::findOrFail($id)->delete();
+        abort_if(Gate::denies('transfer_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
+        $transfer     = Transfer::findOrFail($id);
+
+        $from_account = Account::findOrFail($transfer->from_account);
+        $to_account   = Account::findOrFail($transfer->to_account);
+
+        $from_account->update([
+            'balance'   =>     $from_account->balance + $transfer->amount
+        ]);
+
+        $to_account->update([
+            'balance'   =>     $to_account->balance - $transfer->amount
+        ]);
+
+        $transfer->clearMediaCollection('attachments');
+        $transfer->delete();
         return back();
     }
 
 
     public function massDestroy()
     {
-//        abort_if(Gate::denies('payment_method_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        Transfer::whereIn('id', request('ids'))->delete();
+        abort_if(Gate::denies('transfer_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        foreach( request('ids') as $id){
+            $transfer     = Transfer::findOrFail($id);
+
+            $from_account = Account::findOrFail($transfer->from_account);
+            $to_account   = Account::findOrFail($transfer->to_account);
+
+            $from_account->update([
+                'balance'   =>     $from_account->balance + $transfer->amount
+            ]);
+
+            $to_account->update([
+                'balance'   =>     $to_account->balance - $transfer->amount
+            ]);
+
+
+            $transfer->clearMediaCollection('attachments');
+            $transfer->delete();
+
+        }
+//        Transfer::whereIn('id', request('ids'))->delete();
 
         return response(null, Response::HTTP_NO_CONTENT);
     }
@@ -146,5 +226,11 @@ class TransfersController extends Controller
     public function viewMedia($id){
         $media = Media::findOrFail($id);
         return response()->file($media->getPath());
+    }
+
+    public function deleteMedia($id,$transfer){
+        Transfer::findOrFail($transfer)->deleteMedia($id);
+        return response()->json(['success'=>'File Deleted Successfully ;)']);
+
     }
 }

@@ -29,21 +29,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="12c5590f-20f1-441a-b116-7f3f712f734a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Modules/Finance/Resources/views/admin/transfers/create.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Modules/Finance/Resources/views/admin/transfers/edit.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Modules/Finance/Resources/views/admin/transfers/index.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Modules/Finance/Resources/views/partials/actions.blade.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Modules/Finance/Resources/views/partials/modal.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Modules/Finance/Resources/views/partials/editModal.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Modules/Finance/Resources/views/partials/showModal.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/deployment.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/webServers.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/Finance/Http/Controllers/admin/PaymentmethodController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/Finance/Http/Controllers/admin/PaymentmethodController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/Finance/Resources/views/admin/payments/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/Finance/Resources/views/admin/payments/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modules/Finance/Http/Controllers/admin/TransfersController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/Finance/Http/Controllers/admin/TransfersController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Modules/Finance/Resources/views/admin/transfers/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/Finance/Resources/views/admin/transfers/edit.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Modules/Finance/Routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/Finance/Routes/web.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/HR/Http/Controllers/Admin/LeaveApplicationsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/HR/Http/Controllers/Admin/LeaveApplicationsController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Traits/MediaUploadingTrait.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Traits/MediaUploadingTrait.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Transfer.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/Finance/Entities/Transfer.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/acl.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/acl.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2020_09_27_000030_create_transfers_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_09_27_000030_create_transfers_table.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/lang/ar/cruds.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/lang/ar/cruds.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/lang/en/cruds.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/lang/en/cruds.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/partials/menu.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/partials/menu.blade.php" afterDir="false" />
@@ -63,41 +57,42 @@
         <counts>
           <entry key="env" value="3" />
           <entry key="gitignore" value="1" />
-          <entry key="jpg" value="5" />
-          <entry key="php" value="116" />
+          <entry key="jpg" value="6" />
+          <entry key="php" value="136" />
           <entry key="png" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key=".env file" value="3" />
-          <entry key="Blade" value="45" />
-          <entry key="Image" value="6" />
-          <entry key="PHP" value="71" />
+          <entry key="Blade" value="54" />
+          <entry key="Image" value="7" />
+          <entry key="PHP" value="82" />
           <entry key="PLAIN_TEXT" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="env" value="2" />
-          <entry key="php" value="4353" />
+          <entry key="php" value="5753" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key=".env file" value="2" />
-          <entry key="Blade" value="1958" />
-          <entry key="PHP" value="2395" />
+          <entry key="Blade" value="2463" />
+          <entry key="PHP" value="3290" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="1" />
-          <entry key="project.open.time.10" value="1" />
+          <entry key="project.closed" value="2" />
+          <entry key="project.open.time.10" value="2" />
           <entry key="project.open.time.3" value="1" />
+          <entry key="project.open.time.6" value="1" />
           <entry key="project.open.time.7" value="1" />
           <entry key="project.open.time.9" value="1" />
-          <entry key="project.opened" value="4" />
+          <entry key="project.opened" value="6" />
         </counts>
       </usages-collector>
     </session>
@@ -107,87 +102,35 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Modules/Finance/Http/Controllers/admin/TransfersController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="461">
-              <caret line="51" lean-forward="true" selection-start-line="51" selection-end-line="51" />
+            <state relative-caret-position="368">
+              <caret line="37" column="66" lean-forward="true" selection-start-line="37" selection-start-column="66" selection-end-line="37" selection-end-column="66" />
               <folding>
                 <element signature="e#58#110#0#PHP" expanded="true" />
+                <element signature="e#2373#2693#0#PHP" />
+                <element signature="e#2699#3723#0#PHP" />
+                <element signature="e#3729#3996#0#PHP" />
+                <element signature="e#4350#5417#0#PHP" />
+                <element signature="e#5424#6100#0#PHP" />
+                <element signature="e#6107#6977#0#PHP" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Modules/Finance/Resources/views/partials/showModal.blade.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="575">
+              <caret line="46" column="46" selection-start-line="46" selection-start-column="46" selection-end-line="46" selection-end-column="46" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Modules/Finance/Resources/views/partials/modal.blade.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="26" selection-start-column="26" selection-end-column="26" />
-              <folding>
-                <element signature="e#654#661#1#HTML" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/.env">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="92">
-              <caret line="4" column="29" selection-start-line="4" selection-start-column="29" selection-end-line="4" selection-end-column="29" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/config/medialibrary.php">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Modules/Finance/Entities/Transfer.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1266">
-              <caret line="62" column="5" selection-start-line="62" selection-start-column="5" selection-end-line="62" selection-end-column="5" />
-              <folding>
-                <element signature="e#44#62#0#PHP" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Modules/Finance/Resources/views/admin/transfers/index.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="277">
-              <caret line="17" column="89" selection-start-line="17" selection-start-column="42" selection-end-line="17" selection-end-column="89" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Modules/Finance/Resources/views/partials/actions.blade.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="69">
-              <caret line="3" column="40" selection-start-line="2" selection-start-column="3" selection-end-line="3" selection-end-column="40" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Modules/Finance/Resources/views/admin/transfers/create.blade.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="434">
-              <caret line="88" column="14" selection-start-line="88" selection-start-column="14" selection-end-line="88" selection-end-column="14" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Modules/Finance/Routes/web.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="529">
-              <caret line="32" column="36" selection-start-line="32" selection-start-column="36" selection-end-line="32" selection-end-column="36" />
-              <caret line="32" column="69" selection-start-line="32" selection-start-column="69" selection-end-line="32" selection-end-column="69" />
-              <caret line="32" column="98" selection-start-line="32" selection-start-column="98" selection-end-line="32" selection-end-column="98" />
+            <state relative-caret-position="438">
+              <caret line="36" column="67" selection-start-line="36" selection-start-column="57" selection-end-line="36" selection-end-column="67" />
             </state>
           </provider>
         </entry>
@@ -219,6 +162,9 @@
       <find>storeMedia</find>
       <find>ck-media</find>
       <find>paymen</find>
+      <find>bookAppointment</find>
+      <find>storebookhome</find>
+      <find>amo</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -238,12 +184,8 @@
         <option value="$PROJECT_DIR$/Modules/Finance/Resources/views/admin/finance/balance_sheet.blade.php" />
         <option value="$PROJECT_DIR$/Modules/Finance/Resources/views/admin/payments/create.blade.php" />
         <option value="$PROJECT_DIR$/Modules/Finance/Resources/views/admin/payments/edit.blade.php" />
-        <option value="$PROJECT_DIR$/config/acl.php" />
-        <option value="$PROJECT_DIR$/resources/views/partials/menu.blade.php" />
         <option value="$PROJECT_DIR$/Modules/Finance/Http/Controllers/admin/PaymentmethodController.php" />
         <option value="$PROJECT_DIR$/Modules/Finance/Resources/views/admin/payments/index.blade.php" />
-        <option value="$PROJECT_DIR$/resources/lang/ar/cruds.php" />
-        <option value="$PROJECT_DIR$/resources/lang/en/cruds.php" />
         <option value="$PROJECT_DIR$/Modules/Finance/Resources/views/partials/actions.blade.php" />
         <option value="$PROJECT_DIR$/Modules/Finance/Resources/views/admin/transfers/index.blade.php" />
         <option value="$PROJECT_DIR$/Modules/HR/Http/Controllers/Admin/LeaveApplicationsController.php" />
@@ -255,9 +197,21 @@
         <option value="$PROJECT_DIR$/app/Http/Controllers/Traits/MediaUploadingTrait.php" />
         <option value="$PROJECT_DIR$/Modules/Finance/Entities/Transfer.php" />
         <option value="$PROJECT_DIR$/.env" />
-        <option value="$PROJECT_DIR$/Modules/Finance/Routes/web.php" />
-        <option value="$PROJECT_DIR$/Modules/Finance/Http/Controllers/admin/TransfersController.php" />
         <option value="$PROJECT_DIR$/Modules/Finance/Resources/views/partials/modal.blade.php" />
+        <option value="&lt;48e0e351-902b-4c04-8937-b7001a32e2d7&gt;/Modules/Patient/Http/Controllers/API/PatientsController.php" />
+        <option value="&lt;48e0e351-902b-4c04-8937-b7001a32e2d7&gt;/Modules/Patient/Routes/api.php" />
+        <option value="&lt;48e0e351-902b-4c04-8937-b7001a32e2d7&gt;/Modules/Patient/Resources/lang/en/locale.php" />
+        <option value="&lt;48e0e351-902b-4c04-8937-b7001a32e2d7&gt;/Modules/Patient/Resources/lang/ar/locale.php" />
+        <option value="&lt;48e0e351-902b-4c04-8937-b7001a32e2d7&gt;/Modules/Patient/Transformers/PatientAppointments.php" />
+        <option value="$PROJECT_DIR$/Modules/Finance/Routes/web.php" />
+        <option value="$PROJECT_DIR$/Modules/Finance/Resources/views/partials/editModal.blade.php" />
+        <option value="$PROJECT_DIR$/Modules/Finance/Resources/views/admin/transfers/edit.blade.php" />
+        <option value="$PROJECT_DIR$/resources/lang/en/cruds.php" />
+        <option value="$PROJECT_DIR$/resources/lang/ar/cruds.php" />
+        <option value="$PROJECT_DIR$/config/acl.php" />
+        <option value="$PROJECT_DIR$/resources/views/partials/menu.blade.php" />
+        <option value="$PROJECT_DIR$/Modules/Finance/Http/Controllers/admin/TransfersController.php" />
+        <option value="$PROJECT_DIR$/Modules/Finance/Resources/views/partials/showModal.blade.php" />
       </list>
     </option>
   </component>
@@ -565,6 +519,57 @@
             <path>
               <item name="pmslaravel" type="b2602c69:ProjectViewProjectNode" />
               <item name="pmslaravel" type="462c0819:PsiDirectoryNode" />
+              <item name="Modules" type="462c0819:PsiDirectoryNode" />
+              <item name="HR" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="pmslaravel" type="b2602c69:ProjectViewProjectNode" />
+              <item name="pmslaravel" type="462c0819:PsiDirectoryNode" />
+              <item name="Modules" type="462c0819:PsiDirectoryNode" />
+              <item name="HR" type="462c0819:PsiDirectoryNode" />
+              <item name="Resources" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="pmslaravel" type="b2602c69:ProjectViewProjectNode" />
+              <item name="pmslaravel" type="462c0819:PsiDirectoryNode" />
+              <item name="Modules" type="462c0819:PsiDirectoryNode" />
+              <item name="HR" type="462c0819:PsiDirectoryNode" />
+              <item name="Resources" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="pmslaravel" type="b2602c69:ProjectViewProjectNode" />
+              <item name="pmslaravel" type="462c0819:PsiDirectoryNode" />
+              <item name="Modules" type="462c0819:PsiDirectoryNode" />
+              <item name="HR" type="462c0819:PsiDirectoryNode" />
+              <item name="Resources" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
+              <item name="admin" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="pmslaravel" type="b2602c69:ProjectViewProjectNode" />
+              <item name="pmslaravel" type="462c0819:PsiDirectoryNode" />
+              <item name="Modules" type="462c0819:PsiDirectoryNode" />
+              <item name="HR" type="462c0819:PsiDirectoryNode" />
+              <item name="Resources" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
+              <item name="admin" type="462c0819:PsiDirectoryNode" />
+              <item name="leaveApplications" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="pmslaravel" type="b2602c69:ProjectViewProjectNode" />
+              <item name="pmslaravel" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="pmslaravel" type="b2602c69:ProjectViewProjectNode" />
+              <item name="pmslaravel" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+              <item name="lang" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="pmslaravel" type="b2602c69:ProjectViewProjectNode" />
+              <item name="pmslaravel" type="462c0819:PsiDirectoryNode" />
               <item name="storage" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -579,19 +584,6 @@
               <item name="storage" type="462c0819:PsiDirectoryNode" />
               <item name="app" type="462c0819:PsiDirectoryNode" />
               <item name="public" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="pmslaravel" type="b2602c69:ProjectViewProjectNode" />
-              <item name="pmslaravel" type="462c0819:PsiDirectoryNode" />
-              <item name="storage" type="462c0819:PsiDirectoryNode" />
-              <item name="tmp" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="pmslaravel" type="b2602c69:ProjectViewProjectNode" />
-              <item name="pmslaravel" type="462c0819:PsiDirectoryNode" />
-              <item name="storage" type="462c0819:PsiDirectoryNode" />
-              <item name="tmp" type="462c0819:PsiDirectoryNode" />
-              <item name="uploads" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -615,22 +607,22 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../medical" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="settings.editor.selected.configurable" value="web.server" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\xampp\htdocs\pmslaravel\Modules\Finance\Resources\views\admin" />
-      <recent name="C:\xampp\htdocs\pmslaravel\Modules\Finance\Resources\views" />
-      <recent name="C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\Modules\ProjectManagement\Resources\views\admin\projects" />
-      <recent name="C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\Modules\ProjectManagement\Resources\views\admin\tickets" />
-      <recent name="C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\app\Notifications" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\xampp\htdocs\pmslaravel\Modules\Finance\Entities" />
       <recent name="C:\xampp\htdocs\pmslaravel\Modules\Finance\Resources\views\admin" />
       <recent name="C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\Modules\ProjectManagement\Database\Migrations" />
       <recent name="C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\Modules\ProjectManagement\Entities" />
       <recent name="C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\Modules\ProjectManagement\Http\Controllers\Admin" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\xampp\htdocs\pmslaravel\Modules\Finance\Resources\views\partials" />
+      <recent name="C:\xampp\htdocs\pmslaravel\Modules\Finance\Resources\views\admin" />
+      <recent name="C:\xampp\htdocs\pmslaravel\Modules\Finance\Resources\views" />
+      <recent name="C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\Modules\ProjectManagement\Resources\views\admin\projects" />
+      <recent name="C:\Users\DEV-Back\Desktop\pms_laravel\PMS-Quickadminpanel-laravel\Modules\ProjectManagement\Resources\views\admin\tickets" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -719,19 +711,21 @@
       <workItem from="1610885452219" duration="8972000" />
       <workItem from="1610954941823" duration="52000" />
       <workItem from="1610955057225" duration="13986000" />
-      <workItem from="1610977580566" duration="10039000" />
+      <workItem from="1610977580566" duration="10385000" />
+      <workItem from="1611047827120" duration="2332000" />
+      <workItem from="1611051454073" duration="12541000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="44428000" />
+    <option name="totallyTimeSpent" value="59647000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1066" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.14765458" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49891067" visible="true" weight="0.26599148" />
+      <window_info id="Structure" order="1" sideWeight="0.50108933" side_tool="true" weight="0.14925373" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -749,7 +743,7 @@
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="Remote Host" order="3" />
+      <window_info anchor="right" id="Remote Host" order="3" weight="0.32995737" />
       <window_info anchor="right" id="Database" order="4" />
     </layout>
   </component>
@@ -884,30 +878,6 @@
     <state x="496" y="158" width="672" height="678" key="search.everywhere.popup/0.0.1680.1010@0.0.1680.1010" timestamp="1608461208246" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Modules/HR/Http/Controllers/Controller.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="138">
-          <caret line="9" column="6" selection-start-line="9" selection-start-column="6" selection-end-line="9" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Sales/Resources/views/admin/calls/index.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2415" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/ProjectManagement/Resources/views/admin/projects/index.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4900">
-          <caret line="456" column="68" selection-start-line="456" selection-start-column="61" selection-end-line="456" selection-end-column="68" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Sales/Resources/views/admin/leads/index.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-10897" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Modules/Payroll/Entities/PaymentMethod.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="138">
@@ -961,16 +931,6 @@
           <caret line="12" selection-start-line="12" selection-end-line="13" />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/config/acl.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="415">
-          <caret line="125" column="40" selection-start-line="125" selection-start-column="40" selection-end-line="125" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Finance/Resources/views/admin/transfers/edit.blade.php">
-      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/Modules/Finance/Http/Controllers/admin/PaymentmethodController.php">
       <provider selected="true" editor-type-id="text-editor">
@@ -1039,9 +999,6 @@
     <entry file="file://$PROJECT_DIR$/storage/tmp/uploads/5feeaca6ea813_131515366_10220746639830047_2261480671819557099_o.jpg">
       <provider selected="true" editor-type-id="images" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/storage/app/public/1/600552b64a92e_205629.jpg">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/storage/app/public/1/conversions/600552b64a92e_205629-preview.jpg">
       <provider selected="true" editor-type-id="images" />
     </entry>
@@ -1049,27 +1006,6 @@
       <provider selected="true" editor-type-id="images" />
     </entry>
     <entry file="file://$PROJECT_DIR$/Modules/Finance/Http/Controllers/traits/StoreMedia.php" />
-    <entry file="file://$PROJECT_DIR$/resources/views/partials/menu.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3634">
-          <caret line="158" column="142" selection-start-line="158" selection-start-column="142" selection-end-line="158" selection-end-column="142" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/lang/ar/cruds.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="529">
-          <caret line="23" column="6" selection-start-line="23" selection-start-column="6" selection-end-line="23" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/lang/en/cruds.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="598">
-          <caret line="26" column="40" selection-start-line="26" selection-start-column="40" selection-end-line="26" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Modules/Finance/Http/Requests/TransferStore.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="437">
@@ -1088,47 +1024,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="543">
           <caret line="30" selection-start-line="30" selection-end-line="31" />
-          <folding>
-            <element signature="e#53#84#0#PHP" expanded="true" />
-            <element signature="e#1110#8251#0#PHP" />
-            <element signature="e#8368#8965#0#PHP" />
-            <element signature="e#8971#9235#0#PHP" />
-            <element signature="e#9241#10518#0#PHP" />
-          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/storage/tmp/uploads/6005925d5d832_205629.jpg">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
+    <entry file="file://$PROJECT_DIR$/storage/tmp/uploads/6005925d5d832_205629.jpg" />
     <entry file="file://$PROJECT_DIR$/database/migrations/2020_09_27_000030_create_transfers_table.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="391">
           <caret line="19" column="47" selection-start-line="19" selection-start-column="47" selection-end-line="19" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Finance/Resources/views/admin/transfers/create.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="434">
-          <caret line="88" column="14" selection-start-line="88" selection-start-column="14" selection-end-line="88" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Finance/Resources/views/partials/actions.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="69">
-          <caret line="3" column="40" selection-start-line="2" selection-start-column="3" selection-end-line="3" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Traits/MediaUploadingTrait.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="599">
-          <caret line="99" column="16" selection-start-line="99" selection-start-column="16" selection-end-line="99" selection-end-column="16" />
-          <folding>
-            <element signature="e#109#1488#0#PHP" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1139,39 +1042,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Finance/Entities/Transfer.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1266">
-          <caret line="62" column="5" selection-start-line="62" selection-start-column="5" selection-end-line="62" selection-end-column="5" />
-          <folding>
-            <element signature="e#44#62#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/vendor/spatie/laravel-medialibrary/src/Models/Media.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="460">
           <caret line="47" column="30" selection-start-line="47" selection-start-column="20" selection-end-line="47" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.env">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="92">
-          <caret line="4" column="29" selection-start-line="4" selection-start-column="29" selection-end-line="4" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/config/medialibrary.php">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Finance/Routes/web.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="529">
-          <caret line="32" column="36" selection-start-line="32" selection-start-column="36" selection-end-line="32" selection-end-column="36" />
-          <caret line="32" column="69" selection-start-line="32" selection-start-column="69" selection-end-line="32" selection-end-column="69" />
-          <caret line="32" column="98" selection-start-line="32" selection-start-column="98" selection-end-line="32" selection-end-column="98" />
         </state>
       </provider>
     </entry>
@@ -1189,30 +1063,147 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Finance/Resources/views/admin/transfers/index.blade.php">
+    <entry file="file://$PROJECT_DIR$/.env">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="277">
-          <caret line="17" column="89" selection-start-line="17" selection-start-column="42" selection-end-line="17" selection-end-column="89" />
+        <state relative-caret-position="92">
+          <caret line="4" column="29" selection-start-line="4" selection-start-column="29" selection-end-line="4" selection-end-column="29" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Modules/Finance/Http/Controllers/admin/TransfersController.php">
+    <entry file="file://$PROJECT_DIR$/config/medialibrary.php">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Modules/Finance/Entities/Transfer.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="461">
-          <caret line="51" lean-forward="true" selection-start-line="51" selection-end-line="51" />
-          <folding>
-            <element signature="e#58#110#0#PHP" expanded="true" />
-          </folding>
+        <state relative-caret-position="1242">
+          <caret line="62" column="5" selection-start-line="62" selection-start-column="5" selection-end-line="62" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Modules/Finance/Resources/views/partials/actions.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="69">
+          <caret line="3" column="40" selection-start-line="2" selection-start-column="3" selection-end-line="3" selection-end-column="40" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Modules/Finance/Resources/views/partials/modal.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="26" selection-start-column="26" selection-end-column="26" />
+        <state relative-caret-position="437">
+          <caret line="19" column="32" lean-forward="true" selection-start-line="19" selection-start-column="32" selection-end-line="19" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/storage/app/public/1/600552b64a92e_205629.jpg">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Traits/MediaUploadingTrait.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-620">
+          <caret line="6" column="6" selection-start-line="6" selection-start-column="6" selection-end-line="6" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Modules/HR/Resources/views/admin/leaveApplications/edit.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-5060">
+          <caret line="18" column="148" selection-start-line="18" selection-start-column="123" selection-end-line="18" selection-end-column="148" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Modules/Finance/Resources/views/admin/transfers/create.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="438">
+          <caret line="71" column="39" selection-end-line="203" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Modules/Finance/Resources/views/partials/editModal.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="438">
+          <caret line="22" column="33" selection-start-line="22" selection-start-column="33" selection-end-line="22" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Modules/Finance/Resources/views/admin/transfers/edit.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="158">
+          <caret line="18" column="86" selection-start-line="18" selection-start-column="78" selection-end-line="18" selection-end-column="86" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/lang/ar/cruds.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="231">
+          <caret line="17" column="1" selection-start-line="17" selection-start-column="1" selection-end-line="17" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/lang/en/cruds.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="138">
+          <caret line="6" column="38" lean-forward="true" selection-start-line="6" selection-start-column="38" selection-end-line="6" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/acl.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="622">
+          <caret line="134" column="32" selection-start-line="134" selection-start-column="32" selection-end-line="134" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/partials/menu.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3152">
+          <caret line="166" lean-forward="true" selection-start-line="166" selection-end-line="166" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Modules/Finance/Routes/web.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="458">
+          <caret line="33" column="54" selection-start-line="33" selection-start-column="54" selection-end-line="33" selection-end-column="54" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Modules/HR/Resources/views/admin/leaveApplications/show.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="127" column="20" lean-forward="true" selection-start-line="15" selection-start-column="11" selection-end-line="127" selection-end-column="20" />
           <folding>
-            <element signature="e#654#661#1#HTML" expanded="true" />
+            <element signature="e#492#5227#0#HTML" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Modules/Finance/Http/Controllers/admin/TransfersController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="368">
+          <caret line="37" column="66" lean-forward="true" selection-start-line="37" selection-start-column="66" selection-end-line="37" selection-end-column="66" />
+          <folding>
+            <element signature="e#58#110#0#PHP" expanded="true" />
+            <element signature="e#2373#2693#0#PHP" />
+            <element signature="e#2699#3723#0#PHP" />
+            <element signature="e#3729#3996#0#PHP" />
+            <element signature="e#4350#5417#0#PHP" />
+            <element signature="e#5424#6100#0#PHP" />
+            <element signature="e#6107#6977#0#PHP" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Modules/Finance/Resources/views/partials/showModal.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="575">
+          <caret line="46" column="46" selection-start-line="46" selection-start-column="46" selection-end-line="46" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Modules/Finance/Resources/views/admin/transfers/index.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="438">
+          <caret line="36" column="67" selection-start-line="36" selection-start-column="57" selection-end-line="36" selection-end-column="67" />
         </state>
       </provider>
     </entry>

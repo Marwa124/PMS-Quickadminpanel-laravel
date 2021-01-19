@@ -19,12 +19,19 @@ return [
     'transfers'                => [
         'title'          => 'Transfers',
         'title_singular' => 'Transfers',
+        'attach' => 'Attachments',
         'fields' => [
+            'name'  => 'Name',
             'from_account'  => 'From Account',
             'to_account'  => 'To Account',
             'amount'  => 'Amount',
             'date'  => 'Date',
             'attachment'  => 'Attachment',
+            'notes'  => 'Notes',
+            'reference'  => 'Reference',
+            'attachments'  => 'Attachments',
+            'payment_method'  => 'Payment Method',
+            'select_payment_method'  => 'Select Payment Method',
         ]
     ],
 

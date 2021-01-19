@@ -31,6 +31,7 @@ Route::group(['as' => 'finance.admin.', 'prefix' => 'admin/finance', 'namespace'
     Route::post('transfers/media', 'TransfersController@storeMediaWithSameName')->name('transfers.storeMedia');
     Route::get('transfers/media/download/{id}', 'TransfersController@downloadMedia')->name('transfers.download.attach');
     Route::get('transfers/media/view/{id}', 'TransfersController@viewMedia')->name('transfers.view.attach');
+    Route::get('transfers/media/delete/{id}/{transfer}', 'TransfersController@deleteMedia')->name('transfers.delete.attach');
     Route::resource('transfers','TransfersController');
     Route::delete('transfers_mass_destroy','TransfersController@massDestroy')->name('transfers.massDestroy');
     Route::get('transfers_get_data','TransfersController@get_data')->name('transfers.get_data');
