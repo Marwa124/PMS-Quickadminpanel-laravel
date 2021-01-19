@@ -1633,6 +1633,10 @@ return [
             'time_spend'                => 'Time Spend',
             'time_spend_helper'         => ' ',
             'total'                     => 'Total',
+            'reason'                    => 'Reason',
+            'total_member_assigned'     => 'Total Member Assigned',
+            'total_tasks_assign'        => 'Total Tasks Assign',
+            'total_bugs_assign'         => 'Total Bugs Assign',
         ],
     ],
     'projectSetting'         => [
@@ -1685,6 +1689,8 @@ return [
             'deleted_at_helper'             => ' ',
             'account'                       => 'Account',
             'account_helper'                => ' ',
+            'subject'                       => 'Subject',
+            'subject_helper'                => ' ',
         ],
     ],
     'account'                 => [

@@ -287,7 +287,7 @@
               return new Promise(function(resolve, reject) {
                 // Init request
                 var xhr = new XMLHttpRequest();
-                xhr.open('POST', '/admin/projects/ckmedia', true);
+                xhr.open('POST', '/admin/projectmanagement/projects/ckmedia', true);
                 xhr.setRequestHeader('x-csrf-token', window._token);
                 xhr.setRequestHeader('Accept', 'application/json');
                 xhr.responseType = 'json';

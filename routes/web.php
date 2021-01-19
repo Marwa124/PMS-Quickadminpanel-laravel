@@ -81,12 +81,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::post('crm-documents/ckmedia', 'CrmDocumentController@storeCKEditorImages')->name('crm-documents.storeCKEditorImages');
     Route::resource('crm-documents', 'CrmDocumentController');
 
-    // Time Work Types
-    Route::delete('time-work-types/destroy', 'TimeWorkTypeController@massDestroy')->name('time-work-types.massDestroy');
-    Route::post('time-work-types/media', 'TimeWorkTypeController@storeMedia')->name('time-work-types.storeMedia');
-    Route::post('time-work-types/ckmedia', 'TimeWorkTypeController@storeCKEditorImages')->name('time-work-types.storeCKEditorImages');
-    Route::resource('time-work-types', 'TimeWorkTypeController');
-
     // Time Projects
     Route::delete('time-projects/destroy', 'TimeProjectController@massDestroy')->name('time-projects.massDestroy');
     Route::resource('time-projects', 'TimeProjectController');
@@ -148,10 +142,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     // Project Settings
     Route::delete('project-settings/destroy', 'ProjectSettingsController@massDestroy')->name('project-settings.massDestroy');
     Route::resource('project-settings', 'ProjectSettingsController', ['except' => ['edit', 'update', 'show']]);
-
-    // Work Trackings
-    Route::delete('work-trackings/destroy', 'WorkTrackingController@massDestroy')->name('work-trackings.massDestroy');
-    Route::resource('work-trackings', 'WorkTrackingController');
 
     // Announcements
     Route::delete('announcements/destroy', 'AnnouncementsController@massDestroy')->name('announcements.massDestroy');

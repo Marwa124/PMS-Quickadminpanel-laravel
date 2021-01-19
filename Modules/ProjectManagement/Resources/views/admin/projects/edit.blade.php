@@ -218,12 +218,12 @@
                 <div class="form-group">
                     <label for="project_status">{{ trans('cruds.project.fields.project_status') }}</label>
                     <select name="project_status" id="project_status" class="form-control {{ $errors->has('project_status') ? 'is-invalid' : '' }}">
-                        <option value="started" {{ $project->project_status == 'started' ? 'selected' : old('project_status') == 'started' ? 'selected' : '' }}>Started</option>
-                        <option value="in_progress" {{ $project->project_status == 'in_progress' ? 'selected' : old('project_status') == 'in_progress' ? 'selected' : '' }}>In Progress</option>
-                        <option value="on_hold" {{ $project->project_status == 'on_hold' ? 'selected' : old('project_status') == 'on_hold' ? 'selected' : '' }}>On Hold</option>
-                        <option value="cancel" {{ $project->project_status == 'cancel' ? 'selected' : old('project_status') == 'cancel' ? 'selected' : '' }}>Cancel</option>
-                        <option value="completed" {{ $project->project_status == 'completed' ? 'selected' : old('project_status') == 'completed' ? 'selected' : '' }}>Completed</option>
-                        <option value="overdue" {{ $project->project_status == 'overdue' ? 'selected' : old('project_status') == 'overdue' ? 'selected' : '' }}>Overdue</option>
+                        <option value="started" {{ $project->project_status == 'started' ? 'selected' : (old('project_status') == 'started' ? 'selected' : '' )}}>Started</option>
+                        <option value="in_progress" {{ $project->project_status == 'in_progress' ? 'selected' : (old('project_status') == 'in_progress' ? 'selected' : '') }}>In Progress</option>
+                        <option value="on_hold" {{ $project->project_status == 'on_hold' ? 'selected' : (old('project_status') == 'on_hold' ? 'selected' : '') }}>On Hold</option>
+                        <option value="cancel" {{ $project->project_status == 'cancel' ? 'selected' : (old('project_status') == 'cancel' ? 'selected' : '') }}>Cancel</option>
+                        <option value="completed" {{ $project->project_status == 'completed' ? 'selected' : (old('project_status') == 'completed' ? 'selected' : '') }}>Completed</option>
+                        <option value="overdue" {{ $project->project_status == 'overdue' ? 'selected' : (old('project_status') == 'overdue' ? 'selected' : '') }}>Overdue</option>
                     </select>
     {{--                <input class="form-control {{ $errors->has('project_status') ? 'is-invalid' : '' }}" type="text" name="project_status" id="project_status" value="{{ old('project_status', $project->project_status) }}">--}}
                     @if($errors->has('project_status'))
