@@ -240,6 +240,9 @@ function calculate_total_edit() {
     if (!isNaN(adjustment)) {
         total = total + adjustment;
     }
+    if(isNaN(adjustment)){
+        adjustment=0;
+    }
 
     after_discount = subtotal - total_discount_calculated;
 

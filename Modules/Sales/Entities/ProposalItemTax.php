@@ -39,4 +39,8 @@ class ProposalItemTax extends Model
     {
         return $this->belongsTo(Proposal::class, 'proposals_id');
     }
+    public function itemproposals()
+    {
+        return $this->belongsTo(ItemPorposalRelations::class, 'item_id');
+    }
 }

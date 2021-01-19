@@ -51,7 +51,7 @@ class ProposalsController extends Controller
 
     public function store(StoreProposalRequest $request)
     {
-        dd($request->all());
+        // dd($request->all());
         DB::beginTransaction();
 
         try {
@@ -127,7 +127,7 @@ class ProposalsController extends Controller
 
         } catch (\Exception $e) {
             DB::rollback();
-            dd($e);
+            // dd($e);
             return redirect()->back();
         }
 
@@ -145,10 +145,88 @@ class ProposalsController extends Controller
 
     public function update(UpdateProposalRequest $request, Proposal $proposal)
     {
-        $proposal->update($request->all());
-        $proposal->permissions()->sync($request->input('permissions', []));
+        
+        // DB::beginTransaction();
 
-        return redirect()->route('sales.admin.proposals.index');
+        // try {
+        $total_tax=$request->total_tax ? array_sum($request->total_tax) : 0;
+        $after_discount=$request->after_discount ? $request->after_discount : 0;
+        $total=$request->total ? $request->total : 0;
+        $discount_percent=$request->discount_percent ? $request->discount_percent : 0;
+        $request->merge(['total_cost_price'=>$total,'total_tax'=>$total_tax,'after_discount'=>$after_discount,'discount_percent'=>$discount_percent]);
+        $proposal->update($request->only([
+        'reference_no',
+        'subject',
+        'module',
+        'currency',
+        'module_id',
+        'status',
+        'user_id',
+        'proposal_validity',
+        'materials_supply_delivery',
+        'warranty',
+        'prices',
+        'maintenance_service_contract',
+        'payment_terms',
+        'notes',
+        'expire_date',
+        'proposal_date',
+        'total_tax',
+        'total_cost_price',
+        'adjustment',
+        'discount_percent',
+        'after_discount',
+        'discount_total',
+        ]));
+
+        $old_propsal_val= $proposal->items->pluck('id');
+       foreach ($request->items as $key => $value) {
+            $total_taxitem=0;
+            if (isset($value['tax'])) {
+                # code...
+                $taxRates = TaxRate::whereIN('id',$value['tax'])->pluck('rate_percent');
+                if(!empty($taxRates)){
+                    foreach ($taxRates as $ratevalue) {
+                       $total_taxitem=$total_taxitem+($value['unit_cost']* $value['total_qty'] * ($ratevalue / 100));
+                    }
+                }
+            }
+
+            
+            $newitem=ItemPorposalRelations::create($value);
+            $newitem->update([
+                'proposals_id'=>$proposal['id'],
+                'item_id'=>$value['saved_items_id'],
+            ]);
+       
+            if($newitem && isset($value['tax'])){
+                foreach($value['tax'] as $newtax){
+                    $addtaxes=new ProposalItemTax;
+                    $addtaxes->tax_cost=$proposal['id'];
+                    $addtaxes->taxs_id=$newtax;
+                    $addtaxes->proposals_id=$proposal['id'];
+                    $addtaxes->item_id=$newitem->id;
+                    $addtaxes->save();
+                }
+
+            }
+        }
+
+
+        if ($media = $request->input('ck-media', false)) {
+            Media::whereIn('id', $media)->update(['model_id' => $proposal->id]);
+        }
+
+        // DB::commit();
+        // return redirect()->route('sales.admin.proposals.index');
+
+        // } catch (\Exception $e) {
+        //     DB::rollback();
+        //     // dd($e);
+        //     return redirect()->back();
+        // }
+
+        
     }
 
     public function show(Proposal $proposal)

@@ -67,4 +67,8 @@ class ItemPorposalRelations extends Model
         return $this->belongsTo(ProposalsItem::class,'item_id');
     }
 
+    public function itemtaxs()
+    {
+        return $this->hasMany(ProposalItemTax::class, 'item_id', 'id');
+    }
 }
