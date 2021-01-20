@@ -55,7 +55,7 @@ return array (
   'submit' => 'Submit',
   'relatedData' => 'Related Data',
   'change_password_success' => 'Password changed successfully',
-  'datatables' => 
+  'datatables' =>
   array (
     'copy' => 'Copy',
     'csv' => 'CSV',
@@ -67,7 +67,7 @@ return array (
     'assgin' => 'Assgin selected',
     'zero_selected' => 'No rows selected',
   ),
-  'billing' => 
+  'billing' =>
   array (
     'menu' => 'Billing',
     'current_plan' => 'Your current plan',
@@ -76,7 +76,7 @@ return array (
     'trial_user' => 'Trial User',
     'plan_purchased_successfully' => 'Plan purchased successfully',
   ),
-  'payments' => 
+  'payments' =>
   array (
     'title' => 'Payments',
     'payment_date' => 'Payment Date',

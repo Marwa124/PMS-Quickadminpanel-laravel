@@ -1,15 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\Api\V1\Admin;
+namespace Modules\MaterialsSuppliers\Http\Controllers\Api\V1\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreTaxRateRequest;
-use App\Http\Requests\UpdateTaxRateRequest;
-use App\Http\Resources\Admin\TaxRateResource;
-use App\Models\TaxRate;
+use Modules\MaterialsSuppliers\Http\Requests\Destroy\MassDestroyTaxRateRequest;
+use Modules\MaterialsSuppliers\Http\Requests\Store\StoreTaxRateRequest;
+use Modules\MaterialsSuppliers\Http\Requests\Update\UpdateTaxRateRequest;
 use Gate;
 use Illuminate\Http\Request;
+use Modules\MaterialsSuppliers\Entities\TaxRate;
+use Modules\MaterialsSuppliers\Http\Resources\Admin\TaxRateResource;
 use Symfony\Component\HttpFoundation\Response;
+
 
 class TaxRatesApiController extends Controller
 {
@@ -17,11 +19,12 @@ class TaxRatesApiController extends Controller
     {
         abort_if(Gate::denies('tax_rate_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return new TaxRateResource(TaxRate::with(['permissions'])->get());
+        return new TaxRateResource(TaxRate::get());
     }
 
     public function store(StoreTaxRateRequest $request)
     {
+        dd($request->all());
         $taxRate = TaxRate::create($request->all());
         $taxRate->permissions()->sync($request->input('permissions', []));
 

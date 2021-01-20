@@ -3,22 +3,27 @@
 namespace Modules\MaterialsSuppliers\Http\Controllers\Api\V1\Admin;
 
 use App\Http\Controllers\Controller;
-use Modules\MaterialsSuppliers\Http\Requests\Destroy\MassDestroySupplierRequest;
-use Modules\MaterialsSuppliers\Http\Requests\Store\StoreSupplierRequest;
-use Modules\MaterialsSuppliers\Http\Requests\Update\UpdateSupplierRequest;
+use App\Http\Controllers\Traits\MediaUploadingTrait;
+// use Modules\MaterialsSuppliers\Http\Requests\Destroy\MassDestroySupplierRequest;
+// use Modules\MaterialsSuppliers\Http\Requests\Store\StoreSupplierRequest;
+// use Modules\MaterialsSuppliers\Http\Requests\Update\UpdateSupplierRequest;
 use Gate;
 use Illuminate\Http\Request;
 use Modules\MaterialsSuppliers\Entities\Supplier;
 use Modules\MaterialsSuppliers\Http\Resources\Admin\SupplierResource;
+use Modules\Sales\Entities\ProposalsItem;
+use Modules\Sales\Http\Resources\Admin\ProposalsItemResource;
 use Symfony\Component\HttpFoundation\Response;
 
-class SuppliersApiController extends Controller
+class ItemsApiController extends Controller
 {
+    use MediaUploadingTrait;
+
     public function index()
     {
-        abort_if(Gate::denies('supplier_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        return new SupplierResource(Supplier::with(['customer_group'])->get());
-        // return new SupplierResource(Supplier::with(['customer_group'])->get());
+        // abort_if(Gate::denies('supplier_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        return new ProposalsItemResource(ProposalsItem::get());
+        // return new ProposalsItemResource(ProposalsItem::with(['customer_group'])->get());
     }
 
     public function store(StoreSupplierRequest $request)

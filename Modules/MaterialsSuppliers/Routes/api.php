@@ -16,8 +16,8 @@ use Illuminate\Http\Request;
 // Route::middleware('auth:api')->get('/materialssuppliers', function (Request $request) {
 //     return $request->user();
 // });
-Route::group(['as' => 'api.', 'prefix' => 'v1/admin/materialssuppliers', 'namespace' => 'Api\V1\Admin', 'middleware' => ['auth:api']], function () {
+// Route::group(['as' => 'api.', 'prefix' => 'v1/admin/materialssuppliers', 'namespace' => 'Api\V1\Admin', 'middleware' => ['auth']], function () {
 
-    Route::apiResource('suppliers', 'SuppliersApiController');
+//     Route::apiResource('suppliers', 'SuppliersApiController');
 
-});
+// });

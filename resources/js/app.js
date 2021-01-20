@@ -43,7 +43,9 @@ Vue.component('EvaluationForm', EvaluationForm)
 
 // Payments
 import PurchaseForm from './components/materialSupplier/purchase/Form'
+import SupplierModal from './components/materialSupplier/purchase/SupplierModal'
 Vue.component('PurchaseForm', PurchaseForm)
+Vue.component('SupplierModal', SupplierModal)
 
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);

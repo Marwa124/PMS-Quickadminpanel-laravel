@@ -3587,6 +3587,173 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -3600,18 +3767,226 @@ __webpack_require__.r(__webpack_exports__);
   props: ['langKey', 'departmentId'],
   data: function data() {
     return {
-      urlGetSuppliers: '/api/v1/admin/materialssuppliers/suppliers',
-      suppliers: [],
-      designations: [],
+      urlGetAccountDetails: '/api/v1/admin/hr/account-details',
+      urlGetItems: '/api/v1/admin/materialssuppliers/items',
+      urlGetTaxRates: '/api/v1/admin/materialssuppliers/tax-rates',
+      users: [],
+      items: [],
+      taxRates: [],
+      quantityAs: this.$t('purchase.fields.quantity_as_qty'),
       spinnerAction: false,
-      spinnerUpdateDepart: false,
+      spinnerLoad: false,
+      selectedItem: [],
       form: new vform__WEBPACK_IMPORTED_MODULE_0__["Form"]({
         ref_no: '',
         supplier: '',
-        // user
-        department_name: '',
-        designations: []
+        purchase_date: '',
+        due_date: '',
+        sales_agent: '',
+        stock: '',
+        discount_type: '',
+        notes: '',
+        items: [{
+          name: '',
+          description: '',
+          quantity: '1',
+          total_cost_price: '',
+          item_tax_total: '',
+          // Calculated
+          total_cost: '',
+          unit_cost: '',
+          total: ''
+        }],
+        item_tax_rate: ''
       })
+    };
+  },
+  methods: {
+    getAccountDetails: function getAccountDetails() {
+      var _this = this;
+
+      axios.get(this.urlGetAccountDetails).then(function (response) {
+        var data = response.data.data;
+        _this.users = data;
+      });
+    },
+    getItems: function getItems() {
+      var _this2 = this;
+
+      axios.get(this.urlGetItems).then(function (response) {
+        console.log(response.data);
+        var data = response.data.data;
+        _this2.items = data;
+      });
+    },
+    getTaxRates: function getTaxRates() {
+      var _this3 = this;
+
+      axios.get(this.urlGetTaxRates).then(function (response) {
+        console.log(response.data);
+        var data = response.data.data;
+        _this3.taxRates = data;
+      });
+    },
+    showQtyAs: function showQtyAs(val) {
+      this.quantityAs = this.$t('purchase.fields.quantity_as_' + val);
+    },
+    addNewPurchaseItem: function addNewPurchaseItem(item) {
+      // console.log(item);
+      this.form.items = [item];
+    },
+    addTax: function addTax(taxItem) {
+      var tax = {
+        name: taxItem // code: newTag.substring(0, 2) + Math.floor((Math.random() * 10000000))
+
+      };
+      this.form.item_tax_rate.push(tax); // this.value.push(tag)
+    }
+  },
+  mounted: function mounted() {
+    _plugins_i18n__WEBPACK_IMPORTED_MODULE_1__["default"].locale = this.langKey;
+    this.getAccountDetails();
+    this.getItems();
+    this.getTaxRates();
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/materialSupplier/purchase/SupplierModal.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/materialSupplier/purchase/SupplierModal.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vform__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vform */ "./node_modules/vform/dist/vform.common.js");
+/* harmony import */ var vform__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vform__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-multiselect */ "./node_modules/vue-multiselect/dist/vue-multiselect.min.js");
+/* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_multiselect__WEBPACK_IMPORTED_MODULE_1__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    HasError: vform__WEBPACK_IMPORTED_MODULE_0__["HasError"],
+    AlertErrors: vform__WEBPACK_IMPORTED_MODULE_0__["AlertErrors"],
+    AlertSuccess: vform__WEBPACK_IMPORTED_MODULE_0__["AlertSuccess"],
+    Multiselect: vue_multiselect__WEBPACK_IMPORTED_MODULE_1___default.a
+  },
+  props: ['form'],
+  data: function data() {
+    return {
+      urlGetSuppliers: '/api/v1/admin/materialssuppliers/suppliers',
+      suppliers: [],
+      supplierForm: new vform__WEBPACK_IMPORTED_MODULE_0__["Form"]({
+        // Supplier Form
+        name: '',
+        mobile: '',
+        phone: '',
+        email: '',
+        address: ''
+      }),
+      spinnerLoad: false
     };
   },
   methods: {
@@ -3620,18 +3995,61 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.get(this.urlGetSuppliers).then(function (response) {
         var data = response.data;
-        console.log(data);
-        _this.suppliers = data.department.department_head_account;
+        _this.suppliers = data.data;
+        console.log(_this.suppliers);
       });
     },
-    supplierName: function supplierName(name) {
-      return "".concat(name.fullname);
+    // Create a new Supplier Form Subbmission
+    supplierNew: function supplierNew() {
+      // console.log(this.rates);
+      this.spinnerLoad = true;
+      var self = this;
+      $.ajax({
+        url: this.urlGetSuppliers,
+        type: "post",
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        data: this.supplierForm,
+        success: function success(data) {
+          self.suppliers.push(data.data); // Reset the alert values if exists
+
+          document.querySelector(".alert-danger") ? document.querySelector(".alert-danger").remove() : ''; // **** Reset the alert values
+
+          this.spinnerLoad = false; // Close The modal after success create
+
+          var supplierBtn = document.querySelector('.supplierFormBtn');
+          supplierBtn.classList.add('close');
+          supplierBtn.setAttribute('data-dismiss', 'modal');
+          supplierBtn.click();
+          supplierBtn.classList.remove('close');
+          supplierBtn.removeAttribute('data-dismiss');
+        },
+        error: function error(_error) {
+          console.log(_error.responseJSON.errors);
+          var errorObj = _error.responseJSON.errors;
+          var result = Object.keys(errorObj).map(function (key) {
+            return [key, errorObj[key]];
+          });
+          result.forEach(function (elem) {
+            var appentToInput = document.querySelector('#supplierModal .modal-body'); // Reset the alert values if exists
+
+            document.querySelector(".alert-danger") ? document.querySelector(".alert-danger").remove() : ''; // **** Reset the alert values
+
+            var error = document.createElement("div");
+            error.className = "form-group alert alert-danger";
+            appentToInput.append(error);
+            elem.forEach(function (val) {
+              error.innerHTML = val;
+            });
+          });
+        }
+      });
     }
   },
   mounted: function mounted() {
-    _plugins_i18n__WEBPACK_IMPORTED_MODULE_1__["default"].locale = this.langKey;
+    console.log("dfdvjbnkf,v");
     this.getSuppliers();
-    console.log('Component mounted.');
   }
 });
 
@@ -9061,7 +9479,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, "\nhr{\n    background-color: rgb(121, 116, 116);\n    width: 70px;\n    transform: rotate(90deg);\n}\n.col-auto .required::after {\n    content: \" *\";\n    color: red;\n}\n", ""]);
+exports.push([module.i, "\nhr{\n    background-color: rgb(121, 116, 116);\n    width: 70px;\n    transform: rotate(90deg);\n}\n.col-auto .required::after {\n    content: \" *\";\n    color: red;\n}\n.input-transparent {\n    outline: 0;\n    border: 0 !important;\n    background: 0 0;\n    padding: 3px;\n    margin-left: 3px;\n    background-color: transparent !important;\n}\n.input-transparent:focus {\n    box-shadow: none;\n}\n", ""]);
 
 // exports
 
@@ -58061,33 +58479,157 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container" }, [
-    _c("div", { staticClass: "row my-3" }, [
-      _c("div", { staticClass: "col-md-6" }, [
-        _c("div", { staticClass: "row g-3 align-items-center" }, [
-          _c("div", { staticClass: "col-auto" }, [
-            _c("label", {
-              staticClass: "col-form-label required",
-              attrs: { for: "refNo" },
-              domProps: {
-                textContent: _vm._s(_vm.$t("cruds.purchase.fields.ref_no"))
-              }
-            })
-          ]),
+  return _c("div", {}, [
+    _c("div", { staticClass: "my-3 d-flex justify-content-around" }, [
+      _c(
+        "div",
+        {},
+        [
+          _c(
+            "div",
+            {
+              staticClass:
+                "d-flex justify-content-between align-items-center form-group"
+            },
+            [
+              _c("div", { staticClass: "col-auto" }, [
+                _c("label", {
+                  staticClass: "col-form-label required",
+                  attrs: { for: "refNo" },
+                  domProps: {
+                    textContent: _vm._s(_vm.$t("purchase.fields.ref_no"))
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-auto" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.form.ref_no,
+                      expression: "form.ref_no"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: { type: "text" },
+                  domProps: { value: _vm.form.ref_no },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.form, "ref_no", $event.target.value)
+                    }
+                  }
+                })
+              ])
+            ]
+          ),
           _vm._v(" "),
-          _vm._m(0)
-        ]),
-        _vm._v(" "),
+          _c("supplier-modal", { attrs: { form: _vm.form } }),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass:
+                "d-flex justify-content-between align-items-center form-group"
+            },
+            [
+              _c("div", { staticClass: "col-auto" }, [
+                _c("label", {
+                  staticClass: "col-form-label",
+                  domProps: {
+                    textContent: _vm._s(_vm.$t("purchase.fields.purchase_date"))
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-auto" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.form.purchase_date,
+                      expression: "form.purchase_date"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: { type: "text" },
+                  domProps: { value: _vm.form.purchase_date },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.form, "purchase_date", $event.target.value)
+                    }
+                  }
+                })
+              ])
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass:
+                "d-flex justify-content-between align-items-center form-group"
+            },
+            [
+              _c("div", { staticClass: "col-auto" }, [
+                _c("label", {
+                  staticClass: "col-form-label",
+                  domProps: {
+                    textContent: _vm._s(_vm.$t("purchase.fields.due_date"))
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-auto" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.form.due_date,
+                      expression: "form.due_date"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: { type: "text" },
+                  domProps: { value: _vm.form.due_date },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.form, "due_date", $event.target.value)
+                    }
+                  }
+                })
+              ])
+            ]
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("div", {}, [
         _c(
           "div",
-          { staticClass: "row g-3 align-items-center" },
+          {
+            staticClass:
+              "d-flex justify-content-between align-items-center form-group"
+          },
           [
             _c("div", { staticClass: "col-auto" }, [
               _c("label", {
-                staticClass: "col-form-label required",
-                attrs: { for: "supplier" },
+                staticClass: "col-form-label",
                 domProps: {
-                  textContent: _vm._s(_vm.$t("cruds.purchase.fields.supplier"))
+                  textContent: _vm._s(_vm.$t("purchase.fields.sales_agent"))
                 }
               })
             ]),
@@ -58098,35 +58640,955 @@ var render = function() {
               [
                 _c("multiselect", {
                   attrs: {
-                    options: _vm.suppliers,
+                    options: _vm.users,
+                    searchable: true,
+                    "close-on-select": true,
+                    "show-labels": false,
+                    label: "fullname",
+                    "track-by": "user_id",
+                    placeholder: _vm.$t("sidebar.choose_user"),
+                    "preselect-first": true
+                  },
+                  model: {
+                    value: _vm.form.sales_agent,
+                    callback: function($$v) {
+                      _vm.$set(_vm.form, "sales_agent", $$v)
+                    },
+                    expression: "form.sales_agent"
+                  }
+                })
+              ],
+              1
+            )
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass:
+              "d-flex justify-content-between align-items-center form-group"
+          },
+          [
+            _c("div", { staticClass: "col-auto" }, [
+              _c("label", {
+                staticClass: "col-form-label",
+                domProps: {
+                  textContent: _vm._s(_vm.$t("purchase.fields.stock"))
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-auto mt-2" }, [
+              _c("div", { staticClass: "input-group" }, [
+                _c("div", { staticClass: "form-group" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.form.stock,
+                        expression: "form.stock"
+                      }
+                    ],
+                    attrs: {
+                      type: "radio",
+                      value: "Yes",
+                      "aria-label": "Radio button for following text input"
+                    },
+                    domProps: { checked: _vm._q(_vm.form.stock, "Yes") },
+                    on: {
+                      change: function($event) {
+                        return _vm.$set(_vm.form, "stock", "Yes")
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("label", [_vm._v("Yes")])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group ml-1" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.form.stock,
+                        expression: "form.stock"
+                      }
+                    ],
+                    attrs: {
+                      type: "radio",
+                      value: "No",
+                      "aria-label": "Radio button for following text input"
+                    },
+                    domProps: { checked: _vm._q(_vm.form.stock, "No") },
+                    on: {
+                      change: function($event) {
+                        return _vm.$set(_vm.form, "stock", "No")
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("label", [_vm._v("No")])
+                ])
+              ])
+            ])
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass:
+              "d-flex justify-content-between align-items-center form-group"
+          },
+          [
+            _c("div", { staticClass: "col-auto" }, [
+              _c("label", {
+                staticClass: "col-form-label",
+                domProps: {
+                  textContent: _vm._s(_vm.$t("purchase.fields.discount_type"))
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-auto" }, [
+              _c(
+                "select",
+                {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.form.discount_type,
+                      expression: "form.discount_type"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  on: {
+                    change: function($event) {
+                      var $$selectedVal = Array.prototype.filter
+                        .call($event.target.options, function(o) {
+                          return o.selected
+                        })
+                        .map(function(o) {
+                          var val = "_value" in o ? o._value : o.value
+                          return val
+                        })
+                      _vm.$set(
+                        _vm.form,
+                        "discount_type",
+                        $event.target.multiple
+                          ? $$selectedVal
+                          : $$selectedVal[0]
+                      )
+                    }
+                  }
+                },
+                [
+                  _c("option", {
+                    attrs: { value: "before_tax" },
+                    domProps: {
+                      textContent: _vm._s(_vm.$t("purchase.fields.before_tax"))
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("option", {
+                    attrs: { value: "after_tax" },
+                    domProps: {
+                      textContent: _vm._s(_vm.$t("purchase.fields.after_tax"))
+                    }
+                  })
+                ]
+              )
+            ])
+          ]
+        ),
+        _vm._v(" "),
+        _c(
+          "div",
+          {
+            staticClass:
+              "d-flex justify-content-between align-items-center form-group"
+          },
+          [
+            _c("div", { staticClass: "col-auto" }, [
+              _c("label", {
+                staticClass: "col-form-label",
+                domProps: {
+                  textContent: _vm._s(_vm.$t("purchase.fields.notes"))
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-auto" }, [
+              _c("textarea", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.form.notes,
+                    expression: "form.notes"
+                  }
+                ],
+                staticClass: "form-control",
+                domProps: { value: _vm.form.notes },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.form, "notes", $event.target.value)
+                  }
+                }
+              })
+            ])
+          ]
+        )
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "d-flex justify-content-between" }, [
+      _c(
+        "div",
+        { staticClass: "col-md-6" },
+        [
+          _vm._v(
+            "\n                " + _vm._s(_vm.form.items) + "\n                "
+          ),
+          _vm._v(" "),
+          _c("multiselect", {
+            attrs: {
+              options: _vm.items,
+              searchable: true,
+              "close-on-select": true,
+              "show-labels": false,
+              label: "name",
+              "track-by": "id",
+              placeholder: _vm.$t("sidebar.choose_item"),
+              "preselect-first": true
+            },
+            on: {
+              input: function($event) {
+                return _vm.addNewPurchaseItem(_vm.selectedItem)
+              }
+            },
+            model: {
+              value: _vm.selectedItem,
+              callback: function($$v) {
+                _vm.selectedItem = $$v
+              },
+              expression: "selectedItem"
+            }
+          })
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-md-6" }, [
+        _c(
+          "div",
+          {
+            staticClass:
+              "d-flex justify-content-between align-items-center form-group"
+          },
+          [
+            _c("div", { staticClass: "col-auto" }, [
+              _c("label", {
+                staticClass: "col-form-label",
+                domProps: {
+                  textContent: _vm._s(_vm.$t("purchase.fields.show_qty_as"))
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "col-auto mt-2" }, [
+              _c("div", { staticClass: "input-group" }, [
+                _c("div", { staticClass: "form-group" }, [
+                  _c("input", {
+                    attrs: {
+                      type: "radio",
+                      name: "qtyAs",
+                      checked: "",
+                      "aria-label": "Radio button for following text input"
+                    },
+                    on: {
+                      click: function($event) {
+                        return _vm.showQtyAs("qty")
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("label", [_vm._v("qty")])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group ml-1" }, [
+                  _c("input", {
+                    attrs: {
+                      type: "radio",
+                      name: "qtyAs",
+                      "aria-label": "Radio button for following text input"
+                    },
+                    on: {
+                      click: function($event) {
+                        return _vm.showQtyAs("hours")
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("label", [_vm._v("hours")])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group ml-1" }, [
+                  _c("input", {
+                    attrs: {
+                      type: "radio",
+                      name: "qtyAs",
+                      "aria-label": "Radio button for following text input"
+                    },
+                    on: {
+                      click: function($event) {
+                        return _vm.showQtyAs("qty_hours")
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("label", [_vm._v("qty/hours")])
+                ])
+              ])
+            ])
+          ]
+        )
+      ])
+    ]),
+    _vm._v(" "),
+    _c("table", { staticClass: "table" }, [
+      _c("thead", { staticClass: "thead-dark" }, [
+        _c("tr", [
+          _c("th", { attrs: { scope: "col" } }, [
+            _vm._v(_vm._s(_vm.$t("items.fields.name")))
+          ]),
+          _vm._v(" "),
+          _c("th", { attrs: { scope: "col" } }, [
+            _vm._v(_vm._s(_vm.$t("items.fields.description")))
+          ]),
+          _vm._v(" "),
+          _c("th", {
+            attrs: { scope: "col" },
+            domProps: { textContent: _vm._s(_vm.quantityAs) }
+          }),
+          _vm._v(" "),
+          _c("th", { attrs: { scope: "col" } }, [
+            _vm._v(_vm._s(_vm.$t("items.fields.price")))
+          ]),
+          _vm._v(" "),
+          _c("th", { attrs: { scope: "col" } }, [
+            _vm._v(_vm._s(_vm.$t("items.fields.tax_rate")))
+          ]),
+          _vm._v(" "),
+          _c("th", { attrs: { scope: "col" } }, [
+            _vm._v(_vm._s(_vm.$t("items.fields.total")))
+          ]),
+          _vm._v(" "),
+          _c("th", { attrs: { scope: "col" } }, [
+            _vm._v(_vm._s(_vm.$t("global.action")))
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      _c(
+        "tbody",
+        _vm._l(_vm.form.items, function(item, index) {
+          return _c("tr", { key: index, attrs: { "data-row-id": "" } }, [
+            _c("th", [
+              _c("textarea", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: item.name,
+                    expression: "item.name"
+                  }
+                ],
+                staticClass: "form-control",
+                domProps: { value: item.name },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(item, "name", $event.target.value)
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("td", [
+              _c("textarea", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: item.description,
+                    expression: "item.description"
+                  }
+                ],
+                staticClass: "form-control",
+                domProps: { value: item.description },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(item, "description", $event.target.value)
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("td", [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: item.quantity,
+                    expression: "item.quantity"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { type: "number" },
+                domProps: { value: item.quantity },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(item, "quantity", $event.target.value)
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: item.unit_cost,
+                    expression: "item.unit_cost"
+                  }
+                ],
+                staticClass: "form-control input-transparent",
+                attrs: {
+                  placeholder: _vm.$t("items.fields.unit_cost"),
+                  type: "text"
+                },
+                domProps: { value: item.unit_cost },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(item, "unit_cost", $event.target.value)
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("td", [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: item.total_cost_price,
+                    expression: "item.total_cost_price"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { type: "number" },
+                domProps: { value: item.total_cost_price },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(item, "total_cost_price", $event.target.value)
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c(
+              "td",
+              [
+                _c("multiselect", {
+                  attrs: {
+                    options: _vm.taxRates,
                     searchable: true,
                     "close-on-select": true,
                     "show-labels": false,
                     label: "name",
                     "track-by": "id",
-                    placeholder: _vm.$t("sidebar.choose_supplier"),
-                    "preselect-first": true
+                    placeholder: _vm.$t("sidebar.choose_tax_rate"),
+                    "preselect-first": true,
+                    multiple: true,
+                    taggable: true
                   },
+                  on: { tag: _vm.addTax },
                   model: {
-                    value: _vm.form.supplier,
+                    value: _vm.form.item_tax_rate,
                     callback: function($$v) {
-                      _vm.$set(_vm.form, "supplier", $$v)
+                      _vm.$set(_vm.form, "item_tax_rate", $$v)
                     },
-                    expression: "form.supplier"
+                    expression: "form.item_tax_rate"
                   }
                 })
               ],
               1
             ),
             _vm._v(" "),
-            _c("has-error", { attrs: { form: _vm.form, field: "supplier" } })
+            _c("td", [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: item.total,
+                    expression: "item.total"
+                  }
+                ],
+                staticClass: "form-control input-transparent",
+                attrs: { type: "number", disabled: "" },
+                domProps: { value: item.total },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(item, "total", $event.target.value)
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("td")
+          ])
+        }),
+        0
+      )
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/materialSupplier/purchase/SupplierModal.vue?vue&type=template&id=06a199d8&":
+/*!******************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/materialSupplier/purchase/SupplierModal.vue?vue&type=template&id=06a199d8& ***!
+  \******************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c(
+      "div",
+      { staticClass: "row g-3 align-items-center form-group" },
+      [
+        _c("div", { staticClass: "col-auto" }, [
+          _c("label", {
+            staticClass: "col-form-label required",
+            attrs: { for: "supplier" },
+            domProps: { textContent: _vm._s(_vm.$t("suppliers.supplier")) }
+          })
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "col-auto d-flex" },
+          [
+            _c("multiselect", {
+              attrs: {
+                options: _vm.suppliers,
+                searchable: true,
+                "close-on-select": true,
+                "show-labels": false,
+                label: "name",
+                "track-by": "id",
+                placeholder: _vm.$t("sidebar.choose_supplier"),
+                "preselect-first": true
+              },
+              model: {
+                value: _vm.form.supplier,
+                callback: function($$v) {
+                  _vm.$set(_vm.form, "supplier", $$v)
+                },
+                expression: "form.supplier"
+              }
+            }),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticStyle: { "align-self": "center", cursor: "pointer" } },
+              [
+                _vm._m(0),
+                _vm._v(" "),
+                _c(
+                  "form",
+                  {
+                    on: {
+                      submit: function($event) {
+                        $event.preventDefault()
+                        return _vm.supplierNew($event)
+                      },
+                      keydown: function($event) {
+                        return _vm.supplierForm.onKeydown($event)
+                      }
+                    }
+                  },
+                  [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "modal fade",
+                        attrs: {
+                          id: "supplierModal",
+                          tabindex: "-1",
+                          role: "dialog",
+                          "aria-labelledby": "supplierModalLabel",
+                          "aria-hidden": "true"
+                        }
+                      },
+                      [
+                        _c(
+                          "div",
+                          {
+                            staticClass: "modal-dialog",
+                            attrs: { role: "document" }
+                          },
+                          [
+                            _c("div", { staticClass: "modal-content" }, [
+                              _c("div", { staticClass: "modal-header" }, [
+                                _c("h5", {
+                                  staticClass: "modal-title",
+                                  attrs: { id: "supplierModalLabel" },
+                                  domProps: {
+                                    textContent: _vm._s(
+                                      _vm.$t("global.new") +
+                                        _vm.$t("suppliers.supplier")
+                                    )
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _vm._m(1)
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "modal-body" }, [
+                                _c(
+                                  "div",
+                                  { staticClass: "row g-3 align-items-center" },
+                                  [
+                                    _c("div", { staticClass: "col-auto" }, [
+                                      _c("label", {
+                                        staticClass: "col-form-label required",
+                                        domProps: {
+                                          textContent: _vm._s(
+                                            _vm.$t("suppliers.fields.name")
+                                          )
+                                        }
+                                      })
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("div", { staticClass: "col-auto" }, [
+                                      _c("input", {
+                                        directives: [
+                                          {
+                                            name: "model",
+                                            rawName: "v-model",
+                                            value: _vm.supplierForm.name,
+                                            expression: "supplierForm.name"
+                                          }
+                                        ],
+                                        staticClass: "form-control",
+                                        attrs: { type: "text" },
+                                        domProps: {
+                                          value: _vm.supplierForm.name
+                                        },
+                                        on: {
+                                          input: function($event) {
+                                            if ($event.target.composing) {
+                                              return
+                                            }
+                                            _vm.$set(
+                                              _vm.supplierForm,
+                                              "name",
+                                              $event.target.value
+                                            )
+                                          }
+                                        }
+                                      })
+                                    ])
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  { staticClass: "row g-3 align-items-center" },
+                                  [
+                                    _c("div", { staticClass: "col-auto" }, [
+                                      _c("label", {
+                                        staticClass: "col-form-label required",
+                                        domProps: {
+                                          textContent: _vm._s(
+                                            _vm.$t("suppliers.fields.mobile")
+                                          )
+                                        }
+                                      })
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("div", { staticClass: "col-auto" }, [
+                                      _c("input", {
+                                        directives: [
+                                          {
+                                            name: "model",
+                                            rawName: "v-model",
+                                            value: _vm.supplierForm.mobile,
+                                            expression: "supplierForm.mobile"
+                                          }
+                                        ],
+                                        staticClass: "form-control",
+                                        attrs: { type: "text" },
+                                        domProps: {
+                                          value: _vm.supplierForm.mobile
+                                        },
+                                        on: {
+                                          input: function($event) {
+                                            if ($event.target.composing) {
+                                              return
+                                            }
+                                            _vm.$set(
+                                              _vm.supplierForm,
+                                              "mobile",
+                                              $event.target.value
+                                            )
+                                          }
+                                        }
+                                      })
+                                    ])
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  { staticClass: "row g-3 align-items-center" },
+                                  [
+                                    _c("div", { staticClass: "col-auto" }, [
+                                      _c("label", {
+                                        staticClass: "col-form-label",
+                                        domProps: {
+                                          textContent: _vm._s(
+                                            _vm.$t("suppliers.fields.phone")
+                                          )
+                                        }
+                                      })
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("div", { staticClass: "col-auto" }, [
+                                      _c("input", {
+                                        directives: [
+                                          {
+                                            name: "model",
+                                            rawName: "v-model",
+                                            value: _vm.supplierForm.phone,
+                                            expression: "supplierForm.phone"
+                                          }
+                                        ],
+                                        staticClass: "form-control",
+                                        attrs: { type: "text" },
+                                        domProps: {
+                                          value: _vm.supplierForm.phone
+                                        },
+                                        on: {
+                                          input: function($event) {
+                                            if ($event.target.composing) {
+                                              return
+                                            }
+                                            _vm.$set(
+                                              _vm.supplierForm,
+                                              "phone",
+                                              $event.target.value
+                                            )
+                                          }
+                                        }
+                                      })
+                                    ])
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  { staticClass: "row g-3 align-items-center" },
+                                  [
+                                    _c("div", { staticClass: "col-auto" }, [
+                                      _c("label", {
+                                        staticClass: "col-form-label required",
+                                        domProps: {
+                                          textContent: _vm._s(
+                                            _vm.$t("suppliers.fields.email")
+                                          )
+                                        }
+                                      })
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("div", { staticClass: "col-auto" }, [
+                                      _c("input", {
+                                        directives: [
+                                          {
+                                            name: "model",
+                                            rawName: "v-model",
+                                            value: _vm.supplierForm.email,
+                                            expression: "supplierForm.email"
+                                          }
+                                        ],
+                                        staticClass: "form-control",
+                                        attrs: { type: "email" },
+                                        domProps: {
+                                          value: _vm.supplierForm.email
+                                        },
+                                        on: {
+                                          input: function($event) {
+                                            if ($event.target.composing) {
+                                              return
+                                            }
+                                            _vm.$set(
+                                              _vm.supplierForm,
+                                              "email",
+                                              $event.target.value
+                                            )
+                                          }
+                                        }
+                                      })
+                                    ])
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  { staticClass: "row g-3 align-items-center" },
+                                  [
+                                    _c("div", { staticClass: "col-auto" }, [
+                                      _c("label", {
+                                        staticClass: "col-form-label",
+                                        domProps: {
+                                          textContent: _vm._s(
+                                            _vm.$t("suppliers.fields.address")
+                                          )
+                                        }
+                                      })
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("div", { staticClass: "col-auto" }, [
+                                      _c("textarea", {
+                                        directives: [
+                                          {
+                                            name: "model",
+                                            rawName: "v-model",
+                                            value: _vm.supplierForm.address,
+                                            expression: "supplierForm.address"
+                                          }
+                                        ],
+                                        staticClass: "form-control",
+                                        domProps: {
+                                          value: _vm.supplierForm.address
+                                        },
+                                        on: {
+                                          input: function($event) {
+                                            if ($event.target.composing) {
+                                              return
+                                            }
+                                            _vm.$set(
+                                              _vm.supplierForm,
+                                              "address",
+                                              $event.target.value
+                                            )
+                                          }
+                                        }
+                                      })
+                                    ])
+                                  ]
+                                )
+                              ]),
+                              _vm._v(" "),
+                              _c("div", { staticClass: "modal-footer" }, [
+                                _c(
+                                  "button",
+                                  {
+                                    staticClass: "btn btn-secondary",
+                                    attrs: {
+                                      type: "button",
+                                      "data-dismiss": "modal"
+                                    }
+                                  },
+                                  [_vm._v("Close")]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "button",
+                                  {
+                                    staticClass:
+                                      "btn btn-primary btn-sm buttonload supplierFormBtn",
+                                    attrs: {
+                                      type: "submit",
+                                      disabled: _vm.supplierForm.busy
+                                    }
+                                  },
+                                  [
+                                    _vm.spinnerLoad
+                                      ? _c("i", {
+                                          staticClass: "fa fa-spinner fa-spin"
+                                        })
+                                      : _vm._e(),
+                                    _vm._v(" "),
+                                    _c("span", {
+                                      domProps: {
+                                        textContent: _vm._s(
+                                          _vm.$t("global.create")
+                                        )
+                                      }
+                                    })
+                                  ]
+                                )
+                              ])
+                            ])
+                          ]
+                        )
+                      ]
+                    )
+                  ]
+                )
+              ]
+            )
           ],
           1
-        )
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-md-6" })
-    ])
+        ),
+        _vm._v(" "),
+        _c("has-error", { attrs: { form: _vm.form, field: "supplier" } })
+      ],
+      1
+    )
   ])
 }
 var staticRenderFns = [
@@ -58134,12 +59596,35 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-auto" }, [
-      _c("input", {
-        staticClass: "form-control",
-        attrs: { type: "text", id: "refNo" }
-      })
-    ])
+    return _c(
+      "button",
+      {
+        staticClass: "btn btn-primary",
+        attrs: {
+          type: "button",
+          "data-toggle": "modal",
+          "data-target": "#supplierModal"
+        }
+      },
+      [_c("i", { staticClass: "fas fa-plus" })]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "close",
+        attrs: {
+          type: "button",
+          "data-dismiss": "modal",
+          "aria-label": "Close"
+        }
+      },
+      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+    )
   }
 ]
 render._withStripped = true
@@ -70864,6 +72349,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_evaluations_Index__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/evaluations/Index */ "./resources/js/components/evaluations/Index.vue");
 /* harmony import */ var _components_evaluations_Form__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/evaluations/Form */ "./resources/js/components/evaluations/Form.vue");
 /* harmony import */ var _components_materialSupplier_purchase_Form__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/materialSupplier/purchase/Form */ "./resources/js/components/materialSupplier/purchase/Form.vue");
+/* harmony import */ var _components_materialSupplier_purchase_SupplierModal__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./components/materialSupplier/purchase/SupplierModal */ "./resources/js/components/materialSupplier/purchase/SupplierModal.vue");
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -70903,7 +72389,9 @@ Vue.component('Evaluation', _components_evaluations_Index__WEBPACK_IMPORTED_MODU
 Vue.component('EvaluationForm', _components_evaluations_Form__WEBPACK_IMPORTED_MODULE_13__["default"]); // Payments
 
 
+
 Vue.component('PurchaseForm', _components_materialSupplier_purchase_Form__WEBPACK_IMPORTED_MODULE_14__["default"]);
+Vue.component('SupplierModal', _components_materialSupplier_purchase_SupplierModal__WEBPACK_IMPORTED_MODULE_15__["default"]);
 Vue.component('example-component', __webpack_require__(/*! ./components/ExampleComponent.vue */ "./resources/js/components/ExampleComponent.vue")["default"]);
 Vue.component('assign-permissions-to-user', __webpack_require__(/*! ./components/AssignPermissionsToUser.vue */ "./resources/js/components/AssignPermissionsToUser.vue"));
 /**
@@ -71945,6 +73433,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/materialSupplier/purchase/SupplierModal.vue":
+/*!*****************************************************************************!*\
+  !*** ./resources/js/components/materialSupplier/purchase/SupplierModal.vue ***!
+  \*****************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _SupplierModal_vue_vue_type_template_id_06a199d8___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SupplierModal.vue?vue&type=template&id=06a199d8& */ "./resources/js/components/materialSupplier/purchase/SupplierModal.vue?vue&type=template&id=06a199d8&");
+/* harmony import */ var _SupplierModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SupplierModal.vue?vue&type=script&lang=js& */ "./resources/js/components/materialSupplier/purchase/SupplierModal.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _SupplierModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _SupplierModal_vue_vue_type_template_id_06a199d8___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _SupplierModal_vue_vue_type_template_id_06a199d8___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/materialSupplier/purchase/SupplierModal.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/materialSupplier/purchase/SupplierModal.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************!*\
+  !*** ./resources/js/components/materialSupplier/purchase/SupplierModal.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SupplierModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./SupplierModal.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/materialSupplier/purchase/SupplierModal.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SupplierModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/materialSupplier/purchase/SupplierModal.vue?vue&type=template&id=06a199d8&":
+/*!************************************************************************************************************!*\
+  !*** ./resources/js/components/materialSupplier/purchase/SupplierModal.vue?vue&type=template&id=06a199d8& ***!
+  \************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SupplierModal_vue_vue_type_template_id_06a199d8___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./SupplierModal.vue?vue&type=template&id=06a199d8& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/materialSupplier/purchase/SupplierModal.vue?vue&type=template&id=06a199d8&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SupplierModal_vue_vue_type_template_id_06a199d8___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SupplierModal_vue_vue_type_template_id_06a199d8___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/roles/Index.vue":
 /*!*************************************************!*\
   !*** ./resources/js/components/roles/Index.vue ***!
@@ -72050,10 +73607,10 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.filter("slug", function (value) {
 /*!***********************************!*\
   !*** ./resources/js/lang/ar.json ***!
   \***********************************/
-/*! exports provided: global, evaluation, messages, users_table, departments_table, job_titles_table, default */
+/*! exports provided: global, evaluation, messages, users_table, departments_table, job_titles_table, suppliers, purchase, items, sidebar, default */
 /***/ (function(module) {
 
-module.exports = JSON.parse("{\"global\":{\"home\":\"الرئيسية\",\"dashboard\":\"الرئيسية\",\"user\":\"مدير\",\"hotel\":\"فندق\",\"the_hotel\":\"الفندق\",\"the_price\":\"السعر\",\"the_travel\":\"الرحلة\",\"the_offers\":\"العروض\",\"room\":\"غرفة\",\"the_travel_program\":\"برنامج الرحلة\",\"the_travel_category\":\"قسم الرحلة\",\"the_images\":\"الصور\",\"type\":\"نوع\",\"comment\":\"تعليق\",\"winner\":\"فائز\",\"setting\":\"إعداد\",\"error_response\":\"لا يمكن حذف هذا العنصر\",\"back\":\"رجوع\",\"no_rooms\":\"لا يوجد غرف\",\"no_travels\":\"لا يوجد رحلات\",\"no_hotel_features\":\"لا توجد مميزات للفندق\",\"no_offers\":\"لا توجد عروض لهذه الرحلة\",\"no_bookings\":\"لا توجد حجوزات لهذه الرحلة\",\"no_gallery\":\"لا توجد صور\",\"no_location\":\"لا توجد خريطة\",\"show_map\":\"اعرض الخريطة\",\"days\":\"أيام\",\"day\":\"يوم\",\"profile\":\"بروفايل\",\"the_profile\":\"البروفايل\",\"edit_profile\":\"تعديل البيانات الشخصية\",\"view_profile\":\"عرض الصفحة الشخصية\",\"user_profile\":\"الصفحة الشخصية\",\"lead_profile\":\"صفحة العميل\",\"model_is_deleted\":\"محذوف\",\"logout\":\"تسجيل الخروج\",\"create\":\"إنشاء\",\"create_again\":\"إنشاء مرة أخرى\",\"edit\":\"تعديل\",\"update\":\"تحديث\",\"save\":\"حفظ\",\"read\":\"اقرأ\",\"all\":\"الكل\",\"n_all\":\"كل\",\"read_more\":\"اقرأ المزيد\",\"more_info\":\"معرفة المزيد\",\"choose_image\":\"اختر صورة\",\"drag_msg\":\"اسحب الصورة وضعها هنا أو اضغط للاختيار\",\"none_status\":\"بدون حالة\",\"active\":\"مفعل\",\"disactive\":\"غير مفعل\",\"available\":\"متاح\",\"unavailable\":\"غير متاح\",\"hidden\":\"مخفى\",\"visible\":\"ظاهر\",\"show\":\"عرض\",\"hide\":\"إخفاء\",\"view\":\"عرض\",\"close\":\"إغلاق\",\"display\":\"إظهار\",\"from\":\"من\",\"to\":\"إلى\",\"in\":\"فى\",\"on\":\"على\",\"or\":\"أو\",\"with\":\"مع\",\"delete\":\"حذف\",\"deleted\":\"تم الحذف\",\"force_delete\":\"إزالة نهائيا\",\"remove\":\"إزالة\",\"removed\":\"تمت الإزالة\",\"restore\":\"استرجاع\",\"restored\":\"تم الإسترجاع\",\"failed\":\"فشل\",\"cancel\":\"إلغاء\",\"yes_delete_it\":\"تأكيد الحذف\",\"yes_remove_it\":\"تأكيد الإزالة\",\"yes_restore_it\":\"تأكيد الإسترجاع\",\"settings_table\":\"إعدادات جدول {model} فى كل الشاشات\",\"notifications\":\"إشعارات\",\"the_notifications\":\"الإشعارات\",\"notification\":\"إشعار\",\"all_notifications\":\"كل الإشعارات\",\"the_messages\":\"الرسائل\",\"all_messages\":\"كل الرسائل\",\"latest_messages\":\"اخر الرسائل\",\"staff\":\"الموظفين\",\"clients\":\"العملاء\",\"vendors\":\"الموردين\",\"reports\":\"التقارير\",\"notif_create_user\":\"تم إنشاء موظف جديد بواسطة\",\"currency\":\"جنية\"},\"evaluation\":{\"evaluation_comments\":\"تعليقات اضافية\",\"evaluation_goals\":\"الهدف\"},\"messages\":{\"delete_msg\":\"هل أنت متأكد من حذف هذا العنصر ؟\",\"delete_success_msg\":\"تم حذف العنصر.\",\"delete_failed_msg\":\"لم يتم حذف العنصر.\",\"force_delete_msg\":\"هل أنت متأكد من إزالة هذا العنصر بشكل نهائى ؟\",\"force_delete_success_msg\":\"تم إزالة العنصر بشكل نهائى.\",\"force_delete_failed_msg\":\"لم يتم إزالة العنصر.\",\"restore_msg\":\"هل أنت متأكد من استرجاع هذا العنصر ؟\",\"restore_success_msg\":\"تم استرجاع العنصر.\",\"restore_failed_msg\":\"لم يتم استرجاع العنصر.\",\"multi_delete_msg\":\"هل أنت متأكد من حذف جميع العناصر المعلم عليها؟\",\"multi_delete_success_msg\":\"تم حذف جميع العناصر المعلم عليها.\",\"multi_delete_failed_msg\":\"لم يتم حذف جميع العناصر المعلم عليها.\",\"multi_force_delete_msg\":\"هل أنت متأكد من إزالة جميع العناصر المعلم عليها بشكل نهائى ؟\",\"multi_force_delete_success_msg\":\"تم إزالة جميع العناصر المعلم عليها بشكل نهائى.\",\"multi_force_delete_failed_msg\":\"لم يتم إزالة جميع العناصر المعلم عليها.\",\"multi_restore_msg\":\"هل أنت متأكد من استرجاع جميع العناصر المعلم عليها؟\",\"multi_restore_success_msg\":\"تم استرجاع جميع العناصر المعلم عليها.\",\"multi_restore_failed_msg\":\"لم يتم استرجاع جميع العناصر المعلم عليها.\",\"change_lead_status_success_msg\":\"تم تحديث حالة العميل بنجاح\",\"change_lead_status_failed_msg\":\"لم يتم تحديث حالة العميل\",\"change_meeting_status_success_msg\":\"تم تحديث حالة المقابلة بنجاح\",\"change_meeting_status_failed_msg\":\"لم يتم تحديث حالة المقابلة\",\"reason_status\":\"سبب تغيير الحالة\",\"change_meeting_status_to\":\"تغيير حالة المقابلة إلى\"},\"users_table\":{\"id\":\"المعرف\",\"name\":\"الاسم\",\"name_ar\":\"الاسم عربى\",\"email\":\"البريد الإليكتروني\",\"password\":\"كلمة السر\",\"repeat_password\":\"أعد كلمة السر\",\"phone\":\"الموبايل\",\"home_phone\":\"تليفون المنزل\",\"emergency_phone\":\"رقم الطوارئ\",\"country\":\"البلد\",\"city\":\"المدينة\",\"address\":\"عنوان المنزل\",\"photo\":\"الصورة الشخصية\",\"id_cart\":\"رقم البطاقة الشخصية\",\"nationality\":\"الجنسية\",\"marital_status\":\"الحالة الزوجية\",\"gender\":\"الجنس\",\"birth_date\":\"تاريخ الميلاد\",\"work_phone\":\"موبايل العمل\",\"work_email\":\"بريد العمل\",\"work_address\":\"عنوان العمل\",\"bank_account_number\":\"رقم حساب البنك\",\"visa_number\":\"رقم الفيزا\",\"visa_expire_date\":\"تاريخ انتهاء الفيزا\",\"certificate_level\":\"المستوى التعليمى\",\"school\":\"الجامعة / المدرسة\",\"job_title_id\":\"المسمى الوظيفى\",\"department_id\":\"القسم\",\"work_period_id\":\"فترة العمل\",\"hiring_date\":\"تاريخ التوظيف\",\"salary\":\"الراتب\",\"rule\":\"الصلاحية\",\"active\":\"التفعيل\",\"document_note\":\"ملحوظة\",\"updated_at\":\"أخر تعديل\",\"created_at\":\"تاريخ الإنشاء\",\"actions\":\"الإجراءات\",\"registration_data\":\"بيانات التسجيل\",\"personal_data\":\"البيانات الشخصية\",\"education\":\"التعليم\",\"word_data\":\"بيانات العمل\",\"job_data\":\"بيانات الوظيفة\",\"activate\":{\"on\":\"مفعل\",\"off\":\"غير مفعل\"},\"rules\":{\"super_admin\":\"مشرف سوبر\",\"admin\":\"مشرف\",\"user\":\"مستخدم\"},\"genders\":{\"male\":\"ذكر\",\"female\":\"أنثى\",\"others\":\"أخرى\"},\"marital_statuses\":{\"single\":\"أعزب\",\"engaged\":\"خاطب / مخطوبة\",\"married\":\"متزوج\",\"others\":\"حالة أخرى\"},\"p_create\":{\"success_msg\":\"تم إنشاء موظف جديد.\",\"failed_msg\":\"لم يتم إنشاء الموظف الجديد.\"},\"p_edit\":{\"success_msg\":\"تم تحديث الموظف.\",\"failed_msg\":\"لم يتم تحديث هذا الموظف.\"}},\"departments_table\":{\"id\":\"المعرف\",\"name\":\"اسم القسم\",\"updated_at\":\"أخر تعديل\",\"created_at\":\"تاريخ الإنشاء\",\"actions\":\"الإجراءات\",\"p_create\":{\"success_msg\":\"تم إنشاء قسم جديد.\",\"failed_msg\":\"لم يتم إنشاء القسم الجديد.\"},\"p_edit\":{\"success_msg\":\"تم تحديث القسم.\",\"failed_msg\":\"لم يتم تحديث هذا القسم.\"}},\"job_titles_table\":{\"id\":\"المعرف\",\"name\":\"اسم الوظيفة\",\"department_id\":\"القسم\",\"updated_at\":\"أخر تعديل\",\"created_at\":\"تاريخ الإنشاء\",\"actions\":\"الإجراءات\"}}");
+module.exports = JSON.parse("{\"global\":{\"home\":\"الرئيسية\",\"dashboard\":\"الرئيسية\",\"user\":\"مدير\",\"hotel\":\"فندق\",\"the_hotel\":\"الفندق\",\"the_price\":\"السعر\",\"the_travel\":\"الرحلة\",\"the_offers\":\"العروض\",\"room\":\"غرفة\",\"the_travel_program\":\"برنامج الرحلة\",\"the_travel_category\":\"قسم الرحلة\",\"the_images\":\"الصور\",\"type\":\"نوع\",\"comment\":\"تعليق\",\"winner\":\"فائز\",\"setting\":\"إعداد\",\"error_response\":\"لا يمكن حذف هذا العنصر\",\"back\":\"رجوع\",\"no_rooms\":\"لا يوجد غرف\",\"no_travels\":\"لا يوجد رحلات\",\"no_hotel_features\":\"لا توجد مميزات للفندق\",\"no_offers\":\"لا توجد عروض لهذه الرحلة\",\"no_bookings\":\"لا توجد حجوزات لهذه الرحلة\",\"no_gallery\":\"لا توجد صور\",\"no_location\":\"لا توجد خريطة\",\"show_map\":\"اعرض الخريطة\",\"days\":\"أيام\",\"day\":\"يوم\",\"profile\":\"بروفايل\",\"the_profile\":\"البروفايل\",\"edit_profile\":\"تعديل البيانات الشخصية\",\"view_profile\":\"عرض الصفحة الشخصية\",\"user_profile\":\"الصفحة الشخصية\",\"lead_profile\":\"صفحة العميل\",\"model_is_deleted\":\"محذوف\",\"new\":\"New\",\"logout\":\"تسجيل الخروج\",\"create\":\"إنشاء\",\"create_again\":\"إنشاء مرة أخرى\",\"edit\":\"تعديل\",\"update\":\"تحديث\",\"save\":\"حفظ\",\"read\":\"اقرأ\",\"all\":\"الكل\",\"n_all\":\"كل\",\"read_more\":\"اقرأ المزيد\",\"more_info\":\"معرفة المزيد\",\"choose_image\":\"اختر صورة\",\"drag_msg\":\"اسحب الصورة وضعها هنا أو اضغط للاختيار\",\"none_status\":\"بدون حالة\",\"active\":\"مفعل\",\"disactive\":\"غير مفعل\",\"available\":\"متاح\",\"unavailable\":\"غير متاح\",\"hidden\":\"مخفى\",\"visible\":\"ظاهر\",\"show\":\"عرض\",\"hide\":\"إخفاء\",\"view\":\"عرض\",\"close\":\"إغلاق\",\"display\":\"إظهار\",\"from\":\"من\",\"to\":\"إلى\",\"in\":\"فى\",\"on\":\"على\",\"or\":\"أو\",\"with\":\"مع\",\"delete\":\"حذف\",\"deleted\":\"تم الحذف\",\"force_delete\":\"إزالة نهائيا\",\"remove\":\"إزالة\",\"removed\":\"تمت الإزالة\",\"restore\":\"استرجاع\",\"restored\":\"تم الإسترجاع\",\"failed\":\"فشل\",\"cancel\":\"إلغاء\",\"yes_delete_it\":\"تأكيد الحذف\",\"yes_remove_it\":\"تأكيد الإزالة\",\"yes_restore_it\":\"تأكيد الإسترجاع\",\"settings_table\":\"إعدادات جدول {model} فى كل الشاشات\",\"notifications\":\"إشعارات\",\"the_notifications\":\"الإشعارات\",\"notification\":\"إشعار\",\"all_notifications\":\"كل الإشعارات\",\"the_messages\":\"الرسائل\",\"all_messages\":\"كل الرسائل\",\"latest_messages\":\"اخر الرسائل\",\"staff\":\"الموظفين\",\"clients\":\"العملاء\",\"vendors\":\"الموردين\",\"reports\":\"التقارير\",\"notif_create_user\":\"تم إنشاء موظف جديد بواسطة\",\"currency\":\"جنية\"},\"evaluation\":{\"evaluation_comments\":\"تعليقات اضافية\",\"evaluation_goals\":\"الهدف\"},\"messages\":{\"delete_msg\":\"هل أنت متأكد من حذف هذا العنصر ؟\",\"delete_success_msg\":\"تم حذف العنصر.\",\"delete_failed_msg\":\"لم يتم حذف العنصر.\",\"force_delete_msg\":\"هل أنت متأكد من إزالة هذا العنصر بشكل نهائى ؟\",\"force_delete_success_msg\":\"تم إزالة العنصر بشكل نهائى.\",\"force_delete_failed_msg\":\"لم يتم إزالة العنصر.\",\"restore_msg\":\"هل أنت متأكد من استرجاع هذا العنصر ؟\",\"restore_success_msg\":\"تم استرجاع العنصر.\",\"restore_failed_msg\":\"لم يتم استرجاع العنصر.\",\"multi_delete_msg\":\"هل أنت متأكد من حذف جميع العناصر المعلم عليها؟\",\"multi_delete_success_msg\":\"تم حذف جميع العناصر المعلم عليها.\",\"multi_delete_failed_msg\":\"لم يتم حذف جميع العناصر المعلم عليها.\",\"multi_force_delete_msg\":\"هل أنت متأكد من إزالة جميع العناصر المعلم عليها بشكل نهائى ؟\",\"multi_force_delete_success_msg\":\"تم إزالة جميع العناصر المعلم عليها بشكل نهائى.\",\"multi_force_delete_failed_msg\":\"لم يتم إزالة جميع العناصر المعلم عليها.\",\"multi_restore_msg\":\"هل أنت متأكد من استرجاع جميع العناصر المعلم عليها؟\",\"multi_restore_success_msg\":\"تم استرجاع جميع العناصر المعلم عليها.\",\"multi_restore_failed_msg\":\"لم يتم استرجاع جميع العناصر المعلم عليها.\",\"change_lead_status_success_msg\":\"تم تحديث حالة العميل بنجاح\",\"change_lead_status_failed_msg\":\"لم يتم تحديث حالة العميل\",\"change_meeting_status_success_msg\":\"تم تحديث حالة المقابلة بنجاح\",\"change_meeting_status_failed_msg\":\"لم يتم تحديث حالة المقابلة\",\"reason_status\":\"سبب تغيير الحالة\",\"change_meeting_status_to\":\"تغيير حالة المقابلة إلى\"},\"users_table\":{\"id\":\"المعرف\",\"name\":\"الاسم\",\"name_ar\":\"الاسم عربى\",\"email\":\"البريد الإليكتروني\",\"password\":\"كلمة السر\",\"repeat_password\":\"أعد كلمة السر\",\"phone\":\"الموبايل\",\"home_phone\":\"تليفون المنزل\",\"emergency_phone\":\"رقم الطوارئ\",\"country\":\"البلد\",\"city\":\"المدينة\",\"address\":\"عنوان المنزل\",\"photo\":\"الصورة الشخصية\",\"id_cart\":\"رقم البطاقة الشخصية\",\"nationality\":\"الجنسية\",\"marital_status\":\"الحالة الزوجية\",\"gender\":\"الجنس\",\"birth_date\":\"تاريخ الميلاد\",\"work_phone\":\"موبايل العمل\",\"work_email\":\"بريد العمل\",\"work_address\":\"عنوان العمل\",\"bank_account_number\":\"رقم حساب البنك\",\"visa_number\":\"رقم الفيزا\",\"visa_expire_date\":\"تاريخ انتهاء الفيزا\",\"certificate_level\":\"المستوى التعليمى\",\"school\":\"الجامعة / المدرسة\",\"job_title_id\":\"المسمى الوظيفى\",\"department_id\":\"القسم\",\"work_period_id\":\"فترة العمل\",\"hiring_date\":\"تاريخ التوظيف\",\"salary\":\"الراتب\",\"rule\":\"الصلاحية\",\"active\":\"التفعيل\",\"document_note\":\"ملحوظة\",\"updated_at\":\"أخر تعديل\",\"created_at\":\"تاريخ الإنشاء\",\"actions\":\"الإجراءات\",\"registration_data\":\"بيانات التسجيل\",\"personal_data\":\"البيانات الشخصية\",\"education\":\"التعليم\",\"word_data\":\"بيانات العمل\",\"job_data\":\"بيانات الوظيفة\",\"activate\":{\"on\":\"مفعل\",\"off\":\"غير مفعل\"},\"rules\":{\"super_admin\":\"مشرف سوبر\",\"admin\":\"مشرف\",\"user\":\"مستخدم\"},\"genders\":{\"male\":\"ذكر\",\"female\":\"أنثى\",\"others\":\"أخرى\"},\"marital_statuses\":{\"single\":\"أعزب\",\"engaged\":\"خاطب / مخطوبة\",\"married\":\"متزوج\",\"others\":\"حالة أخرى\"},\"p_create\":{\"success_msg\":\"تم إنشاء موظف جديد.\",\"failed_msg\":\"لم يتم إنشاء الموظف الجديد.\"},\"p_edit\":{\"success_msg\":\"تم تحديث الموظف.\",\"failed_msg\":\"لم يتم تحديث هذا الموظف.\"}},\"departments_table\":{\"id\":\"المعرف\",\"name\":\"اسم القسم\",\"updated_at\":\"أخر تعديل\",\"created_at\":\"تاريخ الإنشاء\",\"actions\":\"الإجراءات\",\"p_create\":{\"success_msg\":\"تم إنشاء قسم جديد.\",\"failed_msg\":\"لم يتم إنشاء القسم الجديد.\"},\"p_edit\":{\"success_msg\":\"تم تحديث القسم.\",\"failed_msg\":\"لم يتم تحديث هذا القسم.\"}},\"job_titles_table\":{\"id\":\"المعرف\",\"name\":\"اسم الوظيفة\",\"department_id\":\"القسم\",\"updated_at\":\"أخر تعديل\",\"created_at\":\"تاريخ الإنشاء\",\"actions\":\"الإجراءات\"},\"suppliers\":{\"supplier\":\"Supplier\",\"fields\":{\"name\":\"Name\",\"mobile\":\"Mobile\",\"phone\":\"Phone\",\"email\":\"Email\",\"address\":\"Address\"}},\"purchase\":{\"supplier\":\"Supplier\",\"fields\":{\"ref_no\":\"Ref No\",\"purchase_date\":\"Purchase Date\",\"due_date\":\"Due Date\",\"sales_agent\":\"Sales Agent\",\"stock\":\"Upload Stock\",\"discount_type\":\"Discount Type\",\"notes\":\"Notes\",\"quantity_as_qty\":\"الكمية\",\"quantity_as_hours\":\"ساعات\",\"quantity_as_qty_hours\":\"كمية/ساعات\",\"show_qty_as\":\"اظهارالكمية ك\",\"before_tax\":\"Before Tax\",\"after_tax\":\"After Tax\"}},\"items\":{\"fields\":{\"name\":\"Item Name\",\"description\":\"Description\",\"price\":\"Price\",\"tax_rate\":\"Tax Rate\",\"total\":\"Total\",\"unit_cost\":\"Unit Cost\"}},\"sidebar\":{\"choose_user\":\"Choose User\",\"choose_item\":\"Choose Item\",\"choose_supplier\":\"Choose Supplier\",\"choose_tax_rate\":\"Choose Tax Rate\",\"\":\"\"}}");
 
 /***/ }),
 
@@ -72061,10 +73618,10 @@ module.exports = JSON.parse("{\"global\":{\"home\":\"الرئيسية\",\"dashbo
 /*!***********************************!*\
   !*** ./resources/js/lang/en.json ***!
   \***********************************/
-/*! exports provided: global, evaluation, messages, default */
+/*! exports provided: global, evaluation, messages, suppliers, purchase, items, sidebar, default */
 /***/ (function(module) {
 
-module.exports = JSON.parse("{\"global\":{\"home\":\"Home\",\"dashboard\":\"Dashboard\",\"user\":\"user\",\"name\":\"Name\",\"total\":\"Total\",\"info\":\"Info\",\"infor\":\"Information\",\"infors\":\"Informations\",\"company\":\"Company\",\"type\":\"type\",\"setting\":\"setting\",\"button\":\"Button\",\"error_response\":\"The selected item can't be deleted\",\"back\":\"Back\",\"logout\":\"Logout\",\"create\":\"Create\",\"create_again\":\"Create Again\",\"edit\":\"Edit\",\"update\":\"update\",\"save\":\"Save\",\"read\":\"Read\",\"toggle\":\"Toggle\",\"actions\":\"Actions\",\"action\":\"Action\",\"add_all\":\"Add all\",\"all\":\"All\",\"n_all\":\"All\",\"read_more\":\"Read more\",\"more_info\":\"More info\",\"choose_image\":\"Choose image\",\"drag_msg\":\"Drag and drop file here\",\"choose_file\":\"Choose file\",\"download\":\"Download\",\"download_all\":\"Download all\",\"download_file\":\"Download file\",\"download_logo_src\":\"Download logo source\",\"download_image\":\"Download image\",\"to_mail\":\"to mail\",\"to_whatsapp\":\"to whatsapp\",\"renewal\":\"Renewal\",\"none_status\":\"None status\",\"items\":\"Items\",\"item\":\"Item\",\"left\":\"Left\",\"active\":\"Active\",\"completed\":\"Completed\",\"clear_completed\":\"Clear completed\",\"disactive\":\"Disactive\",\"activate\":\"Activate\",\"activation\":\"Activation\",\"activated_at\":\"Activated at\",\"accepted_at\":\"Accepted at\",\"accepte\":\"Accepte\",\"accepte_now\":\"Accepte now\",\"done_at\":\"Done at\",\"in_progress\":\"In progress\",\"available\":\"Available\",\"unavailable\":\"Unavailable\",\"hidden\":\"Hidden\",\"visible\":\"Visible\",\"show\":\"Show\",\"send\":\"Send\",\"hide\":\"Hide\",\"view\":\"View\",\"donwload\":\"Donwload\",\"close\":\"Close\",\"display\":\"Display\",\"from\":\"From\",\"to\":\"To\",\"in\":\"In\",\"on\":\"On\",\"or\":\"Or\",\"with\":\"With\",\"yes\":\"Yes\",\"no\":\"No\",\"delete\":\"Delete\",\"deleted\":\"Deleted\",\"force_delete\":\"Force delete\",\"remove\":\"Remove\",\"removed\":\"Removed\",\"restore\":\"Restore\",\"restored\":\"Restored\",\"failed\":\"Failed\",\"cancel\":\"Cancel\",\"undefined\":\"Undefined\",\"meeting\":\"Meeting\",\"next_meeting\":\"Next meeting\",\"contract\":\"Contract\",\"payments\":\"Payments\",\"view_payments\":\"View payments\",\"invoice\":\"Invoice\",\"lead\":\"Lead\",\"client\":\"Client\",\"yes_delete_it\":\"Yes, delete it\",\"yes_remove_it\":\"Yes, remove it\",\"yes_restore_it\":\"Yes, restore it\",\"settings_table\":\"Settings table {model} on all screens\",\"notifications\":\"Notifications\",\"the_notifications\":\"Notifications\",\"notification\":\"Notification\",\"all_notifications\":\"All notifications\",\"the_messages\":\"Messages\",\"all_messages\":\"All messages\",\"latest_messages\":\"Latest Messages\",\"staff\":\"staff\",\"clients\":\"Clients\",\"vendors\":\"Vendors\",\"notif_create_user\":\"A new employee was created by\",\"currency\":\"EGP\",\"payment_methods\":{\"cash\":\"Cash\",\"bank\":\"Bank\",\"partner_drawing\":\"Partner drawing\"},\"projects_posts_type\":{\"single\":\"single\",\"grouped\":\"grouped\",\"cover_post\":\"cover post\"},\"requests_types\":{\"1\":\"casual vacation\",\"2\":\"medical issues\",\"3\":\"travel\",\"4\":\"permission\",\"5\":\"check in\",\"6\":\"check out\"},\"accounts_types\":{\"saving\":\"Saving account\",\"current\":\"Current account\",\"joint\":\"Joint partner\",\"recom\":\"Recommended partner\"},\"logo_profile\":\"Logo Details\",\"hosting_profile\":\"Host profile\",\"website_profile\":\"Website Details\",\"\":\"\"},\"evaluation\":{\"evaluation_comments\":\"ADDITIONAL COMMENTS\",\"evaluation_goals\":\"GOALS\"},\"messages\":{\"delete_msg\":\"Are you sure to delete this element?\",\"delete_success_msg\":\"The element has been deleted.\",\"delete_failed_msg\":\"The element has not been deleted.\",\"force_delete_msg\":\"Are you sure to remove this element?\",\"force_delete_success_msg\":\"The element has been removed.\",\"force_delete_failed_msg\":\"The element has not been removed.\",\"restore_msg\":\"Are you sure to restore this element?\",\"restore_success_msg\":\"The element has been restored.\",\"restore_failed_msg\":\"The element has not been restored.\",\"multi_delete_msg\":\"Are you sure to delete all checked elements?\",\"multi_delete_success_msg\":\"All elements checked as deleted.\",\"multi_delete_failed_msg\":\"Not all checked elements have been deleted.\",\"multi_force_delete_msg\":\"Are you sure to permanently remove all checked elements?\",\"multi_force_delete_success_msg\":\"All checked elements have been permanently removed.\",\"multi_force_delete_failed_msg\":\"Not all checked elements have been removed.\",\"multi_restore_msg\":\"Are you sure to restore all checked elements?\",\"multi_restore_success_msg\":\"All elements checked as restored.\",\"multi_restore_failed_msg\":\"Not all checked elements have been restored.\",\"change_lead_status_success_msg\":\"Lead status has been successfully updated\",\"change_lead_status_failed_msg\":\"Lead status was not updated\",\"change_client_status_success_msg\":\"Client status has been successfully updated\",\"change_client_status_failed_msg\":\"Client status was not updated\",\"change_meeting_status_success_msg\":\"Meeting status has been successfully updated\",\"change_meeting_status_failed_msg\":\"Meeting status was not updated\",\"reason_status\":\"Reason change status\",\"change_meeting_status_to\":\"Change Meeting status to\",\"not_found_roles\":\"Not found roles\",\"msg_not_mail_lead_registerd\":\"This client does'nt have a registered email.\"}}");
+module.exports = JSON.parse("{\"global\":{\"home\":\"Home\",\"dashboard\":\"Dashboard\",\"user\":\"user\",\"name\":\"Name\",\"total\":\"Total\",\"info\":\"Info\",\"infor\":\"Information\",\"infors\":\"Informations\",\"company\":\"Company\",\"type\":\"type\",\"setting\":\"setting\",\"button\":\"Button\",\"new\":\"New\",\"error_response\":\"The selected item can't be deleted\",\"back\":\"Back\",\"logout\":\"Logout\",\"create\":\"Create\",\"edit\":\"Edit\",\"update\":\"update\",\"save\":\"Save\",\"read\":\"Read\",\"toggle\":\"Toggle\",\"actions\":\"Actions\",\"action\":\"Action\",\"add_all\":\"Add all\",\"all\":\"All\",\"read_more\":\"Read more\",\"more_info\":\"More info\",\"choose_image\":\"Choose image\",\"drag_msg\":\"Drag and drop file here\",\"choose_file\":\"Choose file\",\"download\":\"Download\",\"download_image\":\"Download image\",\"items\":\"Items\",\"item\":\"Item\",\"left\":\"Left\",\"active\":\"Active\",\"completed\":\"Completed\",\"clear_completed\":\"Clear completed\",\"disactive\":\"Disactive\",\"activate\":\"Activate\",\"activation\":\"Activation\",\"accepte\":\"Accepte\",\"done_at\":\"Done at\",\"in_progress\":\"In progress\",\"available\":\"Available\",\"unavailable\":\"Unavailable\",\"hidden\":\"Hidden\",\"visible\":\"Visible\",\"show\":\"Show\",\"send\":\"Send\",\"hide\":\"Hide\",\"view\":\"View\",\"donwload\":\"Donwload\",\"close\":\"Close\",\"display\":\"Display\",\"from\":\"From\",\"to\":\"To\",\"in\":\"In\",\"on\":\"On\",\"or\":\"Or\",\"with\":\"With\",\"yes\":\"Yes\",\"no\":\"No\",\"delete\":\"Delete\",\"deleted\":\"Deleted\",\"force_delete\":\"Force delete\",\"remove\":\"Remove\",\"removed\":\"Removed\",\"restore\":\"Restore\",\"restored\":\"Restored\",\"failed\":\"Failed\",\"cancel\":\"Cancel\",\"undefined\":\"Undefined\",\"meeting\":\"Meeting\",\"next_meeting\":\"Next meeting\",\"contract\":\"Contract\",\"payments\":\"Payments\",\"view_payments\":\"View payments\",\"invoice\":\"Invoice\",\"lead\":\"Lead\",\"client\":\"Client\",\"yes_delete_it\":\"Yes, delete it\",\"yes_remove_it\":\"Yes, remove it\",\"yes_restore_it\":\"Yes, restore it\",\"settings_table\":\"Settings table {model} on all screens\",\"notifications\":\"Notifications\",\"the_notifications\":\"Notifications\",\"notification\":\"Notification\",\"all_notifications\":\"All notifications\",\"the_messages\":\"Messages\",\"all_messages\":\"All messages\",\"latest_messages\":\"Latest Messages\",\"staff\":\"staff\",\"clients\":\"Clients\",\"vendors\":\"Vendors\",\"notif_create_user\":\"A new employee was created by\",\"currency\":\"EGP\",\"payment_methods\":{\"cash\":\"Cash\",\"bank\":\"Bank\",\"partner_drawing\":\"Partner drawing\"},\"\":\"\"},\"evaluation\":{\"evaluation_comments\":\"ADDITIONAL COMMENTS\",\"evaluation_goals\":\"GOALS\"},\"messages\":{\"delete_msg\":\"Are you sure to delete this element?\",\"delete_success_msg\":\"The element has been deleted.\",\"delete_failed_msg\":\"The element has not been deleted.\",\"force_delete_msg\":\"Are you sure to remove this element?\",\"force_delete_success_msg\":\"The element has been removed.\",\"force_delete_failed_msg\":\"The element has not been removed.\",\"restore_msg\":\"Are you sure to restore this element?\",\"restore_success_msg\":\"The element has been restored.\",\"restore_failed_msg\":\"The element has not been restored.\",\"multi_delete_msg\":\"Are you sure to delete all checked elements?\",\"multi_delete_success_msg\":\"All elements checked as deleted.\",\"multi_delete_failed_msg\":\"Not all checked elements have been deleted.\",\"multi_force_delete_msg\":\"Are you sure to permanently remove all checked elements?\",\"multi_force_delete_success_msg\":\"All checked elements have been permanently removed.\",\"multi_force_delete_failed_msg\":\"Not all checked elements have been removed.\",\"multi_restore_msg\":\"Are you sure to restore all checked elements?\",\"multi_restore_success_msg\":\"All elements checked as restored.\",\"multi_restore_failed_msg\":\"Not all checked elements have been restored.\",\"change_lead_status_success_msg\":\"Lead status has been successfully updated\",\"change_lead_status_failed_msg\":\"Lead status was not updated\",\"change_client_status_success_msg\":\"Client status has been successfully updated\",\"change_client_status_failed_msg\":\"Client status was not updated\",\"change_meeting_status_success_msg\":\"Meeting status has been successfully updated\",\"change_meeting_status_failed_msg\":\"Meeting status was not updated\",\"reason_status\":\"Reason change status\",\"change_meeting_status_to\":\"Change Meeting status to\",\"not_found_roles\":\"Not found roles\",\"msg_not_mail_lead_registerd\":\"This client does'nt have a registered email.\"},\"suppliers\":{\"supplier\":\"Supplier\",\"fields\":{\"name\":\"Name\",\"mobile\":\"Mobile\",\"phone\":\"Phone\",\"email\":\"Email\",\"address\":\"Address\"}},\"purchase\":{\"supplier\":\"Supplier\",\"fields\":{\"ref_no\":\"Ref No\",\"purchase_date\":\"Purchase Date\",\"due_date\":\"Due Date\",\"sales_agent\":\"Sales Agent\",\"stock\":\"Upload Stock\",\"discount_type\":\"Discount Type\",\"notes\":\"Notes\",\"quantity_as_qty\":\"Qty\",\"quantity_as_hours\":\"Hours\",\"quantity_as_qty_hours\":\"Qty/Hours\",\"show_qty_as\":\"Show Quantity As\",\"before_tax\":\"Before Tax\",\"after_tax\":\"After Tax\"}},\"items\":{\"fields\":{\"name\":\"Item Name\",\"description\":\"Description\",\"price\":\"Price\",\"tax_rate\":\"Tax Rate\",\"total\":\"Total\",\"unit_cost\":\"Unit Cost\"}},\"sidebar\":{\"choose_user\":\"Choose User\",\"choose_item\":\"Choose Item\",\"choose_supplier\":\"Choose Supplier\",\"choose_tax_rate\":\"Choose Tax Rate\",\"\":\"\"}}");
 
 /***/ }),
 
@@ -72219,8 +73776,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_i18n__WEBPACK_IMPORTED_MODULE
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\laragon\www\01-Test-Permission-PMS\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\laragon\www\01-Test-Permission-PMS\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! F:\laragon\www\01-Test-Permission-PMS\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! F:\laragon\www\01-Test-Permission-PMS\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

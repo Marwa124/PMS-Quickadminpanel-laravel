@@ -1,16 +1,16 @@
 <?php
 
 return array (
-  'userManagement' => 
+  'userManagement' =>
   array (
     'title' => 'User management',
     'title_singular' => 'User management',
   ),
-  'permission' => 
+  'permission' =>
   array (
     'title' => 'Permissions',
     'title_singular' => 'Permission',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -24,11 +24,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'role' => 
+  'role' =>
   array (
     'title' => 'Roles',
     'title_singular' => 'Role',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -44,11 +44,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'user' => 
+  'user' =>
   array (
     'title' => 'Users',
     'title_singular' => 'User',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -128,16 +128,16 @@ return array (
       'vacation_verified_helper' => ' ',
     ),
   ),
-  'basicCRM' => 
+  'basicCRM' =>
   array (
     'title' => 'Basic CRM',
     'title_singular' => 'Basic CRM',
   ),
-  'crmStatus' => 
+  'crmStatus' =>
   array (
     'title' => 'Statuses',
     'title_singular' => 'Status',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -151,11 +151,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'crmCustomer' => 
+  'crmCustomer' =>
   array (
     'title' => 'Customers',
     'title_singular' => 'Customer',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -185,11 +185,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'crmNote' => 
+  'crmNote' =>
   array (
     'title' => 'Notes',
     'title_singular' => 'Note',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -211,11 +211,11 @@ return array (
       'user_helper' => ' ',
     ),
   ),
-  'crmDocument' => 
+  'crmDocument' =>
   array (
     'title' => 'Documents',
     'title_singular' => 'Document',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -235,20 +235,20 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'hr' => 
+  'hr' =>
   array (
     'title' => 'Hr',
     'title_singular' => 'Hr',
   ),
-  'evaluation' => 
+  'evaluation' =>
   array (
     'period' => 'Specify evaluation period',
   ),
-  'employee' => 
+  'employee' =>
   array (
     'title' => 'Employees',
     'title_singular' => 'Employee',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -330,16 +330,16 @@ return array (
       'vacation_verified_helper' => ' ',
     ),
   ),
-  'timeManagement' => 
+  'timeManagement' =>
   array (
     'title' => 'Time management',
     'title_singular' => 'Time management',
   ),
-  'timeWorkType' => 
+  'timeWorkType' =>
   array (
     'title' => 'Work types',
     'title_singular' => 'Work type',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -359,11 +359,11 @@ return array (
       'query_helper' => ' ',
     ),
   ),
-  'timeProject' => 
+  'timeProject' =>
   array (
     'title' => 'Projects',
     'title_singular' => 'Project',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -377,11 +377,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'timeEntry' => 
+  'timeEntry' =>
   array (
     'title' => 'Time entries',
     'title_singular' => 'Time Entry',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -401,11 +401,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'timeReport' => 
+  'timeReport' =>
   array (
     'title' => 'Monthly report',
     'title_singular' => 'Monthly report',
-    'reports' => 
+    'reports' =>
     array (
       'title' => 'Reports',
       'title_singular' => 'Report',
@@ -414,16 +414,16 @@ return array (
       'timeByWorkType' => 'Report by work type',
     ),
   ),
-  'taskManagement' => 
+  'taskManagement' =>
   array (
     'title' => 'Task management',
     'title_singular' => 'Task management',
   ),
-  'taskStatus' => 
+  'taskStatus' =>
   array (
     'title' => 'Task Statuses',
     'title_singular' => 'Task Status',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -437,11 +437,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'taskTag' => 
+  'taskTag' =>
   array (
     'title' => 'Task Tags',
     'title_singular' => 'Task Tag',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -455,11 +455,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'task' => 
+  'task' =>
   array (
     'title' => 'Tasks',
     'title_singular' => 'Task',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -527,16 +527,16 @@ return array (
       'parent_task_helper' => ' ',
     ),
   ),
-  'tasksCalendar' => 
+  'tasksCalendar' =>
   array (
     'title' => 'Calendar',
     'title_singular' => 'Calendar',
   ),
-  'userAlert' => 
+  'userAlert' =>
   array (
     'title' => 'User Alerts',
     'title_singular' => 'User Alert',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -556,11 +556,11 @@ return array (
       'model_helper' => ' ',
     ),
   ),
-  'department' => 
+  'department' =>
   array (
     'title' => 'Departments',
     'title_singular' => 'Department',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -596,11 +596,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'designation' => 
+  'designation' =>
   array (
     'title' => 'Designations',
     'title_singular' => 'Designation',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -619,12 +619,12 @@ return array (
       'designation_name_ar' => 'Name in Ar',
     ),
   ),
-  'accountDetail' => 
+  'accountDetail' =>
   array (
     'title' => 'Account Details',
     'title_singular' => 'Account Detail',
     'user_salary_error' => 'Set the user salary first',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -691,11 +691,11 @@ return array (
       'set_time_helper' => ' ',
     ),
   ),
-  'overtime' => 
+  'overtime' =>
   array (
     'title' => 'Overtime',
     'title_singular' => 'Overtime',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -717,11 +717,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'holiday' => 
+  'holiday' =>
   array (
     'title' => 'Holidays',
     'title_singular' => 'Holiday',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -743,11 +743,11 @@ return array (
       'user_helper' => ' ',
     ),
   ),
-  'training' => 
+  'training' =>
   array (
     'title' => 'Trainings',
     'title_singular' => 'Training',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -783,11 +783,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'leaveCategory' => 
+  'leaveCategory' =>
   array (
     'title' => 'Leave Categories',
     'title_singular' => 'Leave Category',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -805,11 +805,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'leaveApplication' => 
+  'leaveApplication' =>
   array (
     'title' => 'Leave Applications',
     'title_singular' => 'Leave Application',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -848,11 +848,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'meetingMinute' => 
+  'meetingMinute' =>
   array (
     'title' => 'Meeting Minutes',
     'title_singular' => 'Meeting Minute',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -880,11 +880,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'employeeAward' => 
+  'employeeAward' =>
   array (
     'title' => 'Employee Awards',
     'title_singular' => 'Employee Award',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -908,16 +908,16 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'attendance' => 
+  'attendance' =>
   array (
     'title' => 'Attendance',
     'title_singular' => 'Attendance',
   ),
-  'attendances' => 
+  'attendances' =>
   array (
     'title' => 'Attendances',
     'title_singular' => 'Attendance',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -941,16 +941,16 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'requests' => 
+  'requests' =>
   array (
     'title' => 'Requests',
     'title_singular' => 'Attendance',
   ),
-  'clientMeeting' => 
+  'clientMeeting' =>
   array (
     'title' => 'Requests',
     'title_singular' => 'Request',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -976,11 +976,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'survey' => 
+  'survey' =>
   array (
     'title' => 'Surveys',
     'title_singular' => 'Survey',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -1004,16 +1004,16 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'employees' => 
+  'employees' =>
   array (
     'title' => 'Employees',
     'title_singular' => 'Employee',
   ),
-  'dailyAttendance' => 
+  'dailyAttendance' =>
   array (
     'title' => 'Daily Attendances',
     'title_singular' => 'Daily Attendance',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -1039,11 +1039,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'monthlyAttendance' => 
+  'monthlyAttendance' =>
   array (
     'title' => 'Monthly Attendances',
     'title_singular' => 'Monthly Attendance',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -1074,16 +1074,16 @@ return array (
       'select_user' => 'Select an Employee',
     ),
   ),
-  'recruitment' => 
+  'recruitment' =>
   array (
     'title' => 'Recruitment',
     'title_singular' => 'Recruitment',
   ),
-  'jobCircular' => 
+  'jobCircular' =>
   array (
     'title' => 'Job Circulars',
     'title_singular' => 'Job Circular',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -1120,12 +1120,12 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'jobApplication' => 
+  'jobApplication' =>
   array (
     'title' => 'Job Application',
     'all_job_applications' => 'All Job Applications',
     'title_singular' => 'Job Application',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -1157,21 +1157,21 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'projectManagement' => 
+  'projectManagement' =>
   array (
     'title' => 'Project Management',
     'title_singular' => 'Project Management',
   ),
-  'sale' => 
+  'sale' =>
   array (
     'title' => 'Sales',
     'title_singular' => 'Sale',
   ),
-  'proposal' => 
+  'proposal' =>
   array (
     'title' => 'Proposals',
     'title_singular' => 'Proposal',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -1261,11 +1261,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'interestedIn' => 
+  'interestedIn' =>
   array (
     'title' => 'Interested In',
     'title_singular' => 'Interested In',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -1279,11 +1279,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'Results' => 
+  'Results' =>
   array (
     'title' => 'Results',
     'title_singular' => 'Results',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -1297,11 +1297,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'Types' => 
+  'Types' =>
   array (
     'title' => 'Types',
     'title_singular' => 'Types',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -1315,11 +1315,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'Countries_Code' => 
+  'Countries_Code' =>
   array (
     'title' => 'Countries Code',
     'title_singular' => 'CountriesCode',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -1333,11 +1333,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'leadCategory' => 
+  'leadCategory' =>
   array (
     'title' => 'Lead Categories',
     'title_singular' => 'Lead Category',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -1355,11 +1355,11 @@ return array (
       'order_no_helper' => ' ',
     ),
   ),
-  'calls' => 
+  'calls' =>
   array (
     'title' => 'Calls',
     'title_singular' => 'Call',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -1389,11 +1389,11 @@ return array (
       'order_no_helper' => ' ',
     ),
   ),
-  'leadSource' => 
+  'leadSource' =>
   array (
     'title' => 'Lead Sources',
     'title_singular' => 'Lead Source',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -1407,11 +1407,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'leadStatus' => 
+  'leadStatus' =>
   array (
     'title' => 'Lead Status',
     'title_singular' => 'Lead Status',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -1429,11 +1429,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'salutation' => 
+  'salutation' =>
   array (
     'title' => 'Salutations',
     'title_singular' => 'Salutation',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -1447,11 +1447,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'lead' => 
+  'lead' =>
   array (
     'title' => 'Leads',
     'title_singular' => 'Lead',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -1513,11 +1513,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'opportunity' => 
+  'opportunity' =>
   array (
     'title' => 'Opportunities',
     'title_singular' => 'Opportunity',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -1549,11 +1549,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'client' => 
+  'client' =>
   array (
     'title' => 'Clients',
     'title_singular' => 'Client',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -1615,11 +1615,11 @@ return array (
       'status_helper' => ' ',
     ),
   ),
-  'clientMenu' => 
+  'clientMenu' =>
   array (
     'title' => 'Client Menu',
     'title_singular' => 'Client Menu',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -1643,11 +1643,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'menu' => 
+  'menu' =>
   array (
     'title' => 'Menu',
     'title_singular' => 'Menu',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -1671,11 +1671,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'project' => 
+  'project' =>
   array (
     'title' => 'Projects',
     'title_singular' => 'Project',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -1742,11 +1742,11 @@ return array (
       'total' => 'Total',
     ),
   ),
-  'projectSetting' => 
+  'projectSetting' =>
   array (
     'title' => 'Project Settings',
     'title_singular' => 'Project Setting',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -1762,11 +1762,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'workTracking' => 
+  'workTracking' =>
   array (
     'title' => 'Work Tracking',
     'title_singular' => 'Work Tracking',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -1798,11 +1798,11 @@ return array (
       'account_helper' => ' ',
     ),
   ),
-  'account' => 
+  'account' =>
   array (
     'title' => 'Bank Accounts',
     'title_singular' => 'Bank Account',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -1822,11 +1822,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'milestone' => 
+  'milestone' =>
   array (
     'title' => 'Milestones',
     'title_singular' => 'Milestone',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -1850,11 +1850,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'bug' => 
+  'bug' =>
   array (
     'title' => 'Bugs',
     'title_singular' => 'Bug',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -1894,11 +1894,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'ticket' => 
+  'ticket' =>
   array (
     'title' => 'Tickets',
     'title_singular' => 'Ticket',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -1944,16 +1944,16 @@ return array (
       'attachments_helper' => ' ',
     ),
   ),
-  'adminstration' => 
+  'adminstration' =>
   array (
     'title' => 'Adminstration',
     'title_singular' => 'Adminstration',
   ),
-  'announcement' => 
+  'announcement' =>
   array (
     'title' => 'Announcements',
     'title_singular' => 'Announcement',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -1983,11 +1983,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'kbCategory' => 
+  'kbCategory' =>
   array (
     'title' => 'Kb Categories',
     'title_singular' => 'Kb Category',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2009,16 +2009,16 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'materialsSupplier' => 
+  'materialsSupplier' =>
   array (
     'title' => 'Materials Suppliers',
     'title_singular' => 'Materials Supplier',
   ),
-  'customerGroup' => 
+  'customerGroup' =>
   array (
     'title' => 'Customer Groups',
     'title_singular' => 'Customer Group',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2036,16 +2036,16 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'finance' => 
+  'finance' =>
   array (
     'title' => 'Finance',
     'title_singular' => 'Finance',
   ),
-  'invoice' => 
+  'invoice' =>
   array (
     'title' => 'Invoices',
     'title_singular' => 'Invoice',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2097,11 +2097,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'proposalsItem' => 
+  'proposalsItem' =>
   array (
     'title' => 'Proposals Items',
     'title_singular' => 'Proposals Item',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2151,11 +2151,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'supplier' => 
+  'supplier' =>
   array (
     'title' => 'Suppliers',
     'title_singular' => 'Supplier',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2181,11 +2181,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'purchase' => 
+  'purchase' =>
   array (
     'title' => 'Purchase',
     'title_singular' => 'Purchase',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2237,11 +2237,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'returnStock' => 
+  'returnStock' =>
   array (
     'title' => 'Return Stock',
     'title_singular' => 'Return Stock',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2293,11 +2293,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'purchasePayment' => 
+  'purchasePayment' =>
   array (
     'title' => 'Purchase Payments',
     'title_singular' => 'Purchase Payment',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2329,11 +2329,11 @@ return array (
       'transaction_helper' => ' ',
     ),
   ),
-  'paymentMethod' => 
+  'paymentMethod' =>
   array (
     'title' => 'Payment Methods',
     'title_singular' => 'Payment Method',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2347,11 +2347,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'payment' => 
+  'payment' =>
   array (
     'title' => 'Payments',
     'title_singular' => 'Payment',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2383,11 +2383,11 @@ return array (
       'transaction_helper' => ' ',
     ),
   ),
-  'transaction' => 
+  'transaction' =>
   array (
     'title' => 'Transactions',
     'title_singular' => 'Transaction',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2453,11 +2453,11 @@ return array (
       'expense_category_helper' => ' ',
     ),
   ),
-  'transfer' => 
+  'transfer' =>
   array (
     'title' => 'Transfers',
     'title_singular' => 'Transfer',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2491,11 +2491,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'employeeBank' => 
+  'employeeBank' =>
   array (
     'title' => 'Employee Bank',
     'title_singular' => 'Employee Bank',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2521,11 +2521,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'taxRate' => 
+  'taxRate' =>
   array (
     'title' => 'Tax Rates',
     'title_singular' => 'Tax Rate',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2543,16 +2543,16 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'officeAsset' => 
+  'officeAsset' =>
   array (
     'title' => 'Office Assets',
     'title_singular' => 'Office Asset',
   ),
-  'stockCategory' => 
+  'stockCategory' =>
   array (
     'title' => 'Stock Categories',
     'title_singular' => 'Stock Category',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2566,11 +2566,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'stockSubCategory' => 
+  'stockSubCategory' =>
   array (
     'title' => 'Stock Sub Categories',
     'title_singular' => 'Stock Sub Category',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2586,11 +2586,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'stock' => 
+  'stock' =>
   array (
     'title' => 'Stocks',
     'title_singular' => 'Stock',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2608,16 +2608,16 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'payroll' => 
+  'payroll' =>
   array (
     'title' => 'Payroll',
     'title_singular' => 'Payroll',
   ),
-  'advanceSalary' => 
+  'advanceSalary' =>
   array (
     'title' => 'Advance Salary',
     'title_singular' => 'Advance Salary',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2643,11 +2643,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'salaryAllowance' => 
+  'salaryAllowance' =>
   array (
     'title' => 'Salary Allowance',
     'title_singular' => 'Salary Allowance',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2665,11 +2665,11 @@ return array (
       'salary_template_helper' => ' ',
     ),
   ),
-  'salaryTemplate' => 
+  'salaryTemplate' =>
   array (
     'title' => 'Salary Scale',
     'title_singular' => 'Salary Scale',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2695,11 +2695,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'salaryDeduction' => 
+  'salaryDeduction' =>
   array (
     'title' => 'Salary Deductions',
     'title_singular' => 'Salary Deduction',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2717,11 +2717,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'salaryPayment' => 
+  'salaryPayment' =>
   array (
     'title' => 'Make Payment',
     'title_singular' => 'Make Payment',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2751,11 +2751,11 @@ return array (
       'paid_date_helper' => ' ',
     ),
   ),
-  'salaryPaymentAllowance' => 
+  'salaryPaymentAllowance' =>
   array (
     'title' => 'Salary Payment Allowance',
     'title_singular' => 'Salary Payment Allowance',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2773,11 +2773,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'salaryPaymentDeduction' => 
+  'salaryPaymentDeduction' =>
   array (
     'title' => 'Salary Payment Deductions',
     'title_singular' => 'Salary Payment Deduction',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2795,11 +2795,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'salaryPaymentDetail' => 
+  'salaryPaymentDetail' =>
   array (
     'title' => 'Employee Salary Details',
     'title_singular' => 'Employee Salary Detail',
-    'fields' => 
+    'fields' =>
     array (
       'salary_type' => 'Salary Type',
       'salary_type_helper' => ' ',
@@ -2819,11 +2819,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'salaryPayslip' => 
+  'salaryPayslip' =>
   array (
     'title' => 'Salary Payslip',
     'title_singular' => 'Salary Payslip',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2841,11 +2841,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'hourlyRate' => 
+  'hourlyRate' =>
   array (
     'title' => 'Hourly Templates',
     'title_singular' => 'Hourly Template',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2861,11 +2861,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'onlinePayment' => 
+  'onlinePayment' =>
   array (
     'title' => 'Online Payments',
     'title_singular' => 'Online Payment',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2881,16 +2881,16 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'setting' => 
+  'setting' =>
   array (
     'title' => 'Settings',
     'title_singular' => 'Setting',
   ),
-  'vacation' => 
+  'vacation' =>
   array (
     'title' => 'Vacations',
     'title_singular' => 'Vacation',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2916,11 +2916,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'setTime' => 
+  'setTime' =>
   array (
     'title' => 'Time Tables',
     'title_singular' => 'Time Table',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2942,11 +2942,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'local' => 
+  'local' =>
   array (
     'title' => 'Locals',
     'title_singular' => 'Local',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2966,11 +2966,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'file' => 
+  'file' =>
   array (
     'title' => 'Files',
     'title_singular' => 'File',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2990,11 +2990,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'taskUploadedFile' => 
+  'taskUploadedFile' =>
   array (
     'title' => 'Task Uploaded Files',
     'title_singular' => 'Task Uploaded File',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -3020,11 +3020,11 @@ return array (
       'task_attachment_helper' => ' ',
     ),
   ),
-  'taskAttachment' => 
+  'taskAttachment' =>
   array (
     'title' => 'Task Attachments',
     'title_singular' => 'Task Attachment',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -3052,11 +3052,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'penaltyCategory' => 
+  'penaltyCategory' =>
   array (
     'title' => 'Penalty Categories',
     'title_singular' => 'Penalty Category',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -3074,11 +3074,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'privateChat' => 
+  'privateChat' =>
   array (
     'title' => 'Private Chat',
     'title_singular' => 'Private Chat',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -3094,11 +3094,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'todo' => 
+  'todo' =>
   array (
     'title' => 'Todos',
     'title_singular' => 'Todo',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -3120,11 +3120,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'outgoingEmail' => 
+  'outgoingEmail' =>
   array (
     'title' => 'Outgoing Emails',
     'title_singular' => 'Outgoing Email',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -3146,11 +3146,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'performanceIndicator' => 
+  'performanceIndicator' =>
   array (
     'title' => 'Performance Indicator',
     'title_singular' => 'Performance Indicator',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -3192,11 +3192,11 @@ return array (
       'ability_to_meet_deadline_helper' => ' ',
     ),
   ),
-  'technicalCategory' => 
+  'technicalCategory' =>
   array (
     'title' => 'Technical Categories',
     'title_singular' => 'Technical Category',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -3216,11 +3216,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'quotationForm' => 
+  'quotationForm' =>
   array (
     'title' => 'Quotation Forms',
     'title_singular' => 'Quotation Form',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -3240,11 +3240,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'quotation' => 
+  'quotation' =>
   array (
     'title' => 'Quotations',
     'title_singular' => 'Quotation',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -3274,11 +3274,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'quotationDetail' => 
+  'quotationDetail' =>
   array (
     'title' => 'Quotation Details',
     'title_singular' => 'Quotation Detail',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -3292,11 +3292,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'dashboardSetting' => 
+  'dashboardSetting' =>
   array (
     'title' => 'Dashboard Settings',
     'title_singular' => 'Dashboard Setting',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -3320,16 +3320,16 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'expenseManagement' => 
+  'expenseManagement' =>
   array (
     'title' => 'Expense Management',
     'title_singular' => 'Expense Management',
   ),
-  'expenseCategory' => 
+  'expenseCategory' =>
   array (
     'title' => 'Expense Categories',
     'title_singular' => 'Expense Category',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -3343,11 +3343,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'incomeCategory' => 
+  'incomeCategory' =>
   array (
     'title' => 'Income categories',
     'title_singular' => 'Income Category',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -3361,11 +3361,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'expense' => 
+  'expense' =>
   array (
     'title' => 'Expenses',
     'title_singular' => 'Expense',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -3385,11 +3385,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'income' => 
+  'income' =>
   array (
     'title' => 'Income',
     'title_singular' => 'Income',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -3409,11 +3409,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'expenseReport' => 
+  'expenseReport' =>
   array (
     'title' => 'Monthly report',
     'title_singular' => 'Monthly report',
-    'reports' => 
+    'reports' =>
     array (
       'title' => 'Reports',
       'title_singular' => 'Report',
@@ -3425,9 +3425,9 @@ return array (
       'profit' => 'Profit',
     ),
   ),
-  'config' => 
+  'config' =>
   array (
-    'fields' => 
+    'fields' =>
     array (
       'config_company_name' => 'Company Name',
       'config_company_namehelper' => '',
@@ -3455,11 +3455,11 @@ return array (
       'config_company_zip_codehelper' => '',
     ),
   ),
-  'activities' => 
+  'activities' =>
   array (
     'title' => 'Activities',
     'title_singular' => 'activities',
-    'fields' => 
+    'fields' =>
     array (
       'time_ago_just_now' => 'Just now',
       'time_ago_minute' => 'one minute ago',
