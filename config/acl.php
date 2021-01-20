@@ -129,6 +129,12 @@
                 'payment_method_edit', // done
                 'payment_method_create', // done
                 'payment_method', // done
+                'transfer', // done
+                'transfer_create', // done
+                'transfer_edit', // done
+                'transfer_delete', // done
+                'transfer', // done
+                'transfer', // done
 
 
             ],
