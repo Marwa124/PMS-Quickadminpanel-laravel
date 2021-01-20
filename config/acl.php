@@ -134,9 +134,14 @@
                 'transfer_edit', // done
                 'transfer_delete', // done
                 'transfer', // done
-                'transfer', // done
-
-
+                'expenses_category', // done
+                'expenses_category_create', // done
+                'expenses_category_edit', // done
+                'expenses_category_delete', // done
+                'expenses', // done
+                'expenses_create', // done
+                'expenses_edit', // done
+                'expenses_delete', // done
             ],
 
             'penalty_category' => [

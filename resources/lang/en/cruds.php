@@ -8,6 +8,8 @@ return [
         'balance_sheet' => 'Balance Sheet',
         'payment_method' => 'Payment Methods',
         'transfers'      => 'Transfers',
+        'expenses_category'      => 'Expense Category',
+        'expenses'      => 'Expenses',
     ],
     'payment_method'                => [
         'title'          => 'Payment Method',
@@ -16,9 +18,17 @@ return [
             'name'  => 'Name'
         ]
     ],
+    'expenses_category'                => [
+        'title'          => 'Expense Category',
+        'title_singular' => 'Expense Category',
+        'fields' => [
+            'name'  => 'Name'
+        ]
+    ],
     'transfers'                => [
         'title'          => 'Transfers',
         'title_singular' => 'Transfers',
+        'transfers_report' => 'Transfers Report',
         'attach' => 'Attachments',
         'fields' => [
             'name'  => 'Name',
@@ -32,6 +42,29 @@ return [
             'attachments'  => 'Attachments',
             'payment_method'  => 'Payment Method',
             'select_payment_method'  => 'Select Payment Method',
+        ]
+    ],
+
+    'expenses'                => [
+        'title'          => 'Expenses',
+        'title_singular' => 'Expenses',
+        'attach' => 'Attachments',
+        'fields' => [
+            'title'  => 'Name/Title',
+            'date'  => 'Date',
+            'account_name'  => 'Account Name',
+            'amount'  => 'Amount',
+            'paid_by'  => 'Paid By',
+            'status'  => 'Status',
+            'attachment'  => 'Attachment',
+            'notes'  => 'Notes',
+            'reference'  => 'Reference',
+            'attachments'  => 'Attachments',
+            'payment_method'  => 'Payment Method',
+            'select_payment_method'  => 'Select Payment Method',
+            'expenses_category'  => 'Expenses Category',
+            'select_expense_category'  => 'Select Expense Category',
+            'select_paid'  => 'Select Paid',
         ]
     ],
 

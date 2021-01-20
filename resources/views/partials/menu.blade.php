@@ -157,13 +157,39 @@
                     @can('transfer')
                         <li class="c-sidebar-nav-item">
                             <a href="{{ route("finance.admin.transfers.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/transfers") || request()->is("admin/finance/*") ? "active" : "" }}">
-                                <i class="fa-fw fas fa-credit-card c-sidebar-nav-icon self-item-link">
+                                <i class="fa-fw fas fa-trademark c-sidebar-nav-icon self-item-link">
 
                                 </i>
                                 {{ trans('cruds.finance.transfers') }}
                             </a>
                         </li>
+                        <li class="c-sidebar-nav-item">
+                            <a href="{{ route("finance.admin.transfers_report") }}" class="c-sidebar-nav-link {{ request()->is("admin/transfers") || request()->is("admin/finance/*") ? "active" : "" }}">
+                                <i class="fa-fw fas fa-newspaper c-sidebar-nav-icon self-item-link">
+
+                                </i>
+                                {{ trans('cruds.transfers.transfers_report') }}
+                            </a>
+                        </li>
                     @endcan
+                    {{--@can('expenses')--}}
+                        <li class="c-sidebar-nav-item">
+                            <a href="{{ route("finance.admin.expenses_category.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/expenses_category") || request()->is("admin/finance/*") ? "active" : "" }}">
+                                <i class="fa-fw fas fa-bookmark c-sidebar-nav-icon self-item-link">
+
+                                </i>
+                                {{ trans('cruds.finance.expenses_category') }}
+                            </a>
+                        </li>
+                        <li class="c-sidebar-nav-item">
+                            <a href="{{ route("finance.admin.expenses.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/expenses") || request()->is("admin/finance/*") ? "active" : "" }}">
+                                <i class="fa-fw fas fa-newspaper c-sidebar-nav-icon self-item-link">
+
+                                </i>
+                                {{ trans('cruds.finance.expenses') }}
+                            </a>
+                        </li>
+                    {{--@endcan--}}
 
 
 

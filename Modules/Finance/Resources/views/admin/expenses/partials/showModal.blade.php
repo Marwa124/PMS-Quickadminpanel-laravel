@@ -1,13 +1,14 @@
-<a type="button" href="#"  data-toggle="modal" data-target="#exampleModalCenter-{{$request->id}}">
-    {{$request->from->name ?? ''}}
+<a type="button" href="#" data-toggle="modal" data-target="#exampleModalCenter-{{$request->id}}">
+    {{$request->title ?? ''}}
 </a>
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModalCenter-{{$request->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal fade" id="exampleModalCenter-{{$request->id}}" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle"> {{ $request->refrence ?? ''}}</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle"> {{ $request->title ?? ''}}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -17,23 +18,31 @@
                     <tbody>
                     <tr>
                         <th>
-                            {{ trans('cruds.transfers.fields.from_account') }}
+                            {{ trans('cruds.expenses.fields.title') }}
                         </th>
                         <td>
-                            {{ $request->from_account }}
+                            {{ $request->title }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.transfers.fields.to_account') }}
+                            {{ trans('cruds.expenses.fields.date') }}
                         </th>
                         <td>
-                            {{ $request->to_account ?? '' }}
+                            {{ $request->entry_date ?? '' }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.transfers.fields.amount') }}
+                            {{ trans('cruds.expenses.fields.account_name') }}
+                        </th>
+                        <td>
+                            {{ $request->account->name ?? '' }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            {{ trans('cruds.expenses.fields.amount') }}
                         </th>
                         <td>
                             {{ $request->amount ?? '' }}
@@ -41,23 +50,21 @@
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.transfers.fields.payment_method') }}
+                            {{ trans('cruds.expenses.fields.status') }}
                         </th>
                         <td>
-                            {{ $request->payment_method->name ?? '' }}
+                            @if($request->status == 'non_approved')
+                                <a href="{{route('finance.admin.expenses.getapproved',$request->id)}}">Non Approved</a>
+                            @elseif($request->status == 'unpaid')
+                                <a href="{{route('finance.admin.expenses.getpaid',$request->id)}}">Unpaid</a>
+                            @else
+                                {{ $request->status ?? '' }}
+                            @endif
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.transfers.fields.date') }}
-                        </th>
-                        <td>
-                            {!! $request->date !!}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.transfers.fields.notes') }}
+                            {{ trans('cruds.expenses.fields.notes') }}
                         </th>
                         <td>
                             {!! $request->notes !!}

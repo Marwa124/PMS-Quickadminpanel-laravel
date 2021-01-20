@@ -212,7 +212,6 @@ class TransfersController extends Controller
             $transfer->delete();
 
         }
-//        Transfer::whereIn('id', request('ids'))->delete();
 
         return response(null, Response::HTTP_NO_CONTENT);
     }
@@ -233,4 +232,15 @@ class TransfersController extends Controller
         return response()->json(['success'=>'File Deleted Successfully ;)']);
 
     }
+
+
+    public function report(){
+        $transfers = Transfer::all();
+        $total_balance = Transfer::sum('amount');
+        return view('finance::admin.transfers.report',compact('transfers','total_balance'));
+    }
+
+
+
+
 }
