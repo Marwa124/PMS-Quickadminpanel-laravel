@@ -269,15 +269,15 @@
 
                 <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                     <a class="nav-link active" id="v-pills-details-tab" data-toggle="pill" href="#v-pills-details" role="tab" aria-controls="v-pills-details" aria-selected="true">Project Details</a>
-                    <a class="nav-link" id="v-pills-milestones-tab" data-toggle="pill" href="#v-pills-milestones" role="tab" aria-controls="v-pills-milestones" aria-selected="false">{{ trans('cruds.milestone.title') }} <span class="float-right">{{$project->milestones()->count() > 0 ? $project->milestones()->count() : ''}}</span></a>
-                    <a class="nav-link" id="v-pills-tasks-tab" data-toggle="pill" href="#v-pills-tasks" role="tab" aria-controls="v-pills-tasks" aria-selected="false">{{ trans('cruds.task.title') }}<span class="float-right">{{$project->tasks()->count() > 0 ? $project->tasks()->count() : ''}}</span></a>
-                    <a class="nav-link" id="v-pills-bugs-tab" data-toggle="pill" href="#v-pills-bugs" role="tab" aria-controls="v-pills-bugs" aria-selected="false">{{ trans('cruds.bug.title') }}<span class="float-right">{{$project->bugs()->count() > 0 ? $project->bugs()->count() : ''}}</span></a>
-                    <a class="nav-link" id="v-pills-notes-tab" data-toggle="pill" href="#v-pills-notes" role="tab" aria-controls="v-pills-notes" aria-selected="false">{{ trans('cruds.project.fields.notes') }}</a>
-                    <a class="nav-link" id="v-pills-tickets-tab" data-toggle="pill" href="#v-pills-tickets" role="tab" aria-controls="v-pills-tickets" aria-selected="false">{{ trans('cruds.ticket.title') }}<span class="float-right">{{$project->tickets()->count() > 0 ? $project->tickets()->count() : ''}}</span></a>
-                    <a class="nav-link" id="v-pills-invoices-tab" data-toggle="pill" href="#v-pills-invoices" role="tab" aria-controls="v-pills-invoices" aria-selected="false">{{ trans('cruds.invoice.title') }}<span class="float-right">{{$project->invoices()->count() > 0 ? $project->invoices()->count() : ''}}</span></a>
-                    <a class="nav-link" id="v-pills-time_sheets-tab" data-toggle="pill" href="#v-pills-time_sheets" role="tab" aria-controls="v-pills-time_sheets" aria-selected="false">{{ trans('cruds.project.fields.time_sheet') }}<span class="float-right">{{$project->TimeSheet()->count() > 0 ? $project->TimeSheet()->count() : ''}}</span></a>
-                    <a class="nav-link" id="v-pills-calendar-tab" data-toggle="pill" href="#v-pills-calendar" role="tab" aria-controls="v-pills-calendar" aria-selected="false" onclick="generateCalendar()">{{ trans('cruds.tasksCalendar.title') }}</a>
-                    <a class="nav-link" id="v-pills-activities-tab" data-toggle="pill" href="#v-pills-activities" role="tab" aria-controls="v-pills-activities" aria-selected="false">{{ trans('cruds.activities.title') }}<span class="float-right">{{$project->activities()->count() > 0 ? $project->activities()->count() : ''}}</span></a>
+                    <a class="nav-link" id="v-pills-milestones-tab"     data-toggle="pill" href="#v-pills-milestones" role="tab" aria-controls="v-pills-milestones" aria-selected="false">{{ trans('cruds.milestone.title') }} <span class="float-right">              {{$project->milestones()->count() > 0 ? $project->milestones()->count() : ''}}</span></a>
+                    <a class="nav-link" id="v-pills-tasks-tab"          data-toggle="pill" href="#v-pills-tasks" role="tab" aria-controls="v-pills-tasks" aria-selected="false">{{ trans('cruds.task.title') }}<span class="float-right">                              {{$project->tasks()->count() > 0 ? $project->tasks()->count() : ''}}</span></a>
+                    <a class="nav-link" id="v-pills-bugs-tab"           data-toggle="pill" href="#v-pills-bugs" role="tab" aria-controls="v-pills-bugs" aria-selected="false">{{ trans('cruds.bug.title') }}<span class="float-right">                                 {{$project->bugs()->count() > 0 ? $project->bugs()->count() : ''}}</span></a>
+                    <a class="nav-link" id="v-pills-notes-tab"          data-toggle="pill" href="#v-pills-notes" role="tab" aria-controls="v-pills-notes" aria-selected="false">{{ trans('cruds.project.fields.notes') }}</a>
+                    <a class="nav-link" id="v-pills-tickets-tab"        data-toggle="pill" href="#v-pills-tickets" role="tab" aria-controls="v-pills-tickets" aria-selected="false">{{ trans('cruds.ticket.title') }}<span class="float-right">                        {{$project->tickets()->count() > 0 ? $project->tickets()->count() : ''}}</span></a>
+                    <a class="nav-link" id="v-pills-invoices-tab"       data-toggle="pill" href="#v-pills-invoices" role="tab" aria-controls="v-pills-invoices" aria-selected="false">{{ trans('cruds.invoice.title') }}<span class="float-right">                     {{$project->invoices()->count() > 0 ? $project->invoices()->count() : ''}}</span></a>
+                    <a class="nav-link" id="v-pills-time_sheets-tab"    data-toggle="pill" href="#v-pills-time_sheets" role="tab" aria-controls="v-pills-time_sheets" aria-selected="false">{{ trans('cruds.project.fields.time_sheet') }}<span class="float-right">   {{$project->TimeSheet()->count() > 0 ? $project->TimeSheet()->count() : ''}}</span></a>
+                    <a class="nav-link" id="v-pills-calendar-tab"       data-toggle="pill" href="#v-pills-calendar" role="tab" aria-controls="v-pills-calendar" aria-selected="false" onclick="generateCalendar()">{{ trans('cruds.tasksCalendar.title') }}</a>
+                    <a class="nav-link" id="v-pills-activities-tab"     data-toggle="pill" href="#v-pills-activities" role="tab" aria-controls="v-pills-activities" aria-selected="false">{{ trans('cruds.activities.title') }}<span class="float-right">              {{$project->activities()->count() > 0 ? $project->activities()->count() : ''}}</span></a>
 {{--                    <a class="nav-link" id="v-pills-comments-tab" data-toggle="pill" href="#v-pills-comments" role="tab" aria-controls="v-pills-comments" aria-selected="false">Comments</a>--}}
                 </div>
             </div>
@@ -299,20 +299,20 @@
 
                                     <div class="pl-1 ">
 
-                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.name') }} :</p> <span class="col-md-6">{{ $project->name ?? ''  }}</span> </div>
-                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.client') }} : </p><span class="col-md-6">{{ $project->client->name ?? '' }}</span> </div>
-                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.start_date') }} :</p> <span class="col-md-6">{{ $project->start_date ?? '' }}</span> </div>
-                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.end_date') }} :</p> <span class="col-md-6">{{ $project->end_date ?? '' }}</span> </div>
-                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.demo_url') }} :</p> <span class="col-md-6">{{ $project->demo_url ?? '' }}</span> </div>
-                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.project_status') }} : </p><span class="col-md-6">{{ ucwords(str_replace('_',' ',$project->project_status ?? '' )) }}</span> </div>
+                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.name') }}            :</p> <span class="col-md-6">{{ $project->name ?? ''  }}</span> </div>
+                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.client') }}          : </p><span class="col-md-6">{{ $project->client->name ?? '' }}</span> </div>
+                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.start_date') }}      :</p> <span class="col-md-6">{{ $project->start_date ?? '' }}</span> </div>
+                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.end_date') }}        :</p> <span class="col-md-6">{{ $project->end_date ?? '' }}</span> </div>
+                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.demo_url') }}        :</p> <span class="col-md-6">{{ $project->demo_url ?? '' }}</span> </div>
+                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.project_status') }}  : </p><span class="col-md-6">{{ ucwords(str_replace('_',' ',$project->project_status ?? '' )) }}</span> </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-4 border-right ">
                                     <div class=" pl-1">
                                         @if($project->TimeSheetOn->first())
-                                            <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.timer_status') }} :</p> <span class="col-md-6"><a class="btn-sm {{$project->TimeSheetOn->first()->timer_status == 'on' ? 'btn-success' : 'btn-danger'}}" style="color: #ffffff">{{ ucfirst($project->TimeSheetOn->first()->timer_status)}}</a> <a href="{{route('projectmanagement.admin.projects.update_project_timer',$project->id)}}" class="btn btn-sm {{$project->TimeSheetOn->first()->timer_status == 'on' ? 'btn-danger' : 'btn-success'}}">{{$project->TimeSheetOn->first()->timer_status == 'on' ? trans('cruds.project.fields.stop_time') : trans('cruds.project.fields.start_time')}}</a></span> </div>
+                                            <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.timer_status') }} :</p> <span class="col-md-6"><a class="btn-sm {{$project->TimeSheetOn->first()->timer_status == 'on' ? 'btn-success' : 'btn-danger'}}" style="color: #ffffff">{{trans('global.on')}}</a> <a href="{{route('projectmanagement.admin.projects.update_project_timer',$project->id)}}" class="btn btn-sm {{$project->TimeSheetOn->first()->timer_status == 'on' ? 'btn-danger' : 'btn-success'}}">{{$project->TimeSheetOn->first()->timer_status == 'on' ? trans('cruds.project.fields.stop_time') : trans('cruds.project.fields.start_time')}}</a></span> </div>
                                         @else
-                                            <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.timer_status') }} :</p> <span class="col-md-6"><a class="btn-sm btn-danger" style="color: #ffffff">Off</a> <a href="{{route('projectmanagement.admin.projects.update_project_timer',$project->id)}}" class="btn btn-sm btn-success"> {{trans('cruds.project.fields.start_time')}}</a></span> </div>
+                                            <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.timer_status') }} :</p> <span class="col-md-6"><a class="btn-sm btn-danger" style="color: #ffffff">{{trans('global.off')}}</a> <a href="{{route('projectmanagement.admin.projects.update_project_timer',$project->id)}}" class="btn btn-sm btn-success"> {{trans('cruds.project.fields.start_time')}}</a></span> </div>
                                         @endif
                                         <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.estimate_hours') }} :</p> <span class="col-md-6">{{ $project->estimate_hours ? $project->estimate_hours.' Hour' : '' }} </span> </div>
                                         <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.department.title_singular') }} {{ trans('cruds.project.fields.name') }} :</p> <span class="col-md-6">{{ $project->department->department_name ?? '' }}</span> </div>
@@ -322,25 +322,31 @@
                                                     @forelse($project->accountDetails as $account)
                                                         <img class="img-thumbnail rounded-circle" title="{{ $account->fullname }}" width="30%" src="{{ $account->avatar ? str_replace('storage', 'storage', $account->avatar->getUrl()) : asset('images/default.png') }}" alt="{{ $account->fullname }}">
                                                     @empty
-                                                        {{ucwords('not assign to anyone')}}
+                                                        {{trans('cruds.messages.not_assign_anyone')}}
                                                     @endforelse
                                                 @else
-                                                    {{ucwords('not assign to anyone')}}
+                                                    {{trans('cruds.messages.not_assign_anyone')}}
                                                 @endif
                                             </span> </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-4  ">
                                     <div class=" pl-1">
-                                        <div class="row"> <p class="font-bold col-md-8">Total Expense :</p> <span class="col-md-4"> {{$total_expense ? $total_expense.' EGP': '' }} </span> </div>
-                                        <div class="row"> <p class="font-bold col-md-8">Billable Expense :</p> <span class="col-md-4"> {{$billable_expense ? $billable_expense.' EGP': '' }} </span> </div>
-                                        <div class="row"> <p class="font-bold col-md-8">Non Billable Expense :</p> <span class="col-md-4"> {{$not_billable_expense ? $not_billable_expense.' EGP': '' }} </span> </div>
-                                        <div class="row"> <p class="font-bold col-md-8">Billed Expense :</p> <span class="col-md-4"> {{$paid_expense ? $paid_expense.' EGP': '' }} </span> </div>
-                                        <div class="row"> <p class="font-bold col-md-8">Unbilled Expense :</p> <span class="col-md-4"> {{($billable_expense - $paid_expense) ? ($billable_expense - $paid_expense).' EGP': '' }} </span> </div>
+                                        <div class="row"> <p class="font-bold col-md-8"> {{trans('cruds.project.fields.total_expense')}}        :</p> <span class="col-md-4"> {{$total_expense ? $total_expense.' EGP': '' }} </span> </div>
+                                        <div class="row"> <p class="font-bold col-md-8"> {{trans('cruds.project.fields.billable_expense')}}     :</p> <span class="col-md-4"> {{$billable_expense ? $billable_expense.' EGP': '' }} </span> </div>
+                                        <div class="row"> <p class="font-bold col-md-8"> {{trans('cruds.project.fields.non_billable_expense')}} :</p> <span class="col-md-4"> {{$not_billable_expense ? $not_billable_expense.' EGP': '' }} </span> </div>
+                                        <div class="row"> <p class="font-bold col-md-8"> {{trans('cruds.project.fields.billed_expense')}}       :</p> <span class="col-md-4"> {{$paid_expense ? $paid_expense.' EGP': '' }} </span> </div>
+                                        <div class="row"> <p class="font-bold col-md-8"> {{trans('cruds.project.fields.unbilled_expense')}}     :</p> <span class="col-md-4"> {{($billable_expense - $paid_expense) ? ($billable_expense - $paid_expense).' EGP': '' }} </span> </div>
 
-                                        <h3 class="row"> <p class="font-bold col-md-6">Total Bill :</p> <span class="col-md-6">  {{$project->project_cost ? $project->project_cost.' EGP': '' }} </span> </h3>
+                                        <h3 class="row"> <p class="font-bold col-md-6"> {{trans('cruds.project.fields.total_bill')}}            :</p> <span class="col-md-6"> {{$project->project_cost ? $project->project_cost.' EGP': '' }} </span> </h3>
 
                                     </div>
+                                </div>
+
+                            </div>
+                            <div class="progress" style="width: auto" >
+                                <div class="progress-bar {{$project->calculate_progress >= 50 ? 'bg-success' : 'bg-danger'}}" role="progressbar" style="width: {{$project->calculate_progress}}%; " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                                    {{$project->calculate_progress}}%
                                 </div>
                             </div>
                         </div>
@@ -413,7 +419,6 @@
                                                             <td>
                                                                 @can('milestone_edit')
                                                                     <a class="btn btn-xs btn-info" href="{{ route('projectmanagement.admin.milestones.edit', $milestone->id) }}">
-                                                                        {{--                                        {{ trans('global.edit') }}--}}
                                                                         <span class="fa fa-pencil-square-o"></span>
                                                                     </a>
                                                                 @endcan
@@ -440,14 +445,14 @@
                                                 @empty
                                                     <tr>
                                                         <td colspan="6" >
-                                                                  No Milestone Found In This Project
+                                                                  {{trans('cruds.messages.no_milestones_found_in_project')}}
                                                         </td>
                                                     </tr>
                                                 @endforelse
                                             @else
                                                 <tr>
                                                     <td colspan="6" >
-                                                        No Milestone Found In This Project
+                                                        {{trans('cruds.messages.no_milestones_found_in_project')}}
                                                     </td>
                                                 </tr>
                                             @endif
@@ -524,7 +529,7 @@
                                                             </div>
                                                         </td>
                                                         <td>
-                                                            {{ $task->status->name ?? '' }}
+                                                            {{ $task->status ?? '' }}
                                                         </td>
                                                         <td>
                                                             {{ $task->start_date ?? '' }}
@@ -547,7 +552,7 @@
 
                                                                 @can('task_assign_to')
 
-                                                                    <a class="btn btn-xs btn-success {{$task->project->department ? '' : 'disabled'}}" href="{{ route('projectmanagement.admin.tasks.getAssignTo', $task->id) }}" title="{{$task->project->department ? '' : 'add department to project'}}" >
+                                                                    <a class="btn btn-xs btn-success {{$task->project->department ? '' : 'disabled'}}" href="{{ route('projectmanagement.admin.tasks.getAssignTo', $task->id) }}" title="{{$task->project->department ? '' : trans('cruds.messages.add_department_to_project')}}" >
                                                                         {{ trans('global.assign_to') }}
                                                                     </a>
 
@@ -567,15 +572,15 @@
                                                     </tr>
                                                 @empty
                                                     <tr>
-                                                        <td colspan="11" >
-                                                            No Tasks Found In This Project
+                                                        <td colspan="7" >
+                                                            {{trans('cruds.messages.no_tasks_found_in_project')}}
                                                         </td>
                                                     </tr>
                                                 @endforelse
                                             @else
                                                 <tr>
-                                                    <td colspan="11" >
-                                                        No Tasks Found In This Project
+                                                    <td colspan="7" >
+                                                        {{trans('cruds.messages.no_tasks_found_in_project')}}
                                                     </td>
                                                 </tr>
                                             @endif
@@ -606,34 +611,34 @@
                                     <div class="table-responsive">
                                         <table class=" table table-bordered table-striped table-hover datatable datatable-Bug">
                                             <thead>
-                                            <tr>
-                                                <th >
-                                                    {{ trans('cruds.bug.fields.id') }}
-                                                </th>
-                                                <th>
-                                                    {{ trans('cruds.bug.title_singular') }} {{ trans('cruds.bug.fields.name') }}
-                                                </th>
-                                                <th>
-                                                    {{ trans('cruds.bug.fields.project') }}
-                                                </th>
-                                                <th>
-                                                    {{ trans('cruds.bug.title_singular') }} {{ trans('cruds.bug.fields.status') }}
-                                                </th>
-                                                <th>
-                                                    {{ trans('cruds.bug.fields.priority') }}
-                                                </th>
-                                                <th>
-                                                    {{ trans('cruds.bug.fields.severity') }}
-                                                </th>
-                                                <th>
-                                                    {{ trans('cruds.bug.fields.reporter') }}
-                                                </th>
-                                                @canany(['bug_edit' , 'bug_assign_to' , 'bug_delete'])
-                                                    <th>
-                                                        &nbsp;
+                                                <tr>
+                                                    <th >
+                                                        {{ trans('cruds.bug.fields.id') }}
                                                     </th>
-                                                @endcanany
-                                            </tr>
+                                                    <th>
+                                                        {{ trans('cruds.bug.title_singular') }} {{ trans('cruds.bug.fields.name') }}
+                                                    </th>
+                                                    <th>
+                                                        {{ trans('cruds.bug.fields.project') }}
+                                                    </th>
+                                                    <th>
+                                                        {{ trans('cruds.bug.title_singular') }} {{ trans('cruds.bug.fields.status') }}
+                                                    </th>
+                                                    <th>
+                                                        {{ trans('cruds.bug.fields.priority') }}
+                                                    </th>
+                                                    <th>
+                                                        {{ trans('cruds.bug.fields.severity') }}
+                                                    </th>
+                                                    <th>
+                                                        {{ trans('cruds.bug.fields.reporter') }}
+                                                    </th>
+                                                    @canany(['bug_edit' , 'bug_assign_to' , 'bug_delete'])
+                                                        <th>
+                                                            &nbsp;
+                                                        </th>
+                                                    @endcanany
+                                                </tr>
                                             </thead>
                                             <tbody>
                                                 @if($project->bugs)
@@ -664,38 +669,38 @@
                                                             </td>
                                                             @canany(['bug_edit' , 'bug_assign_to' , 'bug_delete'])
                                                                 <td>
-                                                                @can('bug_edit')
-                                                                    <a class="btn btn-xs btn-info" href="{{ route('projectmanagement.admin.bugs.edit', $bug->id) }}">
-                                                                        <span class="fa fa-pencil-square-o"></span>
-                                                                    </a>
-                                                                @endcan
-                                                                @can('bug_assign_to')
+                                                                    @can('bug_edit')
+                                                                        <a class="btn btn-xs btn-info" href="{{ route('projectmanagement.admin.bugs.edit', $bug->id) }}">
+                                                                            <span class="fa fa-pencil-square-o"></span>
+                                                                        </a>
+                                                                    @endcan
+                                                                    @can('bug_assign_to')
 
-                                                                    <a class="btn btn-xs btn-success {{$bug->project->department ? '' : 'disabled'}}" href="{{ route('projectmanagement.admin.bugs.getAssignTo', $bug->id) }}" title="{{$bug->project->department ? '' : 'add department to project'}}" >
-                                                                        {{ trans('global.assign_to') }}
-                                                                    </a>
+                                                                        <a class="btn btn-xs btn-success {{$bug->project->department ? '' : 'disabled'}}" href="{{ route('projectmanagement.admin.bugs.getAssignTo', $bug->id) }}" title="{{$bug->project->department ? '' :  trans('cruds.messages.add_department_to_project') }}" >
+                                                                            {{ trans('global.assign_to') }}
+                                                                        </a>
 
-                                                                @endcan
-                                                                @can('bug_delete')
-                                                                    <form action="{{ route('projectmanagement.admin.bugs.destroy', $bug->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
-                                                                        <input type="hidden" name="_method" value="DELETE">
-                                                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                                        <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
-                                                                    </form>
-                                                                @endcan
+                                                                    @endcan
+                                                                    @can('bug_delete')
+                                                                        <form action="{{ route('projectmanagement.admin.bugs.destroy', $bug->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                                                            <input type="hidden" name="_method" value="DELETE">
+                                                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                                            <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
+                                                                        </form>
+                                                                    @endcan
 
-                                                            </td>
+                                                                </td>
                                                             @endcanany
 
                                                         </tr>
                                                     @empty
                                                         <tr>
-                                                            <td colspan="8"> No bug  Found In This Project</td>
+                                                            <td colspan="8"> {{trans('cruds.messages.no_bugs_found_in_project')}}</td>
                                                         </tr>
                                                     @endforelse
                                                 @else
                                                     <tr>
-                                                        <td colspan="8"> No bug  Found In This Project</td>
+                                                        <td colspan="8"> {{trans('cruds.messages.no_bugs_found_in_project')}}</td>
                                                     </tr>
                                                 @endif
                                             </tbody>
@@ -752,28 +757,28 @@
                                     <div class="table-responsive">
                                         <table class=" table table-bordered table-striped table-hover datatable datatable-Ticket">
                                             <thead>
-                                            <tr>
-                                                <th>
-                                                    {{ trans('cruds.ticket.fields.id') }}
-                                                </th>
-                                                <th>
-                                                    {{ trans('cruds.ticket.fields.ticket_code') }}
-                                                </th>
-                                                <th>
-                                                    {{ trans('cruds.ticket.fields.subject') }}
-                                                </th>
-                                                <th>
-                                                    {{ trans('cruds.ticket.fields.project') }}
-                                                </th>
-                                                <th>
-                                                    {{ trans('cruds.ticket.fields.status') }}
-                                                </th>
-                                                @canany(['ticket_show' , 'ticket_edit' , 'ticket_delete'])
+                                                <tr>
                                                     <th>
-                                                        &nbsp;
+                                                        {{ trans('cruds.ticket.fields.id') }}
                                                     </th>
-                                                @endcanany
-                                            </tr>
+                                                    <th>
+                                                        {{ trans('cruds.ticket.fields.ticket_code') }}
+                                                    </th>
+                                                    <th>
+                                                        {{ trans('cruds.ticket.fields.subject') }}
+                                                    </th>
+                                                    <th>
+                                                        {{ trans('cruds.ticket.fields.project') }}
+                                                    </th>
+                                                    <th>
+                                                        {{ trans('cruds.ticket.fields.status') }}
+                                                    </th>
+                                                    @canany(['ticket_show' , 'ticket_edit' , 'ticket_delete'])
+                                                        <th>
+                                                            &nbsp;
+                                                        </th>
+                                                    @endcanany
+                                                </tr>
                                             </thead>
                                             <tbody>
                                                 @if($project->tickets)
@@ -801,7 +806,6 @@
                                                                 <td>
                                                                     @can('ticket_show')
                                                                         <a class="btn btn-xs btn-primary" href="{{ route('projectmanagement.admin.tickets.show', $ticket->id) }}">
-
                                                                             <span class="fa fa-eye"></span>
                                                                         </a>
                                                                     @endcan
@@ -809,7 +813,6 @@
                                                                     @can('ticket_edit')
                                                                         <a class="btn btn-xs btn-info" href="{{ route('projectmanagement.admin.tickets.edit', $ticket->id) }}">
                                                                             <span class="fa fa-pencil-square-o"></span>
-
                                                                         </a>
                                                                     @endcan
 
@@ -827,12 +830,12 @@
                                                         </tr>
                                                     @empty
                                                         <tr>
-                                                            <td colspan="6"> No Tickets Found In This Project</td>
+                                                            <td colspan="6"> {{trans('cruds.messages.no_tickets_found_in_project')}}</td>
                                                         </tr>
                                                     @endforelse
                                                 @else
                                                     <tr>
-                                                        <td colspan="6"> No Tickets Found In This Project</td>
+                                                        <td colspan="6"> {{trans('cruds.messages.no_tickets_found_in_project')}}</td>
                                                     </tr>
                                                 @endif
                                             </tbody>
@@ -953,7 +956,7 @@
                                                     @endforeach
                                                 @else
                                                     <tr>
-                                                        <td colspan="9"> No Invoices Found In This Project</td>
+                                                        <td colspan="9"> {{trans('cruds.messages.no_invoices_found_in_project')}}</td>
                                                     </tr>
                                                 @endif
                                             </tbody>
@@ -984,31 +987,31 @@
                                     <div class="table-responsive">
                                         <table class=" table table-bordered table-striped table-hover datatable datatable-TimeSheet">
                                             <thead>
-                                            <tr>
-                                                <th>
-                                                    {{ trans('cruds.project.fields.id') }}
-                                                </th>
-                                                <th width="100">
-                                                    {{ trans('cruds.user.title_singular') }}
-                                                </th>
-                                                <th>
-                                                    {{ trans('cruds.project.fields.start_time') }}
-                                                </th>
-                                                <th>
-                                                    {{ trans('cruds.project.fields.stop_time') }}
-                                                </th>
-                                                <th>
-                                                    {{ trans('cruds.project.title_singular') }}
-                                                </th>
-                                                <th>
-                                                    {{ trans('cruds.project.fields.time_spend') }}
-                                                </th>
-                                                @canany(['time_sheet_edit','time_sheet_delete'])
+                                                <tr>
                                                     <th>
-                                                        &nbsp;
+                                                        {{ trans('cruds.project.fields.id') }}
                                                     </th>
-                                                @endcanany
-                                            </tr>
+                                                    <th width="100">
+                                                        {{ trans('cruds.user.title_singular') }}
+                                                    </th>
+                                                    <th>
+                                                        {{ trans('cruds.project.fields.start_time') }}
+                                                    </th>
+                                                    <th>
+                                                        {{ trans('cruds.project.fields.stop_time') }}
+                                                    </th>
+                                                    <th>
+                                                        {{ trans('cruds.project.title_singular') }}
+                                                    </th>
+                                                    <th>
+                                                        {{ trans('cruds.project.fields.time_spend') }}
+                                                    </th>
+                                                    @canany(['time_sheet_edit','time_sheet_delete'])
+                                                        <th>
+                                                            &nbsp;
+                                                        </th>
+                                                    @endcanany
+                                                </tr>
                                             </thead>
                                             <tbody>
                                                 @if($project->TimeSheet)
@@ -1051,7 +1054,7 @@
                                                                 <td>
                                                                     @can('time_sheet_edit')
                                                                         <input type="hidden" name="timesheets" id="timesheets" value="{{$project->TimeSheet}}">
-                                                                        <a class="btn btn-xs btn-info tablinks"  onclick="showEditTime(event, '{{$timer->id}}')" data-id="{{$timer->id}}"  id="edit_timesheet" >
+                                                                        <a class="btn btn-xs btn-info tablinks"  onclick="showEditTime('{{$timer->id}}')" data-id="{{$timer->id}}"  id="edit_timesheet" title=" {{ trans('global.edit') }}">
                                                                             <span class="fa fa-pencil-square-o"></span>
                                                                         </a>
                                                                     @endcan
@@ -1070,12 +1073,12 @@
                                                         </tr>
                                                     @empty
                                                         <tr>
-                                                            <td colspan="7"> No Time Sheet Found In This Project</td>
+                                                            <td colspan="7"> {{trans('cruds.messages.no_time_sheet_found_in_project')}}</td>
                                                         </tr>
                                                     @endforelse
                                                 @else
                                                     <tr>
-                                                        <td colspan="7"> No Time Sheet Found In This Project</td>
+                                                        <td colspan="7"> {{trans('cruds.messages.no_time_sheet_found_in_project')}} </td>
                                                     </tr>
                                                 @endif
                                             </tbody>
@@ -1409,7 +1412,7 @@
         }
 
 
-        function showEditTime(evt, timer_id) {
+        function showEditTime(timer_id) {
             var i, tabcontent, tablinks;
             tabcontent = document.getElementById("v-pills-time_sheet-tab");
 

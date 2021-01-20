@@ -67,7 +67,7 @@ class ProjectsController extends Controller
     {
         abort_if(Gate::denies('project_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $clients = Client::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $clients = Client::all()->pluck('name', 'id');
 
         $departments = Department::all();
 
@@ -91,7 +91,7 @@ class ProjectsController extends Controller
     {
         abort_if(Gate::denies('project_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $clients = Client::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $clients = Client::all()->pluck('name', 'id');
 
         $project->load('client','department');
 

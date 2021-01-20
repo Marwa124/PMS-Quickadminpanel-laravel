@@ -41,7 +41,8 @@ class Task extends Model implements HasMedia
     protected $fillable = [
         'name',
         'description',
-        'status_id',
+        //'status_id',
+        'status',
         'start_date',
         'due_date',
         'assigned_to_id',
@@ -80,10 +81,10 @@ class Task extends Model implements HasMedia
         $this->addMediaConversion('preview')->fit('crop', 120, 120);
     }
 
-    public function status()
-    {
-        return $this->belongsTo(TaskStatus::class, 'status_id');
-    }
+//    public function status()
+//    {
+//        return $this->belongsTo(TaskStatus::class, 'status_id');
+//    }
 
     public function tags()
     {

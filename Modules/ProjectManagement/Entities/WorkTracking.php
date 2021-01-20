@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace Modules\ProjectManagement\Entities;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -23,6 +23,7 @@ class WorkTracking extends Model
 
     protected $fillable = [
         'work_type_id',
+        'subject',
         'achievement',
         'start_date',
         'end_date',
@@ -66,13 +67,13 @@ class WorkTracking extends Model
         $this->attributes['end_date'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
     }
 
-    public function permissions()
-    {
-        return $this->belongsToMany(Permission::class);
-    }
-
-    public function account()
-    {
-        return $this->belongsTo(Account::class, 'account_id');
-    }
+//    public function permissions()
+//    {
+//        return $this->belongsToMany(Permission::class);
+//    }
+//
+//    public function account()
+//    {
+//        return $this->belongsTo(Account::class, 'account_id');
+//    }
 }

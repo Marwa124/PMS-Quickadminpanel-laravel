@@ -294,10 +294,10 @@
                                                     @forelse($bug->accountDetails as $account)
                                                         <img class="img-thumbnail rounded-circle" title="{{ $account->fullname ?? ''  }}" width="30%" src="{{ $account->avatar ? str_replace('storage', 'storage', $account->avatar->getUrl()) : asset('images/default.png') }}" alt="{{ $account->fullname ?? ''  }}">
                                                     @empty
-                                                        {{ucwords('not assign to anyone')}}
+                                                        {{trans('not_assign_anyone')}}
                                                     @endforelse
                                                 @else
-                                                    {{ucwords('not assign to anyone')}}
+                                                    {{trans('not_assign_anyone')}}
                                                 @endif
                                             </span> </div>
 

@@ -297,15 +297,15 @@
                                         <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.milestone.title') }} {{ trans('cruds.milestone.fields.name') }} : </p><span class="col-md-6">{{ $task->milestone->name ?? '' }}</span> </div>
                                         <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.task.fields.start_date') }} :</p> <span class="col-md-6">{{ $task->start_date ?? '' }}</span> </div>
                                         <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.task.fields.due_date') }} :</p> <span class="col-md-6">{{ $task->due_date ?? '' }}</span> </div>
-                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.task.fields.status') }} : </p><span class="col-md-6">{{ $task->status->name ?? '' }}</span> </div>
+                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.task.fields.status') }} : </p><span class="col-md-6">{{ $task->status ?? '' }}</span> </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-4 border-right ">
                                     <div class=" pl-1">
                                         @if($task->TimeSheetOn->first())
-                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.timer_status') }} :</p> <span class="col-md-6"><a class="btn-sm {{$task->TimeSheetOn->first()->timer_status == 'on' ? 'btn-success' : 'btn-danger'}}" style="color: #ffffff">{{ ucfirst($task->TimeSheetOn->first()->timer_status)}}</a> <a href="{{route('projectmanagement.admin.tasks.update_task_timer',$task->id)}}" class="btn btn-sm {{$task->TimeSheetOn->first()->timer_status == 'on' ? 'btn-danger' : 'btn-success'}}">{{$task->TimeSheetOn->first()->timer_status == 'on' ? trans('cruds.project.fields.stop_time') : trans('cruds.project.fields.start_time')}}</a></span> </div>
+                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.timer_status') }} :</p> <span class="col-md-6"><a class="btn-sm {{$task->TimeSheetOn->first()->timer_status == 'on' ? 'btn-success' : 'btn-danger'}}" style="color: #ffffff">{{trans('global.on')}}</a> <a href="{{route('projectmanagement.admin.tasks.update_task_timer',$task->id)}}" class="btn btn-sm {{$task->TimeSheetOn->first()->timer_status == 'on' ? 'btn-danger' : 'btn-success'}}">{{$task->TimeSheetOn->first()->timer_status == 'on' ? trans('cruds.project.fields.stop_time') : trans('cruds.project.fields.start_time')}}</a></span> </div>
                                         @else
-                                            <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.timer_status') }} :</p> <span class="col-md-6"><a class="btn-sm btn-danger" style="color: #ffffff">Off</a> <a href="{{route('projectmanagement.admin.tasks.update_task_timer',$task->id)}}" class="btn btn-sm btn-success"> {{trans('cruds.project.fields.start_time')}}</a></span> </div>
+                                            <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.timer_status') }} :</p> <span class="col-md-6"><a class="btn-sm btn-danger" style="color: #ffffff">{{trans('global.off')}}</a> <a href="{{route('projectmanagement.admin.tasks.update_task_timer',$task->id)}}" class="btn btn-sm btn-success"> {{trans('cruds.project.fields.start_time')}}</a></span> </div>
                                         @endif
                                         <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.task.fields.task_hours') }} :</p> <span class="col-md-6">{{ $task->task_hours ?? ''  }}</span> </div>
                                         <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.task.fields.created_by') }} :</p> <span class="col-md-6">{{ $task->createBy->name ?? ''  }}</span> </div>
@@ -316,7 +316,7 @@
                                                     @forelse($task->tags as $key => $tag)
                                                         <span class="label label-info">{{ $tag->name ? $tag->name.',' :'' }}</span>
                                                     @empty
-                                                        Not Found Tags To This Task
+                                                        {{trans('cruds.messages.no_tags_found_in_task')}}
                                                     @endforelse
                                                 @endif
                                             </span>
@@ -333,7 +333,7 @@
                                                         {{ trans('global.view_file') }}
                                                     </a>
                                                 @else
-                                                    {{ucwords('No Attachment To Task')}}
+                                                    {{trans('cruds.messages.no_attachment_found_in_task')}}
                                                 @endif
                                             </span>
                                         </div>
@@ -344,10 +344,10 @@
                                                     @forelse($task->accountDetails as $account)
                                                         <img class="img-thumbnail rounded-circle" title="{{ $account->fullname ?? ''  }}" width="30%" src="{{ $account->avatar ? str_replace('storage', 'storage', $account->avatar->getUrl()) : asset('images/default.png') }}" alt="{{ $account->fullname ?? ''  }}">
                                                     @empty
-                                                        {{ucwords('not assign to anyone')}}
+                                                        {{trans('cruds.messages.not_assign_anyone')}}
                                                     @endforelse
                                                 @else
-                                                    {{ucwords('not assign to anyone')}}
+                                                    {{trans('cruds.messages.not_assign_anyone')}}
                                                 @endif
                                             </span>
                                         </div>
@@ -425,7 +425,7 @@
                                                             </div>
                                                         </td>
                                                         <td>
-                                                            {{ ucwords($v_task->status->name ?? '') }}
+                                                            {{ ucwords($v_task->status ?? '') }}
                                                         </td>
                                                         <td>
                                                             {{ $v_task->start_date ?? '' }}
@@ -449,7 +449,7 @@
 
                                                                 @can('task_assign_to')
 
-                                                                    <a class="btn btn-xs btn-success {{$v_task->project->department ? '' : 'disabled'}}" href="{{ route('projectmanagement.admin.tasks.getAssignTo', $v_task->id) }}" title="{{$v_task->project->department ? '' : 'add department to project'}}"  >
+                                                                    <a class="btn btn-xs btn-success {{$v_task->project->department ? '' : 'disabled'}}" href="{{ route('projectmanagement.admin.tasks.getAssignTo', $v_task->id) }}" title="{{$v_task->project->department ? '' : trans('cruds.messages.add_department_to_project')}}"  >
                                                                         {{ trans('global.assign_to') }}
                                                                     </a>
 
@@ -469,15 +469,15 @@
                                                     </tr>
                                                 @empty
                                                     <tr>
-                                                        <td colspan="10">
-                                                            No Sub Tasks Found In This Tasks
+                                                        <td colspan="7">
+                                                            {{trans('cruds.messages.no_sub_tasks_found_in_task')}}
                                                         </td>
                                                     </tr>
                                                 @endforelse
                                             @else
                                                 <tr>
-                                                    <td colspan="10" >
-                                                        No Sub Tasks Found In This Tasks
+                                                    <td colspan="7" >
+                                                        {{trans('cruds.messages.no_sub_tasks_found_in_task')}}
                                                     </td>
                                                 </tr>
                                             @endif
@@ -744,12 +744,16 @@
                                                     </tr>
                                                 @empty
                                                     <tr>
-                                                        <td colspan="7"> No Time Sheet Found In This Project</td>
+                                                        <td colspan="7">
+                                                            {{trans('cruds.messages.no_time_sheet_found_in_task')}}
+                                                        </td>
                                                     </tr>
                                                 @endforelse
                                             @else
                                                 <tr>
-                                                    <td colspan="7"> No Time Sheet Found In This Project</td>
+                                                    <td colspan="7">
+                                                        {{trans('cruds.messages.no_time_sheet_found_in_task')}}
+                                                    </td>
                                                 </tr>
                                             @endif
                                             </tbody>

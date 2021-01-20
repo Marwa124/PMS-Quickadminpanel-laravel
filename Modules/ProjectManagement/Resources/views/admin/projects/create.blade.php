@@ -122,6 +122,7 @@
                 <div class="form-group">
                     <label for="client_id">{{ trans('cruds.project.fields.client') }}</label>
                     <select class="form-control select2 {{ $errors->has('client') ? 'is-invalid' : '' }}" name="client_id" id="client_id">
+                        <option value="" selected disabled>{{trans('global.pleaseSelect')}}</option>
                         @foreach($clients as $id => $client)
                             <option value="{{ $id }}" {{ old('client_id') == $id ? 'selected' : '' }}>{{ $client }}</option>
                         @endforeach
@@ -201,12 +202,13 @@
                 <div class="form-group">
                     <label for="project_status">{{ trans('cruds.project.fields.project_status') }}</label>
                     <select name="project_status" id="project_status" class="form-control {{ $errors->has('project_status') ? 'is-invalid' : '' }}">
-                        <option selected="" value="started" {{ old('project_status') == 'started' ? 'selected' : '' }}>Started</option>
-                        <option value="in_progress" {{ old('project_status') == 'in_progress' ? 'selected' : '' }}>In Progress</option>
-                        <option value="on_hold" {{ old('project_status') == 'on_hold' ? 'selected' : '' }}>On Hold</option>
-                        <option value="cancel" {{ old('project_status') == 'cancel' ? 'selected' : '' }}>Cancel</option>
-                        <option value="completed" {{ old('project_status') == 'completed' ? 'selected' : '' }}>Completed</option>
-                        <option value="overdue" {{ old('project_status') == 'overdue' ? 'selected' : '' }}>Overdue</option>
+                        <option value="" selected disabled>{{trans('global.pleaseSelect')}}</option>
+                        <option value="started"     {{ old('project_status') == 'started'       ? 'selected' : '' }}>{{trans('cruds.status.started')}}</option>
+                        <option value="in_progress" {{ old('project_status') == 'in_progress'   ? 'selected' : '' }}>{{trans('cruds.status.in_progress')}}</option>
+                        <option value="on_hold"     {{ old('project_status') == 'on_hold'       ? 'selected' : '' }}>{{trans('cruds.status.on_hold')}}</option>
+                        <option value="cancel"      {{ old('project_status') == 'cancel'        ? 'selected' : '' }}>{{trans('cruds.status.cancel')}}</option>
+                        <option value="completed"   {{ old('project_status') == 'completed'     ? 'selected' : '' }}>{{trans('cruds.status.completed')}}</option>
+                        <option value="overdue"     {{ old('project_status') == 'overdue'       ? 'selected' : '' }}>{{trans('cruds.status.overdue')}}</option>
                     </select>
     {{--                <input class="form-control {{ $errors->has('project_status') ? 'is-invalid' : '' }}" type="text" name="project_status" id="project_status" value="{{ old('project_status', '') }}">--}}
                     @if($errors->has('project_status'))
@@ -287,7 +289,7 @@
               return new Promise(function(resolve, reject) {
                 // Init request
                 var xhr = new XMLHttpRequest();
-                xhr.open('POST', '/admin/projects/ckmedia', true);
+                xhr.open('POST', '/admin/projectmanagement/projects/ckmedia', true);
                 xhr.setRequestHeader('x-csrf-token', window._token);
                 xhr.setRequestHeader('Accept', 'application/json');
                 xhr.responseType = 'json';
@@ -342,43 +344,9 @@
      var value = document.getElementById("calculate_progress").value;
      document.getElementById("progress_value").classList.add('visible');
      document.getElementById("progress_value").classList.remove('invisible');
-     document.getElementById("progress_value").innerHTML = "Progress "+ value + "%";
+     document.getElementById("progress_value").innerHTML = "{{trans('cruds.task.fields.progress')}} "+ value + "%";
  }
 
-    function ProgressInput1() {
-        var progress_hours = document.getElementById("progress_hours");
-        var progress_tasks = document.getElementById("progress_tasks");
-        var progress_input = document.getElementById("div_progress_input");
-        if (progress_hours.checked == true){
-            progress_tasks.checked = false;
-            //progress_input.style.display = "none";
-            document.getElementById("calculate_progress").disabled = true;
-        } else {
-
-            //progress_input.style.display = "block";
-            document.getElementById("calculate_progress").disabled = false;
-        }
-
-
-    }
-
-    function  ProgressInput2() {
-        var progress_hours = document.getElementById("progress_hours");
-        var progress_tasks = document.getElementById("progress_tasks");
-        var progress_input = document.getElementById("div_progress_input");
-        if (progress_tasks.checked == true){
-            progress_hours.checked = false;
-            //progress_input.style.display = "none";
-            document.getElementById("calculate_progress").disabled = true;
-
-        } else {
-
-            //progress_input.style.display = "block";
-            document.getElementById("calculate_progress").disabled = false;
-        }
-
-
-    }
 
 </script>
 

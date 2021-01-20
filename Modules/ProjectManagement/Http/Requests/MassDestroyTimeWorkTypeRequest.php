@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Requests;
+namespace Modules\ProjectManagement\Http\Requests;
 
-use App\Models\WorkTracking;
+use App\Models\TimeWorkType;
 use Gate;
 use Illuminate\Foundation\Http\FormRequest;
 use Symfony\Component\HttpFoundation\Response;
 
-class MassDestroyWorkTrackingRequest extends FormRequest
+class MassDestroyTimeWorkTypeRequest extends FormRequest
 {
     public function authorize()
     {
-        abort_if(Gate::denies('work_tracking_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('time_work_type_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return true;
     }
@@ -20,7 +20,7 @@ class MassDestroyWorkTrackingRequest extends FormRequest
     {
         return [
             'ids'   => 'required|array',
-            'ids.*' => 'exists:work_trackings,id',
+            'ids.*' => 'exists:time_work_types,id',
         ];
     }
 }

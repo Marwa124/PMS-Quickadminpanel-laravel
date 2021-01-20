@@ -41,9 +41,10 @@
                             </div>
 
                         @empty
-{{--                            <div class="form-group col-md-6">--}}
-{{--                                No account found in department--}}
-{{--                            </div>--}}
+                            <div class="form-group col-md-6">
+
+                                {{trans('cruds.messages.no_designation_found_in_department_project')}}
+                            </div>
                         @endforelse
                     </div>
                 </div>
