@@ -78,4 +78,6 @@ class ProposalsItem extends Model implements HasMedia
             'item_porposal_relations','item_id','proposals_id')->orderBy('id','asc');
 
     }
+
+
 }

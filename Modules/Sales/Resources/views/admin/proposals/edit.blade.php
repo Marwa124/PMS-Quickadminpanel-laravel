@@ -322,9 +322,10 @@
                                                 onclick="add_item_to_table('undefined', 'undefined',1); return false;"
                                                 class="btn-xs btn btn-info"><i class="fa fa-check"></i></button></td>
                                     </tr>
+                                    
                                     @if($proposal->items->isEmpty() != true)
                                     @foreach($proposal->items as $key => $value)
-                                    {{-- @dd($proposal->items, $key , $value) --}}
+                                   
                                     <tr class="sortable item" data-merge-invoice="1">
                                         <input type="hidden" class="order" name="items[{{ $key }}][order]" value="{{ $value->pivot->order }}">
                                         <input type="hidden" name="items[{{ $key }}][saved_items_id]" value="{{ $value->pivot->saved_items_id }}">
@@ -343,9 +344,10 @@
                                         <td class="rateee"> <input type="text" data-parsley-type="number"  onblur="calculate_total_edit();" onchange="calculate_total_edit();" name="items[{{ $key }}][selling_price]"  value="{{ $value->pivot->selling_price }}" class="form-control "  readonly=""> </td>
                                         <td class="ratex"><input type="text" data-parsley-type="text" name="items[{{ $key }}][delivery]" value="{{ $value->pivot->delivery}}" class="form-control "></td>
                                         <td class="taxrate"> 
-                                            <select class="selectpicker display-block tax" name="items[{{ $key }}][tax][]" multiple data-none-selected-text="no_tax" >
+                                           
+                                            <select class="selectpicker display-block tax" name="items[{{ $key }}][tax][]" multiple data-none-selected-text="no_tax" >{{-- proposal->itemtaxs->pluck('taxs_id') --}}
                                             @foreach($taxRates as $id => $taxRate)
-                                            <option value=" {{ $taxRate->rate_percent.'|'.$taxRate->name }}" {{ $value->pivot->tax_name != null ? (in_array($taxRate->id, json_decode($value->pivot->tax_name)) ? 'selected' :'') :'' }}
+                                            <option value=" {{ $taxRate->rate_percent.'|'.$taxRate->name }}" {{ $proposal->itemtaxs->where('item_id',$value->pivot->id)->pluck('taxs_id')->isEmpty() != true ? (in_array($taxRate->id, $proposal->itemtaxs->where('item_id',$value->pivot->id)->pluck('taxs_id')->toArray()) ? 'selected' :'') :'' }}
                                                   data-taxrate="{{ $taxRate->rate_percent }}" data-taxname="{{ $taxRate->name }}" data-subtext="{{ $taxRate->name }}" >
                                                 {{ $taxRate->rate_percent.'% | '.$taxRate->name }}</option>
                                             @endforeach 
@@ -364,6 +366,7 @@
         
                     </div>
                     {{-- end add item --}}
+                   
                     {{-- calculate  items --}}
                     <div class="row row d-flex justify-content-end">
                         <div class="col-md-6 pull-right">
@@ -371,7 +374,7 @@
                                 <tbody>
                                     <tr id="subtotal">
                                         <td><span class="bold">Sub Total Without VAT :</span>  </td>
-                                        <td class="subtotal"></td>
+                                        <td class="subtotal">{{ $proposal->after_discount }}<input type="hidden" name="subtotal" value="{{ $proposal->after_discount }}"></td>
                                     </tr>
                                     <tr id="discount_percent">
                                         <td>
@@ -389,30 +392,30 @@
                                             <input type="hidden" name="discount_total" value="{{ $proposal->discount_total }}">
                                         </td>
                                     </tr>
-                                    <tr class="total_after_discount d-none">
+                                    <tr class="total_after_discount @if($proposal->discount_percen == '' || $proposal->discount_percen == 0 || $proposal->discount_percen == 100) d-none @endif ">
                                         <td><span class="bold">Total After Discount :</span>  </td>
-                                        <td class="after_discount"></td>
+                                        <td class="after_discount">{{$proposal->after_discount}}<input type="hidden" name="after_discount" value="{{$proposal->after_discount}}"></td>
                                     </tr>
-                                    
-                                    @if (!empty($proposal->itemtaxs->pluck('taxs_id')) )
-                                    @foreach(array_count_values($proposal->itemtaxs->pluck('taxs_id')->toArray()) as $key=> $taxold)
-
+                                    @if($proposal->items->isEmpty() != true)
+                                  
+                                    @foreach($proposal->gettaxesarray($proposal) as $key=> $taxold)
+                                  
+                                   
                                     <tr class="tax-area">
                                      <td>{{get_taxes($key)->name }}({{ get_taxes($key)->rate_percent }}%)</td>
                                      <td id="tax_id_12services">
-                                         361.08<input type="hidden" name="total_tax_name[]" value=" 12|services">
-                                         <input type="hidden" name="total_tax[]" value="361.08">
+                                        {{ array_sum($taxold) }}
+                                        <input type="hidden" name="total_tax_name[]" value="{{ get_taxes($key)->rate_percent }}|{{get_taxes($key)->name }}">
+                                         <input type="hidden" name="total_tax[]" value=" {{ array_sum($taxold) }}">
                                      </td>
                                     
                                     </tr> 
                                     
                                      @endforeach
+                                  
                                     @endif
-                                      
-                                    
-                            
+                                     
                                    
-                                    
                                     <tr class="tax-area"></tr>
                                     <tr>
                                         <td>
@@ -425,19 +428,29 @@
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="adjustment"></td>
+                                        <td class="adjustment">{{ $proposal->adjustment }}<input type="hidden" name="adjustment" value="{{ $proposal->adjustment }}"></td>
                                     </tr>
                                     <tr>
                                         <td><span class="bold" style="background-color:#e8e8e8;color:#6d6d6d;">Total :</span> </td>
-                                        <td class="total">{{ $proposal->total_cost_price }}</td>
+                                        <td class="total">{{ $proposal->total_tax + $proposal->after_discount }}<input type="hidden" name="total" value="{{ $proposal->total_tax + $proposal->after_discount }}"></td>
                                     </tr>
                                     <tr>
                                         <td><span class="bold" style="background-color:#e8e8e8;color:#6d6d6d;">Total Cost Price ( Without Margin / Tax ) :</span> </td>
-                                        <td class="total_without_margin"></td>
+                                        <td class="total_without_margin">@if($proposal->items->isEmpty() != true) {{ $proposal->items->sum('pivot.total_cost_price') }} @endif <input type="hidden" name="total_without_margin" value="@if($proposal->items->isEmpty() != true) {{ $proposal->items->sum('pivot.total_cost_price') }} @else 0 @endif"></td>
                                     </tr>
                                     <tr>
                                         <td><span class="bold" style="background-color:#e8e8e8;color:#6d6d6d;">Profit :</span> </td>
-                                        <td class="profit"></td>
+                                        <td class="profit">
+                                        @if($proposal->items->isEmpty() != true)
+                                            @if ($proposal->after_discount > $proposal->items->sum('pivot.total_cost_price')) 
+                                                {{ $profit =$proposal->after_discount - $proposal->items->sum('pivot.total_cost_price') }}
+                                            @else 
+                                               {{ $profit = $proposal->items->sum('pivot.total_cost_price') - $proposal->after_discount}} 
+                                           @endif
+                                           ({{ number_format(((float)($profit * 100) / $proposal->after_discount) ,2)  }} %)
+                                           <input type="hidden" name="profit" value="{{ $profit }}">
+                                         @endif
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
