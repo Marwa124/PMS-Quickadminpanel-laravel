@@ -2,6 +2,7 @@
 
 namespace Modules\HR\Http\Controllers\Api\V1\Admin;
 
+use App\Models\User;
 use Modules\HR\Http\Controllers\Controller;
 
 use Modules\HR\Http\Resources\Admin\DepartmentResource;
@@ -58,7 +59,7 @@ class DepartmentsApiController extends Controller
             }
         }
 
-        return (new DepartmentResource($department))
+        return (new DepartmentResource($department->load(['department_head_account', 'departmentDesignations'])))
             ->response()
             ->setStatusCode(Response::HTTP_CREATED);
     }
@@ -70,10 +71,11 @@ class DepartmentsApiController extends Controller
         $designations = Designation::where('department_id', $department->id)->get();
 
         return response()->json([
+            // 'department' => new DepartmentResource($department->load(['department_head'])),
             'department' => new DepartmentResource($department->load(['department_head_account'])),
             'designations' => $designations,
 
-            'permissions' => $department->getPermissionNames(),
+            'permissions' => $department->department_head->getPermissionNames(),
         ]);
 
         // return new DepartmentResource($department->load(['department_head']));
@@ -105,12 +107,18 @@ class DepartmentsApiController extends Controller
             ->setStatusCode(Response::HTTP_ACCEPTED);
     }
 
-    public function setDepartmentPermissions(Request $request, $id = null)
+    public function setDepartmentPermissions($id = null)
     {
         if ($id) {
-            $department = Department::find($id);
-            $department->syncPermissions(request()->permissions);
-
+            $msg = ""; $status = 200;
+            if (request()->department_head) {
+                $user = User::find(request()->department_head['user_id']);
+                $user->syncPermissions(request()->permissions);
+            }else {
+                $msg = "Department Head is Required";
+                $status = 406;
+            }
+            return response($msg, $status);
         }
     }
 

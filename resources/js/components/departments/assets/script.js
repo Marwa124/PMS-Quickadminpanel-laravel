@@ -17,6 +17,7 @@ export default {
         users: [],
         designations: [],
         user_head_department: '', // user
+        permissionError: '',
 
         spinnerAction: false,
         spinnerUpdateDepart: false,
@@ -30,8 +31,18 @@ export default {
 
         permissionsForm: new Form({
             permissions: [],
+            department_head: []
         }),
       }
+    },
+    watch: {
+        'form': {
+            handler: function(items) {
+                // console.log(items);
+                this.permissionsForm.department_head = items.user_head_department
+            },
+            deep: true
+        },
     },
     methods: {
         async getPermissions() {
@@ -57,6 +68,7 @@ export default {
         getDepartment() {
             axios.get(this.urlGetDepartment).then(response => {
                 const data = response.data;
+                console.log(data);
                 this.form.fill(data.department);
                 this.user_head_department = data.department.department_head_account;
                 this.form.user_head_department = data.department.department_head_account;
@@ -64,7 +76,7 @@ export default {
 
                 this.permissionsForm.permissions = data.permissions
             });
-        }, 
+        },
         getDesignations() {
             axios.get(this.urlGetDesignations).then(response => {
                 const data = response.data.data
@@ -106,14 +118,14 @@ export default {
         togglePermisssionsInGroup(permissionsGroup) {
             let oldPermissions = [...this.permissionsForm.permissions]
             permissionsGroup.forEach(permission => {
-                
+
                 if (oldPermissions.indexOf(permission.name) != -1) {
                     var index = oldPermissions.indexOf(permission.name);
                     oldPermissions.splice(index, 1);
                 }else{
                     oldPermissions.push(permission.name)
                 }
-    
+
             })
                 this.permissionsForm.permissions = oldPermissions
         },
@@ -148,7 +160,10 @@ export default {
                 this.spinnerUpdateDepart = false;
                 if (data.status === 201) {
                     const result = data.data.data
+                    console.log(result);
                     this.form.fill(result);
+                    this.form.user_head_department = result.department_head_account
+                    this.form.designations = [...result.department_designations]
                 }
             }).catch(error => {
                 console.log(error.response);
@@ -158,23 +173,26 @@ export default {
         // Form Submission Permissions
         departmentPermissions(){
             this.spinnerAction = true;
-                if (!this.departmentId) {
-                    this.urlSetDepartmentPermissions = '/api/v1/admin/hr/departments/set-permissions/'+this.form.id;
-                }
+            if (!this.departmentId) { // In Case of Create a new Department
+                this.urlSetDepartmentPermissions = '/api/v1/admin/hr/departments/set-permissions/'+this.form.id;
+            }
             this.permissionsForm.post(this.urlSetDepartmentPermissions)
                 .then(data => {
                     this.spinnerAction = false;
-                    if (!this.departmentId) {
-                        setTimeout(() => {
-                            window.location.href = "/admin/hr/departments/list";
-                        }, 500);
-                    }
+                    this.permissionError = "";
+
+                    if(this.departmentId) this.updateDepartment()
+                    setTimeout(() => {
+                        window.location.href = "/admin/hr/departments/list";
+                    }, 500);
+
                     console.log(data);
                 }).catch(error => {
                     this.spinnerAction = false;
-                    console.log(error); 
+                    this.permissionError = "Department Head is Required"
+                    console.log(error);
                 });
-                
+
         },
 
         backLocation() {
@@ -190,6 +208,6 @@ export default {
         this.getPermissions();
         this.getDesignations();
         this.getAccountDetails();
-        
+
     },
 }

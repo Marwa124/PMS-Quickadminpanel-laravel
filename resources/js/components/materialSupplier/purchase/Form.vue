@@ -276,17 +276,17 @@
                     discount_type: '',
                     notes:         '',
                     items: [
-                        // {
-                        //     name:      '',
-                        //     description:      '',
-                        //     quantity:       '1',
-                        //     total_cost_price: '',
-                        //     item_tax_total: '', // Calculated
-                        //     total_cost:     '',
-                        //     unit_cost:      '',
-                        //     total:          '',
-                        // }
-                        this.dataItems
+                        {
+                            name:      '',
+                            description:      '',
+                            quantity:       '1',
+                            total_cost_price: '',
+                            item_tax_total: '', // Calculated
+                            total_cost:     '',
+                            unit_cost:      '',
+                            total:          '',
+                        }
+                        // this.dataItems
                     ],
                     item_tax_rate:  '',
 
@@ -338,8 +338,8 @@
                 }
             },
             addItemToModel(item) { // Add row item to model
-                this.form.items.push(item);
-                this.form.items.push(this.dataItems)
+                this.form.items.unshift(this.dataItems)
+                // this.form.items.push(item);
             }
         },
         mounted() {
