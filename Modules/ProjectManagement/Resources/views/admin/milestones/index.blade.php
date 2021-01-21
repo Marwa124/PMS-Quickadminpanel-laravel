@@ -1,12 +1,12 @@
 @extends('layouts.admin')
 @section('content')
-    @php
-        $trashed = request()->segment(count(request()->segments())) == 'trashed'?true :false;
-    @endphp
+{{--    @php--}}
+{{--        $trashed = request()->segment(count(request()->segments())) == 'trashed'?true :false;--}}
+{{--    @endphp--}}
     <div class="row">
         @can('milestone_create')
             <div style="margin: 10px;" class="row">
-                <div class="col-lg-8">
+                <div class="col-lg-6">
                     <a class="btn btn-success" href="{{ route('projectmanagement.admin.milestones.create') }}">
                         {{ trans('global.add') }} {{ trans('cruds.milestone.title_singular') }}
                     </a>
@@ -19,7 +19,7 @@
                     <a class="btn btn-{{$trashed ? 'info' : 'danger'}}"
                        href="{{$trashed ? route('projectmanagement.admin.milestones.index') : route('projectmanagement.admin.milestones.trashed.index')}}">
 
-                        {{ $trashed ? 'Active milestones' : 'Trashed milestones' }}
+                        {{ $trashed ? trans('cruds.status.active') : trans('cruds.status.trashed') }} {{ trans('cruds.milestone.title') }}
 
                     </a>
                 </div>
@@ -121,7 +121,7 @@
                                                 <input type="hidden" name="action" value="restore">
                                                 <input type="submit" class="btn btn-xs btn-success" value="{{ trans('global.restore') }}">
                                             </form>
-                                            <form action="{{ route('projectmanagement.admin.milestones.forceDestroy', $milestone->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                            <form action="{{ route('projectmanagement.admin.milestones.forceDestroy', $milestone->id) }}" method="POST" onsubmit="return confirm('{{trans('cruds.messages.task_sub_tasks_in_milestone_force_delete')}} \n{{ trans('global.areYouSure') }}');" style="display: inline-block;">
                                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                                 <input type="hidden" name="action" value="force_delete">
                                                 <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.forcedelete') }}">

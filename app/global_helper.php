@@ -3,6 +3,8 @@
 use App\Models\User;
 use Modules\ProjectManagement\Entities\Activity;
 use Modules\Sales\Entities\Proposal;
+use Modules\MaterialsSuppliers\Entities\TaxRate;
+
 
 //get global user notify
 if (!function_exists('globalNotificationId')) {
@@ -146,9 +148,20 @@ if (!function_exists('generate_proposal_number')) {
             $nextPoNumber = 'PRO-'.$date->isoFormat('D/MMM/Y').'/'.'0001';
         } else {
             //increase 1 with last invoice number
-            $incr=$lastrecorde+1;
+            $incr=$lastrecorder+1;
             $nextPoNumber = 'PRO-'.date('Y').'-'.date('m').'-'.date('d').'-'.'000'.$incr;
         }
        return $nextPoNumber;
     }
 }
+if (!function_exists('get_taxes')) {
+
+    function get_taxes($id)
+    {
+      
+        $taxes=TaxRate::findOrFail($id);
+       
+       return $taxes;
+    }
+}
+

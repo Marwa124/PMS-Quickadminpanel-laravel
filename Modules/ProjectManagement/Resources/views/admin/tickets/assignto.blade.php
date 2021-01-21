@@ -59,7 +59,7 @@
                                 @if($keydes == 0)
                                     <div class="form-group col-md-6">
 
-                                        No accounts assign to Project of ticket
+                                        {{trans('cruds.messages.no_accounts_assign_project_ticket')}}
                                         @php
                                             $keydes++;
                                         @endphp
@@ -68,10 +68,10 @@
                             @endforelse
 
                         @empty
-{{--                            <div class="form-group col-md-6">--}}
+                            <div class="form-group col-md-6">
 
-{{--                                No Sub Department available "please add sub department"--}}
-{{--                            </div>--}}
+                                {{trans('cruds.messages.no_designation_found_in_department_project')}}
+                            </div>
                         @endforelse
                     </div>
                 </div>

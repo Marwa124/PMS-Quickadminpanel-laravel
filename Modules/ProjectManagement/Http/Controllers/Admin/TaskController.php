@@ -9,7 +9,7 @@ use App\Notifications\ProjectManagementNotification;
 use Modules\HR\Entities\AccountDetail;
 use Modules\ProjectManagement\Entities\Milestone;
 use Modules\ProjectManagement\Entities\TimeSheet;
-use Modules\ProjectManagement\Http\Controllers\Traits\PermissionHelperTrait;
+use Modules\ProjectManagement\Http\Controllers\Traits\ProjectManagementHelperTrait;
 use Modules\ProjectManagement\Http\Requests\MassDestroyTaskRequest;
 use Modules\ProjectManagement\Http\Requests\StoreTaskRequest;
 use Modules\ProjectManagement\Http\Requests\UpdateTaskRequest;
@@ -28,7 +28,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class TaskController extends Controller
 {
-    use MediaUploadingTrait,PermissionHelperTrait;
+    use MediaUploadingTrait,ProjectManagementHelperTrait;
 
     public function __construct()
     {
@@ -39,8 +39,6 @@ class TaskController extends Controller
     {
         abort_if(Gate::denies('task_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $tasks = auth()->user()->getUserTasksByUserID(auth()->user()->id);
-
         $task_statuses = TaskStatus::get();
 
         $task_tags = TaskTag::get();
@@ -49,7 +47,23 @@ class TaskController extends Controller
 
         $milestones = Milestone::get();
 
-        return view('projectmanagement::admin.tasks.index', compact('tasks', 'task_statuses', 'task_tags', 'projects', 'milestones'));
+        if (request()->segment(count(request()->segments())) == 'trashed'){
+
+            abort_if(Gate::denies('task_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+            $trashed = true;
+
+            $tasks = auth()->user()->getUserTasksByUserID(auth()->user()->id,$trashed);
+
+            return view('projectmanagement::admin.tasks.index', compact('tasks','trashed', 'task_statuses', 'task_tags', 'projects', 'milestones'));
+
+        }
+
+        $trashed = false;
+
+        $tasks = auth()->user()->getUserTasksByUserID(auth()->user()->id,$trashed);
+
+        return view('projectmanagement::admin.tasks.index', compact('tasks','trashed', 'task_statuses', 'task_tags', 'projects', 'milestones'));
     }
 
     public function create($id = null)
@@ -58,7 +72,7 @@ class TaskController extends Controller
 
         abort_if(Gate::denies('task_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $statuses = TaskStatus::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        //$statuses = TaskStatus::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         $tags = TaskTag::all()->pluck('name', 'id');
 
@@ -93,7 +107,7 @@ class TaskController extends Controller
             $tasks = Task::where('milestone_id',$task->milestone->id)->pluck('name', 'id');
         }
 
-        return view('projectmanagement::admin.tasks.create', compact('statuses', 'tags', 'projects', 'milestones','task','tasks','milestone','project'));
+        return view('projectmanagement::admin.tasks.create', compact('tags', 'projects', 'milestones','task','tasks','milestone','project'));
     }
 
     public function store(StoreTaskRequest $request)
@@ -121,7 +135,7 @@ class TaskController extends Controller
     {
         abort_if(Gate::denies('task_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $statuses = TaskStatus::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        //$statuses = TaskStatus::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         $tags = TaskTag::all()->pluck('name', 'id');
 
@@ -131,9 +145,9 @@ class TaskController extends Controller
 
         $tasks = Task::with('milestone')->get();
 
-        $task->load('status', 'tags', 'assigned_to', 'project', 'milestone');
+        $task->load( 'tags', 'assigned_to', 'project', 'milestone');
 
-        return view('projectmanagement::admin.tasks.edit', compact('statuses', 'tags', 'projects', 'milestones', 'task','tasks'));
+        return view('projectmanagement::admin.tasks.edit', compact('tags', 'projects', 'milestones', 'task','tasks'));
     }
 
     public function update(UpdateTaskRequest $request, Task $task)
@@ -182,7 +196,7 @@ class TaskController extends Controller
     {
         abort_if(Gate::denies('task_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $task->load('status', 'tags', 'project', 'milestone','createBy','TimeSheetOn','TimeSheet');
+        $task->load('tags', 'project', 'milestone','createBy','TimeSheetOn','TimeSheet');
 
         return view('projectmanagement::admin.tasks.show', compact('task'));
     }
@@ -357,4 +371,39 @@ class TaskController extends Controller
 
         return redirect()->back();
     }
+
+    public function forceDelete(Request $request,$id)
+    {
+        //dd($request->all(),$id);
+        $action = $request->action;
+
+        if ($action == 'force_delete') {
+
+            $task = Task::onlyTrashed()->where('id', $id)->first();
+            //force Delete Task
+            $this->forceDeleteTask($task);
+
+        } else if ($action == 'restore') {
+            //restore Task
+            Task::onlyTrashed()->where('id', $id)->restore();
+        }
+
+        return back();
+
+    }
+
+    public function task_clone($task_id)
+    {
+
+        // get Task by id
+        $task = Task::findOrFail($task_id);
+
+        // clone Task as new Task
+
+        $newtask = $task->cloneTask();
+
+        return redirect()->route('projectmanagement.admin.tasks.show',$newtask->id);
+
+    }
+
 }

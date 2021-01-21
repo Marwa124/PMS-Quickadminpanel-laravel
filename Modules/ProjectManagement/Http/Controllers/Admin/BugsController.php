@@ -8,7 +8,7 @@ use App\Http\Controllers\Traits\MediaUploadingTrait;
 use App\Notifications\ProjectManagementNotification;
 use Modules\HR\Entities\AccountDetail;
 use Modules\ProjectManagement\Entities\Bug;
-use Modules\ProjectManagement\Http\Controllers\Traits\PermissionHelperTrait;
+use Modules\ProjectManagement\Http\Controllers\Traits\ProjectManagementHelperTrait;
 use Modules\ProjectManagement\Http\Requests\MassDestroyBugRequest;
 use Modules\ProjectManagement\Http\Requests\StoreBugRequest;
 use Modules\ProjectManagement\Http\Requests\UpdateBugRequest;
@@ -21,7 +21,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class BugsController extends Controller
 {
-    use MediaUploadingTrait,PermissionHelperTrait;
+    use MediaUploadingTrait,ProjectManagementHelperTrait;
 
     public function __construct()
     {
@@ -32,13 +32,28 @@ class BugsController extends Controller
     {
         abort_if(Gate::denies('bug_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $bugs = auth()->user()->getUserBugsByUserID(auth()->user()->id);
 
         $projects = Project::get();
 
         $tasks = Task::get();
 
-        return view('projectmanagement::admin.bugs.index', compact('bugs', 'projects', 'tasks'));
+        if (request()->segment(count(request()->segments())) == 'trashed'){
+
+            abort_if(Gate::denies('bug_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+            $trashed = true;
+
+            $bugs = auth()->user()->getUserBugsByUserID(auth()->user()->id,$trashed);
+
+            return view('projectmanagement::admin.bugs.index', compact('bugs','trashed', 'projects', 'tasks'));
+        }
+
+
+        $trashed = false;
+
+        $bugs = auth()->user()->getUserBugsByUserID(auth()->user()->id,$trashed);
+
+        return view('projectmanagement::admin.bugs.index', compact('bugs','trashed', 'projects', 'tasks'));
     }
 
     public function create($id =null)
@@ -274,5 +289,26 @@ class BugsController extends Controller
         setActivity('bug',$bug->id,'Update Note ',$bug->name);
 
         return redirect()->back();
+    }
+
+    public function forceDelete(Request $request,$id)
+    {
+        //dd($request->all(),$id);
+        $action = $request->action;
+
+        if ($action == 'force_delete') {
+
+            $bug = Bug::onlyTrashed()->where('id', $id)->first();
+
+            // force delete bug
+            $bug->forceDelete();
+
+        } else if ($action == 'restore') {
+            //restore bug
+            Bug::onlyTrashed()->where('id', $id)->restore();
+        }
+
+        return back();
+
     }
 }

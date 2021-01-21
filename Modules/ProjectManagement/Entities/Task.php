@@ -41,7 +41,8 @@ class Task extends Model implements HasMedia
     protected $fillable = [
         'name',
         'description',
-        'status_id',
+        //'status_id',
+        'status',
         'start_date',
         'due_date',
         'assigned_to_id',
@@ -80,10 +81,10 @@ class Task extends Model implements HasMedia
         $this->addMediaConversion('preview')->fit('crop', 120, 120);
     }
 
-    public function status()
-    {
-        return $this->belongsTo(TaskStatus::class, 'status_id');
-    }
+//    public function status()
+//    {
+//        return $this->belongsTo(TaskStatus::class, 'status_id');
+//    }
 
     public function tags()
     {
@@ -179,5 +180,47 @@ class Task extends Model implements HasMedia
     public function activities()
     {
         return $this->hasMany(Activity::class,'module_field_id')->where('module','=','task')->orderBy('id','desc');
+    }
+
+    public function cloneTask($new_milestone=null,$newproject=null)
+    {
+
+        $new_task                   = $this->replicate();
+        $new_task->name             = $this->name.'-copy'.substr(time(),-5);
+        if ($newproject){
+            $new_task->project_id       = $newproject->id;
+        }
+        if ($new_milestone) {
+            $new_task->milestone_id = $new_milestone->id;
+        }
+        $new_task->push();
+
+        $new_task = Task::findOrFail($new_task->id);
+
+        setActivity('task',$new_task->id,'Save Task Details',$new_task->name);
+
+        foreach ($this->subTasks as $subtask)
+        {
+            $new_sub_task                   = $subtask->replicate();
+            $new_sub_task->name             = $subtask->name.'-copy'.substr(time(),-5);
+            if ($newproject){
+                $new_sub_task->project_id       = $newproject->id;
+            }
+
+            if ($new_milestone){
+
+                $new_sub_task->milestone_id     = $new_milestone->id;
+            }
+            $new_sub_task->parent_task_id	= $new_task->id;
+
+
+            $new_sub_task->push();
+
+            $new_sub_task = Task::findOrFail($new_sub_task->id);
+
+            setActivity('task',$new_sub_task->id,'Save Task Details',$new_sub_task->name);
+        }
+
+        return $new_task;
     }
 }

@@ -3,8 +3,9 @@
 namespace Modules\ProjectManagement\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\HR\Entities\AccountDetail;
-use Modules\ProjectManagement\Http\Controllers\Traits\PermissionHelperTrait;
+use Modules\ProjectManagement\Http\Controllers\Traits\ProjectManagementHelperTrait;
 use Modules\ProjectManagement\Http\Requests\MassDestroyMilestoneRequest;
 use Modules\ProjectManagement\Http\Requests\StoreMilestoneRequest;
 use Modules\ProjectManagement\Http\Requests\UpdateMilestoneRequest;
@@ -17,7 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class MilestonesController extends Controller
 {
-    use PermissionHelperTrait;
+    use ProjectManagementHelperTrait;
 
     public function __construct()
     {
@@ -27,17 +28,24 @@ class MilestonesController extends Controller
     public function index()
     {
         abort_if(Gate::denies('milestone_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        //(request()->segment(count(request()->segments())));
 
-        $milestones = auth()->user()->getUserMilestonesByUserID(auth()->user()->id,false);
 
         if (request()->segment(count(request()->segments())) == 'trashed'){
 
-            $milestones = auth()->user()->getUserMilestonesByUserID(auth()->user()->id,true);
+            abort_if(Gate::denies('milestone_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+            $trashed = true;
+            $milestones = auth()->user()->getUserMilestonesByUserID(auth()->user()->id,$trashed);
+
+            return view('projectmanagement::admin.milestones.index', compact('milestones','trashed'));
 
         }
 
-        return view('projectmanagement::admin.milestones.index', compact('milestones'));
+        $trashed = false;
+        $milestones = auth()->user()->getUserMilestonesByUserID(auth()->user()->id,$trashed);
+
+
+        return view('projectmanagement::admin.milestones.index', compact('milestones','trashed'));
     }
 
     public function create($id = null)
@@ -68,7 +76,7 @@ class MilestonesController extends Controller
     {
         abort_if(Gate::denies('milestone_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $projects = Project::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $projects = Project::all()->pluck('name', 'id');
 
         $milestone->load('accountDetails', 'project');
 
@@ -94,7 +102,7 @@ class MilestonesController extends Controller
     public function destroy(Milestone $milestone)
     {
         abort_if(Gate::denies('milestone_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        $milestone->accountDetails()->detach();
+        //$milestone->accountDetails()->detach();
         $milestone->delete();
 
         return back();
@@ -104,10 +112,10 @@ class MilestonesController extends Controller
     {
         $ids = request('ids');
 
-        foreach ($ids as $id){
-            $milestone = Milestone::where('id',$id)->first();
-            $milestone->accountDetails()->detach();
-        }
+//        foreach ($ids as $id){
+//            $milestone = Milestone::where('id',$id)->first();
+//            $milestone->accountDetails()->detach();
+//        }
 
         Milestone::whereIn('id', request('ids'))->delete();
 
@@ -195,24 +203,27 @@ class MilestonesController extends Controller
         $action = $request->action;
 
         if ($action == 'force_delete') {
-                Milestone::onlyTrashed()->where('id', $id)->forceDelete();
+
+            $milestone = Milestone::onlyTrashed()->where('id', $id)->first();
+
+            $this->forceDeleteMilestone($milestone);
+
         } else if ($action == 'restore') {
             Milestone::onlyTrashed()->where('id', $id)->restore();
         }
 
         return back();
-
-
     }
+
     public function massforceDelete(Request $request)
     {
         //dd($request->all());
         $ids = request('ids');
 
-//        foreach ($ids as $id){
-//            $milestone = Milestone::where('id',$id)->first();
-//            $milestone->accountDetails()->detach();
-//        }
+        foreach ($ids as $id){
+            $milestone = Milestone::where('id',$id)->first();
+            $milestone->accountDetails()->detach();
+        }
 
         Milestone::onlyTrashed()->whereIn('id', request('ids'))->forceDelete();
 

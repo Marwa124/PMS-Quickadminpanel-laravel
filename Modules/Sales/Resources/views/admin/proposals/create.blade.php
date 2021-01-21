@@ -204,18 +204,7 @@
  
           
             <div class="form-group row">
-                <div class="col-md-6">
-                    <label for="expire_date">{{ trans('cruds.proposal.fields.expire_date') }}</label>
-                    <input class="form-control date {{ $errors->has('expire_date') ? 'is-invalid' : '' }}" type="text"
-                        name="expire_date" id="expire_date" value="{{ old('expire_date') }}">
-                    @if($errors->has('expire_date'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('expire_date') }}
-                    </div>
-                    @endif
-                    <span class="help-block">{{ trans('cruds.proposal.fields.expire_date_helper') }}</span>
-                </div>
-                <div class="col-md-6">
+                 <div class="col-md-6">
                     <label class="required"
                         for="proposal_date">{{ trans('cruds.proposal.fields.proposal_date') }}</label>
                     <input class="form-control date {{ $errors->has('proposal_date') ? 'is-invalid' : '' }}" type="text"
@@ -227,6 +216,18 @@
                     @endif
                     <span class="help-block">{{ trans('cruds.proposal.fields.proposal_date_helper') }}</span>
                 </div>
+                <div class="col-md-6">
+                    <label for="expire_date">{{ trans('cruds.proposal.fields.expire_date') }}</label>
+                    <input class="form-control date {{ $errors->has('expire_date') ? 'is-invalid' : '' }}" type="text"
+                        name="expire_date" id="expire_date" value="{{ old('expire_date') }}">
+                    @if($errors->has('expire_date'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('expire_date') }}
+                    </div>
+                    @endif
+                    <span class="help-block">{{ trans('cruds.proposal.fields.expire_date_helper') }}</span>
+                </div>
+               
             </div>
              <div class="form-group">
                 <label for="items">{{ trans('cruds.proposal.fields.items') }}</label>
@@ -292,7 +293,7 @@
                                 <td class=""><input class="form-control" type="number" name="delivery" id=""></td>
                                 <td class="form-group"><select class="selectpicker tax" multiple  name="tax[]" id="" > 
                                     @foreach($taxRates as $id => $taxRate)
-                                    <option value=" {{ $taxRate->rate_percent.'|'.$taxRate->name }}"  data-taxrate="{{ $taxRate->rate_percent }}" data-taxname="{{ $taxRate->name }}" data-subtext="{{ $taxRate->name }}">
+                                    <option value=" {{ $taxRate->rate_percent.'|'.$taxRate->name }}"  data-taxrate="{{ $taxRate->rate_percent }}" data-taxname="{{ $taxRate->name }}" data-subtext="{{ $taxRate->name }}" >
                                         {{ $taxRate->rate_percent.'% | '.$taxRate->name }}</option>
                                     @endforeach 
                                 </td>

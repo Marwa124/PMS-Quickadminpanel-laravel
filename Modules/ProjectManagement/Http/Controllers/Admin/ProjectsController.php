@@ -15,7 +15,7 @@ use Modules\HR\Entities\Department;
 use Modules\ProjectManagement\Entities\ProjectSpecification;
 use Modules\ProjectManagement\Entities\TaskStatus;
 use Modules\ProjectManagement\Entities\TimeSheet;
-use Modules\ProjectManagement\Http\Controllers\Traits\PermissionHelperTrait;
+use Modules\ProjectManagement\Http\Controllers\Traits\ProjectManagementHelperTrait;
 use Modules\ProjectManagement\Http\Requests\MassDestroyProjectRequest;
 use Modules\ProjectManagement\Http\Requests\StoreProjectRequest;
 use Modules\ProjectManagement\Http\Requests\UpdateProjectRequest;
@@ -27,10 +27,12 @@ use Spatie\MediaLibrary\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
 use PDF;
 use Modules\ProjectManagement\Entities\Milestone;
+use Modules\ProjectManagement\Entities\Task;
+
 
 class ProjectsController extends Controller
 {
-    use MediaUploadingTrait,PermissionHelperTrait;
+    use MediaUploadingTrait,ProjectManagementHelperTrait;
 
     public function __construct()
     {
@@ -41,19 +43,31 @@ class ProjectsController extends Controller
     {
         abort_if(Gate::denies('project_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $projects = auth()->user()->getUserProjectsByUserID(auth()->user()->id);
         $clients = Client::get();
 
         $status =TaskStatus::all();
 
-        return view('projectmanagement::admin.projects.index', compact('projects', 'clients','status'));
+        if (request()->segment(count(request()->segments())) == 'trashed'){
+
+            abort_if(Gate::denies('project_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+            $trashed = true;
+            $projects = auth()->user()->getUserProjectsByUserID(auth()->user()->id,$trashed);
+
+            return view('projectmanagement::admin.projects.index', compact('projects','trashed', 'clients','status'));
+        }
+
+        $trashed = false;
+        $projects = auth()->user()->getUserProjectsByUserID(auth()->user()->id,$trashed);
+
+        return view('projectmanagement::admin.projects.index', compact('projects','trashed', 'clients','status'));
     }
 
     public function create()
     {
         abort_if(Gate::denies('project_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $clients = Client::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $clients = Client::all()->pluck('name', 'id');
 
         $departments = Department::all();
 
@@ -77,7 +91,7 @@ class ProjectsController extends Controller
     {
         abort_if(Gate::denies('project_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $clients = Client::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $clients = Client::all()->pluck('name', 'id');
 
         $project->load('client','department');
 
@@ -346,41 +360,31 @@ class ProjectsController extends Controller
     public function project_clone($project_id)
     {
 
-        $project            = Project::findOrFail($project_id);
+        // get project by id
+        $project  = Project::findOrFail($project_id);
 
-        $newproject         = $project->replicate();
-        $newproject->name   = $project->name.'-copy'.substr(time(),-4);
-        $newproject->push();
+        $newproject = $project->cloneProject();
 
-        $newproject = Project::findOrFail($newproject->id);
-        //dd($newproject->id);
+        return redirect()->route('projectmanagement.admin.projects.show',$newproject->id);
 
+    }
 
-        foreach ($project->milestones as $milestone)
-        {
-            $new_milestone              = $milestone->replicate();
-            $new_milestone->name        = $milestone->name.'-copy'.substr(time(),-4);
-            $new_milestone->project_id  = $newproject->id;
+    public function forceDelete(Request $request,$id)
+    {
+        //dd($request->all(),$id);
+        $action = $request->action;
 
-            $new_milestone->push();
-            $new_milestone = Milestone::findOrFail($new_milestone->id);
+        if ($action == 'force_delete') {
 
+            $project = Project::onlyTrashed()->where('id', $id)->first();
 
-            foreach ($milestone->tasks as $task)
-            {
-                $new_task                   = $task->replicate();
-                $new_task->name             = $task->name.'-copy'.substr(time(),-4);
-                $new_task->project_id       = $newproject->id;
-                $new_task->milestone_id     = $new_milestone->id;
+            $this->forceDeleteProject($project);
 
-                $new_task->push();
-            }
-
-           // dd($new_milestone,'dsd');
+        } else if ($action == 'restore') {
+            Project::onlyTrashed()->where('id', $id)->restore();
         }
 
-//        dd($newproject);
-        return redirect()->route('projectmanagement.admin.projects.show',$newproject->id);
+        return back();
 
     }
 

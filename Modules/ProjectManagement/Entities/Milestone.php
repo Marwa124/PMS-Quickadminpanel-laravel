@@ -70,15 +70,51 @@ class Milestone extends Model
         $this->attributes['end_date'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
     }
 
-    public function accountDetails(){
+    public function accountDetails()
+    {
 
         return $this->belongsToMany('Modules\HR\Entities\AccountDetail',
             'milestone_account_details_pivot','milestone_id','account_details_id');
 
     }
 
-    public function tasks(){
+    // tasks without sub tasks
+    public function tasks()
+    {
+        return $this->hasMany(Task::class,'milestone_id')->where('parent_task_id','=',null);
+    }
+
+    // all tasks
+    public function allTasks()
+    {
         return $this->hasMany(Task::class,'milestone_id');
+    }
+
+    public function cloneMilestone($newproject =null)
+    {
+        $new_milestone              = $this->replicate();
+        $new_milestone->name        = $this->name.'-copy'.substr(time(),-4);
+        if ($newproject){
+
+            $new_milestone->project_id  = $newproject->id;
+        }
+
+        $new_milestone->push();
+        $new_milestone = Milestone::findOrFail($new_milestone->id);
+
+        // clone tasks in milestone to add for new project & new milesetone
+        foreach ($this->tasks as $task)
+        {
+
+            $task->cloneTask($new_milestone,$newproject);
+        }
+
+        return $new_milestone;
+    }
+
+    public function trash() {
+
+        return $this->onlyTrashed();
     }
 
 }

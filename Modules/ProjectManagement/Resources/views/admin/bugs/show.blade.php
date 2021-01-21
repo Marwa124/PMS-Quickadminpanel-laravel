@@ -277,9 +277,9 @@
                                 <div class="col-sm-4 border-right ">
 
                                     <div class="pl-1 ">
-                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.bug.fields.name') }} :</p> <span class="col-md-6">{{ $bug->name }}</span> </div>
-                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.bug.fields.issue_no') }} : </p><span class="col-md-6">{{ $bug->issue_no }}</span> </div>
-                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.title') }} {{ trans('cruds.project.fields.name') }}  : </p><span class="col-md-6">{{ $bug->project->name }}</span> </div>
+                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.bug.fields.name') }} :</p> <span class="col-md-6">{{ $bug->name ?? '' }}</span> </div>
+                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.bug.fields.issue_no') }} : </p><span class="col-md-6">{{ $bug->issue_no ?? '' }}</span> </div>
+                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.title') }} {{ trans('cruds.project.fields.name') }}  : </p><span class="col-md-6">{{ $bug->project ? $bug->project->name : '' }}</span> </div>
 {{--                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.task.title') }} {{ trans('cruds.task.fields.name') }}  : </p><span class="col-md-6">{{ $bug->task->name }}</span> </div>--}}
                                         <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.bug.fields.status') }} : </p><span class="col-md-6 "><span class="bg-success p-1">{{ ucwords($bug->status ?? '') }}</span></span> </div>
                                         <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.bug.fields.priority') }} :</p> <span class="col-md-6 "><span class="bg-info p-1">{{ ucwords($bug->priority?? '') }}</span></span> </div>
@@ -292,12 +292,12 @@
                                         <div class="row"> <p class="font-bold col-md-5">{{ trans('global.assign_to') }} :</p> <span class="col-md-6">
                                                 @if($bug->accountDetails)
                                                     @forelse($bug->accountDetails as $account)
-                                                        <img class="img-thumbnail rounded-circle" title="{{ $account->fullname }}" width="30%" src="{{ $account->avatar ? str_replace('storage', 'storage', $account->avatar->getUrl()) : asset('images/default.png') }}" alt="{{ $account->fullname }}">
+                                                        <img class="img-thumbnail rounded-circle" title="{{ $account->fullname ?? ''  }}" width="30%" src="{{ $account->avatar ? str_replace('storage', 'storage', $account->avatar->getUrl()) : asset('images/default.png') }}" alt="{{ $account->fullname ?? ''  }}">
                                                     @empty
-                                                        {{ucwords('not assign to anyone')}}
+                                                        {{trans('not_assign_anyone')}}
                                                     @endforelse
                                                 @else
-                                                    {{ucwords('not assign to anyone')}}
+                                                    {{trans('not_assign_anyone')}}
                                                 @endif
                                             </span> </div>
 
@@ -305,7 +305,7 @@
                                 </div>
                                 <div class="col-sm-4  ">
                                     <div class=" pl-1">
-                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.bug.fields.reproducibility') }} :</p> <span class="col-md-6">{!! $bug->reproducibility  !!}</span> </div>
+                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.bug.fields.reproducibility') }} :</p> <span class="col-md-6">{!! $bug->reproducibility ?? ''  !!}</span> </div>
 
                                     </div>
                                 </div>
@@ -316,7 +316,7 @@
                 <div class="tab-pane fade" id="v-pills-notes" role="tabpanel" aria-labelledby="v-pills-notes-tab">
                     <div class="card">
                         <div class="card-body">
-                            <form method="POST" action="{{ route("projectmanagement.admin.bugs.update_note", [$bug->id]) }}" enctype="multipart/form-data">
+                            <form method="POST" action="{{ route("projectmanagement.admin.bugs.update_note", $bug->id) }}" enctype="multipart/form-data">
                                 @method('PUT')
                                 @csrf
                                 <div class="form-group">
@@ -359,8 +359,8 @@
                                                     {{--                                                   time_ago in file global_helper --}}
                                                     <section>
                                                         <ul>
-                                                            <small title="{{$activity->activity_date}}">{{time_ago($activity->activity_date)}}</small>
-                                                            <li><a href="{{route('admin.users.show',$activity->user->id)}}">{{$activity->user->name}}</a> {{$activity->activity}} <strong> {{$activity->value1}} </strong></li>
+                                                            <small title="{{$activity->activity_date ?? ''}}">{{time_ago($activity->activity_date) ?? ''}}</small>
+                                                            <li><a href="{{route('admin.users.show',$activity->user->id)}}">{{$activity->user ? $activity->user->name : ''}}</a> {{$activity->activity ?? '' }} <strong> {{$activity->value1 ?? ''}} </strong></li>
                                                         </ul>
                                                     </section>
                                                 </section>

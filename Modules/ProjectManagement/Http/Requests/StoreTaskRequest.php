@@ -27,9 +27,9 @@ class StoreTaskRequest extends FormRequest
 
                 }),
             ],
-            'status_id'          => [
+            'status'          => [
                 'required',
-                'integer',
+                //'integer',
             ],
             'tags.*'             => [
                 'integer',
