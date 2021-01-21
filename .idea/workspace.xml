@@ -30,11 +30,6 @@
   <component name="ChangeListManager">
     <list default="true" id="12c5590f-20f1-441a-b116-7f3f712f734a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/Finance/Entities/Expense.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/Finance/Entities/Expense.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/Finance/Http/Controllers/admin/ExpensesController.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/Finance/Http/Controllers/admin/ExpensesController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/Finance/Resources/views/admin/expenses/create.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/Finance/Resources/views/admin/expenses/create.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Modules/Finance/Resources/views/admin/expenses/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/Modules/Finance/Resources/views/admin/expenses/edit.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2020_09_27_000136_add_relationship_fields_to_expenses_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2020_09_27_000136_add_relationship_fields_to_expenses_table.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -135,10 +130,7 @@
         <entry file="file://$PROJECT_DIR$/Modules/Finance/Resources/views/admin/expenses/index.blade.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="207">
-              <caret line="63" column="16" selection-start-line="63" selection-start-column="13" selection-end-line="63" selection-end-column="16" />
-              <caret line="97" column="19" selection-start-line="97" selection-start-column="16" selection-end-line="97" selection-end-column="19" />
-              <caret line="2" column="8" selection-start-line="2" selection-start-column="5" selection-end-line="2" selection-end-column="8" />
-              <caret line="10" column="11" selection-start-line="10" selection-start-column="8" selection-end-line="10" selection-end-column="11" />
+              <caret line="10" column="11" lean-forward="true" selection-start-line="10" selection-start-column="11" selection-end-line="10" selection-end-column="11" />
             </state>
           </provider>
         </entry>
@@ -737,18 +729,17 @@
       <workItem from="1610977580566" duration="10385000" />
       <workItem from="1611047827120" duration="2332000" />
       <workItem from="1611051454073" duration="12541000" />
-      <workItem from="1611224505174" duration="6700000" />
+      <workItem from="1611224505174" duration="7859000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="85912000" />
+    <option name="totallyTimeSpent" value="87071000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1066" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49891067" visible="true" weight="0.25746268" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49891067" visible="true" weight="0.25746268" />
       <window_info id="Structure" order="1" sideWeight="0.50108933" side_tool="true" weight="0.14925373" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
@@ -763,11 +754,11 @@
       <window_info anchor="bottom" id="Version Control" order="8" weight="0.32897604" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info anchor="bottom" id="Terminal" order="11" weight="0.32897604" />
+      <window_info anchor="bottom" id="Terminal" order="11" visible="true" weight="0.32897604" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="Remote Host" order="3" weight="0.32995737" />
+      <window_info active="true" anchor="right" id="Remote Host" order="3" visible="true" weight="0.32995737" />
       <window_info anchor="right" id="Database" order="4" />
     </layout>
   </component>
@@ -1255,10 +1246,7 @@
     <entry file="file://$PROJECT_DIR$/Modules/Finance/Resources/views/admin/expenses/index.blade.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="207">
-          <caret line="63" column="16" selection-start-line="63" selection-start-column="13" selection-end-line="63" selection-end-column="16" />
-          <caret line="97" column="19" selection-start-line="97" selection-start-column="16" selection-end-line="97" selection-end-column="19" />
-          <caret line="2" column="8" selection-start-line="2" selection-start-column="5" selection-end-line="2" selection-end-column="8" />
-          <caret line="10" column="11" selection-start-line="10" selection-start-column="8" selection-end-line="10" selection-end-column="11" />
+          <caret line="10" column="11" lean-forward="true" selection-start-line="10" selection-start-column="11" selection-end-line="10" selection-end-column="11" />
         </state>
       </provider>
     </entry>
