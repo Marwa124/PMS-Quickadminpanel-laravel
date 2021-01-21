@@ -17,6 +17,8 @@ class AddRelationshipFieldsToExpensesTable extends Migration
             $table->foreign('payment_method_id')->references('id')->on('payment_methods')->onDelete('cascade');
             $table->unsignedInteger('account_id')->nullable();
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
+            $table->unsignedInteger('created_by')->nullable();
+            $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
 
         });
     }

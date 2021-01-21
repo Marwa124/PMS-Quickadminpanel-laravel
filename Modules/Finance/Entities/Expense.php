@@ -4,6 +4,7 @@ namespace Modules\Finance\Entities;
 
 
 use App\Models\Client;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -35,6 +36,7 @@ class Expense extends Model implements HasMedia
         'status',
         'reference',
         'payment_method_id',
+        'created_by',
         'paid_by_id',
         'account_id',
         'created_at',
@@ -72,6 +74,11 @@ class Expense extends Model implements HasMedia
     public function expense_category()
     {
         return $this->belongsTo(ExpenseCategory::class, 'expense_category_id');
+    }
+
+    public function added_by()
+    {
+        return $this->belongsTo(User::class, 'created_by');
     }
 
     public function getEntryDateAttribute($value)

@@ -29,8 +29,12 @@ class ExpensesController extends Controller
     {
 
         if (\request()->ajax()) {
+            if(auth()->user()->hasRole('Admin') || auth()->user()->hasRole('Super Admin') ){
+                $expenses = Expense::all();
+            }else{
+                $expenses = Expense::where('created_by',auth()->user()->id)->get();
+            }
 
-            $expenses = Expense::all();
 
 
             return DataTables::of($expenses)
@@ -52,15 +56,28 @@ class ExpensesController extends Controller
                 })
                 ->addColumn('status', function (Expense $request) {
                     $status = '';
-                    if ($request->status == 'non_approved') {
-                        $status = '<a href="' . route('finance.admin.expenses.getapproved',$request->id) . '" title="getapproved"> Non Approved</a>';
+                    if(auth()->user()->hasRole('Admin') || auth()->user()->hasRole('Super Admin') ){
+                        if ($request->status == 'non_approved') {
+                            $status = '<a href="' . route('finance.admin.expenses.getapproved',$request->id) . '" title="getapproved"> Non Approved</a>';
 
-                    } else if ($request->status == 'unpaid') {
-                        $status = '<a href="' . route('finance.admin.expenses.getpaid',$request->id) . '" title="getpaid"> Unpaid</a>';
+                        } else if ($request->status == 'unpaid') {
+                            $status = '<a href="' . route('finance.admin.expenses.getpaid',$request->id) . '" title="getpaid"> Unpaid</a>';
 
-                    } else{
-                        $status = $request->status;
+                        } else{
+                            $status = $request->status;
+                        }
+                    }else{
+                        if ($request->status == 'non_approved') {
+                            $status = 'Non Approved';
+
+                        } else if ($request->status == 'unpaid') {
+                            $status = 'Unpaid';
+
+                        } else{
+                            $status = $request->status;
+                        }
                     }
+
 
                     return $status;
                 })
@@ -127,20 +144,26 @@ class ExpensesController extends Controller
     public function edit($id)
     {
         abort_if(Gate::denies('expenses_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        $expense = Expense::findOrFail($id);
-        $accounts = Account::all();
-        $payment_methods = PaymentMethod::all();
-        $expenses_category = ExpenseCategory::all();
-        $clients = Client::all();
 
-        $attachments = $expense->getMedia('attachments') ?? null;
+            $expense = Expense::findOrFail($id);
+        if(auth()->user()->hasRole('Admin') || auth()->user()->hasRole('Super Admin') || auth()->user()->id == $expense->created_by ){
+            $accounts = Account::all();
+            $payment_methods = PaymentMethod::all();
+            $expenses_category = ExpenseCategory::all();
+            $clients = Client::all();
+
+            $attachments = $expense->getMedia('attachments') ?? null;
 
 
-        $data = trans('cruds.expenses.attach');
+            $data = trans('cruds.expenses.attach');
 
-        $attachments = view('finance::partials.editModal', compact('data', 'attachments', 'id', 'expense'));
+            $attachments = view('finance::partials.editModal', compact('data', 'attachments', 'id', 'expense'));
 
-        return view('finance::admin.expenses.edit', compact('accounts', 'payment_methods','expenses_category','clients','expense', 'attachments'));
+            return view('finance::admin.expenses.edit', compact('accounts', 'payment_methods','expenses_category','clients','expense', 'attachments'));
+
+        }else{
+            abort( Response::HTTP_FORBIDDEN, '403 Forbidden');
+        }
 
     }
 

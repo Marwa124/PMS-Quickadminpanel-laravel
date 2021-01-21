@@ -11,6 +11,7 @@
                   enctype="multipart/form-data">
                 @method("PUT")
                 <input type="hidden" name="status" id="status" value="{{$expense->status}}">
+                <input type="hidden" name="created_by" id="created_by" value="{{auth()->user()->id}}">
 
                 @csrf
 
