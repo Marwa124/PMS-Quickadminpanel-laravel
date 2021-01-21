@@ -675,6 +675,12 @@ return array (
       'deleted_at' => 'Deleted at',
       'deleted_at_helper' => ' ',
     ),
+    'salaryForm' => array(
+      'type'   => 'النوع مطلوب',
+      'type_str'   => 'النوع يجب ان يكون احرف',
+      'amount' => 'يجب ادخال القيمة',
+      'amount_int' => 'القيمه يجب ان تكون عدد صحيح',
+    ),
   ),
   'overtime' => 
   array (

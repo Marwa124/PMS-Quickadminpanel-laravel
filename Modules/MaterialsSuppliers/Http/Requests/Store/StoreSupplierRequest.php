@@ -38,7 +38,7 @@ class StoreSupplierRequest extends FormRequest
                 'nullable',
             ],
             'customer_group_id' => [
-                'required',
+                'nullable',
                 'integer',
             ],
         ];

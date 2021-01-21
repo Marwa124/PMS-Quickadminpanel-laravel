@@ -224,7 +224,10 @@
                                             @if ($accountDetail->user_id != auth()->user()->id)
                                                 @php
                                                 // dd(auth()->user()->accountDetail()->get());
+                                                $dep = '';
+                                                if (auth()->user()->accountDetail) {
                                                     $dep = auth()->user()->accountDetail->designation ? auth()->user()->accountDetail->designation->department->id : '';
+                                                }
                                                 @endphp
                                                 @if ($dep)
                                                     @php
@@ -340,7 +343,7 @@
                 </select>
             </div>
             <div class="form-group">
-                <label class="required" for="">Amount</label>
+                <label class="required" for="">{{trans('cruds.accountDetail.fields.amount')}}</label>
                 <input name="amount" type="integer" class="form-control" placeholder="ex:1000 EGY" required
                 value="{{$advancedUserSalaray ? ((date('Y-m') == $advancedUserSalaray->month) ? $advancedUserSalaray->amount : '') : ''}}"
                 >
@@ -469,12 +472,14 @@ $.ajax({
 $('.updateUserSalary').on('click', function(){
     var userId = $(this).closest('.modal').find('input[name="user_id"]').val();
     var type   = $(this).closest('.modal').find('select[name="type"]').val();
-    var type   = $(this).closest('.modal').find('select[name="type"]').val();
     var amount = $(this).closest('.modal').find('input[name="amount"]').val();
     var month  = $(this).closest('.modal').find('input[name="month"]').val();
-    var reason = $(this).closest('.modal').find('input[name="reason"]').val();
+    var reason = $(this).closest('.modal').find('input[name="reason"]').val() ?? '';
     console.log(type);
     console.log(userId);
+    console.log(amount);
+    console.log(month);
+    console.log(reason);
         $.ajax({
         url: '{{url('admin/hr/account-details/advanced-salary')}}/' + userId,
         type: 'post',

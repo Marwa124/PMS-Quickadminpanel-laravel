@@ -8,51 +8,223 @@
         content: " *";
         color: red;
     }
+    .input-transparent {
+        outline: 0;
+        border: 0 !important;
+        background: 0 0;
+        padding: 3px;
+        margin-left: 3px;
+        background-color: transparent !important;
+    }
+    .input-transparent:focus {
+        box-shadow: none;
+    }
+    .pointer {
+        cursor: pointer;
+    }
 </style>
 <template>
-    <div class="container">
-        <div class="row my-3">
-            <div class="col-md-6">
+    <div class="">
+        <div class="my-3 d-flex justify-content-around">
+            <div class="">
 
 
-                <div class="row g-3 align-items-center">
+                <div class="d-flex justify-content-between align-items-center form-group">
                     <div class="col-auto">
-                        <label for="refNo" class="col-form-label required" v-text="$t('cruds.purchase.fields.ref_no')"></label>
+                        <label for="refNo" class="col-form-label required" v-text="$t('purchase.fields.ref_no')"></label>
                     </div>
                     <div class="col-auto">
-                        <input type="text" id="refNo" class="form-control">
+                        <input type="text" v-model="form.ref_no" class="form-control">
                     </div>
                 </div>
 
-                <!-- department_head -->
-                <div class="row g-3 align-items-center">
+                <supplier-modal :form="form">
+                </supplier-modal>
+
+                <div class="d-flex justify-content-between align-items-center form-group">
                     <div class="col-auto">
-                        <label for="supplier" class="col-form-label required" v-text="$t('cruds.purchase.fields.supplier')"></label>
+                        <label class="col-form-label" v-text="$t('purchase.fields.purchase_date')"></label>
                     </div>
                     <div class="col-auto">
-                        <multiselect 
-                            v-model="form.supplier" 
-                            :options="suppliers" 
-                            :searchable="true" 
-                            :close-on-select="true" 
-                            :show-labels="false" 
-                            label="name" 
-                            track-by="id"
-                            :placeholder="$t('sidebar.choose_supplier')"
-                            :preselect-first="true"
-                        ></multiselect>
-                            <!-- :custom-label="userFullname" -->
+                        <input type="text" v-model="form.purchase_date" class="form-control">
                     </div>
-                    <has-error :form="form" field="supplier"></has-error>
                 </div>
 
+                <div class="d-flex justify-content-between align-items-center form-group">
+                    <div class="col-auto">
+                        <label class="col-form-label" v-text="$t('purchase.fields.due_date')"></label>
+                    </div>
+                    <div class="col-auto">
+                        <input type="text" v-model="form.due_date" class="form-control">
+                    </div>
+                </div>
 
             </div>
             <!-- End First Half Screen -->
-            <div class="col-md-6"></div>
+            <div class="">
+
+                <div class="d-flex justify-content-between align-items-center form-group">
+                    <div class="col-auto">
+                        <label class="col-form-label" v-text="$t('purchase.fields.sales_agent')"></label>
+                    </div>
+                    <div class="col-auto">
+                        <multiselect
+                            v-model="form.sales_agent"
+                            :options="users"
+                            :searchable="true"
+                            :close-on-select="true"
+                            :show-labels="false"
+                            label="fullname"
+                            track-by="user_id"
+                            :placeholder="$t('sidebar.choose_user')"
+                            :preselect-first="true"
+                        ></multiselect>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center form-group">
+                    <div class="col-auto">
+                        <label class="col-form-label" v-text="$t('purchase.fields.stock')"></label>
+                    </div>
+                    <div class="col-auto mt-2">
+                        <div class="input-group">
+                            <div class="form-group">
+                                <input type="radio" v-model="form.stock" value="Yes" aria-label="Radio button for following text input">
+                                <label>Yes</label>
+                            </div>
+                            <div class="form-group ml-1">
+                                <input type="radio" v-model="form.stock" value="No" aria-label="Radio button for following text input">
+                                <label>No</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center form-group">
+                    <div class="col-auto">
+                        <label class="col-form-label" v-text="$t('purchase.fields.discount_type')"></label>
+                    </div>
+                    <div class="col-auto">
+                        <select v-model="form.discount_type" class="form-control">
+                            <option value="before_tax" v-text="$t('purchase.fields.before_tax')"></option>
+                            <option value="after_tax" v-text="$t('purchase.fields.after_tax')"></option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center form-group">
+                    <div class="col-auto">
+                        <label class="col-form-label" v-text="$t('purchase.fields.notes')"></label>
+                    </div>
+                    <div class="col-auto">
+                        <textarea v-model="form.notes" class="form-control"></textarea>
+                    </div>
+                </div>
+
+            </div>
             <!-- End Second Half Screen -->
 
         </div>
+
+        <!-- Items -->
+        <div class="d-flex justify-content-between">
+            <div class="col-md-6">
+                    {{form.items}}
+                    <!-- {{selectedItem}} -->
+                <multiselect
+                    :options="items"
+                    v-model="selectedItem"
+                    :searchable="true"
+                    :close-on-select="true"
+                    :show-labels="false"
+                    label="name"
+                    track-by="id"
+                    :placeholder="$t('sidebar.choose_item')"
+                    :preselect-first="true"
+                    @input="addNewPurchaseItem(selectedItem)"
+                ></multiselect>
+            </div>
+            <div class="col-md-6">
+                <div class="d-flex justify-content-between align-items-center form-group">
+                    <div class="col-auto">
+                        <label class="col-form-label" v-text="$t('purchase.fields.show_qty_as')"></label>
+                    </div>
+                    <div class="col-auto mt-2">
+                        <div class="input-group">
+                            <div class="form-group">
+                                <input type="radio" name="qtyAs" checked @click="showQtyAs('qty')" aria-label="Radio button for following text input">
+                                <label v-text="$t('purchase.fields.quantity_as_qty')"></label>
+                            </div>
+                            <div class="form-group ml-1">
+                                <input type="radio" name="qtyAs" @click="showQtyAs('hours')" aria-label="Radio button for following text input">
+                                <label v-text="$t('purchase.fields.quantity_as_hours')"></label>
+                            </div>
+                            <div class="form-group ml-1">
+                                <input type="radio" name="qtyAs" @click="showQtyAs('qty_hours')" aria-label="Radio button for following text input">
+                                <label v-text="$t('purchase.fields.quantity_as_qty_hours')"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- .........Items......... -->
+
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                <th scope="col">{{$t('items.fields.name')}}</th>
+                <th scope="col">{{$t('items.fields.description')}}</th>
+                <th scope="col" v-text="quantityAs"></th>
+                <th scope="col">{{$t('items.fields.price')}}</th>
+                <th scope="col">{{$t('items.fields.tax_rate')}}</th>
+                <th scope="col">{{$t('items.fields.total')}}</th>
+                <th scope="col">{{$t('global.action')}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-row-id="" v-for="(item, index) in form.items" :key="index">
+
+                <!-- <tr> -->
+                    <!-- <th scope="row">1</th> -->
+                    <th>
+                        <textarea class="form-control" v-model="item.name" @keyup="newItemAdded(item)"></textarea>
+                    </th>
+                    <td>
+                        <textarea class="form-control" v-model="item.description"></textarea>
+                    </td>
+                    <td>
+                        <input class="form-control" type="number" v-model="item.quantity" @change="newItemAdded(item)">
+                        <input class="form-control input-transparent" :placeholder="$t('items.fields.unit_cost')" type="text" v-model="item.unit_cost">
+                    </td>
+                    <td>
+                        <input class="form-control" type="number" v-model="item.total_cost_price" @change="newItemAdded(item)">
+                    </td>
+                    <td>
+                        <multiselect
+                            :options="taxRates"
+                            v-model="form.item_tax_rate"
+                            :searchable="true"
+                            :close-on-select="true"
+                            :show-labels="false"
+                            label="name"
+                            track-by="id"
+                            :placeholder="$t('sidebar.choose_tax_rate')"
+                            :preselect-first="true"
+                            :multiple="true"
+                            :taggable="true"
+                            @tag="addTax"
+                        ></multiselect>
+                    </td>
+                    <td>
+                        <input class="form-control input-transparent" type="number" disabled v-model="item.total">
+                    </td>
+                    <td>
+                        <i class="fas fa-check text-white p-1" :class="activeRowAddition" @click="addItemToModel(item)"></i>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </template>
 
@@ -67,39 +239,114 @@
         props: ['langKey', 'departmentId'],
         data() {
             return {
-                urlGetSuppliers:   '/api/v1/admin/materialssuppliers/suppliers',
+                urlGetAccountDetails: '/api/v1/admin/hr/account-details',
+                urlGetItems:          '/api/v1/admin/materialssuppliers/items',
+                urlGetTaxRates:       '/api/v1/admin/materialssuppliers/tax-rates',
 
-                suppliers: [],
-                designations: [],
+                users: [],
+                items: [],
+                taxRates: [],
+                quantityAs: this.$t('purchase.fields.quantity_as_qty'),
 
                 spinnerAction: false,
-                spinnerUpdateDepart: false,
+                spinnerLoad: false,
+
+                activeRowAddition: 'bg-secondary',
+
+                selectedItem: [],
+
+                dataItems: {
+                            name:      '',
+                            description:      '',
+                            quantity:       '1',
+                            total_cost_price: '',
+                            item_tax_total: '', // Calculated
+                            total_cost:     '',
+                            unit_cost:      '',
+                            total:          '',
+                        },
 
                 form: new Form({
-                    ref_no: '',
-                    supplier: '', // user
-                    department_name: '',
-                    designations: [],
+                    ref_no:        '',
+                    supplier:      '',
+                    purchase_date: '',
+                    due_date:      '',
+                    sales_agent:   '',
+                    stock:         '',
+                    discount_type: '',
+                    notes:         '',
+                    items: [
+                        // {
+                        //     name:      '',
+                        //     description:      '',
+                        //     quantity:       '1',
+                        //     total_cost_price: '',
+                        //     item_tax_total: '', // Calculated
+                        //     total_cost:     '',
+                        //     unit_cost:      '',
+                        //     total:          '',
+                        // }
+                        this.dataItems
+                    ],
+                    item_tax_rate:  '',
+
                 }),
             }
         },
         methods: {
-            getSuppliers() {
-                axios.get(this.urlGetSuppliers).then(response => {
-                    const data = response.data;
-                    console.log(data);
-                    this.suppliers = data.department.department_head_account;
+            getAccountDetails() {
+                axios.get(this.urlGetAccountDetails).then(response => {
+                    const data = response.data.data
+                    this.users = data
                 });
             },
-            supplierName(name) {
-                return `${name.fullname}`
+            getItems() {
+                axios.get(this.urlGetItems).then(response => {
+                    console.log(response.data);
+                    const data = response.data.data
+                    this.items = data
+                });
             },
+            getTaxRates() {
+                axios.get(this.urlGetTaxRates).then(response => {
+                    console.log(response.data);
+                    const data = response.data.data
+                    this.taxRates = data
+                });
+            },
+            showQtyAs(val) {
+                this.quantityAs = this.$t('purchase.fields.quantity_as_'+val)
+            },
+            addNewPurchaseItem(item) {
+                // console.log(item);
+                this.form.items = [item]
+                // this.form.items.push(item)
+                this.newItemAdded(item)
+            },
+            addTax (taxItem) {
+                const tax = {
+                    name: taxItem,
+                    // code: newTag.substring(0, 2) + Math.floor((Math.random() * 10000000))
+                }
+                this.form.item_tax_rate.push(tax)
+                // this.value.push(tag)
+            },
+            newItemAdded(item) { // Set the input data values in row
+                if(item.name && item.quantity && item.total_cost_price != ''){
+                    console.log(item)
+                    this.activeRowAddition = 'bg-primary pointer'
+                }
+            },
+            addItemToModel(item) { // Add row item to model
+                this.form.items.push(item);
+                this.form.items.push(this.dataItems)
+            }
         },
         mounted() {
             i18n.locale = this.langKey;
-
-            this.getSuppliers();
-            console.log('Component mounted.')
+            this.getAccountDetails();
+            this.getItems();
+            this.getTaxRates();
         }
     }
 </script>
