@@ -60,14 +60,11 @@
 
                             <?php
                                 $user = Auth::user()->hasRole('Admin') ? true : false;
-                                // $user = Auth::user()->role ? (Auth::user()->role->title == 'Admin' ? true : false) : false;
                                 $owner = (Auth::user()->id == $accountDetail->user->id) ? true : false;
                             ?>
                             @if ($owner || $user)
 
                             <div class="row"> <p class="font-bold col-md-5">Password: </p><span class="col-md-7">
-
-
 
                                 <button  data-toggle="modal" data-target="#passwordModal" class="btn-xs btn-link passwordBtn">Reset Password
                                 </button>
@@ -82,6 +79,12 @@
                                     </button>
                                     </div>
                                     <div class="modal-body">
+                                        {{-- <div class="error-msg alert alert-danger" role="alert">
+                                        </div> --}}
+                                        <div class="error-msg">
+                                            <ul class="alert alert-danger" role="alert">
+                                            </ul>
+                                        </div>
                                         <div class="form-group">
                                             <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
                                             <input type="hidden" name="userId" id="userId" value="{{ $accountDetail->user->id }}">
@@ -183,6 +186,8 @@
 
 @section('scripts')
 <script>
+    $('.error-msg .alert-danger').css('display', 'none');
+
     $('.resetPassword').click(function(){
         var old_pass = $('input[name=old_password]').val();
         var new_pass = $('input[name=password]').val();
@@ -199,9 +204,39 @@
                 password_confirmation: confirm_pass,
                 userId: user_id,
             },
-            success: function() {
+            success: function(data) {
+                if (data == 'global.success') {
+                    let passwordModal = document.querySelector('#passwordModal');
+                        passwordModal.classList.add('close');
+                        $('.error-msg .alert-danger').css('display', 'none');
+                        $('.error-msg .alert-danger').html(``);
+                        // Reset Input value
+                        passwordModal.querySelectorAll('input').forEach(element => {
+                            if (element.getAttribute('type') != 'hidden') {
+                                element.value = ''
+                            }
+                        });
+                        // ---------Reset Input value
 
-            }
+                        passwordModal.setAttribute('data-dismiss', 'modal');
+                        passwordModal.click()
+                        passwordModal.classList.remove('close');
+                        passwordModal.removeAttribute('data-dismiss');
+                }else {
+                        $('.error-msg .alert-danger').css('display', 'block');
+                        $('.error-msg .alert-danger').html(``);
+                        // console.log(data);
+                        if (typeof data == 'object') {
+                            $.each( data, function( index, value ){
+                                value.forEach(err => {
+                                    $('.error-msg .alert-danger').append(`<li>`+err+`</li>`);
+                                });
+                            });
+                        }else {
+                            $('.error-msg .alert-danger').append(`<li>`+data+`</li>`);
+                        }
+                }
+            },
         })
     })
 </script>

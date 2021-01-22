@@ -19,6 +19,7 @@ use Spatie\MediaLibrary\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use Modules\HR\Entities\LeaveCategory;
 use Modules\Payroll\Entities\AdvanceSalary;
 use Modules\Payroll\Http\Requests\Store\StoreAdvanceSalaryRequest;
@@ -82,12 +83,18 @@ class AccountDetailsController extends Controller
             'password' => ['required', 'confirmed']
         ];
         $messages = [
-            // 'old-password.required' => '',
-            // 'new-password.required' => ''
+            'old_password.required' => trans('form.old_password_required'),
+            'password.required' => trans('form.new_password_required'),
+            'password.confirmed' => trans('form.new_password_confirm')
         ];
-        $this->validate($request, $rules, $messages);
 
-        $user = Auth::user()->role ? (Auth::user()->role->title == 'Admin' ? true : false) : false;
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors());
+        }
+
+        $user = Auth::user()->hasRole('Admin') ? true : false;
         $owner = (Auth::user()->id == $request->userId) ? true : false;
         $userObject = User::find($request->userId);
 
@@ -97,9 +104,13 @@ class AccountDetailsController extends Controller
                 //the password match..
                 $userObject->password = bcrypt($request->input('password'));
                 $userObject->save();
-                return response()->json('Password Updated Successfully');
+                return response()->json(trans('global.success'));
+                // return response()->json([
+                //     trans('form.success_password_update'), // Password Updated Successfully
+                //     'status' => trans('global.success')
+                // ]);
             }
-            return response()->json('Password Mismatch');
+            return response()->json(trans('forms.dismatch_password'));
         }
     }
 
