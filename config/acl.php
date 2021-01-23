@@ -240,7 +240,7 @@
                 'training_access',
                 'employee_request_create',
                 'employee_request_edit',
-                'employee_request_show',
+                // 'employee_request_show',
                 'employee_request_delete',
                 'employee_request_access',
             ],

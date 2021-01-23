@@ -56,7 +56,7 @@ Route::group(['as' => 'hr.admin.', 'prefix' => 'admin/hr', 'namespace' => 'Admin
 
     // Requests
     Route::delete('requests/destroy', 'RequestsController@massDestroy')->name('requests.massDestroy');
-    Route::resource('requests', 'RequestsController');
+    Route::resource('requests', 'RequestsController', ['except' => ['show']]);
 
     // Employees
     Route::delete('employees/destroy', 'EmployeesController@massDestroy')->name('employees.massDestroy');
