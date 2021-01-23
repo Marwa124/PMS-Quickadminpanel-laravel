@@ -83,9 +83,9 @@ class AccountDetailsController extends Controller
             'password' => ['required', 'confirmed']
         ];
         $messages = [
-            'old_password.required' => trans('form.old_password_required'),
-            'password.required' => trans('form.new_password_required'),
-            'password.confirmed' => trans('form.new_password_confirm')
+            'old_password.required' => trans('cruds.form.old_password_required'),
+            'password.required' => trans('cruds.form.new_password_required'),
+            'password.confirmed' => trans('cruds.form.new_password_confirm')
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages);
@@ -104,13 +104,9 @@ class AccountDetailsController extends Controller
                 //the password match..
                 $userObject->password = bcrypt($request->input('password'));
                 $userObject->save();
-                return response()->json(trans('global.success'));
-                // return response()->json([
-                //     trans('form.success_password_update'), // Password Updated Successfully
-                //     'status' => trans('global.success')
-                // ]);
+                return response()->json('success');
             }
-            return response()->json(trans('forms.dismatch_password'));
+            return response()->json(trans('cruds.form.dismatch_password'));
         }
     }
 

@@ -134,10 +134,6 @@
                 'evaluation_print',
                 'evaluation_delete',
             ],
-
-            'employee_evaluation' => [
-                'employee_evaluation_access',
-            ],
             // End Evaluations
 
 
@@ -529,7 +525,7 @@
             // 'sales_returns' => [
             //     'index-sales_returns'
             // ],
-            
+
             'suppliers' => [
                 'materials_supplier_access',
                 'supplier_access',
@@ -565,7 +561,7 @@
                 'purchase_payment_edit',
                 'purchase_payment_delete',
             ],
-            
+
             'purchase' => [
                 'purchase_access',
                 'purchase_create',

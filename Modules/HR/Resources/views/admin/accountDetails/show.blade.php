@@ -66,14 +66,15 @@
 
                             <div class="row"> <p class="font-bold col-md-5">Password: </p><span class="col-md-7">
 
-                                <button  data-toggle="modal" data-target="#passwordModal" class="btn-xs btn-link passwordBtn">Reset Password
+                                <button  data-toggle="modal" data-target="#passwordModal" class="btn-xs btn-link passwordBtn">
+                                    {{ trans('global.change_password') }}
                                 </button>
                             <!-- Modal -->
                             <div class="modal fade" id="passwordModal" tabindex="-1" role="dialog" aria-labelledby="passwordModalLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                    <h5 class="modal-title" id="passwordModalLabel">Reset Password</h5>
+                                    <h5 class="modal-title" id="passwordModalLabel">{{ trans('global.change_password') }}</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -205,7 +206,7 @@
                 userId: user_id,
             },
             success: function(data) {
-                if (data == 'global.success') {
+                if (data == 'success') {
                     let passwordModal = document.querySelector('#passwordModal');
                         passwordModal.classList.add('close');
                         $('.error-msg .alert-danger').css('display', 'none');

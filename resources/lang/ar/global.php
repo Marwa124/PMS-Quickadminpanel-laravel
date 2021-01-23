@@ -53,7 +53,7 @@ return array (
   'submit' => 'إرسال',
   'relatedData' => 'بيانات ذات صلة',
   'change_password_success' => 'تم تغير كلمة المرور بنجاح',
-  'datatables' => 
+  'datatables' =>
   array (
     'copy' => 'نسخ',
     'csv' => 'CSV',
@@ -64,7 +64,7 @@ return array (
     'delete' => 'حذف المحدد',
     'zero_selected' => 'لم يتم تحديد صفوف',
   ),
-  'billing' => 
+  'billing' =>
   array (
     'menu' => 'الفوترة',
     'current_plan' => 'اشتراكك الحالي',
@@ -73,7 +73,7 @@ return array (
     'trial_user' => 'مستخدم تجريبي',
     'plan_purchased_successfully' => 'تم شراء هذا الاشتراك بنجاح',
   ),
-  'payments' => 
+  'payments' =>
   array (
     'title' => 'الفواتير',
     'payment_date' => 'تاريخ الفاتورة',
@@ -282,4 +282,7 @@ return array (
   'Friday' => 'الجمعة',
   'Saturday' => 'السبت',
   'back' => 'رجوع',
+
+  'success' => 'تم بنجاح',
+
 );

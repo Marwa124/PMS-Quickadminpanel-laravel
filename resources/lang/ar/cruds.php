@@ -1,16 +1,16 @@
 <?php
 
 return array (
-  'userManagement' => 
+  'userManagement' =>
   array (
     'title' => 'إدارة المستخدمين',
     'title_singular' => 'إدارة المستخدمين',
   ),
-  'permission' => 
+  'permission' =>
   array (
     'title' => 'الصلاحيات',
     'title_singular' => 'الصلاحية',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -24,11 +24,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'role' => 
+  'role' =>
   array (
     'title' => 'مجموعات',
     'title_singular' => 'مجموعة',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -44,11 +44,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'user' => 
+  'user' =>
   array (
     'title' => 'المستخدمين',
     'title_singular' => 'مستخدم',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -128,16 +128,16 @@ return array (
       'vacation_verified_helper' => ' ',
     ),
   ),
-  'basicCRM' => 
+  'basicCRM' =>
   array (
     'title' => 'Basic CRM',
     'title_singular' => 'Basic CRM',
   ),
-  'crmStatus' => 
+  'crmStatus' =>
   array (
     'title' => 'Statuses',
     'title_singular' => 'Status',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -151,11 +151,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'crmCustomer' => 
+  'crmCustomer' =>
   array (
     'title' => 'Customers',
     'title_singular' => 'Customer',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -185,11 +185,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'crmNote' => 
+  'crmNote' =>
   array (
     'title' => 'Notes',
     'title_singular' => 'Note',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -211,11 +211,11 @@ return array (
       'user_helper' => ' ',
     ),
   ),
-  'crmDocument' => 
+  'crmDocument' =>
   array (
     'title' => 'Documents',
     'title_singular' => 'Document',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -235,20 +235,20 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'hr' => 
+  'hr' =>
   array (
     'title' => 'Hr',
     'title_singular' => 'Hr',
   ),
-  'evaluation' => 
+  'evaluation' =>
   array (
     'period' => 'حدد مده التقييم',
   ),
-  'employee' => 
+  'employee' =>
   array (
     'title' => 'Employees',
     'title_singular' => 'Employee',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -330,16 +330,16 @@ return array (
       'vacation_verified_helper' => ' ',
     ),
   ),
-  'timeManagement' => 
+  'timeManagement' =>
   array (
     'title' => 'إدارة الوقت',
     'title_singular' => 'إدارة الوقت',
   ),
-  'timeWorkType' => 
+  'timeWorkType' =>
   array (
     'title' => 'انواع العمل',
     'title_singular' => 'نوع العمل',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -359,11 +359,11 @@ return array (
       'query_helper' => ' ',
     ),
   ),
-  'timeProject' => 
+  'timeProject' =>
   array (
     'title' => 'المشاريع',
     'title_singular' => 'مشروع',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -377,11 +377,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'timeEntry' => 
+  'timeEntry' =>
   array (
     'title' => 'وقت المدخلات',
     'title_singular' => 'وقت الإدخال',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -401,11 +401,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'timeReport' => 
+  'timeReport' =>
   array (
     'title' => 'تقرير شهري',
     'title_singular' => 'تقرير شهري',
-    'reports' => 
+    'reports' =>
     array (
       'title' => 'التقارير',
       'title_singular' => 'تقرير',
@@ -414,16 +414,16 @@ return array (
       'timeByWorkType' => 'تقرير حسب نوع العمل',
     ),
   ),
-  'taskManagement' => 
+  'taskManagement' =>
   array (
     'title' => 'Task management',
     'title_singular' => 'Task management',
   ),
-  'taskStatus' => 
+  'taskStatus' =>
   array (
     'title' => 'الحالات',
     'title_singular' => 'الحاله',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -437,11 +437,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'taskTag' => 
+  'taskTag' =>
   array (
     'title' => 'علامات',
     'title_singular' => 'علامة',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -455,11 +455,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'task' => 
+  'task' =>
   array (
     'title' => 'مهام',
     'title_singular' => 'مهمه',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -525,16 +525,16 @@ return array (
       'index_no_helper' => ' ',
     ),
   ),
-  'tasksCalendar' => 
+  'tasksCalendar' =>
   array (
     'title' => 'الجدول الزمني',
     'title_singular' => 'الجدول الزمني',
   ),
-  'userAlert' => 
+  'userAlert' =>
   array (
     'title' => 'User Alerts',
     'title_singular' => 'User Alert',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -554,11 +554,11 @@ return array (
       'model_helper' => ' ',
     ),
   ),
-  'department' => 
+  'department' =>
   array (
     'title' => 'Departments',
     'title_singular' => 'Department',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -592,11 +592,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'designation' => 
+  'designation' =>
   array (
     'title' => 'Designations',
     'title_singular' => 'Designation',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -615,12 +615,12 @@ return array (
       'designation_name_ar' => 'الأسم بالعربية',
     ),
   ),
-  'accountDetail' => 
+  'accountDetail' =>
   array (
     'title' => 'Account Details',
     'title_singular' => 'Account Detail',
     'user_salary_error' => 'تأكد من وجود مرتب لهذا المستخدم',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -682,11 +682,11 @@ return array (
       'amount_int' => 'القيمه يجب ان تكون عدد صحيح',
     ),
   ),
-  'overtime' => 
+  'overtime' =>
   array (
     'title' => 'Overtime',
     'title_singular' => 'Overtime',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -708,11 +708,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'holiday' => 
+  'holiday' =>
   array (
     'title' => 'Holidays',
     'title_singular' => 'Holiday',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -734,11 +734,11 @@ return array (
       'user_helper' => ' ',
     ),
   ),
-  'training' => 
+  'training' =>
   array (
     'title' => 'Trainings',
     'title_singular' => 'Training',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -774,11 +774,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'leaveCategory' => 
+  'leaveCategory' =>
   array (
     'title' => 'Leave Categories',
     'title_singular' => 'Leave Category',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -794,11 +794,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'leaveApplication' => 
+  'leaveApplication' =>
   array (
     'title' => 'Leave Applications',
     'title_singular' => 'Leave Application',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -837,11 +837,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'meetingMinute' => 
+  'meetingMinute' =>
   array (
     'title' => 'Meeting Minutes',
     'title_singular' => 'Meeting Minute',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -869,11 +869,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'employeeAward' => 
+  'employeeAward' =>
   array (
     'title' => 'Employee Awards',
     'title_singular' => 'Employee Award',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -897,16 +897,16 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'attendance' => 
+  'attendance' =>
   array (
     'title' => 'Attendance',
     'title_singular' => 'Attendance',
   ),
-  'attendances' => 
+  'attendances' =>
   array (
     'title' => 'Attendances',
     'title_singular' => 'Attendance',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -930,16 +930,16 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'employeess' => 
+  'employeess' =>
   array (
     'title' => 'Employees',
     'title_singular' => 'Employee',
   ),
-  'dailyAttendance' => 
+  'dailyAttendance' =>
   array (
     'title' => 'Daily Attendances',
     'title_singular' => 'Daily Attendance',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -965,11 +965,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'monthlyAttendance' => 
+  'monthlyAttendance' =>
   array (
     'title' => 'Monthly Attendances',
     'title_singular' => 'Monthly Attendance',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -995,16 +995,16 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'recruitment' => 
+  'recruitment' =>
   array (
     'title' => 'Recruitment',
     'title_singular' => 'Recruitment',
   ),
-  'jobCircular' => 
+  'jobCircular' =>
   array (
     'title' => 'Job Circulars',
     'title_singular' => 'Job Circular',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -1040,11 +1040,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'jobApplication' => 
+  'jobApplication' =>
   array (
     'title' => 'Job Application',
     'title_singular' => 'Job Application',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -1076,21 +1076,21 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'projectManagement' => 
+  'projectManagement' =>
   array (
     'title' => 'إدارة المشاريع',
     'title_singular' => 'إدارة المشاريع',
   ),
-  'sale' => 
+  'sale' =>
   array (
     'title' => 'Sales',
     'title_singular' => 'Sale',
   ),
-  'proposal' => 
+  'proposal' =>
   array (
     'title' => 'Proposals',
     'title_singular' => 'Proposal',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -1140,11 +1140,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'interestedIn' => 
+  'interestedIn' =>
   array (
     'title' => 'Interested In',
     'title_singular' => 'Interested In',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -1158,11 +1158,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'Results' => 
+  'Results' =>
   array (
     'title' => 'النتائج',
     'title_singular' => 'النتائج',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -1176,11 +1176,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'Types' => 
+  'Types' =>
   array (
     'title' => 'النوع',
     'title_singular' => 'النوع',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -1194,11 +1194,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'Countries_Code' => 
+  'Countries_Code' =>
   array (
     'title' => 'اكواد الدول',
     'title_singular' => 'اكواد الدول',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -1212,11 +1212,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'leadCategory' => 
+  'leadCategory' =>
   array (
     'title' => 'Lead Categories',
     'title_singular' => 'Lead Category',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -1234,11 +1234,11 @@ return array (
       'order_no_helper' => ' ',
     ),
   ),
-  'leadSource' => 
+  'leadSource' =>
   array (
     'title' => 'Lead Sources',
     'title_singular' => 'Lead Source',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -1252,11 +1252,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'leadStatus' => 
+  'leadStatus' =>
   array (
     'title' => 'Lead Status',
     'title_singular' => 'Lead Status',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -1274,11 +1274,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'salutation' => 
+  'salutation' =>
   array (
     'title' => 'Salutations',
     'title_singular' => 'Salutation',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -1292,11 +1292,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'lead' => 
+  'lead' =>
   array (
     'title' => 'Leads',
     'title_singular' => 'Lead',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -1356,11 +1356,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'opportunity' => 
+  'opportunity' =>
   array (
     'title' => 'Opportunities',
     'title_singular' => 'Opportunity',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -1392,11 +1392,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'client' => 
+  'client' =>
   array (
     'title' => 'Clients',
     'title_singular' => 'Client',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -1458,11 +1458,11 @@ return array (
       'status_helper' => ' ',
     ),
   ),
-  'clientMenu' => 
+  'clientMenu' =>
   array (
     'title' => 'Client Menu',
     'title_singular' => 'Client Menu',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -1486,11 +1486,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'menu' => 
+  'menu' =>
   array (
     'title' => 'Menu',
     'title_singular' => 'Menu',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -1514,11 +1514,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'project' => 
+  'project' =>
   array (
     'title' => 'المشاريع',
     'title_singular' => 'مشروع',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -1578,11 +1578,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'projectSetting' => 
+  'projectSetting' =>
   array (
     'title' => 'Project Settings',
     'title_singular' => 'Project Setting',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -1598,11 +1598,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'workTracking' => 
+  'workTracking' =>
   array (
     'title' => 'Work Tracking',
     'title_singular' => 'Work Tracking',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -1634,11 +1634,11 @@ return array (
       'account_helper' => ' ',
     ),
   ),
-  'account' => 
+  'account' =>
   array (
     'title' => 'Accounts',
     'title_singular' => 'Account',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -1658,11 +1658,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'milestone' => 
+  'milestone' =>
   array (
     'title' => 'Milestones',
     'title_singular' => 'Milestone',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -1686,11 +1686,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'bug' => 
+  'bug' =>
   array (
     'title' => 'Bugs',
     'title_singular' => 'Bug',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -1730,11 +1730,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'ticket' => 
+  'ticket' =>
   array (
     'title' => 'Tickets',
     'title_singular' => 'Ticket',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -1772,16 +1772,16 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'adminstration' => 
+  'adminstration' =>
   array (
     'title' => 'Adminstration',
     'title_singular' => 'Adminstration',
   ),
-  'announcement' => 
+  'announcement' =>
   array (
     'title' => 'Announcements',
     'title_singular' => 'Announcement',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -1811,11 +1811,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'kbCategory' => 
+  'kbCategory' =>
   array (
     'title' => 'Kb Categories',
     'title_singular' => 'Kb Category',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -1837,16 +1837,16 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'materialsSupplier' => 
+  'materialsSupplier' =>
   array (
     'title' => 'Materials Suppliers',
     'title_singular' => 'Materials Supplier',
   ),
-  'customerGroup' => 
+  'customerGroup' =>
   array (
     'title' => 'Customer Groups',
     'title_singular' => 'Customer Group',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -1864,16 +1864,16 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'finance' => 
+  'finance' =>
   array (
     'title' => 'Finance',
     'title_singular' => 'Finance',
   ),
-  'invoice' => 
+  'invoice' =>
   array (
     'title' => 'Invoices',
     'title_singular' => 'Invoice',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -1925,11 +1925,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'proposalsItem' => 
+  'proposalsItem' =>
   array (
     'title' => 'Proposals Items',
     'title_singular' => 'Proposals Item',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -1979,11 +1979,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'supplier' => 
+  'supplier' =>
   array (
     'title' => 'Suppliers',
     'title_singular' => 'Supplier',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2009,11 +2009,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'purchase' => 
+  'purchase' =>
   array (
     'title' => 'Purchase',
     'title_singular' => 'Purchase',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2065,11 +2065,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'returnStock' => 
+  'returnStock' =>
   array (
     'title' => 'Return Stock',
     'title_singular' => 'Return Stock',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2121,11 +2121,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'purchasePayment' => 
+  'purchasePayment' =>
   array (
     'title' => 'Purchase Payments',
     'title_singular' => 'Purchase Payment',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2157,11 +2157,11 @@ return array (
       'transaction_helper' => ' ',
     ),
   ),
-  'paymentMethod' => 
+  'paymentMethod' =>
   array (
     'title' => 'Payment Methods',
     'title_singular' => 'Payment Method',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2175,11 +2175,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'payment' => 
+  'payment' =>
   array (
     'title' => 'Payments',
     'title_singular' => 'Payment',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2211,11 +2211,11 @@ return array (
       'transaction_helper' => ' ',
     ),
   ),
-  'transaction' => 
+  'transaction' =>
   array (
     'title' => 'Transactions',
     'title_singular' => 'Transaction',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2281,11 +2281,11 @@ return array (
       'expense_category_helper' => ' ',
     ),
   ),
-  'transfer' => 
+  'transfer' =>
   array (
     'title' => 'Transfers',
     'title_singular' => 'Transfer',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2319,11 +2319,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'employeeBank' => 
+  'employeeBank' =>
   array (
     'title' => 'Employee Bank',
     'title_singular' => 'Employee Bank',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2349,11 +2349,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'taxRate' => 
+  'taxRate' =>
   array (
     'title' => 'Tax Rates',
     'title_singular' => 'Tax Rate',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2371,16 +2371,16 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'officeAsset' => 
+  'officeAsset' =>
   array (
     'title' => 'Office Assets',
     'title_singular' => 'Office Asset',
   ),
-  'stockCategory' => 
+  'stockCategory' =>
   array (
     'title' => 'Stock Categories',
     'title_singular' => 'Stock Category',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2394,11 +2394,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'stockSubCategory' => 
+  'stockSubCategory' =>
   array (
     'title' => 'Stock Sub Categories',
     'title_singular' => 'Stock Sub Category',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2414,11 +2414,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'stock' => 
+  'stock' =>
   array (
     'title' => 'Stocks',
     'title_singular' => 'Stock',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2436,16 +2436,16 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'payroll' => 
+  'payroll' =>
   array (
     'title' => 'Payroll',
     'title_singular' => 'Payroll',
   ),
-  'advanceSalary' => 
+  'advanceSalary' =>
   array (
     'title' => 'Advance Salary',
     'title_singular' => 'Advance Salary',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2471,11 +2471,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'salaryAllowance' => 
+  'salaryAllowance' =>
   array (
     'title' => 'Salary Allowance',
     'title_singular' => 'Salary Allowance',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2493,11 +2493,11 @@ return array (
       'salary_template_helper' => ' ',
     ),
   ),
-  'salaryTemplate' => 
+  'salaryTemplate' =>
   array (
     'title' => 'Salary Template',
     'title_singular' => 'Salary Template',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2515,11 +2515,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'salaryDeduction' => 
+  'salaryDeduction' =>
   array (
     'title' => 'Salary Deductions',
     'title_singular' => 'Salary Deduction',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2537,11 +2537,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'salaryPayment' => 
+  'salaryPayment' =>
   array (
     'title' => 'Salary Payments',
     'title_singular' => 'Salary Payment',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2567,11 +2567,11 @@ return array (
       'deduct_from_helper' => ' ',
     ),
   ),
-  'salaryPaymentAllowance' => 
+  'salaryPaymentAllowance' =>
   array (
     'title' => 'Salary Payment Allowance',
     'title_singular' => 'Salary Payment Allowance',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2589,11 +2589,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'salaryPaymentDeduction' => 
+  'salaryPaymentDeduction' =>
   array (
     'title' => 'Salary Payment Deductions',
     'title_singular' => 'Salary Payment Deduction',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2611,11 +2611,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'salaryPaymentDetail' => 
+  'salaryPaymentDetail' =>
   array (
     'title' => 'Salary Payment Details',
     'title_singular' => 'Salary Payment Detail',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2633,11 +2633,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'salaryPayslip' => 
+  'salaryPayslip' =>
   array (
     'title' => 'Salary Payslip',
     'title_singular' => 'Salary Payslip',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2655,11 +2655,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'hourlyRate' => 
+  'hourlyRate' =>
   array (
     'title' => 'Hourly Rates',
     'title_singular' => 'Hourly Rate',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2675,11 +2675,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'onlinePayment' => 
+  'onlinePayment' =>
   array (
     'title' => 'Online Payments',
     'title_singular' => 'Online Payment',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2695,16 +2695,16 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'setting' => 
+  'setting' =>
   array (
     'title' => 'Settings',
     'title_singular' => 'Setting',
   ),
-  'vacation' => 
+  'vacation' =>
   array (
     'title' => 'Vacations',
     'title_singular' => 'Vacation',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2730,11 +2730,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'local' => 
+  'local' =>
   array (
     'title' => 'Locals',
     'title_singular' => 'Local',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2754,11 +2754,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'file' => 
+  'file' =>
   array (
     'title' => 'Files',
     'title_singular' => 'File',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2778,11 +2778,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'taskUploadedFile' => 
+  'taskUploadedFile' =>
   array (
     'title' => 'ملفات المهام المرفوعة',
     'title_singular' => 'ملف مرفوع لمهمة',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2808,11 +2808,11 @@ return array (
       'task_attachment_helper' => ' ',
     ),
   ),
-  'taskAttachment' => 
+  'taskAttachment' =>
   array (
     'title' => 'مرفقات المهمة',
     'title_singular' => 'مرفق المهمة',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2840,11 +2840,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'penaltyCategory' => 
+  'penaltyCategory' =>
   array (
     'title' => 'Penalty Categories',
     'title_singular' => 'Penalty Category',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2862,11 +2862,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'privateChat' => 
+  'privateChat' =>
   array (
     'title' => 'Private Chat',
     'title_singular' => 'Private Chat',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2882,11 +2882,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'todo' => 
+  'todo' =>
   array (
     'title' => 'Todos',
     'title_singular' => 'Todo',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2908,11 +2908,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'outgoingEmail' => 
+  'outgoingEmail' =>
   array (
     'title' => 'Outgoing Emails',
     'title_singular' => 'Outgoing Email',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2934,11 +2934,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'performanceIndicator' => 
+  'performanceIndicator' =>
   array (
     'title' => 'Performance Indicator',
     'title_singular' => 'Performance Indicator',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -2980,11 +2980,11 @@ return array (
       'ability_to_meet_deadline_helper' => ' ',
     ),
   ),
-  'technicalCategory' => 
+  'technicalCategory' =>
   array (
     'title' => 'Technical Categories',
     'title_singular' => 'Technical Category',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -3004,11 +3004,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'quotationForm' => 
+  'quotationForm' =>
   array (
     'title' => 'Quotation Forms',
     'title_singular' => 'Quotation Form',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -3028,11 +3028,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'quotation' => 
+  'quotation' =>
   array (
     'title' => 'Quotations',
     'title_singular' => 'Quotation',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -3062,11 +3062,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'quotationDetail' => 
+  'quotationDetail' =>
   array (
     'title' => 'Quotation Details',
     'title_singular' => 'Quotation Detail',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -3080,11 +3080,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'dashboardSetting' => 
+  'dashboardSetting' =>
   array (
     'title' => 'Dashboard Settings',
     'title_singular' => 'Dashboard Setting',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -3108,16 +3108,16 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'expenseManagement' => 
+  'expenseManagement' =>
   array (
     'title' => 'إدارة المصاريف',
     'title_singular' => 'إدارة المصاريف',
   ),
-  'expenseCategory' => 
+  'expenseCategory' =>
   array (
     'title' => 'تصنيف النفقات',
     'title_singular' => 'تصنيف المصروفات',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -3131,11 +3131,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'incomeCategory' => 
+  'incomeCategory' =>
   array (
     'title' => 'تصنيفات الإيراد',
     'title_singular' => 'الإيراد حسب التصنيف',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -3149,11 +3149,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'expense' => 
+  'expense' =>
   array (
     'title' => 'المصروفات',
     'title_singular' => 'المصروف',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -3173,11 +3173,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'income' => 
+  'income' =>
   array (
     'title' => 'الإيرادات',
     'title_singular' => 'الإيرادات',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -3197,11 +3197,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'expenseReport' => 
+  'expenseReport' =>
   array (
     'title' => 'تقرير شهري',
     'title_singular' => 'تقرير شهري',
-    'reports' => 
+    'reports' =>
     array (
       'title' => 'التقارير',
       'title_singular' => 'تقرير',
@@ -3213,11 +3213,11 @@ return array (
       'profit' => 'ربح',
     ),
   ),
-  'projectSpecification' => 
+  'projectSpecification' =>
   array (
     'title' => 'Project Specifications',
     'title_singular' => 'project Specification',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -3231,11 +3231,11 @@ return array (
       'deleted_at_helper' => ' ',
     ),
   ),
-  'sub_department' => 
+  'sub_department' =>
   array (
     'title' => 'Sub Departments',
     'title_singular' => 'Sub Department',
-    'fields' => 
+    'fields' =>
     array (
       'id' => 'ID',
       'id_helper' => ' ',
@@ -3248,5 +3248,11 @@ return array (
       'deleted_at' => 'Deleted at',
       'deleted_at_helper' => ' ',
     ),
+  ),
+  'form' => array(
+    'dismatch_password' => 'كلمه المرور غير متطابقه',
+    'old_password_required' => 'ادخل كلمه المرور السابقه',
+    'new_password_required' => 'ادخل كلمه المرور الجديده',
+    'new_password_confirm' => 'اعد ادخال كلمه المرور الجديده',
   ),
 );

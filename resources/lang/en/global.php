@@ -20,7 +20,7 @@ return array (
   'select_all' => 'Select all',
   'deselect_all' => 'Deselect all',
   'search' => 'Search',
-  'datatables' => 
+  'datatables' =>
   array (
     'delete' => 'Delete selected',
     'zero_selected' => 'No rows selected',
@@ -90,7 +90,7 @@ return array (
   'yes' => 'Yes',
   'youAreLoggedIn' => 'You are logged in!',
   'yourAccountNeedsAdminApproval' => 'Your accounts needs an administrator approval in order to log in',
-  'billing' => 
+  'billing' =>
   array (
     'menu' => 'Billing',
     'current_plan' => 'Your current plan',
@@ -99,7 +99,7 @@ return array (
     'trial_user' => 'Trial User',
     'plan_purchased_successfully' => 'Plan purchased successfully',
   ),
-  'payments' => 
+  'payments' =>
   array (
     'title' => 'Payments',
     'payment_date' => 'Payment Date',
@@ -288,4 +288,7 @@ return array (
   'Monday' => 'Monday',
   'Friday' => 'Friday',
   'Saturday' => 'Saturday',
+
+
+  'success' => 'Success',
 );
