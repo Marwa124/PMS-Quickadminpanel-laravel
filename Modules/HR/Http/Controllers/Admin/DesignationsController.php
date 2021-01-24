@@ -59,7 +59,8 @@ class DesignationsController extends Controller
     // public function update(Request $request, Designation $designation)
     public function update(UpdateDesignationRequest $request, Designation $designation)
     {
-        $designation->syncPermissions(request()->permission_name);
+        dd($designation->designationLeader()->first());
+        // syncPermissions(request()->permission_name);
         $designation->update($request->all());
 
         return redirect()->route('hr.admin.designations.index');

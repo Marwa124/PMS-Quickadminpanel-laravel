@@ -24,7 +24,7 @@ class UpdateDesignationRequest extends FormRequest
             'designation_name_ar' => [
                 'string',
                 'nullable',
-                'unique:designations,designation_name_ar',
+                // 'unique:designations,designation_name_ar',
             ],
             // 'permissions.*'    => [
             //     'integer',

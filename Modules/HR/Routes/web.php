@@ -71,7 +71,7 @@ Route::group(['as' => 'hr.admin.', 'prefix' => 'admin/hr', 'namespace' => 'Admin
 
      // Designations
      Route::delete('designations/destroy', 'DesignationsController@massDestroy')->name('designations.massDestroy');
-     Route::resource('designations', 'DesignationsController');
+     Route::resource('designations', 'DesignationsController', ['except' => 'show']);
 
      // Overtimes
      Route::delete('overtimes/destroy', 'OvertimeController@massDestroy')->name('overtimes.massDestroy');

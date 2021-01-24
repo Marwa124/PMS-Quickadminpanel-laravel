@@ -12,10 +12,14 @@
             @method('PUT')
             @csrf
             <div class="form-group">
-                <label for="user_id">{{ trans('cruds.training.fields.user') }}</label>
-                <select class="form-control select2 {{ $errors->has('user') ? 'is-invalid' : '' }}" name="user_id" id="user_id">
-                    @foreach($users as $id => $user)
-                        <option value="{{ $id }}" {{ (old('user_id') ? old('user_id') : $training->user->id ?? '') == $id ? 'selected' : '' }}>{{ $user }}</option>
+                <label>{{ trans('cruds.training.fields.assigned_by') }}</label>
+                <select class="form-control select2 {{ $errors->has('user') ? 'is-invalid' : '' }}" name="user_id" id="user_id" required>
+                    @foreach($users as $key => $label)
+                        @foreach ($label as $key => $item)
+                           @if ($key != 0)
+                            <option value="{{ $key }}" {{ (old('user_id') ? old('user_id') : $training->user->id ?? '') == $key ? 'selected' : '' }}>{{ $item }}</option>
+                           @endif
+                        @endforeach
                     @endforeach
                 </select>
                 @if($errors->has('user'))
@@ -25,7 +29,7 @@
                 @endif
                 <span class="help-block">{{ trans('cruds.training.fields.user_helper') }}</span>
             </div>
-            <div class="form-group">
+            {{-- <div class="form-group">
                 <label>{{ trans('cruds.training.fields.assigned_by') }}</label>
                 <select class="form-control {{ $errors->has('assigned_by') ? 'is-invalid' : '' }}" name="assigned_by" id="assigned_by">
                     <option value disabled {{ old('assigned_by', null) === null ? 'selected' : '' }}>{{ trans('global.pleaseSelect') }}</option>
@@ -39,7 +43,7 @@
                     </div>
                 @endif
                 <span class="help-block">{{ trans('cruds.training.fields.assigned_by_helper') }}</span>
-            </div>
+            </div> --}}
             <div class="form-group">
                 <label for="training_name">{{ trans('cruds.training.fields.training_name') }}</label>
                 <input class="form-control {{ $errors->has('training_name') ? 'is-invalid' : '' }}" type="text" name="training_name" id="training_name" value="{{ old('training_name', $training->training_name) }}">
@@ -94,7 +98,7 @@
                 <label>{{ trans('cruds.training.fields.status') }}</label>
                 <select class="form-control {{ $errors->has('status') ? 'is-invalid' : '' }}" name="status" id="status">
                     <option value disabled {{ old('status', null) === null ? 'selected' : '' }}>{{ trans('global.pleaseSelect') }}</option>
-                    @foreach(App\Models\Training::STATUS_SELECT as $key => $label)
+                    @foreach($trainingModel::STATUS_SELECT as $key => $label)
                         <option value="{{ $key }}" {{ old('status', $training->status) === (string) $key ? 'selected' : '' }}>{{ $label }}</option>
                     @endforeach
                 </select>
@@ -109,7 +113,7 @@
                 <label>{{ trans('cruds.training.fields.performance') }}</label>
                 <select class="form-control {{ $errors->has('performance') ? 'is-invalid' : '' }}" name="performance" id="performance">
                     <option value disabled {{ old('performance', null) === null ? 'selected' : '' }}>{{ trans('global.pleaseSelect') }}</option>
-                    @foreach(App\Models\Training::Performance_SELECT as $key => $label)
+                    @foreach($trainingModel::Performance_SELECT as $key => $label)
                         <option value="{{ $key }}" {{ old('performance', $training->performance) === (string) $key ? 'selected' : '' }}>{{ $label }}</option>
                     @endforeach
                 </select>

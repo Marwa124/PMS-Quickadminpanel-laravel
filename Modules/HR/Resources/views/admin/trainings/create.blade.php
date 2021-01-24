@@ -11,9 +11,18 @@
             @csrf
             <div class="form-group">
                 <label for="user_id">{{ trans('cruds.training.fields.user') }}</label>
-                <select class="form-control select2 {{ $errors->has('user') ? 'is-invalid' : '' }}" name="user_id" id="user_id">
+                {{-- <select class="form-control select2 {{ $errors->has('user') ? 'is-invalid' : '' }}" name="user_id" id="user_id">
                     @foreach($users as $id => $user)
                         <option value="{{ $id }}" {{ old('user_id') == $id ? 'selected' : '' }}>{{ $user }}</option>
+                    @endforeach
+                </select> --}}
+                <select class="form-control select2 {{ $errors->has('user') ? 'is-invalid' : '' }}" name="user_id" id="user_id" required>
+                    @foreach($users as $key => $label)
+                        @foreach ($label as $key => $item)
+                           @if ($key != 0)
+                            <option value="{{ $key }}" {{ old('user') === (string) $key ? 'selected' : '' }} {{ $key == 0 ? 'disabled' : '' }}>{{ $item }}</option>
+                           @endif
+                        @endforeach
                     @endforeach
                 </select>
                 @if($errors->has('user'))

@@ -94,7 +94,7 @@ class RequestsController extends Controller
 
     public function massDestroy(MassDestroyClientMeetingRequest $request)
     {
-        ClientMeeting::whereIn('id', request('ids'))->delete();
+        ClientMeeting::whereIn('id', request('ids'))->forceDelete();
 
         return response(null, Response::HTTP_NO_CONTENT);
     }
