@@ -157,7 +157,7 @@ class Proposal extends Model implements HasMedia
                 'tax_cost',
                 'order',
                 'unit',
-                'hsn_code',
+                'hsn_code'
             )->orderBy('order','asc');
 
     }
