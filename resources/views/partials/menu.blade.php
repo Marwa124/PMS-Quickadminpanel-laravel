@@ -208,6 +208,16 @@
                             </a>
                         </li>
                     @endcan
+                    @can('invoice')
+                        <li class="c-sidebar-nav-item">
+                            <a href="{{ route("finance.admin.invoices.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/invoices") || request()->is("admin/finance/*") ? "active" : "" }}">
+                                <i class="fa-fw fas fa-newspaper c-sidebar-nav-icon self-item-link">
+
+                                </i>
+                                {{ trans('cruds.finance.invoices') }}
+                            </a>
+                        </li>
+                    @endcan
 
 
 

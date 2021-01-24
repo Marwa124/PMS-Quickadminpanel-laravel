@@ -75,9 +75,14 @@ Route::group(['as' => 'finance.admin.', 'prefix' => 'admin/finance', 'namespace'
     ////////////////////////////////END DEPOSITS///////////////////////////////////////////////////////////////////////
 
     ////////////////////////////////////INVOICES///////////////////////////////////////////////////////////////////////
-    Route::resource('invoices','InvoicesController');
-    Route::delete('invoices_mass_destroy','InvoicesController@massDestroy')->name('invoices.massDestroy');
-    Route::get('invoices_get_data','InvoicesController@get_data')->name('invoices.get_data');
+    Route::delete('invoices/destroy', 'InvoicesController@massDestroy')->name('invoices.massDestroy');
+    Route::post('invoices/getmodule', 'InvoicesController@getmodule')->name('invoices.getmodule');
+    Route::post('invoices/get_taxes', 'InvoicesController@get_taxes_ajax')->name('invoices.get_taxes_ajax');
+    Route::post('invoices/getinvoiceitem', 'InvoicesController@get_item_by_id')->name('invoices.getinvoiceitem');
+    Route::post('invoices/media', 'InvoicesController@storeMedia')->name('invoices.storeMedia');
+    Route::post('invoices/ckmedia', 'InvoicesController@storeCKEditorImages')->name('invoices.storeCKEditorImages');
+    Route::resource('invoices', 'InvoicesController');
+
     ////////////////////////////////END INVOICES///////////////////////////////////////////////////////////////////////
 
 });

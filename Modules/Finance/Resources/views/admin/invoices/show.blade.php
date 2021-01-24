@@ -3,13 +3,13 @@
 
 {{-- <div class="card">
     <div class="card-header">
-        {{ trans('global.show') }} {{ trans('cruds.proposal.title') }}
+        {{ trans('global.show') }} {{ trans('cruds.invoice.title') }}
     </div>
 
     <div class="card-body">
         <div class="form-group">
             <div class="form-group">
-                <a class="btn btn-default" href="{{ route('sales.admin.proposals.index') }}">
+                <a class="btn btn-default" href="{{ route('sales.admin.invoices.index') }}">
                     {{ trans('global.back_to_list') }}
                 </a>
             </div>
@@ -17,159 +17,159 @@
                 <tbody>
                     <tr>
                         <th>
-                            {{ trans('cruds.proposal.fields.id') }}
+                            {{ trans('cruds.invoice.fields.id') }}
                         </th>
                         <td>
-                            {{ $proposal->id }}
+                            {{ $invoice->id }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.proposal.fields.reference_no') }}
+                            {{ trans('cruds.invoice.fields.reference_no') }}
                         </th>
                         <td>
-                            {{ $proposal->reference_no }}
+                            {{ $invoice->reference_no }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.proposal.fields.subject') }}
+                            {{ trans('cruds.invoice.fields.subject') }}
                         </th>
                         <td>
-                            {{ $proposal->subject }}
+                            {{ $invoice->subject }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.proposal.fields.module') }}
+                            {{ trans('cruds.invoice.fields.module') }}
                         </th>
                         <td>
-                            {{ $proposal->module }}
+                            {{ $invoice->module }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.proposal.fields.proposal_date') }}
+                            {{ trans('cruds.invoice.fields.invoice_date') }}
                         </th>
                         <td>
-                            {{ $proposal->proposal_date }}
+                            {{ $invoice->invoice_date }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.proposal.fields.expire_date') }}
+                            {{ trans('cruds.invoice.fields.expire_date') }}
                         </th>
                         <td>
-                            {{ $proposal->expire_date }}
+                            {{ $invoice->expire_date }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.proposal.fields.alert_overdue') }}
+                            {{ trans('cruds.invoice.fields.alert_overdue') }}
                         </th>
                         <td>
-                            {{ $proposal->alert_overdue }}
+                            {{ $invoice->alert_overdue }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.proposal.fields.currency') }}
+                            {{ trans('cruds.invoice.fields.currency') }}
                         </th>
                         <td>
-                            {{ $proposal->currency }}
+                            {{ $invoice->currency }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.proposal.fields.notes') }}
+                            {{ trans('cruds.invoice.fields.notes') }}
                         </th>
                         <td>
-                            {!! $proposal->notes !!}
+                            {!! $invoice->notes !!}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.proposal.fields.total_tax') }}
+                            {{ trans('cruds.invoice.fields.total_tax') }}
                         </th>
                         <td>
-                            {{ $proposal->total_tax }}
+                            {{ $invoice->total_tax }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.proposal.fields.total_cost_price') }}
+                            {{ trans('cruds.invoice.fields.total_cost_price') }}
                         </th>
                         <td>
-                            {{ $proposal->total_cost_price }}
+                            {{ $invoice->total_cost_price }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.proposal.fields.tax') }}
+                            {{ trans('cruds.invoice.fields.tax') }}
                         </th>
                         <td>
-                            {{ $proposal->tax }}
+                            {{ $invoice->tax }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.proposal.fields.status') }}
+                            {{ trans('cruds.invoice.fields.status') }}
                         </th>
                         <td>
-                            {{ $proposal->status }}
+                            {{ $invoice->status }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.proposal.fields.date_sent') }}
+                            {{ trans('cruds.invoice.fields.date_sent') }}
                         </th>
                         <td>
-                            {{ $proposal->date_sent }}
+                            {{ $invoice->date_sent }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.proposal.fields.proposal_deleted') }}
+                            {{ trans('cruds.invoice.fields.invoice_deleted') }}
                         </th>
                         <td>
-                            {{ Modules\Sales\Entities\Proposal::PROPOSAL_DELETED_SELECT[$proposal->proposal_deleted] ?? '' }}
+                            {{ Modules\Sales\Entities\Proposal::PROPOSAL_DELETED_SELECT[$invoice->invoice_deleted] ?? '' }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.proposal.fields.emailed') }}
+                            {{ trans('cruds.invoice.fields.emailed') }}
                         </th>
                         <td>
-                            {{ Modules\Sales\Entities\Proposal::EMAILED_SELECT[$proposal->emailed] ?? '' }}
+                            {{ Modules\Sales\Entities\Proposal::EMAILED_SELECT[$invoice->emailed] ?? '' }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.proposal.fields.show_client') }}
+                            {{ trans('cruds.invoice.fields.show_client') }}
                         </th>
                         <td>
-                            {{ Modules\Sales\Entities\Proposal::SHOW_CLIENT_SELECT[$proposal->show_client] ?? '' }}
+                            {{ Modules\Sales\Entities\Proposal::SHOW_CLIENT_SELECT[$invoice->show_client] ?? '' }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.proposal.fields.convert') }}
+                            {{ trans('cruds.invoice.fields.convert') }}
                         </th>
                         <td>
-                            {{ Modules\Sales\Entities\Proposal::CONVERT_SELECT[$proposal->convert] ?? '' }}
+                            {{ Modules\Sales\Entities\Proposal::CONVERT_SELECT[$invoice->convert] ?? '' }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.proposal.fields.convert_module') }}
+                            {{ trans('cruds.invoice.fields.convert_module') }}
                         </th>
                         <td>
-                            {{ $proposal->convert_module }}
+                            {{ $invoice->convert_module }}
                         </td>
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.proposal.fields.permissions') }}
+                            {{ trans('cruds.invoice.fields.permissions') }}
                         </th>
                         <td>
                           
@@ -180,7 +180,7 @@
                 </tbody>
             </table>
             <div class="form-group">
-                <a class="btn btn-default" href="{{ route('sales.admin.proposals.index') }}">
+                <a class="btn btn-default" href="{{ route('sales.admin.invoices.index') }}">
                     {{ trans('global.back_to_list') }}
                 </a>
             </div>
@@ -193,8 +193,8 @@
 
       <div class="card">
         <div class="card-header">
-            {{ trans('global.show') }} {{ trans('cruds.proposal.title') }}
-          <strong># {{ $proposal->reference_no }}</strong>
+            {{ trans('global.show') }} {{ trans('cruds.invoice.title') }}
+          <strong># {{ $invoice->reference_no }}</strong>
           <a href="#" class="btn btn-sm btn-info float-right" onclick="javascript:window.print();"><i class="fa fa-print"></i> Print</a>
           {{-- <a href="#" class="btn btn-sm btn-info float-right"><i class="fa fa-save"></i> Save</a> --}}
         </div>
@@ -216,15 +216,15 @@
 
             <div class="col-sm-4">
 
-              <h6 class="mb-3"> {{ trans('cruds.proposal.fields.reference_no') }}:</h6>
+              <h6 class="mb-3"> {{ trans('cruds.invoice.fields.reference_no') }}:</h6>
               <div>
-                <strong>#{{ $proposal->reference_no }}</strong>
+                <strong>#{{ $invoice->reference_no }}</strong>
               </div>
-              <div>{{ trans('cruds.proposal.fields.proposal_date') }} : {{ $proposal->proposal_date }}</div>
-              <div>{{ trans('cruds.proposal.fields.expire_date') }} : {{ $proposal->expire_date }}</div>
-              <div>{{ trans('cruds.proposal.fields.Sales_Agent') }}: {{ $proposal->user && $proposal->user->accountDetail ? $proposal->user->accountDetail->fullname :'' }} </div>
+              <div>{{ trans('cruds.invoice.fields.invoice_date') }} : {{ $invoice->invoice_date }}</div>
+              <div>{{ trans('cruds.invoice.fields.expire_date') }} : {{ $invoice->expire_date }}</div>
+              <div>{{ trans('cruds.invoice.fields.Sales_Agent') }}: {{ $invoice->user && $invoice->user->accountDetail ? $invoice->user->accountDetail->fullname :'' }} </div>
               <div>
-                {{ trans('cruds.proposal.fields.status') }}: {{ $proposal->status }}
+                {{ trans('cruds.invoice.fields.status') }}: {{ $invoice->status }}
               </div>
             </div>
             <!--/.col-->
@@ -235,13 +235,13 @@
 
             <div class="col-sm-4">
 
-                {{-- <h6 class="mb-3"> {{ trans('cruds.proposal.fields.OTG_INFO') }}:</h6> --}}
+                {{-- <h6 class="mb-3"> {{ trans('cruds.invoice.fields.OTG_INFO') }}:</h6> --}}
                 <div>
-                  <strong> {{ trans('cruds.proposal.fields.OTG_INFO') }}</strong>
+                  <strong> {{ trans('cruds.invoice.fields.OTG_INFO') }}</strong>
                 </div>
-                <div>{{ trans('cruds.proposal.fields.companyname') }} : One Tec Group LLC</div>
-                <div>{{ trans('cruds.proposal.fields.companyaddress') }} : 8th Sector – Building 10 – Block 11 – Nasr City - Cairo, Egypt</div>
-                <div>{{ trans('cruds.proposal.fields.companyphone') }}: +201555836995 </div>
+                <div>{{ trans('cruds.invoice.fields.companyname') }} : One Tec Group LLC</div>
+                <div>{{ trans('cruds.invoice.fields.companyaddress') }} : 8th Sector – Building 10 – Block 11 – Nasr City - Cairo, Egypt</div>
+                <div>{{ trans('cruds.invoice.fields.companyphone') }}: +201555836995 </div>
               </div>
             <!--/.col-->
 
@@ -249,23 +249,23 @@
             <div class="col-sm-4">
             </div>
             <div class="col-sm-4">
-            {{--@dd($proposal->client,$proposal->opportunity)--}}
-               @if($proposal->module =='client') 
+            {{--@dd($invoice->client,$invoice->opportunity)--}}
+               @if($invoice->module =='client')
                
                     <div>
-                    <strong>{{ trans('cruds.proposal.fields.Customer_INFO') }}</strong>
+                    <strong>{{ trans('cruds.invoice.fields.Customer_INFO') }}</strong>
                     </div>
-                    <div>{{ trans('cruds.proposal.fields.companyname') }} :{{-- $proposal->client?: --}}</div>
-                    <div>{{ trans('cruds.proposal.fields.companyaddress') }} : 8th Sector – Building 10 – Block 11 – Nasr City - Cairo, Egypt</div>
-                    <div>{{ trans('cruds.proposal.fields.companyphone') }}: +201555836995 </div>
+                    <div>{{ trans('cruds.invoice.fields.companyname') }} :{{-- $invoice->client?: --}}</div>
+                    <div>{{ trans('cruds.invoice.fields.companyaddress') }} : 8th Sector – Building 10 – Block 11 – Nasr City - Cairo, Egypt</div>
+                    <div>{{ trans('cruds.invoice.fields.companyphone') }}: +201555836995 </div>
                @endif
-               @if($proposal->module =='opportunities') 
+               @if($invoice->module =='opportunities')
                     <div>
-                        <strong>{{ trans('cruds.proposal.fields.Opportunity_INFO') }}</strong>
+                        <strong>{{ trans('cruds.invoice.fields.Opportunity_INFO') }}</strong>
                     </div>
-                    <div>{{ trans('cruds.proposal.fields.companyname') }} :{{-- $proposal->opportunity?: --}}</div>
-                    <div>{{ trans('cruds.proposal.fields.companyaddress') }} : 8th Sector – Building 10 – Block 11 – Nasr City - Cairo, Egypt</div>
-                    <div>{{ trans('cruds.proposal.fields.companyphone') }}: +201555836995 </div>
+                    <div>{{ trans('cruds.invoice.fields.companyname') }} :{{-- $invoice->opportunity?: --}}</div>
+                    <div>{{ trans('cruds.invoice.fields.companyaddress') }} : 8th Sector – Building 10 – Block 11 – Nasr City - Cairo, Egypt</div>
+                    <div>{{ trans('cruds.invoice.fields.companyphone') }}: +201555836995 </div>
                     @endif
             </div>
             <!--/.col-->

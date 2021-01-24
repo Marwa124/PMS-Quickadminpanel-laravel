@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Invoice;
 use App\Models\User;
 use Modules\ProjectManagement\Entities\Activity;
 use Modules\Sales\Entities\Proposal;
@@ -154,6 +155,27 @@ if (!function_exists('generate_proposal_number')) {
        return $nextPoNumber;
     }
 }
+
+
+if (!function_exists('generate_invoice_number')) {
+
+    function generate_invoice_number()
+    {
+
+        $lastrecorder=Invoice::max('id');
+        $date = \Carbon\Carbon::now();
+        if ($lastrecorder == null){
+            $nextPoNumber = 'PRO-'.$date->isoFormat('D/MMM/Y').'/'.'0001';
+        } else {
+            //increase 1 with last invoice number
+            $incr=$lastrecorder+1;
+            $nextPoNumber = 'PRO-'.date('Y').'-'.date('m').'-'.date('d').'-'.'000'.$incr;
+        }
+       return $nextPoNumber;
+    }
+}
+
+
 if (!function_exists('get_taxes')) {
 
     function get_taxes($id)

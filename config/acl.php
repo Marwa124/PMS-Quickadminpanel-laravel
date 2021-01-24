@@ -133,7 +133,6 @@
                 'transfer_create', // done
                 'transfer_edit', // done
                 'transfer_delete', // done
-                'transfer', // done
                 'expenses_category', // done
                 'expenses_category_create', // done
                 'expenses_category_edit', // done
@@ -150,6 +149,11 @@
                 'deposits_create', // done
                 'deposits_edit', // done
                 'deposits_delete', // done
+                'invoice', // done
+                'invoice_create', // done
+                'invoice_access', // done
+                'invoice_edit', // done
+                'invoice_delete', // done
             ],
 
             'penalty_category' => [
