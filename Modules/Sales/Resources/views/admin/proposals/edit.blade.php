@@ -322,15 +322,16 @@
                                                 onclick="add_item_to_table('undefined', 'undefined',1); return false;"
                                                 class="btn-xs btn btn-info"><i class="fa fa-check"></i></button></td>
                                     </tr>
-                                    
+                                
                                     @if($proposal->items->isEmpty() != true)
                                     @foreach($proposal->items as $key => $value)
-                                   
+                                    
+                                    <input type="hidden" name="item_relation_id[]" value="{{ $value->pivot->id }}">
                                     <tr class="sortable item" data-merge-invoice="1">
                                         <input type="hidden" class="order" name="items[{{ $key }}][order]" value="{{ $value->pivot->order }}">
-                                        <input type="hidden" name="items[{{ $key }}][saved_items_id]" value="{{ $value->pivot->saved_items_id }}">
+                                        <input type="hidden" name="items[{{ $key }}][saved_items_id]" value="{{ $value->pivot->item_id }}">
                                         <input type="hidden"  data-total-qty="" name="items[{{ $key }}][total_qty]" value="{{ $value->pivot->total_qty }}">
-                                        <input type="hidden"  data-saved-items-id="" name="new_itmes_id[]" value="{{ $value->pivot->saved_items_id }}">
+                                        <input type="hidden"  data-saved-items-id="" name="new_itmes_id[]" value="{{ $value->pivot->item_id }}">
                                         <td class="item_name"><input name="items[{{ $key }}][item_name]" class="form-control "  value="{{ $value->pivot->item_name }}"></td>
                                         <td><textarea name="items[{{ $key }}][item_desc]"  class="form-control item_item_desc">{{ $value->pivot->item_desc }}</textarea></td>
                                         <td class="group_name"><input class="form-control " type="text"  name="items[{{ $key }}][group_name]" id="" value="{{ $value->pivot->group_name }}"></td>
@@ -347,7 +348,7 @@
                                            
                                             <select class="selectpicker display-block tax" name="items[{{ $key }}][tax][]" multiple data-none-selected-text="no_tax" >{{-- proposal->itemtaxs->pluck('taxs_id') --}}
                                             @foreach($taxRates as $id => $taxRate)
-                                            <option value=" {{ $taxRate->rate_percent.'|'.$taxRate->name }}" {{ $proposal->itemtaxs->where('item_id',$value->pivot->id)->pluck('taxs_id')->isEmpty() != true ? (in_array($taxRate->id, $proposal->itemtaxs->where('item_id',$value->pivot->id)->pluck('taxs_id')->toArray()) ? 'selected' :'') :'' }}
+                                            <option value=" {{ $taxRate->id }}" {{ $proposal->itemtaxs->where('item_id',$value->pivot->id)->pluck('taxs_id')->isEmpty() != true ? (in_array($taxRate->id, $proposal->itemtaxs->where('item_id',$value->pivot->id)->pluck('taxs_id')->toArray()) ? 'selected' :'') :'' }}
                                                   data-taxrate="{{ $taxRate->rate_percent }}" data-taxname="{{ $taxRate->name }}" data-subtext="{{ $taxRate->name }}" >
                                                 {{ $taxRate->rate_percent.'% | '.$taxRate->name }}</option>
                                             @endforeach 
@@ -403,7 +404,7 @@
                                    
                                     <tr class="tax-area">
                                      <td>{{get_taxes($key)->name }}({{ get_taxes($key)->rate_percent }}%)</td>
-                                     <td id="tax_id_12services">
+                                     <td id="tax_id_{{ get_taxes($key)->id }}">
                                         {{ array_sum($taxold) }}
                                         <input type="hidden" name="total_tax_name[]" value="{{ get_taxes($key)->rate_percent }}|{{get_taxes($key)->name }}">
                                          <input type="hidden" name="total_tax[]" value=" {{ array_sum($taxold) }}">
@@ -412,11 +413,12 @@
                                     </tr> 
                                     
                                      @endforeach
-                                  
+
+                                    @else
+                                    <tr class="tax-area"></tr>
                                     @endif
                                      
                                    
-                                    <tr class="tax-area"></tr>
                                     <tr>
                                         <td>
                                             <div class="row">
