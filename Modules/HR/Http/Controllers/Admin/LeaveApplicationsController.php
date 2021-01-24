@@ -123,7 +123,7 @@ class LeaveApplicationsController extends Controller
                 if ($request->get('trashed')) {
                     $instance->onlyTrashed();
                 }else{
-                    $instance->where('deleted_at', NULL);
+                    // $instance->where('deleted_at', NULL);
                 }
             })
             ->rawColumns(['status']);
@@ -131,8 +131,9 @@ class LeaveApplicationsController extends Controller
             $table->editColumn('id', function ($row) {
                 return $row->id ? $row->id : "";
             });
-            $table->addColumn('leave_category_name', function ($row) {
-                return $row->leave_category ? $row->leave_category->name : '';
+            $table->editColumn('leave_category_name', function ($row) {
+                return $row->leave_category && $row->leave_category->name ? $row->leave_category->name : '';
+                // return  $row;
             });
             $table->editColumn('leave_start_date', function ($row) {
                 return $row->leave_start_date ? $row->leave_start_date : "";
@@ -155,10 +156,16 @@ class LeaveApplicationsController extends Controller
             $table->addColumn('user_name', function ($row) {
                 return $row->user->accountDetail->fullname ?? '';
             });
+            $table->addColumn('attachment', function ($row) {
+                $attachment = $row->attachments ? asset($row->attachments->getUrl()) : '';
+                if($attachment) {
+                    return '<a href="'.$attachment.'">' . "View File" . '</a>';
+                }else { return ; }
+            });
 
-            $table->rawColumns(['actions', 'placeholder', 'leave_category', 'user']);
-
-            return $table->make(true);
+            $table->rawColumns(['actions', 'placeholder', 'leave_category_name', 'user']);
+                        
+            return $table->escapeColumns([])->make(true);
         }
 
         return view('hr::admin.leaveApplications.index');

@@ -122,7 +122,7 @@ export default {
             axios.get(this.urlGetSuppliers).then(response => {
                 const data = response.data;
                 this.suppliers = data.data;
-                console.log(this.suppliers);
+                // console.log(this.suppliers);
             });
         },
         // Create a new Supplier Form Subbmission
@@ -175,7 +175,6 @@ export default {
 
     },
     mounted() {
-        console.log("dfdvjbnkf,v");
         this.getSuppliers();
     },
 }

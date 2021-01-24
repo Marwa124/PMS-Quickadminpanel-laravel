@@ -46,7 +46,7 @@
                                         ></button>
                                     </div>
                                 </div>
-                                <vue-slide :active="roleActive == role.id" :duration="600" :use-hidden="true">
+                                <div :active="roleActive == role.id" :duration="600" :use-hidden="true">
                                     <div class="inner-role">
                                         <div class="global-form-handel">
                                             <!-- role-name-edit -->
@@ -131,7 +131,7 @@
                                         <!-- ./permissions -->
 
                                     </div>
-                                </vue-slide>
+                                </div>
                             </div>
                             <div class="alert alert-info" v-if="!role" v-text="$t('messages.not_found_roles')"></div>
                         </div>
@@ -241,6 +241,7 @@ export default {
                     let role = response.data.data
                     this.role = role
                     let getCurrentRole = this.role.find(role => role.id === id)
+                    window.location.href = "/admin/roles-management"
                     this.cancelEditMode(getCurrentRole)
                     ToastReq.fire({
                         text: this.success_msg

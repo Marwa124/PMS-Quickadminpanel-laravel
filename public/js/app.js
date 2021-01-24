@@ -3564,6 +3564,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -3637,7 +3638,6 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       axios.get(this.urlGetItems).then(function (response) {
-        console.log(response.data);
         var data = response.data.data;
         _this2.items = data;
       });
@@ -3646,7 +3646,6 @@ __webpack_require__.r(__webpack_exports__);
       var _this3 = this;
 
       axios.get(this.urlGetTaxRates).then(function (response) {
-        console.log(response.data);
         var data = response.data.data;
         _this3.taxRates = data;
       });
@@ -3655,22 +3654,26 @@ __webpack_require__.r(__webpack_exports__);
       this.quantityAs = this.$t('purchase.fields.quantity_as_' + val);
     },
     addNewPurchaseItem: function addNewPurchaseItem(item) {
-      // console.log(item);
-      this.form.items = [item]; // this.form.items.push(item)
-
+      // Add New Item Row To Proposal
+      this.form.items.splice(0, 1);
+      this.form.items.unshift(item);
       this.newItemAdded(item);
     },
-    addTax: function addTax(taxItem) {
+    addTax: function addTax(taxItem, index) {
+      // console.log(taxItem);
       var tax = {
-        name: taxItem // code: newTag.substring(0, 2) + Math.floor((Math.random() * 10000000))
+        name: taxItem
+      }; // console.log(tax);
+      // console.log(index);
+      // console.log(this.form.items);
+      // this.form.items[0].item_tax_rate = tax
 
-      };
-      this.form.item_tax_rate.push(tax); // this.value.push(tag)
+      console.log(this.form.items[index]); // this.form.item_tax_rate.unshift(tax)
+      // this.form.item_tax_rate.push(tax)
     },
     newItemAdded: function newItemAdded(item) {
       // Set the input data values in row
       if (item.name && item.quantity && item.total_cost_price != '') {
-        console.log(item);
         this.activeRowAddition = 'bg-primary pointer';
       }
     },
@@ -3679,6 +3682,21 @@ __webpack_require__.r(__webpack_exports__);
       this.form.items.unshift(this.dataItems); // this.form.items.push(item);
     }
   },
+  // watch: {
+  //     'form': {
+  //         handler: function(items, index) {
+  //             const tax = {
+  //                 name: items,
+  //             }
+  //             console.log("fslidg h");
+  //             console.log(index);
+  //             console.log(items);
+  //             console.log(tax);
+  //             this.form.item_tax_total = tax
+  //         },
+  //         deep: true
+  //     }
+  // },
   mounted: function mounted() {
     _plugins_i18n__WEBPACK_IMPORTED_MODULE_1__["default"].locale = this.langKey;
     this.getAccountDetails();
@@ -3831,8 +3849,7 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.get(this.urlGetSuppliers).then(function (response) {
         var data = response.data;
-        _this.suppliers = data.data;
-        console.log(_this.suppliers);
+        _this.suppliers = data.data; // console.log(this.suppliers);
       });
     },
     // Create a new Supplier Form Subbmission
@@ -3884,7 +3901,6 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
-    console.log("dfdvjbnkf,v");
     this.getSuppliers();
   }
 });
@@ -4196,6 +4212,8 @@ var id = window.location.href.split('/').pop();
           var getCurrentRole = _this3.role.find(function (role) {
             return role.id === id;
           });
+
+          window.location.href = "/admin/roles-management";
 
           _this3.cancelEditMode(getCurrentRole);
 
@@ -58752,7 +58770,11 @@ var render = function() {
                     multiple: true,
                     taggable: true
                   },
-                  on: { tag: _vm.addTax },
+                  on: {
+                    input: function($event) {
+                      return _vm.addTax(_vm.form.item_tax_rate, index)
+                    }
+                  },
                   model: {
                     value: _vm.form.item_tax_rate,
                     callback: function($$v) {
@@ -59283,279 +59305,205 @@ var render = function() {
         _c("div", { staticClass: "card" }, [
           _c("div", { staticClass: "card-body" }, [
             _c("div", { staticClass: "wrapper-roles show-roles" }, [
-              _c(
-                "div",
-                { staticClass: "wrapper-role" },
-                [
-                  _c(
-                    "div",
-                    {
-                      staticClass: "role-header",
-                      on: {
-                        click: function($event) {
-                          if ($event.target !== $event.currentTarget) {
-                            return null
-                          }
-                          return _vm.showRole(_vm.role)
+              _c("div", { staticClass: "wrapper-role" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "role-header",
+                    on: {
+                      click: function($event) {
+                        if ($event.target !== $event.currentTarget) {
+                          return null
                         }
+                        return _vm.showRole(_vm.role)
                       }
-                    },
-                    [
-                      _c(
-                        "h5",
-                        {
-                          staticClass: "name",
-                          on: {
-                            click: function($event) {
-                              return _vm.showRole(_vm.role)
-                            }
+                    }
+                  },
+                  [
+                    _c(
+                      "h5",
+                      {
+                        staticClass: "name",
+                        on: {
+                          click: function($event) {
+                            return _vm.showRole(_vm.role)
                           }
-                        },
-                        [
-                          _vm._v(
-                            "\n                                    " +
-                              _vm._s(
-                                _vm._f("capitalize")(
-                                  _vm._f("slug")(_vm.role.name)
-                                )
-                              ) +
-                              "\n                                "
-                          )
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "actions" }, [
-                        !_vm.modeEdit ||
-                        (_vm.modeEdit && _vm.roleActive != _vm.role.id)
-                          ? _c("button", {
-                              staticClass:
-                                "btn btn-primary btn-sm waves-effect",
-                              attrs: { type: "button" },
-                              domProps: {
-                                textContent: _vm._s(_vm.$t("sidebar.edit_role"))
-                              },
-                              on: {
-                                click: function($event) {
-                                  return _vm.showEditMode(_vm.role)
-                                }
-                              }
-                            })
-                          : _vm._e(),
-                        _vm._v(" "),
-                        _vm.modeEdit && _vm.roleActive == _vm.role.id
-                          ? _c("button", {
-                              staticClass:
-                                "btn btn-secondary btn-sm waves-effect",
-                              attrs: { type: "button" },
-                              domProps: {
-                                textContent: _vm._s(_vm.$t("global.cancel"))
-                              },
-                              on: {
-                                click: function($event) {
-                                  return _vm.cancelEditMode(_vm.role)
-                                }
-                              }
-                            })
-                          : _vm._e(),
-                        _vm._v(" "),
-                        _vm.modeEdit && _vm.roleActive == _vm.role.id
-                          ? _c("button", {
-                              staticClass:
-                                "btn btn-success btn-sm waves-effect",
-                              attrs: { type: "button" },
-                              domProps: {
-                                textContent: _vm._s(_vm.$t("global.update"))
-                              },
-                              on: {
-                                click: function($event) {
-                                  return _vm.updateRole(_vm.role.id)
-                                }
-                              }
-                            })
-                          : _vm._e(),
-                        _vm._v(" "),
-                        _c("button", {
-                          staticClass: "btn btn-danger btn-sm waves-effect",
-                          attrs: { type: "button" },
-                          domProps: {
-                            textContent: _vm._s(_vm.$t("global.delete"))
-                          },
-                          on: {
-                            click: function($event) {
-                              return _vm.deleteRole(_vm.role.id)
-                            }
-                          }
-                        })
-                      ])
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "vue-slide",
-                    {
-                      attrs: {
-                        active: _vm.roleActive == _vm.role.id,
-                        duration: 600,
-                        "use-hidden": true
-                      }
-                    },
-                    [
-                      _c("div", { staticClass: "inner-role" }, [
-                        _c("div", { staticClass: "global-form-handel" }, [
-                          _vm.modeEdit && _vm.roleForm.id == _vm.role.id
-                            ? _c("div", { staticClass: "role-name-edit row" }, [
-                                _c(
-                                  "div",
-                                  { staticClass: "col-sm-6 col-lg-4 col-xl-3" },
-                                  [
-                                    _c(
-                                      "div",
-                                      {
-                                        staticClass:
-                                          "form-group form-group-input"
-                                      },
-                                      [
-                                        _c("label", [
-                                          _vm._v(
-                                            _vm._s(_vm.$t("roles_table.name"))
-                                          )
-                                        ]),
-                                        _vm._v(" "),
-                                        _c("input", {
-                                          directives: [
-                                            {
-                                              name: "model",
-                                              rawName: "v-model",
-                                              value: _vm.roleForm.name,
-                                              expression: "roleForm.name"
-                                            }
-                                          ],
-                                          staticClass:
-                                            "form-control form-control-sm",
-                                          class: {
-                                            "is-invalid": _vm.roleForm.errors.has(
-                                              "name"
-                                            )
-                                          },
-                                          attrs: { type: "text" },
-                                          domProps: {
-                                            value: _vm.roleForm.name
-                                          },
-                                          on: {
-                                            input: function($event) {
-                                              if ($event.target.composing) {
-                                                return
-                                              }
-                                              _vm.$set(
-                                                _vm.roleForm,
-                                                "name",
-                                                $event.target.value
-                                              )
-                                            }
-                                          }
-                                        })
-                                      ]
-                                    )
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "div",
-                                  { staticClass: "col-sm-6 col-lg-4 col-xl-3" },
-                                  [
-                                    _c(
-                                      "div",
-                                      {
-                                        staticClass:
-                                          "form-group form-group-input"
-                                      },
-                                      [
-                                        _c("label", {
-                                          domProps: {
-                                            textContent: _vm._s(
-                                              _vm.$t("global.actions")
-                                            )
-                                          }
-                                        }),
-                                        _vm._v(" "),
-                                        _c("div", [
-                                          _c("button", {
-                                            staticClass:
-                                              "btn btn-dark waves-effect btn-sm btn-toggle-all-permissions",
-                                            attrs: { type: "button" },
-                                            domProps: {
-                                              textContent: _vm._s(
-                                                _vm.$t("global.toggle")
-                                              )
-                                            }
-                                          }),
-                                          _vm._v(" "),
-                                          _c("button", {
-                                            staticClass:
-                                              "btn btn-dark waves-effect btn-sm",
-                                            attrs: { type: "button" },
-                                            domProps: {
-                                              textContent: _vm._s(
-                                                _vm.$t("global.add_all")
-                                              )
-                                            },
-                                            on: {
-                                              click: _vm.addAllPermisssions
-                                            }
-                                          })
-                                        ])
-                                      ]
-                                    )
-                                  ]
-                                )
-                              ])
-                            : _vm._e()
-                        ]),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          {
-                            staticClass: "permissions",
-                            class: {
-                              "wrapper-invalid": _vm.roleForm.errors.has(
-                                "permissions"
+                        }
+                      },
+                      [
+                        _vm._v(
+                          "\n                                    " +
+                            _vm._s(
+                              _vm._f("capitalize")(
+                                _vm._f("slug")(_vm.role.name)
                               )
+                            ) +
+                            "\n                                "
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "actions" }, [
+                      !_vm.modeEdit ||
+                      (_vm.modeEdit && _vm.roleActive != _vm.role.id)
+                        ? _c("button", {
+                            staticClass: "btn btn-primary btn-sm waves-effect",
+                            attrs: { type: "button" },
+                            domProps: {
+                              textContent: _vm._s(_vm.$t("sidebar.edit_role"))
+                            },
+                            on: {
+                              click: function($event) {
+                                return _vm.showEditMode(_vm.role)
+                              }
                             }
-                          },
-                          _vm._l(_vm.groups, function(group, indexGroup) {
-                            return _c(
-                              "div",
-                              { key: group.id, staticClass: "wrapper-group" },
-                              [
-                                _c("div", { staticClass: "group-header" }, [
-                                  _c("div", { staticClass: "group-name" }, [
-                                    _vm._v(
-                                      _vm._s(
-                                        _vm._f("capitalize")(
-                                          _vm._f("slug")(group.name)
+                          })
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.modeEdit && _vm.roleActive == _vm.role.id
+                        ? _c("button", {
+                            staticClass:
+                              "btn btn-secondary btn-sm waves-effect",
+                            attrs: { type: "button" },
+                            domProps: {
+                              textContent: _vm._s(_vm.$t("global.cancel"))
+                            },
+                            on: {
+                              click: function($event) {
+                                return _vm.cancelEditMode(_vm.role)
+                              }
+                            }
+                          })
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.modeEdit && _vm.roleActive == _vm.role.id
+                        ? _c("button", {
+                            staticClass: "btn btn-success btn-sm waves-effect",
+                            attrs: { type: "button" },
+                            domProps: {
+                              textContent: _vm._s(_vm.$t("global.update"))
+                            },
+                            on: {
+                              click: function($event) {
+                                return _vm.updateRole(_vm.role.id)
+                              }
+                            }
+                          })
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c("button", {
+                        staticClass: "btn btn-danger btn-sm waves-effect",
+                        attrs: { type: "button" },
+                        domProps: {
+                          textContent: _vm._s(_vm.$t("global.delete"))
+                        },
+                        on: {
+                          click: function($event) {
+                            return _vm.deleteRole(_vm.role.id)
+                          }
+                        }
+                      })
+                    ])
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    attrs: {
+                      active: _vm.roleActive == _vm.role.id,
+                      duration: 600,
+                      "use-hidden": true
+                    }
+                  },
+                  [
+                    _c("div", { staticClass: "inner-role" }, [
+                      _c("div", { staticClass: "global-form-handel" }, [
+                        _vm.modeEdit && _vm.roleForm.id == _vm.role.id
+                          ? _c("div", { staticClass: "role-name-edit row" }, [
+                              _c(
+                                "div",
+                                { staticClass: "col-sm-6 col-lg-4 col-xl-3" },
+                                [
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass: "form-group form-group-input"
+                                    },
+                                    [
+                                      _c("label", [
+                                        _vm._v(
+                                          _vm._s(_vm.$t("roles_table.name"))
                                         )
-                                      )
-                                    )
-                                  ]),
-                                  _vm._v(" "),
-                                  _c("div", { staticClass: "actions" }, [
-                                    _vm.modeEdit &&
-                                    _vm.roleForm.id == _vm.role.id
-                                      ? _c("button", {
+                                      ]),
+                                      _vm._v(" "),
+                                      _c("input", {
+                                        directives: [
+                                          {
+                                            name: "model",
+                                            rawName: "v-model",
+                                            value: _vm.roleForm.name,
+                                            expression: "roleForm.name"
+                                          }
+                                        ],
+                                        staticClass:
+                                          "form-control form-control-sm",
+                                        class: {
+                                          "is-invalid": _vm.roleForm.errors.has(
+                                            "name"
+                                          )
+                                        },
+                                        attrs: { type: "text" },
+                                        domProps: { value: _vm.roleForm.name },
+                                        on: {
+                                          input: function($event) {
+                                            if ($event.target.composing) {
+                                              return
+                                            }
+                                            _vm.$set(
+                                              _vm.roleForm,
+                                              "name",
+                                              $event.target.value
+                                            )
+                                          }
+                                        }
+                                      })
+                                    ]
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                { staticClass: "col-sm-6 col-lg-4 col-xl-3" },
+                                [
+                                  _c(
+                                    "div",
+                                    {
+                                      staticClass: "form-group form-group-input"
+                                    },
+                                    [
+                                      _c("label", {
+                                        domProps: {
+                                          textContent: _vm._s(
+                                            _vm.$t("global.actions")
+                                          )
+                                        }
+                                      }),
+                                      _vm._v(" "),
+                                      _c("div", [
+                                        _c("button", {
                                           staticClass:
-                                            "btn btn-dark waves-effect btn-sm btn-toggle-permissions-in-group",
+                                            "btn btn-dark waves-effect btn-sm btn-toggle-all-permissions",
                                           attrs: { type: "button" },
                                           domProps: {
                                             textContent: _vm._s(
                                               _vm.$t("global.toggle")
                                             )
                                           }
-                                        })
-                                      : _vm._e(),
-                                    _vm._v(" "),
-                                    _vm.modeEdit &&
-                                    _vm.roleForm.id == _vm.role.id
-                                      ? _c("button", {
+                                        }),
+                                        _vm._v(" "),
+                                        _c("button", {
                                           staticClass:
                                             "btn btn-dark waves-effect btn-sm",
                                           attrs: { type: "button" },
@@ -59564,172 +59512,230 @@ var render = function() {
                                               _vm.$t("global.add_all")
                                             )
                                           },
-                                          on: {
-                                            click: function($event) {
-                                              return _vm.addAllPermisssionsInGroup(
-                                                group.permissions
-                                              )
-                                            }
-                                          }
+                                          on: { click: _vm.addAllPermisssions }
                                         })
-                                      : _vm._e()
-                                  ])
+                                      ])
+                                    ]
+                                  )
+                                ]
+                              )
+                            ])
+                          : _vm._e()
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass: "permissions",
+                          class: {
+                            "wrapper-invalid": _vm.roleForm.errors.has(
+                              "permissions"
+                            )
+                          }
+                        },
+                        _vm._l(_vm.groups, function(group, indexGroup) {
+                          return _c(
+                            "div",
+                            { key: group.id, staticClass: "wrapper-group" },
+                            [
+                              _c("div", { staticClass: "group-header" }, [
+                                _c("div", { staticClass: "group-name" }, [
+                                  _vm._v(
+                                    _vm._s(
+                                      _vm._f("capitalize")(
+                                        _vm._f("slug")(group.name)
+                                      )
+                                    )
+                                  )
                                 ]),
                                 _vm._v(" "),
-                                _c(
-                                  "div",
-                                  { staticClass: "row" },
-                                  _vm._l(group.permissions, function(
-                                    permission,
-                                    indexPer
-                                  ) {
-                                    return _c(
-                                      "div",
-                                      {
-                                        key: permission.id,
-                                        staticClass: "col-md-3 inner-permission"
-                                      },
-                                      [
-                                        _c(
-                                          "div",
-                                          {
+                                _c("div", { staticClass: "actions" }, [
+                                  _vm.modeEdit && _vm.roleForm.id == _vm.role.id
+                                    ? _c("button", {
+                                        staticClass:
+                                          "btn btn-dark waves-effect btn-sm btn-toggle-permissions-in-group",
+                                        attrs: { type: "button" },
+                                        domProps: {
+                                          textContent: _vm._s(
+                                            _vm.$t("global.toggle")
+                                          )
+                                        }
+                                      })
+                                    : _vm._e(),
+                                  _vm._v(" "),
+                                  _vm.modeEdit && _vm.roleForm.id == _vm.role.id
+                                    ? _c("button", {
+                                        staticClass:
+                                          "btn btn-dark waves-effect btn-sm",
+                                        attrs: { type: "button" },
+                                        domProps: {
+                                          textContent: _vm._s(
+                                            _vm.$t("global.add_all")
+                                          )
+                                        },
+                                        on: {
+                                          click: function($event) {
+                                            return _vm.addAllPermisssionsInGroup(
+                                              group.permissions
+                                            )
+                                          }
+                                        }
+                                      })
+                                    : _vm._e()
+                                ])
+                              ]),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                { staticClass: "row" },
+                                _vm._l(group.permissions, function(
+                                  permission,
+                                  indexPer
+                                ) {
+                                  return _c(
+                                    "div",
+                                    {
+                                      key: permission.id,
+                                      staticClass: "col-md-3 inner-permission"
+                                    },
+                                    [
+                                      _c(
+                                        "div",
+                                        {
+                                          staticClass:
+                                            "custom-control custom-switch"
+                                        },
+                                        [
+                                          _c("input", {
+                                            directives: [
+                                              {
+                                                name: "model",
+                                                rawName: "v-model",
+                                                value: _vm.roleForm.permissions,
+                                                expression:
+                                                  "roleForm.permissions"
+                                              }
+                                            ],
                                             staticClass:
-                                              "custom-control custom-switch"
-                                          },
-                                          [
-                                            _c("input", {
-                                              directives: [
-                                                {
-                                                  name: "model",
-                                                  rawName: "v-model",
-                                                  value:
+                                              "custom-control-input input-permission",
+                                            attrs: {
+                                              type: "checkbox",
+                                              disabled:
+                                                !_vm.modeEdit ||
+                                                (_vm.modeEdit &&
+                                                  _vm.roleForm.id !=
+                                                    _vm.role.id),
+                                              id:
+                                                "permission_" +
+                                                _vm.role.id +
+                                                indexGroup +
+                                                indexPer +
+                                                permission.name
+                                            },
+                                            domProps: {
+                                              value: permission.name,
+                                              checked: Array.isArray(
+                                                _vm.roleForm.permissions
+                                              )
+                                                ? _vm._i(
                                                     _vm.roleForm.permissions,
-                                                  expression:
-                                                    "roleForm.permissions"
+                                                    permission.name
+                                                  ) > -1
+                                                : _vm.roleForm.permissions
+                                            },
+                                            on: {
+                                              change: function($event) {
+                                                var $$a =
+                                                    _vm.roleForm.permissions,
+                                                  $$el = $event.target,
+                                                  $$c = $$el.checked
+                                                    ? true
+                                                    : false
+                                                if (Array.isArray($$a)) {
+                                                  var $$v = permission.name,
+                                                    $$i = _vm._i($$a, $$v)
+                                                  if ($$el.checked) {
+                                                    $$i < 0 &&
+                                                      _vm.$set(
+                                                        _vm.roleForm,
+                                                        "permissions",
+                                                        $$a.concat([$$v])
+                                                      )
+                                                  } else {
+                                                    $$i > -1 &&
+                                                      _vm.$set(
+                                                        _vm.roleForm,
+                                                        "permissions",
+                                                        $$a
+                                                          .slice(0, $$i)
+                                                          .concat(
+                                                            $$a.slice($$i + 1)
+                                                          )
+                                                      )
+                                                  }
+                                                } else {
+                                                  _vm.$set(
+                                                    _vm.roleForm,
+                                                    "permissions",
+                                                    $$c
+                                                  )
                                                 }
-                                              ],
+                                              }
+                                            }
+                                          }),
+                                          _vm._v(" "),
+                                          _c(
+                                            "label",
+                                            {
                                               staticClass:
-                                                "custom-control-input input-permission",
+                                                "custom-control-label label-permission",
                                               attrs: {
-                                                type: "checkbox",
-                                                disabled:
-                                                  !_vm.modeEdit ||
-                                                  (_vm.modeEdit &&
-                                                    _vm.roleForm.id !=
-                                                      _vm.role.id),
-                                                id:
+                                                for:
                                                   "permission_" +
                                                   _vm.role.id +
                                                   indexGroup +
                                                   indexPer +
                                                   permission.name
-                                              },
-                                              domProps: {
-                                                value: permission.name,
-                                                checked: Array.isArray(
-                                                  _vm.roleForm.permissions
-                                                )
-                                                  ? _vm._i(
-                                                      _vm.roleForm.permissions,
-                                                      permission.name
-                                                    ) > -1
-                                                  : _vm.roleForm.permissions
-                                              },
-                                              on: {
-                                                change: function($event) {
-                                                  var $$a =
-                                                      _vm.roleForm.permissions,
-                                                    $$el = $event.target,
-                                                    $$c = $$el.checked
-                                                      ? true
-                                                      : false
-                                                  if (Array.isArray($$a)) {
-                                                    var $$v = permission.name,
-                                                      $$i = _vm._i($$a, $$v)
-                                                    if ($$el.checked) {
-                                                      $$i < 0 &&
-                                                        _vm.$set(
-                                                          _vm.roleForm,
-                                                          "permissions",
-                                                          $$a.concat([$$v])
-                                                        )
-                                                    } else {
-                                                      $$i > -1 &&
-                                                        _vm.$set(
-                                                          _vm.roleForm,
-                                                          "permissions",
-                                                          $$a
-                                                            .slice(0, $$i)
-                                                            .concat(
-                                                              $$a.slice($$i + 1)
-                                                            )
-                                                        )
-                                                    }
-                                                  } else {
-                                                    _vm.$set(
-                                                      _vm.roleForm,
-                                                      "permissions",
-                                                      $$c
-                                                    )
-                                                  }
-                                                }
                                               }
-                                            }),
-                                            _vm._v(" "),
-                                            _c(
-                                              "label",
-                                              {
-                                                staticClass:
-                                                  "custom-control-label label-permission",
-                                                attrs: {
-                                                  for:
-                                                    "permission_" +
-                                                    _vm.role.id +
-                                                    indexGroup +
-                                                    indexPer +
-                                                    permission.name
-                                                }
-                                              },
-                                              [
-                                                _vm._v(
-                                                  "\n                                                            " +
-                                                    _vm._s(
-                                                      _vm._f("capitalize")(
-                                                        _vm._f("slug")(
-                                                          permission.name
-                                                        )
+                                            },
+                                            [
+                                              _vm._v(
+                                                "\n                                                            " +
+                                                  _vm._s(
+                                                    _vm._f("capitalize")(
+                                                      _vm._f("slug")(
+                                                        permission.name
                                                       )
-                                                    ) +
-                                                    "\n                                                        "
-                                                )
-                                              ]
-                                            )
-                                          ]
-                                        )
-                                      ]
-                                    )
-                                  }),
-                                  0
-                                )
-                              ]
-                            )
-                          }),
-                          0
-                        ),
-                        _vm._v(" "),
-                        _c("input", {
-                          staticClass: "form-control",
-                          class: {
-                            "is-invalid": _vm.roleForm.errors.has("permissions")
-                          },
-                          attrs: { type: "hidden" }
-                        })
-                      ])
-                    ]
-                  )
-                ],
-                1
-              ),
+                                                    )
+                                                  ) +
+                                                  "\n                                                        "
+                                              )
+                                            ]
+                                          )
+                                        ]
+                                      )
+                                    ]
+                                  )
+                                }),
+                                0
+                              )
+                            ]
+                          )
+                        }),
+                        0
+                      ),
+                      _vm._v(" "),
+                      _c("input", {
+                        staticClass: "form-control",
+                        class: {
+                          "is-invalid": _vm.roleForm.errors.has("permissions")
+                        },
+                        attrs: { type: "hidden" }
+                      })
+                    ])
+                  ]
+                )
+              ]),
               _vm._v(" "),
               !_vm.role
                 ? _c("div", {
@@ -73333,8 +73339,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_i18n__WEBPACK_IMPORTED_MODULE
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! F:\laragon\www\01-Test-Permission-PMS\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! F:\laragon\www\01-Test-Permission-PMS\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\laragon\www\01-Test-Permission-PMS\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\laragon\www\01-Test-Permission-PMS\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

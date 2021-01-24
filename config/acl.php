@@ -220,6 +220,8 @@
                 'employee_award_delete',
                 'employee_award_access',
                 'employees_access',
+                'appointment_letter',
+                'account_detail_evaluate',
             ],
 
             'requests' => [

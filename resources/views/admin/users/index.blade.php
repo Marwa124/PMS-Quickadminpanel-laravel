@@ -196,11 +196,11 @@
                                 {{ $user->vacation_verified ?? '' }}
                             </td>
                             <td>
-                                @can('user_show')
+                                {{-- @can('user_show')
                                     <a class="btn btn-xs btn-primary" href="{{ route('admin.users.show', $user->id) }}">
                                         {{ trans('global.view') }}
                                     </a>
-                                @endcan
+                                @endcan --}}
 
                                 @can('user_edit')
                                     <a class="btn btn-xs btn-info" href="{{ route('admin.users.edit', $user->id) }}">

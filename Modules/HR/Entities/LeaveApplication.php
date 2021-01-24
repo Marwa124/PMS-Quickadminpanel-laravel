@@ -85,8 +85,7 @@ class LeaveApplication extends Model implements HasMedia
 
     public function registerMediaCollections()
     {
-        $this
-            ->addMediaCollection('attachments');
+        $this->addMediaCollection('attachments');
             // ->acceptsMimeTypes(['image/jpg', 'image/png', 'image/jpeg', 'application/msword']);
     }
 

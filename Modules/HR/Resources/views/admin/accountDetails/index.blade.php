@@ -101,19 +101,10 @@
                             </td>
                             <td>
                                 @if($accountDetail->avatar)
-                                    {{-- <a href="{{ str_replace('storage', 'public/storage', $accountDetail->avatar->getUrl()) }}" target="_blank">
-                                        <img class="rounded-circle img-thumbnail d-flex m-auto"
-                                        src="{{ str_replace('storage', 'public/storage', $accountDetail->avatar->getUrl('thumb')) }}">
-                                    </a> --}}
-
                                     <a href="{{ $accountDetail->avatar->getUrl() }}" target="_blank">
                                         <img class="rounded-circle img-thumbnail d-flex m-auto"
                                         src="{{$accountDetail->avatar->getUrl('thumb') }}">
                                     </a>
-                                    {{-- <a href="{{ $accountDetail->avatar->getUrl() }}" target="_blank">
-                                        <img class="rounded-circle img-thumbnail d-flex m-auto"
-                                        src="{{ $accountDetail->avatar->getUrl('thumb') }}">
-                                    </a> --}}
                                 @else
                                     <a href="javascript:void(0)" style="display: inline-block">
                                         <img class="rounded-circle img-thumbnail"
@@ -127,13 +118,9 @@
                             </td>
                             <td>
                             {{-- <td  contenteditable="true"> --}}
-                                {{-- <a>
-                                    {{ $accountDetail->fullname ?? '' }}
-                                </a> --}}
                                 <a type="button" class="fullname" data-toggle="modal" data-target="#fullName{{$accountDetail->user_id}}">
                                     {{ $accountDetail->fullname ?? '' }}
                                 </a>
-
 
                                 @can('account_detail_edit')
                                  <!-- Modal -->
@@ -157,7 +144,6 @@
                                     </div>
                                 </div>
                                 @endcan
-
 
                             </td>
                             <td>
@@ -220,7 +206,7 @@
                                             </a>
                                         @endcan
 
-                                        {{-- @can('appointment_letter') --}}
+                                        @can('appointment_letter')
                                             @if ($accountDetail->user_id != auth()->user()->id)
                                                 @php
                                                 // dd(auth()->user()->accountDetail()->get());
@@ -244,20 +230,19 @@
                                                     @endif
                                                 @endif
                                             @endif
-                                        {{-- @endcan --}}
+                                        @endcan
 
-                                        {{-- @can('account_detail_evaluate') --}}
+                                        @can('account_detail_evaluate')
                                             <a class="btn btn-xs btn-success my-1" href="{{ route('hr.admin.evaluations.edit', $accountDetail->id) }}">
                                                 Evaluate
                                             </a>
-                                        {{-- @endcan --}}
+                                        @endcan
 
                                         {{-- Adjust User Salary --}}
                                         @can('employee_award_access')
                                             <button type="button" class="btn btn-xs btn-secondary" data-toggle="modal" data-target="#advancedSalary{{$accountDetail->user_id}}">
                                                 Edit Salary
                                             </button>
-
                                             <?php
                                                 $advancedUserSalaray = $advanceSalaryModel::where('user_id', $accountDetail->user_id)->first();
                                             ?>

@@ -213,8 +213,9 @@
                             :preselect-first="true"
                             :multiple="true"
                             :taggable="true"
-                            @tag="addTax"
+                            @input="addTax(form.item_tax_rate, index)"
                         ></multiselect>
+                            <!-- @tag="addTax(form.item_tax_rate, index)" -->
                     </td>
                     <td>
                         <input class="form-control input-transparent" type="number" disabled v-model="item.total">
@@ -302,14 +303,12 @@
             },
             getItems() {
                 axios.get(this.urlGetItems).then(response => {
-                    console.log(response.data);
                     const data = response.data.data
                     this.items = data
                 });
             },
             getTaxRates() {
                 axios.get(this.urlGetTaxRates).then(response => {
-                    console.log(response.data);
                     const data = response.data.data
                     this.taxRates = data
                 });
@@ -317,23 +316,26 @@
             showQtyAs(val) {
                 this.quantityAs = this.$t('purchase.fields.quantity_as_'+val)
             },
-            addNewPurchaseItem(item) {
-                // console.log(item);
-                this.form.items = [item]
-                // this.form.items.push(item)
+            addNewPurchaseItem(item) { // Add New Item Row To Proposal
+                this.form.items.splice(0, 1);
+                this.form.items.unshift(item)
                 this.newItemAdded(item)
             },
-            addTax (taxItem) {
+            addTax (taxItem, index) {
+                // console.log(taxItem);
                 const tax = {
                     name: taxItem,
-                    // code: newTag.substring(0, 2) + Math.floor((Math.random() * 10000000))
                 }
-                this.form.item_tax_rate.push(tax)
-                // this.value.push(tag)
+                // console.log(tax);
+                // console.log(index);
+                // console.log(this.form.items);
+                // this.form.items[0].item_tax_rate = tax
+                console.log(this.form.items[index]);
+                // this.form.item_tax_rate.unshift(tax)
+                // this.form.item_tax_rate.push(tax)
             },
             newItemAdded(item) { // Set the input data values in row
                 if(item.name && item.quantity && item.total_cost_price != ''){
-                    console.log(item)
                     this.activeRowAddition = 'bg-primary pointer'
                 }
             },
@@ -342,6 +344,21 @@
                 // this.form.items.push(item);
             }
         },
+        // watch: {
+        //     'form': {
+        //         handler: function(items, index) {
+        //             const tax = {
+        //                 name: items,
+        //             }
+        //             console.log("fslidg h");
+        //             console.log(index);
+        //             console.log(items);
+        //             console.log(tax);
+        //             this.form.item_tax_total = tax
+        //         },
+        //         deep: true
+        //     }
+        // },
         mounted() {
             i18n.locale = this.langKey;
             this.getAccountDetails();

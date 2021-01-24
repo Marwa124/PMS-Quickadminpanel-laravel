@@ -81,7 +81,7 @@ Route::group(['as' => 'hr.admin.', 'prefix' => 'admin/hr', 'namespace' => 'Admin
 
      // Holidays
      Route::delete('holidays/destroy', 'HolidaysController@massDestroy')->name('holidays.massDestroy');
-     Route::resource('holidays', 'HolidaysController');
+     Route::resource('holidays', 'HolidaysController', ['except' => 'show']);
 
      // Set Time
      Route::delete('set-times/destroy', 'SetTimesController@massDestroy')->name('set-times.massDestroy');
@@ -116,7 +116,7 @@ Route::group(['as' => 'hr.admin.', 'prefix' => 'admin/hr', 'namespace' => 'Admin
 
      // Employee Awards
      Route::delete('employee-awards/destroy', 'EmployeeAwardsController@massDestroy')->name('employee-awards.massDestroy');
-     Route::resource('employee-awards', 'EmployeeAwardsController');
+     Route::resource('employee-awards', 'EmployeeAwardsController', ['except' => 'show']);
 
      // attendances
      Route::delete('attendances/destroy', 'AttendancesController@massDestroy')->name('attendances.massDestroy');

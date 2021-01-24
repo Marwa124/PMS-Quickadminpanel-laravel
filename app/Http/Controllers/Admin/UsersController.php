@@ -30,28 +30,19 @@ class UsersController extends Controller
             array_push($roles, $user->getRoleNames()[0] ?? '');
         }
 
-        // $permissions = Permission::all();
-
         return view('admin.users.index', compact('users', 'roles'));
-        // return view('admin.users.index', compact('users', 'roles', 'permissions'));
     }
 
     public function create()
     {
         abort_if(Gate::denies('user_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $roles = Role::all()->pluck('title', 'id');
-
-        $permissions = Permission::all()->pluck('title', 'id');
-
-        return view('admin.users.create', compact('roles', 'permissions'));
+        return view('admin.users.create');
     }
 
     public function store(StoreUserRequest $request)
     {
         $user = User::create($request->all());
-        $user->roles()->sync($request->input('roles', []));
-        $user->permissions()->sync($request->input('permissions', []));
 
         if ($media = $request->input('ck-media', false)) {
             Media::whereIn('id', $media)->update(['model_id' => $user->id]);
@@ -64,32 +55,24 @@ class UsersController extends Controller
     {
         abort_if(Gate::denies('user_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $roles = Role::all()->pluck('title', 'id');
+        // $user->load('roles');
 
-        $permissions = Permission::all()->pluck('title', 'id');
-
-        $user->load('roles', 'permissions');
-
-        return view('admin.users.edit', compact('roles', 'permissions', 'user'));
+        return view('admin.users.edit', compact('roles', 'user'));
     }
 
     public function update(UpdateUserRequest $request, User $user)
     {
         $user->update($request->all());
-        $user->roles()->sync($request->input('roles', []));
-        $user->permissions()->sync($request->input('permissions', []));
 
         return redirect()->route('admin.users.index');
     }
 
-    public function show(User $user)
-    {
-        abort_if(Gate::denies('user_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        $user->load('roles', 'permissions', 'departmentHeadDepartments', 'userAccountDetails', 'userTrainings', 'userEmployeeAwards', 'userUserAlerts');
-
-        return view('admin.users.show', compact('user'));
-    }
+    // public function show(User $user)
+    // {
+    //     abort_if(Gate::denies('user_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+    //     $user->load('departmentHeadDepartments', 'userAccountDetails', 'userTrainings', 'userEmployeeAwards', 'userUserAlerts');
+    //     return view('admin.users.show', compact('user'));
+    // }
 
     public function destroy(User $user)
     {

@@ -66,6 +66,9 @@
                         {{ trans('cruds.leaveApplication.fields.leave_end_date') }}
                     </th>
                     <th>
+                        {{ trans('cruds.leaveApplication.fields.attachment') }}
+                    </th>
+                    <th>
                         &nbsp;
                     </th>
                 </tr>
@@ -139,6 +142,7 @@
         { data: 'application_status', name: 'application_status' },
         { data: 'leave_start_date', name: 'leave_start_date' },
         { data: 'leave_end_date', name: 'leave_end_date' },
+        { data: 'attachment', name: 'attachment' },
         { data: 'actions', name: '{{ trans('global.actions') }}' }
     ],
     orderCellsTop: true,
