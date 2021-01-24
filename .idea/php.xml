@@ -153,7 +153,12 @@
       <path value="$PROJECT_DIR$/vendor/psr/http-client" />
       <path value="$PROJECT_DIR$/vendor/apility/laravel-fcm" />
       <path value="$PROJECT_DIR$/vendor/livewire/livewire" />
+<<<<<<< HEAD
       <path value="$PROJECT_DIR$/vendor/ezyang/htmlpurifier" />
+=======
+      <path value="$PROJECT_DIR$/vendor/scrivo/highlight.php" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-php70" />
+>>>>>>> c0af074cde523189657786148a521d272e5adee2
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.2" />

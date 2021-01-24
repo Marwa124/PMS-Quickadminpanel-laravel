@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace Modules\ProjectManagement\Http\Requests;
 
 use App\Models\WorkTracking;
 use Gate;
@@ -20,6 +20,10 @@ class StoreWorkTrackingRequest extends FormRequest
             'work_type_id'           => [
                 'required',
                 'integer',
+            ],
+            'subject'           => [
+                'required',
+                'string',
             ],
             'achievement'            => [
                 'nullable',
@@ -42,12 +46,6 @@ class StoreWorkTrackingRequest extends FormRequest
             'notify_work_not_achive' => [
                 'string',
                 'nullable',
-            ],
-            'permissions.*'          => [
-                'integer',
-            ],
-            'permissions'            => [
-                'array',
             ],
             'email_send'             => [
                 'string',

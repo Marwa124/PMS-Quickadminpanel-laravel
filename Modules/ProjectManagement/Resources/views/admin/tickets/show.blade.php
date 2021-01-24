@@ -27,7 +27,7 @@
                 <div class="card">
                     <div class="row" style="font-size:16px;font-weight:bold;">
                         <div class="col-md-12">
-                            <div class="card-header">Subject : {{ ucfirst($ticket->subject) }}</div>
+                            <div class="card-header">{{trans('cruds.ticket.fields.subject')}} : {{ ucfirst($ticket->subject) }} <span class="float-right">{{ trans('cruds.ticket.fields.reporter') }} : {{ $ticket->reporterBy ? ($ticket->reporterBy->name ?? '') : ''}}</span></div>
                             @if(preg_match("/\p{Arabic}/u", $ticket->body))
                                 <div class='col-md-12 mt-3 ' dir="rtl" style=" font-size: 17px;margin-left:6px;">
 

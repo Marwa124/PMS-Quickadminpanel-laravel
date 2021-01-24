@@ -123,6 +123,7 @@
                 <div class="form-group">
                     <label for="client_id">{{ trans('cruds.project.fields.client') }}</label>
                     <select class="form-control select2 {{ $errors->has('client') ? 'is-invalid' : '' }}" name="client_id" id="client_id">
+                        <option value="" selected disabled>{{trans('global.pleaseSelect')}}</option>
                         @foreach($clients as $id => $client)
                             <option value="{{ $id }}" {{ (old('client_id') ? old('client_id') : $project->client->id ?? '') == $id ? 'selected' : '' }}>{{ $client }}</option>
                         @endforeach
@@ -134,21 +135,6 @@
                     @endif
                     <span class="help-block">{{ trans('cruds.project.fields.client_helper') }}</span>
                 </div>
-
-
-{{--                <div class="form-group">--}}
-{{--                    <label for="progress">{{ trans('cruds.project.fields.progress') }}</label>--}}
-{{--                    <input type="checkbox" id="progress_hours" name="progress" value="project_hours" {{ old('progress') == 'project_hours' ? 'checked' : $project->progress == 'project_hours' ? 'checked' : '' }} onclick="ProgressInput1()" />  Project Hours--}}
-{{--                    <input type="checkbox" id="progress_tasks" name="progress" value="through_tasks" {{ old('progress') == 'through_tasks' ? 'checked' : $project->progress == 'through_tasks' ? 'checked' : '' }} onclick="ProgressInput2()" />  Through tasks--}}
-
-
-{{--                    @if($errors->has('progress'))--}}
-{{--                        <div class="invalid-feedback">--}}
-{{--                            {{ $errors->first('progress') }}--}}
-{{--                        </div>--}}
-{{--                    @endif--}}
-{{--                    <span class="help-block">{{ trans('cruds.project.fields.progress_helper') }}</span>--}}
-{{--                </div>--}}
 
                 <div class="form-group w3-light-grey w3-xlarge" id="div_progress_input">
                     <label for="calculate_progress">{{ trans('cruds.project.fields.calculate_progress') }}</label>
@@ -218,12 +204,13 @@
                 <div class="form-group">
                     <label for="project_status">{{ trans('cruds.project.fields.project_status') }}</label>
                     <select name="project_status" id="project_status" class="form-control {{ $errors->has('project_status') ? 'is-invalid' : '' }}">
-                        <option value="started" {{ $project->project_status == 'started' ? 'selected' : old('project_status') == 'started' ? 'selected' : '' }}>Started</option>
-                        <option value="in_progress" {{ $project->project_status == 'in_progress' ? 'selected' : old('project_status') == 'in_progress' ? 'selected' : '' }}>In Progress</option>
-                        <option value="on_hold" {{ $project->project_status == 'on_hold' ? 'selected' : old('project_status') == 'on_hold' ? 'selected' : '' }}>On Hold</option>
-                        <option value="cancel" {{ $project->project_status == 'cancel' ? 'selected' : old('project_status') == 'cancel' ? 'selected' : '' }}>Cancel</option>
-                        <option value="completed" {{ $project->project_status == 'completed' ? 'selected' : old('project_status') == 'completed' ? 'selected' : '' }}>Completed</option>
-                        <option value="overdue" {{ $project->project_status == 'overdue' ? 'selected' : old('project_status') == 'overdue' ? 'selected' : '' }}>Overdue</option>
+                        <option value="" selected disabled>{{trans('global.pleaseSelect')}}</option>
+                        <option value="started"     {{ $project->project_status == 'started'        ? 'selected' : (old('project_status') == 'started'      ? 'selected' : '' )}}>{{trans('cruds.status.started')}}</option>
+                        <option value="in_progress" {{ $project->project_status == 'in_progress'    ? 'selected' : (old('project_status') == 'in_progress'  ? 'selected' : '') }}>{{trans('cruds.status.in_progress')}}</option>
+                        <option value="on_hold"     {{ $project->project_status == 'on_hold'        ? 'selected' : (old('project_status') == 'on_hold'      ? 'selected' : '') }}>{{trans('cruds.status.on_hold')}}</option>
+                        <option value="cancel"      {{ $project->project_status == 'cancel'         ? 'selected' : (old('project_status') == 'cancel'       ? 'selected' : '') }}>{{trans('cruds.status.cancel')}}</option>
+                        <option value="completed"   {{ $project->project_status == 'completed'      ? 'selected' : (old('project_status') == 'completed'    ? 'selected' : '') }}>{{trans('cruds.status.completed')}}</option>
+                        <option value="overdue"     {{ $project->project_status == 'overdue'        ? 'selected' : (old('project_status') == 'overdue'      ? 'selected' : '') }}>{{trans('cruds.status.overdue')}}</option>
                     </select>
     {{--                <input class="form-control {{ $errors->has('project_status') ? 'is-invalid' : '' }}" type="text" name="project_status" id="project_status" value="{{ old('project_status', $project->project_status) }}">--}}
                     @if($errors->has('project_status'))
@@ -248,7 +235,7 @@
                 <div class="form-group">
                     <label for="department_id">{{ trans('cruds.department.title_singular') }}</label>
                     <select class="form-control select2 {{ $errors->has('department_id') ? 'is-invalid' : '' }}" name="department_id" id="department_id">
-                        <option value="" selected disabled>Please Select {{ trans('cruds.department.title_singular') }}</option>
+                        <option value="" selected disabled>{{trans('global.pleaseSelect')}} {{ trans('cruds.department.title_singular') }}</option>
 
                         @foreach($departments as $department)
                             <option value="{{ $department->id }}" {{ !$project->department_id ? '' : old('department_id') == $project->department_id ? 'selected' : $department->id == $project->department_id ?  'selected' : '' }}>{{ $department->department_name }}</option>
@@ -358,42 +345,7 @@
         document.getElementById("progress_value").classList.add('visible');
         document.getElementById("progress_value").classList.remove('invisible');
         document.getElementById("old_value").style.display = 'none';
-        document.getElementById("progress_value").innerHTML = "Progress "+ value + "%";
-    }
-
-    function ProgressInput1() {
-        var progress_hours = document.getElementById("progress_hours");
-        var progress_tasks = document.getElementById("progress_tasks");
-        var progress_input = document.getElementById("div_progress_input");
-        if (progress_hours.checked == true){
-            progress_tasks.checked = false;
-            //progress_input.style.display = "none";
-            document.getElementById("calculate_progress").disabled = true;
-        } else {
-
-            //progress_input.style.display = "block";
-            document.getElementById("calculate_progress").disabled = false;
-        }
-
-
-    }
-
-    function  ProgressInput2() {
-        var progress_hours = document.getElementById("progress_hours");
-        var progress_tasks = document.getElementById("progress_tasks");
-        var progress_input = document.getElementById("div_progress_input");
-        if (progress_tasks.checked == true){
-            progress_hours.checked = false;
-            //progress_input.style.display = "none";
-            document.getElementById("calculate_progress").disabled = true;
-
-        } else {
-
-            //progress_input.style.display = "block";
-            document.getElementById("calculate_progress").disabled = false;
-        }
-
-
+        document.getElementById("progress_value").innerHTML = "{{trans('cruds.task.fields.progress')}} "+ value + "%";
     }
 
 </script>

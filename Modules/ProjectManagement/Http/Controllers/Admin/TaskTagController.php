@@ -66,6 +66,7 @@ class TaskTagController extends Controller
 
     public function show(TaskTag $taskTag)
     {
+        abort(404,"this page does not exist");
         abort_if(Gate::denies('task_tag_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return view('projectmanagement::admin.taskTags.show', compact('taskTag'));

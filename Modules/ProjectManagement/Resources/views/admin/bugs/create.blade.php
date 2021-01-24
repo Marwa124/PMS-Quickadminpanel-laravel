@@ -11,17 +11,6 @@
             @csrf
             <div class="col-sm-12">
 
-
-{{--            <div class="form-group">--}}
-{{--                <label for="issue_no">{{ trans('cruds.bug.fields.issue_no') }}</label>--}}
-{{--                <input class="form-control {{ $errors->has('issue_no') ? 'is-invalid' : '' }}" type="text" name="issue_no" id="issue_no" value="{{ old('issue_no', '') }}">--}}
-{{--                @if($errors->has('issue_no'))--}}
-{{--                    <div class="invalid-feedback">--}}
-{{--                        {{ $errors->first('issue_no') }}--}}
-{{--                    </div>--}}
-{{--                @endif--}}
-{{--                <span class="help-block">{{ trans('cruds.bug.fields.issue_no_helper') }}</span>--}}
-{{--            </div>--}}
                 <div class="col-sm-6 float-left">
                     <div class="form-group">
                         <label class="required" for="name">{{ trans('cruds.bug.fields.name') }}</label>
@@ -56,8 +45,8 @@
                             <input type="hidden" name="old_project" id="old_project" value="{{old('project_id')}}"/>
                             <input type="hidden" name="project_bug_id" id="project_bug_id" value="{{ $project ? $project->id : null}}"/>
                             <label for="project_id">{{ trans('cruds.bug.fields.project') }}</label>
-                            <select class="form-control select2 {{ $errors->has('project') ? 'is-invalid' : '' }}" name="project_id" id="project_id" onchange="getProjectId()">
-                                <option value="" selected disabled>Please Select</option>
+                            <select class="form-control select2 {{ $errors->has('project') ? 'is-invalid' : '' }}" name="project_id" id="project_id" {{--onchange="getProjectId()"--}}>
+                                <option value="" selected disabled>{{trans('global.pleaseSelect')}}</option>
                                 @foreach($projects as $id => $v_project)
                                     @if($project)
                                         <option value="{{ $id }}" {{ old('project_id') == $id ? 'selected' : $project->id == $id ? 'selected' : '' }}>{{ $v_project }}</option>
@@ -104,12 +93,12 @@
                     <div class="form-group">
                         <label for="status">{{ trans('cruds.bug.fields.status') }}</label>
                         <select class="form-control select2 {{ $errors->has('status') ? 'is-invalid' : '' }}" name="status" id="status">
-                            <option value="" selected disabled>Please Select</option>
-                            <option value="unconfirm"   {{ old('status') == 'unconfirm'   ? 'selected' : '' }}>Unconfirm</option>
-                            <option value="confirmed"   {{ old('status') == 'confirmed'   ? 'selected' : '' }}>Confirmed</option>
-                            <option value="in_progress" {{ old('status') == 'in_progress' ? 'selected' : '' }}>In Progress</option>
-                            <option value="resolved"    {{ old('status') == 'resolved'    ? 'selected' : '' }}>Resolved</option>
-                            <option value="verified"    {{ old('status') == 'verified'    ? 'selected' : '' }}>Verified</option>
+                            <option value="" selected disabled>{{trans('global.pleaseSelect')}}</option>
+                            <option value="unconfirm"   {{ old('status') == 'unconfirm'   ? 'selected' : '' }}>{{trans('cruds.status.unconfirm')}}</option>
+                            <option value="confirmed"   {{ old('status') == 'confirmed'   ? 'selected' : '' }}>{{trans('cruds.status.confirmed')}}</option>
+                            <option value="in_progress" {{ old('status') == 'in_progress' ? 'selected' : '' }}>{{trans('cruds.status.in_progress')}}</option>
+                            <option value="resolved"    {{ old('status') == 'resolved'    ? 'selected' : '' }}>{{trans('cruds.status.resolved')}}</option>
+                            <option value="verified"    {{ old('status') == 'verified'    ? 'selected' : '' }}>{{trans('cruds.status.verified')}}</option>
                         </select>
         {{--                <input class="form-control {{ $errors->has('status') ? 'is-invalid' : '' }}" type="text" name="status" id="status" value="{{ old('status', '') }}">--}}
                         @if($errors->has('status'))
@@ -123,10 +112,10 @@
                     <div class="form-group">
                         <label class="required" for="priority">{{ trans('cruds.bug.fields.priority') }}</label>
                         <select class="form-control select2 {{ $errors->has('priority') ? 'is-invalid' : '' }}" name="priority" id="priority">
-                            <option value="" selected disabled>Please Select</option>
-                            <option value="low"     {{ old('priority') == 'low'    ? 'selected' : '' }}>Low</option>
-                            <option value="medium"  {{ old('priority') == 'medium' ? 'selected' : '' }}>Medium</option>
-                            <option value="high"    {{ old('priority') == 'high'   ? 'selected' : '' }}>High</option>
+                            <option value="" selected disabled>{{trans('global.pleaseSelect')}}</option>
+                            <option value="low"     {{ old('priority') == 'low'    ? 'selected' : '' }}>{{trans('cruds.status.low')}}</option>
+                            <option value="medium"  {{ old('priority') == 'medium' ? 'selected' : '' }}>{{trans('cruds.status.medium')}}</option>
+                            <option value="high"    {{ old('priority') == 'high'   ? 'selected' : '' }}>{{trans('cruds.status.high')}}</option>
                         </select>
                         @if($errors->has('priority'))
                             <div class="invalid-feedback">
@@ -138,11 +127,11 @@
                     <div class="form-group">
                         <label for="severity">{{ trans('cruds.bug.fields.severity') }}</label>
                         <select class="form-control select2 {{ $errors->has('severity') ? 'is-invalid' : '' }}" name="severity" id="severity">
-                            <option value="" selected disabled>Please Select</option>
-                            <option value="minor"           {{ old('severity') == 'minor'        ? 'selected' : '' }}>Minor</option>
-                            <option value="major"           {{ old('severity') == 'major'        ? 'selected' : '' }}>Major</option>
-                            <option value="show stopper"    {{ old('severity') == 'show stopper' ? 'selected' : '' }}>Show Stopper</option>
-                            <option value="must be fixed"   {{ old('severity') == 'must be fixed'? 'selected' : '' }}>Must be Fixed</option>
+                            <option value="" selected disabled>{{trans('global.pleaseSelect')}}</option>
+                            <option value="minor"           {{ old('severity') == 'minor'        ? 'selected' : '' }}>{{trans('cruds.status.minor')}}</option>
+                            <option value="major"           {{ old('severity') == 'major'        ? 'selected' : '' }}>{{trans('cruds.status.major')}}</option>
+                            <option value="show stopper"    {{ old('severity') == 'show stopper' ? 'selected' : '' }}>{{trans('cruds.status.show_stopper')}}</option>
+                            <option value="must be fixed"   {{ old('severity') == 'must be fixed'? 'selected' : '' }}>{{trans('cruds.status.must_fixed')}}</option>
                         </select>
                         @if($errors->has('severity'))
                             <div class="invalid-feedback">
@@ -196,7 +185,7 @@
 
         var old_project = document.getElementById("old_project").value;
         if(old_project || old_task || project_bug_id){
-            getProjectId();
+            //getProjectId();
         }
 
   function SimpleUploadAdapter(editor) {
@@ -208,7 +197,7 @@
               return new Promise(function(resolve, reject) {
                 // Init request
                 var xhr = new XMLHttpRequest();
-                xhr.open('POST', '/admin/bugs/ckmedia', true);
+                xhr.open('POST', '/admin/projectmanagement/bugs/ckmedia', true);
                 xhr.setRequestHeader('x-csrf-token', window._token);
                 xhr.setRequestHeader('Accept', 'application/json');
                 xhr.responseType = 'json';
@@ -269,7 +258,9 @@
             var alltasks = document.getElementById("tasks").value;
             var tasks = JSON.parse(alltasks);
             var innerHtml =[];
-            innerHtml.push(`<option value="" selected disabled>Please Select</option>`);
+            var pleaseSelect ='{{trans('global.pleaseSelect')}}';
+
+            innerHtml.push(`<option value="" selected disabled>${pleaseSelect}</option>`);
             for (const [key, value] of Object.entries(tasks)){
                 if (project_id == value.project.id){
                     var selected = '';

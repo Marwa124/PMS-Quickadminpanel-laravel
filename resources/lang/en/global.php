@@ -285,5 +285,7 @@ return [
 
     ////////
     'assign_to'                            => 'Assign To',
-    'forcedelete'                          => 'Force Delete'
+    'forcedelete'                          => 'Force Delete',
+    'off'                                  => 'OFF',
+    'on'                                   => 'ON',
 ];
