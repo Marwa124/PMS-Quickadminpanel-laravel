@@ -9,7 +9,7 @@ use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
 use \DateTimeInterface;
-
+use  Modules\Sales\Entities\Proposal;
 class Opportunity extends Model implements HasMedia
 {
     use SoftDeletes, HasMediaTrait;
@@ -47,6 +47,10 @@ class Opportunity extends Model implements HasMedia
         return $date->format('Y-m-d H:i:s');
     }
 
+    public function proposals()
+    {
+        return $this->hasMany(Proposal::class,'module_id')->where('module','=','opportunities')->orderBy('id','desc');
+    }
     public function registerMediaConversions(Media $media = null)
     {
         $this->addMediaConversion('thumb')->fit('crop', 50, 50);
