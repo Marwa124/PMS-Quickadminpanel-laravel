@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
-
+use App\Models\User;
 use  Modules\Sales\Entities\ProposalItemTax;
 use \DateTimeInterface;
 
@@ -131,10 +131,10 @@ class Proposal extends Model implements HasMedia
         $this->attributes['date_sent'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
     }
 
-    // public function permissions()
-    // {
-    //     return $this->belongsToMany(Permission::class);
-    // }
+    public function user()
+    {
+        return $this->belongsToMany(User::class , 'user_id' ,'id');
+    }
     public function items(){
 
         return $this->belongsToMany('Modules\Sales\Entities\ProposalsItem',
@@ -162,33 +162,33 @@ class Proposal extends Model implements HasMedia
 
     }
 
-        public function itemtaxs()
-        {
-            return $this->hasMany(ProposalItemTax::class, 'proposals_id', 'id');
-        }
+    public function itemtaxs()
+    {
+        return $this->hasMany(ProposalItemTax::class, 'proposals_id', 'id');
+    }
 
-       public function gettaxesarray($taxes)
-        {
-            
-            $unique_taxes_ids = array_unique($taxes->itemtaxs->pluck('taxs_id')->toArray());
-            $turned_into_keys = array_fill_keys($unique_taxes_ids,null);
+    public function gettaxesarray($taxes)
+    {
+        
+        $unique_taxes_ids = array_unique($taxes->itemtaxs->pluck('taxs_id')->toArray());
+        $turned_into_keys = array_fill_keys($unique_taxes_ids,null);
 
-           foreach($taxes->items as $key => $value){
-          
-               $items_tax = 0;    
-         
-                foreach($taxes->itemtaxs->where('item_id',$value->pivot->id)->pluck('taxs_id') as $tax){
+        foreach($taxes->items as $key => $value){
+        
+            $items_tax = 0;    
+        
+            foreach($taxes->itemtaxs->where('item_id',$value->pivot->id)->pluck('taxs_id') as $tax){
 
-                    if(array_key_exists($tax,$turned_into_keys)){
-                        
-                        $items_tax = ($value->pivot->unit_cost * $value->pivot->quantity)* (get_taxes($tax)->rate_percent/100) ;
-                        $turned_into_keys[$tax][]=$items_tax;
-                    }
+                if(array_key_exists($tax,$turned_into_keys)){
+                    
+                    $items_tax = ($value->pivot->unit_cost * $value->pivot->quantity)* (get_taxes($tax)->rate_percent/100) ;
+                    $turned_into_keys[$tax][]=$items_tax;
                 }
-
-           }
-               
-          return  $turned_into_keys;
+            }
 
         }
+            
+        return  $turned_into_keys;
+
+    }
 }

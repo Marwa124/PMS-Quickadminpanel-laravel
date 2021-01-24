@@ -233,7 +233,7 @@ class ProposalsController extends Controller
     {
         abort_if(Gate::denies('proposal_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $proposal->load('permissions');
+      
 
         return view('sales::admin.proposals.show', compact('proposal'));
     }
