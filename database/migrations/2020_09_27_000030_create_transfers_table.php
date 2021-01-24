@@ -18,6 +18,7 @@ class CreateTransfersTable extends Migration
             $table->longText('notes')->nullable();
             $table->date('date')->nullable();
             $table->string('type')->nullable();
+            $table->string('bank_balance')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

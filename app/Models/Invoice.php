@@ -175,4 +175,9 @@ class Invoice extends Model implements HasMedia
 //        }
         return $amount;
     }
+
+
+    public function items(){
+        return $this->hasMany('invoice_items','invoice_id');
+    }
 }

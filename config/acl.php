@@ -142,6 +142,14 @@
                 'expenses_create', // done
                 'expenses_edit', // done
                 'expenses_delete', // done
+                'deposits_category', // done
+                'deposits_category_create', // done
+                'deposits_category_edit', // done
+                'deposits_category_delete', // done
+                'deposits', // done
+                'deposits_create', // done
+                'deposits_edit', // done
+                'deposits_delete', // done
             ],
 
             'penalty_category' => [

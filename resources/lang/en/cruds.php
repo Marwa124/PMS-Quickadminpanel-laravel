@@ -9,7 +9,9 @@ return [
         'payment_method' => 'Payment Methods',
         'transfers'      => 'Transfers',
         'expenses_category'      => 'Expense Category',
+        'deposits_category'      => 'Deposit Category',
         'expenses'      => 'Expenses',
+        'deposits'      => 'Deposits',
     ],
     'payment_method'                => [
         'title'          => 'Payment Method',
@@ -21,6 +23,13 @@ return [
     'expenses_category'                => [
         'title'          => 'Expense Category',
         'title_singular' => 'Expense Category',
+        'fields' => [
+            'name'  => 'Name'
+        ]
+    ],
+    'deposits_category'                => [
+        'title'          => 'Deposit Category',
+        'title_singular' => 'Deposit Category',
         'fields' => [
             'name'  => 'Name'
         ]
@@ -65,6 +74,33 @@ return [
             'expenses_category'  => 'Expenses Category',
             'select_expense_category'  => 'Select Expense Category',
             'select_paid'  => 'Select Paid',
+            'entry_date'  => 'Entry Date',
+        ]
+    ],
+
+
+    'deposits'                => [
+        'title'          => 'Deposits',
+        'title_singular' => 'Deposits',
+        'attach' => 'Attachments',
+        'fields' => [
+            'title'  => 'Name/Title',
+            'date'  => 'Date',
+            'account_name'  => 'Account Name',
+            'amount'  => 'Amount',
+            'paid_by'  => 'Paid By',
+            'status'  => 'Status',
+            'attachment'  => 'Attachment',
+            'notes'  => 'Notes',
+            'reference'  => 'Reference',
+            'attachments'  => 'Attachments',
+            'payment_method'  => 'Payment Method',
+            'select_payment_method'  => 'Select Payment Method',
+            'deposits_category'  => 'Deposits Category',
+            'select_deposit_category'  => 'Select Deposit Category',
+            'select_paid'  => 'Select Paid',
+            'entry_date'  => 'Entry Date',
+            'balance'  => 'Balance',
         ]
     ],
 

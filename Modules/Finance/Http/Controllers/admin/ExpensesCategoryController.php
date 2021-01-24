@@ -6,7 +6,7 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Gate;
-use Modules\Finance\Entities\ExpenseCategory;
+use App\Models\ExpenseCategory;
 use Symfony\Component\HttpFoundation\Response;
 
 class ExpensesCategoryController extends Controller

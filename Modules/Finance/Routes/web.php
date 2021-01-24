@@ -45,6 +45,11 @@ Route::group(['as' => 'finance.admin.', 'prefix' => 'admin/finance', 'namespace'
     Route::delete('expenses_category_mass_destroy','ExpensesCategoryController@massDestroy')->name('expenses_category.massDestroy');
     ////////////////////////////////END EXPENSES Category//////////////////////////////////////////////////////////////
 
+    ////////////////////////////////////DEPOSITS Category//////////////////////////////////////////////////////////////
+    Route::resource('deposits_category','DepositsCategoryController');
+    Route::delete('deposits_category_mass_destroy','DepositsCategoryController@massDestroy')->name('deposits_category.massDestroy');
+    ////////////////////////////////END DEPOSITS Category//////////////////////////////////////////////////////////////
+
     ////////////////////////////////////EXPENSES///////////////////////////////////////////////////////////////////////
     Route::post('expenses/media', 'ExpensesController@storeMediaWithSameName')->name('expenses.storeMedia');
     Route::get('expenses/media/download/{id}', 'ExpensesController@downloadMedia')->name('expenses.download.attach');
@@ -56,5 +61,23 @@ Route::group(['as' => 'finance.admin.', 'prefix' => 'admin/finance', 'namespace'
     Route::get('expenses_getapproved/{id}','ExpensesController@getapproved')->name('expenses.getapproved');
     Route::get('expenses_getpaid/{id}','ExpensesController@getpaid')->name('expenses.getpaid');
     ////////////////////////////////END EXPENSES///////////////////////////////////////////////////////////////////////
+
+    ////////////////////////////////////DEPOSITS///////////////////////////////////////////////////////////////////////
+    Route::post('deposits/media', 'DepositsController@storeMediaWithSameName')->name('deposits.storeMedia');
+    Route::get('deposits/media/download/{id}', 'DepositsController@downloadMedia')->name('deposits.download.attach');
+    Route::get('deposits/media/view/{id}', 'DepositsController@viewMedia')->name('deposits.view.attach');
+    Route::get('deposits/media/delete/{id}/{transfer}', 'DepositsController@deleteMedia')->name('deposits.delete.attach');
+    Route::resource('deposits','DepositsController');
+    Route::delete('deposits_mass_destroy','DepositsController@massDestroy')->name('deposits.massDestroy');
+    Route::get('deposits_get_data','DepositsController@get_data')->name('deposits.get_data');
+    Route::get('deposits_getapproved/{id}','DepositsController@getapproved')->name('deposits.getapproved');
+    Route::get('deposits_getpaid/{id}','DepositsController@getpaid')->name('deposits.getpaid');
+    ////////////////////////////////END DEPOSITS///////////////////////////////////////////////////////////////////////
+
+    ////////////////////////////////////INVOICES///////////////////////////////////////////////////////////////////////
+    Route::resource('invoices','InvoicesController');
+    Route::delete('invoices_mass_destroy','InvoicesController@massDestroy')->name('invoices.massDestroy');
+    Route::get('invoices_get_data','InvoicesController@get_data')->name('invoices.get_data');
+    ////////////////////////////////END INVOICES///////////////////////////////////////////////////////////////////////
 
 });

@@ -1,6 +1,7 @@
 <?php
 
-namespace Modules\Finance\Entities;
+namespace App\Models;
+
 
 
 use App\Models\Client;
@@ -36,6 +37,7 @@ class Expense extends Model implements HasMedia
         'status',
         'reference',
         'payment_method_id',
+        'bank_balance',
         'created_by',
         'paid_by_id',
         'account_id',
@@ -63,7 +65,7 @@ class Expense extends Model implements HasMedia
 
     public function paid_by()
     {
-        return $this->belongsTo(Client::class, 'payment_method_id');
+        return $this->belongsTo(Client::class, 'paid_by_id');
     }
 
     protected function serializeDate(DateTimeInterface $date)

@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Finance\Entities;
+namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;

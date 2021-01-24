@@ -172,7 +172,7 @@
                             </a>
                         </li>
                     @endcan
-                    {{--@can('expenses')--}}
+                    @can('expenses')
                         <li class="c-sidebar-nav-item">
                             <a href="{{ route("finance.admin.expenses_category.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/expenses_category") || request()->is("admin/finance/*") ? "active" : "" }}">
                                 <i class="fa-fw fas fa-bookmark c-sidebar-nav-icon self-item-link">
@@ -189,7 +189,25 @@
                                 {{ trans('cruds.finance.expenses') }}
                             </a>
                         </li>
-                    {{--@endcan--}}
+                    @endcan
+                    @can('deposits')
+                        <li class="c-sidebar-nav-item">
+                            <a href="{{ route("finance.admin.deposits_category.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/deposits_category") || request()->is("admin/finance/*") ? "active" : "" }}">
+                                <i class="fa-fw fas fa-bookmark c-sidebar-nav-icon self-item-link">
+
+                                </i>
+                                {{ trans('cruds.finance.deposits_category') }}
+                            </a>
+                        </li>
+                        <li class="c-sidebar-nav-item">
+                            <a href="{{ route("finance.admin.deposits.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/deposits") || request()->is("admin/finance/*") ? "active" : "" }}">
+                                <i class="fa-fw fas fa-newspaper c-sidebar-nav-icon self-item-link">
+
+                                </i>
+                                {{ trans('cruds.finance.deposits') }}
+                            </a>
+                        </li>
+                    @endcan
 
 
 

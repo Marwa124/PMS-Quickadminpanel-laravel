@@ -4,7 +4,7 @@ namespace Modules\Finance\Http\Controllers\admin;
 
 use App\Http\Controllers\Traits\MediaUploadingTrait;
 use Gate;
-use Modules\Finance\Entities\Transfer;
+use App\Models\Transfer;
 use Modules\HR\Entities\Account;
 use Modules\Payroll\Entities\PaymentMethod;
 use Spatie\MediaLibrary\Models\Media;
@@ -104,7 +104,12 @@ class TransfersController extends Controller
                 'balance' => $to_account->balance + $request->amount
             ]);
 
-            if ($request->input('attachments', false)) {
+            $transfer->update([
+                'bank_balance'   => $to_account->balance
+            ]);
+
+
+        if ($request->input('attachments', false)) {
                 foreach ($request->attachments as $attachment) {
                     $transfer->addMedia(storage_path('tmp/uploads/' . $attachment))->toMediaCollection('attachments');
                 }

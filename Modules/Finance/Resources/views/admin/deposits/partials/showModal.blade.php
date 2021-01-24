@@ -18,7 +18,7 @@
                     <tbody>
                     <tr>
                         <th>
-                            {{ trans('cruds.expenses.fields.title') }}
+                            {{ trans('cruds.deposits.fields.title') }}
                         </th>
                         <td>
                             {{ $request->title }}
@@ -26,7 +26,7 @@
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.expenses.fields.date') }}
+                            {{ trans('cruds.deposits.fields.date') }}
                         </th>
                         <td>
                             {{ $request->entry_date ?? '' }}
@@ -34,7 +34,7 @@
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.expenses.fields.account_name') }}
+                            {{ trans('cruds.deposits.fields.account_name') }}
                         </th>
                         <td>
                             {{ $request->account->name ?? '' }}
@@ -42,7 +42,7 @@
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.expenses.fields.amount') }}
+                            {{ trans('cruds.deposits.fields.amount') }}
                         </th>
                         <td>
                             {{ $request->amount ?? '' }} EGP
@@ -50,21 +50,7 @@
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.expenses.fields.status') }}
-                        </th>
-                        <td>
-                            @if($request->status == 'non_approved')
-                                <a href="{{route('finance.admin.expenses.getapproved',$request->id)}}">Non Approved</a>
-                            @elseif($request->status == 'unpaid')
-                                <a href="{{route('finance.admin.expenses.getpaid',$request->id)}}">Unpaid</a>
-                            @else
-                                {{ $request->status ?? '' }}
-                            @endif
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.expenses.fields.notes') }}
+                            {{ trans('cruds.deposits.fields.notes') }}
                         </th>
                         <td>
                             {!! $request->notes !!}

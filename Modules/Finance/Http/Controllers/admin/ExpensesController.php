@@ -5,8 +5,8 @@ namespace Modules\Finance\Http\Controllers\admin;
 use App\Http\Controllers\Traits\MediaUploadingTrait;
 use App\Models\Client;
 use Gate;
-use Modules\Finance\Entities\Expense;
-use Modules\Finance\Entities\ExpenseCategory;
+use App\Models\Expense;
+use App\Models\ExpenseCategory;
 use Modules\HR\Entities\Account;
 use Modules\Payroll\Entities\PaymentMethod;
 use Spatie\MediaLibrary\Models\Media;
@@ -128,6 +128,11 @@ class ExpensesController extends Controller
         $account->update([
             'balance'   => $account->balance - $request->amount
         ]);
+
+        $expenses->update([
+           'bank_balance'   =>  $account->balance
+        ]);
+
 
 
         if ($request->input('attachments', false)) {

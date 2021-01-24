@@ -1,17 +1,18 @@
 <?php
 
-namespace Modules\Finance\Entities;
+namespace App\Models;
+
 
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use \DateTimeInterface;
 
-class ExpenseCategory extends Model
+class DepositCategory extends Model
 {
     use SoftDeletes;
 
-    public $table = 'expense_categories';
+    public $table = 'deposit_categories';
 
     protected $dates = [
         'created_at',
