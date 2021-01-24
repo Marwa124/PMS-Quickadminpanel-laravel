@@ -126,7 +126,7 @@ class ProposalsController extends Controller
 
         } catch (\Exception $e) {
             DB::rollback();
-            // dd($e);
+             dd($e);
             return redirect()->back();
         }
 
