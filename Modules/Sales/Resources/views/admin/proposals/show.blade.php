@@ -215,21 +215,58 @@
             <!--/.col-->
 
             <div class="col-sm-4">
-                {{-- Subject :
-Proposals date : 04-01-2021
-Due Date : 13-01-2021
-Sales Account : Sales
-Proposals Status: Approved --}}
+
               <h6 class="mb-3"> {{ trans('cruds.proposal.fields.reference_no') }}:</h6>
               <div>
                 <strong>#{{ $proposal->reference_no }}</strong>
               </div>
               <div>{{ trans('cruds.proposal.fields.proposal_date') }} : {{ $proposal->proposal_date }}</div>
               <div>{{ trans('cruds.proposal.fields.expire_date') }} : {{ $proposal->expire_date }}</div>
-              <div>Sales Account: {{ $proposal->user ? $proposal->user->full_time :'' }} </div>
+              <div>{{ trans('cruds.proposal.fields.Sales_Agent') }}: {{ $proposal->user && $proposal->user->accountDetail ? $proposal->user->accountDetail->fullname :'' }} </div>
               <div>
                 {{ trans('cruds.proposal.fields.status') }}: {{ $proposal->status }}
               </div>
+            </div>
+            <!--/.col-->
+
+          </div>
+          <hr>
+          <div class="row mb-4">
+
+            <div class="col-sm-4">
+
+                {{-- <h6 class="mb-3"> {{ trans('cruds.proposal.fields.OTG_INFO') }}:</h6> --}}
+                <div>
+                  <strong> {{ trans('cruds.proposal.fields.OTG_INFO') }}</strong>
+                </div>
+                <div>{{ trans('cruds.proposal.fields.companyname') }} : One Tec Group LLC</div>
+                <div>{{ trans('cruds.proposal.fields.companyaddress') }} : 8th Sector – Building 10 – Block 11 – Nasr City - Cairo, Egypt</div>
+                <div>{{ trans('cruds.proposal.fields.companyphone') }}: +201555836995 </div>
+              </div>
+            <!--/.col-->
+
+
+            <div class="col-sm-4">
+            </div>
+            <div class="col-sm-4">
+            @dd($proposal->client,$proposal->opportunity)
+               @if($proposal->module =='client') 
+               
+                    <div>
+                    <strong>{{ trans('cruds.proposal.fields.Customer_INFO') }}</strong>
+                    </div>
+                    <div>{{ trans('cruds.proposal.fields.companyname') }} :{{-- $proposal->client?: --}}</div>
+                    <div>{{ trans('cruds.proposal.fields.companyaddress') }} : 8th Sector – Building 10 – Block 11 – Nasr City - Cairo, Egypt</div>
+                    <div>{{ trans('cruds.proposal.fields.companyphone') }}: +201555836995 </div>
+               @endif
+               @if($proposal->module =='opportunities') 
+                    <div>
+                        <strong>{{ trans('cruds.proposal.fields.Opportunity_INFO') }}</strong>
+                    </div>
+                    <div>{{ trans('cruds.proposal.fields.companyname') }} :{{-- $proposal->opportunity?: --}}</div>
+                    <div>{{ trans('cruds.proposal.fields.companyaddress') }} : 8th Sector – Building 10 – Block 11 – Nasr City - Cairo, Egypt</div>
+                    <div>{{ trans('cruds.proposal.fields.companyphone') }}: +201555836995 </div>
+                    @endif
             </div>
             <!--/.col-->
 

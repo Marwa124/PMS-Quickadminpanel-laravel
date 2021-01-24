@@ -10,6 +10,8 @@ use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
 use App\Models\User;
+use App\Models\Opportunity;
+use App\Models\Client;
 use  Modules\Sales\Entities\ProposalItemTax;
 use \DateTimeInterface;
 
@@ -89,7 +91,14 @@ class Proposal extends Model implements HasMedia
         'updated_at',
         'deleted_at',
     ];
-
+    public function opportunity()
+    {
+        return $this->belongsTo(Opportunity::class,'module_id')->where('proposals.module','=','opportunities');
+    }
+    public function client()
+    {
+        return $this->belongsTo(Client::class,'module_id')->where('proposals.module','=','client');
+    }
     protected function serializeDate(DateTimeInterface $date)
     {
         return $date->format('Y-m-d H:i:s');
@@ -133,7 +142,7 @@ class Proposal extends Model implements HasMedia
 
     public function user()
     {
-        return $this->belongsToMany(User::class , 'user_id' ,'id');
+        return $this->belongsTo(User::class ,'user_id');
     }
     public function items(){
 

@@ -15,7 +15,7 @@ class DropStatusIdFromTasks extends Migration
     {
         Schema::disableForeignKeyConstraints();
         Schema::table('tasks', function (Blueprint $table) {
-            //$table->dropForeign('status_fk_2165607');
+            $table->dropForeign('status_fk_2165607');
             $table->dropColumn('status_id');
             //$table->enum('status', ['Not Started','In Progress','Completed','Deffered','Waiting For Someone'])->default('Not Started');
         });

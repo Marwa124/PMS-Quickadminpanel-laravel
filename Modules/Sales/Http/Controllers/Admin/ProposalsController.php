@@ -180,8 +180,10 @@ class ProposalsController extends Controller
         ]));
 
     
+            if(isset($request->item_relation_id)){
 
-            $deleteold=ItemPorposalRelations::whereIn('id',$request->item_relation_id)->forceDelete();
+                $deleteold=ItemPorposalRelations::whereIn('id',$request->item_relation_id)->forceDelete();
+            }
         
        foreach ($request->items as $key => $value) {
             $total_taxitem=0;
