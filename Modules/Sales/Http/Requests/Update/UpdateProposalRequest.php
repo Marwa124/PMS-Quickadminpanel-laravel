@@ -27,7 +27,7 @@ class UpdateProposalRequest extends FormRequest
             ],
             'module'         => [
                 'string',
-                'nullable',
+                'required',
             ],
             'proposal_date'  => [
                 'required',
@@ -37,22 +37,16 @@ class UpdateProposalRequest extends FormRequest
                 'date_format:' . config('panel.date_format'),
                 'nullable',
             ],
-            'alert_overdue'  => [
-                'nullable',
-                'integer',
-                'min:-2147483648',
-                'max:2147483647',
-            ],
             'currency'       => [
                 'string',
                 'nullable',
             ],
             'total_tax'      => [
-                'string',
+                // 'string',
                 'nullable',
             ],
             'status'         => [
-                'string',
+                // 'string',
                 'nullable',
             ],
             'date_sent'      => [
@@ -63,12 +57,13 @@ class UpdateProposalRequest extends FormRequest
                 'string',
                 'nullable',
             ],
-            'permissions.*'  => [
-                'integer',
-            ],
-            'permissions'    => [
-                'array',
-            ],
+            // 'permissions.*'  => [
+            //     'integer',
+            // ],
+            // 'permissions'    => [
+            //     'array',
+            // ],
         ];
+    
     }
 }

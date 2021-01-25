@@ -85,7 +85,6 @@ class ProposalsController extends Controller
         'discount_total',
         ]));
 
-    
        foreach ($request->items as $key => $value) {
             $total_taxitem=0;
             if (isset($value['tax'])) {
@@ -146,14 +145,15 @@ class ProposalsController extends Controller
     public function update(UpdateProposalRequest $request, Proposal $proposal)
     {
         
-        // DB::beginTransaction();
+        DB::beginTransaction();
 
-        // try {
+        try {
         $total_tax=$request->total_tax ? array_sum($request->total_tax) : 0;
         $after_discount=$request->after_discount ? $request->after_discount : 0;
         $total=$request->total ? $request->total : 0;
         $discount_percent=$request->discount_percent ? $request->discount_percent : 0;
         $request->merge(['total_cost_price'=>$total,'total_tax'=>$total_tax,'after_discount'=>$after_discount,'discount_percent'=>$discount_percent]);
+        // dd($request->all(),$request->item_relation_id,isset($request->item_relation_id),ItemPorposalRelations::whereIn('id',$request->item_relation_id)->get());
         $proposal->update($request->only([
         'reference_no',
         'subject',
@@ -179,7 +179,12 @@ class ProposalsController extends Controller
         'discount_total',
         ]));
 
-        $old_propsal_val= $proposal->items->pluck('id');
+    
+            if(isset($request->item_relation_id)){
+
+                $deleteold=ItemPorposalRelations::whereIn('id',$request->item_relation_id)->forceDelete();
+            }
+        
        foreach ($request->items as $key => $value) {
             $total_taxitem=0;
             if (isset($value['tax'])) {
@@ -217,14 +222,14 @@ class ProposalsController extends Controller
             Media::whereIn('id', $media)->update(['model_id' => $proposal->id]);
         }
 
-        // DB::commit();
-        // return redirect()->route('sales.admin.proposals.index');
+        DB::commit();
+        return redirect()->route('sales.admin.proposals.index');
 
-        // } catch (\Exception $e) {
-        //     DB::rollback();
-        //     // dd($e);
-        //     return redirect()->back();
-        // }
+        } catch (\Exception $e) {
+            DB::rollback();
+            dd($e);
+            return redirect()->back();
+        }
 
         
     }
@@ -233,7 +238,7 @@ class ProposalsController extends Controller
     {
         abort_if(Gate::denies('proposal_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $proposal->load('permissions');
+      
 
         return view('sales::admin.proposals.show', compact('proposal'));
     }
