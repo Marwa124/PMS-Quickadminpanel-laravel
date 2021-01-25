@@ -67,6 +67,11 @@ class WorkTracking extends Model
         $this->attributes['end_date'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
     }
 
+    public function activities()
+    {
+        return $this->hasMany(Activity::class,'module_field_id')->where('module','=','workTracking')->orderBy('id','desc');
+    }
+
 //    public function permissions()
 //    {
 //        return $this->belongsToMany(Permission::class);

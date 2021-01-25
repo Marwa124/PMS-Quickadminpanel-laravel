@@ -106,7 +106,9 @@ trait ProjectManagementHelperTrait
                 ->where('status', 'Completed')->count();
             $achievement_WorkTracking = $tasks_count;
 
-            if ($workTracking->achievement <= $achievement_WorkTracking) {
+            if (!$workTracking->achievement){
+                $progress_WorkTracking = 0;
+            }elseif ($workTracking->achievement <= $achievement_WorkTracking) {
                 $progress_WorkTracking = 100;
             } else {
                 $progress_WorkTracking = (int)($achievement_WorkTracking / ($workTracking->achievement) * 100);

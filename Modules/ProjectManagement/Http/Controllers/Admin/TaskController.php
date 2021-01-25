@@ -135,19 +135,26 @@ class TaskController extends Controller
     {
         abort_if(Gate::denies('task_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        //$statuses = TaskStatus::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $tags = TaskTag::all()->pluck('name', 'id');
+        $tasks = auth()->user()->getUserTasksByUserID(auth()->user()->id,false,true)->pluck('id');
 
-        $projects = Project::all()->pluck('name', 'id');
+        if (in_array($task->id,$tasks->toArray())){
 
-        $milestones = Milestone::with('project')->get();
+            $tags = TaskTag::all()->pluck('name', 'id');
 
-        $tasks = Task::with('milestone')->get();
+            $projects = Project::all()->pluck('name', 'id');
 
-        $task->load( 'tags', 'assigned_to', 'project', 'milestone');
+            $milestones = Milestone::with('project')->get();
 
-        return view('projectmanagement::admin.tasks.edit', compact('tags', 'projects', 'milestones', 'task','tasks'));
+            $tasks = Task::with('milestone')->get();
+
+            $task->load( 'tags', 'assigned_to', 'project', 'milestone');
+
+            return view('projectmanagement::admin.tasks.edit', compact('tags', 'projects', 'milestones', 'task','tasks'));
+
+        }
+
+        abort(Response::HTTP_FORBIDDEN, '403 Forbidden This Page Not Allow To You');
     }
 
     public function update(UpdateTaskRequest $request, Task $task)
@@ -196,9 +203,17 @@ class TaskController extends Controller
     {
         abort_if(Gate::denies('task_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $task->load('tags', 'project', 'milestone','createBy','TimeSheetOn','TimeSheet');
+        $tasks = auth()->user()->getUserTasksByUserID(auth()->user()->id,false,true)->pluck('id');
 
-        return view('projectmanagement::admin.tasks.show', compact('task'));
+        if (in_array($task->id,$tasks->toArray())){
+
+            $task->load('tags', 'project', 'milestone','createBy','TimeSheetOn','TimeSheet');
+
+            return view('projectmanagement::admin.tasks.show', compact('task'));
+        }
+
+        abort(Response::HTTP_FORBIDDEN, '403 Forbidden This Page Not Allow To You');
+
     }
 
     public function destroy(Task $task)
@@ -207,14 +222,25 @@ class TaskController extends Controller
 
         $task->delete();
 
-        //setActivity('task',$task->id,'Delete Task',$task->name);
+        setActivity('task',$task->id,'Delete Task',$task->name);
 
         return back();
     }
 
     public function massDestroy(MassDestroyTaskRequest $request)
     {
-        Task::whereIn('id', request('ids'))->delete();
+        //Task::whereIn('id', request('ids'))->delete();
+
+        $ids = request('ids');
+
+        foreach ($ids as $id){
+            $task = Task::where('id',$id)->first();
+
+            $task->delete();
+
+            //$project->accountDetails()->detach();
+            setActivity('task',$task->id,'Delete Task',$task->name);
+        }
 
         return response(null, Response::HTTP_NO_CONTENT);
     }
@@ -386,6 +412,10 @@ class TaskController extends Controller
         } else if ($action == 'restore') {
             //restore Task
             Task::onlyTrashed()->where('id', $id)->restore();
+            $task = Task::findOrFail($id);
+
+            setActivity('task',$task->id,'Restore Task',$task->name);
+
         }
 
         return back();
@@ -405,5 +435,21 @@ class TaskController extends Controller
         return redirect()->route('projectmanagement.admin.tasks.show',$newtask->id);
 
     }
+
+    public function task_report()
+    {
+        $user = User::findOrFail(auth()->user()->id);
+
+        if ($user->hasrole(['Admin','Super Admin']))
+        {
+            $tasks = Task::all();
+
+            return view('projectmanagement::admin.tasks.task_report', compact('tasks'));
+
+        }
+
+        return abort(Response::HTTP_FORBIDDEN, '403 Forbidden .., This Page Allow To Admin Only');
+    }
+
 
 }

@@ -167,11 +167,11 @@
 
             'task_management' => [
                 'task_management_access',
-                'task_status_create',
-                'task_status_edit',
-                'task_status_show',
-                'task_status_delete',
-                'task_status_access',
+//                'task_status_create',
+//                'task_status_edit',
+//                'task_status_show',
+//                'task_status_delete',
+//                'task_status_access',
                 'task_tag_create',
                 'task_tag_edit',
                 'task_tag_show',

@@ -550,6 +550,7 @@
                 </ul>
             </li>
         @endcan
+{{--        @dd(auth()->user()->id)--}}
         @canany(['task_management_access' , 'project_management_access'])
 {{--        @if(auth()->user()->can('task_management_access') || auth()->user()->can('project_management_access'))--}}
             <li class="c-sidebar-nav-dropdown">
@@ -661,6 +662,36 @@
                             </a>
                         </li>
                     @endcan
+
+                    <li class="c-sidebar-nav-dropdown">
+                        <a class="c-sidebar-nav-dropdown-toggle" href="#">
+                            <i class="fa-fw far fa-edit c-sidebar-nav-icon parent-dropdown">
+
+                            </i>
+                            {{ trans('global.reports') }}
+                        </a>
+                        <ul class="c-sidebar-nav-dropdown-items">
+
+                            <li class="c-sidebar-nav-item">
+                                <a href="{{ route("projectmanagement.admin.projects.project_report") }}" class="c-sidebar-nav-link {{ request()->is("admin/projectmanagement/projects/reports/project_report") ? "active" : "" }}">
+                                    <i class="fa-fw fas fa-clipboard-list c-sidebar-nav-icon sub-dropdown">
+
+                                    </i>
+                                    {{ trans('cruds.project.fields.project_report') }}
+                                </a>
+                            </li>
+                            <li class="c-sidebar-nav-item">
+                                <a href="{{ route("projectmanagement.admin.tasks.task_report") }}" class="c-sidebar-nav-link {{ request()->is("admin/projectmanagement/tasks/reports/task_report") ? "active" : "" }}">
+                                    <i class="fa-fw fas fa-clipboard-list c-sidebar-nav-icon sub-dropdown">
+
+                                    </i>
+                                    {{ trans('cruds.task.fields.task_report') }}
+                                </a>
+                            </li>
+
+                        </ul>
+                    </li>
+
                     @can('task_uploaded_file_access')
                         <li class="c-sidebar-nav-item">
                             <a href="{{ route("projectmanagement.admin.task-uploaded-files.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/projectmanagement/task-uploaded-files") || request()->is("admin/projectmanagement/task-uploaded-files/*") ? "active" : "" }}">

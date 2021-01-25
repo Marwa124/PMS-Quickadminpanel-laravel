@@ -103,17 +103,27 @@ class BugsController extends Controller
     {
         abort_if(Gate::denies('bug_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $projects = Project::all()->pluck('name', 'id');
+        $bugs = auth()->user()->getUserBugsByUserID(auth()->user()->id)->pluck('id');
 
-        $tasks = Task::with('project')->get();
+        if (in_array($bug->id,$bugs->toArray()))
+        {
 
-        $bug->load('project','task');
+            $projects = Project::all()->pluck('name', 'id');
 
-        return view('projectmanagement::admin.bugs.edit', compact('projects','tasks','bug'));
+            $tasks = Task::with('project')->get();
+
+            $bug->load('project','task');
+
+            return view('projectmanagement::admin.bugs.edit', compact('projects','tasks','bug'));
+        }
+
+        abort(Response::HTTP_FORBIDDEN, '403 Forbidden This Page Not Allow To You');
+
     }
 
     public function update(UpdateBugRequest $request, Bug $bug)
     {
+
         $bug->update($request->all());
 
         // Notify User
@@ -139,15 +149,25 @@ class BugsController extends Controller
         setActivity('bug',$bug->id,'Update Bug',$bug->status);
 
         return redirect()->route('projectmanagement.admin.bugs.index');
+
     }
 
     public function show(Bug $bug)
     {
         abort_if(Gate::denies('bug_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $bug->load('project', 'task');
+        $bugs = auth()->user()->getUserBugsByUserID(auth()->user()->id)->pluck('id');
 
-        return view('projectmanagement::admin.bugs.show', compact('bug'));
+        if (in_array($bug->id,$bugs->toArray()))
+        {
+
+            $bug->load('project', 'task');
+
+            return view('projectmanagement::admin.bugs.show', compact('bug'));
+        }
+
+        abort(Response::HTTP_FORBIDDEN, '403 Forbidden This Page Not Allow To You');
+
     }
 
     public function destroy(Bug $bug)
@@ -156,12 +176,25 @@ class BugsController extends Controller
 
         $bug->delete();
 
+        setActivity('bug',$bug->id,'Delete Bug',$bug->name);
+
         return back();
     }
 
     public function massDestroy(MassDestroyBugRequest $request)
     {
-        Bug::whereIn('id', request('ids'))->delete();
+        //Bug::whereIn('id', request('ids'))->delete();
+
+        $ids = request('ids');
+
+        foreach ($ids as $id){
+            $bug = Bug::where('id',$id)->first();
+
+            $bug->delete();
+
+            //$project->accountDetails()->detach();
+            setActivity('bug',$bug->id,'Delete Bug',$bug->name);
+        }
 
         return response(null, Response::HTTP_NO_CONTENT);
     }
@@ -306,6 +339,9 @@ class BugsController extends Controller
         } else if ($action == 'restore') {
             //restore bug
             Bug::onlyTrashed()->where('id', $id)->restore();
+            $bug = Bug::findOrFail($id);
+
+            setActivity('bug',$bug->id,'Restore Bug',$bug->name);
         }
 
         return back();

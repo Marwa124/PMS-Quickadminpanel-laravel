@@ -18,6 +18,7 @@ use Modules\ProjectManagement\Entities\Project;
 use Modules\ProjectManagement\Entities\ProjectTimer;
 use Modules\ProjectManagement\Entities\Task;
 use Modules\ProjectManagement\Entities\TimeSheet;
+use Modules\ProjectManagement\Entities\ticket;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
@@ -225,15 +226,27 @@ class User extends Authenticatable implements HasMedia
     public function getUserProjectsByUserID($user_id,$trashed=null)
     {
         $user = User::findOrFail($user_id);
+        $departments = Department::where('department_head_id',$user_id)->get();
 
-        if ($user->hasrole(['Admin','Super Admin'])){
+        if ($user->hasrole(['Admin','Super Admin'])) {
 
-            if ($trashed){
+            if ($trashed) {
 //            abort_if(Gate::denies('project_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
                 return Project::onlyTrashed()->get();
             }
 
             $projects = Project::all();
+
+        }elseif ($departments->count() > 0 ){
+            // get projects to show for head department of this projects
+
+            if ($trashed){
+//            abort_if(Gate::denies('project_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+                return Project::whereIn('department_id',$departments->pluck('id'))->onlyTrashed()->get();
+            }
+
+            $projects = Project::whereIn('department_id',$departments->pluck('id'))->get();
+
         }else{
 
             if ($trashed){
@@ -250,6 +263,8 @@ class User extends Authenticatable implements HasMedia
     public function getUserMilestonesByUserID($user_id,$trashed=null)
     {
         $user = User::findOrFail($user_id);
+        $departments = Department::where('department_head_id',$user_id)->get();
+
 
         if ($user->hasrole(['Admin','Super Admin'])){
 
@@ -259,6 +274,25 @@ class User extends Authenticatable implements HasMedia
             }
 
             $milestones = Milestone::all();
+
+        }elseif ($departments->count() > 0 ){
+            // get milestones of projects to show for head department of this projects
+
+            if ($trashed){
+//            abort_if(Gate::denies('milestone_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+                return Milestone::whereHas('project',function ($query) use($departments)  {
+
+                    $query->whereIn('department_id',$departments->pluck('id'));
+
+                })->onlyTrashed()->get();
+            }
+
+            $milestones = Milestone::whereHas('project',function ($query) use($departments)  {
+
+                $query->whereIn('department_id',$departments->pluck('id'));
+
+            })->get();
+
 
         }else{
             if ($trashed){
@@ -273,9 +307,10 @@ class User extends Authenticatable implements HasMedia
         return $milestones;
     }
 
-    public function getUserTasksByUserID($user_id,$trashed=null)
+    public function getUserTasksByUserID($user_id,$trashed=null,$sub_task=null)
     {
         $user = User::findOrFail($user_id);
+        $departments = Department::where('department_head_id',$user_id)->get();
 
         if ($user->hasrole(['Admin','Super Admin'])){
 
@@ -284,13 +319,49 @@ class User extends Authenticatable implements HasMedia
                 return Task::onlyTrashed()->get();
             }
 
+            if ($sub_task){
+
+                return Task::get();
+            }
+
             $tasks = Task::where('parent_task_id',null)->get();
+
+        }elseif ($departments->count() > 0 ){
+            // get tasks of projects to show for head department of this projects
+
+            if ($trashed){
+//            abort_if(Gate::denies('task_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+                //return Task::whereIn('department_id',$departments->pluck('id'))->onlyTrashed()->get();
+                return Task::whereHas('project',function ($query) use($departments)  {
+                            $query->whereIn('department_id',$departments->pluck('id'));
+                        })->onlyTrashed()->get();
+            }
+
+            if ($sub_task){
+
+                return $tasks = Task::whereHas('project',function ($query) use($departments)  {
+
+                    $query->whereIn('department_id',$departments->pluck('id'));
+
+                })->get();
+            }
+
+            $tasks = Task::whereHas('project',function ($query) use($departments)  {
+
+                        $query->whereIn('department_id',$departments->pluck('id'));
+
+                    })->where('parent_task_id',null)->get();
 
         }else{
 
             if ($trashed){
 //            abort_if(Gate::denies('task_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
                 return $user->accountDetail->trashTasks;
+            }
+
+            if ($sub_task){
+
+                return $user->accountDetail->tasks;
             }
 
             $tasks = $user->accountDetail->tasks->where('parent_task_id',null);
@@ -302,6 +373,8 @@ class User extends Authenticatable implements HasMedia
     public function getUserBugsByUserID($user_id,$trashed = null)
     {
         $user = User::findOrFail($user_id);
+        $departments = Department::where('department_head_id',$user_id)->get();
+
 
         if ($user->hasrole(['Admin','Super Admin'])){
 
@@ -311,6 +384,25 @@ class User extends Authenticatable implements HasMedia
             }
 
             $bugs = Bug::all();
+
+        }elseif ($departments->count() > 0 ){
+            // get bugs of projects to show for head department of this projects
+            if ($trashed){
+//            abort_if(Gate::denies('bug_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+                return Bug::whereHas('project',function ($query) use($departments)  {
+
+                    $query->whereIn('department_id',$departments->pluck('id'));
+
+                })->onlyTrashed()->get();
+            }
+
+            $bugs = Bug::whereHas('project',function ($query) use($departments)  {
+
+                $query->whereIn('department_id',$departments->pluck('id'));
+
+            })->get();
+
+
 
         }else{
 
@@ -339,5 +431,61 @@ class User extends Authenticatable implements HasMedia
 
     }
 
+    public function getUserTicketsByUserID($user_id,$trashed = null)
+    {
+        $user = User::findOrFail($user_id);
+        $departments = Department::where('department_head_id',$user_id)->get();
+
+        if ($user->hasrole(['Admin','Super Admin'])){
+
+            if ($trashed){
+//            abort_if(Gate::denies('ticket_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+                return Ticket::onlyTrashed()->get();
+            }
+
+            $tickets = Ticket::all();
+
+        }elseif ($departments->count() > 0 ) {
+            // get Tickets of projects to show for head department of this projects
+            if ($trashed) {
+//            abort_if(Gate::denies('ticket_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+                return Ticket::whereHas('project', function ($query) use ($departments) {
+
+                    $query->whereIn('department_id', $departments->pluck('id'));
+
+                })->onlyTrashed()->get();
+            }
+
+            $tickets = Ticket::whereHas('project', function ($query) use ($departments) {
+
+                $query->whereIn('department_id', $departments->pluck('id'));
+
+            })->get();
+
+        }else{
+
+                if ($trashed){
+//            abort_if(Gate::denies('ticket_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+                    $tickets = $user->accountDetail->trashTickets;
+
+                    if (!$tickets){
+                        $tickets = Ticket::onlyTrashed()
+                            ->whereHas('reporterBy' , function ($query){
+                                $query->where('id',auth()->user()->id);
+                            })->with('reporterBy')->get();
+                    }
+                    return $tickets;
+                }
+
+                $tickets = $user->accountDetail->tickets;
+                if (!$tickets || $tickets->count() == 0){
+                    $tickets = Ticket::whereHas('reporterBy' , function ($query){
+                        $query->where('id',auth()->user()->id);
+                    })->with('reporterBy')->get();
+                }
+        }
+
+        return $tickets;
+    }
 
 }

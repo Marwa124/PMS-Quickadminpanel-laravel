@@ -84,7 +84,7 @@
   </script>
 </head>
 
-<body class="c-app">
+<body class="c-app" {{--dir="{{app()->getLocale() == 'en' ? 'ltr' : 'rtl'}}"--}}>
     <div class="w-100" id="app">
     @include('partials.menu')
     <div class="c-wrapper">

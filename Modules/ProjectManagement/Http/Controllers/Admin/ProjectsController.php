@@ -91,13 +91,22 @@ class ProjectsController extends Controller
     {
         abort_if(Gate::denies('project_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $clients = Client::all()->pluck('name', 'id');
+        $projects = auth()->user()->getUserProjectsByUserID(auth()->user()->id)->pluck('id');
 
-        $project->load('client','department');
+        if (in_array($project->id,$projects->toArray())){
 
-        $departments = Department::all();
 
-        return view('projectmanagement::admin.projects.edit', compact('clients', 'project','departments'));
+            $clients = Client::all()->pluck('name', 'id');
+
+            $project->load('client','department');
+
+            $departments = Department::all();
+
+            return view('projectmanagement::admin.projects.edit', compact('clients', 'project','departments'));
+        }
+
+        abort(Response::HTTP_FORBIDDEN, '403 Forbidden This Page Not Allow To You');
+
     }
 
     public function update(UpdateProjectRequest $request, Project $project)
@@ -143,22 +152,32 @@ class ProjectsController extends Controller
     public function show(Project $project)
     {
         abort_if(Gate::denies('project_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        $project->load('client','department','TimeSheetOn','TimeSheet');
 
-        $total_expense = $project->transactions->where('type' , 'Expense')->sum('amount');
-        $billable_expense = $project->transactions->where(array('type' => 'Expense', 'billable' => 'Yes'))->sum('amount');
-        $not_billable_expense = $project->transactions->where(array('type' => 'Expense', 'billable' => 'No'))->sum('amount');
+        $projects = auth()->user()->getUserProjectsByUserID(auth()->user()->id)->pluck('id');
 
-        $all_expense_info =  $project->transactions->where('type', 'Expense');
+        if (in_array($project->id,$projects->toArray())){
 
-        $paid_expense = 0;
-        foreach ($all_expense_info as $v_expenses){
-            if ($v_expenses->invoices_id != 0) {
-                $paid_expense += Invoice::get_invoice_paid_amount($v_expenses->invoices_id);
+            $project->load('client','department','TimeSheetOn','TimeSheet');
+
+            $total_expense = $project->transactions->where('type' , 'Expense')->sum('amount');
+            $billable_expense = $project->transactions->where(array('type' => 'Expense', 'billable' => 'Yes'))->sum('amount');
+            $not_billable_expense = $project->transactions->where(array('type' => 'Expense', 'billable' => 'No'))->sum('amount');
+
+            $all_expense_info =  $project->transactions->where('type', 'Expense');
+
+            $paid_expense = 0;
+            foreach ($all_expense_info as $v_expenses){
+                if ($v_expenses->invoices_id != 0) {
+                    $paid_expense += Invoice::get_invoice_paid_amount($v_expenses->invoices_id);
+                }
             }
+
+            return view('projectmanagement::admin.projects.show', compact('project','total_expense','billable_expense','not_billable_expense','paid_expense'));
+
         }
 
-        return view('projectmanagement::admin.projects.show', compact('project','total_expense','billable_expense','not_billable_expense','paid_expense'));
+        abort(Response::HTTP_FORBIDDEN, '403 Forbidden This Page Not Allow To You');
+
     }
 
     public function destroy(Project $project)
@@ -179,23 +198,19 @@ class ProjectsController extends Controller
 
     public function massDestroy(MassDestroyProjectRequest $request)
     {
+
+        //Project::whereIn('id', request('ids'))->delete();
+
         $ids = request('ids');
 
         foreach ($ids as $id){
             $project = Project::where('id',$id)->first();
 
-            if($project->deleted_at == 0){
-                $project->update(['deleted_at' => 1]);
-            }else{
-                $project->accountDetails()->detach();
-                $project->delete();
+            $project->delete();
 
-            }
             //$project->accountDetails()->detach();
             setActivity('project',$project->id,'Delete Project Details',$project->name);
         }
-
-        //Project::whereIn('id', request('ids'))->delete();
 
         return response(null, Response::HTTP_NO_CONTENT);
     }
@@ -382,6 +397,9 @@ class ProjectsController extends Controller
 
         } else if ($action == 'restore') {
             Project::onlyTrashed()->where('id', $id)->restore();
+            $project = Project::findOrFail($id);
+            setActivity('project',$project->id,'Restore Project Details',$project->name);
+
         }
 
         return back();
@@ -420,5 +438,21 @@ class ProjectsController extends Controller
 
         return $pdf->download('project.pdf');
 
+    }
+
+    public function project_report()
+    {
+
+        $user = User::findOrFail(auth()->user()->id);
+
+        if ($user->hasrole(['Admin','Super Admin']))
+        {
+            $projects = Project::all();
+
+            return view('projectmanagement::admin.projects.project_report', compact('projects'));
+
+        }
+
+        return abort(Response::HTTP_FORBIDDEN, '403 Forbidden .., This Page Allow To Admin Only');
     }
 }
