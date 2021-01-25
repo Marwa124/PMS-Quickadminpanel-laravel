@@ -76,11 +76,20 @@ class MilestonesController extends Controller
     {
         abort_if(Gate::denies('milestone_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $projects = Project::all()->pluck('name', 'id');
+        $milestones = auth()->user()->getUserMilestonesByUserID(auth()->user()->id)->pluck('id');
 
-        $milestone->load('accountDetails', 'project');
+        if (in_array($milestone->id,$milestones->toArray()))
+        {
 
-        return view('projectmanagement::admin.milestones.edit', compact('projects', 'milestone'));
+            $projects = Project::all()->pluck('name', 'id');
+
+            $milestone->load('accountDetails', 'project');
+
+            return view('projectmanagement::admin.milestones.edit', compact('projects', 'milestone'));
+        }
+
+        abort(Response::HTTP_FORBIDDEN, '403 Forbidden This Page Not Allow To You');
+
     }
 
     public function update(UpdateMilestoneRequest $request, Milestone $milestone)
@@ -94,9 +103,18 @@ class MilestonesController extends Controller
     {
         abort_if(Gate::denies('milestone_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $milestone->load('accountDetails', 'project');
+        $milestones = auth()->user()->getUserMilestonesByUserID(auth()->user()->id)->pluck('id');
 
-        return view('projectmanagement::admin.milestones.show', compact('milestone'));
+        if (in_array($milestone->id,$milestones->toArray()))
+        {
+
+            $milestone->load('accountDetails', 'project');
+
+            return view('projectmanagement::admin.milestones.show', compact('milestone'));
+        }
+
+        abort(Response::HTTP_FORBIDDEN, '403 Forbidden This Page Not Allow To You');
+
     }
 
     public function destroy(Milestone $milestone)
@@ -112,12 +130,14 @@ class MilestonesController extends Controller
     {
         $ids = request('ids');
 
-//        foreach ($ids as $id){
-//            $milestone = Milestone::where('id',$id)->first();
-//            $milestone->accountDetails()->detach();
-//        }
 
-        Milestone::whereIn('id', request('ids'))->delete();
+        //Milestone::whereIn('id', request('ids'))->delete();
+
+        foreach ($ids as $id){
+            $milestone = Project::where('id',$id)->first();
+
+            $milestone->delete();
+        }
 
         return response(null, Response::HTTP_NO_CONTENT);
     }
@@ -215,18 +235,18 @@ class MilestonesController extends Controller
         return back();
     }
 
-    public function massforceDelete(Request $request)
-    {
-        //dd($request->all());
-        $ids = request('ids');
-
-        foreach ($ids as $id){
-            $milestone = Milestone::where('id',$id)->first();
-            $milestone->accountDetails()->detach();
-        }
-
-        Milestone::onlyTrashed()->whereIn('id', request('ids'))->forceDelete();
-
-        return response(null, Response::HTTP_NO_CONTENT);
-    }
+//    public function massforceDelete(Request $request)
+//    {
+//        //dd($request->all());
+//        $ids = request('ids');
+//
+//        foreach ($ids as $id){
+//            $milestone = Milestone::where('id',$id)->first();
+//            $milestone->accountDetails()->detach();
+//        }
+//
+//        Milestone::onlyTrashed()->whereIn('id', request('ids'))->forceDelete();
+//
+//        return response(null, Response::HTTP_NO_CONTENT);
+//    }
 }

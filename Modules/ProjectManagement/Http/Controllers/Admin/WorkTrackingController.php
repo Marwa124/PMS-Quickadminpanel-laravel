@@ -59,6 +59,8 @@ class WorkTrackingController extends Controller
     {
         $workTracking = WorkTracking::create($request->all());
 
+        setActivity('workTracking',$workTracking->id,'Create Work Tracking Details',$workTracking->subject);
+
         return redirect()->route('projectmanagement.admin.work-trackings.index');
     }
 
@@ -81,6 +83,8 @@ class WorkTrackingController extends Controller
     {
         $workTracking->update($request->all());
         //$workTracking->permissions()->sync($request->input('permissions', []));
+
+        setActivity('workTracking',$workTracking->id,'Update Work Tracking Details',$workTracking->subject);
 
         return redirect()->route('projectmanagement.admin.work-trackings.index');
     }
@@ -120,12 +124,27 @@ class WorkTrackingController extends Controller
 
         $workTracking->delete();
 
+        setActivity('workTracking',$workTracking->id,'Delete Work Tracking',$workTracking->subject);
+
         return back();
     }
 
     public function massDestroy(MassDestroyWorkTrackingRequest $request)
     {
-        WorkTracking::whereIn('id', request('ids'))->delete();
+        $ids = request('ids');
+
+        foreach ($ids as $id){
+            $workTracking = WorkTracking::where('id',$id)->first();
+
+            $workTracking->delete();
+
+            //$project->accountDetails()->detach();
+            setActivity('workTracking',$workTracking->id,'Delete Work Tracking',$workTracking->subject);
+        }
+
+
+        //WorkTracking::whereIn('id', request('ids'))->delete();
+
 
         return response(null, Response::HTTP_NO_CONTENT);
     }
@@ -143,8 +162,11 @@ class WorkTrackingController extends Controller
             $workTracking->forceDelete();
 
         } else if ($action == 'restore') {
-            //restore bug
+            //restore WorkTracking
             WorkTracking::onlyTrashed()->where('id', $id)->restore();
+            $workTracking = WorkTracking::findOrFail($id);
+
+            setActivity('workTracking',$workTracking->id,'Restore Work Tracking Details',$workTracking->subject);
         }
 
         return back();

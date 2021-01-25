@@ -288,4 +288,9 @@ return [
     'forcedelete'                          => 'Force Delete',
     'off'                                  => 'OFF',
     'on'                                   => 'ON',
+    'details'                              => 'Details',
+    'reports'                              => 'Reports',
+    'hours'                                => 'Hours',
+    'minutes'                              => 'Minutes',
+    'seconds'                              => 'Seconds',
 ];

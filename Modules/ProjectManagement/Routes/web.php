@@ -48,6 +48,8 @@ Route::group(['prefix' => 'admin/projectmanagement', 'as' => 'projectmanagement.
     Route::get('tasks/{id}/task_timer','TaskController@update_task_timer')->name('tasks.update_task_timer');
     Route::get('tasks/{id}/clone','TaskController@task_clone')->name('tasks.clone');
     Route::post('tasks/{id}/force-destroy', 'TaskController@forceDelete')->name('tasks.forceDestroy');
+    Route::get('tasks/reports/task_report', 'TaskController@task_report')->name('tasks.task_report');
+
 
 
     // Tasks Calendars
@@ -66,6 +68,7 @@ Route::group(['prefix' => 'admin/projectmanagement', 'as' => 'projectmanagement.
     Route::get('projects/{id}/clone','ProjectsController@project_clone')->name('projects.clone');
     Route::get('projects/index/trashed','ProjectsController@index')->name('projects.trashed.index');
     Route::post('projects/{id}/force-destroy', 'ProjectsController@forceDelete')->name('projects.forceDestroy');
+    Route::get('projects/reports/project_report', 'ProjectsController@project_report')->name('projects.project_report');
 
 
     // Milestones

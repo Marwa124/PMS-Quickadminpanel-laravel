@@ -593,7 +593,11 @@ return [
             'index_no_helper'           => ' ',
             'parent_task'               => 'Parent Task',
             'parent_task_helper'        => ' ',
-            'no_task'                   => 'No Tasks'
+            'no_task'                   => 'No Tasks',
+            'sub_task'                  => 'Sub Tasks',
+            'task_report'               => 'Task Report',
+            'total_projects_time_spent' => 'Total Tasks Time Spent',
+
         ],
     ],
     'tasksCalendar'          => [
@@ -1765,6 +1769,8 @@ return [
             'billed_expense'            => 'Billed Expense',
             'unbilled_expense'          => 'Unbilled Expense',
             'total_bill'                => 'Total Bill',
+            'project_report'            => 'Project Report',
+            'total_projects_time_spent' => 'Total Projects Time Spent',
         ],
     ],
     'projectSetting'         => [
