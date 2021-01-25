@@ -5,6 +5,7 @@ namespace Modules\Finance\Http\Controllers\admin;
 use App\Http\Controllers\Traits\MediaUploadingTrait;
 use App\Models\Client;
 use App\Models\Invoice;
+use App\Models\InvoiceItemTax;
 use App\Models\ItemInvoiceRelations;
 use App\Models\Opportunity;
 use App\Models\User;
@@ -13,7 +14,10 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Gate;
 use DataTables;
+use Illuminate\Support\Facades\DB;
+use Modules\Finance\Http\Requests\Store\StoreInvoiceRequest;
 use Modules\MaterialsSuppliers\Entities\TaxRate;
+use Modules\ProjectManagement\Entities\Project;
 use Modules\Sales\Entities\ProposalsItem;
 use Spatie\MediaLibrary\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,7 +32,6 @@ class InvoicesController extends Controller
 
         $invoices = Invoice::all();
 
-        // $permissions = Permission::get();
 
         return view('finance::admin.invoices.index', compact('invoices'));
     }
@@ -37,15 +40,15 @@ class InvoicesController extends Controller
     {
         abort_if(Gate::denies('invoice_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $users = User::whereHas('accountDetail')->get()->pluck('accountDetail.fullname', 'id');
         $ProposalsItem = ProposalsItem::all();
         $taxRates = TaxRate::all();
-        return view('finance::admin.invoices.create', compact('users','ProposalsItem','taxRates'));
+        $clients = Client::all();
+        $projects = Project::all();
+        return view('finance::admin.invoices.create', compact('ProposalsItem','taxRates','clients','projects'));
     }
 
     public function store(StoreInvoiceRequest $request)
     {
-        // dd($request->all());
         DB::beginTransaction();
 
         try {
@@ -54,30 +57,29 @@ class InvoicesController extends Controller
             $total=$request->total ? $request->total : 0;
             $discount_percent=$request->discount_percent ? $request->discount_percent : 0;
             $request->merge(['total_cost_price'=>$total,'total_tax'=>$total_tax,'after_discount'=>$after_discount,'discount_percent'=>$discount_percent]);
-            $invoice = Invoice::create($request->only([
-                'reference_no',
-                'subject',
-                'module',
-                'currency',
-                'module_id',
-                'status',
-                'user_id',
-                'invoice_validity',
-                'materials_supply_delivery',
-                'warranty',
-                'prices',
-                'maintenance_service_contract',
-                'payment_terms',
-                'notes',
-                'expire_date',
-                'invoice_date',
-                'total_tax',
-                'total_cost_price',
-                'adjustment',
-                'discount_percent',
-                'after_discount',
-                'discount_total',
-            ]));
+
+
+
+            $data = [
+                'reference_no'      => $request->reference_no,
+                'recurring'         => $request->recurring,
+                'recur_start_date'  => $request->recur_start_date,
+                'recur_end_date'    => $request->recur_end_date,
+                'invoice_date'      => $request->invoice_date,
+                'due_date'          => $request->due_date,
+                'notes'             => $request->notes,
+                'total_tax'         => $request->total_tax,
+                'client_id'         => $request->client_id,
+                'project_id'        => $request->project_id,
+                'discounts'         => $request->discounts,
+                'total_amount'      => floatval($request->total),
+                'discount_percent'  => intval($request->discount_percent),
+                'currency'          => 'EGP',
+                'status'            => 'Approved',
+            ];
+
+
+            $invoice = Invoice::create($data);
 
             foreach ($request->items as $key => $value) {
                 $total_taxitem=0;
@@ -129,14 +131,14 @@ class InvoicesController extends Controller
     public function edit(Invoice $invoice)
     {
         abort_if(Gate::denies('invoice_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        $datamodule=$invoice->module=="opportunities" || $invoice->module=="client" ?($invoice->module=="opportunities" ? $data=Opportunity::all()->pluck('name', 'id') : $data=Client::all()->pluck('name', 'id')) : null;
-        $users = User::whereHas('accountDetail')->get()->pluck('accountDetail.fullname', 'id');
         $ProposalsItem = ProposalsItem::all();
         $taxRates = TaxRate::all();
-        return view('finance::admin.invoices.edit', compact('users','ProposalsItem','taxRates','invoice','datamodule'));
+        $clients = Client::all();
+        $projects = Project::all();
+        return view('finance::admin.invoices.edit', compact('ProposalsItem','taxRates','invoice','clients','projects'));
     }
 
-    public function update(UpdateInvoiceRequest $request, Invoice $invoice)
+    public function update(Request $request, Invoice $invoice)
     {
 
         DB::beginTransaction();
@@ -148,30 +150,25 @@ class InvoicesController extends Controller
             $discount_percent=$request->discount_percent ? $request->discount_percent : 0;
             $request->merge(['total_cost_price'=>$total,'total_tax'=>$total_tax,'after_discount'=>$after_discount,'discount_percent'=>$discount_percent]);
             // dd($request->all(),$request->item_relation_id,isset($request->item_relation_id),ItemInvoiceRelations::whereIn('id',$request->item_relation_id)->get());
-            $invoice->update($request->only([
-                'reference_no',
-                'subject',
-                'module',
-                'currency',
-                'module_id',
-                'status',
-                'user_id',
-                'invoice_validity',
-                'materials_supply_delivery',
-                'warranty',
-                'prices',
-                'maintenance_service_contract',
-                'payment_terms',
-                'notes',
-                'expire_date',
-                'invoice_date',
-                'total_tax',
-                'total_cost_price',
-                'adjustment',
-                'discount_percent',
-                'after_discount',
-                'discount_total',
-            ]));
+            $data = [
+                'reference_no'      => $request->reference_no,
+                'recurring'         => $request->recurring,
+                'recur_start_date'  => $request->recur_start_date,
+                'recur_end_date'    => $request->recur_end_date,
+                'invoice_date'      => $request->invoice_date,
+                'due_date'          => $request->due_date,
+                'notes'             => $request->notes,
+                'total_tax'         => $request->total_tax,
+                'client_id'         => $request->client_id,
+                'project_id'        => $request->project_id,
+                'discounts'         => $request->discounts,
+                'total_amount'      => floatval($request->total),
+                'discount_percent'  => intval($request->discount_percent),
+                'currency'          => 'EGP',
+                'status'            => 'Approved',
+            ];
+
+            $invoice->update($data);
 
 
             if(isset($request->item_relation_id)){
@@ -221,7 +218,7 @@ class InvoicesController extends Controller
 
         } catch (\Exception $e) {
             DB::rollback();
-            dd($e);
+//            dd($e);
             return redirect()->back();
         }
 

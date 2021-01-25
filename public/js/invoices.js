@@ -39,6 +39,18 @@ function get_related_moduleName(val, invoice) {
 
 
 }
+
+
+function recur_switch() {
+    if(recu){
+        $('#recu_div').hide(1000);
+        $('#recurring').val('none');
+        recu = false;
+    }else{
+        $('#recu_div').show(1000);
+        recu = true;
+    }
+}
 /*
  * add item to table on change function
  * 
@@ -96,6 +108,10 @@ function getitem(val) {
             $('.main select.tax').selectpicker('val', tax);
             $('.main input[name="unit"]').val(response.unit_type);
             $('.main input[name="unit_cost"]').val(response.unit_cost);
+
+            $('#porposal_item').val('');
+
+
         }
     });
 }
@@ -185,7 +201,7 @@ function calculate_total_edit() {
         _amount2 = parseFloat($(this).find('td.rate input').val()) * quantity;
 
         _margin = _amount2 * margina / 100;
-        totaa = _margin += _amount2
+        totaa = _margin += _amount2;
 
         $(this).find('td.amount').html(totaa);
         subtotal += totaa;
@@ -225,6 +241,8 @@ function calculate_total_edit() {
 
     total_discount_calculated = (subtotal * discount_percent) / 100;
 
+
+
     $.each(taxes, function (taxname, total_tax) {
         total_tax_calculated = (total_tax * discount_percent) / 100;
         total_tax = (total_tax - total_tax_calculated);
@@ -232,9 +250,21 @@ function calculate_total_edit() {
         $('#tax_id_' + slugify(taxname)).html(total_tax.toFixed(2) + hidden_input('total_tax_name[]', taxname) + hidden_input('total_tax[]', total_tax.toFixed(2)));
     });
 
+
+    // if($('#discounts') == 'no_discounts'){
+    //
+    // }
+    // else if($('#discounts') == 'after_tax'){
+    //
+    // }else{
+    //
+    // }
+
     total = (total + subtotal);
 
     total = total - total_discount_calculated;
+
+
     adjustment = parseFloat(adjustment);
 
     if (!isNaN(adjustment)) {
@@ -245,6 +275,9 @@ function calculate_total_edit() {
     }
 
     after_discount = subtotal - total_discount_calculated;
+
+
+
 
     $('[total_cost_price]').each(function () {
         total_cost_price += parseInt($(this).val());
@@ -327,30 +360,30 @@ function add_item_to_table(data, itemid, merge_invoice) {
             //  table_row += '</td>';
             table_row += '<td class="item_name"><input  name="items[' + item_key + '][item_name]" class="form-control " value="' + data.name + '"></td>';
             table_row += '<td><textarea  name="items[' + item_key + '][item_desc]" class="form-control item_item_desc" >' + data.description.replace(regex, "\n") + '</textarea></td>';
-            table_row += '<td class="group_name"><input class="form-control " type="text" name="items[' + item_key + '][group_name]" id="" value="' + data.group_name + '"></td>';
+            table_row += '<td class="group_name" style="display: none"><input class="form-control " type="hidden" name="items[' + item_key + '][group_name]" id="" value="' + data.group_name + '"></td>';
             table_row += '<td><input type="number" data-parsley-type="number" min="0" onblur="calculate_total_edit();" onchange="calculate_total_edit();" data-quantity name="items[' + item_key + '][quantity]" value="' + data.qty + '" class="form-control " >';
 
 
             table_row += '</td>';
-            table_row += '<td class="ratex"><input type="text" data-parsley-type="number" name="items[' + item_key + '][unit]" value="' + data.unit + '" class="form-control " ></td>';
-            table_row += '<td class="ratex"><input type="text" data-parsley-type="text" name="items[' + item_key + '][brand]" value="' + data.brand + '" class="form-control " ></td>';
-            table_row += '<td class="ratex"><input type="text" data-parsley-type="text" name="items[' + item_key + '][part]" value="' + data.part + '" class="form-control " ></td>';
+            table_row += '<td class="ratex" style="display: none"><input type="hidden" data-parsley-type="number" name="items[' + item_key + '][unit]" value="' + data.unit + '" class="form-control " ></td>';
+            table_row += '<td class="ratex" style="display: none"><input type="hidden" data-parsley-type="text" name="items[' + item_key + '][brand]" value="' + data.brand + '" class="form-control " ></td>';
+            table_row += '<td class="ratex" style="display: none"><input type="hidden" data-parsley-type="text" name="items[' + item_key + '][part]" value="' + data.part + '" class="form-control " ></td>';
 
             if (data.selling_Price != 0) {
 
                 table_row += '<td class="rate"><input type="number" data-parsley-type="number" value="' + data.unit_cost + '" class="form-control  w-auto" onblur="calculate_total_edit();" onchange="calculate_total_edit();" name="items[' + item_key + '][unit_cost]"></td>';
-                table_row += '<td class="total_cost_price"><input type="text" name="items[' + item_key + '][total_cost_price]" value="' + data.total_cost_price + '" onblur="calculate_total_edit();" onchange="calculate_total_edit();" total_cost_price placeholder="Total Cost Price" class="form-control " readonly/></td>';
-                table_row += '<td class="margin"><input type="text" name="items[' + item_key + '][margin]" value="' + data.margin + '" onblur="calculate_total_edit();" onchange="calculate_total_edit();" data-edit-margin placeholder="Margin" class="form-control "/></td>';
-                table_row += '<td class="rateee"> <input type="text" data-parsley-type="number"  onblur="calculate_total_edit();" onchange="calculate_total_edit();" name="items[' + item_key + '][selling_price]" value="' + data.selling_Price + '" class="form-control " readonly> </td>';
-                table_row += '<td class="ratex"><input type="text" data-parsley-type="text" name="items[' + item_key + '][delivery]" value="' + data.delivery + '" class="form-control " ></td>';
+                table_row += '<td class="total_cost_price" style="display: none"><input type="hidden" name="items[' + item_key + '][total_cost_price]" value="' + data.total_cost_price + '" onblur="calculate_total_edit();" onchange="calculate_total_edit();" total_cost_price placeholder="Total Cost Price" class="form-control " readonly/></td>';
+                table_row += '<td class="margin" style="display: none"><input type="hidden" name="items[' + item_key + '][margin]" value="' + data.margin + '" onblur="calculate_total_edit();" onchange="calculate_total_edit();" data-edit-margin placeholder="Margin" class="form-control "/></td>';
+                table_row += '<td class="rateee" style="display: none"> <input type="hidden" data-parsley-type="number"  onblur="calculate_total_edit();" onchange="calculate_total_edit();" name="items[' + item_key + '][selling_price]" value="' + data.selling_Price + '" class="form-control " readonly> </td>';
+                table_row += '<td class="ratex" style="display: none"><input type="hidden" data-parsley-type="text" name="items[' + item_key + '][delivery]" value="' + data.delivery + '" class="form-control " ></td>';
             } else {
                 //  table_row += '<td class="ratex"><input type="text" data-parsley-type="number" onblur="calculate_total();" onchange="calculate_total();" name="items[' + item_key + '][unit_cost]" value="' + data.rate + '" class="form-control " ></td>';
                 table_row += '<td class="rate"> <input type="number" data-parsley-type="number" onblur="calculate_total();" onchange="calculate_total();" name="items[' + item_key + '][unit_cost]" value="' + data.unit_cost + '" class="form-control "/> </td>';
-                table_row += '<td class="total_cost_price"><input type="text" name="items[' + item_key + '][total_cost_price]" value="' + data.total_cost_price + '" onblur="calculate_total_edit();" onchange="calculate_total_edit();" total_cost_price placeholder="Total Cost Price" class="form-control " readonly/></td>';
-                table_row += '<td class="margin"><input type="text" name="items[' + item_key + '][margin]" value="' + data.margin + '" onblur="calculate_total_edit();" onchange="calculate_total_edit();" data-edit-margin placeholder="Margin" class="form-control "/></td>';
-                table_row += '<td class="rateee"> <input type="text" data-parsley-type="number"  onblur="calculate_total_edit();" onchange="calculate_total_edit();" name="items[' + item_key + '][selling_price]" value="' + data.selling_Price + '" class="form-control " readonly> </td>';
+                table_row += '<td class="total_cost_price" style="display: none"><input type="hidden" name="items[' + item_key + '][total_cost_price]" value="' + data.total_cost_price + '" onblur="calculate_total_edit();" onchange="calculate_total_edit();" total_cost_price placeholder="Total Cost Price" class="form-control " readonly/></td>';
+                table_row += '<td class="margin" style="display: none"><input type="hidden" name="items[' + item_key + '][margin]" value="' + data.margin + '" onblur="calculate_total_edit();" onchange="calculate_total_edit();" data-edit-margin placeholder="Margin" class="form-control "/></td>';
+                table_row += '<td class="rateee" style="display: none"> <input type="hidden" data-parsley-type="number"  onblur="calculate_total_edit();" onchange="calculate_total_edit();" name="items[' + item_key + '][selling_price]" value="' + data.selling_Price + '" class="form-control " readonly> </td>';
                 // table_row += '<td class="rate"> <input type="text" data-parsley-type="number"  onblur="calculate_total();" onchange="calculate_total();" name="items[' + item_key + '][unit_cost]" value="' +  data.unit_cost + '" class="form-control "> </td>';
-                table_row += '<td class="ratex"><input type="text" data-parsley-type="text" name="items[' + item_key + '][delivery]" value="' + data.delivery + '" class="form-control " ></td>';
+                table_row += '<td class="ratex" style="display: none"><input type="hidden" data-parsley-type="text" name="items[' + item_key + '][delivery]" value="' + data.delivery + '" class="form-control " ></td>';
             }
 
             var taxnamearray = [];

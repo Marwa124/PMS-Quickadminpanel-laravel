@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Sales\Http\Requests\Update;
+namespace Modules\Finance\Http\Requests\Update;
 
 use Gate;
 use Illuminate\Foundation\Http\FormRequest;

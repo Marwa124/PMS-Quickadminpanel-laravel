@@ -23,43 +23,31 @@
 
                         </th>
                         <th>
-                            {{ trans('cruds.invoice.fields.id') }}
+                            {{ trans('cruds.invoice.title_singular') }}
                         </th>
                         <th>
-                            {{ trans('cruds.invoice.fields.subject') }}
+                            {{ trans('cruds.invoice.fields.date') }}
                         </th>
                         <th>
-                            {{ trans('cruds.invoice.fields.invoice_date') }}
+                            {{ trans('cruds.invoice.fields.due_date') }}
                         </th>
                         <th>
-                            {{ trans('cruds.invoice.fields.expire_date') }}
+                            {{ trans('cruds.invoice.fields.client_name') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.invoice.fields.due_amount') }}
                         </th>
                         <th>
                             {{ trans('cruds.invoice.fields.status') }}
                         </th>
                         <th>
+                            {{ trans('cruds.invoice.fields.proposal') }}
+                        </th>
+                        <th>
                             &nbsp;
                         </th>
                     </tr>
-                    <tr>
-                        <td>
-                        </td>
-                        <td>
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                        </td>
-                        <td>
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
-                        <td>
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                        </td>
-                        <td>
-                        </td>
-                    </tr>
+
                 </thead>
                 <tbody>
                     @foreach($invoices as $key => $invoice)
@@ -68,19 +56,25 @@
 
                             </td>
                             <td>
-                                {{ $invoice->id ?? '' }}
-                            </td>
-                            <td>
-                                {{ $invoice->subject ?? '' }}
+                                {{ $invoice->reference_no ?? '' }}
                             </td>
                             <td>
                                 {{ $invoice->invoice_date ?? '' }}
                             </td>
                             <td>
-                                {{ $invoice->expire_date ?? '' }}
+                                {{ $invoice->due_date ?? '' }}
+                            </td>
+                            <td>
+                                {{ $invoice->client->name ?? '' }}
+                            </td>
+                            <td>
+                                {{ $invoice->total_amount ?? '' }}
                             </td>
                             <td>
                                 {{ $invoice->status ?? '' }}
+                            </td>
+                            <td>
+
                             </td>
                             <td>
                                 @can('invoice_show')

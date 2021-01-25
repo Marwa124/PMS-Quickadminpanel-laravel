@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Sales\Http\Requests\Destroy;
+namespace Modules\Finance\Http\Requests\Destroy;
 
 
 use Gate;

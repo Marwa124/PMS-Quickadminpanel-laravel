@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Sales\Http\Requests\Store;
+namespace Modules\Finance\Http\Requests\Store;
 
 use Gate;
 use Illuminate\Foundation\Http\FormRequest;
@@ -20,42 +20,42 @@ class StoreInvoiceRequest extends FormRequest
                 'string',
                 'nullable',
             ],
-            'subject'        => [
-                'string',
-                'required',
-            ],
-            'module'         => [
-                'string',
-                'required',
-            ],
-            'invoice_date'  => [
-                'required',
-                'date_format:' . config('panel.date_format'),
-            ],
-            'expire_date'    => [
-                'date_format:' . config('panel.date_format'),
-                'nullable',
-            ],
-            'currency'       => [
-                'string',
-                'nullable',
-            ],
-            'total_tax'      => [
-                // 'string',
-                'nullable',
-            ],
-            'status'         => [
-                // 'string',
-                'nullable',
-            ],
-            'date_sent'      => [
-                'date_format:' . config('panel.date_format'),
-                'nullable',
-            ],
-            'convert_module' => [
-                'string',
-                'nullable',
-            ],
+//            'subject'        => [
+//                'string',
+//                'required',
+//            ],
+//            'module'         => [
+//                'string',
+//                'required',
+//            ],
+//            'invoice_date'  => [
+//                'required',
+//                'date_format:' . config('panel.date_format'),
+//            ],
+//            'expire_date'    => [
+//                'date_format:' . config('panel.date_format'),
+//                'nullable',
+//            ],
+//            'currency'       => [
+//                'string',
+//                'nullable',
+//            ],
+//            'total_tax'      => [
+//                // 'string',
+//                'nullable',
+//            ],
+//            'status'         => [
+//                // 'string',
+//                'nullable',
+//            ],
+//            'date_sent'      => [
+//                'date_format:' . config('panel.date_format'),
+//                'nullable',
+//            ],
+//            'convert_module' => [
+//                'string',
+//                'nullable',
+//            ],
             // 'permissions.*'  => [
             //     'integer',
             // ],

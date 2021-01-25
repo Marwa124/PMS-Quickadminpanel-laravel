@@ -58,6 +58,7 @@ class Invoice extends Model implements HasMedia
         'tax',
         'total_tax',
         'discount_percent',
+        'total_amount',
         'recurring',
         'recurring_frequency',
         'recur_frequency',
@@ -180,7 +181,7 @@ class Invoice extends Model implements HasMedia
     public function items(){
 
         return $this->belongsToMany('Modules\Sales\Entities\ProposalsItem',
-            'item_porposal_relations','proposals_id','item_id') ->withPivot(
+            'item_invoice_relations','invoices_id','item_id') ->withPivot(
             'id',
             'item_name',
             'item_desc',
