@@ -28,10 +28,7 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="12c5590f-20f1-441a-b116-7f3f712f734a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/deployment.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="12c5590f-20f1-441a-b116-7f3f712f734a" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -79,17 +76,18 @@
           <entry key="project.closed" value="4" />
           <entry key="project.open.time.10" value="2" />
           <entry key="project.open.time.3" value="1" />
+          <entry key="project.open.time.4" value="1" />
           <entry key="project.open.time.5" value="1" />
           <entry key="project.open.time.6" value="1" />
           <entry key="project.open.time.7" value="1" />
           <entry key="project.open.time.9" value="1" />
-          <entry key="project.opened" value="7" />
+          <entry key="project.opened" value="8" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
+    <leaf />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -689,20 +687,20 @@
       <workItem from="1611047827120" duration="2332000" />
       <workItem from="1611051454073" duration="15379000" />
       <workItem from="1611337191272" duration="12657000" />
+      <workItem from="1611538088127" duration="353000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="75142000" />
+    <option name="totallyTimeSpent" value="75495000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1066" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49891067" weight="0.26599148" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49891067" visible="true" weight="0.26599148" />
       <window_info id="Structure" order="1" sideWeight="0.50108933" side_tool="true" weight="0.14925373" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
-      <window_info anchor="bottom" id="File Transfer" weight="0.32897604" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32897604" />
       <window_info anchor="bottom" id="Run" order="2" />
@@ -714,11 +712,12 @@
       <window_info anchor="bottom" id="Version Control" order="8" weight="0.32897604" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info anchor="bottom" id="Terminal" order="11" weight="0.32897604" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="11" visible="true" weight="0.32897604" />
+      <window_info anchor="bottom" id="File Transfer" order="12" weight="0.32897604" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info active="true" anchor="right" id="Remote Host" order="3" visible="true" weight="0.32995737" />
+      <window_info anchor="right" id="Remote Host" order="3" weight="0.32995737" />
       <window_info anchor="right" id="Database" order="4" />
     </layout>
   </component>
