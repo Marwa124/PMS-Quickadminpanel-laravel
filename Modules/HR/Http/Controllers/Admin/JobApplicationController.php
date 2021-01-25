@@ -29,7 +29,7 @@ class JobApplicationController extends Controller
     {
         abort_if(Gate::denies('job_application_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $jobApplications = JobApplication::all();
+        $jobApplications = JobApplication::orderBy('created_at', 'desc')->get();
 
         $circularId = '';
         if (count(request()->all()) > 0) {
@@ -56,17 +56,14 @@ class JobApplicationController extends Controller
 
         $pdfarr = [
             'title'=>'HR Letter',
-            'data'=>$html, // render file blade with content html
-            'header'=>['show'=>false], // header content
-            'footer'=>['show'=>false], // Footer content
+            'data'=>$html,
+            'header'=>['show'=>false], 
+            'footer'=>['show'=>false], 
             'font'=>'aealarabiya', //  dejavusans, aefurat ,aealarabiya ,times
-            'font-size'=>12, // font-size
-            'text'=>'', //Write
-            'rtl'=>($local == 'ar') ? true : false , //true or false
-            'creator'=>'phpanonymous', // creator file - you can remove this key
-            'keywords'=>'phpanonymous keywords', // keywords file - you can remove this key
-            'subject'=>'phpanonymous subject', // subject file - you can remove this key
-            'filename'=>'HR Letter_'.rand(1, 999).'.pdf', // filename example - invoice.pdf
+            'font-size'=>12,
+            'text'=>'',
+            'rtl'=>($local == 'ar') ? true : false ,
+            'filename'=>'HR Letter_'.rand(1, 999).'.pdf',
             'display'=>'download', // stream , download , print
         ];
 
@@ -128,8 +125,9 @@ class JobApplicationController extends Controller
 
                 $designation_id = $jobApplication->job_circular()->first()->designation_id;
                 $incrementId = Designation::find($designation_id)->accountDetails()->get()->count()+1;
-                $department_id  = Designation::find($designation_id)->department()->first()->id;
 
+                $designationHasDepartment = Designation::find($designation_id)->department()->first(); 
+                $department_id  = $designationHasDepartment ? $designationHasDepartment->id : '';
                 AccountDetail::create([
                     'fullname' => $jobApplication->name,
                     'mobile'   => $jobApplication->mobile,

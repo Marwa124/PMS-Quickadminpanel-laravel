@@ -15,12 +15,14 @@
                   <span class="d-block card-text">Job Nature : {{$circularDetail->employment_type}}</span>
                   <span class="d-block card-text">Posted Date : {{$circularDetail->posted_date}}</span>
                   <span class="d-block card-text">Last Date : {{$circularDetail->last_date}}</span>
-          
+
+                  @if($circularDetail->description)
                   <div class="card" style="width: 18rem;">
                       <div class="card-body p-2">
                           <p class="card-text">{{$circularDetail->description}}</p>
                       </div>
                   </div>
+                  @endif
             </div>
         </div>
         <div class="col-md-5">
@@ -35,7 +37,7 @@
                     <span class="d-block card-text">Age: {{$circularDetail->age}}</span>
                     <span class="d-block card-text">Salary Range: {{$circularDetail->salary_range}}</span>
                     <span class="d-block card-text">Vacancy: {{$circularDetail->vacancy}}</span>
-                    <span class="d-block card-text">Job Nature : {{$circularDetail->employment_type}}</span>
+                    <span class="d-block card-text">Job Nature : {{$circularDetail::EMPLOYMENT_TYPE_SELECT[$circularDetail->employment_type]}}</span>
                     <span class="d-block card-text">Posted Date : {{$circularDetail->posted_date}}</span>
                     <span class="d-block card-text">Last Date : {{$circularDetail->last_date}}</span>
                   <a href="{{route('front.job-applications.create', $circularDetail->id)}}" class="btn btn-primary mt-4">Apply Now</a>

@@ -54,8 +54,8 @@ class HRController extends Controller
             Media::whereIn('id', $media)->update(['model_id' => $jobApplication->id]);
         }
         $job_circular = JobCircular::find($job_circular_id)->name;
-        Mail::to('marwa120640@gmail.com')->cc("marwa120640@gmail.com")
-                ->send(new JobApplicationRequest($jobApplication, $job_circular));
+        // Mail::to('marwa120640@gmail.com')->cc("marwa120640@gmail.com")
+        //         ->send(new JobApplicationRequest($jobApplication, $job_circular));
 
         return redirect()->route('front.circular_details', $job_circular_id);
     }

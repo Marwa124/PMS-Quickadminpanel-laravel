@@ -25,9 +25,6 @@
                         <th width="10">
 
                         </th>
-                        {{-- <th>
-                            {{ trans('cruds.jobApplication.fields.id') }}
-                        </th> --}}
                         <th>
                             {{ trans('cruds.jobApplication.fields.job_circular') }}
                         </th>
@@ -82,9 +79,6 @@
                             <td>
 
                             </td>
-                            {{-- <td>
-                                {{ $jobApplication->id ?? '' }}
-                            </td> --}}
                             <td>
                                 {{ $jobApplication->job_circular->name ?? '' }}
                             </td>
@@ -250,7 +244,6 @@
   $('.changeStatusBtn').click(function() {
     //   $('.changeStatus').css('display', 'block');
       var customApplicationId = $(this).closest('tr').data('entry-id');
-      console.log(customApplicationId);
       $(`#changeStatus${customApplicationId}`).modal('show');
     //   $('body').addClass('modal-open');
     //   console.log($(`#changeStatus${customApplicationId}`).modal('show'));
@@ -265,7 +258,6 @@
     let applicationId = $(this).closest('.modal-sm').attr('data-app-id');
     // let applicationColor = $(this).closest('tr').find('.applicationColor');
     let applicationColor = $(`tr[data-entry-id="${applicationId}"]`).find('.applicationColor');
-    console.log(applicationColor);
 
     $('body').removeClass('modal-open');
     $('#changeStatus'+applicationId).removeClass('show');
