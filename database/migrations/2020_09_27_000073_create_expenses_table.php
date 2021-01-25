@@ -12,7 +12,14 @@ class CreateExpensesTable extends Migration
             $table->increments('id');
             $table->date('entry_date')->nullable();
             $table->decimal('amount', 15, 2)->nullable();
-            $table->string('description')->nullable();
+            $table->string('title')->nullable();
+            $table->text('notes')->nullable();
+            $table->enum('status',['paid','non_approved','unpaid'])->nullable();
+            $table->string('reference')->nullable();
+            $table->string('bank_balance')->nullable();
+
+
+
             $table->timestamps();
             $table->softDeletes();
         });

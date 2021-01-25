@@ -157,10 +157,64 @@
                     @can('transfer')
                         <li class="c-sidebar-nav-item">
                             <a href="{{ route("finance.admin.transfers.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/transfers") || request()->is("admin/finance/*") ? "active" : "" }}">
-                                <i class="fa-fw fas fa-credit-card c-sidebar-nav-icon self-item-link">
+                                <i class="fa-fw fas fa-trademark c-sidebar-nav-icon self-item-link">
 
                                 </i>
                                 {{ trans('cruds.finance.transfers') }}
+                            </a>
+                        </li>
+                        <li class="c-sidebar-nav-item">
+                            <a href="{{ route("finance.admin.transfers_report") }}" class="c-sidebar-nav-link {{ request()->is("admin/transfers") || request()->is("admin/finance/*") ? "active" : "" }}">
+                                <i class="fa-fw fas fa-newspaper c-sidebar-nav-icon self-item-link">
+
+                                </i>
+                                {{ trans('cruds.transfers.transfers_report') }}
+                            </a>
+                        </li>
+                    @endcan
+                    @can('expenses')
+                        <li class="c-sidebar-nav-item">
+                            <a href="{{ route("finance.admin.expenses_category.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/expenses_category") || request()->is("admin/finance/*") ? "active" : "" }}">
+                                <i class="fa-fw fas fa-bookmark c-sidebar-nav-icon self-item-link">
+
+                                </i>
+                                {{ trans('cruds.finance.expenses_category') }}
+                            </a>
+                        </li>
+                        <li class="c-sidebar-nav-item">
+                            <a href="{{ route("finance.admin.expenses.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/expenses") || request()->is("admin/finance/*") ? "active" : "" }}">
+                                <i class="fa-fw fas fa-newspaper c-sidebar-nav-icon self-item-link">
+
+                                </i>
+                                {{ trans('cruds.finance.expenses') }}
+                            </a>
+                        </li>
+                    @endcan
+                    @can('deposits')
+                        <li class="c-sidebar-nav-item">
+                            <a href="{{ route("finance.admin.deposits_category.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/deposits_category") || request()->is("admin/finance/*") ? "active" : "" }}">
+                                <i class="fa-fw fas fa-bookmark c-sidebar-nav-icon self-item-link">
+
+                                </i>
+                                {{ trans('cruds.finance.deposits_category') }}
+                            </a>
+                        </li>
+                        <li class="c-sidebar-nav-item">
+                            <a href="{{ route("finance.admin.deposits.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/deposits") || request()->is("admin/finance/*") ? "active" : "" }}">
+                                <i class="fa-fw fas fa-newspaper c-sidebar-nav-icon self-item-link">
+
+                                </i>
+                                {{ trans('cruds.finance.deposits') }}
+                            </a>
+                        </li>
+                    @endcan
+                    @can('invoice')
+                        <li class="c-sidebar-nav-item">
+                            <a href="{{ route("finance.admin.invoices.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/invoices") || request()->is("admin/finance/*") ? "active" : "" }}">
+                                <i class="fa-fw fas fa-newspaper c-sidebar-nav-icon self-item-link">
+
+                                </i>
+                                {{ trans('cruds.finance.invoices') }}
                             </a>
                         </li>
                     @endcan
@@ -170,8 +224,7 @@
 
 
 
-
-
+                    
                 </ul>
             </li>
         @endcan
@@ -558,16 +611,6 @@
                     {{ trans('cruds.timeManagement.title') }}
                 </a>
                 <ul class="c-sidebar-nav-dropdown-items">
-                    @can('time_work_type_access')
-                        <li class="c-sidebar-nav-item">
-                            <a href="{{ route("admin.time-work-types.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/time-work-types") || request()->is("admin/time-work-types/*") ? "active" : "" }}">
-                                <i class="fa-fw fas fa-th c-sidebar-nav-icon">
-
-                                </i>
-                                {{ trans('cruds.timeWorkType.title') }}
-                            </a>
-                        </li>
-                    @endcan
                     @can('time_project_access')
                         <li class="c-sidebar-nav-item">
                             <a href="{{ route("admin.time-projects.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/time-projects") || request()->is("admin/time-projects/*") ? "active" : "" }}">
@@ -608,16 +651,7 @@
                             </a>
                         </li>
                     @endcan
-                    @can('work_tracking_access')
-                        <li class="c-sidebar-nav-item">
-                            <a href="{{ route("admin.work-trackings.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/work-trackings") || request()->is("admin/work-trackings/*") ? "active" : "" }}">
-                                <i class="fa-fw fas fa-stopwatch c-sidebar-nav-icon">
 
-                                </i>
-                                {{ trans('cruds.workTracking.title') }}
-                            </a>
-                        </li>
-                    @endcan
                     @can('file_access')
                         <li class="c-sidebar-nav-item">
                             <a href="{{ route("admin.files.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/files") || request()->is("admin/files/*") ? "active" : "" }}">
@@ -641,16 +675,16 @@
                     {{ trans('cruds.projectManagement.title') }}
                 </a>
                 <ul class="c-sidebar-nav-dropdown-items">
-                    @can('task_status_access')
-                        <li class="c-sidebar-nav-item">
-                            <a href="{{ route("projectmanagement.admin.task-statuses.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/projectmanagement/task-statuses") || request()->is("admin/projectmanagement/task-statuses/*") ? "active" : "" }}">
-                                <i class="fa-fw fas fa-server c-sidebar-nav-icon">
+{{--                    @can('task_status_access')--}}
+{{--                        <li class="c-sidebar-nav-item">--}}
+{{--                            <a href="{{ route("projectmanagement.admin.task-statuses.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/projectmanagement/task-statuses") || request()->is("admin/projectmanagement/task-statuses/*") ? "active" : "" }}">--}}
+{{--                                <i class="fa-fw fas fa-server c-sidebar-nav-icon">--}}
 
-                                </i>
-                                {{ trans('cruds.taskStatus.title') }}
-                            </a>
-                        </li>
-                    @endcan
+{{--                                </i>--}}
+{{--                                {{ trans('cruds.taskStatus.title') }}--}}
+{{--                            </a>--}}
+{{--                        </li>--}}
+{{--                    @endcan--}}
                     @can('task_tag_access')
                         <li class="c-sidebar-nav-item">
                             <a href="{{ route("projectmanagement.admin.task-tags.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/projectmanagement/task-tags") || request()->is("admin/projectmanagement/task-tags/*") ? "active" : "" }}">
@@ -719,6 +753,26 @@
 
                                 </i>
                                 {{ trans('cruds.ticket.title') }}
+                            </a>
+                        </li>
+                    @endcan
+{{--                    @can('time_work_type_access')--}}
+{{--                        <li class="c-sidebar-nav-item">--}}
+{{--                            <a href="{{ route("projectmanagement.admin.time-work-types.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/projectmanagement/time-work-types") || request()->is("admin/projectmanagement/time-work-types/*") ? "active" : "" }}">--}}
+{{--                                <i class="fa-fw fas fa-th c-sidebar-nav-icon">--}}
+
+{{--                                </i>--}}
+{{--                                {{ trans('cruds.timeWorkType.title') }}--}}
+{{--                            </a>--}}
+{{--                        </li>--}}
+{{--                    @endcan--}}
+                    @can('work_tracking_access')
+                        <li class="c-sidebar-nav-item">
+                            <a href="{{ route("projectmanagement.admin.work-trackings.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/projectmanagement/work-trackings") || request()->is("admin/projectmanagement/work-trackings/*") ? "active" : "" }}">
+                                <i class="fa-fw fas fa-stopwatch c-sidebar-nav-icon">
+
+                                </i>
+                                {{ trans('cruds.workTracking.title') }}
                             </a>
                         </li>
                     @endcan

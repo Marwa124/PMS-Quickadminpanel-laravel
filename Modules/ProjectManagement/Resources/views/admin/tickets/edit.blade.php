@@ -61,12 +61,12 @@
                 <div class="form-group">
                     <label for="status">{{ trans('cruds.ticket.fields.status') }}</label>
                     <select class="form-control select2 {{ $errors->has('status') ? 'is-invalid' : '' }}" name="status" id="status">
-                        <option value="" selected disabled>Please Select</option>
-                        <option value="opened"      {{ old('status', $ticket->status) == 'opened'       ? 'selected' : '' }}>Open</option>
-                        <option value="answered"    {{ old('status', $ticket->status) == 'answered'     ? 'selected' : '' }}>Answered</option>
-                        <option value="in_progress" {{ old('status', $ticket->status) == 'in_progress'  ? 'selected' : '' }}>In Progress</option>
-                        <option value="closed"      {{ old('status', $ticket->status) == 'closed'       ? 'selected' : '' }}>Closed</option>
-                        <option value="reopen"      {{ old('status', $ticket->status) == 'reopen'       ? 'selected' : '' }}>Reopen</option>
+                        <option value="" selected disabled>{{trans('global.pleaseSelect')}}</option>
+                        <option value="opened"      {{ old('status', $ticket->status) == 'opened'       ? 'selected' : '' }}>{{trans('cruds.status.open')}}</option>
+                        <option value="answered"    {{ old('status', $ticket->status) == 'answered'     ? 'selected' : '' }}>{{trans('cruds.status.answered')}}</option>
+                        <option value="in_progress" {{ old('status', $ticket->status) == 'in_progress'  ? 'selected' : '' }}>{{trans('cruds.status.in_progress')}}</option>
+                        <option value="closed"      {{ old('status', $ticket->status) == 'closed'       ? 'selected' : '' }}>{{trans('cruds.status.close')}}</option>
+                        <option value="reopen"      {{ old('status', $ticket->status) == 'reopen'       ? 'selected' : '' }}>{{trans('cruds.status.reopen')}}</option>
                     </select>
                     @if($errors->has('status'))
                         <div class="invalid-feedback">
@@ -103,10 +103,10 @@
                     <label for="priority">{{ trans('cruds.ticket.fields.priority') }}</label>
 {{--                    <input class="form-control {{ $errors->has('priority') ? 'is-invalid' : '' }}" type="text" name="priority" id="priority" value="{{ old('priority', $ticket->priority) }}">--}}
                     <select class="form-control select2 {{ $errors->has('priority') ? 'is-invalid' : '' }}" name="priority" id="priority">
-                        <option value="" selected disabled>Please Select</option>
-                        <option value="low"     {{ old('priority', $ticket->priority) == 'low'    ? 'selected' : '' }}>Low</option>
-                        <option value="medium"  {{ old('priority', $ticket->priority) == 'medium' ? 'selected' : '' }}>Medium</option>
-                        <option value="high"    {{ old('priority', $ticket->priority) == 'high'   ? 'selected' : '' }}>High</option>
+                        <option value="" selected disabled>{{trans('global.pleaseSelect')}}</option>
+                        <option value="low"     {{ old('priority', $ticket->priority) == 'low'    ? 'selected' : '' }}>{{trans('cruds.status.low')}}</option>
+                        <option value="medium"  {{ old('priority', $ticket->priority) == 'medium' ? 'selected' : '' }}>{{trans('cruds.status.medium')}}</option>
+                        <option value="high"    {{ old('priority', $ticket->priority) == 'high'   ? 'selected' : '' }}>{{trans('cruds.status.high')}}</option>
                     </select>
                     @if($errors->has('priority'))
                         <div class="invalid-feedback">

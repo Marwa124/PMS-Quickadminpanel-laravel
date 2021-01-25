@@ -72,7 +72,7 @@ class TaskController extends Controller
 
         abort_if(Gate::denies('task_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $statuses = TaskStatus::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        //$statuses = TaskStatus::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         $tags = TaskTag::all()->pluck('name', 'id');
 
@@ -107,7 +107,7 @@ class TaskController extends Controller
             $tasks = Task::where('milestone_id',$task->milestone->id)->pluck('name', 'id');
         }
 
-        return view('projectmanagement::admin.tasks.create', compact('statuses', 'tags', 'projects', 'milestones','task','tasks','milestone','project'));
+        return view('projectmanagement::admin.tasks.create', compact('tags', 'projects', 'milestones','task','tasks','milestone','project'));
     }
 
     public function store(StoreTaskRequest $request)
@@ -135,7 +135,7 @@ class TaskController extends Controller
     {
         abort_if(Gate::denies('task_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $statuses = TaskStatus::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        //$statuses = TaskStatus::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         $tags = TaskTag::all()->pluck('name', 'id');
 
@@ -145,9 +145,9 @@ class TaskController extends Controller
 
         $tasks = Task::with('milestone')->get();
 
-        $task->load('status', 'tags', 'assigned_to', 'project', 'milestone');
+        $task->load( 'tags', 'assigned_to', 'project', 'milestone');
 
-        return view('projectmanagement::admin.tasks.edit', compact('statuses', 'tags', 'projects', 'milestones', 'task','tasks'));
+        return view('projectmanagement::admin.tasks.edit', compact('tags', 'projects', 'milestones', 'task','tasks'));
     }
 
     public function update(UpdateTaskRequest $request, Task $task)
@@ -196,7 +196,7 @@ class TaskController extends Controller
     {
         abort_if(Gate::denies('task_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $task->load('status', 'tags', 'project', 'milestone','createBy','TimeSheetOn','TimeSheet');
+        $task->load('tags', 'project', 'milestone','createBy','TimeSheetOn','TimeSheet');
 
         return view('projectmanagement::admin.tasks.show', compact('task'));
     }

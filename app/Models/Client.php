@@ -82,4 +82,9 @@ class Client extends Model implements HasMedia
     {
         return $this->belongsTo(AccountDetail::class, 'status_id');
     }
+
+    public function proposals()
+    {
+        return $this->hasMany(Proposal::class,'module_id')->where('module','=','opportunities')->orderBy('id','desc');
+    }
 }

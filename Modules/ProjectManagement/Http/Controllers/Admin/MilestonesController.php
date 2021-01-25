@@ -76,7 +76,7 @@ class MilestonesController extends Controller
     {
         abort_if(Gate::denies('milestone_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $projects = Project::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $projects = Project::all()->pluck('name', 'id');
 
         $milestone->load('accountDetails', 'project');
 

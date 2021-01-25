@@ -175,4 +175,62 @@ class Invoice extends Model implements HasMedia
 //        }
         return $amount;
     }
+
+
+    public function items(){
+
+        return $this->belongsToMany('Modules\Sales\Entities\ProposalsItem',
+            'item_porposal_relations','proposals_id','item_id') ->withPivot(
+            'id',
+            'item_name',
+            'item_desc',
+            'group_name',
+            'brand',
+            'delivery',
+            'part',
+            'quantity',
+            'unit_cost',
+            'margin',
+            'selling_price',
+            'total_cost_price',
+            'tax_rate',
+            'tax_name',
+            'tax_total',
+            'tax_cost',
+            'order',
+            'unit',
+            'hsn_code'
+        )->orderBy('order','asc');
+
+    }
+
+    public function itemtaxs()
+    {
+        return $this->hasMany(InvoiceItemTax::class, 'invoices_id', 'id');
+    }
+
+    public function gettaxesarray($taxes)
+    {
+
+        $unique_taxes_ids = array_unique($taxes->itemtaxs->pluck('taxs_id')->toArray());
+        $turned_into_keys = array_fill_keys($unique_taxes_ids,null);
+
+        foreach($taxes->items as $key => $value){
+
+            $items_tax = 0;
+
+            foreach($taxes->itemtaxs->where('item_id',$value->pivot->id)->pluck('taxs_id') as $tax){
+
+                if(array_key_exists($tax,$turned_into_keys)){
+
+                    $items_tax = ($value->pivot->unit_cost * $value->pivot->quantity)* (get_taxes($tax)->rate_percent/100) ;
+                    $turned_into_keys[$tax][]=$items_tax;
+                }
+            }
+
+        }
+
+        return  $turned_into_keys;
+
+    }
 }

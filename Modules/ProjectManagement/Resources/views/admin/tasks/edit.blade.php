@@ -129,11 +129,14 @@
                     <span class="help-block">{{ trans('cruds.task.fields.description_helper') }}</span>
                 </div>
                 <div class="form-group">
-                    <label class="required" for="status_id">{{ trans('cruds.task.fields.status') }}</label>
-                    <select class="form-control select2 {{ $errors->has('status') ? 'is-invalid' : '' }}" name="status_id" id="status_id" required>
-                        @foreach($statuses as $id => $status)
-                            <option value="{{ $id }}" {{ (old('status_id') ? old('status_id') : $task->status->id ?? '') == $id ? 'selected' : '' }}>{{ $status }}</option>
-                        @endforeach
+                    <label class="required" for="status">{{ trans('cruds.task.fields.status') }}</label>
+                    <select name="status" id="status" class="form-control {{ $errors->has('status') ? 'is-invalid' : '' }}">
+                        <option value="" selected disabled>{{trans('global.pleaseSelect')}}</option>
+                        <option value="Not Started"         {{ $task->status == 'Not Started'           ? 'selected' : (old('status') == 'Not Started'          ? 'selected' : '' )}}>{{trans('cruds.status.not_started')}}</option>
+                        <option value="In Progress"         {{ $task->status == 'In Progress'           ? 'selected' : (old('status') == 'In Progress'          ? 'selected' : '') }}>{{trans('cruds.status.in_progress')}}</option>
+                        <option value="Completed"           {{ $task->status == 'Completed'             ? 'selected' : (old('status') == 'Completed'            ? 'selected' : '') }}>{{trans('cruds.status.completed')}}</option>
+                        <option value="Deffered"            {{ $task->status == 'Deffered'              ? 'selected' : (old('status') == 'Deffered'             ? 'selected' : '') }}>{{trans('cruds.status.deffered')}}</option>
+                        <option value="Waiting For Someone" {{ $task->status == 'Waiting For Someone'   ? 'selected' : (old('status') == 'Waiting For Someone'  ? 'selected' : '') }}>{{trans('cruds.status.waiting_someone')}}</option>
                     </select>
                     @if($errors->has('status'))
                         <div class="invalid-feedback">
@@ -420,7 +423,9 @@
             var allmilestones = document.getElementById("milestones").value;
             var milestones = JSON.parse(allmilestones);
             var innerHtml =[];
-            innerHtml.push(`<option value="" selected disabled>Please Select</option>`);
+            var pleaseSelect ='{{trans('global.pleaseSelect')}}';
+
+            innerHtml.push(`<option value="" selected disabled>${pleaseSelect}</option>`);
             for (const [key, value] of Object.entries(milestones)){
                 if (project_id == value.project.id){
                     var selected = '';
@@ -441,7 +446,7 @@
 
     function getMilestoneId() {
         var milestone_id = document.getElementById("milestone_id").value;
-        var task_id = {{$task->id}};
+        var task_id = '{{$task->id}}';
 
         if(milestone_id){
             document.getElementById("parent_task_div").classList.add('visible');
@@ -449,7 +454,9 @@
             var alltasks = document.getElementById("tasks").value;
             var tasks = JSON.parse(alltasks);
             var innerHtml =[];
-            innerHtml.push(`<option value="" selected >Please Select</option>`);
+            var pleaseSelect ='{{trans('global.pleaseSelect')}}';
+
+            innerHtml.push(`<option value="" selected >${pleaseSelect}</option>`);
             for (const [key, value] of Object.entries(tasks)){
                 if (milestone_id == value.milestone.id){
                     var selected = '';
@@ -474,7 +481,7 @@
         var value = document.getElementById("calculate_progress").value;
         document.getElementById("progress_value").classList.add('visible');
         document.getElementById("progress_value").classList.remove('invisible');
-        document.getElementById("progress_value").innerHTML = "Progress "+ value + "%";
+        document.getElementById("progress_value").innerHTML = "{{trans('cruds.task.fields.progress')}} "+ value + "%";
     }
 </script>
 

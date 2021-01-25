@@ -137,7 +137,7 @@
                                 {{ $errors->first('parent_task_id') }}
                             </div>
                         @endif
-                        <span class="help-block">{{ trans('cruds.task.fields.status_helper') }}</span>
+{{--                        <span class="help-block">{{ trans('cruds.task.fields.status_helper') }}</span>--}}
                     </div>
                 @endif
                 @if($milestone)
@@ -157,7 +157,7 @@
                                     {{ $errors->first('milestone_id') }}
                                 </div>
                             @endif
-                            <span class="help-block">{{ trans('cruds.task.fields.status_helper') }}</span>
+{{--                            <span class="help-block">{{ trans('cruds.task.fields.status_helper') }}</span>--}}
                         </div>
                     @endif
                 <div class="form-group">
@@ -171,12 +171,20 @@
                     <span class="help-block">{{ trans('cruds.task.fields.description_helper') }}</span>
                 </div>
                 <div class="form-group">
-                    <label class="required" for="status_id">{{ trans('cruds.task.fields.status') }}</label>
-                    <select class="form-control select2 {{ $errors->has('status') ? 'is-invalid' : '' }}" name="status_id" id="status_id" required>
-                        @foreach($statuses as $id => $status)
-                            <option value="{{ $id }}" {{ old('status_id') == $id ? 'selected' : '' }}>{{ $status }}</option>
-                        @endforeach
+                    <label class="required" for="status">{{ trans('cruds.task.fields.status') }}</label>
+                    <select name="status" id="status" class="form-control {{ $errors->has('status') ? 'is-invalid' : '' }}" required>
+                        <option value="" selected disabled>{{trans('global.pleaseSelect')}}</option>
+                        <option value="Not Started"         {{ (old('status') == 'Not Started'          ? 'selected' : '' )}}>{{trans('cruds.status.not_started')}}</option>
+                        <option value="In Progress"         {{ (old('status') == 'In Progress'          ? 'selected' : '') }}>{{trans('cruds.status.in_progress')}}</option>
+                        <option value="Completed"           {{ (old('status') == 'Completed'            ? 'selected' : '') }}>{{trans('cruds.status.completed')}}</option>
+                        <option value="Deffered"            {{ (old('status') == 'Deffered'             ? 'selected' : '') }}>{{trans('cruds.status.deffered')}}</option>
+                        <option value="Waiting For Someone" {{ (old('status') == 'Waiting For Someone'  ? 'selected' : '') }}>{{trans('cruds.status.waiting_someone')}}</option>
                     </select>
+{{--                    <select class="form-control select2 {{ $errors->has('status') ? 'is-invalid' : '' }}" name="status_id" id="status_id" required>--}}
+{{--                        @foreach($statuses as $id => $status)--}}
+{{--                            <option value="{{ $id }}" {{ old('status_id') == $id ? 'selected' : '' }}>{{ $status }}</option>--}}
+{{--                        @endforeach--}}
+{{--                    </select>--}}
                     @if($errors->has('status'))
                         <div class="invalid-feedback">
                             {{ $errors->first('status') }}
@@ -253,7 +261,7 @@
                         <input type="hidden" name="project_task_id" id="project_task_id" value="{{ $project ? $project->id : null}}"/>
                         <label for="project_id">{{ trans('cruds.task.fields.project') }}</label>
                         <select class="form-control select2 {{ $errors->has('project') ? 'is-invalid' : '' }}" name="project_id" id="project_id" onchange="getProjectId()">
-                            <option value="" selected disabled>Please Select</option>
+                            <option value="" selected disabled>{{trans('global.pleaseSelect')}}</option>
 
                             @foreach($projects as $id => $v_project)
                                 @if($project)
@@ -409,7 +417,7 @@
                   return new Promise(function(resolve, reject) {
                     // Init request
                     var xhr = new XMLHttpRequest();
-                    xhr.open('POST', '/admin/tasks/ckmedia', true);
+                    xhr.open('POST', '/admin/projectmanagement/tasks/ckmedia', true);
                     xhr.setRequestHeader('x-csrf-token', window._token);
                     xhr.setRequestHeader('Accept', 'application/json');
                     xhr.responseType = 'json';
@@ -471,7 +479,9 @@
             var allmilestones = document.getElementById("milestones").value;
             var milestones = JSON.parse(allmilestones);
             var innerHtml =[];
-            innerHtml.push(`<option value="" selected disabled>Please Select</option>`);
+            var pleaseSelect ='{{trans('global.pleaseSelect')}}';
+
+            innerHtml.push(`<option value="" selected disabled>${pleaseSelect}</option>`);
             for (const [key, value] of Object.entries(milestones)){
                 if (project_id == value.project.id){
                     var selected = '';
@@ -493,7 +503,7 @@
         var value = document.getElementById("calculate_progress").value;
         document.getElementById("progress_value").classList.add('visible');
         document.getElementById("progress_value").classList.remove('invisible');
-        document.getElementById("progress_value").innerHTML = "Progress "+ value + "%";
+        document.getElementById("progress_value").innerHTML = "{{trans('cruds.task.fields.progress')}} "+ value + "%";
     }
 
 </script>

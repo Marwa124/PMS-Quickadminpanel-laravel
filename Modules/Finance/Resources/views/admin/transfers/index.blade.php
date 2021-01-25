@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 @section('content')
-    @can('payment_method_create')
+    @can('transfer_create')
         <div style="margin-bottom: 10px;" class="row">
             <div class="col-lg-12">
                 <a class="btn btn-success" href="{{ route('finance.admin.transfers.create') }}">

@@ -56,7 +56,7 @@
                                 @if($keydes == 0)
                                     <div class="form-group col-md-6">
 
-                                        No accounts assign to milestone of task
+                                        {{trans('cruds.messages.no_accounts_assign_milestone_task')}}
                                         @php
                                             $keydes++;
                                         @endphp
@@ -73,7 +73,7 @@
             @empty
                 <div class="form-group col-md-6">
 
-                    No designation found in project Department
+                    {{trans('cruds.messages.no_designation_found_in_department_project')}}
                 </div>
             @endforelse
 
