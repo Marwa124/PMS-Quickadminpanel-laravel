@@ -48,12 +48,6 @@ class StoreJobCircularRequest extends FormRequest
                 'date_format:' . config('panel.date_format'),
                 'nullable',
             ],
-            'permissions.*'   => [
-                'integer',
-            ],
-            'permissions'     => [
-                'array',
-            ],
         ];
     }
 }

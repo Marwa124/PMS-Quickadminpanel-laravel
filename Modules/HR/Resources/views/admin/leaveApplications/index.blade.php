@@ -23,6 +23,7 @@
                     <option value="allLeaves">All Leaves</option>
                     <option value="pending">Pending Approval</option>
                     <option value="myLeaves">My Leaves</option>
+                    <option value="leaveReport">Leave Report</option>
                 </select>
             </div>
         </div>
@@ -108,14 +109,17 @@
           method: 'POST',
           url: config.url,
           data: { ids: ids, _method: 'DELETE' }})
-          .done(function () { location.reload() })
+          .done(function (data) { 
+            //   location.reload() 
+                for (let x = 0; x < data.ids.length; x++) {
+                    $("tbody").find(`[data-entry-id='${data.ids[x]}']`).remove();
+                }  
+            })
       }
     }
   }
   dtButtons.push(deleteButton)
 @endcan
-
-
 
   let dtOverrideGlobals = {
     buttons: dtButtons,
@@ -162,8 +166,27 @@
     table.draw();
   })
 
-  $('.filter-leaves-type').change(function() {
-      table.draw();
+  $('.filter-leaves-type').change(function(e) {
+console.log(e.target.value);
+
+    if (e.target.value == 'leaveReport') {
+        $.ajax({
+            url: "{{ route('hr.admin.leave-applications.leaveReport') }}",
+            type: 'get',
+            dataType: 'html',
+            data: function (d) {
+                d.leaveTypes= $(".filter-leaves-type").val();
+            },
+            success: function (data) {
+                window.location.href = "/admin/hr/leave-applications/leave-report"
+            }
+        });
+        
+    }else {
+        // leaveTypes= e.target.value;
+        // table.ajax.reload();
+        table.draw();
+    }
   })
 
 });

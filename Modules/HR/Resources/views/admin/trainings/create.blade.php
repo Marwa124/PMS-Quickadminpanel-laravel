@@ -12,6 +12,8 @@
             <div class="form-group">
                 <label for="user_id">{{ trans('cruds.training.fields.user') }}</label>
                 <select class="form-control select2 {{ $errors->has('user') ? 'is-invalid' : '' }}" name="user_id" id="user_id" required>
+                    <option value="" disabled selected>{{trans('global.pleaseSelect')}}</option>
+                    
                     @foreach($users as $key => $label)
                         @foreach ($label as $key => $item)
                            @if ($key != 0)

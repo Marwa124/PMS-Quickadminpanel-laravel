@@ -35,7 +35,7 @@ class TrainingsController extends Controller
 
         $users = [];
         foreach (User::where('banned', 0)->get() as $key => $value) {
-            $users[] = $value->accountDetail()->where('employment_id', '!=', null)->pluck('fullname', 'user_id')->prepend(trans('global.pleaseSelect'), '');
+            $users[] = $value->accountDetail()->where('employment_id', '!=', null)->pluck('fullname', 'user_id');
         }
 
         return view('hr::admin.trainings.create', compact('users'));

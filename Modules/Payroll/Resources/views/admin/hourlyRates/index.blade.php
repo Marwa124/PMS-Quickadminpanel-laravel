@@ -23,9 +23,6 @@
 
                         </th>
                         <th>
-                            {{ trans('cruds.hourlyRate.fields.id') }}
-                        </th>
-                        <th>
                             {{ trans('cruds.hourlyRate.fields.hourly_grade') }}
                         </th>
                         <th>
@@ -43,16 +40,18 @@
 
                             </td>
                             <td>
-                                {{ $hourlyRate->id ?? '' }}
-                            </td>
-                            <td>
                                 {{ $hourlyRate->hourly_grade ?? '' }}
                             </td>
                             <td>
-                                {{ $hourlyRate->hourly_rate ?? '' }}
+                                {{  $hourlyRate->hourly_rate ? 'EGY ' .number_format((int) $hourlyRate->hourly_rate, 0, ',', '.') : ''}}
                             </td>
                             <td>
 
+                                {{-- @can('hourly_rate_edit') --}}
+                                    <a class="btn btn-xs btn-info" href="{{ route('payroll.admin.hourly-rates.edit', $hourlyRate->id) }}">
+                                        {{ trans('global.edit') }}
+                                    </a>
+                                {{-- @endcan --}}
 
                                 @can('hourly_rate_delete')
                                     <form action="{{ route('payroll.admin.hourly-rates.destroy', $hourlyRate->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
@@ -103,7 +102,12 @@
           method: 'POST',
           url: config.url,
           data: { ids: ids, _method: 'DELETE' }})
-          .done(function () { location.reload() })
+          .done(function (data) {
+              console.log(data); 
+                for (let x = 0; x < data.ids.length; x++) {
+                    $("tbody").find(`[data-entry-id='${data.ids[x]}']`).remove();
+                }
+           })
       }
     }
   }

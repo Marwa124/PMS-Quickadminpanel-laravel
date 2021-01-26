@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Requests;
+namespace Modules\HR\Http\Requests\Destroy;
 
-use App\Models\PenaltyCategory;
 use Gate;
 use Illuminate\Foundation\Http\FormRequest;
 use Symfony\Component\HttpFoundation\Response;

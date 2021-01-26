@@ -44,7 +44,7 @@
                         </span>
                         <span v-else>
                             <div>
-                                <a v-if="canEdit" :href="`${urlDepartments}/${row.id}/edit`" v-text="$t('global.dit')"
+                                <a v-if="canEdit" :href="`${urlDepartments}/${row.id}/edit`" v-text="$t('global.edit')"
                                     class="btn btn-primary btn-sm">
                                 </a>
 

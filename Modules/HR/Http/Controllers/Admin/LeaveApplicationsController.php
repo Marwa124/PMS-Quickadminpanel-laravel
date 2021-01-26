@@ -60,7 +60,7 @@ class LeaveApplicationsController extends Controller
                     // Only Users leaves
                     $query = LeaveApplication::where('user_id', auth()->user()->id)->with(['user', 'leave_category'])->select(sprintf('%s.*', (new LeaveApplication)->table));
                 }
-            }else{
+            }else {
                 // All Leaves
                 $isDepartmentHead = Department::where('department_head_id', auth()->user()->id)->first();
                 if (User::find(auth()->user()->id)->hasRole('Board Members') || User::find(auth()->user()->id)->hasRole('Admin')) {
@@ -164,11 +164,38 @@ class LeaveApplicationsController extends Controller
             });
 
             $table->rawColumns(['actions', 'placeholder', 'leave_category_name', 'user']);
-                        
+
             return $table->escapeColumns([])->make(true);
         }
 
         return view('hr::admin.leaveApplications.index');
+    }
+
+    public function leaveReport()
+    {
+        $leaves = LeaveApplication::where('application_status', 'accepted')->get();
+        // $annual = 0;
+        // $emergency = 0;
+        // $sick = 0;
+        // $home = 0;
+        // $clockLate = 0;
+        $annual = checkAvailableLeaves(23, date('Y-m'), LeaveCategory::categoryId('Annual Leave'));
+        $emergency = checkAvailableLeaves(23, date('Y-m'), LeaveCategory::categoryId('Annual Leave'));
+        $sick = checkAvailableLeaves(23, date('Y-m'), LeaveCategory::categoryId('Annual Leave'));
+        $home = checkAvailableLeaves(23, date('Y-m'), LeaveCategory::categoryId('Annual Leave'));
+        $clockLate = checkAvailableLeaves(23, date('Y-m'), LeaveCategory::categoryId('Annual Leave'));
+        // dd($annual['token_leaves']);
+        // foreach ($leaves as $key => $value) {
+        //     // dump($value->leaveCategoryStatus('Annual Leave')->first()->id);
+        //     dump( LeaveCategory::categoryId('Annual Leave') );
+        //     $annual += $value->leaveCategoryStatus('Annual Leave')->count();
+        //     $emergency += $value->leaveCategoryStatus('Emergency Leave')->count();
+        //     $sick  += $value->leaveCategoryStatus('Sick  Leave')->count();
+        //     $home += $value->leaveCategoryStatus('Working From Home')->count();
+        //     $clockLate += $value->leaveCategoryStatus('Clock in late')->count();
+        // }
+        // dd($annual);
+        return view('hr::admin.leaveApplications.leave_report', compact('annual', 'emergency', 'sick', 'home', 'clockLate'));
     }
 
     // display all leaves of which the user has taken
@@ -268,11 +295,11 @@ class LeaveApplicationsController extends Controller
         // $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
         // event(new NewNotification($userNotify));
 
-        if($department_head_employee){
-            $department_head_employee->notify(new LeaveApplicationNotification($leaveApplication, $leave_category));
-            $userNotify = $department_head_employee->notifications->where('notifiable_id', $department_head_employee->id)->sortBy(['created_at' => 'desc'])->first();
-            event(new NewNotification($userNotify));
-        }
+        // if($department_head_employee){
+        //     $department_head_employee->notify(new LeaveApplicationNotification($leaveApplication, $leave_category));
+        //     $userNotify = $department_head_employee->notifications->where('notifiable_id', $department_head_employee->id)->sortBy(['created_at' => 'desc'])->first();
+        //     event(new NewNotification($userNotify));
+        // }
         /* !!!: End Notification (db, mail) via Laravel $user->notify() */
         /* !!!: End Sending Emails for each User admin and Depart. Head */
 
@@ -300,11 +327,11 @@ class LeaveApplicationsController extends Controller
 
         $user = User::find($leaveApplication->user_id);
         $leaveCategory = $leaveApplication->leave_category()->first();
-        $user->notify(new ApproveRejectLeaveNotification($leaveApplication, $leaveCategory, $status));
+        // $user->notify(new ApproveRejectLeaveNotification($leaveApplication, $leaveCategory, $status));
         /* !!!: End Notification (db, mail) via Laravel $user->notify() */
 
-        $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
-        event(new NewNotification($userNotify));
+        // $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
+        // event(new NewNotification($userNotify));
 
         return redirect()->route('hr.admin.leave-applications.index');
     }
@@ -357,8 +384,10 @@ class LeaveApplicationsController extends Controller
         } else {
             LeaveApplication::whereIn('id', request('ids'))->delete();
         }
-
-        return response(null, Response::HTTP_NO_CONTENT);
+        return response()->json([
+            'ids'   => request('ids'),
+        ]);
+        // return response(null, Response::HTTP_NO_CONTENT);
     }
 
     public function storeCKEditorImages(Request $request)

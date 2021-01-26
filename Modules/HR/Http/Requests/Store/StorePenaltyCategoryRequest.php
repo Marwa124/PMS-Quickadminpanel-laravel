@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Requests;
 
-use App\Models\PenaltyCategory;
+namespace Modules\HR\Http\Requests\Store;
+
 use Gate;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Response;

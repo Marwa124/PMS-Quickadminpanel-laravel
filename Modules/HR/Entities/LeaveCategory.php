@@ -38,4 +38,9 @@ class LeaveCategory extends Model
     {
         return $this->hasMany(LeaveApplication::class, 'leave_category_id', 'id');
     }
+
+    protected function categoryId($name)
+    {
+        return $this->where('name', $name)->select('id')->first()->id;
+    }
 }

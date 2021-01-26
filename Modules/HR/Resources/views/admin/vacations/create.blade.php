@@ -12,9 +12,15 @@
             <div class="form-group">
               <label class="required" for="user_id">{{ trans('cruds.vacation.fields.user') }}</label>
               <select class="form-control select2 {{ $errors->has('user') ? 'is-invalid' : '' }}" name="user_id" id="user_id" required>
-                  @foreach($users as $id => $user)
-                      <option value="{{ $id }}" {{ old('user_id') == $id ? 'selected' : '' }}>{{ $user }}</option>
-                  @endforeach
+                <option value="" disabled selected>{{trans('global.pleaseSelect')}}</option>
+                
+                @foreach($users as $key => $label)
+                    @foreach ($label as $key => $item)
+                       @if ($key != 0)
+                        <option value="{{ $key }}" {{ old('user') === (string) $key ? 'selected' : '' }} {{ $key == 0 ? 'disabled' : '' }}>{{ $item }}</option>
+                       @endif
+                    @endforeach
+                @endforeach
               </select>
               @if($errors->has('user'))
                   <div class="invalid-feedback">

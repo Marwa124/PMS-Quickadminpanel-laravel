@@ -29,7 +29,11 @@ class AttendancesController extends Controller
     {
         abort_if(Gate::denies('attendances_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $users = AccountDetail::all()->pluck('fullname', 'user_id')->prepend(trans('global.pleaseSelect'), '');
+        // $users = AccountDetail::all()->pluck('fullname', 'user_id')->prepend(trans('global.pleaseSelect'), '');
+        $users = [];
+        foreach (User::where('banned', 0)->get() as $key => $value) {
+            $users[] = $value->accountDetail()->where('employment_id', '!=', null)->pluck('fullname', 'user_id')->prepend(trans('global.pleaseSelect'), '');
+        }
 
         return view('hr::admin.attendances.create', compact('users'));
     }
@@ -48,16 +52,16 @@ class AttendancesController extends Controller
         return redirect()->route('hr.admin.attendances.index');
     }
 
-    public function edit(FingerprintAttendance $attendances)
-    {
-        abort_if(Gate::denies('attendances_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+    // public function edit(FingerprintAttendance $attendances)
+    // {
+    //     abort_if(Gate::denies('attendances_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $users = AccountDetail::all()->pluck('fullname', 'user_id')->prepend(trans('global.pleaseSelect'), '');
+    //     $users = AccountDetail::all()->pluck('fullname', 'user_id')->prepend(trans('global.pleaseSelect'), '');
 
-        $attendances->load('user', 'leave_application');
+    //     $attendances->load('user', 'leave_application');
 
-        return view('hr::admin.attendances.edit', compact('users', 'attendances'));
-    }
+    //     return view('hr::admin.attendances.edit', compact('users', 'attendances'));
+    // }
 
     public function update($id)
     {
@@ -89,6 +93,6 @@ class AttendancesController extends Controller
         return response()->json([
             'ids'   => request('ids'),
             'users' => request('users')
-            ]);
+        ]);
     }
 }

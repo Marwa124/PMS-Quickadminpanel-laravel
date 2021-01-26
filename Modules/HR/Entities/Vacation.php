@@ -48,6 +48,18 @@ class Vacation extends Model implements HasMedia
         $this->addMediaConversion('preview')->fit('crop', 120, 120);
     }
 
+    public function getAttachmentsAttribute()
+    {
+        $file = $this->getMedia('attachments')->last();
+
+        if ($file) {
+            $file->url       = $file->getUrl();
+            $file->thumbnail = $file->getUrl('thumb');
+            $file->preview   = $file->getUrl('preview');
+        }
+        return $file;
+    }
+    
     public function getStartDateAttribute($value)
     {
         return $value ? Carbon::parse($value)->format(config('panel.date_format')) : null;

@@ -22,7 +22,7 @@ class StoreHourlyRateRequest extends FormRequest
                 'required',
             ],
             'hourly_rate'  => [
-                'string',
+                'integer',
                 'required',
             ],
         ];

@@ -996,7 +996,7 @@ return array (
     array (
       'hourly_grade' => 'Hourly Grade',
       'hourly_grade_helper' => ' ',
-      'hourly_rate' => 'Hourly Template',
+      'hourly_rate' => 'Hourly Rate',
       'hourly_rate_helper' => ' ',
       'id' => 'ID',
       'id_helper' => ' ',

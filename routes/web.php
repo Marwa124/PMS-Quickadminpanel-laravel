@@ -208,10 +208,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::post('files/ckmedia', 'FilesController@storeCKEditorImages')->name('files.storeCKEditorImages');
     Route::resource('files', 'FilesController', ['except' => ['edit', 'update']]);
 
-    // Penalty Categories
-    Route::delete('penalty-categories/destroy', 'PenaltyCategoriesController@massDestroy')->name('penalty-categories.massDestroy');
-    Route::resource('penalty-categories', 'PenaltyCategoriesController', ['except' => ['edit', 'update', 'show']]);
-
     // Private Chats
     Route::delete('private-chats/destroy', 'PrivateChatController@massDestroy')->name('private-chats.massDestroy');
     Route::resource('private-chats', 'PrivateChatController', ['except' => ['edit', 'update', 'show']]);

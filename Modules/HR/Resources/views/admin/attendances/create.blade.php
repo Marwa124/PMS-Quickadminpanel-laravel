@@ -1,5 +1,4 @@
 @extends('layouts.admin')
-@inject('attendanceModel ', 'Modules\HR\Entities\Attendance')
 @section('content')
 
 <div class="card">
@@ -12,14 +11,18 @@
             @csrf
             <div class="form-group">
                 <label class="required" for="user_id">{{ trans('cruds.attendances.fields.user') }}</label>
-                <select class="form-control select2 {{ $errors->has('user') ? 'is-invalid' : '' }}" name="user_id" id="user_id" required>
-                    @foreach($users as $id => $user)
-                        <option value="{{ $id }}" {{ old('user_id') == $id ? 'selected' : '' }}>{{ $user }}</option>
+                <select class="form-control select2 {{ $errors->has('user_id') ? 'is-invalid' : '' }}" name="user_id" id="user_id" required>
+                    @foreach($users as $key => $label)
+                        @foreach ($label as $key => $item)
+                           @if ($key != 0)
+                            <option value="{{ $key }}" {{ old('user_id') === (string) $key ? 'selected' : '' }} {{ $key == 0 ? 'disabled' : '' }}>{{ $item }}</option>
+                           @endif
+                        @endforeach
                     @endforeach
                 </select>
-                @if($errors->has('user'))
+                @if($errors->has('user_id'))
                     <div class="invalid-feedback">
-                        {{ $errors->first('user') }}
+                        {{ $errors->first('user_id') }}
                     </div>
                 @endif
                 <span class="help-block">{{ trans('cruds.attendances.fields.user_helper') }}</span>

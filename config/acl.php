@@ -124,7 +124,7 @@
                 'penalty_category_access',
                 'penalty_category_create',
                 'penalty_category_delete',
-
+                'penalty_category_edit',
             ],
 
             // Evaluations
@@ -374,6 +374,7 @@
                 'salary_payslip_delete',
                 'salary_payslip_access',
                 'hourly_rate_create',
+                'hourly_rate_edit',
                 'hourly_rate_delete',
                 'hourly_rate_access',
                 'online_payment_create',

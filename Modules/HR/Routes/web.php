@@ -85,7 +85,7 @@ Route::group(['as' => 'hr.admin.', 'prefix' => 'admin/hr', 'namespace' => 'Admin
 
      // Set Time
      Route::delete('set-times/destroy', 'SetTimesController@massDestroy')->name('set-times.massDestroy');
-     Route::resource('set-times', 'SetTimesController');
+     Route::resource('set-times', 'SetTimesController', ['except' => 'show']);
 
      // Trainings
      Route::delete('trainings/destroy', 'TrainingsController@massDestroy')->name('trainings.massDestroy');
@@ -106,6 +106,7 @@ Route::group(['as' => 'hr.admin.', 'prefix' => 'admin/hr', 'namespace' => 'Admin
      Route::get('leave-applications/mark-notification-as-read/{id}', 'LeaveApplicationsController@markNotificationAsRead')->name('leave-applications.markNotificationAsRead');
      Route::get('leave-applications/mark-attendance/{id}', 'LeaveApplicationsController@markAttendance')->name('leave-applications.markAttendance');
      Route::get('leave-applications/approve_reject/{id}/{status}', 'LeaveApplicationsController@approveReject')->name('leave-applications.approveReject');
+     Route::get('leave-applications/leave-report', 'LeaveApplicationsController@leaveReport')->name('leave-applications.leaveReport');
      Route::resource('leave-applications', 'LeaveApplicationsController', ['except' => ['edit']]);
 
      // Meeting Minutes
@@ -120,7 +121,7 @@ Route::group(['as' => 'hr.admin.', 'prefix' => 'admin/hr', 'namespace' => 'Admin
 
      // attendances
      Route::delete('attendances/destroy', 'AttendancesController@massDestroy')->name('attendances.massDestroy');
-     Route::resource('attendances', 'AttendancesController', ['except' => ['show']]);
+     Route::resource('attendances', 'AttendancesController', ['except' => ['show', 'edit']]);
 
      // Employee Banks
      Route::delete('employee-banks/destroy', 'EmployeeBankController@massDestroy')->name('employee-banks.massDestroy');
@@ -130,7 +131,11 @@ Route::group(['as' => 'hr.admin.', 'prefix' => 'admin/hr', 'namespace' => 'Admin
      Route::delete('vacations/destroy', 'VacationsController@massDestroy')->name('vacations.massDestroy');
      Route::post('vacations/media', 'VacationsController@storeMedia')->name('vacations.storeMedia');
      Route::post('vacations/ckmedia', 'VacationsController@storeCKEditorImages')->name('vacations.storeCKEditorImages');
-     Route::resource('vacations', 'VacationsController');
+     Route::resource('vacations', 'VacationsController', ['except' => ['show']]);
+
+     // Penalty Categories
+    Route::delete('penalty-categories/destroy', 'PenaltyCategoriesController@massDestroy')->name('penalty-categories.massDestroy');
+    Route::resource('penalty-categories', 'PenaltyCategoriesController', ['except' => ['show']]);
 
      // Job Circulars
     Route::delete('job-circulars/destroy', 'JobCircularsController@massDestroy')->name('job-circulars.massDestroy');

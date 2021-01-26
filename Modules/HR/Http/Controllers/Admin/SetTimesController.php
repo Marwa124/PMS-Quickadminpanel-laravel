@@ -6,7 +6,7 @@ use Modules\HR\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\MediaUploadingTrait;
 use Modules\HR\Http\Requests\Destroy\MassDestroyVacationRequest;
 use Modules\HR\Http\Requests\Store\StoreSetTimeRequest;
-use Modules\HR\Http\Requests\Update\UpdateVacationRequest;
+use Modules\HR\Http\Requests\Update\UpdateSetTimeRequest;
 use App\Models\User;
 use Modules\HR\Entities\SetTime;
 use Gate;
@@ -31,9 +31,7 @@ class SetTimesController extends Controller
     {
         abort_if(Gate::denies('set_time_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
-
-        return view('hr::admin.setTimes.create', compact('users'));
+        return view('hr::admin.setTimes.create');
     }
 
     public function store(StoreSetTimeRequest $request)
@@ -51,11 +49,7 @@ class SetTimesController extends Controller
     {
         abort_if(Gate::denies('set_time_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
-
-        $setTime->load('user');
-
-        return view('hr::admin.setTimes.edit', compact('users', 'setTime'));
+        return view('hr::admin.setTimes.edit', compact('setTime'));
     }
 
     public function update(UpdateSetTimeRequest $request, SetTime $setTime)
@@ -65,14 +59,12 @@ class SetTimesController extends Controller
         return redirect()->route('hr.admin.set-times.index');
     }
 
-    public function show(SetTime $setTime)
-    {
-        abort_if(Gate::denies('set_time_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+    // public function show(SetTime $setTime)
+    // {
+    //     abort_if(Gate::denies('set_time_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $setTime->load('user');
-
-        return view('hr::admin.setTimes.show', compact('setTime'));
-    }
+    //     return view('hr::admin.setTimes.show', compact('setTime'));
+    // }
 
     public function destroy(SetTime $setTime)
     {

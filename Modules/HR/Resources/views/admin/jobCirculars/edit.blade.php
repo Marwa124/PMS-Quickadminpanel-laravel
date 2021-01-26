@@ -135,29 +135,11 @@
                 @endif
                 <span class="help-block">{{ trans('cruds.jobCircular.fields.status_helper') }}</span>
             </div>
-            <div class="form-group">
-                <label for="permissions">{{ trans('cruds.jobCircular.fields.permissions') }}</label>
-                <div style="padding-bottom: 4px">
-                    <span class="btn btn-info btn-xs select-all" style="border-radius: 0">{{ trans('global.select_all') }}</span>
-                    <span class="btn btn-info btn-xs deselect-all" style="border-radius: 0">{{ trans('global.deselect_all') }}</span>
-                </div>
-                <select class="form-control select2 {{ $errors->has('permissions') ? 'is-invalid' : '' }}" name="permissions[]" id="permissions" multiple>
-                    @foreach($permissions as $id => $permissions)
-                        <option value="{{ $id }}" {{ (in_array($id, old('permissions', [])) || $jobCircular->permissions->contains($id)) ? 'selected' : '' }}>{{ $permissions }}</option>
-                    @endforeach
-                </select>
-                @if($errors->has('permissions'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('permissions') }}
-                    </div>
-                @endif
-                <span class="help-block">{{ trans('cruds.jobCircular.fields.permissions_helper') }}</span>
-            </div>
-            <div class="form-group">
+            <d class="form-group">
                 <button class="btn btn-danger" type="submit">
                     {{ trans('global.save') }}
                 </button>
-            </div>
+            </d>
         </form>
     </div>
 </div>
