@@ -162,7 +162,7 @@
                         <label for="discounts">{{ trans('cruds.invoice.fields.discounts') }}</label>
                         <select class="form-control  {{ $errors->has('discounts') ? 'is-invalid' : '' }}"
                                 name="discounts"
-                                id="discounts">
+                                id="ifdiscounts" onchange="calculate_total_edit()">
 
                             <option value="no_discount">{{trans('cruds.invoice.fields.no_discount')}}</option>
                             <option value="before_tax">{{trans('cruds.invoice.fields.before_tax')}}</option>
@@ -285,7 +285,7 @@
                                             <span class="bold">Discount (%)</span>
                                         </div>
                                         <div class="col-md-5">
-                                            <input type="text" data-parsley-type="number" value="0"
+                                            <input type="number" data-parsley-type="number" value="0"
                                                    class="form-control pull-left" min="0" max="100"
                                                    name="discount_percent">
                                         </div>
@@ -305,7 +305,7 @@
                                             <span class="bold">Adjustment</span>
                                         </div>
                                         <div class="col-md-5">
-                                            <input type="text" data-parsley-type="number" value="0"
+                                            <input type="number" data-parsley-type="number" value="0"
                                                    class="form-control pull-left" name="adjustment">
                                         </div>
                                     </div>

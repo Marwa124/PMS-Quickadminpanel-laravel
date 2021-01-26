@@ -173,6 +173,7 @@ function calculate_total_edit() {
         total_discount_calculated = 0,
         rows = $('.table.invoice-items-table tbody tr.item,.table.table-main-estimate-edit tbody tr.item'),
         adjustment = $('input[name="adjustment"]').val(),
+        ifdiscounts = $('#ifdiscounts').val(),
         discount_area = $('tr#discount_percent'),
         discount_percent = $('input[name="discount_percent"]').val();
 
@@ -215,7 +216,6 @@ function calculate_total_edit() {
             $.each(item_taxes, function (i, taxname) {
                 taxrate = row.find('select.tax [value="' + taxname + '"]').data('taxrate');
                 subtext = row.find('select.tax [value="' + taxname + '"]').data('taxname');
-                console.log(subtext,taxrate);
                 calculated_tax = (_amount2 / 100 * taxrate);
                 if (!taxes.hasOwnProperty(taxname)) {
                     if (taxrate != 0) {
@@ -239,26 +239,52 @@ function calculate_total_edit() {
         }
     });
 
-    total_discount_calculated = (subtotal * discount_percent) / 100;
-
-
-
-    $.each(taxes, function (taxname, total_tax) {
-        total_tax_calculated = (total_tax * discount_percent) / 100;
-        total_tax = (total_tax - total_tax_calculated);
-        total += total_tax;
-        $('#tax_id_' + slugify(taxname)).html(total_tax.toFixed(2) + hidden_input('total_tax_name[]', taxname) + hidden_input('total_tax[]', total_tax.toFixed(2)));
-    });
-
-
-    // if($('#discounts') == 'no_discounts'){
+    // total_discount_calculated = (subtotal * discount_percent) / 100;
     //
-    // }
-    // else if($('#discounts') == 'after_tax'){
     //
-    // }else{
     //
-    // }
+    // $.each(taxes, function (taxname, total_tax) {
+    //     console.log(total_tax,taxname);
+    //     total_tax_calculated = (total_tax * discount_percent) / 100;
+    //     total_tax = (total_tax - total_tax_calculated);
+    //     total += total_tax;
+    //     $('#tax_id_' + slugify(taxname)).html(total_tax.toFixed(2) + hidden_input('total_tax_name[]', taxname) + hidden_input('total_tax[]', total_tax.toFixed(2)));
+    // });
+
+    if(ifdiscounts== 'no_discount'){
+        total_discount_calculated = 0 ;
+
+        $.each(taxes, function (taxname, total_tax) {
+            console.log(total_tax,taxname);
+            // total_tax_calculated = (total_tax * discount_percent) / 100;
+            total_tax = (total_tax);
+            total += total_tax;
+            $('#tax_id_' + slugify(taxname)).html(total_tax.toFixed(2) + hidden_input('total_tax_name[]', taxname) + hidden_input('total_tax[]', total_tax.toFixed(2)));
+        });
+    }
+    else if(ifdiscounts == 'after_tax'){
+        total_discount_calculated = (subtotal * discount_percent) / 100;
+
+
+
+        $.each(taxes, function (taxname, total_tax) {
+            console.log(total_tax,taxname);
+            total_tax_calculated = (total_tax * discount_percent) / 100;
+            total_tax = (total_tax - total_tax_calculated);
+            total += total_tax;
+            $('#tax_id_' + slugify(taxname)).html(total_tax.toFixed(2) + hidden_input('total_tax_name[]', taxname) + hidden_input('total_tax[]', total_tax.toFixed(2)));
+        });
+    }else{
+        total_discount_calculated = (subtotal * discount_percent) / 100;
+
+        $.each(taxes, function (taxname, total_tax) {
+            console.log(total_tax,taxname);
+            // total_tax_calculated = (total_tax * discount_percent) / 100;
+            total_tax = (total_tax);
+            total += total_tax;
+            $('#tax_id_' + slugify(taxname)).html(total_tax.toFixed(2) + hidden_input('total_tax_name[]', taxname) + hidden_input('total_tax[]', total_tax.toFixed(2)));
+        });
+    }
 
     total = (total + subtotal);
 

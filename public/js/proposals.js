@@ -96,6 +96,7 @@ function getitem(val) {
             $('.main select.tax').selectpicker('val', tax);
             $('.main input[name="unit"]').val(response.unit_type);
             $('.main input[name="unit_cost"]').val(response.unit_cost);
+            $('#porposal_item').val('');
         }
     });
 }
