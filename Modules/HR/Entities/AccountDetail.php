@@ -207,4 +207,19 @@ class AccountDetail extends Model implements HasMedia
 
     }
 
+    public function tickets(){
+
+        return $this->belongsToMany('Modules\ProjectManagement\Entities\Ticket',
+            'ticket_account_details_pivot','account_details_id','ticket_id');
+
+    }
+
+
+    public function trashTickets(){
+
+        return $this->belongsToMany('Modules\ProjectManagement\Entities\Ticket',
+            'ticket_account_details_pivot','account_details_id','ticket_id')->onlyTrashed();
+
+    }
+
 }

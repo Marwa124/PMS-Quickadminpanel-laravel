@@ -10,6 +10,8 @@ use Modules\ProjectManagement\Entities\Bug;
 use Modules\ProjectManagement\Entities\Milestone;
 use Modules\ProjectManagement\Entities\Project;
 use Modules\ProjectManagement\Entities\Task;
+use Modules\HR\Entities\Department;
+
 
 class AllowAccessShowAndEditPagesMiddleware
 {
@@ -23,8 +25,9 @@ class AllowAccessShowAndEditPagesMiddleware
     public function handle(Request $request, Closure $next,$model = null)
     {
         $user = auth()->user();
+        $departments = Department::where('department_head_id',$user->id)->get();
 
-        if ($user->hasrole(['Admin','Super Admin'])) {
+        if ($user->hasrole(['Admin','Super Admin']) || $departments->count() > 0) {
             return $next($request);
         }
         //dd(is_numeric(request()->segment(count(request()->segments())) ));

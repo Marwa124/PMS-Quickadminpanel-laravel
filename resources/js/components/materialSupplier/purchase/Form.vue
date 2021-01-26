@@ -123,14 +123,13 @@
 
             </div>
             <!-- End Second Half Screen -->
-
         </div>
 
         <!-- Items -->
         <div class="d-flex justify-content-between">
             <div class="col-md-6">
-                    {{form.items}}
-                    <!-- {{selectedItem}} -->
+                    <!-- {{form.items}} -->
+                    {{selectedItem}}
                 <multiselect
                     :options="items"
                     v-model="selectedItem"
@@ -184,21 +183,18 @@
             </thead>
             <tbody>
                 <tr data-row-id="" v-for="(item, index) in form.items" :key="index">
-
-                <!-- <tr> -->
-                    <!-- <th scope="row">1</th> -->
                     <th>
-                        <textarea class="form-control" v-model="item.name" @keyup="newItemAdded(item)"></textarea>
+                        <textarea class="form-control" v-model="item.name" @keydown="newItemAdded(item, index)"></textarea>
                     </th>
                     <td>
                         <textarea class="form-control" v-model="item.description"></textarea>
                     </td>
                     <td>
-                        <input class="form-control" type="number" v-model="item.quantity" @change="newItemAdded(item)">
+                        <input class="form-control" type="number" v-model="item.quantity" @keydown="newItemAdded(item, index)">
                         <input class="form-control input-transparent" :placeholder="$t('items.fields.unit_cost')" type="text" v-model="item.unit_cost">
                     </td>
                     <td>
-                        <input class="form-control" type="number" v-model="item.total_cost_price" @change="newItemAdded(item)">
+                        <input class="form-control" type="number" v-model="item.total_cost_price" @keydown="newItemAdded(item, index)">
                     </td>
                     <td>
                         <multiselect
@@ -221,7 +217,12 @@
                         <input class="form-control input-transparent" type="number" disabled v-model="item.total">
                     </td>
                     <td>
-                        <i class="fas fa-check text-white p-1" :class="activeRowAddition" @click="addItemToModel(item)"></i>
+                        <div v-if="form.items[index].activeRowAddition == 'bg-danger pointer'">
+                            <i class="fas fa-trash-alt text-white p-1" :class="form.items[index].activeRowAddition" @click="removeItemRow(item, index)"></i>
+                        </div>
+                        <div v-else>
+                            <i class="fas fa-check text-white p-1" :class="form.items[index].activeRowAddition" @click="addItemToModel(item)"></i>
+                        </div>
                     </td>
                 </tr>
             </tbody>
@@ -252,20 +253,7 @@
                 spinnerAction: false,
                 spinnerLoad: false,
 
-                activeRowAddition: 'bg-secondary',
-
-                selectedItem: [],
-
-                dataItems: {
-                            name:      '',
-                            description:      '',
-                            quantity:       '1',
-                            total_cost_price: '',
-                            item_tax_total: '', // Calculated
-                            total_cost:     '',
-                            unit_cost:      '',
-                            total:          '',
-                        },
+                selectedItem: '',
 
                 form: new Form({
                     ref_no:        '',
@@ -278,16 +266,16 @@
                     notes:         '',
                     items: [
                         {
-                            name:      '',
-                            description:      '',
+                            // name:      '',
+                            // description:    '',
                             quantity:       '1',
-                            total_cost_price: '',
-                            item_tax_total: '', // Calculated
-                            total_cost:     '',
-                            unit_cost:      '',
-                            total:          '',
-                        }
-                        // this.dataItems
+                            // total_cost_price: '',
+                            // item_tax_total: '', // Calculated
+                            // total_cost:     '',
+                            // unit_cost:      '',
+                            // total:          '',
+                            activeRowAddition: 'bg-secondary',
+                        },
                     ],
                     item_tax_rate:  '',
 
@@ -317,8 +305,18 @@
                 this.quantityAs = this.$t('purchase.fields.quantity_as_'+val)
             },
             addNewPurchaseItem(item) { // Add New Item Row To Proposal
-                this.form.items.splice(0, 1);
-                this.form.items.unshift(item)
+                // this.form.items.splice(0, 1);
+                // this.form.items.unshift(item)
+                this.form.items[0].name      = item.name,
+                this.form.items[0].description    = item.description,
+                this.form.items[0].quantity      = item.quantity,
+                this.form.items[0].total_cost_price = item.total_cost_price,
+                this.form.items[0].item_tax_total = item.item_tax_total, // Calculated
+                this.form.items[0].total_cost     = item.total_cost,
+                this.form.items[0].unit_cost      = item.unit_cost,
+                this.form.items[0].total          = item.total,
+                this.form.items[0].activeRowAddition = 'bg-primary pointer',
+
                 this.newItemAdded(item)
             },
             addTax (taxItem, index) {
@@ -326,9 +324,6 @@
                 const tax = {
                     name: taxItem,
                 }
-                // console.log(tax);
-                // console.log(index);
-                // console.log(this.form.items);
                 // this.form.items[0].item_tax_rate = tax
                 console.log(this.form.items[index]);
                 // this.form.item_tax_rate.unshift(tax)
@@ -336,12 +331,34 @@
             },
             newItemAdded(item) { // Set the input data values in row
                 if(item.name && item.quantity && item.total_cost_price != ''){
-                    this.activeRowAddition = 'bg-primary pointer'
+                    this.form.items[0].activeRowAddition = 'bg-primary pointer'
                 }
             },
             addItemToModel(item) { // Add row item to model
-                this.form.items.unshift(this.dataItems)
-                // this.form.items.push(item);
+                this.form.items.unshift({
+                    name           : '',
+                    description    : '',
+                    quantity       : '1',
+                    total_cost_price : '',
+                    item_tax_total : '', // Calculated
+                    total_cost     : '',
+                    unit_cost      : '',
+                    total          : '',
+                    activeRowAddition : 'bg-secondary',
+                })
+                
+                this.form.items.forEach( (element, index) => {
+                    if (index > 0) {
+                        element.activeRowAddition = 'bg-danger pointer'
+                    }
+                });
+
+                // for (const [key, value] of Object.entries(this.dataItems)) {
+                //     console.log(`${key}: ''`);
+                // }
+            },
+            removeItemRow(item, index) {
+                this.form.items.splice(index, 1);
             }
         },
         // watch: {

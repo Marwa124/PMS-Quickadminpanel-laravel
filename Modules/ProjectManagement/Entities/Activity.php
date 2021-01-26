@@ -17,8 +17,8 @@ class Activity extends Model
         return $this->belongsTo(User::class,'user_id');
     }
 
-    public function project()
-    {
-        return $this->belongsTo(Project::class,'module_field_id')->where('module','=','project');
-    }
+//    public function project()
+//    {
+//        return $this->belongsTo(Project::class,'module_field_id')->where('module','=','project');
+//    }
 }

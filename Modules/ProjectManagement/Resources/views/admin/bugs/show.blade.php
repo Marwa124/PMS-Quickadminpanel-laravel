@@ -253,7 +253,7 @@
             <div class="card">
 
                 <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                    <a class="nav-link active" id="v-pills-details-tab" data-toggle="pill" href="#v-pills-details" role="tab" aria-controls="v-pills-details" aria-selected="true">{{ trans('cruds.bug.title') }} Details</a>
+                    <a class="nav-link active" id="v-pills-details-tab" data-toggle="pill" href="#v-pills-details" role="tab" aria-controls="v-pills-details" aria-selected="true">{{ trans('cruds.bug.title') }} {{trans('global.details')}}</a>
                     <a class="nav-link" id="v-pills-notes-tab" data-toggle="pill" href="#v-pills-notes" role="tab" aria-controls="v-pills-notes" aria-selected="false">{{ trans('cruds.bug.fields.notes') }}</a>
                     <a class="nav-link" id="v-pills-activities-tab" data-toggle="pill" href="#v-pills-activities" role="tab" aria-controls="v-pills-activities" aria-selected="false">{{ trans('cruds.activities.title') }}<span class="float-right">{{$bug->activities()->count() > 0 ? $bug->activities()->count() : ''}}</span></a>
                     {{--                    <a class="nav-link" id="v-pills-comments-tab" data-toggle="pill" href="#v-pills-comments" role="tab" aria-controls="v-pills-comments" aria-selected="false">Comments</a>--}}
@@ -341,15 +341,13 @@
                 </div>
                 <div class="tab-pane fade" id="v-pills-activities" role="tabpanel" aria-labelledby="v-pills-activities-tab">
                     <div class="card">
-                        <div class="card-body">
-                            <div class="nav flex-row nav-pills" id="v-pills-tab" role="tablist" aria-orientation="horizontal">
-                                <a class="nav-link active" id="v-pills-activity-tab" data-toggle="pill" href="#v-pills-activity" role="tab" aria-controls="v-pills-activity" aria-selected="true">{{ trans('cruds.activities.title') }}</a>
-                            </div>
+                        <div class="card-header">
+                                {{ trans('cruds.activities.title') }}
                         </div>
-                    </div>
-                    <div class="tab-pane fade show active" id="v-pills-activity" role="tabpanel" aria-labelledby="v-pills-activity-tab">
+
+                        <div class="tab-pane fade show active" id="v-pills-activity" role="tabpanel" aria-labelledby="v-pills-activity-tab">
                         @if($bug->activities()->count() > 0)
-                            <div class="card">
+                            <div class="card-body">
 
                                 <div class="item">
                                     <div id="timeline">
@@ -373,6 +371,7 @@
 
                             </div>
                         @endif
+                    </div>
                     </div>
                 </div>
                 <div class="tab-pane fade" id="v-pills-comments" role="tabpanel" aria-labelledby="v-pills-comments-tab">...</div>

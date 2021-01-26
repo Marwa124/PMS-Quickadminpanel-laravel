@@ -15,7 +15,7 @@ class CreateItemPorposalRelationsTable extends Migration
     {
         Schema::create('item_porposal_relations', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('item_name')->unique();
+            $table->string('item_name')->nullable();
             $table->longText('item_desc')->nullable();
             $table->string('group_name')->nullable();
             $table->string('brand')->nullable();

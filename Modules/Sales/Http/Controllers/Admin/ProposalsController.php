@@ -180,8 +180,10 @@ class ProposalsController extends Controller
         ]));
 
     
+            if(isset($request->item_relation_id)){
 
-            $deleteold=ItemPorposalRelations::whereIn('id',$request->item_relation_id)->forceDelete();
+                $deleteold=ItemPorposalRelations::whereIn('id',$request->item_relation_id)->forceDelete();
+            }
         
        foreach ($request->items as $key => $value) {
             $total_taxitem=0;
@@ -236,7 +238,7 @@ class ProposalsController extends Controller
     {
         abort_if(Gate::denies('proposal_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $proposal->load('permissions');
+      
 
         return view('sales::admin.proposals.show', compact('proposal'));
     }

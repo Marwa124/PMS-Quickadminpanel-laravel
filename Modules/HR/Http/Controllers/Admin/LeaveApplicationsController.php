@@ -180,11 +180,11 @@ class LeaveApplicationsController extends Controller
         // $home = 0;
         // $clockLate = 0;
         $annual = checkAvailableLeaves(23, date('Y-m'), LeaveCategory::categoryId('Annual Leave'));
-        $emergency = checkAvailableLeaves(23, date('Y-m'), LeaveCategory::categoryId('Annual Leave'));
-        $sick = checkAvailableLeaves(23, date('Y-m'), LeaveCategory::categoryId('Annual Leave'));
-        $home = checkAvailableLeaves(23, date('Y-m'), LeaveCategory::categoryId('Annual Leave'));
-        $clockLate = checkAvailableLeaves(23, date('Y-m'), LeaveCategory::categoryId('Annual Leave'));
-        // dd($annual['token_leaves']);
+        $emergency = checkAvailableLeaves(23, date('Y-m'), LeaveCategory::categoryId('Emergency Leave'));
+        $sick = checkAvailableLeaves(23, date('Y-m'), LeaveCategory::categoryId('Sick Leave'));
+        $home = checkAvailableLeaves(23, date('Y-m'), LeaveCategory::categoryId('Working From Home'));
+        $clockLate = checkAvailableLeaves(23, date('Y-m'), LeaveCategory::categoryId('Clock in late'));
+        // dd($annual);
         // foreach ($leaves as $key => $value) {
         //     // dump($value->leaveCategoryStatus('Annual Leave')->first()->id);
         //     dump( LeaveCategory::categoryId('Annual Leave') );

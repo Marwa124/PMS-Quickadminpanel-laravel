@@ -268,7 +268,7 @@
             <div class="card">
 
                 <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                    <a class="nav-link active" id="v-pills-details-tab" data-toggle="pill" href="#v-pills-details" role="tab" aria-controls="v-pills-details" aria-selected="true">Project Details</a>
+                    <a class="nav-link active" id="v-pills-details-tab" data-toggle="pill" href="#v-pills-details" role="tab" aria-controls="v-pills-details" aria-selected="true">{{trans('cruds.project.title_singular')}} {{trans('global.details')}}</a>
                     <a class="nav-link" id="v-pills-milestones-tab"     data-toggle="pill" href="#v-pills-milestones" role="tab" aria-controls="v-pills-milestones" aria-selected="false">{{ trans('cruds.milestone.title') }} <span class="float-right">              {{$project->milestones()->count() > 0 ? $project->milestones()->count() : ''}}</span></a>
                     <a class="nav-link" id="v-pills-tasks-tab"          data-toggle="pill" href="#v-pills-tasks" role="tab" aria-controls="v-pills-tasks" aria-selected="false">{{ trans('cruds.task.title') }}<span class="float-right">                              {{$project->tasks()->count() > 0 ? $project->tasks()->count() : ''}}</span></a>
                     <a class="nav-link" id="v-pills-bugs-tab"           data-toggle="pill" href="#v-pills-bugs" role="tab" aria-controls="v-pills-bugs" aria-selected="false">{{ trans('cruds.bug.title') }}<span class="float-right">                                 {{$project->bugs()->count() > 0 ? $project->bugs()->count() : ''}}</span></a>
@@ -1182,15 +1182,14 @@
                 </div>
                 <div class="tab-pane fade" id="v-pills-activities" role="tabpanel" aria-labelledby="v-pills-activities-tab">
                     <div class="card">
-                        <div class="card-body">
-                            <div class="nav flex-row nav-pills" id="v-pills-tab" role="tablist" aria-orientation="horizontal">
-                                <a class="nav-link active" id="v-pills-activity-tab" data-toggle="pill" href="#v-pills-activity" role="tab" aria-controls="v-pills-activity" aria-selected="true">{{ trans('cruds.activities.title') }}</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade show active" id="v-pills-activity" role="tabpanel" aria-labelledby="v-pills-activity-tab">
+                        <h5 class="card-header">
+                               {{ trans('cruds.activities.title') }}
+
+                        </h5>
+
+                        <div class="tab-pane fade show active" id="v-pills-activity" role="tabpanel" aria-labelledby="v-pills-activity-tab">
                         @if($project->activities()->count() > 0)
-                            <div class="card">
+                            <div class="card-body">
 
                                 <div class="item">
                                     <div id="timeline">
@@ -1214,6 +1213,7 @@
 
                             </div>
                         @endif
+                    </div>
                     </div>
                 </div>
                 <div class="tab-pane fade" id="v-pills-comments" role="tabpanel" aria-labelledby="v-pills-comments-tab">...</div>

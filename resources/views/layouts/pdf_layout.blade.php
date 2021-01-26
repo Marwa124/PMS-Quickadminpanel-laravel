@@ -7,6 +7,13 @@
     <link rel="shortcut icon" href="">
 
     <style>
+        @font-face {
+            font-family: 'ARIALUNI';
+            src: url(data:font/truetype;charset=utf-8;base64,<BASE64-ENCODED-DATA>);
+            }
+        body, h1 {
+        font-family: 'ARIALUNI', sans-serif;
+        }
         hr {
             height: 0;
             -webkit-box-sizing: content-box;

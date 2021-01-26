@@ -3565,6 +3565,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -3587,19 +3588,7 @@ __webpack_require__.r(__webpack_exports__);
       quantityAs: this.$t('purchase.fields.quantity_as_qty'),
       spinnerAction: false,
       spinnerLoad: false,
-      activeRowAddition: 'bg-secondary',
-      selectedItem: [],
-      dataItems: {
-        name: '',
-        description: '',
-        quantity: '1',
-        total_cost_price: '',
-        item_tax_total: '',
-        // Calculated
-        total_cost: '',
-        unit_cost: '',
-        total: ''
-      },
+      selectedItem: '',
       form: new vform__WEBPACK_IMPORTED_MODULE_0__["Form"]({
         ref_no: '',
         supplier: '',
@@ -3610,17 +3599,16 @@ __webpack_require__.r(__webpack_exports__);
         discount_type: '',
         notes: '',
         items: [{
-          name: '',
-          description: '',
+          // name:      '',
+          // description:    '',
           quantity: '1',
-          total_cost_price: '',
-          item_tax_total: '',
-          // Calculated
-          total_cost: '',
-          unit_cost: '',
-          total: ''
-        } // this.dataItems
-        ],
+          // total_cost_price: '',
+          // item_tax_total: '', // Calculated
+          // total_cost:     '',
+          // unit_cost:      '',
+          // total:          '',
+          activeRowAddition: 'bg-secondary'
+        }],
         item_tax_rate: ''
       })
     };
@@ -3655,18 +3643,16 @@ __webpack_require__.r(__webpack_exports__);
     },
     addNewPurchaseItem: function addNewPurchaseItem(item) {
       // Add New Item Row To Proposal
-      this.form.items.splice(0, 1);
-      this.form.items.unshift(item);
-      this.newItemAdded(item);
+      // this.form.items.splice(0, 1);
+      // this.form.items.unshift(item)
+      this.form.items[0].name = item.name, this.form.items[0].description = item.description, this.form.items[0].quantity = item.quantity, this.form.items[0].total_cost_price = item.total_cost_price, this.form.items[0].item_tax_total = item.item_tax_total, // Calculated
+      this.form.items[0].total_cost = item.total_cost, this.form.items[0].unit_cost = item.unit_cost, this.form.items[0].total = item.total, this.form.items[0].activeRowAddition = 'bg-primary pointer', this.newItemAdded(item);
     },
     addTax: function addTax(taxItem, index) {
       // console.log(taxItem);
       var tax = {
         name: taxItem
-      }; // console.log(tax);
-      // console.log(index);
-      // console.log(this.form.items);
-      // this.form.items[0].item_tax_rate = tax
+      }; // this.form.items[0].item_tax_rate = tax
 
       console.log(this.form.items[index]); // this.form.item_tax_rate.unshift(tax)
       // this.form.item_tax_rate.push(tax)
@@ -3674,12 +3660,33 @@ __webpack_require__.r(__webpack_exports__);
     newItemAdded: function newItemAdded(item) {
       // Set the input data values in row
       if (item.name && item.quantity && item.total_cost_price != '') {
-        this.activeRowAddition = 'bg-primary pointer';
+        this.form.items[0].activeRowAddition = 'bg-primary pointer';
       }
     },
     addItemToModel: function addItemToModel(item) {
       // Add row item to model
-      this.form.items.unshift(this.dataItems); // this.form.items.push(item);
+      this.form.items.unshift({
+        name: '',
+        description: '',
+        quantity: '1',
+        total_cost_price: '',
+        item_tax_total: '',
+        // Calculated
+        total_cost: '',
+        unit_cost: '',
+        total: '',
+        activeRowAddition: 'bg-secondary'
+      });
+      this.form.items.forEach(function (element, index) {
+        if (index > 0) {
+          element.activeRowAddition = 'bg-danger pointer';
+        }
+      }); // for (const [key, value] of Object.entries(this.dataItems)) {
+      //     console.log(`${key}: ''`);
+      // }
+    },
+    removeItemRow: function removeItemRow(item, index) {
+      this.form.items.splice(index, 1);
     }
   },
   // watch: {
@@ -57009,7 +57016,7 @@ var render = function() {
                                         "/edit"
                                     },
                                     domProps: {
-                                      textContent: _vm._s(_vm.$t("global.dit"))
+                                      textContent: _vm._s(_vm.$t("global.edit"))
                                     }
                                   })
                                 : _vm._e(),
@@ -58462,9 +58469,8 @@ var render = function() {
         { staticClass: "col-md-6" },
         [
           _vm._v(
-            "\n                " + _vm._s(_vm.form.items) + "\n                "
+            "\n                " + _vm._s(_vm.selectedItem) + "\n            "
           ),
-          _vm._v(" "),
           _c("multiselect", {
             attrs: {
               options: _vm.items,
@@ -58639,8 +58645,8 @@ var render = function() {
                 staticClass: "form-control",
                 domProps: { value: item.name },
                 on: {
-                  keyup: function($event) {
-                    return _vm.newItemAdded(item)
+                  keydown: function($event) {
+                    return _vm.newItemAdded(item, index)
                   },
                   input: function($event) {
                     if ($event.target.composing) {
@@ -58689,8 +58695,8 @@ var render = function() {
                 attrs: { type: "number" },
                 domProps: { value: item.quantity },
                 on: {
-                  change: function($event) {
-                    return _vm.newItemAdded(item)
+                  keydown: function($event) {
+                    return _vm.newItemAdded(item, index)
                   },
                   input: function($event) {
                     if ($event.target.composing) {
@@ -58741,8 +58747,8 @@ var render = function() {
                 attrs: { type: "number" },
                 domProps: { value: item.total_cost_price },
                 on: {
-                  change: function($event) {
-                    return _vm.newItemAdded(item)
+                  keydown: function($event) {
+                    return _vm.newItemAdded(item, index)
                   },
                   input: function($event) {
                     if ($event.target.composing) {
@@ -58812,15 +58818,29 @@ var render = function() {
             ]),
             _vm._v(" "),
             _c("td", [
-              _c("i", {
-                staticClass: "fas fa-check text-white p-1",
-                class: _vm.activeRowAddition,
-                on: {
-                  click: function($event) {
-                    return _vm.addItemToModel(item)
-                  }
-                }
-              })
+              _vm.form.items[index].activeRowAddition == "bg-danger pointer"
+                ? _c("div", [
+                    _c("i", {
+                      staticClass: "fas fa-trash-alt text-white p-1",
+                      class: _vm.form.items[index].activeRowAddition,
+                      on: {
+                        click: function($event) {
+                          return _vm.removeItemRow(item, index)
+                        }
+                      }
+                    })
+                  ])
+                : _c("div", [
+                    _c("i", {
+                      staticClass: "fas fa-check text-white p-1",
+                      class: _vm.form.items[index].activeRowAddition,
+                      on: {
+                        click: function($event) {
+                          return _vm.addItemToModel(item)
+                        }
+                      }
+                    })
+                  ])
             ])
           ])
         }),
@@ -73339,8 +73359,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_i18n__WEBPACK_IMPORTED_MODULE
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\laragon\www\01-Test-Permission-PMS\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\laragon\www\01-Test-Permission-PMS\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! F:\laragon\www\01-Test-Permission-PMS\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! F:\laragon\www\01-Test-Permission-PMS\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
