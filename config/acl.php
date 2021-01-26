@@ -154,6 +154,7 @@
                 'invoice_access', // done
                 'invoice_edit', // done
                 'invoice_delete', // done
+                'invoice_show', // done
             ],
 
             'penalty_category' => [

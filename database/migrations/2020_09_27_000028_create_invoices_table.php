@@ -20,13 +20,15 @@ class CreateInvoicesTable extends Migration
             $table->float('tax', 15, 2)->nullable();
             $table->string('total_tax')->nullable();
             $table->double('total_amount')->nullable();
+            $table->string('adjustment')->nullable();
+            $table->string('discount_status')->nullable();
             $table->string('discount_percent')->nullable();
             $table->string('recurring');
             $table->string('recurring_frequency')->nullable();
             $table->string('recur_frequency')->nullable();
             $table->date('recur_next_date')->nullable();
             $table->string('currency')->default('EGP')->nullable();
-            $table->string('status');
+            $table->enum('status',['cancelled','unpaid','paid','draft','partially_paid','waiting_approval','approved','rejected'])->default('waiting_approval')->nullable();
             $table->integer('archived')->nullable();
             $table->date('date_sent')->nullable();
             $table->timestamps();

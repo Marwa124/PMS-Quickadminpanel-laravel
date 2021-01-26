@@ -8,6 +8,7 @@
 
         <div class="card-body">
             <form method="POST" action="{{ route("finance.admin.invoices.store") }}" enctype="multipart/form-data">
+                <input type="hidden" name="user_id"  value="{{ auth()->user()->id }}">
                 @csrf
                 <div class="form-group row">
                     <div class="col-md-6">
@@ -222,7 +223,7 @@
                 <div class="row">
 
                     <div class="table-responsive">
-                        <table class="table table-responsive invoice-items-table items">
+                        <table class="table  invoice-items-table items">
                             <thead style="background: #e7e4e4">
                             <tr>
                                 <th class="">Item Name</th>

@@ -166,11 +166,11 @@
                         <label for="discounts">{{ trans('cruds.invoice.fields.discounts') }}</label>
                         <select class="form-control  {{ $errors->has('discounts') ? 'is-invalid' : '' }}"
                                 name="discounts"
-                                id="discounts">
+                                id="ifdiscounts" onchange="calculate_total_edit()">
 
-                            <option value="no_discount" {{$invoice->discounts == 'no_discount' ? 'selected' : ''}}>{{trans('cruds.invoice.fields.no_discount')}}</option>
-                            <option value="before_tax"  {{$invoice->discounts == 'before_tax' ? 'selected' : ''}}>{{trans('cruds.invoice.fields.before_tax')}}</option>
-                            <option value="after_tax"   {{$invoice->discounts == 'after_tax' ? 'selected' : ''}}>{{trans('cruds.invoice.fields.after_tax')}}</option>
+                            <option value="no_discount" {{$invoice->discount_status == 'no_discount' ? 'selected' : ''}}>{{trans('cruds.invoice.fields.no_discount')}}</option>
+                            <option value="before_tax"  {{$invoice->discount_status == 'before_tax' ? 'selected' : ''}}>{{trans('cruds.invoice.fields.before_tax')}}</option>
+                            <option value="after_tax"   {{$invoice->discount_status == 'after_tax' ? 'selected' : ''}}>{{trans('cruds.invoice.fields.after_tax')}}</option>
 
                         </select>
                         @if($errors->has('discounts'))
@@ -226,7 +226,7 @@
                 <div class="row">
 
                     <div class="table-responsive">
-                        <table class="table table-responsive invoice-items-table items">
+                        <table class="table  invoice-items-table items">
                             <thead style="background: #e7e4e4">
                             <tr>
                                 <th class="">Item Name</th>
@@ -506,6 +506,7 @@
     <script>
         $(document).ready(function () {
 
+            calculate_total_edit();
             if($('#recurring').val('none')){
                 $('#recu_div').hide();
                 var recu = false;

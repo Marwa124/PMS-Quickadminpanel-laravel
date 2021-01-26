@@ -62,7 +62,13 @@
                                 {{ $invoice->invoice_date ?? '' }}
                             </td>
                             <td>
-                                {{ $invoice->due_date ?? '' }}
+                                @php
+                                    if(date('Y-m-d',strtotime($invoice->due_date)) < date('Y-m-d'))
+                                        $overdue = '<span class="btn btn-xs btn-danger">Overdue</span>' ;
+                                    else
+                                        $overdue = '';
+                                @endphp
+                                {!! $invoice->due_date .' '. $overdue ?? ''  !!}
                             </td>
                             <td>
                                 {{ $invoice->client->name ?? '' }}
@@ -71,7 +77,7 @@
                                 {{ $invoice->total_amount ?? '' }}
                             </td>
                             <td>
-                                {{ $invoice->status ?? '' }}
+                                {!!  config("enum.status.$invoice->status") ?? ''  !!}
                             </td>
                             <td>
 
