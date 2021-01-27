@@ -93,12 +93,22 @@ class Proposal extends Model implements HasMedia
     ];
     public function opportunity()
     {
-        return $this->belongsTo(Opportunity::class,'module_id')->where('proposals.module','=','opportunities');
+        return $this->belongsTo(Opportunity::class,'module_id');
     }
     public function client()
     {
-        return $this->belongsTo(Client::class,'module_id')->where('proposals.module','=','client');
+        return $this->belongsTo(Client::class,'module_id');
     }
+   
+    public function getclient()
+    {
+        return $this->where('proposals.module','=','client')->first()->client();
+    }
+    public function getopportunity()
+    {
+        return $this->where('proposals.module','=','opportunities')->first()->opportunity();
+    }
+   
     protected function serializeDate(DateTimeInterface $date)
     {
         return $date->format('Y-m-d H:i:s');
