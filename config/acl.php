@@ -356,6 +356,7 @@
                 'work_tracking_show',
                 'work_tracking_delete',
                 'work_tracking_access',
+                'work_tracking_assign_to',
             ],
 
             'milestones' => [
@@ -641,6 +642,14 @@
                         'time_sheet_edit',
                         'time_sheet_delete',
                     ],
+
+
+            'reports' => [
+                'project_report_access',
+                'task_report_access',
+                'bug_report_access',
+                'ticket_report_access',
+            ],
         ]
 
     ];

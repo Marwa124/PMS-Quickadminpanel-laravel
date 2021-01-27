@@ -45,39 +45,39 @@ class LeaveApplicationNotification extends Notification
      * @param  mixed  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail($notifiable)
-    {
-        $userName = AccountDetail::where('user_id', $this->application->user_id)->first();
-        $attachment = $this->application->attachments ?
-            asset($this->application->attachments->getUrl()) : '';
-            // env('APP_URL') . str_replace('storage', 'storage/app/public', $this->application->attachments->getUrl()) : '';
-        /////////// Fix Attachment URL
-        if ($attachment) {
-            $sendMail = (new MailMessage)
-                ->subject('Pending Leave Request ')
-                ->greeting('Employee ' . $userName->fullname ?? '' . ' applies for ' . $this->leave_category)
-                ->line('Leave Type: ' . $this->application->leave_type)
-                ->line('Leave start date: ' . $this->application->leave_start_date)
-                ->line('Leave end date: ' . $this->application->leave_end_date)
-                ->line('Leave hours: ' . $this->application->hours)
-                ->attach($attachment)
-                ->line('Reason: ' . strip_tags($this->application->reason) ?? '')
-                ->action('Go To Request', route("hr.admin.leave-applications.show", $this->application->id));
-                // ->action('Go To Request', url("admin/hr/leave-applications/". $this->application->id . '/edit'));
-        }else{
-            $sendMail = (new MailMessage)
-                    ->subject('Pending Leave Request ')
-                    ->greeting($userName->fullname ?? '' . ' applies for ' . $this->leave_category)
-                    ->line('Leave Type: ' . $this->application->leave_type)
-                    ->line('Leave start date: ' . $this->application->leave_start_date)
-                    ->line('Leave end date: ' . $this->application->leave_end_date)
-                    ->line('Leave hours: ' . $this->application->hours)
-                    ->line('Reason: ' . strip_tags($this->application->reason) ?? '')
-                    ->action('Go To Request', route("hr.admin.leave-applications.show", $this->application->id));
-        }
-
-        return $sendMail;
-    }
+//    public function toMail($notifiable)
+//    {
+//        $userName = AccountDetail::where('user_id', $this->application->user_id)->first();
+//        $attachment = $this->application->attachments ?
+//            asset($this->application->attachments->getUrl()) : '';
+//            // env('APP_URL') . str_replace('storage', 'storage/app/public', $this->application->attachments->getUrl()) : '';
+//        /////////// Fix Attachment URL
+//        if ($attachment) {
+//            $sendMail = (new MailMessage)
+//                ->subject('Pending Leave Request ')
+//                ->greeting('Employee ' . $userName->fullname ?? '' . ' applies for ' . $this->leave_category)
+//                ->line('Leave Type: ' . $this->application->leave_type)
+//                ->line('Leave start date: ' . $this->application->leave_start_date)
+//                ->line('Leave end date: ' . $this->application->leave_end_date)
+//                ->line('Leave hours: ' . $this->application->hours)
+//                ->attach($attachment)
+//                ->line('Reason: ' . strip_tags($this->application->reason) ?? '')
+//                ->action('Go To Request', route("hr.admin.leave-applications.show", $this->application->id));
+//                // ->action('Go To Request', url("admin/hr/leave-applications/". $this->application->id . '/edit'));
+//        }else{
+//            $sendMail = (new MailMessage)
+//                    ->subject('Pending Leave Request ')
+//                    ->greeting($userName->fullname ?? '' . ' applies for ' . $this->leave_category)
+//                    ->line('Leave Type: ' . $this->application->leave_type)
+//                    ->line('Leave start date: ' . $this->application->leave_start_date)
+//                    ->line('Leave end date: ' . $this->application->leave_end_date)
+//                    ->line('Leave hours: ' . $this->application->hours)
+//                    ->line('Reason: ' . strip_tags($this->application->reason) ?? '')
+//                    ->action('Go To Request', route("hr.admin.leave-applications.show", $this->application->id));
+//        }
+//
+//        return $sendMail;
+//    }
 
     /**
      * Get the array representation of the notification.

@@ -93,6 +93,7 @@ Route::group(['prefix' => 'admin/projectmanagement', 'as' => 'projectmanagement.
     Route::get('bugs/create/task-bug/{id}','BugsController@create')->name('bugs.create_task_bug');
     Route::get('bugs/index/trashed','BugsController@index')->name('bugs.trashed.index');
     Route::post('bugs/{id}/force-destroy', 'BugsController@forceDelete')->name('bugs.forceDestroy');
+    Route::get('bugs/reports/bug_report', 'BugsController@bug_report')->name('bugs.bug_report');
 
     // Tickets
     Route::delete('tickets/destroy', 'TicketsController@massDestroy')->name('tickets.massDestroy');
@@ -106,6 +107,7 @@ Route::group(['prefix' => 'admin/projectmanagement', 'as' => 'projectmanagement.
     Route::post('tickets/change_status','TicketsController@change_status')->name('tickets.change_status');
     Route::get('tickets/index/trashed','TicketsController@index')->name('tickets.trashed.index');
     Route::post('tickets/{id}/force-destroy', 'TicketsController@forceDelete')->name('tickets.forceDestroy');
+    Route::get('tickets/reports/ticket_report', 'TicketsController@ticket_report')->name('tickets.ticket_report');
     //Route::post('close_ticket','TicketsController@close')->name('tickets.close');
     //Route::get('changestatus/{status}/{id}','TicketController@change_status')->name('tickets.change_status');
 
@@ -135,6 +137,8 @@ Route::group(['prefix' => 'admin/projectmanagement', 'as' => 'projectmanagement.
     Route::delete('work-trackings/destroy', 'WorkTrackingController@massDestroy')->name('work-trackings.massDestroy');
     Route::resource('work-trackings', 'WorkTrackingController');
     Route::get('work-trackings/index/trashed','WorkTrackingController@index')->name('work-trackings.trashed.index');
+    Route::get('work-trackings/{id}/assign_to','WorkTrackingController@getAssignTo')->name('work-trackings.getAssignTo');
+    Route::post('work-trackings/assign_to','WorkTrackingController@storeAssignTo')->name('work-trackings.storeAssignTo');
     Route::post('work-trackings/{id}/force-destroy', 'WorkTrackingController@forceDelete')->name('work-trackings.forceDestroy');
 
     // Time Work Types

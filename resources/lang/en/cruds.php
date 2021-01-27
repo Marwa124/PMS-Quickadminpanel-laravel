@@ -1918,6 +1918,7 @@ return [
             'updated_at_helper'      => ' ',
             'deleted_at'             => 'Deleted at',
             'deleted_at_helper'      => ' ',
+            'bug_report'             => 'Bug Report',
 
         ],
     ],
@@ -1967,7 +1968,8 @@ return [
             'reopen_replay_helper'      => ' ',
             'attachments'               => 'Attachments',
             'attachments_helper'        => ' ',
-            'no_ticket'                 => 'No Tickets'
+            'no_ticket'                 => 'No Tickets',
+            'ticket_report'             => 'Ticket Report',
         ],
     ],
     'adminstration'          => [
@@ -3507,12 +3509,14 @@ return [
     'messages' => [
 
         'no_designation_found_in_department_project'=> 'No designation found in Department of project ',
+        'no_designation_found'                      => 'No designation Found ',
         'add_department_to_project'                 => 'Add Department To Project',
         'not_assign_anyone'                         => 'Not Assign To Anyone ..!',
-        'no_accounts_assign_project_bug'            => 'No accounts assign to Project of bug ..!',
-        'no_accounts_assign_project_milestone'      => 'No accounts assign to project of milestone ..!',
-        'no_accounts_assign_milestone_task'         => 'No accounts assign to milestone of task..!',
-        'no_accounts_assign_project_ticket'         => 'No accounts assign to Project of ticket..!',
+        'no_accounts_assign_project_bug'            => 'No Accounts Assign To Project of Bug ..!',
+        'no_accounts_assign_project_milestone'      => 'No Accounts Assign To project of Milestone ..!',
+        'no_accounts_assign_milestone_task'         => 'No Accounts Assign To milestone of Task..!',
+        'no_accounts_assign_project_ticket'         => 'No Accounts Assign To Project of Ticket..!',
+        'no_accounts_in_designation'                => 'No Accounts Assign In Designation..!',
         'no_milestones_found_in_project'            => 'No Milestone Found In This Project',
         'no_tasks_found_in_project'                 => 'No Tasks Found In This Project',
         'no_bugs_found_in_project'                  => 'No bugs Found In This Project',
@@ -3532,6 +3536,12 @@ return [
         'task_tag_force_delete'                     => 'Task Tag Will Force Delete ..!',
         'ticket_replies_force_delete'               => 'Ticket and Replies Will Force Delete Too ..!',
         'work_tracking_force_delete'                => 'Work Tracking Will Force Delete ..!',
+        'ticket_not_have_project'                   => 'This Ticket don\'t have Project',
+        'project_of_ticket_not_have_department'     => 'The Project Of Ticket don\'t have Department',
+        'project_of_bug_not_have_department'        => 'The Project Of Bug don\'t have Department',
+        'milestone_not_have_project'                => 'This Milestone don\'t have Project',
+        'project_of_milestone_not_have_department'  => 'The Project Of Milestone don\'t have Department',
+        'project_of_task_not_have_department'       => 'The Project Of Task don\'t have Department',
     ]
 
 

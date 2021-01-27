@@ -27,12 +27,12 @@ class MilestonesController extends Controller
 
     public function index()
     {
-        abort_if(Gate::denies('milestone_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('milestone_access'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
 
         if (request()->segment(count(request()->segments())) == 'trashed'){
 
-            abort_if(Gate::denies('milestone_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+            abort_if(Gate::denies('milestone_delete'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
             $trashed = true;
             $milestones = auth()->user()->getUserMilestonesByUserID(auth()->user()->id,$trashed);
@@ -53,14 +53,21 @@ class MilestonesController extends Controller
 
         // $id refer to project_id in this case
 
-        abort_if(Gate::denies('milestone_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('milestone_create'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
-        $projects = Project::all()->pluck('name', 'id');
+        $projects = auth()->user()->getUserProjectsByUserID(auth()->user()->id)->pluck('name', 'id');
         $project = null;
 
         if (request()->segment(count(request()->segments())-1) == 'project-milestone' || $id)
         {
             $project = Project::findOrFail($id);
+
+            // check if user can access this project or not
+            $all_projects = auth()->user()->getUserProjectsByUserID(auth()->user()->id)->pluck('id');
+
+            if (!in_array($project->id,$all_projects->toArray())){
+                return abort(Response::HTTP_FORBIDDEN, trans('global.forbidden_page_not_allow_to_you'));
+            }
         }
 
         return view('projectmanagement::admin.milestones.create', compact('projects','project'));
@@ -68,32 +75,37 @@ class MilestonesController extends Controller
 
     public function store(StoreMilestoneRequest $request)
     {
+        abort_if(Gate::denies('milestone_create'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
+
         $milestone = Milestone::create($request->all());
         return redirect()->route('projectmanagement.admin.milestones.index');
     }
 
     public function edit(Milestone $milestone)
     {
-        abort_if(Gate::denies('milestone_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('milestone_edit'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
+        // check if user can access this milestone or not
         $milestones = auth()->user()->getUserMilestonesByUserID(auth()->user()->id)->pluck('id');
 
         if (in_array($milestone->id,$milestones->toArray()))
         {
 
-            $projects = Project::all()->pluck('name', 'id');
+            $projects = auth()->user()->getUserProjectsByUserID(auth()->user()->id)->pluck('name', 'id');
 
             $milestone->load('accountDetails', 'project');
 
             return view('projectmanagement::admin.milestones.edit', compact('projects', 'milestone'));
         }
 
-        abort(Response::HTTP_FORBIDDEN, '403 Forbidden This Page Not Allow To You');
+        return abort(Response::HTTP_FORBIDDEN, trans('global.forbidden_page_not_allow_to_you'));
 
     }
 
     public function update(UpdateMilestoneRequest $request, Milestone $milestone)
     {
+        abort_if(Gate::denies('milestone_edit'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
+
         $milestone->update($request->all());
 
         return redirect()->route('projectmanagement.admin.milestones.index');
@@ -101,8 +113,9 @@ class MilestonesController extends Controller
 
     public function show(Milestone $milestone)
     {
-        abort_if(Gate::denies('milestone_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('milestone_show'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
+        // check if user can access this milestone or not
         $milestones = auth()->user()->getUserMilestonesByUserID(auth()->user()->id)->pluck('id');
 
         if (in_array($milestone->id,$milestones->toArray()))
@@ -113,13 +126,13 @@ class MilestonesController extends Controller
             return view('projectmanagement::admin.milestones.show', compact('milestone'));
         }
 
-        abort(Response::HTTP_FORBIDDEN, '403 Forbidden This Page Not Allow To You');
+        return abort(Response::HTTP_FORBIDDEN, trans('global.forbidden_page_not_allow_to_you'));
 
     }
 
     public function destroy(Milestone $milestone)
     {
-        abort_if(Gate::denies('milestone_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('milestone_delete'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
         //$milestone->accountDetails()->detach();
         $milestone->delete();
 
@@ -128,8 +141,9 @@ class MilestonesController extends Controller
 
     public function massDestroy(MassDestroyMilestoneRequest $request)
     {
-        $ids = request('ids');
+        abort_if(Gate::denies('milestone_delete'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
+        $ids = request('ids');
 
         //Milestone::whereIn('id', request('ids'))->delete();
 
@@ -142,31 +156,42 @@ class MilestonesController extends Controller
         return response(null, Response::HTTP_NO_CONTENT);
     }
 
-    public function getAssignTo($id){
+    public function getAssignTo($id)
+    {
 
-        abort_if(Gate::denies('milestone_assign_to'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('milestone_assign_to'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
-        $milestone = Milestone::findOrFail($id);
+        // check if user can access this milestone or not
+        $milestones = auth()->user()->getUserMilestonesByUserID(auth()->user()->id)->pluck('id');
 
-        if (!$milestone->project){
+        if (in_array($id,$milestones->toArray()))
+        {
 
-            abort(404,"this milestone don't have project ");
+            $milestone = Milestone::findOrFail($id);
+
+            if (!$milestone->project){
+
+                abort(404,trans('cruds.messages.milestone_not_have_project'));
+            }
+
+            $department = $milestone->project->department;
+
+            if (!$department){
+                abort(404,trans('cruds.messages.project_of_milestone_not_have_department'));
+
+            }
+
+            return view('projectmanagement::admin.milestones.assignto',compact('milestone','department'));
         }
 
-        $department = $milestone->project->department;
-
-        if (!$department){
-            abort(404,"this milestone project don't have Department ");
-
-        }
-
-        return view('projectmanagement::admin.milestones.assignto',compact('milestone','department'));
+        return abort(Response::HTTP_FORBIDDEN, trans('global.forbidden_page_not_allow_to_you'));
     }
 
 
     public function storeAssignTo(Request $request)
-
     {
+        abort_if(Gate::denies('milestone_assign_to'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
+
         $milestone = Milestone::findOrFail($request->milsetone_id);
         if ($request->accounts) {
 
@@ -207,18 +232,10 @@ class MilestonesController extends Controller
         return redirect()->route('projectmanagement.admin.milestones.index');
     }
 
-//    public function getPermissionID($permissions){
-//        $permissions_id =[];
-//        foreach ($permissions as $permission_name){
-//
-//            $permission = Permission::where('name',$permission_name)->first();
-//            array_push($permissions_id,$permission->id);
-//        }
-//        return $permissions_id;
-//    }
-
     public function forceDelete(Request $request,$id)
     {
+        abort_if(Gate::denies('milestone_delete'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
+
         //dd($request->all(),$id);
         $action = $request->action;
 

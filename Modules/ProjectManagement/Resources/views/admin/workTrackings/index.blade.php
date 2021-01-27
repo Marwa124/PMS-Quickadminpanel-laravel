@@ -101,6 +101,14 @@
                                         </a>
                                     @endcan
 
+                                    @can('work_tracking_assign_to')
+
+                                        <a class="btn btn-xs btn-success" href="{{ route('projectmanagement.admin.work-trackings.getAssignTo', $workTracking->id) }}" >
+                                            {{ trans('global.assign_to') }}
+                                        </a>
+
+                                    @endcan
+
                                     @can('work_tracking_delete')
                                         <form action="{{ route('projectmanagement.admin.work-trackings.destroy', $workTracking->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
                                             <input type="hidden" name="_method" value="DELETE">

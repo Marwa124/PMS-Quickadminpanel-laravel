@@ -20,6 +20,7 @@ class StoreTaskTagRequest extends FormRequest
             'name' => [
                 'string',
                 'required',
+                'unique:task_tags,name',
             ],
         ];
     }

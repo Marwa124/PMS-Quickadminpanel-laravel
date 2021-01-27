@@ -50,24 +50,24 @@ class ProjectManagementNotification extends Notification
      * @param  mixed  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail($notifiable)
-    {
-        if(User::find(auth()->user()->id)->accountDetail()->first())
-        {
-            $userName = AccountDetail::where('user_id', auth()->user()->id)->first()->fullname;
-        }else{
-            $userName = User::find(auth()->user()->id)->name;
-        }
-        $sendMail = (new MailMessage)
-//            ->subject('New Project Assign To You')
-//            ->greeting($userName.' Assign The Project '.$this->project->name.' To '.$this->user->name)
-//            ->action('You can view', route("projectmanagement.admin.projects.show", $this->project->id));
-            ->subject($this->dataMail['subjectMail'])
-            ->greeting($userName.' '.$this->dataMail['bodyMail'])
-            ->action('You can view', $this->dataMail['action']);
-
-        return $sendMail;
-    }
+//    public function toMail($notifiable)
+//    {
+//        if(User::find(auth()->user()->id)->accountDetail()->first())
+//        {
+//            $userName = AccountDetail::where('user_id', auth()->user()->id)->first()->fullname;
+//        }else{
+//            $userName = User::find(auth()->user()->id)->name;
+//        }
+//        $sendMail = (new MailMessage)
+////            ->subject('New Project Assign To You')
+////            ->greeting($userName.' Assign The Project '.$this->project->name.' To '.$this->user->name)
+////            ->action('You can view', route("projectmanagement.admin.projects.show", $this->project->id));
+//            ->subject($this->dataMail['subjectMail'])
+//            ->greeting($userName.' '.$this->dataMail['bodyMail'])
+//            ->action('You can view', $this->dataMail['action']);
+//
+//        return $sendMail;
+//    }
 
     /**
      * Get the array representation of the notification.

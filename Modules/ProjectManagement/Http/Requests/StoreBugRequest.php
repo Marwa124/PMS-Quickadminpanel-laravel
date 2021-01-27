@@ -6,6 +6,7 @@ use App\Models\Bug;
 use Gate;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Response;
+use Illuminate\Validation\Rule;
 
 class StoreBugRequest extends FormRequest
 {
@@ -24,16 +25,30 @@ class StoreBugRequest extends FormRequest
             'name'           => [
                 'string',
                 'required',
+                Rule::unique('bugs','name')->where(function($query) {
+
+                    $query->where('project_id', '=', request()->project_id);
+
+                }),
+            ],
+            'project_id'         => [
+                'required',
             ],
             'status'         => [
+                'required',
                 'string',
-                'nullable',
+                //'nullable',
             ],
             'priority'       => [
                 'string',
                 'required',
             ],
             'severity'       => [
+                'required',
+                'string',
+                //'nullable',
+            ],
+            'reproducibility'       => [
                 'string',
                 'nullable',
             ],
