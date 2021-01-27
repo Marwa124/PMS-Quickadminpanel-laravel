@@ -3334,28 +3334,39 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _plugins_i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../plugins/i18n */ "./resources/js/plugins/i18n.js");
 /* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-multiselect */ "./node_modules/vue-multiselect/dist/vue-multiselect.min.js");
 /* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue_multiselect__WEBPACK_IMPORTED_MODULE_2__);
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
-function _createForOfIteratorHelper(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e2) { throw _e2; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e3) { didErr = true; err = _e3; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
-
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
 function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
 
 function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -3644,14 +3655,18 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           // name:      '',
           // description:    '',
           quantity: '1',
-          // total_cost_price: '',
+          total_cost_price: '',
           // item_tax_total: '', // Calculated
           // total_cost:     '',
           // unit_cost:      '',
           // total:          '',
           activeRowAddition: 'bg-secondary',
           taxes: []
-        }] // taxes:  '',
+        }],
+        sub_total: '',
+        discount_amount: '',
+        discount: '',
+        taxRate_total: [] // taxes:  '',
 
       })
     };
@@ -3692,34 +3707,77 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       this.form.items[0].total_cost = item.total_cost, this.form.items[0].unit_cost = item.unit_cost, this.form.items[0].total = item.total, this.form.items[0].activeRowAddition = 'bg-primary pointer', // this.form.items[0].taxes = item.taxes,
       this.newItemAdded(item);
     },
+    // toggleUnSelectMarket({ value, id }) {
+    toggleUnSelectMarket: function toggleUnSelectMarket(val) {
+      var _this4 = this;
+
+      console.log('val  ' + val);
+
+      var _loop = function _loop() {
+        var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
+            i = _Object$entries$_i[0],
+            v = _Object$entries$_i[1];
+
+        // console.log('i  '+ i);
+        // console.log('v  '+ v);
+        index = _this4.form.taxRate_total.findIndex(function (o) {
+          return o.name === v;
+        }); // if (index !== -1) this.form.taxRate_total.splice(index, 1);
+      };
+
+      for (var _i = 0, _Object$entries = Object.entries(val); _i < _Object$entries.length; _i++) {
+        var index;
+
+        _loop();
+      }
+
+      return index;
+    },
     addTax: function addTax(taxItem, index) {
+      var _this5 = this;
+
       // const tax = {
       //     name: taxItem,
       // }
-      var selectedTax = _toConsumableArray(taxItem);
+      // console.log('index   '+index);
+      if (taxItem.length != 0 && index != 0) {
+        var selectedTax = _toConsumableArray(taxItem);
 
-      var taxArray = [];
-      console.log(selectedTax);
-      selectedTax.forEach(function (element) {
-        taxArray.push(element);
-      });
-      this.form.items[index].taxes = taxArray;
+        var taxArray = [];
+        console.log(selectedTax);
+        selectedTax.forEach(function (element) {
+          taxArray.push(element);
+
+          _this5.form.taxRate_total.push({
+            name: element.name,
+            value: element.rate_percent
+          }); // *****prevent object duplication inside an array
+
+
+          var uniqueAddresses = Array.from(new Set(_this5.form.taxRate_total.map(function (a) {
+            return a.name;
+          }))).map(function (name) {
+            return _this5.form.taxRate_total.find(function (a) {
+              return a.name === name;
+            });
+          });
+          _this5.form.taxRate_total = uniqueAddresses; // *****prevent object duplication inside an array
+        });
+        this.form.items[index].taxes = taxArray;
+      }
     },
-    calculateTotal: function calculateTotal(index) {
-      var indexRowForm = this.form.items[index];
-      indexRowForm.total = indexRowForm.total_cost_price * indexRowForm.quantity;
-    },
+    // calculateTotal(index) {
+    //     let indexRowForm = this.form.items[index];
+    //     indexRowForm.total = indexRowForm.total_cost_price * indexRowForm.quantity
+    // },
     newItemAdded: function newItemAdded(item, index) {
       // Set the input data values in row
       if (item.name && item.quantity && item.total_cost_price != '') {
         this.form.items[0].activeRowAddition = 'bg-primary pointer';
       }
-
-      if (index > 0) this.calculateTotal(index);
     },
     addItemToModel: function addItemToModel(item, index) {
       // Add row item to model
-      this.calculateTotal(index);
       this.form.items.unshift({
         name: '',
         description: '',
@@ -3748,40 +3806,60 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
   watch: {
     'form': {
       handler: function handler(form) {
-        // console.log(form.items);
-        var _iterator = _createForOfIteratorHelper(form.items),
-            _step;
+        var _loop2 = function _loop2() {
+          var _Object$entries2$_i = _slicedToArray(_Object$entries2[_i2], 2),
+              key = _Object$entries2$_i[0],
+              value = _Object$entries2$_i[1];
 
-        try {
-          for (_iterator.s(); !(_step = _iterator.n()).done;) {
-            var items = _step.value;
-            console.log(items['quantity']);
-            items['total'] = items['total_cost_price'] * items['quantity']; // for (let [index, val] of Object.entries(items)) {
-            //     // if(index == 'total_cost_price') console.log('items  '+ items['total_cost_price']);
-            //     items['total'] = items['total_cost_price'] * items['quantity']
-            // }
-            // console.log(Object.entries(items));
-            //     val.total = val.total_cost_price * val.quantity
+          if (key >= 1) for (var _i3 = 0, _Object$keys = Object.keys(value); _i3 < _Object$keys.length; _i3++) {
+            i = _Object$keys[_i3];
+
+            if (i == 'total_cost_price' || i == 'quantity') {
+              value['total'] = value['total_cost_price'] * value['quantity'];
+            }
+
+            if (i == 'taxes') {
+              if (value['taxes'].length > 0) {
+                // var result = value['taxes'].map(tax => ({ key: tax.name, rate: tax.rate_percent }));
+                taxNames = value['taxes'].map(function (tax) {
+                  return tax.name;
+                });
+                taxRates = value['taxes'].map(function (tax) {
+                  return tax.rate_percent;
+                }); // console.log(result);
+                // console.log(taxRates);
+
+                console.log('taxNames   ' + taxNames); // Find if the array contains an object by comparing the property value
+                // for(let names of taxNames) {
+
+                form.taxRate_total.some(function (formTaxRate) {
+                  value['taxes'].map(function (tax) {
+                    if (tax.name === formTaxRate.name) {
+                      console.log('rates  ' + tax.rate_percent);
+                      formTaxRate.value = value['total_cost_price'] * value['quantity'] * (tax.rate_percent / 100);
+                    }
+                  });
+                }); // }
+              }
+            }
           }
-        } catch (err) {
-          _iterator.e(err);
-        } finally {
-          _iterator.f();
+        };
+
+        for (var _i2 = 0, _Object$entries2 = Object.entries(form.items); _i2 < _Object$entries2.length; _i2++) {
+          var i;
+          var taxNames;
+          var taxRates;
+
+          _loop2();
         }
 
+        var subTotal = 0;
         var result = form.items.reduce(function (accum, currentVal) {
-          for (var _i = 0, _Object$entries = Object.entries(accum); _i < _Object$entries.length; _i++) {
-            var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
-                index = _Object$entries$_i[0],
-                val = _Object$entries$_i[1];
-
-            console.log('acc val  ' + val);
-            console.log('acc index  ' + index);
-            console.log('acc  ' + val);
-          } // accum[currentVal.id] = currentVal.total;
-          // return accum;
-
-        }, {}); // console.log(result);
+          if (parseInt(currentVal.total)) subTotal += parseInt(currentVal.total);
+          return subTotal;
+        }, {});
+        form.sub_total = result;
+        form.discount_amount = form.discount * subTotal * (1 / 100);
       },
       deep: true
     }
@@ -58861,7 +58939,8 @@ var render = function() {
                   on: {
                     input: function($event) {
                       return _vm.addTax(item.taxes, index)
-                    }
+                    },
+                    remove: _vm.toggleUnSelectMarket
                   },
                   model: {
                     value: item.taxes,
@@ -58930,46 +59009,159 @@ var render = function() {
       )
     ]),
     _vm._v(" "),
-    _vm._m(0)
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("table", { staticClass: "table" }, [
-      _c("tbody", { staticClass: "text-right" }, [
-        _c("tr", [
-          _c("td", [_vm._v("Sub Total: ")]),
-          _vm._v(" "),
-          _c("td", [_vm._v("Otto")])
-        ]),
-        _vm._v(" "),
-        _c("tr", [
-          _c("td", { staticClass: "d-flex float-right" }, [
-            _c("div", [_vm._v("Discount (%)")]),
+    _c("table", { staticClass: "table" }, [
+      _c(
+        "tbody",
+        { staticClass: "text-right" },
+        [
+          _c("tr", [
+            _c("td", [_vm._v("Sub Total: ")]),
             _vm._v(" "),
-            _c("div", [
-              _c("input", {
-                staticClass: "form-control",
-                attrs: { type: "number", step: "0.01" }
-              })
+            _c("td", [
+              _c("div", [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.form.sub_total,
+                      expression: "form.sub_total"
+                    }
+                  ],
+                  staticClass: "form-control input-transparent text-right",
+                  attrs: { type: "number", disabled: "", step: "0.01" },
+                  domProps: { value: _vm.form.sub_total },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.form, "sub_total", $event.target.value)
+                    }
+                  }
+                })
+              ])
             ])
           ]),
           _vm._v(" "),
-          _c("td", [_vm._v("Thornton")])
-        ]),
-        _vm._v(" "),
-        _c("tr", [
-          _c("td", [_vm._v("Larry")]),
+          _c("tr", [
+            _c("td", { staticClass: "d-flex float-right" }, [
+              _c("div", [_vm._v("Discount (%)")]),
+              _vm._v(" "),
+              _c("div", [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.form.discount,
+                      expression: "form.discount"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: { type: "number", step: "0.01" },
+                  domProps: { value: _vm.form.discount },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.form, "discount", $event.target.value)
+                    }
+                  }
+                })
+              ])
+            ]),
+            _vm._v(" "),
+            _c("td", [
+              _c("div", [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.form.discount_amount,
+                      expression: "form.discount_amount"
+                    }
+                  ],
+                  staticClass: "form-control input-transparent text-right",
+                  attrs: { type: "number", disabled: "", step: "0.01" },
+                  domProps: { value: _vm.form.discount_amount },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.form, "discount_amount", $event.target.value)
+                    }
+                  }
+                })
+              ])
+            ])
+          ]),
           _vm._v(" "),
-          _c("td", [_vm._v("the Bird")])
-        ])
-      ])
+          _vm._l(_vm.form.taxRate_total, function(tax, i) {
+            return _c("tr", { key: i, attrs: { "data-row-id": "" } }, [
+              _c("td", [
+                _c("div", [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: tax.name,
+                        expression: "tax.name"
+                      }
+                    ],
+                    staticClass: "form-control input-transparent text-right",
+                    attrs: { type: "text", disabled: "" },
+                    domProps: { value: tax.name },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(tax, "name", $event.target.value)
+                      }
+                    }
+                  })
+                ])
+              ]),
+              _vm._v(" "),
+              _c("td", [
+                _c("div", [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: tax.value,
+                        expression: "tax.value"
+                      }
+                    ],
+                    staticClass: "form-control input-transparent text-right",
+                    attrs: { type: "number", disabled: "", step: "0.01" },
+                    domProps: { value: tax.value },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(tax, "value", $event.target.value)
+                      }
+                    }
+                  })
+                ])
+              ])
+            ])
+          })
+        ],
+        2
+      )
     ])
-  }
-]
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
