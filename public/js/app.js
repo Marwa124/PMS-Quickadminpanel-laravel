@@ -3334,6 +3334,48 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _plugins_i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../plugins/i18n */ "./resources/js/plugins/i18n.js");
 /* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-multiselect */ "./node_modules/vue-multiselect/dist/vue-multiselect.min.js");
 /* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue_multiselect__WEBPACK_IMPORTED_MODULE_2__);
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+function _createForOfIteratorHelper(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e2) { throw _e2; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e3) { didErr = true; err = _e3; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -3607,9 +3649,10 @@ __webpack_require__.r(__webpack_exports__);
           // total_cost:     '',
           // unit_cost:      '',
           // total:          '',
-          activeRowAddition: 'bg-secondary'
-        }],
-        item_tax_rate: ''
+          activeRowAddition: 'bg-secondary',
+          taxes: []
+        }] // taxes:  '',
+
       })
     };
   },
@@ -3646,25 +3689,37 @@ __webpack_require__.r(__webpack_exports__);
       // this.form.items.splice(0, 1);
       // this.form.items.unshift(item)
       this.form.items[0].name = item.name, this.form.items[0].description = item.description, this.form.items[0].quantity = item.quantity, this.form.items[0].total_cost_price = item.total_cost_price, this.form.items[0].item_tax_total = item.item_tax_total, // Calculated
-      this.form.items[0].total_cost = item.total_cost, this.form.items[0].unit_cost = item.unit_cost, this.form.items[0].total = item.total, this.form.items[0].activeRowAddition = 'bg-primary pointer', this.newItemAdded(item);
+      this.form.items[0].total_cost = item.total_cost, this.form.items[0].unit_cost = item.unit_cost, this.form.items[0].total = item.total, this.form.items[0].activeRowAddition = 'bg-primary pointer', // this.form.items[0].taxes = item.taxes,
+      this.newItemAdded(item);
     },
     addTax: function addTax(taxItem, index) {
-      // console.log(taxItem);
-      var tax = {
-        name: taxItem
-      }; // this.form.items[0].item_tax_rate = tax
+      // const tax = {
+      //     name: taxItem,
+      // }
+      var selectedTax = _toConsumableArray(taxItem);
 
-      console.log(this.form.items[index]); // this.form.item_tax_rate.unshift(tax)
-      // this.form.item_tax_rate.push(tax)
+      var taxArray = [];
+      console.log(selectedTax);
+      selectedTax.forEach(function (element) {
+        taxArray.push(element);
+      });
+      this.form.items[index].taxes = taxArray;
     },
-    newItemAdded: function newItemAdded(item) {
+    calculateTotal: function calculateTotal(index) {
+      var indexRowForm = this.form.items[index];
+      indexRowForm.total = indexRowForm.total_cost_price * indexRowForm.quantity;
+    },
+    newItemAdded: function newItemAdded(item, index) {
       // Set the input data values in row
       if (item.name && item.quantity && item.total_cost_price != '') {
         this.form.items[0].activeRowAddition = 'bg-primary pointer';
       }
+
+      if (index > 0) this.calculateTotal(index);
     },
-    addItemToModel: function addItemToModel(item) {
+    addItemToModel: function addItemToModel(item, index) {
       // Add row item to model
+      this.calculateTotal(index);
       this.form.items.unshift({
         name: '',
         description: '',
@@ -3675,7 +3730,8 @@ __webpack_require__.r(__webpack_exports__);
         total_cost: '',
         unit_cost: '',
         total: '',
-        activeRowAddition: 'bg-secondary'
+        activeRowAddition: 'bg-secondary',
+        taxes: []
       });
       this.form.items.forEach(function (element, index) {
         if (index > 0) {
@@ -3689,21 +3745,47 @@ __webpack_require__.r(__webpack_exports__);
       this.form.items.splice(index, 1);
     }
   },
-  // watch: {
-  //     'form': {
-  //         handler: function(items, index) {
-  //             const tax = {
-  //                 name: items,
-  //             }
-  //             console.log("fslidg h");
-  //             console.log(index);
-  //             console.log(items);
-  //             console.log(tax);
-  //             this.form.item_tax_total = tax
-  //         },
-  //         deep: true
-  //     }
-  // },
+  watch: {
+    'form': {
+      handler: function handler(form) {
+        // console.log(form.items);
+        var _iterator = _createForOfIteratorHelper(form.items),
+            _step;
+
+        try {
+          for (_iterator.s(); !(_step = _iterator.n()).done;) {
+            var items = _step.value;
+            console.log(items['quantity']);
+            items['total'] = items['total_cost_price'] * items['quantity']; // for (let [index, val] of Object.entries(items)) {
+            //     // if(index == 'total_cost_price') console.log('items  '+ items['total_cost_price']);
+            //     items['total'] = items['total_cost_price'] * items['quantity']
+            // }
+            // console.log(Object.entries(items));
+            //     val.total = val.total_cost_price * val.quantity
+          }
+        } catch (err) {
+          _iterator.e(err);
+        } finally {
+          _iterator.f();
+        }
+
+        var result = form.items.reduce(function (accum, currentVal) {
+          for (var _i = 0, _Object$entries = Object.entries(accum); _i < _Object$entries.length; _i++) {
+            var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
+                index = _Object$entries$_i[0],
+                val = _Object$entries$_i[1];
+
+            console.log('acc val  ' + val);
+            console.log('acc index  ' + index);
+            console.log('acc  ' + val);
+          } // accum[currentVal.id] = currentVal.total;
+          // return accum;
+
+        }, {}); // console.log(result);
+      },
+      deep: true
+    }
+  },
   mounted: function mounted() {
     _plugins_i18n__WEBPACK_IMPORTED_MODULE_1__["default"].locale = this.langKey;
     this.getAccountDetails();
@@ -58695,7 +58777,7 @@ var render = function() {
                 attrs: { type: "number" },
                 domProps: { value: item.quantity },
                 on: {
-                  keydown: function($event) {
+                  keypress: function($event) {
                     return _vm.newItemAdded(item, index)
                   },
                   input: function($event) {
@@ -58747,7 +58829,7 @@ var render = function() {
                 attrs: { type: "number" },
                 domProps: { value: item.total_cost_price },
                 on: {
-                  keydown: function($event) {
+                  keypress: function($event) {
                     return _vm.newItemAdded(item, index)
                   },
                   input: function($event) {
@@ -58769,7 +58851,7 @@ var render = function() {
                     searchable: true,
                     "close-on-select": true,
                     "show-labels": false,
-                    label: "name",
+                    label: "rate_percent",
                     "track-by": "id",
                     placeholder: _vm.$t("sidebar.choose_tax_rate"),
                     "preselect-first": true,
@@ -58778,15 +58860,15 @@ var render = function() {
                   },
                   on: {
                     input: function($event) {
-                      return _vm.addTax(_vm.form.item_tax_rate, index)
+                      return _vm.addTax(item.taxes, index)
                     }
                   },
                   model: {
-                    value: _vm.form.item_tax_rate,
+                    value: item.taxes,
                     callback: function($$v) {
-                      _vm.$set(_vm.form, "item_tax_rate", $$v)
+                      _vm.$set(item, "taxes", $$v)
                     },
-                    expression: "form.item_tax_rate"
+                    expression: "item.taxes"
                   }
                 })
               ],
@@ -58836,7 +58918,7 @@ var render = function() {
                       class: _vm.form.items[index].activeRowAddition,
                       on: {
                         click: function($event) {
-                          return _vm.addItemToModel(item)
+                          return _vm.addItemToModel(item, index)
                         }
                       }
                     })
@@ -58846,10 +58928,48 @@ var render = function() {
         }),
         0
       )
-    ])
+    ]),
+    _vm._v(" "),
+    _vm._m(0)
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("table", { staticClass: "table" }, [
+      _c("tbody", { staticClass: "text-right" }, [
+        _c("tr", [
+          _c("td", [_vm._v("Sub Total: ")]),
+          _vm._v(" "),
+          _c("td", [_vm._v("Otto")])
+        ]),
+        _vm._v(" "),
+        _c("tr", [
+          _c("td", { staticClass: "d-flex float-right" }, [
+            _c("div", [_vm._v("Discount (%)")]),
+            _vm._v(" "),
+            _c("div", [
+              _c("input", {
+                staticClass: "form-control",
+                attrs: { type: "number", step: "0.01" }
+              })
+            ])
+          ]),
+          _vm._v(" "),
+          _c("td", [_vm._v("Thornton")])
+        ]),
+        _vm._v(" "),
+        _c("tr", [
+          _c("td", [_vm._v("Larry")]),
+          _vm._v(" "),
+          _c("td", [_vm._v("the Bird")])
+        ])
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 

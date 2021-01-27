@@ -190,26 +190,27 @@
                         <textarea class="form-control" v-model="item.description"></textarea>
                     </td>
                     <td>
-                        <input class="form-control" type="number" v-model="item.quantity" @keydown="newItemAdded(item, index)">
+                        <!-- focusout -->
+                        <input class="form-control" type="number" v-model="item.quantity" @keypress="newItemAdded(item, index)">
                         <input class="form-control input-transparent" :placeholder="$t('items.fields.unit_cost')" type="text" v-model="item.unit_cost">
                     </td>
                     <td>
-                        <input class="form-control" type="number" v-model="item.total_cost_price" @keydown="newItemAdded(item, index)">
+                        <input class="form-control" type="number" v-model="item.total_cost_price" @keypress="newItemAdded(item, index)">
                     </td>
                     <td>
                         <multiselect
                             :options="taxRates"
-                            v-model="form.item_tax_rate"
+                            v-model="item.taxes"
                             :searchable="true"
                             :close-on-select="true"
                             :show-labels="false"
-                            label="name"
+                            label="rate_percent"
                             track-by="id"
                             :placeholder="$t('sidebar.choose_tax_rate')"
                             :preselect-first="true"
                             :multiple="true"
                             :taggable="true"
-                            @input="addTax(form.item_tax_rate, index)"
+                            @input="addTax(item.taxes, index)"
                         ></multiselect>
                             <!-- @tag="addTax(form.item_tax_rate, index)" -->
                     </td>
@@ -221,12 +222,31 @@
                             <i class="fas fa-trash-alt text-white p-1" :class="form.items[index].activeRowAddition" @click="removeItemRow(item, index)"></i>
                         </div>
                         <div v-else>
-                            <i class="fas fa-check text-white p-1" :class="form.items[index].activeRowAddition" @click="addItemToModel(item)"></i>
+                            <i class="fas fa-check text-white p-1" :class="form.items[index].activeRowAddition" @click="addItemToModel(item, index)"></i>
                         </div>
                     </td>
                 </tr>
             </tbody>
         </table>
+        <table class="table"> <!-- Total -->
+            <tbody class="text-right">
+                <tr>
+                <td>Sub Total: </td>
+                <td>Otto</td>
+                </tr>
+                <tr>
+                <td class="d-flex float-right">
+                    <div>Discount (%)</div>
+                    <div><input type="number" class="form-control" step="0.01"></div>
+                </td>
+                <td>Thornton</td>
+                </tr>
+                <tr>
+                <td>Larry</td>
+                <td>the Bird</td>
+                </tr>
+            </tbody>
+        </table> <!-- Total -->
     </div>
 </template>
 
@@ -275,10 +295,10 @@
                             // unit_cost:      '',
                             // total:          '',
                             activeRowAddition: 'bg-secondary',
+                            taxes : []
                         },
                     ],
-                    item_tax_rate:  '',
-
+                    // taxes:  '',
                 }),
             }
         },
@@ -316,25 +336,34 @@
                 this.form.items[0].unit_cost      = item.unit_cost,
                 this.form.items[0].total          = item.total,
                 this.form.items[0].activeRowAddition = 'bg-primary pointer',
-
+                // this.form.items[0].taxes = item.taxes,
                 this.newItemAdded(item)
             },
             addTax (taxItem, index) {
-                // console.log(taxItem);
-                const tax = {
-                    name: taxItem,
-                }
-                // this.form.items[0].item_tax_rate = tax
-                console.log(this.form.items[index]);
-                // this.form.item_tax_rate.unshift(tax)
-                // this.form.item_tax_rate.push(tax)
+                // const tax = {
+                //     name: taxItem,
+                // }
+                let selectedTax = [...taxItem];
+                let taxArray = [];
+
+                console.log(selectedTax);
+                selectedTax.forEach(element => {
+                    taxArray.push(element);
+                });
+                this.form.items[index].taxes = taxArray;
             },
-            newItemAdded(item) { // Set the input data values in row
+            calculateTotal(index) {
+                let indexRowForm = this.form.items[index];
+                indexRowForm.total = indexRowForm.total_cost_price * indexRowForm.quantity
+            },
+            newItemAdded(item, index) { // Set the input data values in row
                 if(item.name && item.quantity && item.total_cost_price != ''){
                     this.form.items[0].activeRowAddition = 'bg-primary pointer'
                 }
+                if(index > 0) this.calculateTotal(index)
             },
-            addItemToModel(item) { // Add row item to model
+            addItemToModel(item, index) { // Add row item to model
+                this.calculateTotal(index)
                 this.form.items.unshift({
                     name           : '',
                     description    : '',
@@ -345,8 +374,9 @@
                     unit_cost      : '',
                     total          : '',
                     activeRowAddition : 'bg-secondary',
+                    taxes          : [],
                 })
-                
+
                 this.form.items.forEach( (element, index) => {
                     if (index > 0) {
                         element.activeRowAddition = 'bg-danger pointer'
@@ -359,23 +389,36 @@
             },
             removeItemRow(item, index) {
                 this.form.items.splice(index, 1);
+            },
+
+        },
+        watch: {
+            'form': {
+                handler: function(form) {
+    // console.log(form.items);
+                    for(let items of form.items) {
+                        console.log(items['quantity']);
+                        items['total'] = items['total_cost_price'] * items['quantity']
+
+                        // for (let [index, val] of Object.entries(items)) {
+                        //     // if(index == 'total_cost_price') console.log('items  '+ items['total_cost_price']);
+                        //     items['total'] = items['total_cost_price'] * items['quantity']
+                        // }
+                    }
+                    var result = form.items.reduce(function(accum, currentVal) {
+                        for(let [index, val] of Object.entries(accum)) {
+                            console.log('acc val  '+ val);
+                            console.log('acc index  '+ index);
+                            console.log('acc  '+ val);
+                        }
+                        // accum[currentVal.id] = currentVal.total;
+                        // return accum;
+                    }, {});
+                    // console.log(result);
+                },
+                deep: true
             }
         },
-        // watch: {
-        //     'form': {
-        //         handler: function(items, index) {
-        //             const tax = {
-        //                 name: items,
-        //             }
-        //             console.log("fslidg h");
-        //             console.log(index);
-        //             console.log(items);
-        //             console.log(tax);
-        //             this.form.item_tax_total = tax
-        //         },
-        //         deep: true
-        //     }
-        // },
         mounted() {
             i18n.locale = this.langKey;
             this.getAccountDetails();
