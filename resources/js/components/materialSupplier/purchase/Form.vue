@@ -309,7 +309,6 @@
                     discount_amount: '',
                     discount: '',
                     taxRate_total: [],
-                    // taxes:  '',
                 }),
             }
         },
@@ -354,8 +353,6 @@
             toggleUnSelectMarket(val) {
                 console.log('val  '+val);
                 for(let [i, v] of Object.entries(val)) {
-                        // console.log('i  '+ i);
-                        // console.log('v  '+ v);
                     var index = this.form.taxRate_total.findIndex(function(o){
                         return o.name === v;
                     })
@@ -364,16 +361,10 @@
                 return index;
             },
             addTax (taxItem, index) {
-                // const tax = {
-                //     name: taxItem,
-                // }
-                // console.log('index   '+index);
                 if (taxItem.length != 0 && index != 0) {
 
                     let selectedTax = [...taxItem];
                     let taxArray = [];
-
-                    console.log(selectedTax);
                     selectedTax.forEach(element => {
                         taxArray.push(element);
 
@@ -390,10 +381,6 @@
                     this.form.items[index].taxes = taxArray;
                 }
             },
-            // calculateTotal(index) {
-            //     let indexRowForm = this.form.items[index];
-            //     indexRowForm.total = indexRowForm.total_cost_price * indexRowForm.quantity
-            // },
             newItemAdded(item, index) { // Set the input data values in row
                 if(item.name && item.quantity && item.total_cost_price != ''){
                     this.form.items[0].activeRowAddition = 'bg-primary pointer'
@@ -428,38 +415,23 @@
         watch: {
             'form': {
                 handler: function(form) {
-                    for (const [key, value] of Object.entries(form.items)) {
-                        if(key >= 1) for (var i of Object.keys(value)) {
-                            if (i == 'total_cost_price' || i == 'quantity') {value['total'] = value['total_cost_price'] * value['quantity']}
+                    var logX = form.items.map(tax => {
+                        tax.total = tax.total_cost_price * tax.quantity
+                        if (tax.taxes.length > 0) {
+                            // Find if the array contains an object by comparing the property value
+                            tax.taxes.map(p => {
 
-                            if (i == 'taxes') {
-                                if (value['taxes'].length > 0) {
-
-                                    // var result = value['taxes'].map(tax => ({ key: tax.name, rate: tax.rate_percent }));
-                                    var taxNames = value['taxes'].map(tax => (tax.name));
-                                    var taxRates = value['taxes'].map(tax => (tax.rate_percent));
-                                    // console.log(result);
-                                    // console.log(taxRates);
-                                    console.log('taxNames   '+taxNames);
-
-
-                                   // Find if the array contains an object by comparing the property value
-                                    // for(let names of taxNames) {
-                                        form.taxRate_total.some(formTaxRate => {
-                                            value['taxes'].map(tax => {
-                                                if(tax.name === formTaxRate.name) {
-                                                    console.log('rates  '+ tax.rate_percent);
-
-                                                    formTaxRate.value = value['total_cost_price'] * value['quantity'] * (tax.rate_percent / 100)
-                                                }
-                                            })
-                                        })
-                                    // }
-                                }
-                            }
-
+                                form.taxRate_total.some(formTaxRate => {
+                                    if(p.name === formTaxRate.name) { // Hashing Those lines prevent infinite looping
+                                        formTaxRate.value = tax.total_cost_price * tax.quantity * (p.rate_percent / 100)
+                                    }
+                                })
+                            })
                         }
-                    }
+                    });
+                    console.log('logX   ' );
+
+
                     let subTotal = 0;
                     var result = form.items.reduce(function(accum, currentVal) {
                         if(parseInt(currentVal.total)) subTotal += parseInt(currentVal.total);
