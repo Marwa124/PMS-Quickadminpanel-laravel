@@ -41,7 +41,7 @@ class ProjectsController extends Controller
 
     public function index()
     {
-        abort_if(Gate::denies('project_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('project_access'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
         $clients = Client::get();
 
@@ -49,7 +49,7 @@ class ProjectsController extends Controller
 
         if (request()->segment(count(request()->segments())) == 'trashed'){
 
-            abort_if(Gate::denies('project_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+            abort_if(Gate::denies('project_delete'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
             $trashed = true;
             $projects = auth()->user()->getUserProjectsByUserID(auth()->user()->id,$trashed);
@@ -65,7 +65,7 @@ class ProjectsController extends Controller
 
     public function create()
     {
-        abort_if(Gate::denies('project_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('project_create'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
         $clients = Client::all()->pluck('name', 'id');
 
@@ -76,6 +76,8 @@ class ProjectsController extends Controller
 
     public function store(StoreProjectRequest $request)
     {
+        abort_if(Gate::denies('project_create'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
+
         $project = Project::create($request->all());
 
         if ($media = $request->input('ck-media', false)) {
@@ -89,8 +91,9 @@ class ProjectsController extends Controller
 
     public function edit(Project $project)
     {
-        abort_if(Gate::denies('project_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('project_edit'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
+        // check if user can access this project or not
         $projects = auth()->user()->getUserProjectsByUserID(auth()->user()->id)->pluck('id');
 
         if (in_array($project->id,$projects->toArray())){
@@ -105,12 +108,13 @@ class ProjectsController extends Controller
             return view('projectmanagement::admin.projects.edit', compact('clients', 'project','departments'));
         }
 
-        abort(Response::HTTP_FORBIDDEN, '403 Forbidden This Page Not Allow To You');
+        return abort(Response::HTTP_FORBIDDEN, trans('global.forbidden_page_not_allow_to_you'));
 
     }
 
     public function update(UpdateProjectRequest $request, Project $project)
     {
+        abort_if(Gate::denies('project_edit'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
         if(!$request->calculate_progress){
             $request['calculate_progress'] = null;
@@ -151,8 +155,9 @@ class ProjectsController extends Controller
 
     public function show(Project $project)
     {
-        abort_if(Gate::denies('project_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('project_show'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
+        // check if user can access this project or not
         $projects = auth()->user()->getUserProjectsByUserID(auth()->user()->id)->pluck('id');
 
         if (in_array($project->id,$projects->toArray())){
@@ -176,13 +181,13 @@ class ProjectsController extends Controller
 
         }
 
-        abort(Response::HTTP_FORBIDDEN, '403 Forbidden This Page Not Allow To You');
+        return abort(Response::HTTP_FORBIDDEN, trans('global.forbidden_page_not_allow_to_you'));
 
     }
 
     public function destroy(Project $project)
     {
-        abort_if(Gate::denies('project_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('project_delete'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
 //        if($project->deleted_at == 0){
 //            $project->update(['deleted_at' => 1]);
@@ -198,7 +203,7 @@ class ProjectsController extends Controller
 
     public function massDestroy(MassDestroyProjectRequest $request)
     {
-
+        abort_if(Gate::denies('project_delete'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
         //Project::whereIn('id', request('ids'))->delete();
 
         $ids = request('ids');
@@ -217,7 +222,7 @@ class ProjectsController extends Controller
 
     public function storeCKEditorImages(Request $request)
     {
-        abort_if(Gate::denies('project_create') && Gate::denies('project_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('project_create') && Gate::denies('project_edit'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
         $model         = new Project();
         $model->id     = $request->input('crud_id', 0);
@@ -227,20 +232,33 @@ class ProjectsController extends Controller
         return response()->json(['id' => $media->id, 'url' => $media->getUrl()], Response::HTTP_CREATED);
     }
 
-    public function getAssignTo($id){
+    public function getAssignTo($id)
+    {
 
-        abort_if(Gate::denies('project_assign_to'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        $project = Project::findOrFail($id);
-        $department = $project->department()->first();
+        abort_if(Gate::denies('project_assign_to'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
-        if (!$department){
-            abort(404,"this project don't have Department ");
+        // check if user can access this project or not
+        $projects = auth()->user()->getUserProjectsByUserID(auth()->user()->id)->pluck('id');
+
+        if (in_array($id,$projects->toArray())){
+
+            $project = Project::findOrFail($id);
+            $department = $project->department()->first();
+
+            if (!$department){
+                abort(404,"This Project don't have Department ");
+            }
+            return view('projectmanagement::admin.projects.assignto',compact('project','department'));
         }
-        return view('projectmanagement::admin.projects.assignto',compact('project','department'));
+
+        return abort(Response::HTTP_FORBIDDEN, trans('global.forbidden_page_not_allow_to_you'));
+
     }
 
-    public function storeAssignTo(Request $request){
+    public function storeAssignTo(Request $request)
+    {
 
+        abort_if(Gate::denies('project_assign_to'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
         $project = Project::where('id', $request->project_id)->first();
         if ($request->accounts) {
 
@@ -313,6 +331,8 @@ class ProjectsController extends Controller
 
     public function update_note(Request $request)
     {
+        abort_if(Gate::denies('project_edit'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
+
         $project = Project::findOrFail($request->project_id);
         //$project->notes = $request->notes;
         $project->update($request->all());
@@ -346,46 +366,67 @@ class ProjectsController extends Controller
 
     public function update_project_timer($project_id)
     {
-        $user_id = auth()->user()->id;
-        $projectTimer = TimeSheet::where('module','=','project')->where('module_field_id',$project_id)->where('user_id',$user_id)->where('timer_status','on')->first();
+        abort_if(Gate::denies('project_edit'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
-        if (!$projectTimer)
-        {
-            $Timer = [
-                'user_id'       => $user_id,
-                'module'            => 'project',
-                'module_field_id'    => $project_id,
-                'timer_status'  => 'on',
-                'start_time'    => time(),
-            ];
+        // check if user can access this project or not
+        $projects = auth()->user()->getUserProjectsByUserID(auth()->user()->id)->pluck('id');
 
-            $projectTimer = TimeSheet::create($Timer);
+        if (in_array($project_id,$projects->toArray())){
 
-        }else{
+            $user_id = auth()->user()->id;
+            $projectTimer = TimeSheet::where('module','=','project')->where('module_field_id',$project_id)->where('user_id',$user_id)->where('timer_status','on')->first();
 
-            $projectTimer->update(['timer_status' => 'off','end_time' => time()]);
+            if (!$projectTimer)
+            {
+                $Timer = [
+                    'user_id'       => $user_id,
+                    'module'            => 'project',
+                    'module_field_id'    => $project_id,
+                    'timer_status'  => 'on',
+                    'start_time'    => time(),
+                ];
+
+                $projectTimer = TimeSheet::create($Timer);
+
+            }else{
+
+                $projectTimer->update(['timer_status' => 'off','end_time' => time()]);
+            }
+
+            setActivity('project',$project_id,'Timer '.ucfirst($projectTimer->timer_status),$projectTimer->project->name);
+
+
+            return redirect()->back();
         }
 
-        setActivity('project',$project_id,'Timer '.ucfirst($projectTimer->timer_status),$projectTimer->project->name);
+        return abort(Response::HTTP_FORBIDDEN, trans('global.forbidden_page_not_allow_to_you'));
 
-
-        return redirect()->back();
     }
 
     public function project_clone($project_id)
     {
 
-        // get project by id
-        $project  = Project::findOrFail($project_id);
+        abort_if(Gate::denies('project_create'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
-        $newproject = $project->cloneProject();
+        // check if user can access this project or not
+        $projects = auth()->user()->getUserProjectsByUserID(auth()->user()->id)->pluck('id');
+        if (in_array($project_id,$projects->toArray())){
 
-        return redirect()->route('projectmanagement.admin.projects.show',$newproject->id);
+            // get project by id
+            $project  = Project::findOrFail($project_id);
+
+            $newproject = $project->cloneProject();
+
+            return redirect()->route('projectmanagement.admin.projects.show',$newproject->id);
+
+        }
+        return abort(Response::HTTP_FORBIDDEN, trans('global.forbidden_page_not_allow_to_you'));
 
     }
 
     public function forceDelete(Request $request,$id)
     {
+        abort_if(Gate::denies('project_delete'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
         //dd($request->all(),$id);
         $action = $request->action;
 
@@ -408,51 +449,63 @@ class ProjectsController extends Controller
 
     public function project_pdf($project_id)
     {
-        $project = Project::findOrFail($project_id);
+
+        abort_if(Gate::denies('project_show'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
+
+        // check if user can access this project or not
+        $projects = auth()->user()->getUserProjectsByUserID(auth()->user()->id)->pluck('id');
+
+        if (in_array($project_id,$projects->toArray())){
+
+                $project = Project::findOrFail($project_id);
 
 
-        $project->load('client','department','TimeSheetOn','TimeSheet');
+            $project->load('client','department','TimeSheetOn','TimeSheet');
 
-        $total_expense = $project->transactions->where('type' , 'Expense')->sum('amount');
-        $billable_expense = $project->transactions->where(array('type' => 'Expense', 'billable' => 'Yes'))->sum('amount');
-        $not_billable_expense = $project->transactions->where(array('type' => 'Expense', 'billable' => 'No'))->sum('amount');
+            $total_expense = $project->transactions->where('type' , 'Expense')->sum('amount');
+            $billable_expense = $project->transactions->where(array('type' => 'Expense', 'billable' => 'Yes'))->sum('amount');
+            $not_billable_expense = $project->transactions->where(array('type' => 'Expense', 'billable' => 'No'))->sum('amount');
 
-        $all_expense_info =  $project->transactions->where('type', 'Expense');
+            $all_expense_info =  $project->transactions->where('type', 'Expense');
 
-        $paid_expense = 0;
-        foreach ($all_expense_info as $v_expenses){
-            if ($v_expenses->invoices_id != 0) {
-                $paid_expense += Invoice::get_invoice_paid_amount($v_expenses->invoices_id);
+            $paid_expense = 0;
+            foreach ($all_expense_info as $v_expenses){
+                if ($v_expenses->invoices_id != 0) {
+                    $paid_expense += Invoice::get_invoice_paid_amount($v_expenses->invoices_id);
+                }
             }
+
+
+           //return view('projectmanagement::admin.projects.project_pdf',compact('project','total_expense','billable_expense','not_billable_expense','paid_expense'));
+
+            //view()->share('project',$project);
+
+            $pdf = PDF::loadView('projectmanagement::admin.projects.project_pdf',compact('project','total_expense','billable_expense','not_billable_expense','paid_expense'));
+    //        $pdf = PDF::loadView('projectmanagement::admin.projects.project_pdf',[
+    //            'project' => $project
+    //        ]);
+
+            return $pdf->download('project.pdf');
         }
 
+        return abort(Response::HTTP_FORBIDDEN, trans('global.forbidden_page_not_allow_to_you'));
 
-       //return view('projectmanagement::admin.projects.project_pdf',compact('project','total_expense','billable_expense','not_billable_expense','paid_expense'));
-
-        //view()->share('project',$project);
-
-        $pdf = PDF::loadView('projectmanagement::admin.projects.project_pdf',compact('project','total_expense','billable_expense','not_billable_expense','paid_expense'));
-//        $pdf = PDF::loadView('projectmanagement::admin.projects.project_pdf',[
-//            'project' => $project
-//        ]);
-
-        return $pdf->download('project.pdf');
 
     }
 
     public function project_report()
     {
+        abort_if(Gate::denies('project_report_access'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
-        $user = User::findOrFail(auth()->user()->id);
-
-        if ($user->hasrole(['Admin','Super Admin']))
-        {
+//        $user = User::findOrFail(auth()->user()->id);
+//        if ($user->hasrole(['Admin','Super Admin']))
+//        {
             $projects = Project::all();
 
             return view('projectmanagement::admin.projects.project_report', compact('projects'));
 
-        }
-
-        return abort(Response::HTTP_FORBIDDEN, '403 Forbidden .., This Page Allow To Admin Only');
+//        }
+//
+//        return abort(Response::HTTP_FORBIDDEN, trans('global.forbidden_page_not_allow_to_you'));
     }
 }

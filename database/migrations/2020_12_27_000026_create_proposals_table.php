@@ -12,7 +12,7 @@ class CreateProposalsTable extends Migration
             $table->increments('id');
             $table->string('reference_no')->nullable();
             $table->string('subject');
-            $table->string('module')->nullable();//client or oppertinate
+            $table->string('module')->nullable();//client or opportunity
             $table->date('proposal_date');
             $table->date('expire_date')->nullable();
             $table->integer('alert_overdue')->nullable();
@@ -28,14 +28,14 @@ class CreateProposalsTable extends Migration
             $table->string('show_client')->nullable();
             $table->string('convert')->nullable();//yes or no 
             $table->string('convert_module')->nullable();//invoice
-            $table->integer('module_id')->nullable();//id of client or oppertinate
+            $table->integer('module_id')->nullable();//id of client or opportunity
             $table->integer('convert_module_id')->nullable();//id of invoice
             $table->date('converted_date')->nullable();
             $table->string('discount_type')->nullable();
             $table->string('discount_percent')->nullable();
             $table->decimal('after_discount', 15, 2)->nullable();
             $table->decimal('discount_total', 15, 2)->nullable();
-            $table->decimal('adjustment', 15, 2)->nullable();//addtionnal values
+            $table->decimal('adjustment', 15, 2)->nullable();//additional values
             $table->string('show_quantity_as')->nullable();
             $table->string('allowed_cmments')->nullable();
             $table->Text('proposal_validity')->nullable();

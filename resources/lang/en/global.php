@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'total'                              => 'Total',
     'actions'                              => 'Actions',
     'add'                                  => 'Add',
     'allRightsReserved'                    => 'All rights reserved.',
@@ -292,4 +293,7 @@ return [
     'hours'                                => 'Hours',
     'minutes'                              => 'Minutes',
     'seconds'                              => 'Seconds',
+    'page_not_exist'                       => 'This Page Not Exist',
+    'forbidden_page'                       => '403 Forbidden',
+    'forbidden_page_not_allow_to_you'      => '403 Forbidden This Page Not Allow To You',
 ];

@@ -30,22 +30,18 @@ class BugsController extends Controller
 
     public function index()
     {
-        abort_if(Gate::denies('bug_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('bug_access'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
-
-        $projects = Project::get();
-
-        $tasks = Task::get();
 
         if (request()->segment(count(request()->segments())) == 'trashed'){
 
-            abort_if(Gate::denies('bug_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+            abort_if(Gate::denies('bug_delete'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
             $trashed = true;
 
             $bugs = auth()->user()->getUserBugsByUserID(auth()->user()->id,$trashed);
 
-            return view('projectmanagement::admin.bugs.index', compact('bugs','trashed', 'projects', 'tasks'));
+            return view('projectmanagement::admin.bugs.index', compact('bugs','trashed'));
         }
 
 
@@ -53,18 +49,20 @@ class BugsController extends Controller
 
         $bugs = auth()->user()->getUserBugsByUserID(auth()->user()->id,$trashed);
 
-        return view('projectmanagement::admin.bugs.index', compact('bugs','trashed', 'projects', 'tasks'));
+        return view('projectmanagement::admin.bugs.index', compact('bugs','trashed'));
     }
 
     public function create($id =null)
     {
         // $id refer to task_id in case and refer to project id in anther case depend on route
 
-        abort_if(Gate::denies('bug_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('bug_create'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
-        $projects = Project::all()->pluck('name', 'id');
+//        $projects = Project::all()->pluck('name', 'id');
+        $projects = auth()->user()->getUserProjectsByUserID(auth()->user()->id)->pluck('name', 'id');
 
-        $tasks = Task::with('project')->get();
+//        $tasks = Task::with('project')->get();
+        $tasks = auth()->user()->getUserTasksByUserID(auth()->user()->id,false,true);
 
         $project    = null;
         $task       = null;
@@ -72,11 +70,27 @@ class BugsController extends Controller
         if (request()->segment(count(request()->segments())-1) == 'project-bug')
         {
             $project = Project::findOrFail($id);
+
+            // check if user can access this project or not
+            $all_projects = auth()->user()->getUserProjectsByUserID(auth()->user()->id)->pluck('id');
+
+            if (!in_array($project->id,$all_projects->toArray())){
+
+                return abort(Response::HTTP_FORBIDDEN, trans('global.forbidden_page_not_allow_to_you'));
+            }
         }
 
         if (request()->segment(count(request()->segments())-1) == 'task-bug')
         {
             $task = Task::findOrFail($id);
+
+            // check if user can access this task or not
+            $all_tasks = auth()->user()->getUserTasksByUserID(auth()->user()->id,false,true)->pluck('id');
+
+            if (!in_array($task->id,$all_tasks->toArray())){
+
+                return abort(Response::HTTP_FORBIDDEN, trans('global.forbidden_page_not_allow_to_you'));
+            }
         }
 
         return view('projectmanagement::admin.bugs.create', compact('projects','tasks','project','task'));
@@ -84,6 +98,8 @@ class BugsController extends Controller
 
     public function store(StoreBugRequest $request)
     {
+        abort_if(Gate::denies('bug_create'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
+
         $request['issue_no'] = 'pms'.substr(time(),-8);           //pms + time function to be sure this num is unique
         $request['reporter'] = auth()->user()->id;
 
@@ -101,14 +117,15 @@ class BugsController extends Controller
 
     public function edit(Bug $bug)
     {
-        abort_if(Gate::denies('bug_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('bug_edit'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
+        // check if user can access this Bug or not
         $bugs = auth()->user()->getUserBugsByUserID(auth()->user()->id)->pluck('id');
 
         if (in_array($bug->id,$bugs->toArray()))
         {
 
-            $projects = Project::all()->pluck('name', 'id');
+            $projects = auth()->user()->getUserProjectsByUserID(auth()->user()->id)->pluck('name', 'id');
 
             $tasks = Task::with('project')->get();
 
@@ -117,12 +134,13 @@ class BugsController extends Controller
             return view('projectmanagement::admin.bugs.edit', compact('projects','tasks','bug'));
         }
 
-        abort(Response::HTTP_FORBIDDEN, '403 Forbidden This Page Not Allow To You');
+        return abort(Response::HTTP_FORBIDDEN, trans('global.forbidden_page_not_allow_to_you'));
 
     }
 
     public function update(UpdateBugRequest $request, Bug $bug)
     {
+        abort_if(Gate::denies('bug_edit'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
         $bug->update($request->all());
 
@@ -154,8 +172,9 @@ class BugsController extends Controller
 
     public function show(Bug $bug)
     {
-        abort_if(Gate::denies('bug_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('bug_show'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
+        // check if user can access this Bug or not
         $bugs = auth()->user()->getUserBugsByUserID(auth()->user()->id)->pluck('id');
 
         if (in_array($bug->id,$bugs->toArray()))
@@ -166,13 +185,13 @@ class BugsController extends Controller
             return view('projectmanagement::admin.bugs.show', compact('bug'));
         }
 
-        abort(Response::HTTP_FORBIDDEN, '403 Forbidden This Page Not Allow To You');
+        return abort(Response::HTTP_FORBIDDEN, trans('global.forbidden_page_not_allow_to_you'));
 
     }
 
     public function destroy(Bug $bug)
     {
-        abort_if(Gate::denies('bug_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('bug_delete'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
         $bug->delete();
 
@@ -183,6 +202,8 @@ class BugsController extends Controller
 
     public function massDestroy(MassDestroyBugRequest $request)
     {
+        abort_if(Gate::denies('bug_delete'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
+
         //Bug::whereIn('id', request('ids'))->delete();
 
         $ids = request('ids');
@@ -201,7 +222,7 @@ class BugsController extends Controller
 
     public function storeCKEditorImages(Request $request)
     {
-        abort_if(Gate::denies('bug_create') && Gate::denies('bug_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('bug_create') && Gate::denies('bug_edit'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
         $model         = new Bug();
         $model->id     = $request->input('crud_id', 0);
@@ -214,20 +235,32 @@ class BugsController extends Controller
     public function getAssignTo($id)
     {
 
-        abort_if(Gate::denies('bug_assign_to'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('bug_assign_to'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
-        $bug = Bug::findOrFail($id);
-        $department = $bug->project->department;
+        // check if user can access this Bug or not
+        $bugs = auth()->user()->getUserBugsByUserID(auth()->user()->id)->pluck('id');
 
-        if (!$department){
-            abort(404,"this project don't have department ");
+        if (in_array($id,$bugs->toArray()))
+        {
+
+            $bug = Bug::findOrFail($id);
+            $department = $bug->project->department;
+
+            if (!$department){
+                abort(404,trans('cruds.messages.project_of_bug_not_have_department'));
+            }
+
+            return view('projectmanagement::admin.bugs.assignto',compact('bug','department'));
         }
 
-        return view('projectmanagement::admin.bugs.assignto',compact('bug','department'));
+        return abort(Response::HTTP_FORBIDDEN, trans('global.forbidden_page_not_allow_to_you'));
+
     }
 
     public function storeAssignTo(Request $request)
     {
+        abort_if(Gate::denies('bug_assign_to'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
+
         $bug = Bug::findOrFail($request->bug_id);
         if ($request->accounts){
 
@@ -295,6 +328,8 @@ class BugsController extends Controller
 
     public function update_note(Request $request)
     {
+        abort_if(Gate::denies('bug_edit'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
+
         $bug = Bug::findOrFail($request->bug_id);
         //$project->notes = $request->notes;
         $bug->update($request->all());
@@ -326,6 +361,8 @@ class BugsController extends Controller
 
     public function forceDelete(Request $request,$id)
     {
+        abort_if(Gate::denies('bug_delete'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
+
         //dd($request->all(),$id);
         $action = $request->action;
 
@@ -346,5 +383,21 @@ class BugsController extends Controller
 
         return back();
 
+    }
+
+    public function bug_report()
+    {
+        abort_if(Gate::denies('bug_report_access'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
+
+//        $user = User::findOrFail(auth()->user()->id);
+//        if ($user->hasrole(['Admin','Super Admin']))
+//        {
+        $bugs = Bug::all();
+
+        return view('projectmanagement::admin.bugs.bug_report', compact('bugs'));
+
+//        }
+//
+//        return abort(Response::HTTP_FORBIDDEN, trans('global.forbidden_page_not_allow_to_you'));
     }
 }

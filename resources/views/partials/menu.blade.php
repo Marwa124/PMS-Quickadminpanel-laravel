@@ -114,6 +114,120 @@
                 </ul>
             </li>
         @endcan
+        @can('finance_access')
+            <li class="c-sidebar-nav-dropdown">
+                <a class="c-sidebar-nav-dropdown-toggle" href="#">
+                    <i class="fa-fw fas fa-money c-sidebar-nav-icon">
+
+                    </i>
+                    {{ trans('cruds.finance.title') }}
+                </a>
+                <ul class="c-sidebar-nav-dropdown-items">
+
+                    @can('account_access')
+                        <li class="c-sidebar-nav-item">
+                            <a href="{{ route("hr.admin.accounts.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/accounts") || request()->is("admin/accounts/*") ? "active" : "" }}">
+                                <i class="fa-fw fas fa-money-check-alt c-sidebar-nav-icon self-item-link">
+
+                                </i>
+                                {{ trans('cruds.account.title') }}
+                            </a>
+                        </li>
+                    @endcan
+                    @can('balance_sheet')
+                        <li class="c-sidebar-nav-item">
+                            <a href="{{ route("finance.admin.balance_sheet") }}" class="c-sidebar-nav-link {{ request()->is("admin/balance_sheet") || request()->is("admin/finance/*") ? "active" : "" }}">
+                                <i class="fa-fw fas fa-file-invoice-dollar c-sidebar-nav-icon self-item-link">
+
+                                </i>
+                                {{ trans('cruds.finance.balance_sheet') }}
+                            </a>
+                        </li>
+                    @endcan
+                    @can('payment_method')
+                        <li class="c-sidebar-nav-item">
+                            <a href="{{ route("finance.admin.payment_method.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/payment_method") || request()->is("admin/finance/*") ? "active" : "" }}">
+                                <i class="fa-fw fas fa-credit-card c-sidebar-nav-icon self-item-link">
+
+                                </i>
+                                {{ trans('cruds.finance.payment_method') }}
+                            </a>
+                        </li>
+                    @endcan
+                    @can('transfer')
+                        <li class="c-sidebar-nav-item">
+                            <a href="{{ route("finance.admin.transfers.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/transfers") || request()->is("admin/finance/*") ? "active" : "" }}">
+                                <i class="fa-fw fas fa-trademark c-sidebar-nav-icon self-item-link">
+
+                                </i>
+                                {{ trans('cruds.finance.transfers') }}
+                            </a>
+                        </li>
+                        <li class="c-sidebar-nav-item">
+                            <a href="{{ route("finance.admin.transfers_report") }}" class="c-sidebar-nav-link {{ request()->is("admin/transfers") || request()->is("admin/finance/*") ? "active" : "" }}">
+                                <i class="fa-fw fas fa-newspaper c-sidebar-nav-icon self-item-link">
+
+                                </i>
+                                {{ trans('cruds.transfers.transfers_report') }}
+                            </a>
+                        </li>
+                    @endcan
+                    @can('expenses')
+                        <li class="c-sidebar-nav-item">
+                            <a href="{{ route("finance.admin.expenses_category.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/expenses_category") || request()->is("admin/finance/*") ? "active" : "" }}">
+                                <i class="fa-fw fas fa-bookmark c-sidebar-nav-icon self-item-link">
+
+                                </i>
+                                {{ trans('cruds.finance.expenses_category') }}
+                            </a>
+                        </li>
+                        <li class="c-sidebar-nav-item">
+                            <a href="{{ route("finance.admin.expenses.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/expenses") || request()->is("admin/finance/*") ? "active" : "" }}">
+                                <i class="fa-fw fas fa-newspaper c-sidebar-nav-icon self-item-link">
+
+                                </i>
+                                {{ trans('cruds.finance.expenses') }}
+                            </a>
+                        </li>
+                    @endcan
+                    @can('deposits')
+                        <li class="c-sidebar-nav-item">
+                            <a href="{{ route("finance.admin.deposits_category.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/deposits_category") || request()->is("admin/finance/*") ? "active" : "" }}">
+                                <i class="fa-fw fas fa-bookmark c-sidebar-nav-icon self-item-link">
+
+                                </i>
+                                {{ trans('cruds.finance.deposits_category') }}
+                            </a>
+                        </li>
+                        <li class="c-sidebar-nav-item">
+                            <a href="{{ route("finance.admin.deposits.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/deposits") || request()->is("admin/finance/*") ? "active" : "" }}">
+                                <i class="fa-fw fas fa-newspaper c-sidebar-nav-icon self-item-link">
+
+                                </i>
+                                {{ trans('cruds.finance.deposits') }}
+                            </a>
+                        </li>
+                    @endcan
+                    @can('invoice')
+                        <li class="c-sidebar-nav-item">
+                            <a href="{{ route("finance.admin.invoices.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/invoices") || request()->is("admin/finance/*") ? "active" : "" }}">
+                                <i class="fa-fw fas fa-newspaper c-sidebar-nav-icon self-item-link">
+
+                                </i>
+                                {{ trans('cruds.finance.invoices') }}
+                            </a>
+                        </li>
+                    @endcan
+
+
+
+
+
+
+
+                </ul>
+            </li>
+        @endcan
         @can('hr_access')
             <li class="c-sidebar-nav-dropdown">
                 <a class="c-sidebar-nav-dropdown-toggle" href="#">
@@ -396,6 +510,7 @@
                 </ul>
             </li>
         @endcan
+
         @can('payroll_access')
             <li class="c-sidebar-nav-dropdown">
                 <a class="c-sidebar-nav-dropdown-toggle" href="#">
@@ -662,35 +777,59 @@
                             </a>
                         </li>
                     @endcan
+                    @canany(['project_report_access' , 'task_report_access' , 'bug_report_access' , 'ticket_report_access'])
+                        <li class="c-sidebar-nav-dropdown">
+                            <a class="c-sidebar-nav-dropdown-toggle" href="#">
+                                <i class="fa-fw far fa-edit c-sidebar-nav-icon parent-dropdown">
 
-                    <li class="c-sidebar-nav-dropdown">
-                        <a class="c-sidebar-nav-dropdown-toggle" href="#">
-                            <i class="fa-fw far fa-edit c-sidebar-nav-icon parent-dropdown">
+                                </i>
+                                {{ trans('global.reports') }}
+                            </a>
+                            <ul class="c-sidebar-nav-dropdown-items">
+                                @can('project_report_access')
+                                    <li class="c-sidebar-nav-item">
+                                        <a href="{{ route("projectmanagement.admin.projects.project_report") }}" class="c-sidebar-nav-link {{ request()->is("admin/projectmanagement/projects/reports/project_report") ? "active" : "" }}">
+                                            <i class="fa-fw fas fa-clipboard-list c-sidebar-nav-icon sub-dropdown">
 
-                            </i>
-                            {{ trans('global.reports') }}
-                        </a>
-                        <ul class="c-sidebar-nav-dropdown-items">
+                                            </i>
+                                            {{ trans('cruds.project.fields.project_report') }}
+                                        </a>
+                                    </li>
+                                @endcan
 
-                            <li class="c-sidebar-nav-item">
-                                <a href="{{ route("projectmanagement.admin.projects.project_report") }}" class="c-sidebar-nav-link {{ request()->is("admin/projectmanagement/projects/reports/project_report") ? "active" : "" }}">
-                                    <i class="fa-fw fas fa-clipboard-list c-sidebar-nav-icon sub-dropdown">
+                                @can('task_report_access')
+                                    <li class="c-sidebar-nav-item">
+                                    <a href="{{ route("projectmanagement.admin.tasks.task_report") }}" class="c-sidebar-nav-link {{ request()->is("admin/projectmanagement/tasks/reports/task_report") ? "active" : "" }}">
+                                        <i class="fa-fw fas fa-clipboard-list c-sidebar-nav-icon sub-dropdown">
 
-                                    </i>
-                                    {{ trans('cruds.project.fields.project_report') }}
-                                </a>
-                            </li>
-                            <li class="c-sidebar-nav-item">
-                                <a href="{{ route("projectmanagement.admin.tasks.task_report") }}" class="c-sidebar-nav-link {{ request()->is("admin/projectmanagement/tasks/reports/task_report") ? "active" : "" }}">
-                                    <i class="fa-fw fas fa-clipboard-list c-sidebar-nav-icon sub-dropdown">
+                                        </i>
+                                        {{ trans('cruds.task.fields.task_report') }}
+                                    </a>
+                                </li>
+                                @endcan
+                                @can('bug_report_access')
+                                    <li class="c-sidebar-nav-item">
+                                        <a href="{{ route("projectmanagement.admin.bugs.bug_report") }}" class="c-sidebar-nav-link {{ request()->is("admin/projectmanagement/bugs/reports/bug_report") ? "active" : "" }}">
+                                            <i class="fa-fw fas fa-clipboard-list c-sidebar-nav-icon sub-dropdown">
 
-                                    </i>
-                                    {{ trans('cruds.task.fields.task_report') }}
-                                </a>
-                            </li>
+                                            </i>
+                                            {{ trans('cruds.bug.fields.bug_report') }}
+                                        </a>
+                                    </li>
+                                @endcan
+                                @can('ticket_report_access')
+                                    <li class="c-sidebar-nav-item">
+                                        <a href="{{ route("projectmanagement.admin.tickets.ticket_report") }}" class="c-sidebar-nav-link {{ request()->is("admin/projectmanagement/tickets/reports/ticket_report") ? "active" : "" }}">
+                                            <i class="fa-fw fas fa-clipboard-list c-sidebar-nav-icon sub-dropdown">
 
-                        </ul>
-                    </li>
+                                            </i>
+                                            {{ trans('cruds.ticket.fields.ticket_report') }}
+                                        </a>
+                                    </li>
+                                @endcan
+                            </ul>
+                        </li>
+                    @endcanany
 
                     @can('task_uploaded_file_access')
                         <li class="c-sidebar-nav-item">

@@ -1,6 +1,39 @@
 <?php
 
 return [
+    'finance'                => [
+        'title'          => 'الحسابات المالية',
+        'title_singular' => 'الحسابات المالية',
+        'balance_sheet' => 'بيان الميزانية',
+        'payment_method' => 'وسائل الدفع',
+        'transfers' => 'التحويلات',
+    ],
+    'payment_method'                => [
+        'title'          => 'Payment Method',
+        'title_singular' => 'Payment Method',
+        'fields' => [
+            'name'  => 'Name'
+        ]
+    ],
+    'transfers'                => [
+        'title'          => 'Transfers',
+        'title_singular' => 'Transfers',
+        'attach' => 'Attachments',
+        'fields' => [
+            'name'  => 'Name',
+            'from_account'  => 'From Account',
+            'to_account'  => 'To Account',
+            'amount'  => 'Amount',
+            'date'  => 'Date',
+            'attachment'  => 'Attachment',
+            'notes'  => 'Notes',
+            'reference'  => 'Reference',
+            'attachments'  => 'Attachments',
+            'payment_method'  => 'Payment Method',
+            'select_payment_method'  => 'Select Payment Method',
+        ]
+    ],
+
     'userManagement'         => [
         'title'          => 'إدارة المستخدمين',
         'title_singular' => 'إدارة المستخدمين',
@@ -1731,10 +1764,7 @@ return [
             'deleted_at_helper'  => ' ',
         ],
     ],
-    'finance'                => [
-        'title'          => 'Finance',
-        'title_singular' => 'Finance',
-    ],
+
     'invoice'                => [
         'title'          => 'Invoices',
         'title_singular' => 'Invoice',

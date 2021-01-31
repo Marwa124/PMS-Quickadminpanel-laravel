@@ -100,7 +100,7 @@ class ProposalsController extends Controller
             $newitem=ItemPorposalRelations::create($value);
             $newitem->update([
                 'proposals_id'=>$proposal['id'],
-                'item_id'=>$value['saved_items_id'],
+                'item_id'=>$value['new_itmes_id'],
             ]);
        
             if($newitem && isset($value['tax'])){
@@ -201,7 +201,7 @@ class ProposalsController extends Controller
             $newitem=ItemPorposalRelations::create($value);
             $newitem->update([
                 'proposals_id'=>$proposal['id'],
-                'item_id'=>$value['saved_items_id'],
+                'item_id'=>$value['new_itmes_id'],
             ]);
        
             if($newitem && isset($value['tax'])){
@@ -313,8 +313,20 @@ class ProposalsController extends Controller
      /**
      * get taxes 
      * **/ 
-    public function get_taxes_ajax(Request $request){
+     public function get_taxes_ajax(Request $request){
         $taxRates = TaxRate::all();
         return response()->json($taxRates, Response::HTTP_CREATED);
-    }
+     }
+     /**
+     *change status of probosal ajax
+     * **/ 
+     public function changestatus(Request $request){
+        $proposal = Proposal::findOrFail($request->id);
+        if(!empty($proposal)){
+            $proposal->update([
+                'status'=>$request->status,
+            ]);
+        }
+        return response()->json(Response::HTTP_CREATED);
+     }
 }
