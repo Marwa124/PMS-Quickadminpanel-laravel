@@ -96,7 +96,7 @@
                         <label class="required" for="client_id">{{ trans('cruds.proposal.fields.client') }}</label>
                         <select class="form-control  {{ $errors->has('client_id') ? 'is-invalid' : '' }}"
                                 name="client_id"
-                                id="client_id" required>
+                                id="client_id" onchange="get_projects()" required>
                             <option value="" selected="">{{trans('global.pleaseSelect')}}</option>
                             @foreach($clients as $client)
                                 <option value="{{$client->id}}" {{$invoice->client_id == $client->id ? 'selected' : ''}}>{{$client->name}}</option>
@@ -109,7 +109,9 @@
                         @endif
                         <span class="help-block">{{ trans('cruds.proposal.fields.Related_To_helper') }}</span>
                     </div>
-                    <div class="col-md-6">
+
+
+                    <div class="col-md-6"  id="projects_div">
                         <label class="required" for="project_id">{{ trans('cruds.invoice.fields.project') }}</label>
                         <select class="form-control  {{ $errors->has('project_id') ? 'is-invalid' : '' }}"
                                 name="project_id"

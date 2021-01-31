@@ -201,7 +201,7 @@ class ProposalsController extends Controller
             $newitem=ItemPorposalRelations::create($value);
             $newitem->update([
                 'proposals_id'=>$proposal['id'],
-                'item_id'=>$value['new_itmes_id'],
+                'item_id'=>$value['saved_items_id'],
             ]);
        
             if($newitem && isset($value['tax'])){

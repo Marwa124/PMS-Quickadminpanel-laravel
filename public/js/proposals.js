@@ -18,8 +18,7 @@ function get_related_moduleName(val, proposal) {
         dataType: 'json',
         data: {
             proposal: proposal,
-            id: val,
-
+            id: val
         },
         context: val,
         beforeSend: function () {

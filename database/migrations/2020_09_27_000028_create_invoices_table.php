@@ -20,6 +20,9 @@ class CreateInvoicesTable extends Migration
             $table->float('tax', 15, 2)->nullable();
             $table->string('total_tax')->nullable();
             $table->double('total_amount')->nullable();
+            $table->double('after_discount')->nullable();
+            $table->double('before_discount')->nullable();
+            $table->double('discount_total')->nullable();
             $table->string('adjustment')->nullable();
             $table->string('discount_status')->nullable();
             $table->string('discount_percent')->nullable();

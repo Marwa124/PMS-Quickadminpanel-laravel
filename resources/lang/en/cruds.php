@@ -2184,6 +2184,7 @@ return [
             'after_tax'       => 'After Tax',
             'discounts_helper'       => ' ',
             'due_date_helper'       => ' ',
+            'companyemail'       => 'Company Name',
 
         ],
     ],

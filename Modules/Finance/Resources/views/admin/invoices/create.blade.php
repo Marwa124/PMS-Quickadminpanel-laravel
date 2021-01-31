@@ -96,7 +96,7 @@
                         <label class="required" for="client_id">{{ trans('cruds.proposal.fields.client') }}</label>
                         <select class="form-control  {{ $errors->has('client_id') ? 'is-invalid' : '' }}"
                                 name="client_id"
-                                id="client_id" required>
+                                id="client_id" onchange="get_projects()" required>
                             <option value="" selected="">{{trans('global.pleaseSelect')}}</option>
                             @foreach($clients as $client)
                                 <option value="{{$client->id}}">{{$client->name}}</option>
@@ -109,22 +109,10 @@
                         @endif
                         <span class="help-block">{{ trans('cruds.proposal.fields.Related_To_helper') }}</span>
                     </div>
-                    <div class="col-md-6">
-                        <label class="required" for="project_id">{{ trans('cruds.invoice.fields.project') }}</label>
-                        <select class="form-control  {{ $errors->has('project_id') ? 'is-invalid' : '' }}"
-                                name="project_id"
-                                id="project_id" required>
-                            <option value="" selected="">{{trans('global.pleaseSelect')}}</option>
-                            @foreach($projects as $project)
-                                <option value="{{$project->id}}">{{$project->name}}</option>
-                            @endforeach
-                        </select>
-                        @if($errors->has('project_id'))
-                            <div class="invalid-feedback">
-                                {{ $errors->first('project_id') }}
-                            </div>
-                        @endif
-                        <span class="help-block">{{ trans('cruds.proposal.fields.Related_To_helper') }}</span>
+
+
+                    <div class="col-md-6" id="projects_div">
+
                     </div>
 
                 </div>
@@ -354,6 +342,7 @@
     <script src="{{ asset('js/invoices.js') }}"></script>
     <script>
         $('#recu_div').hide();
+        $('#projects_div').hide();
         var recu = false;
 
         $(document).ready(function () {

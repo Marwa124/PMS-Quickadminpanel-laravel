@@ -82,7 +82,8 @@ Route::group(['as' => 'finance.admin.', 'prefix' => 'admin/finance', 'namespace'
     Route::post('invoices/media', 'InvoicesController@storeMedia')->name('invoices.storeMedia');
     Route::post('invoices/ckmedia', 'InvoicesController@storeCKEditorImages')->name('invoices.storeCKEditorImages');
     Route::resource('invoices', 'InvoicesController');
-
+    Route::get('invoices/getpdf/{id}', 'PdfController@pdf')->name('invoices.pdf');
+    Route::post('invoices/get_projects', 'InvoicesController@get_projects');
     ////////////////////////////////END INVOICES///////////////////////////////////////////////////////////////////////
 
 });

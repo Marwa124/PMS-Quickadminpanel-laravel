@@ -43,7 +43,7 @@ class InvoicesController extends Controller
         $ProposalsItem = ProposalsItem::all();
         $taxRates = TaxRate::all();
         $clients = Client::all();
-        $projects = Project::all();
+        $projects = [];
         return view('finance::admin.invoices.create', compact('ProposalsItem', 'taxRates', 'clients', 'projects'));
     }
 
@@ -72,6 +72,9 @@ class InvoicesController extends Controller
                 'project_id' => $request->project_id,
                 'adjustment' => $request->adjustment,
                 'discount_status' => $request->discounts,
+                'discount_total' => $request->discount_total,
+                'before_discount' => $request->subtotal,
+                'after_discount' => $request->after_discount,
                 'total_amount' => floatval($request->total),
                 'discount_percent' => intval($request->discount_percent),
                 'user_id' => $request->user_id,
@@ -101,7 +104,7 @@ class InvoicesController extends Controller
                     ]);
 
                     if ($newitem && isset($value['tax'])) {
-                        foreach ($value['tax'] as $newtax) {
+                        foreach ($value['tax'] as $index => $newtax) {
                             $addtaxes = new InvoiceItemTax;
                             $addtaxes->tax_cost = $invoice['id'];
                             $addtaxes->taxs_id = $newtax;
@@ -136,7 +139,7 @@ class InvoicesController extends Controller
         $ProposalsItem = ProposalsItem::all();
         $taxRates = TaxRate::all();
         $clients = Client::all();
-        $projects = Project::all();
+        $projects =  Project::where('client_id',$invoice->project_id)->get();
         return view('finance::admin.invoices.edit', compact('ProposalsItem', 'taxRates', 'invoice', 'clients', 'projects'));
     }
 
@@ -165,6 +168,9 @@ class InvoicesController extends Controller
                 'project_id' => $request->project_id,
                 'adjustment' => $request->adjustment,
                 'discount_status' => $request->discounts,
+                'discount_total' => $request->discount_total,
+                'before_discount' => $request->subtotal,
+                'after_discount' => $request->after_discount,
                 'total_amount' => floatval($request->total),
                 'discount_percent' => intval($request->discount_percent),
                 'currency' => 'EGP',
@@ -296,4 +302,21 @@ class InvoicesController extends Controller
         $taxRates = TaxRate::all();
         return response()->json($taxRates, Response::HTTP_CREATED);
     }
+
+
+
+
+    /**
+     * get projects
+     * **/
+    public function get_projects(Request $request)
+    {
+        $projects = Project::where('client_id',$request->id)->get();
+        $loadview=view('finance::admin.invoices.ajaxload', compact('projects'))->render();
+        return response()->json($loadview, Response::HTTP_CREATED);
+    }
+
+
+
+
 }
