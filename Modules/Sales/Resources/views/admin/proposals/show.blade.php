@@ -6,7 +6,7 @@
     <div class="mb-2">
             @if($proposal->status != 'accepted' || $proposal->status != 'Approved')
                   <!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
-            <button type="button" class="btn btn-primary">Add item</button>
+            <button type="button" class="btn btn-primary"  data-toggle="modal" data-target="#primaryModal">Add item</button>
             
             <!-- Secondary, outline button -->
             <button type="button" class="btn btn-secondary">Clone</button>
@@ -253,7 +253,36 @@
         </div>
       </div>
 
-      
+    <!-- ****************************************************modal****************************************************** -->
+    <!-- /.modal -->
+
+<div class="modal fade" id="primaryModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-primary" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"> {{ trans('global.create') }} {{ trans('cruds.customerGroup.title_singular') }}
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+             <form method="POST" action="#" id="form2">
+                    @csrf
+            <div class="modal-body">
+                   
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="customgroupsubmit">
+                    {{ trans('global.save') }}</button>
+            </div>
+            </form>
+        </div>
+        <!-- /.modal-content -->
+</div>
+<!-- /.modal-dialog -->
+    <!-- ****************************************************/modal****************************************************** -->
 @section('scripts')
 <script>
 /**

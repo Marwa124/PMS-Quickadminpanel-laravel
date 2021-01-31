@@ -20,7 +20,7 @@
                     @endforeach
                 </select>
                 <span class="input-group-append">
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#primaryModal"><i
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#primaryModal" ><i
                             class="fa fa-plus"></i></button>
                 </span>
             </div>
@@ -302,8 +302,8 @@
             </form>
         </div>
         <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
 <!-- /.modal -->
