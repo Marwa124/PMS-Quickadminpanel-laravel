@@ -43,8 +43,9 @@ class PurchaseController extends Controller
         return view('materialssuppliers::admin.purchases.create', compact('suppliers', 'users'));
     }
 
-    public function store(StorePurchaseRequest $request)
+    public function store(Request $request)
     {
+        dd($request->all());
         $purchase = Purchase::create($request->all());
         $purchase->permissions()->sync($request->input('permissions', []));
 
