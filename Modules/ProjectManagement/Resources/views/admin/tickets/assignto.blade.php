@@ -68,16 +68,17 @@
                             @endforelse
 
                         @empty
-                            <div class="form-group col-md-6">
 
-                                {{trans('cruds.messages.no_designation_found_in_department_project')}}
-                            </div>
                         @endforelse
                     </div>
                 </div>
 
                 <div class="clearfix"></div>
             @empty
+                <div class="form-group col-md-6">
+
+                    {{trans('cruds.messages.no_designation_found_in_department_project')}}
+                </div>
             @endforelse
 
             <div class="form-group">

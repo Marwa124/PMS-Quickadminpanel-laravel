@@ -224,7 +224,7 @@
 
 
 
-                    
+
                 </ul>
             </li>
         @endcan
@@ -777,35 +777,59 @@
                             </a>
                         </li>
                     @endcan
+                    @canany(['project_report_access' , 'task_report_access' , 'bug_report_access' , 'ticket_report_access'])
+                        <li class="c-sidebar-nav-dropdown">
+                            <a class="c-sidebar-nav-dropdown-toggle" href="#">
+                                <i class="fa-fw far fa-edit c-sidebar-nav-icon parent-dropdown">
 
-                    <li class="c-sidebar-nav-dropdown">
-                        <a class="c-sidebar-nav-dropdown-toggle" href="#">
-                            <i class="fa-fw far fa-edit c-sidebar-nav-icon parent-dropdown">
+                                </i>
+                                {{ trans('global.reports') }}
+                            </a>
+                            <ul class="c-sidebar-nav-dropdown-items">
+                                @can('project_report_access')
+                                    <li class="c-sidebar-nav-item">
+                                        <a href="{{ route("projectmanagement.admin.projects.project_report") }}" class="c-sidebar-nav-link {{ request()->is("admin/projectmanagement/projects/reports/project_report") ? "active" : "" }}">
+                                            <i class="fa-fw fas fa-clipboard-list c-sidebar-nav-icon sub-dropdown">
 
-                            </i>
-                            {{ trans('global.reports') }}
-                        </a>
-                        <ul class="c-sidebar-nav-dropdown-items">
+                                            </i>
+                                            {{ trans('cruds.project.fields.project_report') }}
+                                        </a>
+                                    </li>
+                                @endcan
 
-                            <li class="c-sidebar-nav-item">
-                                <a href="{{ route("projectmanagement.admin.projects.project_report") }}" class="c-sidebar-nav-link {{ request()->is("admin/projectmanagement/projects/reports/project_report") ? "active" : "" }}">
-                                    <i class="fa-fw fas fa-clipboard-list c-sidebar-nav-icon sub-dropdown">
+                                @can('task_report_access')
+                                    <li class="c-sidebar-nav-item">
+                                    <a href="{{ route("projectmanagement.admin.tasks.task_report") }}" class="c-sidebar-nav-link {{ request()->is("admin/projectmanagement/tasks/reports/task_report") ? "active" : "" }}">
+                                        <i class="fa-fw fas fa-clipboard-list c-sidebar-nav-icon sub-dropdown">
 
-                                    </i>
-                                    {{ trans('cruds.project.fields.project_report') }}
-                                </a>
-                            </li>
-                            <li class="c-sidebar-nav-item">
-                                <a href="{{ route("projectmanagement.admin.tasks.task_report") }}" class="c-sidebar-nav-link {{ request()->is("admin/projectmanagement/tasks/reports/task_report") ? "active" : "" }}">
-                                    <i class="fa-fw fas fa-clipboard-list c-sidebar-nav-icon sub-dropdown">
+                                        </i>
+                                        {{ trans('cruds.task.fields.task_report') }}
+                                    </a>
+                                </li>
+                                @endcan
+                                @can('bug_report_access')
+                                    <li class="c-sidebar-nav-item">
+                                        <a href="{{ route("projectmanagement.admin.bugs.bug_report") }}" class="c-sidebar-nav-link {{ request()->is("admin/projectmanagement/bugs/reports/bug_report") ? "active" : "" }}">
+                                            <i class="fa-fw fas fa-clipboard-list c-sidebar-nav-icon sub-dropdown">
 
-                                    </i>
-                                    {{ trans('cruds.task.fields.task_report') }}
-                                </a>
-                            </li>
+                                            </i>
+                                            {{ trans('cruds.bug.fields.bug_report') }}
+                                        </a>
+                                    </li>
+                                @endcan
+                                @can('ticket_report_access')
+                                    <li class="c-sidebar-nav-item">
+                                        <a href="{{ route("projectmanagement.admin.tickets.ticket_report") }}" class="c-sidebar-nav-link {{ request()->is("admin/projectmanagement/tickets/reports/ticket_report") ? "active" : "" }}">
+                                            <i class="fa-fw fas fa-clipboard-list c-sidebar-nav-icon sub-dropdown">
 
-                        </ul>
-                    </li>
+                                            </i>
+                                            {{ trans('cruds.ticket.fields.ticket_report') }}
+                                        </a>
+                                    </li>
+                                @endcan
+                            </ul>
+                        </li>
+                    @endcanany
 
                     @can('task_uploaded_file_access')
                         <li class="c-sidebar-nav-item">

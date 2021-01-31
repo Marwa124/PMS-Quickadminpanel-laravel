@@ -15,11 +15,11 @@ class TaskStatusController extends Controller
 {
     public function index()
     {
-        abort_if(Gate::denies('task_status_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('task_status_access'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
         if (request()->segment(count(request()->segments())) == 'trashed'){
 
-            abort_if(Gate::denies('task_status_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+            abort_if(Gate::denies('task_status_delete'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
             $trashed = true;
 
@@ -37,7 +37,7 @@ class TaskStatusController extends Controller
 
     public function create()
     {
-        abort_if(Gate::denies('task_status_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('task_status_create'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
         return view('projectmanagement::admin.taskStatuses.create');
     }
@@ -51,7 +51,7 @@ class TaskStatusController extends Controller
 
     public function edit(TaskStatus $taskStatus)
     {
-        abort_if(Gate::denies('task_status_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('task_status_edit'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
         return view('projectmanagement::admin.taskStatuses.edit', compact('taskStatus'));
     }
@@ -65,15 +65,15 @@ class TaskStatusController extends Controller
 
     public function show(TaskStatus $taskStatus)
     {
-        abort(404,"this page does not exist");
-        abort_if(Gate::denies('task_status_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort(404, trans('global.page_not_exist'));
+        abort_if(Gate::denies('task_status_show'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
         return view('projectmanagement::admin.taskStatuses.show', compact('taskStatus'));
     }
 
     public function destroy(TaskStatus $taskStatus)
     {
-        abort_if(Gate::denies('task_status_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('task_status_delete'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
         $taskStatus->delete();
 

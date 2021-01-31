@@ -43,27 +43,27 @@ class ApproveRejectLeaveNotification extends Notification
     //     return ['database'];
     // }
 
-    // /**
-    //  * Get the mail representation of the notification.
-    //  *
-    //  * @param  mixed  $notifiable
-    //  * @return \Illuminate\Notifications\Messages\MailMessage
-    //  */
-    // public function toMail($notifiable)
-    // {
-    //     if(User::find(auth()->user()->id)->accountDetail()->first())
-    //     {
-    //         $userName = AccountDetail::where('user_id', auth()->user()->id)->first()->fullname;
-    //     }else{
-    //         $userName = User::find(auth()->user()->id)->name;
-    //     }
-    //     $sendMail = (new MailMessage)
-    //         ->subject('Your Leave Request has been '.$this->leave_status)
-    //         ->greeting('Congratulations! Your request for '.$this->leave_category->name.' has been approved by '.$userName ?? '')
-    //         ->action('Go To Request', route("hr.admin.leave-applications.show", $this->application->id));
-
-    //     return $sendMail;
-    // }
+    /**
+     * Get the mail representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return \Illuminate\Notifications\Messages\MailMessage
+     */
+//    public function toMail($notifiable)
+//    {
+//        if(User::find(auth()->user()->id)->accountDetail()->first())
+//        {
+//            $userName = AccountDetail::where('user_id', auth()->user()->id)->first()->fullname;
+//        }else{
+//            $userName = User::find(auth()->user()->id)->name;
+//        }
+//        $sendMail = (new MailMessage)
+//            ->subject('Your Leave Request has been '.$this->leave_status)
+//            ->greeting('Congratulations! Your request for '.$this->leave_category->name.' has been approved by '.$userName ?? '')
+//            ->action('Go To Request', route("hr.admin.leave-applications.show", $this->application->id));
+//
+//        return $sendMail;
+//    }
 
     // /**
     //  * Get the array representation of the notification.
