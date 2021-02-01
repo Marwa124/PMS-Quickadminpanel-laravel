@@ -178,6 +178,7 @@
                   <th>Description</th>
                   <th class="center">Quantity</th>
                   <th class="right">Unit Cost</th>
+                  <th class="right">Margin</th>
                   <th class="right">Selling Price</th>
                   <th class="right">Total</th>
                 </tr>
@@ -192,8 +193,9 @@
                   <td class="left">{{ $item->pivot->item_desc }}</td>
                   <td class="center">{{ $item->pivot->quantity }}</td>
                   <td class="right">{{ $item->pivot->unit_cost }}</td>
-                  <td class="right">{{ $item->pivot->selling_price }}</td>
-                  <td class="right">{{ $item->pivot->selling_price * $item->pivot->quantity}}</td>
+                  <td class="right">{{ $item->pivot->margin }}</td>
+                  <td class="right">{{ $item->pivot->selling_price / $item->pivot->quantity }}</td>
+                  <td class="right">{{ $item->pivot->selling_price}}</td>
                  </tr>
                 @endforeach
               @endif

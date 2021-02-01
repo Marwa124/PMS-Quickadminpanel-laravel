@@ -390,7 +390,7 @@
                                             <span class="bold">Discount (%)</span>
                                         </div>
                                         <div class="col-md-5">
-                                            <input type="text" data-parsley-type="number"
+                                            <input type="number" data-parsley-type="number"
                                                    value="{{ $invoice->discount_percent }}"
                                                    class="form-control pull-left" min="0" max="100"
                                                    name="discount_percent">
@@ -440,7 +440,7 @@
                                             <span class="bold">Adjustment</span>
                                         </div>
                                         <div class="col-md-5">
-                                            <input type="text" data-parsley-type="number"
+                                            <input type="number" data-parsley-type="number"
                                                    value="{{ $invoice->adjustment }}" class="form-control pull-left"
                                                    name="adjustment">
                                         </div>

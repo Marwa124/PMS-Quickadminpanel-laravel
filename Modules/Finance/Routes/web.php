@@ -84,6 +84,8 @@ Route::group(['as' => 'finance.admin.', 'prefix' => 'admin/finance', 'namespace'
     Route::resource('invoices', 'InvoicesController');
     Route::get('invoices/getpdf/{id}', 'PdfController@pdf')->name('invoices.pdf');
     Route::post('invoices/get_projects', 'InvoicesController@get_projects');
+    Route::get('invoices/change_status_approved/{id}', 'InvoicesController@change_status_approved')->name('invoices.change_status_approved');
+    Route::get('invoices/change_status_reject/{id}', 'InvoicesController@change_status_reject')->name('invoices.change_status_reject');
     ////////////////////////////////END INVOICES///////////////////////////////////////////////////////////////////////
 
 });

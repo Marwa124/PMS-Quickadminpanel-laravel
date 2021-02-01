@@ -4,9 +4,7 @@
 
 
   <div class="mb-2">
-  @if($invoice->status != 'accepted' || $invoice->status != 'approved')
-    <!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
-      <button type="button" class="btn btn-primary">Add item</button>
+  @if($invoice->status == 'accepted' || $invoice->status == 'approved' || $invoice->status == 'rejected')
 
       <!-- Secondary, outline button -->
       <button type="button" class="btn btn-secondary">Clone</button>
@@ -39,10 +37,10 @@
 
 
     <!-- Indicates a successful or positive action -->
-      <button type="button" class="btn btn-success changestatus" data-status="accepted">{{trans('cruds.invoice.fields.accepted')}}</button>
+      <a href="{{route('finance.admin.invoices.change_status_approved',$invoice->id)}}" class="btn btn-success changestatus" data-status="accepted">{{trans('cruds.invoice.fields.accepted')}}</a>
 
       <!-- Indicates caution should be taken with this action -->
-      <button type="button" class="btn btn-danger changestatus" data-status="Rejected">{{trans('cruds.invoice.fields.Rejected')}}</button>
+      <a href="{{route('finance.admin.invoices.change_status_reject',$invoice->id)}}" class="btn btn-danger changestatus" data-status="Rejected">{{trans('cruds.invoice.fields.Rejected')}}</a>
 
 
     @endif
@@ -108,7 +106,7 @@
           <div>{{ trans('cruds.invoice.fields.due_date') }} : {{ $invoice->due_date }}</div>
           <div>{{ trans('cruds.invoice.fields.Sales_Agent') }}: {{ $invoice->added_by && $invoice->added_by->accountDetail ? $invoice->added_by->accountDetail->fullname :'' }} </div>
           <div>
-            {{ trans('cruds.invoice.fields.status') }}: {{ $invoice->status }}
+            {{ trans('cruds.invoice.fields.status') }}: {!! config('enum.status.'.$invoice->status) !!}
           </div>
         </div>
         <!--/.col-->
@@ -222,7 +220,7 @@
                 </td>
                 <td class="right">
                   @if($invoice->discount_status == 'after_tax')
-                    {{ $invoice->after_discount * get_taxes($key)->rate_percent / 100 }}
+                    {{ $invoice->after_discount * ( get_taxes($key)->rate_percent / 100 )}}
                   @else
                     {{ array_sum($taxold) }}
                   @endif

@@ -106,7 +106,8 @@ class InvoicesController extends Controller
                     if ($newitem && isset($value['tax'])) {
                         foreach ($value['tax'] as $index => $newtax) {
                             $addtaxes = new InvoiceItemTax;
-                            $addtaxes->tax_cost = $invoice['id'];
+//                            $addtaxes->tax_cost = $invoice['id'];
+                            $addtaxes->tax_cost = $request->total_tax[$index] ? $request->total_tax[$index]: $request->total_tax ;
                             $addtaxes->taxs_id = $newtax;
                             $addtaxes->invoices_id = $invoice['id'];
                             $addtaxes->item_id = $newitem->id;
@@ -314,6 +315,36 @@ class InvoicesController extends Controller
         $projects = Project::where('client_id',$request->id)->get();
         $loadview=view('finance::admin.invoices.ajaxload', compact('projects'))->render();
         return response()->json($loadview, Response::HTTP_CREATED);
+    }
+
+
+
+    /**
+     * Approved or reject Invoice
+     * **/
+    public function change_status_approved($id)
+    {
+        $invoice = Invoice::findOrFail($id);
+        $invoice->update([
+           'status'     =>    'approved'
+        ]);
+
+        return redirect()->route('finance.admin.invoices.show',$id);
+
+    }
+
+    /**
+     * Reject or reject Invoice
+     * **/
+    public function change_status_reject($id)
+    {
+        $invoice = Invoice::findOrFail($id);
+        $invoice->update([
+           'status'     =>    'rejected'
+        ]);
+
+        return redirect()->route('finance.admin.invoices.show',$id);
+
     }
 
 
