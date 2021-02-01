@@ -157,7 +157,7 @@ class Proposal extends Model implements HasMedia
     public function items(){
 
         return $this->belongsToMany('Modules\Sales\Entities\ProposalsItem',
-            'item_porposal_relations','proposals_id','item_id') ->withPivot(
+            'item_porposal_relations','proposals_id','item_id')->withPivot(
                 'id',
                 'item_name',
                 'item_desc',
@@ -199,8 +199,14 @@ class Proposal extends Model implements HasMedia
             foreach($taxes->itemtaxs->where('item_id',$value->pivot->id)->pluck('taxs_id') as $tax){
 
                 if(array_key_exists($tax,$turned_into_keys)){
-                    
-                    $items_tax = ($value->pivot->unit_cost * $value->pivot->quantity)* (get_taxes($tax)->rate_percent/100) ;
+                    $sallingprice = $value->pivot->selling_price * $value->pivot->quantity;
+                    if($taxes->discount_percent != 0){
+                        $old =$sallingprice * (get_taxes($tax)->rate_percent/100) ;
+                        $items_tax =  ($old * $taxes->discount_percent) / 100 ;
+                    }else{
+
+                        $items_tax = $sallingprice * (get_taxes($tax)->rate_percent/100) ;
+                    }
                     $turned_into_keys[$tax][]=$items_tax;
                 }
             }
@@ -210,4 +216,7 @@ class Proposal extends Model implements HasMedia
         return  $turned_into_keys;
 
     }
+    
+   
+
 }

@@ -43,8 +43,8 @@ class InvoicesController extends Controller
         $ProposalsItem = ProposalsItem::all();
         $taxRates = TaxRate::all();
         $clients = Client::all();
-        $projects = Project::all();
-        return view('finance::admin.invoices.create', compact('ProposalsItem','taxRates','clients','projects'));
+        $projects = [];
+        return view('finance::admin.invoices.create', compact('ProposalsItem', 'taxRates', 'clients', 'projects'));
     }
 
     public function store(StoreInvoiceRequest $request)
@@ -52,63 +52,69 @@ class InvoicesController extends Controller
         DB::beginTransaction();
 
         try {
-            $total_tax=$request->total_tax ? array_sum($request->total_tax) : 0;
-            $after_discount=$request->after_discount ? $request->after_discount : 0;
-            $total=$request->total ? $request->total : 0;
-            $discount_percent=$request->discount_percent ? $request->discount_percent : 0;
-            $request->merge(['total_cost_price'=>$total,'total_tax'=>$total_tax,'after_discount'=>$after_discount,'discount_percent'=>$discount_percent]);
-
+            $total_tax = $request->total_tax ? array_sum($request->total_tax) : 0;
+            $after_discount = $request->after_discount ? $request->after_discount : 0;
+            $total = $request->total ? $request->total : 0;
+            $discount_percent = $request->discount_percent ? $request->discount_percent : 0;
+            $request->merge(['total_cost_price' => $total, 'total_tax' => $total_tax, 'after_discount' => $after_discount, 'discount_percent' => $discount_percent]);
 
 
             $data = [
-                'reference_no'      => $request->reference_no,
-                'recurring'         => $request->recurring,
-                'recur_start_date'  => $request->recur_start_date,
-                'recur_end_date'    => $request->recur_end_date,
-                'invoice_date'      => $request->invoice_date,
-                'due_date'          => $request->due_date,
-                'notes'             => $request->notes,
-                'total_tax'         => $request->total_tax,
-                'client_id'         => $request->client_id,
-                'project_id'        => $request->project_id,
-                'discounts'         => $request->discounts,
-                'total_amount'      => floatval($request->total),
-                'discount_percent'  => intval($request->discount_percent),
-                'currency'          => 'EGP',
-                'status'            => 'Approved',
+                'reference_no' => $request->reference_no,
+                'recurring' => $request->recurring,
+                'recur_start_date' => $request->recur_start_date,
+                'recur_end_date' => $request->recur_end_date,
+                'invoice_date' => $request->invoice_date,
+                'due_date' => $request->due_date,
+                'notes' => $request->notes,
+                'total_tax' => $request->total_tax,
+                'client_id' => $request->client_id,
+                'project_id' => $request->project_id,
+                'adjustment' => $request->adjustment,
+                'discount_status' => $request->discounts,
+                'discount_total' => $request->discount_total,
+                'before_discount' => $request->subtotal,
+                'after_discount' => $request->after_discount,
+                'total_amount' => floatval($request->total),
+                'discount_percent' => intval($request->discount_percent),
+                'user_id' => $request->user_id,
+                'currency' => 'EGP',
             ];
 
 
             $invoice = Invoice::create($data);
+            if ($request->items) {
 
-            foreach ($request->items as $key => $value) {
-                $total_taxitem=0;
-                if (isset($value['tax'])) {
-                    # code...
-                    $taxRates = TaxRate::whereIN('id',$value['tax'])->pluck('rate_percent');
-                    if(!empty($taxRates)){
-                        foreach ($taxRates as $ratevalue) {
-                            $total_taxitem=$total_taxitem+($value['unit_cost']* $value['total_qty'] * ($ratevalue / 100));
+                foreach ($request->items as $key => $value) {
+                    $total_taxitem = 0;
+                    if (isset($value['tax'])) {
+                        # code...
+                        $taxRates = TaxRate::whereIN('id', $value['tax'])->pluck('rate_percent');
+                        if (!empty($taxRates)) {
+                            foreach ($taxRates as $ratevalue) {
+                                $total_taxitem = $total_taxitem + ($value['unit_cost'] * $value['total_qty'] * ($ratevalue / 100));
+                            }
                         }
                     }
-                }
 
-                $newitem=ItemInvoiceRelations::create($value);
-                $newitem->update([
-                    'invoices_id'=>$invoice['id'],
-                    'item_id'=>$value['saved_items_id'],
-                ]);
+                    $newitem = ItemInvoiceRelations::create($value);
+                    $newitem->update([
+                        'invoices_id' => $invoice['id'],
+                        'item_id' => $value['saved_items_id'],
+                    ]);
 
-                if($newitem && isset($value['tax'])){
-                    foreach($value['tax'] as $newtax){
-                        $addtaxes=new InvoiceItemTax;
-                        $addtaxes->tax_cost=$invoice['id'];
-                        $addtaxes->taxs_id=$newtax;
-                        $addtaxes->invoices_id=$invoice['id'];
-                        $addtaxes->item_id=$newitem->id;
-                        $addtaxes->save();
+                    if ($newitem && isset($value['tax'])) {
+                        foreach ($value['tax'] as $index => $newtax) {
+                            $addtaxes = new InvoiceItemTax;
+//                            $addtaxes->tax_cost = $invoice['id'];
+                            $addtaxes->tax_cost = $request->total_tax[$index] ? $request->total_tax[$index]: $request->total_tax ;
+                            $addtaxes->taxs_id = $newtax;
+                            $addtaxes->invoices_id = $invoice['id'];
+                            $addtaxes->item_id = $newitem->id;
+                            $addtaxes->save();
+                        }
+
                     }
-
                 }
             }
 
@@ -134,8 +140,8 @@ class InvoicesController extends Controller
         $ProposalsItem = ProposalsItem::all();
         $taxRates = TaxRate::all();
         $clients = Client::all();
-        $projects = Project::all();
-        return view('finance::admin.invoices.edit', compact('ProposalsItem','taxRates','invoice','clients','projects'));
+        $projects =  Project::where('client_id',$invoice->project_id)->get();
+        return view('finance::admin.invoices.edit', compact('ProposalsItem', 'taxRates', 'invoice', 'clients', 'projects'));
     }
 
     public function update(Request $request, Invoice $invoice)
@@ -144,68 +150,75 @@ class InvoicesController extends Controller
         DB::beginTransaction();
 
         try {
-            $total_tax=$request->total_tax ? array_sum($request->total_tax) : 0;
-            $after_discount=$request->after_discount ? $request->after_discount : 0;
-            $total=$request->total ? $request->total : 0;
-            $discount_percent=$request->discount_percent ? $request->discount_percent : 0;
-            $request->merge(['total_cost_price'=>$total,'total_tax'=>$total_tax,'after_discount'=>$after_discount,'discount_percent'=>$discount_percent]);
+            $total_tax = $request->total_tax ? array_sum($request->total_tax) : 0;
+            $after_discount = $request->after_discount ? $request->after_discount : 0;
+            $total = $request->total ? $request->total : 0;
+            $discount_percent = $request->discount_percent ? $request->discount_percent : 0;
+            $request->merge(['total_cost_price' => $total, 'total_tax' => $total_tax, 'after_discount' => $after_discount, 'discount_percent' => $discount_percent]);
             // dd($request->all(),$request->item_relation_id,isset($request->item_relation_id),ItemInvoiceRelations::whereIn('id',$request->item_relation_id)->get());
             $data = [
-                'reference_no'      => $request->reference_no,
-                'recurring'         => $request->recurring,
-                'recur_start_date'  => $request->recur_start_date,
-                'recur_end_date'    => $request->recur_end_date,
-                'invoice_date'      => $request->invoice_date,
-                'due_date'          => $request->due_date,
-                'notes'             => $request->notes,
-                'total_tax'         => $request->total_tax,
-                'client_id'         => $request->client_id,
-                'project_id'        => $request->project_id,
-                'discounts'         => $request->discounts,
-                'total_amount'      => floatval($request->total),
-                'discount_percent'  => intval($request->discount_percent),
-                'currency'          => 'EGP',
-                'status'            => 'Approved',
+                'reference_no' => $request->reference_no,
+                'recurring' => $request->recurring,
+                'recur_start_date' => $request->recur_start_date,
+                'recur_end_date' => $request->recur_end_date,
+                'invoice_date' => $request->invoice_date,
+                'due_date' => $request->due_date,
+                'notes' => $request->notes,
+                'total_tax' => $request->total_tax,
+                'client_id' => $request->client_id,
+                'project_id' => $request->project_id,
+                'adjustment' => $request->adjustment,
+                'discount_status' => $request->discounts,
+                'discount_total' => $request->discount_total,
+                'before_discount' => $request->subtotal,
+                'after_discount' => $request->after_discount,
+                'total_amount' => floatval($request->total),
+                'discount_percent' => intval($request->discount_percent),
+                'currency' => 'EGP',
             ];
 
             $invoice->update($data);
 
 
-            if(isset($request->item_relation_id)){
+            if (isset($request->item_relation_id)) {
 
-                $deleteold=ItemInvoiceRelations::whereIn('id',$request->item_relation_id)->forceDelete();
+                $deleteold = ItemInvoiceRelations::whereIn('id', $request->item_relation_id)->forceDelete();
             }
 
-            foreach ($request->items as $key => $value) {
-                $total_taxitem=0;
-                if (isset($value['tax'])) {
-                    # code...
-                    $taxRates = TaxRate::whereIN('id',$value['tax'])->pluck('rate_percent');
-                    if(!empty($taxRates)){
-                        foreach ($taxRates as $ratevalue) {
-                            $total_taxitem=$total_taxitem+($value['unit_cost']* $value['total_qty'] * ($ratevalue / 100));
+
+            if ($request->items) {
+                foreach ($request->items as $key => $value) {
+                    $total_taxitem = 0;
+                    if (isset($value['tax'])) {
+                        # code...
+                        $taxRates = TaxRate::whereIN('id', $value['tax'])->pluck('rate_percent');
+                        if (!empty($taxRates)) {
+                            foreach ($taxRates as $ratevalue) {
+                                $total_taxitem = $total_taxitem + ($value['unit_cost'] * $value['total_qty'] * ($ratevalue / 100));
+                            }
                         }
                     }
-                }
 
 
-                $newitem=ItemInvoiceRelations::create($value);
-                $newitem->update([
-                    'invoices_id'=>$invoice['id'],
-                    'item_id'=>$value['saved_items_id'],
-                ]);
+                    $newitem = ItemInvoiceRelations::create($value);
+                    $newitem->update([
+                        'invoices_id' => $invoice['id'],
+                        'item_id' => $value['saved_items_id'],
+                    ]);
 
-                if($newitem && isset($value['tax'])){
-                    foreach($value['tax'] as $newtax){
-                        $addtaxes=new InvoiceItemTax;
-                        $addtaxes->tax_cost=$invoice['id'];
-                        $addtaxes->taxs_id=$newtax;
-                        $addtaxes->invoices_id=$invoice['id'];
-                        $addtaxes->item_id=$newitem->id;
-                        $addtaxes->save();
+                    if ($newitem && isset($value['tax'])) {
+                        foreach ($value['tax'] as $newtax) {
+                            $addtaxes = new InvoiceItemTax;
+                            $addtaxes->tax_cost = $invoice['id'];
+                            $addtaxes->taxs_id = $newtax;
+                            $addtaxes->invoices_id = $invoice['id'];
+                            $addtaxes->item_id = $newitem->id;
+                            $addtaxes->save();
+                        }
+
                     }
-
                 }
+
             }
 
 
@@ -230,7 +243,6 @@ class InvoicesController extends Controller
         abort_if(Gate::denies('invoice_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
 
-
         return view('finance::admin.invoices.show', compact('invoice'));
     }
 
@@ -243,7 +255,7 @@ class InvoicesController extends Controller
         return back();
     }
 
-    public function massDestroy(MassDestroyInvoiceRequest $request)
+    public function massDestroy(Request $request)
     {
         Invoice::whereIn('id', request('ids'))->delete();
 
@@ -254,58 +266,88 @@ class InvoicesController extends Controller
     {
         abort_if(Gate::denies('invoice_create') && Gate::denies('invoice_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $model         = new Invoice();
-        $model->id     = $request->input('crud_id', 0);
+        $model = new Invoice();
+        $model->id = $request->input('crud_id', 0);
         $model->exists = true;
-        $media         = $model->addMediaFromRequest('upload')->toMediaCollection('ck-media');
+        $media = $model->addMediaFromRequest('upload')->toMediaCollection('ck-media');
 
         return response()->json(['id' => $media->id, 'url' => $media->getUrl()], Response::HTTP_CREATED);
     }
 
-    public function getmodule(Request $request)
-    {
-        $ajaxrequest="getmodule";
-        if($request->id=="opportunities"){
-            $data=Opportunity::all()->pluck('name', 'id');
-            $datataype=$request->id;
-        }elseif ($request->id=="client") {
-            $data=Client::all()->pluck('name', 'id');
-            $datataype=$request->id;
-        }
-        if($request->id != null){
 
-            $loadview=view('finance::admin.invoices.ajaxload', compact('data','datataype','ajaxrequest'))->render();
-        }else{
-            $loadview="";
-        }
-        return response()->json($loadview, Response::HTTP_CREATED);
-
-
-    }
     /**
      * get invoice item by id
      * **/
     public function get_item_by_id(Request $request)
     {
-        if($request->id != null){
+        if ($request->id != null) {
 
             $item = ProposalsItem::find($request->id);
             $item->setAttribute('group_name', (!empty($item->customer_group) ? $item->customer_group->name : null));
-            $item->setAttribute('taxname' , (!empty($item->taxes) ? $item->taxes->name : null));
-            $item->setAttribute('taxrate' , (!empty($item->taxes) ? $item->taxes->rate_percent : null));
-            $item->setAttribute('description' , strip_tags($item->description));
+            $item->setAttribute('taxname', (!empty($item->taxes) ? $item->taxes->name : null));
+            $item->setAttribute('taxrate', (!empty($item->taxes) ? $item->taxes->rate_percent : null));
+            $item->setAttribute('description', strip_tags($item->description));
 
             return response()->json($item, Response::HTTP_CREATED);
-        }else{
+        } else {
 
-            return response()->json(null,500);
+            return response()->json(null, 500);
         }
     }
+
     /**
      * get taxes
      * **/
-    public function get_taxes_ajax(Request $request){
+    public function get_taxes_ajax(Request $request)
+    {
         $taxRates = TaxRate::all();
         return response()->json($taxRates, Response::HTTP_CREATED);
     }
+
+
+
+
+    /**
+     * get projects
+     * **/
+    public function get_projects(Request $request)
+    {
+        $projects = Project::where('client_id',$request->id)->get();
+        $loadview=view('finance::admin.invoices.ajaxload', compact('projects'))->render();
+        return response()->json($loadview, Response::HTTP_CREATED);
+    }
+
+
+
+    /**
+     * Approved or reject Invoice
+     * **/
+    public function change_status_approved($id)
+    {
+        $invoice = Invoice::findOrFail($id);
+        $invoice->update([
+           'status'     =>    'approved'
+        ]);
+
+        return redirect()->route('finance.admin.invoices.show',$id);
+
+    }
+
+    /**
+     * Reject or reject Invoice
+     * **/
+    public function change_status_reject($id)
+    {
+        $invoice = Invoice::findOrFail($id);
+        $invoice->update([
+           'status'     =>    'rejected'
+        ]);
+
+        return redirect()->route('finance.admin.invoices.show',$id);
+
+    }
+
+
+
+
 }

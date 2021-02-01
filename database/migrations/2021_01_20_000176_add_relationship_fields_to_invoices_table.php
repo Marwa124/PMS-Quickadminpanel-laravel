@@ -13,6 +13,8 @@ class AddRelationshipFieldsToInvoicesTable extends Migration
             $table->foreign('client_id', 'client_fk_2177095')->references('id')->on('clients');
             $table->unsignedInteger('project_id')->nullable();
             $table->foreign('project_id', 'project_fk_2177096')->references('id')->on('projects');
+            $table->unsignedInteger('user_id')->nullable();
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 }

@@ -20,6 +20,7 @@ Route::group(['as' => 'sales.admin.', 'prefix' => 'admin/sales', 'namespace' => 
     Route::delete('proposals/destroy', 'ProposalsController@massDestroy')->name('proposals.massDestroy');
     Route::post('proposals/changestatus', 'ProposalsController@changestatus')->name('proposals.changestatus');
     Route::post('proposals/getmodule', 'ProposalsController@getmodule')->name('proposals.getmodule');
+    Route::post('proposals/Clone/{proposal}', 'ProposalsController@cloneproposal')->name('proposals.cloneproposal');
     Route::post('proposals/get_taxes', 'ProposalsController@get_taxes_ajax')->name('proposals.get_taxes_ajax');
     Route::post('proposals/getproposalitem', 'ProposalsController@get_item_by_id')->name('proposals.getproposalitem');
     Route::post('proposals/media', 'ProposalsController@storeMedia')->name('proposals.storeMedia');

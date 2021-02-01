@@ -23,8 +23,8 @@ class ProposalsItem extends Model implements HasMedia
 
     protected $fillable = [
         // 'proposals_id',
-        'name',
-        'description',
+        'item_name',
+        'item_desc',
         'customer_group_id',
         // 'group_name',
         'brand',
