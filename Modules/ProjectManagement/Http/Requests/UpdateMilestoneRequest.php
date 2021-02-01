@@ -38,6 +38,7 @@ class UpdateMilestoneRequest extends FormRequest
             'end_date'   => [
                 'required',
                 'date_format:' . config('panel.date_format'),
+                'after_or_equal:start_date',
             ],
         ];
     }

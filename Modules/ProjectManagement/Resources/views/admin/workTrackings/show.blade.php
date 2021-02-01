@@ -168,8 +168,10 @@
                                     {{--<div class="card-body">--}}
                                         <input type="hidden" id="progress_WorkTracking" value="{{$result['progress_WorkTracking']}}"/>
                                         <div class="chart-wrapper">
-                                            <canvas id="canvas-3" height="70"></canvas>
-                                            <h2>{{$result['progress_WorkTracking']}} %</h2>
+                                            <div style="position:relative">
+                                                <canvas id="canvas-3" height="70"></canvas>
+                                                <h2 style="display:inline;">{{$result['progress_WorkTracking']}} %</h2>
+                                            </div>
                                         </div>
 {{--                                @dd($result)--}}
                                     {{--</div>--}}

@@ -403,7 +403,31 @@ class TicketsController extends Controller
 //        {
         $tickets = Ticket::all();
 
-        return view('projectmanagement::admin.tickets.ticket_report', compact('tickets'));
+        $yearly_report = $this->get_project_report_by_month(true);
+
+        $openedArray = [];
+        $answeredArray = [];
+        $in_progressArray = [];
+        $closedArray = [];
+        $reopenArray = [];
+
+        foreach($yearly_report as $report)
+        {
+            array_push($openedArray,$report->where('status','opened')->count());
+            array_push($answeredArray,$report->where('status','answered')->count());
+            array_push($in_progressArray,$report->where('status','in_progress')->count());
+            array_push($closedArray,$report->where('status','closed')->count());
+            array_push($reopenArray,$report->where('status','reopen')->count());
+        }
+
+
+        $openedArray = implode(',',$openedArray);
+        $answeredArray = implode(',',$answeredArray);
+        $in_progressArray = implode(',',$in_progressArray);
+        $closedArray = implode(',',$closedArray);
+        $reopenArray = implode(',',$reopenArray);
+
+        return view('projectmanagement::admin.tickets.ticket_report', compact('tickets','openedArray','answeredArray','in_progressArray','closedArray','reopenArray'));
 
 //        }
 //

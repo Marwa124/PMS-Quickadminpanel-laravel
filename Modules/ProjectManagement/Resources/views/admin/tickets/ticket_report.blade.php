@@ -26,57 +26,20 @@
                     </div>
                     <div class="card">
                         <div class="card-header">
-                            {{trans('cruds.ticket.title')}} {{trans('global.reports')}}
+                            {{trans('cruds.ticket.title')}} {{trans('global.reports')}} {{ date('Y')}}
 
                         </div>
-                        <div class="card-body text-center" >
-{{--                            <div class="chart-wrapper">--}}
-{{--                                @php--}}
-{{--                                    $total_spend = 0;--}}
-{{--                                @endphp--}}
-{{--                                @forelse($projects as $project)--}}
-{{--                                    @php--}}
-{{--                                        $tasks = $project->tasks;--}}
-{{--                                        $timeProject = $project->TimeSheet;--}}
-{{--                                                //->where("module_field_id",$project->id);--}}
 
-{{--                                       //$timeTasks = TimeSheet::where('module','task')--}}
-{{--                                       //       ->whereIn("module_field_id",$tasks->pluck('id'));--}}
-{{--                                    @endphp--}}
+                        <input type="hidden" id="openedArray"       value="{{$openedArray}}"/>
+                        <input type="hidden" id="answeredArray"     value="{{$answeredArray}}"/>
+                        <input type="hidden" id="in_progressArray"  value="{{$in_progressArray}}"/>
+                        <input type="hidden" id="closedArray"       value="{{$closedArray}}"/>
+                        <input type="hidden" id="reopenArray"       value="{{$reopenArray}}"/>
 
-{{--                                    --}}{{--get user time spend in project--}}
-{{--                                    @forelse($timeProject as $timer)--}}
-
-{{--                                        @if($timer->end_time && $timer->start_time)--}}
-{{--                                            @php--}}
-{{--                                                $total_spend += ($timer->end_time - $timer->start_time);--}}
-{{--                                            @endphp--}}
-{{--                                        @endif--}}
-{{--                                    @empty--}}
-{{--                                    @endforelse--}}
-
-{{--                                    --}}{{--get user time spend in tasks of project --}}
-
-{{--                                    --}}{{--@forelse($timeTasks as $timer)--}}
-
-
-{{--                                        --}}{{--@if($timer->end_time && $timer->start_time)--}}
-{{--                                            --}}{{--@php--}}
-{{--                                                --}}{{--$total_spend += ($timer->end_time - $timer->start_time);--}}
-{{--                                            --}}{{--@endphp--}}
-{{--                                        --}}{{--@endif--}}
-{{--                                    --}}{{--@empty--}}
-{{--                                    --}}{{--@endforelse--}}
-
-{{--                                    --}}{{--    get_time_spent_result in file global_helper     --}}
-{{--                                @empty--}}
-{{--                                @endforelse--}}
-{{--                                <div  class="align-content-center p-4">--}}
-
-{{--                                    <h1>{{ get_time_spent_result($total_spend)  }}</h1>--}}
-{{--                                    <h6 class="align-content-center">{{trans('global.hours')}} : {{trans('global.minutes')}} : {{trans('global.seconds')}}</h6>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
+                        <div class="card-body" >
+                            <div class="chart-wrapper">
+                                <canvas id="canvas-1"></canvas>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -135,6 +98,162 @@
                 responsive: true
             }
         });
+
+        var opened      = document.getElementById("openedArray").value;
+        var answered    = document.getElementById("answeredArray").value;
+        var in_progress = document.getElementById("in_progressArray").value;
+        var close       = document.getElementById("closedArray").value;
+        var reopen      = document.getElementById("reopenArray").value;
+
+        //convert objects to array
+        var openedArray      = convert_object_to_array(opened);
+        var answeredArray    = convert_object_to_array(answered);
+        var in_progressArray = convert_object_to_array(in_progress);
+        var closedArray      = convert_object_to_array(close);
+        var reopenArray      = convert_object_to_array(reopen);
+
+
+        var lineChartData = {
+
+            labels : ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+            datasets : [
+                {
+                    label: '{{trans('cruds.status.open')}}',
+                    backgroundColor : 'rgba(220,220,220,0)',
+                    borderColor : 'rgb(13,134,255)',
+                    pointBackgroundColor : 'rgba(220,220,220,1)',
+                    pointBorderColor : '#0d86ff',
+                    data : [
+                        openedArray.shift() ,
+                        openedArray.shift() ,
+                        openedArray.shift() ,
+                        openedArray.shift() ,
+                        openedArray.shift() ,
+                        openedArray.shift() ,
+                        openedArray.shift() ,
+                        openedArray.shift() ,
+                        openedArray.shift() ,
+                        openedArray.shift() ,
+                        openedArray.shift() ,
+                        openedArray.shift() ,
+
+                    ],
+                },
+                {
+                    label:'{{trans('cruds.status.answered')}}',
+                    backgroundColor : 'rgba(220,220,220,0)',
+                    borderColor : 'rgb(28,116,48)',
+                    pointBackgroundColor : 'rgba(220,220,220,1)',
+                    pointBorderColor : '#1c7430',
+                    data : [
+                        answeredArray.shift() ,
+                        answeredArray.shift() ,
+                        answeredArray.shift() ,
+                        answeredArray.shift() ,
+                        answeredArray.shift() ,
+                        answeredArray.shift() ,
+                        answeredArray.shift() ,
+                        answeredArray.shift() ,
+                        answeredArray.shift() ,
+                        answeredArray.shift() ,
+                        answeredArray.shift() ,
+                        answeredArray.shift() ,
+                    ],
+                },
+                {
+                    label: '{{trans('cruds.status.in_progress')}}',
+                    backgroundColor : 'rgba(220,220,220,0)',
+                    borderColor : 'rgb(255,206,86)',
+                    pointBackgroundColor : 'rgba(220,220,220,1)',
+                    pointBorderColor : '#FFCE56',
+                    data : [
+                        in_progressArray.shift() ,
+                        in_progressArray.shift() ,
+                        in_progressArray.shift() ,
+                        in_progressArray.shift() ,
+                        in_progressArray.shift() ,
+                        in_progressArray.shift() ,
+                        in_progressArray.shift() ,
+                        in_progressArray.shift() ,
+                        in_progressArray.shift() ,
+                        in_progressArray.shift() ,
+                        in_progressArray.shift() ,
+                        in_progressArray.shift() ,
+                    ],
+                },
+                {
+                    label: '{{trans('cruds.status.close')}}',
+                    backgroundColor : 'rgba(220,220,220,0)',
+                    borderColor : 'rgb(0,0,0)',
+                    pointBackgroundColor : 'rgba(220,220,220,1)',
+                    pointBorderColor : '#000000',
+                    data : [
+                        closedArray.shift(),
+                        closedArray.shift(),
+                        closedArray.shift(),
+                        closedArray.shift(),
+                        closedArray.shift(),
+                        closedArray.shift(),
+                        closedArray.shift(),
+                        closedArray.shift(),
+                        closedArray.shift(),
+                        closedArray.shift(),
+                        closedArray.shift(),
+                        closedArray.shift(),
+                    ],
+                },
+                {
+                    label:  '{{trans('cruds.status.reopen')}}',
+                    backgroundColor : 'rgba(220,220,220,0)',
+                    borderColor : 'rgb(147,23,28)',
+                    pointBackgroundColor : 'rgba(220,220,220,1)',
+                    pointBorderColor : '#94171c',
+                    data : [
+                        reopenArray.shift(),
+                        reopenArray.shift(),
+                        reopenArray.shift(),
+                        reopenArray.shift(),
+                        reopenArray.shift(),
+                        reopenArray.shift(),
+                        reopenArray.shift(),
+                        reopenArray.shift(),
+                        reopenArray.shift(),
+                        reopenArray.shift(),
+                        reopenArray.shift(),
+                        reopenArray.shift(),
+                    ],
+                }
+            ]
+        }
+
+        var ctx = document.getElementById('canvas-1');
+        var chart = new Chart(ctx, {
+            type: 'line',
+            data: lineChartData,
+            options: {
+                responsive: true,
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            stepSize: 2
+                        }
+                    }]
+                },
+            }
+        });
+
+        function convert_object_to_array ( status)
+        {
+            status   = status.split(',');
+            var statusArray  = [];
+
+            for (var i = 0;i<status.length;i++){
+
+                statusArray[i] = status[i]
+            }
+
+            return statusArray;
+        }
     </script>
 
 @endsection

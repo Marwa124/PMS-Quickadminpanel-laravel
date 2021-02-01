@@ -393,8 +393,33 @@ class BugsController extends Controller
 //        if ($user->hasrole(['Admin','Super Admin']))
 //        {
         $bugs = Bug::all();
+        $yearly_report = $this->get_project_report_by_month();
 
-        return view('projectmanagement::admin.bugs.bug_report', compact('bugs'));
+        $unconfirmArray = [];
+        $confirmedArray = [];
+        $in_progressArray = [];
+        $resolvedArray = [];
+        $verifiedArray = [];
+
+        foreach($yearly_report as $report)
+        {
+                array_push($unconfirmArray,$report->where('status','unconfirm')->count());
+                array_push($confirmedArray,$report->where('status','confirmed')->count());
+                array_push($in_progressArray,$report->where('status','in_progress')->count());
+                array_push($resolvedArray,$report->where('status','resolved')->count());
+                array_push($verifiedArray,$report->where('status','verified')->count());
+        }
+
+
+        $unconfirmArray = implode(',',$unconfirmArray);
+        $confirmedArray = implode(',',$confirmedArray);
+        $in_progressArray = implode(',',$in_progressArray);
+        $resolvedArray = implode(',',$resolvedArray);
+        $verifiedArray = implode(',',$verifiedArray);
+
+//        dd($unconfirmArray,$confirmedArray,$in_progressArray,$resolvedArray,$verifiedArray);
+
+        return view('projectmanagement::admin.bugs.bug_report', compact('bugs','unconfirmArray','confirmedArray','in_progressArray','resolvedArray','verifiedArray'));
 
 //        }
 //

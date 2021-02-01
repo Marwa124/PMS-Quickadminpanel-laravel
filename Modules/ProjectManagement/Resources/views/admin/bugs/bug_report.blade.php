@@ -26,57 +26,20 @@
                     </div>
                     <div class="card">
                         <div class="card-header">
-                            {{trans('cruds.bug.title')}} {{trans('global.reports')}}
+                            {{trans('cruds.bug.title')}} {{trans('global.reports')}} {{ date('Y')}}
 
                         </div>
-                        <div class="card-body text-center" >
-{{--                            <div class="chart-wrapper">--}}
-{{--                                @php--}}
-{{--                                    $total_spend = 0;--}}
-{{--                                @endphp--}}
-{{--                                @forelse($projects as $project)--}}
-{{--                                    @php--}}
-{{--                                        $tasks = $project->tasks;--}}
-{{--                                        $timeProject = $project->TimeSheet;--}}
-{{--                                                //->where("module_field_id",$project->id);--}}
 
-{{--                                       //$timeTasks = TimeSheet::where('module','task')--}}
-{{--                                       //       ->whereIn("module_field_id",$tasks->pluck('id'));--}}
-{{--                                    @endphp--}}
+                        <input type="hidden" id="unconfirmArray"    value="{{$unconfirmArray}}"/>
+                        <input type="hidden" id="confirmedArray"    value="{{$confirmedArray}}"/>
+                        <input type="hidden" id="in_progressArray"  value="{{$in_progressArray}}"/>
+                        <input type="hidden" id="resolvedArray"     value="{{$resolvedArray}}"/>
+                        <input type="hidden" id="verifiedArray"     value="{{$verifiedArray}}"/>
 
-{{--                                    --}}{{--get user time spend in project--}}
-{{--                                    @forelse($timeProject as $timer)--}}
-
-{{--                                        @if($timer->end_time && $timer->start_time)--}}
-{{--                                            @php--}}
-{{--                                                $total_spend += ($timer->end_time - $timer->start_time);--}}
-{{--                                            @endphp--}}
-{{--                                        @endif--}}
-{{--                                    @empty--}}
-{{--                                    @endforelse--}}
-
-{{--                                    --}}{{--get user time spend in tasks of project --}}
-
-{{--                                    --}}{{--@forelse($timeTasks as $timer)--}}
-
-
-{{--                                        --}}{{--@if($timer->end_time && $timer->start_time)--}}
-{{--                                            --}}{{--@php--}}
-{{--                                                --}}{{--$total_spend += ($timer->end_time - $timer->start_time);--}}
-{{--                                            --}}{{--@endphp--}}
-{{--                                        --}}{{--@endif--}}
-{{--                                    --}}{{--@empty--}}
-{{--                                    --}}{{--@endforelse--}}
-
-{{--                                    --}}{{--    get_time_spent_result in file global_helper     --}}
-{{--                                @empty--}}
-{{--                                @endforelse--}}
-{{--                                <div  class="align-content-center p-4">--}}
-
-{{--                                    <h1>{{ get_time_spent_result($total_spend)  }}</h1>--}}
-{{--                                    <h6 class="align-content-center">{{trans('global.hours')}} : {{trans('global.minutes')}} : {{trans('global.seconds')}}</h6>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
+                        <div class="card-body">
+                            <div class="chart-wrapper">
+                                <canvas id="canvas-1"></canvas>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -137,6 +100,164 @@
                 responsive: true
             }
         });
+
+        var unconfirm      = document.getElementById("unconfirmArray").value;
+        var confirmed      = document.getElementById("confirmedArray").value;
+        var in_progress    = document.getElementById("in_progressArray").value;
+        var resolved       = document.getElementById("resolvedArray").value;
+        var verified       = document.getElementById("verifiedArray").value;
+
+        //convert objects to array
+
+        var unconfirmArray      = convert_object_to_array(unconfirm);
+        var confirmedArray      = convert_object_to_array(confirmed);
+        var in_progressArray    = convert_object_to_array(in_progress);
+        var resolvedArray       = convert_object_to_array(resolved);
+        var verifiedArray       = convert_object_to_array(verified);
+
+
+        var lineChartData = {
+
+            labels : ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+            datasets : [
+                {
+                    label: '{{trans('cruds.status.unconfirm')}}',
+                    backgroundColor : 'rgba(220,220,220,0)',
+                    borderColor : 'rgb(147,23,28)',
+                    pointBackgroundColor : 'rgba(220,220,220,1)',
+                    pointBorderColor : '#94171c',
+                    data : [
+                        unconfirmArray.shift() ,
+                        unconfirmArray.shift() ,
+                        unconfirmArray.shift() ,
+                        unconfirmArray.shift() ,
+                        unconfirmArray.shift() ,
+                        unconfirmArray.shift() ,
+                        unconfirmArray.shift() ,
+                        unconfirmArray.shift() ,
+                        unconfirmArray.shift() ,
+                        unconfirmArray.shift() ,
+                        unconfirmArray.shift() ,
+                        unconfirmArray.shift() ,
+
+                    ],
+                },
+                {
+                    label:'{{trans('cruds.status.confirmed')}}',
+                    backgroundColor : 'rgba(220,220,220,0)',
+                    borderColor : 'rgb(13,134,255)',
+                    pointBackgroundColor : 'rgba(220,220,220,1)',
+                    pointBorderColor : '#0d86ff',
+                    data : [
+                        confirmedArray.shift() ,
+                        confirmedArray.shift() ,
+                        confirmedArray.shift() ,
+                        confirmedArray.shift() ,
+                        confirmedArray.shift() ,
+                        confirmedArray.shift() ,
+                        confirmedArray.shift() ,
+                        confirmedArray.shift() ,
+                        confirmedArray.shift() ,
+                        confirmedArray.shift() ,
+                        confirmedArray.shift() ,
+                        confirmedArray.shift() ,
+                    ],
+                },
+                {
+                    label: '{{trans('cruds.status.in_progress')}}',
+                    backgroundColor : 'rgba(220,220,220,0)',
+                    borderColor : 'rgb(255,206,86)',
+                    pointBackgroundColor : 'rgba(220,220,220,1)',
+                    pointBorderColor : '#FFCE56',
+                    data : [
+                        in_progressArray.shift() ,
+                        in_progressArray.shift() ,
+                        in_progressArray.shift() ,
+                        in_progressArray.shift() ,
+                        in_progressArray.shift() ,
+                        in_progressArray.shift() ,
+                        in_progressArray.shift() ,
+                        in_progressArray.shift() ,
+                        in_progressArray.shift() ,
+                        in_progressArray.shift() ,
+                        in_progressArray.shift() ,
+                        in_progressArray.shift() ,
+                    ],
+                },
+                {
+                    label: '{{trans('cruds.status.resolved')}}',
+                    backgroundColor : 'rgba(220,220,220,0)',
+                    borderColor : 'rgb(0,15,255)',
+                    pointBackgroundColor : 'rgba(220,220,220,1)',
+                    pointBorderColor : '#000fff',
+                    data : [
+                        resolvedArray.shift(),
+                        resolvedArray.shift(),
+                        resolvedArray.shift(),
+                        resolvedArray.shift(),
+                        resolvedArray.shift(),
+                        resolvedArray.shift(),
+                        resolvedArray.shift(),
+                        resolvedArray.shift(),
+                        resolvedArray.shift(),
+                        resolvedArray.shift(),
+                        resolvedArray.shift(),
+                        resolvedArray.shift(),
+                    ],
+                },
+                {
+                    label:  '{{trans('cruds.status.verified')}}',
+                    backgroundColor : 'rgba(220,220,220,0)',
+                    borderColor : 'rgb(28,116,48)',
+                    pointBackgroundColor : 'rgba(220,220,220,1)',
+                    pointBorderColor : '#1c7430',
+                    data : [
+                        verifiedArray.shift(),
+                        verifiedArray.shift(),
+                        verifiedArray.shift(),
+                        verifiedArray.shift(),
+                        verifiedArray.shift(),
+                        verifiedArray.shift(),
+                        verifiedArray.shift(),
+                        verifiedArray.shift(),
+                        verifiedArray.shift(),
+                        verifiedArray.shift(),
+                        verifiedArray.shift(),
+                        verifiedArray.shift(),
+                    ],
+                }
+            ]
+        }
+
+        var ctx = document.getElementById('canvas-1');
+        var chart = new Chart(ctx, {
+            type: 'line',
+            data: lineChartData,
+            options: {
+                responsive: true,
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            stepSize: 2
+                        }
+                    }]
+                },
+            }
+        });
+
+        function convert_object_to_array ( status)
+        {
+           status   = status.split(',');
+            var statusArray  = [];
+
+            for (var i = 0;i<status.length;i++){
+
+                statusArray[i] = status[i]
+            }
+
+            return statusArray;
+        }
+
     </script>
 
 @endsection
