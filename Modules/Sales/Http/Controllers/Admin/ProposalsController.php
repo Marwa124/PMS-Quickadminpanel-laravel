@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\MediaUploadingTrait;
 use Modules\Sales\Http\Requests\Destroy\MassDestroyProposalRequest;
 use Modules\Sales\Http\Requests\Store\StoreProposalRequest;
+use Modules\Sales\Http\Requests\Store\CloneProposalRequest;
 use Modules\Sales\Http\Requests\Update\UpdateProposalRequest;
 use Modules\Sales\Http\Requests;
 use Modules\Sales\Entities\ProposalsItem;
@@ -23,7 +24,7 @@ use Illuminate\Http\Request;
 use Spatie\MediaLibrary\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Arr;
 class ProposalsController extends Controller
 {
     use MediaUploadingTrait;
@@ -227,7 +228,7 @@ class ProposalsController extends Controller
 
         } catch (\Exception $e) {
             DB::rollback();
-            dd($e);
+            // dd($e);
             return redirect()->back();
         }
 
@@ -238,9 +239,9 @@ class ProposalsController extends Controller
     {
         abort_if(Gate::denies('proposal_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-      
+        $ProposalsItem = ProposalsItem::all();
 
-        return view('sales::admin.proposals.show', compact('proposal'));
+        return view('sales::admin.proposals.show', compact('proposal','ProposalsItem'));
     }
 
     public function destroy(Proposal $proposal)
@@ -328,5 +329,68 @@ class ProposalsController extends Controller
             ]);
         }
         return response()->json(Response::HTTP_CREATED);
+     }
+
+     /** clone project  */
+     public function cloneproposal(CloneProposalRequest $request,Proposal $proposal){
+        DB::beginTransaction();
+
+        try {
+            
+            //load relation of proposals
+            $proposal->load('items','itemtaxs');
+            //fill data with i need
+            $newproposal = $proposal->replicate()->fill([
+                'reference_no'=> $proposal->reference_no.'_Copy',
+                'module'=>$request->module,
+                'module_id'=>$request->module_id,
+                'expire_date'=>$request->expire_date,
+                'proposal_date'=>$request->proposal_date,
+                ]);
+                $newproposal->push();
+                
+                // load relation in new proposal 
+                foreach($proposal->getRelations() as $relation => $items){
+                    
+                    foreach($items as $item){
+                        
+                        if($relation == 'items'){
+
+                            $extra_attributes = Arr::except($item->toArray()['pivot'],['proposals_id','id']);
+                            //new proposalitem relation
+                            $newitem=ItemPorposalRelations::create($extra_attributes);
+                            $newitem->update([
+                                'proposals_id'=>$newproposal['id'],
+                            ]);
+                            //find taxes of proposal item relation 
+                            $findtaxes=ProposalItemTax::where([['item_id',$item->pivot['id']],['proposals_id',$proposal->id]])->get();
+                            //add tax of item
+                            if($newitem && !empty($findtaxes)){
+                                foreach($findtaxes as $newtax){
+                                    $addtaxes=new ProposalItemTax;
+                                    $addtaxes->tax_cost=$newtax['tax_cost'];
+                                    $addtaxes->taxs_id=$newtax['taxs_id'];
+                                    $addtaxes->proposals_id=$newproposal['id'];
+                                    $addtaxes->item_id=$newitem->id;
+                                    $addtaxes->save();
+                                }
+                
+                            }
+                        }
+                       
+                    }
+                    
+                   
+                }
+            
+        DB::commit();
+        return redirect()->route('sales.admin.proposals.index');
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            dd($e);
+            return redirect()->back();
+        }
+   
      }
 }

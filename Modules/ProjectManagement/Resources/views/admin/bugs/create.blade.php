@@ -178,15 +178,15 @@
 
 @section('scripts')
 <script>
-    var old_task = document.getElementById("old_task").value;
+    //var old_task = document.getElementById("old_task").value;
     var project_bug_id = document.getElementById("project_bug_id").value;
 
     $(document).ready(function () {
 
         var old_project = document.getElementById("old_project").value;
-        if(old_project || old_task || project_bug_id){
-            //getProjectId();
-        }
+        // if(old_project || old_task || project_bug_id){
+        //     //getProjectId();
+        // }
 
   function SimpleUploadAdapter(editor) {
     editor.plugins.get('FileRepository').createUploadAdapter = function(loader) {
@@ -264,9 +264,9 @@
             for (const [key, value] of Object.entries(tasks)){
                 if (project_id == value.project.id){
                     var selected = '';
-                    if (value.id == old_task){
-                        selected = 'selected';
-                    }
+                    // if (value.id == old_task){
+                    //     selected = 'selected';
+                    // }
                     innerHtml.push(`<option value='${value.id}'  ${selected} >${value.name}</option>`);
                     //console.log(value.id,value.name,old_task);
                 }

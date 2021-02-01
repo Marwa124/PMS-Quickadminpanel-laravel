@@ -72,13 +72,11 @@ class WorkTracking extends Model
         return $this->hasMany(Activity::class,'module_field_id')->where('module','=','workTracking')->orderBy('id','desc');
     }
 
-//    public function permissions()
-//    {
-//        return $this->belongsToMany(Permission::class);
-//    }
-//
-//    public function account()
-//    {
-//        return $this->belongsTo(Account::class, 'account_id');
-//    }
+    public function accountDetails()
+    {
+
+        return $this->belongsToMany('Modules\HR\Entities\AccountDetail',
+            'work_tracking_account_details_pivot','work_tracking_id','account_details_id');
+
+    }
 }

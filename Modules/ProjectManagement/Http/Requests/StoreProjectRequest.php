@@ -20,7 +20,7 @@ class StoreProjectRequest extends FormRequest
             'name'               => [
                 'string',
                 'required',
-                'unique:projects',
+                'unique:projects,name',
             ],
             'client_id'          => [
                 'required',
@@ -53,6 +53,7 @@ class StoreProjectRequest extends FormRequest
                 'max:1',
             ],
             'project_cost'       => [
+                'required',
                 'numeric',
             ],
             'demo_url'           => [
@@ -60,8 +61,9 @@ class StoreProjectRequest extends FormRequest
                 'nullable',
             ],
             'project_status'     => [
+                'required',
                 'string',
-                'nullable',
+                //'nullable',
             ],
 //            'timer_started_by'   => [
 //                'nullable',

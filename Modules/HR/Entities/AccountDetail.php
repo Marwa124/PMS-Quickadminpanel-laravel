@@ -150,49 +150,56 @@ class AccountDetail extends Model implements HasMedia
         $this->attributes['date_of_birth'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
     }
 
-    public function projects(){
+    public function projects()
+    {
 
         return $this->belongsToMany('Modules\ProjectManagement\Entities\Project',
             'project_account_details_pivot','account_details_id','project_id');
 
     }
 
-    public function trashProjects(){
+    public function trashProjects()
+    {
 
         return $this->belongsToMany('Modules\ProjectManagement\Entities\Project',
             'project_account_details_pivot','account_details_id','project_id')->onlyTrashed();
 
     }
 
-    public function milestones(){
+    public function milestones()
+    {
 
         return $this->belongsToMany('Modules\ProjectManagement\Entities\Milestone',
             'milestone_account_details_pivot','account_details_id','milestone_id');
 
     }
 
-    public function trashMilestones(){
+    public function trashMilestones()
+    {
 
         return $this->belongsToMany('Modules\ProjectManagement\Entities\Milestone',
             'milestone_account_details_pivot','account_details_id','milestone_id')->onlyTrashed();
 
     }
 
-    public function tasks(){
+    public function tasks()
+    {
 
         return $this->belongsToMany('Modules\ProjectManagement\Entities\Task',
             'task_account_details_pivot','account_details_id','task_id');
 
     }
 
-    public function trashTasks(){
+    public function trashTasks()
+    {
 
         return $this->belongsToMany('Modules\ProjectManagement\Entities\Task',
             'task_account_details_pivot','account_details_id','task_id')->onlyTrashed();
 
     }
 
-    public function bugs(){
+    public function bugs()
+    {
 
         return $this->belongsToMany('Modules\ProjectManagement\Entities\Bug',
             'bug_account_details_pivot','account_details_id','bug_id');
@@ -200,14 +207,16 @@ class AccountDetail extends Model implements HasMedia
     }
 
 
-    public function trashBugs(){
+    public function trashBugs()
+    {
 
         return $this->belongsToMany('Modules\ProjectManagement\Entities\Bug',
             'bug_account_details_pivot','account_details_id','bug_id')->onlyTrashed();
 
     }
 
-    public function tickets(){
+    public function tickets()
+    {
 
         return $this->belongsToMany('Modules\ProjectManagement\Entities\Ticket',
             'ticket_account_details_pivot','account_details_id','ticket_id');
@@ -215,10 +224,27 @@ class AccountDetail extends Model implements HasMedia
     }
 
 
-    public function trashTickets(){
+    public function trashTickets()
+    {
 
         return $this->belongsToMany('Modules\ProjectManagement\Entities\Ticket',
             'ticket_account_details_pivot','account_details_id','ticket_id')->onlyTrashed();
+
+    }
+
+    public function work_tracking()
+    {
+
+        return $this->belongsToMany('Modules\ProjectManagement\Entities\WorkTracking',
+            'work_tracking_account_details_pivot','account_details_id','work_tracking_id');
+
+    }
+
+    public function trashWork_tracking()
+    {
+
+        return $this->belongsToMany('Modules\ProjectManagement\Entities\WorkTracking',
+            'work_tracking_account_details_pivot','account_details_id','work_tracking_id')->onlyTrashed();
 
     }
 

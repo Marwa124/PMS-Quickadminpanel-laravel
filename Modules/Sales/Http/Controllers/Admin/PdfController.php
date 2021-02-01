@@ -16,9 +16,15 @@ class PdfController extends Controller
      */
     public function pdf(Request $request)
     {
-           $proposal = Proposal::findOrFail($request->id);
-           $pdf = PDF::loadView('sales::admin.proposals.pdf', compact('proposal'));
-           return $pdf->download('proposals.pdf');
+           $proposals_info = Proposal::findOrFail($request->id);
+        //    $options = new Options();
+        //    $options->set('defaultFont', 'Cairo');
+        dd( PDF::loadView('sales::admin.proposals.pdf', compact('proposals_info')));
+           $loadpdf = PDF::loadView('sales::admin.proposals.pdf', compact('proposals_info'))
+           ->stream('PDF-Report.pdf');;
+        //    $loadpdf = PDF::loadView('sales::admin.proposals.pdf', compact('proposal'))->stream('proposals.pdf');
+        //    $pdf=$loadpdf::loadView('sales::admin.proposals.pdf', compact('proposal'));
+           return $loadpdf;
     }
 
     /**
