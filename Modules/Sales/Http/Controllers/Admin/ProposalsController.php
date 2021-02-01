@@ -101,7 +101,7 @@ class ProposalsController extends Controller
             $newitem=ItemPorposalRelations::create($value);
             $newitem->update([
                 'proposals_id'=>$proposal['id'],
-                'item_id'=>$value['new_itmes_id'],
+                'item_id'=>$value['saved_items_id'],
             ]);
        
             if($newitem && isset($value['tax'])){
@@ -145,7 +145,7 @@ class ProposalsController extends Controller
 
     public function update(UpdateProposalRequest $request, Proposal $proposal)
     {
-        
+
         DB::beginTransaction();
 
         try {
@@ -202,7 +202,7 @@ class ProposalsController extends Controller
             $newitem=ItemPorposalRelations::create($value);
             $newitem->update([
                 'proposals_id'=>$proposal['id'],
-                'item_id'=>$value['new_itmes_id'],
+                'item_id'=>$value['saved_items_id'],
             ]);
        
             if($newitem && isset($value['tax'])){
@@ -228,7 +228,7 @@ class ProposalsController extends Controller
 
         } catch (\Exception $e) {
             DB::rollback();
-            // dd($e);
+            dd($e);
             return redirect()->back();
         }
 

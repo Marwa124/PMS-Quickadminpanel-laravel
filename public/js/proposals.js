@@ -77,10 +77,10 @@ function getitem(val) {
             $('.main input[name="quantity"]').val(response.quantity);
             $('.main input[name="total_qty"]').val(Math.round(response.quantity));
             if(response.margin != 0){
-                var selling_Price= (response.unit_cost * response.quantity)*(response.margin/100) +(response.unit_cost * response.quantity);
+                var selling_Price= (response.unit_cost)*(response.margin/100) +(response.unit_cost);
 
             }else{
-                var selling_Price= response.unit_cost * response.quantity;
+                var selling_Price= response.unit_cost;
                 
             }
 
