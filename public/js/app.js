@@ -3640,7 +3640,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       spinnerAction: false,
       spinnerLoad: false,
       selectedItem: '',
-      fetchRowIndex: '',
+      rowIndex: 1,
       form: new vform__WEBPACK_IMPORTED_MODULE_0__["Form"]({
         ref_no: '',
         supplier: '',
@@ -3665,7 +3665,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         sub_total: '',
         discount_amount: '',
         discount: '',
-        taxRate_total: [],
+        taxRate_total: {},
         removedTax: '',
         AddedTax: ''
       })
@@ -3717,9 +3717,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     toggleUnSelectMarket: function toggleUnSelectMarket(val) {
       this.form.removedTax = [val.name, val.rate_percent]; // Get the (removed Tax object) Stored into removedTax
     },
-    mouseHoverIndexRow: function mouseHoverIndexRow(index) {
-      this.fetchRowIndex = index; // Get the (Row Index) of  the removed Tax object Stored into fetchRowIndex
-    },
     addTax: function addTax(taxItem, index) {
       var _this4 = this;
 
@@ -3730,22 +3727,21 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
       var taxArray = [];
       selectedTax.forEach(function (element) {
-        taxArray.push(element);
+        taxArray.push(element); // this.form.taxRate_total.push([element.name, 0])
 
-        _this4.form.taxRate_total.push({
+        _this4.form.taxRate_total[element.name] = {
           name: element.name,
           value: 0
-        }); // *****prevent object duplication inside an array
-
-
-        var uniqueAddresses = Array.from(new Set(_this4.form.taxRate_total.map(function (a) {
-          return a.name;
-        }))).map(function (name) {
-          return _this4.form.taxRate_total.find(function (a) {
-            return a.name === name;
-          });
-        });
-        _this4.form.taxRate_total = uniqueAddresses; // *****prevent object duplication inside an array
+        }; // this.form.taxRate_total.push([element.name,{name: element.name, value: 0}])
+        // console.log('this.form.taxRate_total    '+ this.form.taxRate_total[0].name);
+        // PREVENT DUBLICATING OBJECT
+        // *****prevent object duplication inside an array
+        // const uniqueAddresses = Array.from(new Set(this.form.taxRate_total.map(a => a.name)))
+        //     .map(name => {
+        //     return this.form.taxRate_total.find(a => a.name === name)
+        // })
+        // this.form.taxRate_total = uniqueAddresses;
+        // *****prevent object duplication inside an array
       });
       this.form.items[index].taxes = taxArray;
     },
@@ -3757,6 +3753,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     addItemToModel: function addItemToModel(item, index) {
       // Add row item to model
+      item.rowIndex = this.rowIndex++;
       this.form.items.unshift({
         name: '',
         description: '',
@@ -3779,42 +3776,38 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     removeItemRow: function removeItemRow(item, index) {
       this.form.items.splice(index, 1);
     },
-    calculateTotalTaxes: function calculateTotalTaxes(taxesArray, totalTaxRate, totalRowPrice) {// if(form.AddedTax) {
-      //     form.taxRate_total.find(formTaxRate => {
-      // // console.log(formTaxRate);
-      //         if(form.AddedTax[0] === formTaxRate.name) { // Hashing Those lines prevent infinite looping
-      //             formTaxRate.value += parseFloat((parseInt(rowTotalItem) * (form.AddedTax[1] / 100)).toFixed(2))
+    // calculateTotalTaxes(taxesArray) {
+    calculateTotalTaxes: function calculateTotalTaxes(subTotal) {// if(typeof taxesArray[0] == 'string') {
+      //     totalTaxRate.find(formTaxRate => {
+      //         if(taxesArray[0] === formTaxRate.name) { // Hashing Those lines prevent infinite looping
+      //             formTaxRate.value += parseFloat((parseInt(totalRowPrice) * (taxesArray[1] / 100)).toFixed(2))
       //         }
       //     })
-      //     form.AddedTax = ''
+      //     taxesArray = ''
+      // }else {
+      //     console.log('AAAAAAAAA ' );
+      //     totalTaxRate.find(formTaxRate => {
+      //         // taxesArray.map(x => {
+      //         //     if(x.name === formTaxRate.name) { // Hashing Those lines prevent infinite looping
+      //         //         formTaxRate.value += parseFloat((parseInt(totalRowPrice) * (x.rate_percent / 100)).toFixed(2))
+      //         //     }
+      //         // })
+      //         // for(let [x, y] of Object.entries(taxesArray)) {
+      //         //     console.log('AAAAAAAAA ' +x);
+      //         //     console.log('YYYYYYYYYYY ' +y);
+      //         //     if(arr.name === formTaxRate.name) { // Hashing Those lines prevent infinite looping
+      //         //         formTaxRate.value += parseFloat((parseInt(totalRowPrice) * (arr.rate_percent / 100)).toFixed(2))
+      //         //     }
+      //         // }
+      //     })
+      //     // taxesArray = ''
       // }
     }
   },
   watch: {
     'form': {
       handler: function handler(form) {
-        var rowTotalItem = form.items[this.fetchRowIndex].total;
-
-        if (form.AddedTax) {
-          form.taxRate_total.find(function (formTaxRate) {
-            // console.log(formTaxRate);
-            if (form.AddedTax[0] === formTaxRate.name) {
-              // Hashing Those lines prevent infinite looping
-              formTaxRate.value += parseFloat((parseInt(rowTotalItem) * (form.AddedTax[1] / 100)).toFixed(2));
-            }
-          });
-          form.AddedTax = '';
-        }
-
-        if (form.removedTax) {
-          form.taxRate_total.find(function (formTaxRate) {
-            if (form.removedTax[0] === formTaxRate.name) {
-              // Hashing Those lines prevent infinite looping
-              formTaxRate.value -= parseFloat((parseInt(rowTotalItem) * (form.removedTax[1] / 100)).toFixed(2));
-            }
-          });
-          form.removedTax = '';
-        }
+        var totalRow = [];
 
         if (form.items.length > 0) {
           var logX = form.items.map(function (tax) {
@@ -3823,11 +3816,36 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           console.log('Taxcccccc   ' + form.removedTax);
           var subTotal = 0;
           var result = form.items.reduce(function (accum, currentVal) {
+            totalRow.push(currentVal.total);
             if (parseInt(currentVal.total)) subTotal += parseInt(currentVal.total);
             return subTotal;
           }, {});
           form.sub_total = result;
-          form.discount_amount = form.discount * subTotal * (1 / 100);
+          form.discount_amount = form.discount * subTotal * (1 / 100); // console.log(totalRow);
+
+          var formTaxes = [];
+          var taxName = [];
+          form.items.forEach(function (element) {
+            var indexRow = element.rowIndex;
+
+            if (indexRow) {
+              console.log(element.rowIndex);
+              console.log(form.items[indexRow].total);
+              form.items[indexRow].taxes.map(function (tax) {
+                taxName[tax.name] = form.sub_total * (tax.rate_percent / 100); // form.taxRate_total.find(formTaxRate => {
+
+                if (tax.name) {
+                  // Hashing Those lines prevent infinite looping
+                  form.taxRate_total[tax.name].value = parseFloat(taxName[tax.name].toFixed(2));
+                  console.log(form.taxRate_total[tax.name].value);
+                } // })
+
+              });
+            }
+          }); // form.items[this.fetchRowIndex].taxes.map(tax => {
+          //     console.log(tax.name);
+          // });
+          // console.log(tax.name);
         }
       },
       deep: true
@@ -58790,236 +58808,219 @@ var render = function() {
           _c(
             "tbody",
             _vm._l(_vm.form.items, function(item, index) {
-              return _c(
-                "tr",
-                {
-                  key: index,
-                  attrs: { "data-row-id": "" },
-                  on: {
-                    mouseover: function($event) {
-                      return _vm.mouseHoverIndexRow(index)
-                    }
-                  }
-                },
-                [
-                  _c("th", [
-                    _c("textarea", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: item.name,
-                          expression: "item.name"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      domProps: { value: item.name },
-                      on: {
-                        keydown: function($event) {
-                          return _vm.newItemAdded(item, index)
-                        },
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(item, "name", $event.target.value)
-                        }
+              return _c("tr", { key: index }, [
+                _c("th", [
+                  _c("textarea", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: item.name,
+                        expression: "item.name"
                       }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c("td", [
-                    _c("textarea", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: item.description,
-                          expression: "item.description"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      domProps: { value: item.description },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(item, "description", $event.target.value)
-                        }
-                      }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c("td", [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: item.quantity,
-                          expression: "item.quantity"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: { type: "number" },
-                      domProps: { value: item.quantity },
-                      on: {
-                        keypress: function($event) {
-                          return _vm.newItemAdded(item, index)
-                        },
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(item, "quantity", $event.target.value)
-                        }
-                      }
-                    }),
-                    _vm._v(" "),
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: item.unit_cost,
-                          expression: "item.unit_cost"
-                        }
-                      ],
-                      staticClass: "form-control input-transparent",
-                      attrs: {
-                        placeholder: _vm.$t("items.fields.unit_cost"),
-                        type: "text"
-                      },
-                      domProps: { value: item.unit_cost },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(item, "unit_cost", $event.target.value)
-                        }
-                      }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c("td", [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: item.total_cost_price,
-                          expression: "item.total_cost_price"
-                        }
-                      ],
-                      staticClass: "form-control",
-                      attrs: { type: "number" },
-                      domProps: { value: item.total_cost_price },
-                      on: {
-                        keypress: function($event) {
-                          return _vm.newItemAdded(item, index)
-                        },
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(
-                            item,
-                            "total_cost_price",
-                            $event.target.value
-                          )
-                        }
-                      }
-                    })
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "td",
-                    [
-                      _c("multiselect", {
-                        attrs: {
-                          options: _vm.taxRates,
-                          searchable: true,
-                          "close-on-select": true,
-                          "show-labels": false,
-                          label: "rate_percent",
-                          "track-by": "id",
-                          placeholder: _vm.$t("sidebar.choose_tax_rate"),
-                          "preselect-first": false,
-                          multiple: true,
-                          taggable: true
-                        },
-                        on: {
-                          input: function($event) {
-                            return _vm.addTax(item.taxes, index)
-                          },
-                          remove: _vm.toggleUnSelectMarket
-                        },
-                        model: {
-                          value: item.taxes,
-                          callback: function($$v) {
-                            _vm.$set(item, "taxes", $$v)
-                          },
-                          expression: "item.taxes"
-                        }
-                      })
                     ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c("td", [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: item.total,
-                          expression: "item.total"
+                    staticClass: "form-control",
+                    domProps: { value: item.name },
+                    on: {
+                      keydown: function($event) {
+                        return _vm.newItemAdded(item, index)
+                      },
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
                         }
-                      ],
-                      staticClass: "form-control input-transparent",
-                      attrs: { type: "number", disabled: "" },
-                      domProps: { value: item.total },
+                        _vm.$set(item, "name", $event.target.value)
+                      }
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("td", [
+                  _c("textarea", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: item.description,
+                        expression: "item.description"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    domProps: { value: item.description },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(item, "description", $event.target.value)
+                      }
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("td", [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: item.quantity,
+                        expression: "item.quantity"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { type: "number" },
+                    domProps: { value: item.quantity },
+                    on: {
+                      keypress: function($event) {
+                        return _vm.newItemAdded(item, index)
+                      },
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(item, "quantity", $event.target.value)
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: item.unit_cost,
+                        expression: "item.unit_cost"
+                      }
+                    ],
+                    staticClass: "form-control input-transparent",
+                    attrs: {
+                      placeholder: _vm.$t("items.fields.unit_cost"),
+                      type: "text"
+                    },
+                    domProps: { value: item.unit_cost },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(item, "unit_cost", $event.target.value)
+                      }
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("td", [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: item.total_cost_price,
+                        expression: "item.total_cost_price"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { type: "number" },
+                    domProps: { value: item.total_cost_price },
+                    on: {
+                      keypress: function($event) {
+                        return _vm.newItemAdded(item, index)
+                      },
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(item, "total_cost_price", $event.target.value)
+                      }
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _c(
+                  "td",
+                  [
+                    _c("multiselect", {
+                      attrs: {
+                        options: _vm.taxRates,
+                        searchable: true,
+                        "close-on-select": true,
+                        "show-labels": false,
+                        label: "rate_percent",
+                        "track-by": "id",
+                        placeholder: _vm.$t("sidebar.choose_tax_rate"),
+                        "preselect-first": false,
+                        multiple: true,
+                        taggable: true
+                      },
                       on: {
                         input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(item, "total", $event.target.value)
-                        }
+                          return _vm.addTax(item.taxes, index)
+                        },
+                        remove: _vm.toggleUnSelectMarket
+                      },
+                      model: {
+                        value: item.taxes,
+                        callback: function($$v) {
+                          _vm.$set(item, "taxes", $$v)
+                        },
+                        expression: "item.taxes"
                       }
                     })
-                  ]),
-                  _vm._v(" "),
-                  _c("td", [
-                    _vm.form.items[index].activeRowAddition ==
-                    "bg-danger pointer"
-                      ? _c("div", [
-                          _c("i", {
-                            staticClass: "fas fa-trash-alt text-white p-1",
-                            class: _vm.form.items[index].activeRowAddition,
-                            on: {
-                              click: function($event) {
-                                return _vm.removeItemRow(item, index)
-                              }
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c("td", [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: item.total,
+                        expression: "item.total"
+                      }
+                    ],
+                    staticClass: "form-control input-transparent",
+                    attrs: { type: "number", disabled: "" },
+                    domProps: { value: item.total },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(item, "total", $event.target.value)
+                      }
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("td", [
+                  _vm.form.items[index].activeRowAddition == "bg-danger pointer"
+                    ? _c("div", [
+                        _c("i", {
+                          staticClass: "fas fa-trash-alt text-white p-1",
+                          class: _vm.form.items[index].activeRowAddition,
+                          on: {
+                            click: function($event) {
+                              return _vm.removeItemRow(item, index)
                             }
-                          })
-                        ])
-                      : _c("div", [
-                          _c("i", {
-                            staticClass: "fas fa-check text-white p-1",
-                            class: _vm.form.items[index].activeRowAddition,
-                            on: {
-                              click: function($event) {
-                                return _vm.addItemToModel(item, index)
-                              }
+                          }
+                        })
+                      ])
+                    : _c("div", [
+                        _c("i", {
+                          staticClass: "fas fa-check text-white p-1",
+                          class: _vm.form.items[index].activeRowAddition,
+                          on: {
+                            click: function($event) {
+                              return _vm.addItemToModel(item, index)
                             }
-                          })
-                        ])
-                  ])
-                ]
-              )
+                          }
+                        })
+                      ])
+                ])
+              ])
             }),
             0
           )

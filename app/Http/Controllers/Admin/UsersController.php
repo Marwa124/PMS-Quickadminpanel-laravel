@@ -12,7 +12,7 @@ use Gate;
 use Illuminate\Http\Request;
 use Spatie\MediaLibrary\Models\Media;
 use Spatie\Permission\Contracts\Permission;
-use Spatie\Permission\Contracts\Role;
+use Spatie\Permission\Models\Role;
 use Symfony\Component\HttpFoundation\Response;
 
 class UsersController extends Controller
@@ -37,7 +37,9 @@ class UsersController extends Controller
     {
         abort_if(Gate::denies('user_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return view('admin.users.create');
+        $roles = Role::all()->pluck('name')->toArray();
+
+        return view('admin.users.create', compact('roles'));
     }
 
     public function store(StoreUserRequest $request)

@@ -186,7 +186,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr data-row-id="" v-for="(item, index) in form.items" :key="index" @mouseover="mouseHoverIndexRow(index)">
+                <tr v-for="(item, index) in form.items" :key="index">
                     <th>
                         <textarea class="form-control" v-model="item.name" @keydown="newItemAdded(item, index)"></textarea>
                     </th>
@@ -290,7 +290,8 @@
                 spinnerLoad: false,
                 selectedItem: '',
 
-                fetchRowIndex: '',
+
+                rowIndex: 1,
 
                 form: new Form({
                     ref_no:        '',
@@ -318,7 +319,7 @@
                     sub_total: '',
                     discount_amount: '',
                     discount: '',
-                    taxRate_total: [],
+                    taxRate_total: {},
 
                     removedTax: '',
                     AddedTax: ''
@@ -370,9 +371,6 @@
             toggleUnSelectMarket(val) {
                 this.form.removedTax = [val.name, val.rate_percent]  // Get the (removed Tax object) Stored into removedTax
             },
-            mouseHoverIndexRow(index) {
-                this.fetchRowIndex = index  // Get the (Row Index) of  the removed Tax object Stored into fetchRowIndex
-            },
             addTax (taxItem, index) {
                 let selectedTax = [...taxItem];
 
@@ -382,15 +380,18 @@
                 let taxArray = [];
                 selectedTax.forEach(element => {
                     taxArray.push(element);
-                    
-                    this.form.taxRate_total.push({name: element.name, value: 0})
+                    // this.form.taxRate_total.push([element.name, 0])
+                    this.form.taxRate_total[element.name] = {name: element.name, value: 0}
+                    // this.form.taxRate_total.push([element.name,{name: element.name, value: 0}])
 
+                    // console.log('this.form.taxRate_total    '+ this.form.taxRate_total[0].name);
+// PREVENT DUBLICATING OBJECT
                     // *****prevent object duplication inside an array
-                    const uniqueAddresses = Array.from(new Set(this.form.taxRate_total.map(a => a.name)))
-                        .map(name => {
-                        return this.form.taxRate_total.find(a => a.name === name)
-                    })
-                    this.form.taxRate_total = uniqueAddresses;
+                    // const uniqueAddresses = Array.from(new Set(this.form.taxRate_total.map(a => a.name)))
+                    //     .map(name => {
+                    //     return this.form.taxRate_total.find(a => a.name === name)
+                    // })
+                    // this.form.taxRate_total = uniqueAddresses;
                     // *****prevent object duplication inside an array
                 });
 
@@ -402,6 +403,8 @@
                 }
             },
             addItemToModel(item, index) { // Add row item to model
+                item.rowIndex = this.rowIndex ++
+
                 this.form.items.unshift({
                     name           : '',
                     description    : '',
@@ -423,15 +426,43 @@
             removeItemRow(item, index) {
                 this.form.items.splice(index, 1);
             },
-            calculateTotalTaxes(taxesArray, totalTaxRate, totalRowPrice) {
-                // if(form.AddedTax) {
-                //     form.taxRate_total.find(formTaxRate => {
-                // // console.log(formTaxRate);
-                //         if(form.AddedTax[0] === formTaxRate.name) { // Hashing Those lines prevent infinite looping
-                //             formTaxRate.value += parseFloat((parseInt(rowTotalItem) * (form.AddedTax[1] / 100)).toFixed(2))
+            // calculateTotalTaxes(taxesArray) {
+            calculateTotalTaxes(subTotal) {
+
+
+                  
+            
+
+
+
+                // if(typeof taxesArray[0] == 'string') {
+                //     totalTaxRate.find(formTaxRate => {
+                //         if(taxesArray[0] === formTaxRate.name) { // Hashing Those lines prevent infinite looping
+                //             formTaxRate.value += parseFloat((parseInt(totalRowPrice) * (taxesArray[1] / 100)).toFixed(2))
                 //         }
                 //     })
-                //     form.AddedTax = ''
+                //     taxesArray = ''
+                // }else {
+                //     console.log('AAAAAAAAA ' );
+                //     totalTaxRate.find(formTaxRate => {
+
+                //         // taxesArray.map(x => {
+                //         //     if(x.name === formTaxRate.name) { // Hashing Those lines prevent infinite looping
+                //         //         formTaxRate.value += parseFloat((parseInt(totalRowPrice) * (x.rate_percent / 100)).toFixed(2))
+                //         //     }
+                //         // })
+
+
+                //         // for(let [x, y] of Object.entries(taxesArray)) {
+                //         //     console.log('AAAAAAAAA ' +x);
+                //         //     console.log('YYYYYYYYYYY ' +y);
+
+                //         //     if(arr.name === formTaxRate.name) { // Hashing Those lines prevent infinite looping
+                //         //         formTaxRate.value += parseFloat((parseInt(totalRowPrice) * (arr.rate_percent / 100)).toFixed(2))
+                //         //     }
+                //         // }
+                //     })
+                //     // taxesArray = ''
                 // }
             },
         },
@@ -439,33 +470,8 @@
             'form': {
                 handler: function(form) {
 
-                    var rowTotalItem = form.items[this.fetchRowIndex].total
-
-
-if(form.AddedTax) {
-    form.taxRate_total.find(formTaxRate => {
-// console.log(formTaxRate);
-        if(form.AddedTax[0] === formTaxRate.name) { // Hashing Those lines prevent infinite looping
-            formTaxRate.value += parseFloat((parseInt(rowTotalItem) * (form.AddedTax[1] / 100)).toFixed(2))
-        }
-    })
-    form.AddedTax = ''
-}
-
-
-if(form.removedTax) {
-    form.taxRate_total.find(formTaxRate => {
-        if(form.removedTax[0] === formTaxRate.name) { // Hashing Those lines prevent infinite looping
-            formTaxRate.value -= parseFloat((parseInt(rowTotalItem) * (form.removedTax[1] / 100)).toFixed(2))   
-        }
-    })
-    form.removedTax = ''
-}
-      
-
-
-
-                    if(form.items.length > 0) {
+                    var totalRow = [];
+                      if(form.items.length > 0) {
                         var logX = form.items.map(tax => {
                             tax.total = tax.total_cost_price * tax.quantity
                         });
@@ -476,6 +482,8 @@ if(form.removedTax) {
 
                         let subTotal = 0;
                         var result = form.items.reduce(function(accum, currentVal) {
+                            totalRow.push(currentVal.total)
+                            
                             if(parseInt(currentVal.total)) subTotal += parseInt(currentVal.total);
 
                             return subTotal;
@@ -483,6 +491,51 @@ if(form.removedTax) {
                         form.sub_total = result
 
                         form.discount_amount = form.discount * subTotal * (1/100)
+
+
+
+
+                // console.log(totalRow);
+                        var formTaxes = [];
+                        var taxName = [];
+                        form.items.forEach(element => {
+                            var indexRow = element.rowIndex;
+
+                            if(indexRow) {
+                                console.log(element.rowIndex);
+                                console.log(form.items[indexRow].total);
+
+
+
+
+
+
+                                form.items[indexRow].taxes.map(tax => {
+                                    taxName[tax.name] = form.sub_total * (tax.rate_percent / 100)
+                                    
+                                    // form.taxRate_total.find(formTaxRate => {
+                                        if(tax.name) { // Hashing Those lines prevent infinite looping
+                                            form.taxRate_total[tax.name].value = parseFloat((taxName[tax.name]).toFixed(2))
+                                    console.log(form.taxRate_total[tax.name].value);
+                                        }
+                                    // })
+
+                                });
+
+                            }
+                        });
+
+
+                        // form.items[this.fetchRowIndex].taxes.map(tax => {
+
+                        //     console.log(tax.name);
+                        // });
+
+
+
+                            // console.log(tax.name);
+
+
                     }
                 },
                 deep: true
