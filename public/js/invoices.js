@@ -41,6 +41,42 @@ function get_related_moduleName(val, invoice) {
 }
 
 
+function get_projects(){
+    var url = '/admin/finance/invoices/get_projects';
+
+    // Ajax Reuqest
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        url: url,
+        type: 'post',
+        dataType: 'json',
+        data: {
+            id: $('#client_id').val()
+        },
+        beforeSend: function () {
+            $("#project_id").html('Loading...');
+        },
+        success: function (response) {
+
+            if (response) {
+                $("#projects_div").html('');
+                $("#projects_div").append(response);
+                $("#projects_div").show(150);
+
+            } else {
+                $("#project_id").empty();
+            }
+
+        }
+    });
+
+
+}
+
 function recur_switch() {
     if(recu){
         $('#recu_div').hide(1000);

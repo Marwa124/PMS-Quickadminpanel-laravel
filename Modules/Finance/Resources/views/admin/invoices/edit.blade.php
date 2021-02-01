@@ -96,7 +96,7 @@
                         <label class="required" for="client_id">{{ trans('cruds.proposal.fields.client') }}</label>
                         <select class="form-control  {{ $errors->has('client_id') ? 'is-invalid' : '' }}"
                                 name="client_id"
-                                id="client_id" required>
+                                id="client_id" onchange="get_projects()" required>
                             <option value="" selected="">{{trans('global.pleaseSelect')}}</option>
                             @foreach($clients as $client)
                                 <option value="{{$client->id}}" {{$invoice->client_id == $client->id ? 'selected' : ''}}>{{$client->name}}</option>
@@ -109,7 +109,9 @@
                         @endif
                         <span class="help-block">{{ trans('cruds.proposal.fields.Related_To_helper') }}</span>
                     </div>
-                    <div class="col-md-6">
+
+
+                    <div class="col-md-6"  id="projects_div">
                         <label class="required" for="project_id">{{ trans('cruds.invoice.fields.project') }}</label>
                         <select class="form-control  {{ $errors->has('project_id') ? 'is-invalid' : '' }}"
                                 name="project_id"
@@ -166,11 +168,11 @@
                         <label for="discounts">{{ trans('cruds.invoice.fields.discounts') }}</label>
                         <select class="form-control  {{ $errors->has('discounts') ? 'is-invalid' : '' }}"
                                 name="discounts"
-                                id="discounts">
+                                id="ifdiscounts" onchange="calculate_total_edit()">
 
-                            <option value="no_discount" {{$invoice->discounts == 'no_discount' ? 'selected' : ''}}>{{trans('cruds.invoice.fields.no_discount')}}</option>
-                            <option value="before_tax"  {{$invoice->discounts == 'before_tax' ? 'selected' : ''}}>{{trans('cruds.invoice.fields.before_tax')}}</option>
-                            <option value="after_tax"   {{$invoice->discounts == 'after_tax' ? 'selected' : ''}}>{{trans('cruds.invoice.fields.after_tax')}}</option>
+                            <option value="no_discount" {{$invoice->discount_status == 'no_discount' ? 'selected' : ''}}>{{trans('cruds.invoice.fields.no_discount')}}</option>
+                            <option value="before_tax"  {{$invoice->discount_status == 'before_tax' ? 'selected' : ''}}>{{trans('cruds.invoice.fields.before_tax')}}</option>
+                            <option value="after_tax"   {{$invoice->discount_status == 'after_tax' ? 'selected' : ''}}>{{trans('cruds.invoice.fields.after_tax')}}</option>
 
                         </select>
                         @if($errors->has('discounts'))
@@ -226,7 +228,7 @@
                 <div class="row">
 
                     <div class="table-responsive">
-                        <table class="table table-responsive invoice-items-table items">
+                        <table class="table  invoice-items-table items">
                             <thead style="background: #e7e4e4">
                             <tr>
                                 <th class="">Item Name</th>
@@ -388,7 +390,7 @@
                                             <span class="bold">Discount (%)</span>
                                         </div>
                                         <div class="col-md-5">
-                                            <input type="text" data-parsley-type="number"
+                                            <input type="number" data-parsley-type="number"
                                                    value="{{ $invoice->discount_percent }}"
                                                    class="form-control pull-left" min="0" max="100"
                                                    name="discount_percent">
@@ -438,7 +440,7 @@
                                             <span class="bold">Adjustment</span>
                                         </div>
                                         <div class="col-md-5">
-                                            <input type="text" data-parsley-type="number"
+                                            <input type="number" data-parsley-type="number"
                                                    value="{{ $invoice->adjustment }}" class="form-control pull-left"
                                                    name="adjustment">
                                         </div>
@@ -506,6 +508,7 @@
     <script>
         $(document).ready(function () {
 
+            calculate_total_edit();
             if($('#recurring').val('none')){
                 $('#recu_div').hide();
                 var recu = false;

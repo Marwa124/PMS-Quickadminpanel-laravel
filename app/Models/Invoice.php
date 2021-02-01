@@ -40,7 +40,7 @@ class Invoice extends Model implements HasMedia
         'paid'              => 'Paid',
         'draft'             => 'Draft',
         'partially_paid'    => 'Partially Paid',
-        'waiting_app_roval' => 'Waiting App Roval',
+        'waiting_approval'  => 'Waiting Approval',
         'approved'          => 'Approved',
         'rejected'          => 'Rejected',
     ];
@@ -57,19 +57,25 @@ class Invoice extends Model implements HasMedia
         'notes',
         'tax',
         'total_tax',
+        'adjustment',
+        'after_discount',
+        'before_discount',
+        'discount_total',
+        'discount_status',
         'discount_percent',
         'total_amount',
         'recurring',
         'recurring_frequency',
         'recur_frequency',
         'recur_next_date',
-        'currerncy',
+        'currency',
         'status',
         'archived',
         'date_sent',
         'created_at',
         'updated_at',
         'deleted_at',
+        'user_id',
     ];
 
     protected function serializeDate(DateTimeInterface $date)
@@ -106,6 +112,10 @@ class Invoice extends Model implements HasMedia
     public function client()
     {
         return $this->belongsTo(Client::class, 'client_id');
+    }
+    public function added_by()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function project()
