@@ -29,4 +29,9 @@ class StockCategory extends Model
     {
         return $date->format('Y-m-d H:i:s');
     }
+
+    protected function sub_categories()
+    {
+        return $this->hasMany(StockSubCategory::class ,'stock_category_id');
+    }
 }

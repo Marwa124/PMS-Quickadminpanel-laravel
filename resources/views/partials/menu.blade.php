@@ -172,6 +172,8 @@
                             </a>
                         </li>
                     @endcan
+
+
                     @can('expenses')
                         <li class="c-sidebar-nav-item">
                             <a href="{{ route("finance.admin.expenses_category.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/expenses_category") || request()->is("admin/finance/*") ? "active" : "" }}">
@@ -219,7 +221,16 @@
                         </li>
                     @endcan
 
+                        @can('office_asset')
+                            <li class="c-sidebar-nav-item">
+                                <a href="{{ route("finance.admin.stock_category.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/stock_category") || request()->is("admin/finance/*") ? "active" : "" }}">
+                                    <i class="fa-fw fas fa-trademark c-sidebar-nav-icon self-item-link">
 
+                                    </i>
+                                    {{ trans('cruds.finance.stock_category') }}
+                                </a>
+                            </li>
+                        @endcan
 
 
 
