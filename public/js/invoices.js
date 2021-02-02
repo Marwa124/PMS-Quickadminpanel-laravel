@@ -125,10 +125,10 @@ function getitem(val) {
             $('.main input[name="quantity"]').val(response.quantity);
             $('.main input[name="total_qty"]').val(Math.round(response.quantity));
             if(response.margin != 0){
-                var selling_Price= (response.unit_cost * response.quantity)*(response.margin/100) +(response.unit_cost * response.quantity);
+                var selling_Price= (response.unit_cost)*(response.margin/100) +(response.unit_cost);
 
             }else{
-                var selling_Price= response.unit_cost * response.quantity;
+                var selling_Price= response.unit_cost ;
                 
             }
 
@@ -252,7 +252,7 @@ function calculate_total_edit() {
             $.each(item_taxes, function (i, taxname) {
                 taxrate = row.find('select.tax [value="' + taxname + '"]').data('taxrate');
                 subtext = row.find('select.tax [value="' + taxname + '"]').data('taxname');
-                calculated_tax = (_amount2 / 100 * taxrate);
+                calculated_tax = (totaa / 100 * taxrate);
                 if (!taxes.hasOwnProperty(taxname)) {
                     if (taxrate != 0) {
                         _tax_name = taxname.split('|');

@@ -167,13 +167,11 @@ function calculate_total_edit() {
     } else {
         $('.total_after_discount').removeClass('d-none');
     }
-    // console.log(quantity,'outside',quantity == '');
     $.each(rows, function () {
         quantity = $(this).find('[data-quantity]').val();
         margina = $(this).find('[data-edit-margin]').val();
         var total_qty = Math.round($(this).find('[data-total-qty]').val());
         var saved_items_id = Math.round($(this).find('[data-saved-items-id]').val());
-        // console.log(quantity,'inside',quantity == '',quantity > total_qty,total_qty,saved_items_id,saved_items_id != null,saved_items_id != '');
         if (quantity == '') {
             quantity = 1;
         }
@@ -194,13 +192,13 @@ function calculate_total_edit() {
 
         row = $(this);
         item_taxes = $(this).find('select.tax').selectpicker('val');
-
+        //tatal taxes with _amount2
         if (item_taxes) {
             $.each(item_taxes, function (i, taxname) {
                 taxrate = row.find('select.tax [value="' + taxname + '"]').data('taxrate');
                 subtext = row.find('select.tax [value="' + taxname + '"]').data('taxname');
-                console.log(subtext,taxrate);
-                calculated_tax = (_amount2 / 100 * taxrate);
+                // console.log(subtext,taxrate);
+                calculated_tax = (totaa / 100 * taxrate);
                 if (!taxes.hasOwnProperty(taxname)) {
                     if (taxrate != 0) {
                         _tax_name = taxname.split('|');

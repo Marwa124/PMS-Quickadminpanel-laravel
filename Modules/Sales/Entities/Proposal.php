@@ -197,12 +197,13 @@ class Proposal extends Model implements HasMedia
             $items_tax = 0;    
         
             foreach($taxes->itemtaxs->where('item_id',$value->pivot->id)->pluck('taxs_id') as $tax){
-
+                // dd($unique_taxes_ids,$turned_into_keys,$taxes->itemtaxs->where('item_id',$value->pivot->id)->pluck('taxs_id'),$tax,$value->pivot->selling_price, $value->pivot->quantity);
                 if(array_key_exists($tax,$turned_into_keys)){
                     $sallingprice = $value->pivot->selling_price * $value->pivot->quantity;
+                   
                     if($taxes->discount_percent != 0){
                         $old =$sallingprice * (get_taxes($tax)->rate_percent/100) ;
-                        $items_tax =  ($old * $taxes->discount_percent) / 100 ;
+                        $items_tax = $old-( $old * ($taxes->discount_percent / 100)) ;
                     }else{
 
                         $items_tax = $sallingprice * (get_taxes($tax)->rate_percent/100) ;
