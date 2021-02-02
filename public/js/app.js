@@ -3334,6 +3334,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _plugins_i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../plugins/i18n */ "./resources/js/plugins/i18n.js");
 /* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-multiselect */ "./node_modules/vue-multiselect/dist/vue-multiselect.min.js");
 /* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue_multiselect__WEBPACK_IMPORTED_MODULE_2__);
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -3640,7 +3642,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       spinnerAction: false,
       spinnerLoad: false,
       selectedItem: '',
-      rowIndex: 1,
       form: new vform__WEBPACK_IMPORTED_MODULE_0__["Form"]({
         ref_no: '',
         supplier: '',
@@ -3711,39 +3712,33 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       // Add New Item Row To Proposal
       this.form.items[0].id = item.id, this.form.items[0].name = item.name, this.form.items[0].description = item.description, this.form.items[0].quantity = item.quantity, this.form.items[0].total_cost_price = item.total_cost_price, this.form.items[0].item_tax_total = item.item_tax_total, // Calculated
       this.form.items[0].total_cost = item.total_cost, this.form.items[0].unit_cost = item.unit_cost, this.form.items[0].total = item.total, // this.form.items[0].activeRowAddition = 'bg-primary pointer',
-      this.form.items[0].taxes = (_item$taxes = item.taxes) !== null && _item$taxes !== void 0 ? _item$taxes : [], console.log('item.taxes     ' + this.form.items[0].taxes);
-      this.newItemAdded(item);
+      this.form.items[0].taxes = (_item$taxes = item.taxes) !== null && _item$taxes !== void 0 ? _item$taxes : [], this.newItemAdded(item);
     },
     toggleUnSelectMarket: function toggleUnSelectMarket(val) {
       this.form.removedTax = [val.name, val.rate_percent]; // Get the (removed Tax object) Stored into removedTax
+
+      this.calculateTotalTaxes(this.form.removedTax);
     },
     addTax: function addTax(taxItem, index) {
       var _this4 = this;
 
-      var selectedTax = _toConsumableArray(taxItem);
+      if (!this.form.removedTax) {
+        var selectedTax = _toConsumableArray(taxItem);
 
-      var addedTaxObj = selectedTax[selectedTax.length - 1];
-      this.form.AddedTax = [addedTaxObj.name, addedTaxObj.rate_percent]; // Get the (last added Tax object) Stored into AddedTax
+        var addedTaxObj = selectedTax[selectedTax.length - 1];
+        this.form.AddedTax = [addedTaxObj.name, addedTaxObj.rate_percent]; // Get the (last added Tax object) Stored into AddedTax
 
-      var taxArray = [];
-      selectedTax.forEach(function (element) {
-        taxArray.push(element); // this.form.taxRate_total.push([element.name, 0])
-
-        _this4.form.taxRate_total[element.name] = {
-          name: element.name,
-          value: 0
-        }; // this.form.taxRate_total.push([element.name,{name: element.name, value: 0}])
-        // console.log('this.form.taxRate_total    '+ this.form.taxRate_total[0].name);
-        // PREVENT DUBLICATING OBJECT
-        // *****prevent object duplication inside an array
-        // const uniqueAddresses = Array.from(new Set(this.form.taxRate_total.map(a => a.name)))
-        //     .map(name => {
-        //     return this.form.taxRate_total.find(a => a.name === name)
-        // })
-        // this.form.taxRate_total = uniqueAddresses;
-        // *****prevent object duplication inside an array
-      });
-      this.form.items[index].taxes = taxArray;
+        var taxArray = [];
+        selectedTax.forEach(function (element) {
+          taxArray.push(element);
+          _this4.form.taxRate_total[element.name] = {
+            name: element.name,
+            value: 0
+          }; // PREVENT DUBLICATING OBJECT
+        });
+        console.log("dsfdvjch lnkfjdbli uekwhilkgwbj", this.form.taxRate_total);
+        this.form.items[index].taxes = taxArray;
+      }
     },
     newItemAdded: function newItemAdded(item, index) {
       // Set the input data values in row
@@ -3753,7 +3748,11 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     },
     addItemToModel: function addItemToModel(item, index) {
       // Add row item to model
-      item.rowIndex = this.rowIndex++;
+      for (var k in this.form.items) {
+        console.log(this.form.items[k]);
+        this.form.items[k].rowIndex = parseInt(k) + 1;
+      }
+
       this.form.items.unshift({
         name: '',
         description: '',
@@ -3774,34 +3773,66 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       });
     },
     removeItemRow: function removeItemRow(item, index) {
+      var taxArray = [];
+      item.taxes.forEach(function (element) {
+        taxArray.push([element.name, element.rate_percent]); // Get the (removed Tax object) Stored into removedTax
+      });
+      this.form.removedTax = taxArray.length > 1 ? taxArray : taxArray[0];
+      this.calculateTotalTaxes(this.form.removedTax);
       this.form.items.splice(index, 1);
+
+      for (var x = index; x < this.form.items.length; x++) {
+        this.form.items[x].rowIndex = x;
+      }
     },
-    // calculateTotalTaxes(taxesArray) {
-    calculateTotalTaxes: function calculateTotalTaxes(subTotal) {// if(typeof taxesArray[0] == 'string') {
-      //     totalTaxRate.find(formTaxRate => {
-      //         if(taxesArray[0] === formTaxRate.name) { // Hashing Those lines prevent infinite looping
-      //             formTaxRate.value += parseFloat((parseInt(totalRowPrice) * (taxesArray[1] / 100)).toFixed(2))
-      //         }
-      //     })
-      //     taxesArray = ''
-      // }else {
-      //     console.log('AAAAAAAAA ' );
-      //     totalTaxRate.find(formTaxRate => {
-      //         // taxesArray.map(x => {
-      //         //     if(x.name === formTaxRate.name) { // Hashing Those lines prevent infinite looping
-      //         //         formTaxRate.value += parseFloat((parseInt(totalRowPrice) * (x.rate_percent / 100)).toFixed(2))
-      //         //     }
-      //         // })
-      //         // for(let [x, y] of Object.entries(taxesArray)) {
-      //         //     console.log('AAAAAAAAA ' +x);
-      //         //     console.log('YYYYYYYYYYY ' +y);
-      //         //     if(arr.name === formTaxRate.name) { // Hashing Those lines prevent infinite looping
-      //         //         formTaxRate.value += parseFloat((parseInt(totalRowPrice) * (arr.rate_percent / 100)).toFixed(2))
-      //         //     }
-      //         // }
-      //     })
-      //     // taxesArray = ''
-      // }
+    calculateTotalTaxes: function calculateTotalTaxes() {
+      var _this5 = this;
+
+      var removedItem = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+      var taxName = new Array();
+      this.taxRates.map(function (rate) {
+        taxName[rate.name] = 0;
+      });
+      this.form.items.forEach(function (element) {
+        var indexRow = element.rowIndex;
+
+        if (indexRow) {
+          _this5.form.items[indexRow].taxes.map(function (tax) {
+            var count = 0;
+
+            if (tax.name || removedItem) {
+              while (count == 0) {
+                if (removedItem[0]) {
+                  // console.log(typeof removedItem[0]);
+                  // console.log(typeof this.form.taxRate_total[removedItem[0]] == 'object', removedItem.length);
+                  if (typeof removedItem[0] == 'string' && _typeof(_this5.form.taxRate_total[removedItem[0]]) == 'object') {
+                    _this5.form.taxRate_total[removedItem[0]].value = 0;
+                    _this5.form.removedTax = '';
+                    console.log('khiukhuihjjj');
+                  } else {
+                    removedItem.forEach(function (element) {
+                      _this5.form.taxRate_total[element[0]].value = 0;
+                      _this5.form.removedTax = '';
+                      console.log('slssssssssssssss');
+                    });
+                  }
+                } else {
+                  for (var key in taxName) {
+                    if (key == tax.name) {
+                      taxName[tax.name] += _this5.form.items[indexRow].total * (tax.rate_percent / 100);
+                      _this5.form.taxRate_total[tax.name].value = parseFloat(taxName[tax.name].toFixed(2));
+                    }
+
+                    console.log('00000', key, taxName[key], taxName);
+                  }
+                }
+
+                count++;
+              }
+            }
+          });
+        }
+      });
     }
   },
   watch: {
@@ -3813,7 +3844,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           var logX = form.items.map(function (tax) {
             tax.total = tax.total_cost_price * tax.quantity;
           });
-          console.log('Taxcccccc   ' + form.removedTax);
           var subTotal = 0;
           var result = form.items.reduce(function (accum, currentVal) {
             totalRow.push(currentVal.total);
@@ -3821,31 +3851,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
             return subTotal;
           }, {});
           form.sub_total = result;
-          form.discount_amount = form.discount * subTotal * (1 / 100); // console.log(totalRow);
-
-          var formTaxes = [];
-          var taxName = [];
-          form.items.forEach(function (element) {
-            var indexRow = element.rowIndex;
-
-            if (indexRow) {
-              console.log(element.rowIndex);
-              console.log(form.items[indexRow].total);
-              form.items[indexRow].taxes.map(function (tax) {
-                taxName[tax.name] = form.sub_total * (tax.rate_percent / 100); // form.taxRate_total.find(formTaxRate => {
-
-                if (tax.name) {
-                  // Hashing Those lines prevent infinite looping
-                  form.taxRate_total[tax.name].value = parseFloat(taxName[tax.name].toFixed(2));
-                  console.log(form.taxRate_total[tax.name].value);
-                } // })
-
-              });
-            }
-          }); // form.items[this.fetchRowIndex].taxes.map(tax => {
-          //     console.log(tax.name);
-          // });
-          // console.log(tax.name);
+          form.discount_amount = form.discount * subTotal * (1 / 100);
+          this.calculateTotalTaxes();
         }
       },
       deep: true
@@ -58869,7 +58876,7 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control",
-                    attrs: { type: "number" },
+                    attrs: { type: "number", min: "1" },
                     domProps: { value: item.quantity },
                     on: {
                       keypress: function($event) {
@@ -58921,7 +58928,7 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control",
-                    attrs: { type: "number" },
+                    attrs: { type: "number", min: "1" },
                     domProps: { value: item.total_cost_price },
                     on: {
                       keypress: function($event) {
@@ -73713,8 +73720,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_i18n__WEBPACK_IMPORTED_MODULE
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\laragon\www\01-Test-Permission-PMS\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\laragon\www\01-Test-Permission-PMS\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! F:\laragon\www\01-Test-Permission-PMS\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! F:\laragon\www\01-Test-Permission-PMS\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
