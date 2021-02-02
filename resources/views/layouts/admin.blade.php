@@ -41,6 +41,7 @@
     {{--<link rel="stylesheet" href="{{ asset('jquery_cdn/fixedHeader.dataTables.min.css') }}">--}}
 
     <link href="{{ asset('css/app.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.min.css">
     
