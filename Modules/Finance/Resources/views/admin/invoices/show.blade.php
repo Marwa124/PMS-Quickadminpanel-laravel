@@ -219,11 +219,7 @@
                   <strong>{{get_taxes($key)->name }} ({{ get_taxes($key)->rate_percent }}%)</strong>
                 </td>
                 <td class="right">
-                  @if($invoice->discount_status == 'after_tax')
-                    {{ $invoice->after_discount * ( get_taxes($key)->rate_percent / 100 )}}
-                  @else
                     {{ array_sum($taxold) }}
-                  @endif
                 </td>
               </tr>
             @endforeach

@@ -2,9 +2,6 @@
 <project version="4">
   <component name="PublishConfigData">
     <serverData>
-<<<<<<< HEAD
-      <paths name="pms_ftp">
-=======
       <paths name="EGO">
         <serverdata>
           <mappings>
@@ -20,7 +17,6 @@
         </serverdata>
       </paths>
       <paths name="OTG">
->>>>>>> 8221f3bf7f3bcb56c8f7dea6a05dba61a8d82fbd
         <serverdata>
           <mappings>
             <mapping local="$PROJECT_DIR$" web="/" />

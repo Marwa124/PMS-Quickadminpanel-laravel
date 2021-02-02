@@ -143,14 +143,14 @@ if (!function_exists('generate_proposal_number')) {
     function generate_proposal_number()
     {
       
-        $lastrecorder=Proposal::max('id');
+        $lastrecorder=Proposal::max('id');//10
         $date = \Carbon\Carbon::now();
         if ($lastrecorder == null){
             $nextPoNumber = 'PRO-'.$date->isoFormat('D/MMM/Y').'/'.'0001';
         } else {
             //increase 1 with last invoice number
             $incr=$lastrecorder+1;
-            $nextPoNumber = 'PRO-'.date('Y').'-'.date('m').'-'.date('d').'-'.'000'.$incr;
+            $nextPoNumber = 'PRO-'.$date->isoFormat('D/MMM/Y').'/'.'000'.$incr;
         }
        return $nextPoNumber;
     }
@@ -169,7 +169,7 @@ if (!function_exists('generate_invoice_number')) {
         } else {
             //increase 1 with last invoice number
             $incr=$lastrecorder+1;
-            $nextPoNumber = 'INV-'.date('Y').'-'.date('m').'-'.date('d').'-'.'000'.$incr;
+            $nextPoNumber = 'INV-'.$date->isoFormat('D/MMM/Y').'/'.'000'.$incr;
         }
        return $nextPoNumber;
     }
