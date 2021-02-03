@@ -42,8 +42,9 @@ class StoreTaskRequest extends FormRequest
                 'date_format:' . config('panel.date_format'),
             ],
             'due_date'           => [
+                'required',
                 'date_format:' . config('panel.date_format'),
-                'nullable',
+                'after_or_equal:start_date',
             ],
             'project_id'           => [
                 'required',

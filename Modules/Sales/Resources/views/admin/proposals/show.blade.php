@@ -1,193 +1,90 @@
 @extends('layouts.admin')
 @section('content')
 
-{{-- <div class="card">
-    <div class="card-header">
-        {{ trans('global.show') }} {{ trans('cruds.proposal.title') }}
-    </div>
 
-    <div class="card-body">
-        <div class="form-group">
-            <div class="form-group">
-                <a class="btn btn-default" href="{{ route('sales.admin.proposals.index') }}">
-                    {{ trans('global.back_to_list') }}
-                </a>
+
+    <div class="mb-2">
+            @if($proposal->status != 'accepted' || $proposal->status != 'Approved')
+             
+            <!-- Secondary, outline button -->
+            <button type="button" class="btn btn-secondary"  data-toggle="modal" data-target="#primaryModal" >Clone</button>
+            
+            <!-- Indicates a successful or positive action -->
+            <button type="button" class="btn btn-warning">Reminder </button>
+            
+            <!-- Indicates caution should be taken with this action -->
+             <!-- /btn-group -->
+             <div class="btn-group">
+              <button type="button" class="btn btn-success  dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Convert To
+              </button>
+              <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 34px, 0px); top: 0px; left: 0px; will-change: transform;">
+                <a class="dropdown-item" href="#">Invoice</a>
+                <a class="dropdown-item" href="#">Estimate</a>
+               
+              </div>
             </div>
-            <table class="table table-bordered table-striped">
-                <tbody>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.proposal.fields.id') }}
-                        </th>
-                        <td>
-                            {{ $proposal->id }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.proposal.fields.reference_no') }}
-                        </th>
-                        <td>
-                            {{ $proposal->reference_no }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.proposal.fields.subject') }}
-                        </th>
-                        <td>
-                            {{ $proposal->subject }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.proposal.fields.module') }}
-                        </th>
-                        <td>
-                            {{ $proposal->module }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.proposal.fields.proposal_date') }}
-                        </th>
-                        <td>
-                            {{ $proposal->proposal_date }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.proposal.fields.expire_date') }}
-                        </th>
-                        <td>
-                            {{ $proposal->expire_date }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.proposal.fields.alert_overdue') }}
-                        </th>
-                        <td>
-                            {{ $proposal->alert_overdue }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.proposal.fields.currency') }}
-                        </th>
-                        <td>
-                            {{ $proposal->currency }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.proposal.fields.notes') }}
-                        </th>
-                        <td>
-                            {!! $proposal->notes !!}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.proposal.fields.total_tax') }}
-                        </th>
-                        <td>
-                            {{ $proposal->total_tax }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.proposal.fields.total_cost_price') }}
-                        </th>
-                        <td>
-                            {{ $proposal->total_cost_price }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.proposal.fields.tax') }}
-                        </th>
-                        <td>
-                            {{ $proposal->tax }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.proposal.fields.status') }}
-                        </th>
-                        <td>
-                            {{ $proposal->status }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.proposal.fields.date_sent') }}
-                        </th>
-                        <td>
-                            {{ $proposal->date_sent }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.proposal.fields.proposal_deleted') }}
-                        </th>
-                        <td>
-                            {{ Modules\Sales\Entities\Proposal::PROPOSAL_DELETED_SELECT[$proposal->proposal_deleted] ?? '' }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.proposal.fields.emailed') }}
-                        </th>
-                        <td>
-                            {{ Modules\Sales\Entities\Proposal::EMAILED_SELECT[$proposal->emailed] ?? '' }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.proposal.fields.show_client') }}
-                        </th>
-                        <td>
-                            {{ Modules\Sales\Entities\Proposal::SHOW_CLIENT_SELECT[$proposal->show_client] ?? '' }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.proposal.fields.convert') }}
-                        </th>
-                        <td>
-                            {{ Modules\Sales\Entities\Proposal::CONVERT_SELECT[$proposal->convert] ?? '' }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.proposal.fields.convert_module') }}
-                        </th>
-                        <td>
-                            {{ $proposal->convert_module }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.proposal.fields.permissions') }}
-                        </th>
-                        <td>
-                          
-                                <span class="label label-info">sara</span>
-                          
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="form-group">
-                <a class="btn btn-default" href="{{ route('sales.admin.proposals.index') }}">
-                    {{ trans('global.back_to_list') }}
-                </a>
+            <!-- /btn-group -->
+             <!-- /btn-group -->
+             <div class="btn-group">
+              <button type="button" class="btn btn-danger  dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">More Actions
+              </button>
+              <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 34px, 0px); top: 0px; left: 0px; will-change: transform;">
+
+                  <a class="dropdown-item" href="http://localhost/PMS/admin/proposals/index/email_proposals/215" data-toggle="ajaxModal">{{trans('cruds.proposal.fields.Email_Proposal')}}</a>
+                  <a class="dropdown-item" href="{{ route('sales.admin.proposals.historyproposal',$proposal->id) }}">{{ trans('cruds.proposal.title_singular') }} {{ trans('cruds.proposal.fields.History') }}</a>
+                  <a class="dropdown-item changestatus" data-status="draft"    title="unmark_as_draft">{{ trans('cruds.proposal.fields.Mark_As') }} {{trans('cruds.proposal.fields.draft')}}</a>
+                  <a class="dropdown-item changestatus" data-status="sent"     title="Mark As Sent">{{ trans('cruds.proposal.fields.Mark_As') }} {{trans('cruds.proposal.fields.sent')}}</a>
+                  <a class="dropdown-item changestatus" data-status="revised"  title="Mark as Revised">{{ trans('cruds.proposal.fields.Mark_As') }} {{trans('cruds.proposal.fields.revised')}}</a>
+                  <a class="dropdown-item changestatus" data-status="open"     title="Mark as Open">{{ trans('cruds.proposal.fields.Mark_As') }} {{trans('cruds.proposal.fields.open')}} </a>
+                  <a class="dropdown-item changestatus" data-status="declined">{{ trans('cruds.proposal.fields.Mark_As') }} {{trans('cruds.proposal.fields.declined')}}</a>
+                  <a class="dropdown-item changestatus" data-status="accepted">{{ trans('cruds.proposal.fields.Mark_As') }} {{trans('cruds.proposal.fields.accepted')}}</a>
+                  <hr>
+                  <a class="dropdown-item" href="http://localhost/PMS/admin/proposals/index/edit_proposals/215"> {{ trans('global.edit') }} {{ trans('cruds.proposal.title_singular') }}</a>
+                      
+               
+              </div>
             </div>
+            <!-- /btn-group -->
+            
+         
+        @else 
+
+
+          <!-- Indicates a successful or positive action -->
+          <button type="button" class="btn btn-success >{{trans('cruds.proposal.fields.accepted')}}</button>
+          <button type="button" class="btn btn-success changestatus" data-status="accepted">{{trans('cruds.proposal.fields.accepted')}}</button>
+        
+          <!-- Indicates caution should be taken with this action -->
+          <button type="button" class="btn btn-danger changestatus" data-status="Rejected">{{trans('cruds.proposal.fields.Rejected')}}</button>
+
+      
+        @endif
+
+     {{-- <div class="float-right "> --}}
+        <div class="mb-2 float-right">
+            <a href="#" data-toggle="tooltip" data-placement="top" title="" class="btn btn-xs btn-primary pull-right" data-original-title="Send Email">
+                <i class="fa fa-envelope-o"></i>
+            </a>
+            <a onclick="print_proposals('print_proposals')" href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="Print" class=" btn btn-xs btn-danger pull-right" aria-describedby="tooltip1049">
+                <i class="fa fa-print"></i>
+            </a>
+    
+            <a href="{{ route('sales.admin.proposals.pdf', $proposal->id) }}" data-toggle="tooltip" data-placement="top" title="" data-original-title="PDF Light Current" class="btn btn-xs btn-success pull-right ">
+                <i class="fa fa-file-pdf-o"></i>
+            </a>
+    
+    
+            <a href="#" data-toggle="tooltip" data-placement="top" title="" data-original-title="PDF Software Development" class="btn btn-xs btn-info pull-right ">
+                <i class="fa fa-file-pdf-o"></i>
+            </a>
+    
+    
         </div>
-    </div>
-</div>
- --}}
+    {{-- </div> --}}
+   </div>
+
+
+
 
 
 
@@ -224,7 +121,7 @@
               <div>{{ trans('cruds.proposal.fields.expire_date') }} : {{ $proposal->expire_date }}</div>
               <div>{{ trans('cruds.proposal.fields.Sales_Agent') }}: {{ $proposal->user && $proposal->user->accountDetail ? $proposal->user->accountDetail->fullname :'' }} </div>
               <div>
-                {{ trans('cruds.proposal.fields.status') }}: {{ $proposal->status }}
+                {{ trans('cruds.proposal.fields.status') }}: <span class="btn btn-sm btn-primary"> {{ $proposal->status }} </span>
               </div>
             </div>
             <!--/.col-->
@@ -249,23 +146,25 @@
             <div class="col-sm-4">
             </div>
             <div class="col-sm-4">
-            @dd($proposal->client,$proposal->opportunity)
+           
                @if($proposal->module =='client') 
-               
                     <div>
                     <strong>{{ trans('cruds.proposal.fields.Customer_INFO') }}</strong>
                     </div>
-                    <div>{{ trans('cruds.proposal.fields.companyname') }} :{{-- $proposal->client?: --}}</div>
-                    <div>{{ trans('cruds.proposal.fields.companyaddress') }} : 8th Sector – Building 10 – Block 11 – Nasr City - Cairo, Egypt</div>
-                    <div>{{ trans('cruds.proposal.fields.companyphone') }}: +201555836995 </div>
+                    <div>{{ trans('cruds.proposal.fields.companyname') }} :{{ $proposal->getclient && $proposal->getclient->name ? $proposal->getclient->name : '' }}</div>
+                    <div>{{ trans('cruds.proposal.fields.companyemail') }}: {{ $proposal->getclient && $proposal->getclient->email ? $proposal->getclient->email : '' }} </div>
+                    <div>{{ trans('cruds.proposal.fields.companyaddress') }} :{{ $proposal->getclient && $proposal->getclient->address ? $proposal->getclient->address : '' }}</div>
+                    <div>{{ trans('cruds.proposal.fields.companyphone') }}: {{ $proposal->getclient && $proposal->getclient->phone ? $proposal->getclient->phone : '' }} </div>
                @endif
                @if($proposal->module =='opportunities') 
                     <div>
                         <strong>{{ trans('cruds.proposal.fields.Opportunity_INFO') }}</strong>
                     </div>
-                    <div>{{ trans('cruds.proposal.fields.companyname') }} :{{-- $proposal->opportunity?: --}}</div>
-                    <div>{{ trans('cruds.proposal.fields.companyaddress') }} : 8th Sector – Building 10 – Block 11 – Nasr City - Cairo, Egypt</div>
-                    <div>{{ trans('cruds.proposal.fields.companyphone') }}: +201555836995 </div>
+                   
+                    <div>{{ trans('cruds.proposal.fields.companyname') }} :{{ $proposal->getopportunity && $proposal->getopportunity->name ? $proposal->getopportunity->name : '' }}</div>
+                    <div>{{ trans('cruds.proposal.fields.companyaddress') }} : {{ $proposal->getopportunity && $proposal->getopportunity->address ? $proposal->getopportunity->address : '' }}</div>
+                    <div>{{ trans('cruds.proposal.fields.companyphone') }}: {{ $proposal->getopportunity && $proposal->getopportunity->phone ? $proposal->getopportunity->phone : '' }} </div>
+                   
                     @endif
             </div>
             <!--/.col-->
@@ -281,43 +180,30 @@
                   <th>Item</th>
                   <th>Description</th>
                   <th class="center">Quantity</th>
+                  <th class="right">margin</th>
                   <th class="right">Unit Cost</th>
+                  <th class="right">Margin</th>
+                  <th class="right">Selling Price</th>
                   <th class="right">Total</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td class="center">1</td>
-                  <td class="left">Origin License</td>
-                  <td class="left">Extended License</td>
-                  <td class="center">1</td>
-                  <td class="right">$999,00</td>
-                  <td class="right">$999,00</td>
-                </tr>
-                <tr>
-                  <td class="center">2</td>
-                  <td class="left">Custom Services</td>
-                  <td class="left">Instalation and Customization (cost per hour)</td>
-                  <td class="center">20</td>
-                  <td class="right">$150,00</td>
-                  <td class="right">$3.000,00</td>
-                </tr>
-                <tr>
-                  <td class="center">3</td>
-                  <td class="left">Hosting</td>
-                  <td class="left">1 year subcription</td>
-                  <td class="center">1</td>
-                  <td class="right">$499,00</td>
-                  <td class="right">$499,00</td>
-                </tr>
-                <tr>
-                  <td class="center">4</td>
-                  <td class="left">Platinum Support</td>
-                  <td class="left">1 year subcription 24/7</td>
-                  <td class="center">1</td>
-                  <td class="right">$3.999,00</td>
-                  <td class="right">$3.999,00</td>
-                </tr>
+              @if($proposal->items->isEmpty() != true)
+                @foreach($proposal->items as $item)
+               
+                 <tr>
+                  <td class="center">{{ $loop->iteration }}</td>
+                  <td class="left">{{ $item->pivot->item_name }}</td>
+                  <td class="left">{{ $item->pivot->item_desc }}</td>
+                  <td class="center">{{ $item->pivot->quantity }}</td>
+                  <td class="right">{{ $item->pivot->margin }}</td>
+                  <td class="right">{{ $item->pivot->unit_cost }}</td>
+                  <td class="right">{{ $item->pivot->margin }}</td>
+                  <td class="right">{{ $item->pivot->selling_price  }}</td>
+                  <td class="right">{{ $item->pivot->selling_price * $item->pivot->quantity}}</td>
+                 </tr>
+                @endforeach
+              @endif
               </tbody>
             </table>
           </div>
@@ -325,8 +211,7 @@
           <div class="row">
 
             <div class="col-lg-4 col-sm-5">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-              in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+            {!! $proposal->notes !!}
             </div>
             <!--/.col-->
 
@@ -337,26 +222,35 @@
                     <td class="left">
                       <strong>Subtotal</strong>
                     </td>
-                    <td class="right">$8.497,00</td>
+                    <td class="right">{{ $proposal->getSubtotal($proposal) }}</td>
                   </tr>
                   <tr>
                     <td class="left">
-                      <strong>Discount (20%)</strong>
+                      <strong>Subtotal After Discount</strong>
                     </td>
-                    <td class="right">$1,699,40</td>
+                    <td class="right">{{ $proposal->after_discount }}</td>
                   </tr>
                   <tr>
                     <td class="left">
-                      <strong>VAT (10%)</strong>
+                      <strong>Discount ({{ $proposal->discount_percent }}%)</strong>
                     </td>
-                    <td class="right">$679,76</td>
+                    <td class="right">{{ $proposal->discount_total }} </td>
                   </tr>
+                  @foreach($proposal->gettaxesarray($proposal) as $key=> $taxold)
+                  <tr>
+                    
+                    <td class="left">
+                      <strong>{{get_taxes($key)->name }} ({{ get_taxes($key)->rate_percent }}%)</strong>
+                    </td>
+                    <td class="right">{{ array_sum($taxold) }}</td>
+                </tr>
+                     @endforeach
                   <tr>
                     <td class="left">
                       <strong>Total</strong>
                     </td>
                     <td class="right">
-                      <strong>$7.477,36</strong>
+                      <strong>{{ $proposal->total_tax + $proposal->after_discount }}</strong>
                     </td>
                   </tr>
                 </tbody>
@@ -370,5 +264,118 @@
         </div>
       </div>
 
+    <!-- ****************************************************modal****************************************************** -->
+    <!-- /.modal -->
+
+<div class="modal fade" id="primaryModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-primary" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"> {{ trans('global.clone') }} {{ trans('cruds.customerGroup.title_singular') }}
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+             <form method="POST" action="{{ route('sales.admin.proposals.cloneproposal', [$proposal->id]) }}" id="form2">
+                    @csrf
+            <div class="modal-body">
+              <div class="form-group row">
+                <div class="col-md-12">
+                  <label class="required" for="module ">{{ trans('cruds.proposal.fields.Related_To') }}</label>
+                  <select class="form-control  {{ $errors->has('module') ? 'is-invalid' : '' }}" name="module"
+                      onchange="get_related_moduleName(this.value, true)" id="module" required>
+                      <option value="" selected="">{{trans('global.pleaseSelect')}}</option>
+                      <option value="client">{{trans('cruds.proposal.fields.client')}}</option>
+                      <option value="opportunities">{{trans('cruds.proposal.fields.opportunities')}}</option>
+                  </select>
+                    @if($errors->has('module'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('module') }}
+                    </div>
+                    @endif
+                    <span class="help-block">{{ trans('cruds.proposal.fields.Related_To_helper') }}</span>
+                </div>
+                  <input type="hidden" name="proposal_id" value="{{$proposal->id}}">
+                  <div class="col-md-12" id="related_to">
+                  </div>
+          
+                <div class="col-md-6">
+                    <label class="required"
+                        for="proposal_date">{{ trans('cruds.proposal.fields.proposal_date') }}</label>
+                    <input class="form-control date {{ $errors->has('proposal_date') ? 'is-invalid' : '' }}" type="text"
+                        name="proposal_date" id="proposal_date" value="{{ old('proposal_date',$proposal->proposal_date) }}" required>
+                    @if($errors->has('proposal_date'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('proposal_date') }}
+                    </div>
+                    @endif
+                    <span class="help-block">{{ trans('cruds.proposal.fields.proposal_date_helper') }}</span>
+                </div>
+                <div class="col-md-6">
+                    <label for="expire_date">{{ trans('cruds.proposal.fields.expire_date') }}</label>
+                    <input class="form-control date {{ $errors->has('expire_date') ? 'is-invalid' : '' }}" type="text"
+                        name="expire_date" id="expire_date" value="{{ old('expire_date',$proposal->expire_date) }}">
+                    @if($errors->has('expire_date'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('expire_date') }}
+                    </div>
+                    @endif
+                    <span class="help-block">{{ trans('cruds.proposal.fields.expire_date_helper') }}</span>
+                </div>
+               
+            </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" id="customgroupsubmit">
+                    {{ trans('global.save') }}</button>
+            </div>
+            </form>
+        </div>
+        <!-- /.modal-content -->
+</div>
+<!-- /.modal-dialog -->
+    <!-- ****************************************************/modal****************************************************** -->
+@section('scripts')
+<script src="{{ asset('js/proposals.js') }}"></script>
+<script>
+/**
+ * function Change status of proposal
+ * 
+ * */
+ $(document).ready(function(){
+    $('.changestatus').click(function(){
+      var currentstatus=$(this).data('status');
+      var url = '/admin/sales/proposals/changestatus';
+      var proposalId="{{ $proposal->id }}"
+   // Ajax Reuqest
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+  $.ajax({
+          url: url,
+          type: 'post',
+          data: {
+            id: proposalId,
+            status: currentstatus,
+
+          },
+          success: function (response) {
+            location.reload(true);
+          }
+      });
+
+    });
+});
+
+
+
+</script> 
+@endsection
   
 @endsection

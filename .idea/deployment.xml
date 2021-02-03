@@ -1,15 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="pms_ftp">
+  <component name="PublishConfigData">
     <serverData>
-      <paths name="OTG">
+<<<<<<< HEAD
+      <paths name="pms_ftp">
+=======
+      <paths name="EGO">
         <serverdata>
           <mappings>
             <mapping local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>
-      <paths name="pms_ftp">
+      <paths name="Health-Tech">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="OTG">
+>>>>>>> 8221f3bf7f3bcb56c8f7dea6a05dba61a8d82fbd
         <serverdata>
           <mappings>
             <mapping local="$PROJECT_DIR$" web="/" />

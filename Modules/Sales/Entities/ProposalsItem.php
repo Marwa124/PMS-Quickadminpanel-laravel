@@ -8,6 +8,8 @@ use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
 use \DateTimeInterface;
+use Modules\MaterialsSuppliers\Entities\Purchase;
+use Modules\MaterialsSuppliers\Entities\TaxRate;
 
 class ProposalsItem extends Model implements HasMedia
 {
@@ -23,8 +25,8 @@ class ProposalsItem extends Model implements HasMedia
 
     protected $fillable = [
         // 'proposals_id',
-        'name',
-        'description',
+        'item_name',
+        'item_desc',
         'customer_group_id',
         // 'group_name',
         'brand',
@@ -71,7 +73,7 @@ class ProposalsItem extends Model implements HasMedia
         return $this->belongsTo(\Modules\MaterialsSuppliers\Entities\TaxRate::class, 'tax_id');
     }
 
-    
+
     public function proposals(){
 
         return $this->belongsToMany('Modules\Sales\Entities\Proposal',
@@ -79,5 +81,13 @@ class ProposalsItem extends Model implements HasMedia
 
     }
 
+
+    public function purchases() {
+        return $this->belongsToMany(Purchase::class, 'pruchase_id');
+    }
+
+    public function purchaseTaxes() {
+        return $this->belongsToMany(TaxRate::class, 'tax_id');
+    }
 
 }

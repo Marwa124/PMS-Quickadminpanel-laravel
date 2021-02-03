@@ -6,7 +6,7 @@
             </div>
             <div class="col-auto d-flex">
                 <multiselect
-                    v-model="form.supplier"
+                    v-model="form.supplier_id"
                     :options="suppliers"
                     :searchable="true"
                     :close-on-select="true"
@@ -21,6 +21,12 @@
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#supplierModal">
                         <i class="fas fa-plus"></i>
                     </button>
+
+
+                    <div style="position: relative;">
+                        <alert-success :form="supplierForm" message="Your changes have been saved!"></alert-success>
+                        <alert-errors :form="supplierForm" message="There were some problems with your input."></alert-errors>
+                    </div>
 
                     <!-- Modal -->
                     <form @submit.prevent="supplierNew" @keydown="supplierForm.onKeydown($event)">
@@ -91,7 +97,7 @@
                     </form>
                 </div>
             </div>
-            <has-error :form="form" field="supplier"></has-error>
+            <has-error :form="supplierForm" field="supplier"></has-error>
         </div>
     </div>
 </template>
@@ -120,9 +126,14 @@ export default {
     methods: {
         getSuppliers() {
             axios.get(this.urlGetSuppliers).then(response => {
-                const data = response.data;
-                this.suppliers = data.data;
-                // console.log(this.suppliers);
+                const data = response.data.data;
+                var result = data.map(item => {
+                    return {
+                        id: item.id,
+                        name: item.name
+                    }
+                })
+                this.suppliers = result;
             });
         },
         // Create a new Supplier Form Subbmission

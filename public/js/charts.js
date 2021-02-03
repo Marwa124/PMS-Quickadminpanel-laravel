@@ -4,7 +4,7 @@ $(function (){
   var randomScalingFactor = function(){ return Math.round(Math.random()*100)};
   var lineChartData = {
     labels : ['January','February','March','April','May','June','July'],
-    datasets : [
+    datasets : [0
       {
         label: 'My First dataset',
         backgroundColor : 'rgba(220,220,220,0.2)',

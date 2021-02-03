@@ -3619,6 +3619,14 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -3635,20 +3643,21 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       urlGetAccountDetails: '/api/v1/admin/hr/account-details',
       urlGetItems: '/api/v1/admin/materialssuppliers/items',
       urlGetTaxRates: '/api/v1/admin/materialssuppliers/tax-rates',
+      urlPurchase: '/admin/materialssuppliers/purchases',
       users: [],
       items: [],
       taxRates: [],
-      quantityAs: this.$t('purchase.fields.quantity_as_qty'),
       spinnerAction: false,
       spinnerLoad: false,
       selectedItem: '',
       form: new vform__WEBPACK_IMPORTED_MODULE_0__["Form"]({
-        ref_no: '',
-        supplier: '',
+        reference_no: '',
+        supplier_id: '',
         purchase_date: '',
+        show_quantity_as: this.$t('purchase.fields.quantity_as_qty'),
         due_date: '',
-        sales_agent: '',
-        stock: '',
+        user_id: '',
+        update_stock: '',
         discount_type: '',
         notes: '',
         items: [{
@@ -3664,8 +3673,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           taxes: []
         }],
         sub_total: '',
-        discount_amount: '',
-        discount: '',
+        discount_total: '',
+        discount_percent: '',
         taxRate_total: {},
         removedTax: '',
         AddedTax: ''
@@ -3674,37 +3683,47 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
   },
   methods: {
     purposalSubmit: function purposalSubmit() {
-      this.form.post('/admin/materialssuppliers/purchases').then(function (_ref) {
-        var data = _ref.data;
+      var _this = this;
+
+      this.spinnerLoad = true;
+      this.form.post(this.urlPurchase).then(function (data) {
         console.log(data);
+        _this.spinnerLoad = false;
+        if (data == 201) window.location.href = _this.urlPurchase;
       });
     },
     getAccountDetails: function getAccountDetails() {
-      var _this = this;
+      var _this2 = this;
 
       axios.get(this.urlGetAccountDetails).then(function (response) {
         var data = response.data.data;
-        _this.users = data;
+        var result = data.map(function (user) {
+          return {
+            user_id: user.id,
+            fullname: user.fullname
+          };
+        });
+        _this2.users = result;
       });
     },
     getItems: function getItems() {
-      var _this2 = this;
+      var _this3 = this;
 
       axios.get(this.urlGetItems).then(function (response) {
         var data = response.data.data;
-        _this2.items = data;
+        _this3.items = data;
       });
     },
     getTaxRates: function getTaxRates() {
-      var _this3 = this;
+      var _this4 = this;
 
       axios.get(this.urlGetTaxRates).then(function (response) {
         var data = response.data.data;
-        _this3.taxRates = data;
+        _this4.taxRates = data;
       });
     },
     showQtyAs: function showQtyAs(val) {
-      this.quantityAs = this.$t('purchase.fields.quantity_as_' + val);
+      this.form.show_quantity_as = this.$t('purchase.fields.quantity_as_' + val);
     },
     addNewPurchaseItem: function addNewPurchaseItem(item) {
       var _item$taxes;
@@ -3720,7 +3739,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       this.calculateTotalTaxes(this.form.removedTax);
     },
     addTax: function addTax(taxItem, index) {
-      var _this4 = this;
+      var _this5 = this;
 
       if (!this.form.removedTax) {
         var selectedTax = _toConsumableArray(taxItem);
@@ -3731,12 +3750,11 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         var taxArray = [];
         selectedTax.forEach(function (element) {
           taxArray.push(element);
-          _this4.form.taxRate_total[element.name] = {
+          _this5.form.taxRate_total[element.name] = {
             name: element.name,
             value: 0
-          }; // PREVENT DUBLICATING OBJECT
+          };
         });
-        console.log("dsfdvjch lnkfjdbli uekwhilkgwbj", this.form.taxRate_total);
         this.form.items[index].taxes = taxArray;
       }
     },
@@ -3786,7 +3804,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       }
     },
     calculateTotalTaxes: function calculateTotalTaxes() {
-      var _this5 = this;
+      var _this6 = this;
 
       var removedItem = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
       var taxName = new Array();
@@ -3797,33 +3815,27 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         var indexRow = element.rowIndex;
 
         if (indexRow) {
-          _this5.form.items[indexRow].taxes.map(function (tax) {
+          _this6.form.items[indexRow].taxes.map(function (tax) {
             var count = 0;
 
             if (tax.name || removedItem) {
               while (count == 0) {
                 if (removedItem[0]) {
-                  // console.log(typeof removedItem[0]);
-                  // console.log(typeof this.form.taxRate_total[removedItem[0]] == 'object', removedItem.length);
-                  if (typeof removedItem[0] == 'string' && _typeof(_this5.form.taxRate_total[removedItem[0]]) == 'object') {
-                    _this5.form.taxRate_total[removedItem[0]].value = 0;
-                    _this5.form.removedTax = '';
-                    console.log('khiukhuihjjj');
+                  if (typeof removedItem[0] == 'string' && _typeof(_this6.form.taxRate_total[removedItem[0]]) == 'object') {
+                    _this6.form.taxRate_total[removedItem[0]].value = 0;
+                    _this6.form.removedTax = '';
                   } else {
                     removedItem.forEach(function (element) {
-                      _this5.form.taxRate_total[element[0]].value = 0;
-                      _this5.form.removedTax = '';
-                      console.log('slssssssssssssss');
+                      _this6.form.taxRate_total[element[0]].value = 0;
+                      _this6.form.removedTax = '';
                     });
                   }
                 } else {
                   for (var key in taxName) {
                     if (key == tax.name) {
-                      taxName[tax.name] += _this5.form.items[indexRow].total * (tax.rate_percent / 100);
-                      _this5.form.taxRate_total[tax.name].value = parseFloat(taxName[tax.name].toFixed(2));
+                      taxName[tax.name] += _this6.form.items[indexRow].total * (tax.rate_percent / 100);
+                      _this6.form.taxRate_total[tax.name].value = parseFloat(taxName[tax.name].toFixed(2));
                     }
-
-                    console.log('00000', key, taxName[key], taxName);
                   }
                 }
 
@@ -3851,7 +3863,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
             return subTotal;
           }, {});
           form.sub_total = result;
-          form.discount_amount = form.discount * subTotal * (1 / 100);
+          form.discount_total = parseFloat((form.discount_percent * subTotal * (1 / 100)).toFixed(2));
           this.calculateTotalTaxes();
         }
       },
@@ -3881,6 +3893,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vform__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vform__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-multiselect */ "./node_modules/vue-multiselect/dist/vue-multiselect.min.js");
 /* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_multiselect__WEBPACK_IMPORTED_MODULE_1__);
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -4009,8 +4027,14 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       axios.get(this.urlGetSuppliers).then(function (response) {
-        var data = response.data;
-        _this.suppliers = data.data; // console.log(this.suppliers);
+        var data = response.data.data;
+        var result = data.map(function (item) {
+          return {
+            id: item.id,
+            name: item.name
+          };
+        });
+        _this.suppliers = result;
       });
     },
     // Create a new Supplier Form Subbmission
@@ -58249,6 +58273,24 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", {}, [
     _c(
+      "div",
+      { staticStyle: { position: "relative" } },
+      [
+        _c("alert-success", {
+          attrs: { form: _vm.form, message: "Your changes have been saved!" }
+        }),
+        _vm._v(" "),
+        _c("alert-errors", {
+          attrs: {
+            form: _vm.form,
+            message: "There were some problems with your input."
+          }
+        })
+      ],
+      1
+    ),
+    _vm._v(" "),
+    _c(
       "form",
       {
         on: {
@@ -58279,7 +58321,9 @@ var render = function() {
                       staticClass: "col-form-label required",
                       attrs: { for: "refNo" },
                       domProps: {
-                        textContent: _vm._s(_vm.$t("purchase.fields.ref_no"))
+                        textContent: _vm._s(
+                          _vm.$t("purchase.fields.reference_no")
+                        )
                       }
                     })
                   ]),
@@ -58290,19 +58334,23 @@ var render = function() {
                         {
                           name: "model",
                           rawName: "v-model",
-                          value: _vm.form.ref_no,
-                          expression: "form.ref_no"
+                          value: _vm.form.reference_no,
+                          expression: "form.reference_no"
                         }
                       ],
                       staticClass: "form-control",
                       attrs: { type: "text" },
-                      domProps: { value: _vm.form.ref_no },
+                      domProps: { value: _vm.form.reference_no },
                       on: {
                         input: function($event) {
                           if ($event.target.composing) {
                             return
                           }
-                          _vm.$set(_vm.form, "ref_no", $event.target.value)
+                          _vm.$set(
+                            _vm.form,
+                            "reference_no",
+                            $event.target.value
+                          )
                         }
                       }
                     })
@@ -58341,7 +58389,7 @@ var render = function() {
                         }
                       ],
                       staticClass: "form-control",
-                      attrs: { type: "text" },
+                      attrs: { type: "date" },
                       domProps: { value: _vm.form.purchase_date },
                       on: {
                         input: function($event) {
@@ -58387,7 +58435,7 @@ var render = function() {
                         }
                       ],
                       staticClass: "form-control",
-                      attrs: { type: "text" },
+                      attrs: { type: "date" },
                       domProps: { value: _vm.form.due_date },
                       on: {
                         input: function($event) {
@@ -58438,11 +58486,11 @@ var render = function() {
                         "preselect-first": true
                       },
                       model: {
-                        value: _vm.form.sales_agent,
+                        value: _vm.form.user_id,
                         callback: function($$v) {
-                          _vm.$set(_vm.form, "sales_agent", $$v)
+                          _vm.$set(_vm.form, "user_id", $$v)
                         },
-                        expression: "form.sales_agent"
+                        expression: "form.user_id"
                       }
                     })
                   ],
@@ -58475,8 +58523,8 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.form.stock,
-                            expression: "form.stock"
+                            value: _vm.form.update_stock,
+                            expression: "form.update_stock"
                           }
                         ],
                         attrs: {
@@ -58484,10 +58532,12 @@ var render = function() {
                           value: "Yes",
                           "aria-label": "Radio button for following text input"
                         },
-                        domProps: { checked: _vm._q(_vm.form.stock, "Yes") },
+                        domProps: {
+                          checked: _vm._q(_vm.form.update_stock, "Yes")
+                        },
                         on: {
                           change: function($event) {
-                            return _vm.$set(_vm.form, "stock", "Yes")
+                            return _vm.$set(_vm.form, "update_stock", "Yes")
                           }
                         }
                       }),
@@ -58501,8 +58551,8 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.form.stock,
-                            expression: "form.stock"
+                            value: _vm.form.update_stock,
+                            expression: "form.update_stock"
                           }
                         ],
                         attrs: {
@@ -58510,10 +58560,12 @@ var render = function() {
                           value: "No",
                           "aria-label": "Radio button for following text input"
                         },
-                        domProps: { checked: _vm._q(_vm.form.stock, "No") },
+                        domProps: {
+                          checked: _vm._q(_vm.form.update_stock, "No")
+                        },
                         on: {
                           change: function($event) {
-                            return _vm.$set(_vm.form, "stock", "No")
+                            return _vm.$set(_vm.form, "update_stock", "No")
                           }
                         }
                       }),
@@ -58648,11 +58700,6 @@ var render = function() {
             "div",
             { staticClass: "col-md-6" },
             [
-              _vm._v(
-                "\n                " +
-                  _vm._s(_vm.selectedItem) +
-                  "\n            "
-              ),
               _c("multiselect", {
                 attrs: {
                   options: _vm.items,
@@ -58791,7 +58838,7 @@ var render = function() {
               _vm._v(" "),
               _c("th", {
                 attrs: { scope: "col" },
-                domProps: { textContent: _vm._s(_vm.quantityAs) }
+                domProps: { textContent: _vm._s(_vm.form.show_quantity_as) }
               }),
               _vm._v(" "),
               _c("th", { attrs: { scope: "col" } }, [
@@ -59078,19 +59125,23 @@ var render = function() {
                         {
                           name: "model",
                           rawName: "v-model",
-                          value: _vm.form.discount,
-                          expression: "form.discount"
+                          value: _vm.form.discount_percent,
+                          expression: "form.discount_percent"
                         }
                       ],
                       staticClass: "form-control",
-                      attrs: { type: "number", step: "0.01" },
-                      domProps: { value: _vm.form.discount },
+                      attrs: { type: "number", step: "0.01", min: "0.01" },
+                      domProps: { value: _vm.form.discount_percent },
                       on: {
                         input: function($event) {
                           if ($event.target.composing) {
                             return
                           }
-                          _vm.$set(_vm.form, "discount", $event.target.value)
+                          _vm.$set(
+                            _vm.form,
+                            "discount_percent",
+                            $event.target.value
+                          )
                         }
                       }
                     })
@@ -59104,13 +59155,13 @@ var render = function() {
                         {
                           name: "model",
                           rawName: "v-model",
-                          value: _vm.form.discount_amount,
-                          expression: "form.discount_amount"
+                          value: _vm.form.discount_total,
+                          expression: "form.discount_total"
                         }
                       ],
                       staticClass: "form-control input-transparent text-right",
                       attrs: { type: "number", disabled: "", step: "0.01" },
-                      domProps: { value: _vm.form.discount_amount },
+                      domProps: { value: _vm.form.discount_total },
                       on: {
                         input: function($event) {
                           if ($event.target.composing) {
@@ -59118,7 +59169,7 @@ var render = function() {
                           }
                           _vm.$set(
                             _vm.form,
-                            "discount_amount",
+                            "discount_total",
                             $event.target.value
                           )
                         }
@@ -59204,7 +59255,15 @@ var render = function() {
             staticClass: "btn btn-primary",
             attrs: { disabled: _vm.form.busy, type: "submit" }
           },
-          [_vm._v("Log In")]
+          [
+            _vm.spinnerLoad
+              ? _c("i", { staticClass: "fa fa-spinner fa-spin" })
+              : _vm._e(),
+            _vm._v(" "),
+            _c("span", {
+              domProps: { textContent: _vm._s(_vm.$t("global.create")) }
+            })
+          ]
         )
       ]
     )
@@ -59264,11 +59323,11 @@ var render = function() {
                 "preselect-first": true
               },
               model: {
-                value: _vm.form.supplier,
+                value: _vm.form.supplier_id,
                 callback: function($$v) {
-                  _vm.$set(_vm.form, "supplier", $$v)
+                  _vm.$set(_vm.form, "supplier_id", $$v)
                 },
-                expression: "form.supplier"
+                expression: "form.supplier_id"
               }
             }),
             _vm._v(" "),
@@ -59277,6 +59336,27 @@ var render = function() {
               { staticStyle: { "align-self": "center", cursor: "pointer" } },
               [
                 _vm._m(0),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticStyle: { position: "relative" } },
+                  [
+                    _c("alert-success", {
+                      attrs: {
+                        form: _vm.supplierForm,
+                        message: "Your changes have been saved!"
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c("alert-errors", {
+                      attrs: {
+                        form: _vm.supplierForm,
+                        message: "There were some problems with your input."
+                      }
+                    })
+                  ],
+                  1
+                ),
                 _vm._v(" "),
                 _c(
                   "form",
@@ -59617,7 +59697,9 @@ var render = function() {
           1
         ),
         _vm._v(" "),
-        _c("has-error", { attrs: { form: _vm.form, field: "supplier" } })
+        _c("has-error", {
+          attrs: { form: _vm.supplierForm, field: "supplier" }
+        })
       ],
       1
     )
@@ -72379,7 +72461,8 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 
 
-window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js"); // import router from './router'
+window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js"); // window.moment = require('moment');
+// import router from './router'
 
 /* !!!: alert */
 

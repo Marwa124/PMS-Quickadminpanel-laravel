@@ -114,10 +114,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::resource('salutations', 'SalutationsController', ['except' => ['edit', 'update', 'show']]);
 
     // Leads
-    Route::delete('leads/destroy', 'LeadsController@massDestroy')->name('leads.massDestroy');
-    Route::post('leads/media', 'LeadsController@storeMedia')->name('leads.storeMedia');
-    Route::post('leads/ckmedia', 'LeadsController@storeCKEditorImages')->name('leads.storeCKEditorImages');
-    Route::resource('leads', 'LeadsController');
+    // Route::delete('leads/destroy', 'LeadsController@massDestroy')->name('leads.massDestroy');
+    // Route::post('leads/media', 'LeadsController@storeMedia')->name('leads.storeMedia');
+    // Route::post('leads/ckmedia', 'LeadsController@storeCKEditorImages')->name('leads.storeCKEditorImages');
+    // Route::resource('leads', 'LeadsController');
 
     // Opportunities
     Route::delete('opportunities/destroy', 'OpportunitiesController@massDestroy')->name('opportunities.massDestroy');

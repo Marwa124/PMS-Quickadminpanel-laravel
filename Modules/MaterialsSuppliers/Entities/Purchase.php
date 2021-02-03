@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace Modules\MaterialsSuppliers\Entities;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -9,6 +9,7 @@ use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
 use \DateTimeInterface;
+use Modules\Sales\Entities\ProposalsItem;
 
 class Purchase extends Model implements HasMedia
 {
@@ -40,30 +41,7 @@ class Purchase extends Model implements HasMedia
         'deleted_at',
     ];
 
-    protected $fillable = [
-        'supplier_id',
-        'reference_no',
-        'total',
-        'update_stock',
-        'status',
-        'emailed',
-        'date_sent',
-        'created_by',
-        'user_id',
-        'purchase_date',
-        'due_date',
-        'discount_type',
-        'discount_percent',
-        'adjustment',
-        'discount_total',
-        'show_quantity_as',
-        'total_tax',
-        'tax',
-        'notes',
-        'created_at',
-        'updated_at',
-        'deleted_at',
-    ];
+    protected $guarded = [];
 
     protected function serializeDate(DateTimeInterface $date)
     {
@@ -81,6 +59,21 @@ class Purchase extends Model implements HasMedia
         return $this->belongsTo(Supplier::class, 'supplier_id');
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function items() {
+        return $this->belongsToMany(ProposalsItem::class, 'item_purchase', 'purchase_id', 'item_id')->withPivot(
+            'item_name',
+            'item_description',
+            'quantity',
+            'price',
+            'total'
+        );
+    }
+
     public function getDateSentAttribute($value)
     {
         return $value ? Carbon::parse($value)->format(config('panel.date_format')) : null;
@@ -89,11 +82,6 @@ class Purchase extends Model implements HasMedia
     public function setDateSentAttribute($value)
     {
         $this->attributes['date_sent'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
-    }
-
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function getPurchaseDateAttribute($value)
@@ -114,10 +102,5 @@ class Purchase extends Model implements HasMedia
     public function setDueDateAttribute($value)
     {
         $this->attributes['due_date'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
-    }
-
-    public function permissions()
-    {
-        return $this->belongsToMany(Permission::class);
     }
 }

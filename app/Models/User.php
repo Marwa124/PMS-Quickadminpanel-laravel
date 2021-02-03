@@ -19,6 +19,7 @@ use Modules\ProjectManagement\Entities\ProjectTimer;
 use Modules\ProjectManagement\Entities\Task;
 use Modules\ProjectManagement\Entities\TimeSheet;
 use Modules\ProjectManagement\Entities\ticket;
+use Modules\ProjectManagement\Entities\WorkTracking;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
@@ -487,5 +488,32 @@ class User extends Authenticatable implements HasMedia
 
         return $tickets;
     }
+
+    public function getUserWorkTrackingByUserID($user_id,$trashed=null)
+    {
+        $user = User::findOrFail($user_id);
+
+        if ($user->hasrole(['Admin','Super Admin'])) {
+
+            if ($trashed) {
+//            abort_if(Gate::denies('work_tracking_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+                return WorkTracking::onlyTrashed()->get();
+            }
+
+            $allWorkTracking = WorkTracking::all();
+
+        }else{
+
+            if ($trashed){
+//            abort_if(Gate::denies('work_tracking_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+                return $user->accountDetail->trashWork_tracking;
+            }
+
+            $allWorkTracking = $user->accountDetail->work_tracking;
+        }
+
+        return $allWorkTracking;
+    }
+
 
 }

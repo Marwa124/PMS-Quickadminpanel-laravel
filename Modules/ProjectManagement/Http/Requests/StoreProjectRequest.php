@@ -20,7 +20,7 @@ class StoreProjectRequest extends FormRequest
             'name'               => [
                 'string',
                 'required',
-                'unique:projects',
+                'unique:projects,name',
             ],
             'client_id'          => [
                 'required',
@@ -41,6 +41,7 @@ class StoreProjectRequest extends FormRequest
             'end_date'           => [
                 'required',
                 'date_format:' . config('panel.date_format'),
+                'after_or_equal:start_date',
             ],
 //            'actual_completion'  => [
 //                'string',
@@ -53,6 +54,7 @@ class StoreProjectRequest extends FormRequest
                 'max:1',
             ],
             'project_cost'       => [
+                'required',
                 'numeric',
             ],
             'demo_url'           => [
@@ -60,8 +62,9 @@ class StoreProjectRequest extends FormRequest
                 'nullable',
             ],
             'project_status'     => [
+                'required',
                 'string',
-                'nullable',
+                //'nullable',
             ],
 //            'timer_started_by'   => [
 //                'nullable',

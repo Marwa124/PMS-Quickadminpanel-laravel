@@ -35,7 +35,7 @@
             </div>
             <div class="form-group row">
                 <div class="col-md-6">
-                    <label class="required" for="module ">{{ trans('cruds.proposal.fields.Related_To') }}</label>
+                    <label class="required" for="module">{{ trans('cruds.proposal.fields.Related_To') }}</label>
                     <select class="form-control  {{ $errors->has('module') ? 'is-invalid' : '' }}" name="module"
                         onchange="get_related_moduleName(this.value, true)" id="module" required>
                         <option value="" selected="">{{trans('global.pleaseSelect')}}</option>
@@ -327,7 +327,7 @@
                                             <span class="bold">Discount (%)</span>
                                         </div>
                                         <div class="col-md-5">
-                                            <input type="text" data-parsley-type="number" value="0" class="form-control pull-left" min="0" max="100" name="discount_percent" >
+                                            <input type="number" data-parsley-type="number" value="0" class="form-control pull-left" min="0" max="100" name="discount_percent" >
                                         </div>
                                     </div>
                                 </td>
@@ -345,7 +345,7 @@
                                             <span class="bold">Adjustment</span>
                                         </div>
                                         <div class="col-md-5">
-                                            <input type="text" data-parsley-type="number" value="0" class="form-control pull-left" name="adjustment" >
+                                            <input type="number" data-parsley-type="number" value="0" class="form-control pull-left" name="adjustment" >
                                         </div>
                                     </div>
                                 </td>

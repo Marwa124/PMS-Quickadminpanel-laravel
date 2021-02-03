@@ -13,26 +13,6 @@
             height: 100%;
         }
 
-        /*body {*/
-        /*    height: inherit;*/
-        /*    display: -webkit-box;*/
-        /*    display: -ms-flexbox;*/
-        /*    display: flex;*/
-        /*    -webkit-box-orient: vertical;*/
-        /*    -webkit-box-direction: normal;*/
-        /*    -ms-flex-direction: column;*/
-        /*    flex-direction: column;*/
-        /*    font-family: 'Fira Sans', sans-serif;*/
-        /*    -webkit-font-smoothing: antialiased;*/
-        /*    -moz-osx-font-smoothing: grayscale;*/
-        /*    color: #79838c;*/
-        /*}*/
-
-        /*a {*/
-        /*    color: #50585f;*/
-        /*    text-decoration: none;*/
-        /*}*/
-
         a:hover {
             color: #383e44;
         }
@@ -69,13 +49,9 @@
             display: block;
             width: 100%;
             z-index: 300;
-            /* FF3.6-15 */
-            /* Chrome10-25,Safari5.1-6 */
             background: -webkit-gradient(linear, left top, left bottom, color-stop(20%, white), to(rgba(255, 255, 255, 0)));
             background: linear-gradient(to bottom, white 20%, rgba(255, 255, 255, 0) 100%);
-            /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
             filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#00ffffff',GradientType=0 );
-            /* IE6-9 */
         }
 
         div.header h1 {
@@ -247,6 +223,11 @@
     </style>
 @endsection
 @section('content')
+    <div class="flash-message">
+        @if(Session::has('messages'))
+            <p class="alert alert-danger">{{ Session::get('messages') }}</p>
+        @endif
+    </div>
     <div class="row">
         <div class="col-12 pb-1">
             <div class="col-3">
@@ -1498,6 +1479,14 @@
             })
 
         }
+
+        //session flash message timeout after 5 sec
+        $("document").ready(function(){
+            setTimeout(function(){
+                $(".flash-message").remove();
+            }, 5000 ); // 5 secs
+
+        });
 
     </script>
 

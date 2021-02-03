@@ -20,6 +20,7 @@ class UpdateTaskTagRequest extends FormRequest
             'name' => [
                 'string',
                 'required',
+                'unique:task_tags,name,' . request()->route('task_tag')->id,
             ],
         ];
     }

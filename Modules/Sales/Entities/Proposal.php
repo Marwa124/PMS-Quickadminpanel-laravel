@@ -13,6 +13,7 @@ use App\Models\User;
 use App\Models\Opportunity;
 use App\Models\Client;
 use  Modules\Sales\Entities\ProposalItemTax;
+use  Modules\ProjectManagement\Entities\Activity;
 use \DateTimeInterface;
 
 class Proposal extends Model implements HasMedia
@@ -93,12 +94,22 @@ class Proposal extends Model implements HasMedia
     ];
     public function opportunity()
     {
-        return $this->belongsTo(Opportunity::class,'module_id')->where('proposals.module','=','opportunities');
+        return $this->belongsTo(Opportunity::class,'module_id');
     }
     public function client()
     {
-        return $this->belongsTo(Client::class,'module_id')->where('proposals.module','=','client');
+        return $this->belongsTo(Client::class,'module_id');
     }
+   
+    public function getclient()
+    {
+        return $this->where('proposals.module','=','client')->first()->client();
+    }
+    public function getopportunity()
+    {
+        return $this->where('proposals.module','=','opportunities')->first()->opportunity();
+    }
+   
     protected function serializeDate(DateTimeInterface $date)
     {
         return $date->format('Y-m-d H:i:s');
@@ -147,7 +158,7 @@ class Proposal extends Model implements HasMedia
     public function items(){
 
         return $this->belongsToMany('Modules\Sales\Entities\ProposalsItem',
-            'item_porposal_relations','proposals_id','item_id') ->withPivot(
+            'item_porposal_relations','proposals_id','item_id')->withPivot(
                 'id',
                 'item_name',
                 'item_desc',
@@ -176,21 +187,28 @@ class Proposal extends Model implements HasMedia
         return $this->hasMany(ProposalItemTax::class, 'proposals_id', 'id');
     }
 
-    public function gettaxesarray($taxes)
+    public function gettaxesarray($proposal)
     {
         
-        $unique_taxes_ids = array_unique($taxes->itemtaxs->pluck('taxs_id')->toArray());
+        $unique_taxes_ids = array_unique($proposal->itemtaxs->pluck('taxs_id')->toArray());
         $turned_into_keys = array_fill_keys($unique_taxes_ids,null);
 
-        foreach($taxes->items as $key => $value){
+        foreach($proposal->items as $key => $value){
         
             $items_tax = 0;    
         
-            foreach($taxes->itemtaxs->where('item_id',$value->pivot->id)->pluck('taxs_id') as $tax){
-
+            foreach($proposal->itemtaxs->where('item_id',$value->pivot->id)->pluck('taxs_id') as $tax){
+                // dd($unique_taxes_ids,$turned_into_keys,$proposal->itemtaxs->where('item_id',$value->pivot->id)->pluck('taxs_id'),$tax,$value->pivot->selling_price, $value->pivot->quantity);
                 if(array_key_exists($tax,$turned_into_keys)){
-                    
-                    $items_tax = ($value->pivot->unit_cost * $value->pivot->quantity)* (get_taxes($tax)->rate_percent/100) ;
+                    $sallingprice = $value->pivot->selling_price * $value->pivot->quantity;
+                   
+                    if($proposal->discount_percent != 0){
+                        $old =$sallingprice * (get_taxes($tax)->rate_percent/100) ;
+                        $items_tax = $old-( $old * ($proposal->discount_percent / 100)) ;
+                    }else{
+
+                        $items_tax = $sallingprice * (get_taxes($tax)->rate_percent/100) ;
+                    }
                     $turned_into_keys[$tax][]=$items_tax;
                 }
             }
@@ -199,5 +217,19 @@ class Proposal extends Model implements HasMedia
             
         return  $turned_into_keys;
 
+    }
+    
+    public function getSubtotal($proposal)
+    {
+        $items_tax = 0;    
+        foreach($proposal->items as $key => $value){
+            $items_tax += $value->pivot->selling_price * $value->pivot->quantity;
+        }
+        return $items_tax;
+    }
+
+    public function activities()
+    {
+        return $this->hasMany(Activity::class,'module_field_id')->where('module','=','proposal')->orderBy('id','desc');
     }
 }
