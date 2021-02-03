@@ -30,25 +30,14 @@
               </button>
               <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 34px, 0px); top: 0px; left: 0px; will-change: transform;">
 
-                {{-- <a  class="dropdown-item" href="#">{{trans('cruds.proposal.fields.Waiting_approval')}}</a>
-                <a  class="dropdown-item" href="#">{{trans('cruds.proposal.fields.Rejected')}}</a>
-                <a  class="dropdown-item" href="#">{{trans('cruds.proposal.fields.Approved')}}</a>
-                <a  class="dropdown-item" href="#">{{trans('cruds.proposal.fields.draft')}}</a>
-                <a  class="dropdown-item" href="#">{{trans('cruds.proposal.fields.sent')}}</a>
-                <a  class="dropdown-item" href="#">{{trans('cruds.proposal.fields.open')}}</a>
-                <a  class="dropdown-item" href="#">{{trans('cruds.proposal.fields.revised')}}</a>
-                <a  class="dropdown-item" href="#">{{trans('cruds.proposal.fields.declined')}}</a>
-                <a  class="dropdown-item" href="#">{{trans('cruds.proposal.fields.accepted')}}</a> --}}
-
-              
                   <a class="dropdown-item" href="http://localhost/PMS/admin/proposals/index/email_proposals/215" data-toggle="ajaxModal">{{trans('cruds.proposal.fields.Email_Proposal')}}</a>
-                  <a class="dropdown-item" href="http://localhost/PMS/admin/proposals/index/proposals_history/215">{{ trans('cruds.proposal.title_singular') }} {{ trans('cruds.proposal.History') }}</a>
-                  <a class="dropdown-item" href="http://localhost/PMS/admin/proposals/change_status/draft/215" title="unmark_as_draft">{{ trans('cruds.proposal.Mark_As') }} {{trans('cruds.proposal.fields.draft')}}</a>
-                  <a class="dropdown-item" href="http://localhost/PMS/admin/proposals/change_status/sent/215" title="Mark As Sent">{{ trans('cruds.proposal.Mark_As') }} {{trans('cruds.proposal.fields.sent')}}</a>
-                  <a class="dropdown-item" href="http://localhost/PMS/admin/proposals/change_status/revised/215" title="Mark as Revised">{{ trans('cruds.proposal.Mark_As') }} {{trans('cruds.proposal.fields.revised')}}</a>
-                  <a class="dropdown-item" href="http://localhost/PMS/admin/proposals/change_status/open/215" title="Mark as Open">{{ trans('cruds.proposal.Mark_As') }} {{trans('cruds.proposal.fields.open')}} </a>
-                  <a class="dropdown-item" href="http://localhost/PMS/admin/proposals/change_status/declined/215">{{ trans('cruds.proposal.Mark_As') }} {{trans('cruds.proposal.fields.declined')}}</a>
-                  <a class="dropdown-item" href="http://localhost/PMS/admin/proposals/change_status/accepted/215">{{ trans('cruds.proposal.Mark_As') }} {{trans('cruds.proposal.fields.accepted')}}</a>
+                  <a class="dropdown-item" href="{{ route('sales.admin.proposals.historyproposal',$proposal->id) }}">{{ trans('cruds.proposal.title_singular') }} {{ trans('cruds.proposal.fields.History') }}</a>
+                  <a class="dropdown-item changestatus" data-status="draft"    title="unmark_as_draft">{{ trans('cruds.proposal.fields.Mark_As') }} {{trans('cruds.proposal.fields.draft')}}</a>
+                  <a class="dropdown-item changestatus" data-status="sent"     title="Mark As Sent">{{ trans('cruds.proposal.fields.Mark_As') }} {{trans('cruds.proposal.fields.sent')}}</a>
+                  <a class="dropdown-item changestatus" data-status="revised"  title="Mark as Revised">{{ trans('cruds.proposal.fields.Mark_As') }} {{trans('cruds.proposal.fields.revised')}}</a>
+                  <a class="dropdown-item changestatus" data-status="open"     title="Mark as Open">{{ trans('cruds.proposal.fields.Mark_As') }} {{trans('cruds.proposal.fields.open')}} </a>
+                  <a class="dropdown-item changestatus" data-status="declined">{{ trans('cruds.proposal.fields.Mark_As') }} {{trans('cruds.proposal.fields.declined')}}</a>
+                  <a class="dropdown-item changestatus" data-status="accepted">{{ trans('cruds.proposal.fields.Mark_As') }} {{trans('cruds.proposal.fields.accepted')}}</a>
                   <hr>
                   <a class="dropdown-item" href="http://localhost/PMS/admin/proposals/index/edit_proposals/215"> {{ trans('global.edit') }} {{ trans('cruds.proposal.title_singular') }}</a>
                       
@@ -62,7 +51,7 @@
 
 
           <!-- Indicates a successful or positive action -->
-          <button type="button" class="btn btn-success changestatus" data-status="accepted">{{trans('cruds.proposal.fields.accepted')}}</button>
+          <button type="button" class="btn btn-success >{{trans('cruds.proposal.fields.accepted')}}</button>
           <button type="button" class="btn btn-success changestatus" data-status="accepted">{{trans('cruds.proposal.fields.accepted')}}</button>
         
           <!-- Indicates caution should be taken with this action -->
@@ -132,7 +121,7 @@
               <div>{{ trans('cruds.proposal.fields.expire_date') }} : {{ $proposal->expire_date }}</div>
               <div>{{ trans('cruds.proposal.fields.Sales_Agent') }}: {{ $proposal->user && $proposal->user->accountDetail ? $proposal->user->accountDetail->fullname :'' }} </div>
               <div>
-                {{ trans('cruds.proposal.fields.status') }}: {{ $proposal->status }}
+                {{ trans('cruds.proposal.fields.status') }}: <span class="btn btn-sm btn-primary"> {{ $proposal->status }} </span>
               </div>
             </div>
             <!--/.col-->
@@ -210,8 +199,8 @@
                   <td class="right">{{ $item->pivot->margin }}</td>
                   <td class="right">{{ $item->pivot->unit_cost }}</td>
                   <td class="right">{{ $item->pivot->margin }}</td>
-                  <td class="right">{{ $item->pivot->selling_price / $item->pivot->quantity }}</td>
-                  <td class="right">{{ $item->pivot->selling_price}}</td>
+                  <td class="right">{{ $item->pivot->selling_price  }}</td>
+                  <td class="right">{{ $item->pivot->selling_price * $item->pivot->quantity}}</td>
                  </tr>
                 @endforeach
               @endif
@@ -233,7 +222,7 @@
                     <td class="left">
                       <strong>Subtotal</strong>
                     </td>
-                    <td class="right">{{-- $proposal->getSubtotal() --}}</td>
+                    <td class="right">{{ $proposal->getSubtotal($proposal) }}</td>
                   </tr>
                   <tr>
                     <td class="left">

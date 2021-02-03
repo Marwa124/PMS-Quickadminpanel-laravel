@@ -121,7 +121,7 @@ class ProposalsController extends Controller
         if ($media = $request->input('ck-media', false)) {
             Media::whereIn('id', $media)->update(['model_id' => $proposal->id]);
         }
-
+        setActivity('proposal',$proposal->id,'Create proposal #',$proposal->reference_no);
         DB::commit();
         return redirect()->route('sales.admin.proposals.index');
 
@@ -222,7 +222,8 @@ class ProposalsController extends Controller
         if ($media = $request->input('ck-media', false)) {
             Media::whereIn('id', $media)->update(['model_id' => $proposal->id]);
         }
-
+        
+        setActivity('proposal',$proposal->id,'Update proposal #',$proposal->reference_no);
         DB::commit();
         return redirect()->route('sales.admin.proposals.index');
 
@@ -328,6 +329,7 @@ class ProposalsController extends Controller
                 'status'=>$request->status,
             ]);
         }
+        setActivity('proposal',$proposal->id,'Change Status proposal #',$proposal->reference_no);
         return response()->json(Response::HTTP_CREATED);
      }
 
@@ -341,7 +343,7 @@ class ProposalsController extends Controller
             $proposal->load('items','itemtaxs');
             //fill data with i need
             $newproposal = $proposal->replicate()->fill([
-                'reference_no'=> $proposal->reference_no.'_Copy',
+                'reference_no'=> generate_proposal_number(),
                 'module'=>$request->module,
                 'module_id'=>$request->module_id,
                 'expire_date'=>$request->expire_date,
@@ -382,7 +384,7 @@ class ProposalsController extends Controller
                     
                    
                 }
-            
+        setActivity('proposal',$newproposal->id,'Change Status proposal #',$newproposal->reference_no);  
         DB::commit();
         return redirect()->route('sales.admin.proposals.index');
 
@@ -393,4 +395,10 @@ class ProposalsController extends Controller
         }
    
      }
+
+    /*** History od Project  */
+
+    public function historyproposal(Proposal $proposal){
+        return view('sales::admin.proposals.history', compact('proposal'));
+    }
 }

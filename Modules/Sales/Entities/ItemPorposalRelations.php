@@ -23,7 +23,7 @@ class ItemPorposalRelations extends Model
     ];
 
     protected $fillable = [
-        'name',
+        // 'name',
         'item_name',
         'item_desc',
         'brand',
