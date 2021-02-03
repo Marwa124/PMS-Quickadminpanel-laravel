@@ -109,14 +109,25 @@
 
 
                 <div class="form-group">
-                    <label class="required" for="name">{{ trans('cruds.task.fields.name') }}</label>
-                    <input class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" type="text" name="name" id="name" value="{{ old('name', '') }}" required>
-                    @if($errors->has('name'))
+                    <label class="required" for="name_en">{{ trans('cruds.task.fields.name_en') }}</label>
+                    <input class="form-control {{ $errors->has('name_en') ? 'is-invalid' : '' }}" type="text" name="name_en" id="name_en" value="{{ old('name_en', '') }}" required>
+                    @if($errors->has('name_en'))
                         <div class="invalid-feedback">
-                            {{ $errors->first('name') }}
+                            {{ $errors->first('name_en') }}
                         </div>
                     @endif
-                    <span class="help-block">{{ trans('cruds.task.fields.name_helper') }}</span>
+                    <span class="help-block">{{ trans('cruds.task.fields.name_en_helper') }}</span>
+                </div>
+
+                <div class="form-group">
+                    <label class="required" for="name_ar">{{ trans('cruds.task.fields.name_ar') }}</label>
+                    <input class="form-control {{ $errors->has('name_ar') ? 'is-invalid' : '' }}" type="text" name="name_ar" id="name_ar" value="{{ old('name_ar', '') }}" required>
+                    @if($errors->has('name_ar'))
+                        <div class="invalid-feedback">
+                            {{ $errors->first('name_ar') }}
+                        </div>
+                    @endif
+                    <span class="help-block">{{ trans('cruds.task.fields.name_ar_helper') }}</span>
                 </div>
                 @if($task)
                     <div class="form-group">
@@ -161,24 +172,34 @@
                         </div>
                     @endif
                 <div class="form-group">
-                    <label for="description">{{ trans('cruds.task.fields.description') }}</label>
-                    <textarea class="form-control {{ $errors->has('description') ? 'is-invalid' : '' }}" name="description" id="description">{{ old('description') }}</textarea>
-                    @if($errors->has('description'))
+                    <label for="description_en">{{ trans('cruds.task.fields.description_en') }}</label>
+                    <textarea class="form-control {{ $errors->has('description_en') ? 'is-invalid' : '' }}" name="description_en" id="description_en">{{ old('description_en') }}</textarea>
+                    @if($errors->has('description_en'))
                         <div class="invalid-feedback">
-                            {{ $errors->first('description') }}
+                            {{ $errors->first('description_en') }}
                         </div>
                     @endif
-                    <span class="help-block">{{ trans('cruds.task.fields.description_helper') }}</span>
+                    <span class="help-block">{{ trans('cruds.task.fields.description_en_helper') }}</span>
+                </div>
+                <div class="form-group">
+                    <label for="description_ar">{{ trans('cruds.task.fields.description_ar') }}</label>
+                    <textarea class="form-control {{ $errors->has('description_ar') ? 'is-invalid' : '' }}" name="description_ar" id="description_ar">{{ old('description_ar') }}</textarea>
+                    @if($errors->has('description_ar'))
+                        <div class="invalid-feedback">
+                            {{ $errors->first('description_ar') }}
+                        </div>
+                    @endif
+                    <span class="help-block">{{ trans('cruds.task.fields.description_ar_helper') }}</span>
                 </div>
                 <div class="form-group">
                     <label class="required" for="status">{{ trans('cruds.task.fields.status') }}</label>
                     <select name="status" id="status" class="form-control {{ $errors->has('status') ? 'is-invalid' : '' }}" required>
                         <option value="" selected disabled>{{trans('global.pleaseSelect')}}</option>
-                        <option value="Not Started"         {{ (old('status') == 'Not Started'          ? 'selected' : '' )}}>{{trans('cruds.status.not_started')}}</option>
-                        <option value="In Progress"         {{ (old('status') == 'In Progress'          ? 'selected' : '') }}>{{trans('cruds.status.in_progress')}}</option>
-                        <option value="Completed"           {{ (old('status') == 'Completed'            ? 'selected' : '') }}>{{trans('cruds.status.completed')}}</option>
-                        <option value="Deffered"            {{ (old('status') == 'Deffered'             ? 'selected' : '') }}>{{trans('cruds.status.deffered')}}</option>
-                        <option value="Waiting For Someone" {{ (old('status') == 'Waiting For Someone'  ? 'selected' : '') }}>{{trans('cruds.status.waiting_someone')}}</option>
+                        <option value="not_started"         {{ (old('status') == 'not_started'      ? 'selected' : '' )}}>{{trans('cruds.status.not_started')}}</option>
+                        <option value="in_progress"         {{ (old('status') == 'in_progress'      ? 'selected' : '') }}>{{trans('cruds.status.in_progress')}}</option>
+                        <option value="completed"           {{ (old('status') == 'completed'        ? 'selected' : '') }}>{{trans('cruds.status.completed')}}</option>
+                        <option value="deffered"            {{ (old('status') == 'deffered'         ? 'selected' : '') }}>{{trans('cruds.status.deffered')}}</option>
+                        <option value="waiting_someone"     {{ (old('status') == 'waiting_someone'  ? 'selected' : '') }}>{{trans('cruds.status.waiting_someone')}}</option>
                     </select>
 {{--                    <select class="form-control select2 {{ $errors->has('status') ? 'is-invalid' : '' }}" name="status_id" id="status_id" required>--}}
 {{--                        @foreach($statuses as $id => $status)--}}
@@ -469,6 +490,7 @@
         }
     });
 
+    var getLocale = document.getElementById('getLocale').value;
 
     function getProjectId() {
         var project_id = document.getElementById("project_id").value;
@@ -488,7 +510,14 @@
                     if (value.id == old_milestone){
                         selected = 'selected';
                     }
-                    innerHtml.push(`<option value='${value.id}'  ${selected} >${value.name}</option>`);
+                    var name = value.name_en;
+
+                    if(getLocale == 'ar'){
+
+                        var name = value.name_ar;
+                    }
+                    {{--console.log(name,value.name_+"{{app()->getLocale()}}")--}}
+                    innerHtml.push(`<option value='${value.id}'  ${selected} >${name}</option>`);
                     //console.log(value.id,value.name,old_milestone);
                 }
             }

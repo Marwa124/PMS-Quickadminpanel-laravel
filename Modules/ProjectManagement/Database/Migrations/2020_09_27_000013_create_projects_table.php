@@ -10,7 +10,8 @@ class CreateProjectsTable extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->unique();
+            $table->string('name_en')->unique();
+            $table->string('name_ar')->unique();
             $table->string('progress')->nullable();
             $table->string('calculate_progress')->nullable();
             $table->date('start_date');
@@ -20,7 +21,8 @@ class CreateProjectsTable extends Migration
             $table->float('project_cost', 15, 2)->nullable();
             $table->string('demo_url')->nullable();
             $table->string('project_status')->nullable();
-            $table->longText('description')->nullable();
+            $table->longText('description_en')->nullable();
+            $table->longText('description_ar')->nullable();
             $table->string('notify_client')->nullable();
             $table->string('timer_status')->nullable();
             $table->integer('timer_started_by')->nullable();

@@ -165,6 +165,7 @@ return [
         /*
          * Package Service Providers...
          */
+        Meneses\LaravelMpdf\LaravelMpdfServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -237,6 +238,7 @@ return [
         'FCM'      => LaravelFCM\Facades\FCM::class,
         'FCMGroup' => LaravelFCM\Facades\FCMGroup::class, // Optional
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        'MPDF' => Meneses\LaravelMpdf\Facades\LaravelMpdf::class
     ],
 
 ];

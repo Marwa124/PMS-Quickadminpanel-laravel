@@ -169,7 +169,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="5" >
+                    <td colspan="4" >
                         {{ucwords('Project not assign to anyone')}}
                     </td>
                 </tr>
@@ -519,12 +519,12 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6"> No Tickets Found In This Project</td>
+                        <td colspan="5"> No Tickets Found In This Project</td>
                     </tr>
                 @endforelse
             @else
                 <tr>
-                    <td colspan="6"> No Tickets Found In This Project</td>
+                    <td colspan="5"> No Tickets Found In This Project</td>
                 </tr>
             @endif
         </tbody>

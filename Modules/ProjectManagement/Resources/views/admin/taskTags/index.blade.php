@@ -39,7 +39,10 @@
                             {{ trans('cruds.taskTag.fields.id') }}
                         </th>
                         <th>
-                            {{ trans('cruds.taskTag.fields.name') }}
+                            {{ trans('cruds.taskTag.fields.name_en') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.taskTag.fields.name_ar') }}
                         </th>
                         <th>
                             &nbsp;
@@ -56,7 +59,10 @@
                                 {{ $taskTag->id ?? '' }}
                             </td>
                             <td>
-                                {{ $taskTag->name ?? '' }}
+                                {{ $taskTag->name_en ?? '' }}
+                            </td>
+                            <td>
+                                {{ $taskTag->name_ar ?? '' }}
                             </td>
                             <td>
                                 @if(!$trashed)
