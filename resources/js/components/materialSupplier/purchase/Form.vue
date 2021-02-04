@@ -4,7 +4,7 @@
         width: 70px;
         transform: rotate(90deg);
     }
-    .col-auto .required::after {
+    .col .required::after {
         content: " *";
         color: red;
     }
@@ -25,17 +25,22 @@
 </style>
 <template>
     <div class="">
+        <div style="position: relative;">
+            <alert-success :form="form" message="Your changes have been saved!"></alert-success>
+            <alert-errors :form="form" message="There were some problems with your input."></alert-errors>
+        </div>
+
     <form @submit.prevent="purposalSubmit" @keydown="form.onKeydown($event)">
         <div class="my-3 d-flex justify-content-around">
-            <div class="">
+            <div class="col-md-6">
 
 
                 <div class="d-flex justify-content-between align-items-center form-group">
-                    <div class="col-auto">
-                        <label for="refNo" class="col-form-label required" v-text="$t('purchase.fields.ref_no')"></label>
+                    <div class="col">
+                        <label for="refNo" class="col-form-label required" v-text="$t('purchase.fields.reference_no')"></label>
                     </div>
-                    <div class="col-auto">
-                        <input type="text" v-model="form.ref_no" class="form-control">
+                    <div class="col">
+                        <input type="text" v-model="form.reference_no" class="form-control">
                     </div>
                 </div>
 
@@ -43,34 +48,36 @@
                 </supplier-modal>
 
                 <div class="d-flex justify-content-between align-items-center form-group">
-                    <div class="col-auto">
+                    <div class="col">
                         <label class="col-form-label" v-text="$t('purchase.fields.purchase_date')"></label>
                     </div>
-                    <div class="col-auto">
-                        <input type="text" v-model="form.purchase_date" class="form-control">
+                    <div class="col">
+                        <input type="date" v-model="form.purchase_date" class="form-control">
                     </div>
                 </div>
 
                 <div class="d-flex justify-content-between align-items-center form-group">
-                    <div class="col-auto">
+                    <div class="col">
                         <label class="col-form-label" v-text="$t('purchase.fields.due_date')"></label>
                     </div>
-                    <div class="col-auto">
-                        <input type="text" v-model="form.due_date" class="form-control">
+                    <div class="col">
+                        <input type="date" v-model="form.due_date" class="form-control">
+
+                        <!-- <input type="date" data-date="" data-date-format="DD MMMM YYYY" v-model="form.due_date" class="form-control"> -->
                     </div>
                 </div>
 
             </div>
             <!-- End First Half Screen -->
-            <div class="">
+            <div class="col-md-6">
 
                 <div class="d-flex justify-content-between align-items-center form-group">
-                    <div class="col-auto">
+                    <div class="col">
                         <label class="col-form-label" v-text="$t('purchase.fields.sales_agent')"></label>
                     </div>
-                    <div class="col-auto">
+                    <div class="col">
                         <multiselect
-                            v-model="form.sales_agent"
+                            v-model="form.user_id"
                             :options="users"
                             :searchable="true"
                             :close-on-select="true"
@@ -84,17 +91,17 @@
                 </div>
 
                 <div class="d-flex justify-content-between align-items-center form-group">
-                    <div class="col-auto">
+                    <div class="col">
                         <label class="col-form-label" v-text="$t('purchase.fields.stock')"></label>
                     </div>
-                    <div class="col-auto mt-2">
+                    <div class="col mt-2">
                         <div class="input-group">
                             <div class="form-group">
-                                <input type="radio" v-model="form.stock" value="Yes" aria-label="Radio button for following text input">
+                                <input type="radio" v-model="form.update_stock" value="Yes" aria-label="Radio button for following text input">
                                 <label>Yes</label>
                             </div>
                             <div class="form-group ml-1">
-                                <input type="radio" v-model="form.stock" value="No" aria-label="Radio button for following text input">
+                                <input type="radio" v-model="form.update_stock" value="No" aria-label="Radio button for following text input">
                                 <label>No</label>
                             </div>
                         </div>
@@ -102,10 +109,10 @@
                 </div>
 
                 <div class="d-flex justify-content-between align-items-center form-group">
-                    <div class="col-auto">
+                    <div class="col">
                         <label class="col-form-label" v-text="$t('purchase.fields.discount_type')"></label>
                     </div>
-                    <div class="col-auto">
+                    <div class="col">
                         <select v-model="form.discount_type" class="form-control">
                             <option value="before_tax" v-text="$t('purchase.fields.before_tax')"></option>
                             <option value="after_tax" v-text="$t('purchase.fields.after_tax')"></option>
@@ -113,12 +120,13 @@
                     </div>
                 </div>
 
-                <div class="d-flex justify-content-between align-items-center form-group">
-                    <div class="col-auto">
+                <div class="d-block form-group">
+                    <div class="col">
                         <label class="col-form-label" v-text="$t('purchase.fields.notes')"></label>
                     </div>
-                    <div class="col-auto">
-                        <textarea v-model="form.notes" class="form-control"></textarea>
+                    <div class="col">
+                        <vue-editor v-model="form.notes"></vue-editor>
+                        <!-- <textarea v-model="form.notes" class="form-control"></textarea> -->
                     </div>
                 </div>
 
@@ -129,8 +137,6 @@
         <!-- Items -->
         <div class="d-flex justify-content-between">
             <div class="col-md-6">
-                    <!-- {{form.items}} -->
-                    {{selectedItem}}
                 <multiselect
                     :options="items"
                     v-model="selectedItem"
@@ -149,10 +155,10 @@
             </div>
             <div class="col-md-6">
                 <div class="d-flex justify-content-between align-items-center form-group">
-                    <div class="col-auto">
+                    <div class="col">
                         <label class="col-form-label" v-text="$t('purchase.fields.show_qty_as')"></label>
                     </div>
-                    <div class="col-auto mt-2">
+                    <div class="col mt-2">
                         <div class="input-group">
                             <div class="form-group">
                                 <input type="radio" name="qtyAs" checked @click="showQtyAs('qty')" aria-label="Radio button for following text input">
@@ -178,7 +184,7 @@
                 <tr>
                 <th scope="col">{{$t('items.fields.name')}}</th>
                 <th scope="col">{{$t('items.fields.description')}}</th>
-                <th scope="col" v-text="quantityAs"></th>
+                <th scope="col" v-text="form.show_quantity_as"></th>
                 <th scope="col">{{$t('items.fields.price')}}</th>
                 <th scope="col">{{$t('items.fields.tax_rate')}}</th>
                 <th scope="col">{{$t('items.fields.total')}}</th>
@@ -195,11 +201,11 @@
                     </td>
                     <td>
                         <!-- focusout -->
-                        <input class="form-control" type="number" v-model="item.quantity" @keypress="newItemAdded(item, index)">
+                        <input class="form-control" type="number" v-model="item.quantity" @keypress="newItemAdded(item, index)" min="1">
                         <input class="form-control input-transparent" :placeholder="$t('items.fields.unit_cost')" type="text" v-model="item.unit_cost">
                     </td>
                     <td>
-                        <input class="form-control" type="number" v-model="item.total_cost_price" @keypress="newItemAdded(item, index)">
+                        <input class="form-control" type="number" v-model="item.total_cost_price" @keypress="newItemAdded(item, index)" min="1">
                     </td>
                     <td>
                         <multiselect
@@ -214,6 +220,7 @@
                             :preselect-first="false"
                             :multiple="true"
                             :taggable="true"
+                            :custom-label="nameWithPercent"
                             @input="addTax(item.taxes, index)"
                             @remove="toggleUnSelectMarket"
                         ></multiselect>
@@ -243,28 +250,51 @@
                     </td>
                 </tr>
                 <tr>
-                    <td class="d-flex float-right">
+                    <td class="d-flex float-right align-items-center">
                         <div>Discount (%)</div>
-                        <div><input type="number" class="form-control" v-model="form.discount" step="0.01"></div>
+                        <div><input type="number" class="form-control ml-2" v-model="form.discount_percent" step="0.01" min="0.01"></div>
                     </td>
                     <td>
                         <div><input class="form-control input-transparent text-right"
-                                type="number" disabled v-model="form.discount_amount" step="0.01"></div>
+                                type="number" disabled v-model="form.discount_total" step="0.01"></div>
                     </td>
                 </tr>
                 <tr data-row-id="" v-for="(tax, i) of form.taxRate_total" :key="i">
                     <td v-if="tax.value > 0.00">
-                        <div><input class="form-control input-transparent text-right"
-                            type="text" disabled v-model="tax.name"></div>
+                        <div class="d-flex justify-content-around"><input class="form-control input-transparent text-right"
+                            type="text" disabled v-model="tax.name"><span class="d-flex align-self-center">({{tax.rate}}%)</span></div>
                     </td>
                     <td v-if="tax.value > 0.00">
                         <div><input class="form-control input-transparent text-right"
                             type="number" disabled v-model="tax.value" step="0.01"></div>
                     </td>
                 </tr>
+
+                
+                <tr>
+                    <td class="d-flex float-right align-items-center">
+                        <div>Adjustment</div>
+                        <div><input type="number" class="form-control ml-2" v-model="form.adjustment" step="0.01"></div>
+                    </td>
+                    <td>
+                        <div><input class="form-control input-transparent text-right"
+                                type="number" disabled v-model="form.adjustment"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Total: </td>
+                    <td>
+                        <div><input class="form-control input-transparent text-right"
+                            type="number" disabled v-model="form.total" step="0.01"></div>
+                    </td>
+                </tr>
+                
             </tbody>
         </table> <!-- Total -->
-          <button :disabled="form.busy" type="submit" class="btn btn-primary">Log In</button>
+          <button :disabled="form.busy" type="submit" class="btn btn-primary float-right mr-2 mb-2">
+              <i v-if="spinnerLoad" class="fa fa-spinner fa-spin"></i>
+              <span v-text="$t('global.create')"></span>
+          </button>
     </form>
     </div>
 </template>
@@ -272,34 +302,35 @@
 <script>
     import { Form, HasError, AlertErrors, AlertSuccess } from 'vform'
     import i18n from '../../../plugins/i18n';
-    import Multiselect from 'vue-multiselect'
+    import Multiselect from 'vue-multiselect';
+
+    import { VueEditor } from "vue2-editor";
 
     export default {
-        components: {HasError, AlertErrors, AlertSuccess, Multiselect},
+        components: {HasError, AlertErrors, AlertSuccess, Multiselect, VueEditor},
         props: ['langKey', 'departmentId'],
         data() {
             return {
                 urlGetAccountDetails: '/api/v1/admin/hr/account-details',
                 urlGetItems:          '/api/v1/admin/materialssuppliers/items',
                 urlGetTaxRates:       '/api/v1/admin/materialssuppliers/tax-rates',
+                urlPurchase:          '/admin/materialssuppliers/purchases',
+
                 users: [],
                 items: [],
                 taxRates: [],
-                quantityAs: this.$t('purchase.fields.quantity_as_qty'),
                 spinnerAction: false,
                 spinnerLoad: false,
                 selectedItem: '',
 
-
-                rowIndex: 1,
-
                 form: new Form({
-                    ref_no:        '',
-                    supplier:      '',
+                    reference_no:        '',
+                    supplier_id:      '',
                     purchase_date: '',
+                    show_quantity_as: this.$t('purchase.fields.quantity_as_qty'),
                     due_date:      '',
-                    sales_agent:   '',
-                    stock:         '',
+                    user_id:   '',
+                    update_stock:         '',
                     discount_type: '',
                     notes:         '',
                     items: [
@@ -317,9 +348,12 @@
                         },
                     ],
                     sub_total: '',
-                    discount_amount: '',
-                    discount: '',
+                    discount_total: '',
+                    discount_percent: '',
+                    adjustment: '',
+                    total_tax: '',
                     taxRate_total: {},
+                    total: '',
 
                     removedTax: '',
                     AddedTax: ''
@@ -328,20 +362,37 @@
         },
         methods: {
             purposalSubmit() {
-                this.form.post('/admin/materialssuppliers/purchases')
-                  .then(({ data }) => { console.log(data) })
+                this.spinnerLoad = true;
+
+                this.form.post(this.urlPurchase)
+                  .then(({data}) => {
+                        this.spinnerLoad = false;
+                        if(data == 201) window.location.href = this.urlPurchase
+                    })
             },
             getAccountDetails() {
                 axios.get(this.urlGetAccountDetails).then(response => {
                     const data = response.data.data
-                    this.users = data
+                    var result = data.map(user => {
+                        return {
+                            user_id: user.id,
+                            fullname: user.fullname
+                        }
+                    })
+                    this.users = result
                 });
             },
             getItems() {
                 axios.get(this.urlGetItems).then(response => {
                     const data = response.data.data
-                    this.items = data
+                    var removeDescTags = data.filter(item => {
+                        if(item.description) return item.description = item.description.replace(/<[^>]*>/g, '')
+                    })
+                    this.items = removeDescTags
                 });
+            },
+            nameWithPercent({rate_percent}) {
+                return `${rate_percent}%`;
             },
             getTaxRates() {
                 axios.get(this.urlGetTaxRates).then(response => {
@@ -350,7 +401,7 @@
                 });
             },
             showQtyAs(val) {
-                this.quantityAs = this.$t('purchase.fields.quantity_as_'+val)
+                this.form.show_quantity_as = this.$t('purchase.fields.quantity_as_'+val)
             },
             addNewPurchaseItem(item) { // Add New Item Row To Proposal
                 this.form.items[0].id            = item.id,
@@ -364,38 +415,27 @@
                 this.form.items[0].total          = item.total,
                 // this.form.items[0].activeRowAddition = 'bg-primary pointer',
                 this.form.items[0].taxes = item.taxes ?? [],
-                    console.log('item.taxes     '+ this.form.items[0].taxes);
 
                 this.newItemAdded(item)
             },
             toggleUnSelectMarket(val) {
                 this.form.removedTax = [val.name, val.rate_percent]  // Get the (removed Tax object) Stored into removedTax
+                this.calculateTotalTaxes(this.form.removedTax)
             },
             addTax (taxItem, index) {
-                let selectedTax = [...taxItem];
+                if (!this.form.removedTax) {
+                    let selectedTax = [...taxItem];
+                    let addedTaxObj = selectedTax[selectedTax.length-1]
+                    this.form.AddedTax = [addedTaxObj.name, addedTaxObj.rate_percent] // Get the (last added Tax object) Stored into AddedTax
 
-                let addedTaxObj = selectedTax[selectedTax.length-1]
-                this.form.AddedTax = [addedTaxObj.name, addedTaxObj.rate_percent] // Get the (last added Tax object) Stored into AddedTax
+                    let taxArray = [];
+                    selectedTax.forEach(element => {
+                        taxArray.push(element);
+                        this.form.taxRate_total[element.name] = {name: element.name, value: 0, rate: element.rate_percent}
+                    });
 
-                let taxArray = [];
-                selectedTax.forEach(element => {
-                    taxArray.push(element);
-                    // this.form.taxRate_total.push([element.name, 0])
-                    this.form.taxRate_total[element.name] = {name: element.name, value: 0}
-                    // this.form.taxRate_total.push([element.name,{name: element.name, value: 0}])
-
-                    // console.log('this.form.taxRate_total    '+ this.form.taxRate_total[0].name);
-// PREVENT DUBLICATING OBJECT
-                    // *****prevent object duplication inside an array
-                    // const uniqueAddresses = Array.from(new Set(this.form.taxRate_total.map(a => a.name)))
-                    //     .map(name => {
-                    //     return this.form.taxRate_total.find(a => a.name === name)
-                    // })
-                    // this.form.taxRate_total = uniqueAddresses;
-                    // *****prevent object duplication inside an array
-                });
-
-                this.form.items[index].taxes = taxArray;
+                    this.form.items[index].taxes = taxArray;
+                }
             },
             newItemAdded(item, index) { // Set the input data values in row
                 if(item.name && item.quantity && item.total_cost_price != ''){
@@ -403,7 +443,9 @@
                 }
             },
             addItemToModel(item, index) { // Add row item to model
-                item.rowIndex = this.rowIndex ++
+                for(let k in this.form.items){
+                    this.form.items[k].rowIndex = parseInt(k) + 1
+                }
 
                 this.form.items.unshift({
                     name           : '',
@@ -424,46 +466,84 @@
                 });
             },
             removeItemRow(item, index) {
+                let taxArray = []
+                item.taxes.forEach(element => {
+                    taxArray.push([element.name, element.rate_percent])  // Get the (removed Tax object) Stored into removedTax
+                });
+
+                this.form.removedTax = (taxArray.length > 1) ? taxArray : taxArray[0] ;
+                this.calculateTotalTaxes(this.form.removedTax);
+
                 this.form.items.splice(index, 1);
+                for (let x = index; x < this.form.items.length; x++) {
+                    this.form.items[x].rowIndex = x;
+                }
             },
-            // calculateTotalTaxes(taxesArray) {
-            calculateTotalTaxes(subTotal) {
+            calculateTotalTaxes(removedItem = []) {
+
+                var taxName = new Array()
+                this.taxRates.map(rate => {
+                    taxName[rate.name] = 0
+                });
+
+                this.form.items.forEach(element => {
+                    var indexRow = element.rowIndex;
+
+                    if(indexRow) {
+                        this.form.items[indexRow].taxes.map(tax => {
+                            let count = 0
+
+                            if(tax.name || removedItem) {
+                                while (count == 0) {
+                                    if (removedItem[0]) {
+                                        if (typeof removedItem[0] == 'string' && (typeof this.form.taxRate_total[removedItem[0]] == 'object')) {
+                                            this.form.taxRate_total[removedItem[0]].value = 0;
+                                            this.form.removedTax = '';
+                                        }else {
+                                            removedItem.forEach(element => {
+                                                this.form.taxRate_total[element[0]].value = 0;
+                                                this.form.removedTax = '';
+                                            });
+                                        }
+                                    }else {
+                                        for (var key in taxName) {
+                                            if (key == tax.name) {
+                                                taxName[tax.name] += this.form.items[indexRow].total * (tax.rate_percent / 100)
+                                                this.form.taxRate_total[tax.name].value = parseFloat((taxName[tax.name]).toFixed(2))
+                                            }
+                                        }
+                                    }
+                                    count ++
+                                }
+                            }
+                        });
+
+                    }
+                });
+
+    //////////////// Total Tax /////////////////////////
+
+                    var totalTaxAmount = 0;
+// if(!this.form.items[0]) {
+//     if(this.form.taxRate_total.length != 0) {
+
+//         // for (let [x, y] of Object.entries(this.form.taxRate_total))
+//         // {
+//         //     if(y.value) this.form.total_tax += y.value
+//         //     // console.log(x, y.value);
+
+//         // }
+//         Object.keys(this.form.taxRate_total).map(function(key, index) {
+//             console.log(this.form.taxRate_total[key]);
+//         });
+
+//     }
+
+// }
+    //////////////// Total Tax /////////////////////////
 
 
-                  
-            
 
-
-
-                // if(typeof taxesArray[0] == 'string') {
-                //     totalTaxRate.find(formTaxRate => {
-                //         if(taxesArray[0] === formTaxRate.name) { // Hashing Those lines prevent infinite looping
-                //             formTaxRate.value += parseFloat((parseInt(totalRowPrice) * (taxesArray[1] / 100)).toFixed(2))
-                //         }
-                //     })
-                //     taxesArray = ''
-                // }else {
-                //     console.log('AAAAAAAAA ' );
-                //     totalTaxRate.find(formTaxRate => {
-
-                //         // taxesArray.map(x => {
-                //         //     if(x.name === formTaxRate.name) { // Hashing Those lines prevent infinite looping
-                //         //         formTaxRate.value += parseFloat((parseInt(totalRowPrice) * (x.rate_percent / 100)).toFixed(2))
-                //         //     }
-                //         // })
-
-
-                //         // for(let [x, y] of Object.entries(taxesArray)) {
-                //         //     console.log('AAAAAAAAA ' +x);
-                //         //     console.log('YYYYYYYYYYY ' +y);
-
-                //         //     if(arr.name === formTaxRate.name) { // Hashing Those lines prevent infinite looping
-                //         //         formTaxRate.value += parseFloat((parseInt(totalRowPrice) * (arr.rate_percent / 100)).toFixed(2))
-                //         //     }
-                //         // }
-                //     })
-                //     // taxesArray = ''
-                // }
             },
         },
         watch: {
@@ -476,56 +556,27 @@
                             tax.total = tax.total_cost_price * tax.quantity
                         });
 
-
-                        console.log('Taxcccccc   '+ form.removedTax);                  
-
-
                         let subTotal = 0;
                         var result = form.items.reduce(function(accum, currentVal) {
-                            totalRow.push(currentVal.total)
-                            
-                            if(parseInt(currentVal.total)) subTotal += parseInt(currentVal.total);
+                            if(currentVal.activeRowAddition == 'bg-danger pointer') {
+                                totalRow.push(currentVal.total)
+                                if(parseInt(currentVal.total)) subTotal += parseInt(currentVal.total);
+                            }
 
                             return subTotal;
                         }, {});
                         form.sub_total = result
 
-                        form.discount_amount = form.discount * subTotal * (1/100)
+                        form.discount_total = parseFloat((form.discount_percent * subTotal * (1/100)).toFixed(2))
 
+                        this.calculateTotalTaxes()
 
+    //////////////// Total Tax /////////////////////////
+                   
 
+    //////////////// Total Tax /////////////////////////
 
-                // console.log(totalRow);
-                        var formTaxes = [];
-                        var taxName = [];
-                        form.items.forEach(element => {
-                            var indexRow = element.rowIndex;
-
-                            if(indexRow) {
-                                console.log(element.rowIndex);
-                                console.log(form.items[indexRow].total);
-
-
-
-
-
-
-                                form.items[indexRow].taxes.map(tax => {
-                                    taxName[tax.name] = form.sub_total * (tax.rate_percent / 100)
-                                    
-                                    // form.taxRate_total.find(formTaxRate => {
-                                        if(tax.name) { // Hashing Those lines prevent infinite looping
-                                            form.taxRate_total[tax.name].value = parseFloat((taxName[tax.name]).toFixed(2))
-                                    console.log(form.taxRate_total[tax.name].value);
-                                        }
-                                    // })
-
-                                });
-
-                            }
-                        });
-
-
+                        // form.total = form.sub_total + form.total_tax
                     }
                 },
                 deep: true

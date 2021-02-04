@@ -9,9 +9,10 @@ use Modules\MaterialsSuppliers\Http\Requests\Store\StorePurchaseRequest;
 use Modules\MaterialsSuppliers\Http\Requests\Update\UpdatePurchaseRequest;
 use App\Models\User;
 use Modules\MaterialsSuppliers\Entities\Supplier;
-use App\Models\Purchase;
 use Gate;
 use Illuminate\Http\Request;
+use Modules\MaterialsSuppliers\Entities\Purchase;
+use Modules\MaterialsSuppliers\Http\Repository\PurchaseRepository;
 use Spatie\MediaLibrary\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -43,17 +44,16 @@ class PurchaseController extends Controller
         return view('materialssuppliers::admin.purchases.create', compact('suppliers', 'users'));
     }
 
-    public function store(Request $request)
+    public function store(StorePurchaseRequest $request, PurchaseRepository $purchase)
     {
-        dd($request->all());
-        $purchase = Purchase::create($request->all());
-        $purchase->permissions()->sync($request->input('permissions', []));
+        // dd($purchase->createPurchase($request));
+        $purchase->createPurchase($request);
 
-        if ($media = $request->input('ck-media', false)) {
-            Media::whereIn('id', $media)->update(['model_id' => $purchase->id]);
-        }
+        // if ($media = $request->input('ck-media', false)) {
+        //     Media::whereIn('id', $media)->update(['model_id' => $purchase->id]);
+        // }
 
-        return redirect()->route('materialssuppliers.admin.purchases.index');
+        return response()->json(Response::HTTP_CREATED);
     }
 
     public function edit(Purchase $purchase)

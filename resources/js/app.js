@@ -14,6 +14,8 @@ import DepartmentForm from './components/departments/Form.vue';
 
 window.Vue = require('vue');
 
+// window.moment = require('moment');
+
 // import router from './router'
 
 /* !!!: alert */

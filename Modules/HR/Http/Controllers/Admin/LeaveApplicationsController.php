@@ -174,27 +174,13 @@ class LeaveApplicationsController extends Controller
     public function leaveReport()
     {
         $leaves = LeaveApplication::where('application_status', 'accepted')->get();
-        // $annual = 0;
-        // $emergency = 0;
-        // $sick = 0;
-        // $home = 0;
-        // $clockLate = 0;
+
         $annual = checkAvailableLeaves(23, date('Y-m'), LeaveCategory::categoryId('Annual Leave'));
         $emergency = checkAvailableLeaves(23, date('Y-m'), LeaveCategory::categoryId('Emergency Leave'));
         $sick = checkAvailableLeaves(23, date('Y-m'), LeaveCategory::categoryId('Sick Leave'));
         $home = checkAvailableLeaves(23, date('Y-m'), LeaveCategory::categoryId('Working From Home'));
         $clockLate = checkAvailableLeaves(23, date('Y-m'), LeaveCategory::categoryId('Clock in late'));
-        // dd($annual);
-        // foreach ($leaves as $key => $value) {
-        //     // dump($value->leaveCategoryStatus('Annual Leave')->first()->id);
-        //     dump( LeaveCategory::categoryId('Annual Leave') );
-        //     $annual += $value->leaveCategoryStatus('Annual Leave')->count();
-        //     $emergency += $value->leaveCategoryStatus('Emergency Leave')->count();
-        //     $sick  += $value->leaveCategoryStatus('Sick  Leave')->count();
-        //     $home += $value->leaveCategoryStatus('Working From Home')->count();
-        //     $clockLate += $value->leaveCategoryStatus('Clock in late')->count();
-        // }
-        // dd($annual);
+
         return view('hr::admin.leaveApplications.leave_report', compact('annual', 'emergency', 'sick', 'home', 'clockLate'));
     }
 

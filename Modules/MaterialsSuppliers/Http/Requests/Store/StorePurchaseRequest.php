@@ -19,7 +19,7 @@ class StorePurchaseRequest extends FormRequest
         return [
             'reference_no'     => [
                 'string',
-                'nullable',
+                'required',
             ],
             'total'            => [
                 'numeric',
@@ -31,12 +31,6 @@ class StorePurchaseRequest extends FormRequest
             'date_sent'        => [
                 'date_format:' . config('panel.date_format'),
                 'nullable',
-            ],
-            'created_by'       => [
-                'nullable',
-                'integer',
-                'min:-2147483648',
-                'max:2147483647',
             ],
             'purchase_date'    => [
                 'date_format:' . config('panel.date_format'),
@@ -58,12 +52,6 @@ class StorePurchaseRequest extends FormRequest
             'show_quantity_as' => [
                 'string',
                 'nullable',
-            ],
-            'permissions.*'    => [
-                'integer',
-            ],
-            'permissions'      => [
-                'array',
             ],
             'total_tax'        => [
                 'string',

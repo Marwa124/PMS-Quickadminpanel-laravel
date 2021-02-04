@@ -248,10 +248,10 @@
 
 
 
-    <?php 
+    <?php
         // if ($_SERVER['REQUEST_URI'] == '/translations/view') {
         if (strpos($_SERVER['REQUEST_URI'], '/translations/view') !== false) {
-     ?>       
+     ?>
         <script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
         <script src="https://unpkg.com/browse/@coreui/coreui@2.1.16/dist/js/coreui.min.js"></script>
@@ -269,7 +269,7 @@
             <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"  ></script>
             <script src="https://unpkg.com/@coreui/coreui/dist/js/coreui.bundle.min.js"></script>
     <?php } ?>
-    
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
     {{-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" ></script> --}}
 

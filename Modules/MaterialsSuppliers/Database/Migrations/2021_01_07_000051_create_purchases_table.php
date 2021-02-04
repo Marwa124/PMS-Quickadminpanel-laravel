@@ -14,7 +14,7 @@ class CreatePurchasesTable extends Migration
             $table->float('total', 15, 2)->nullable();
             $table->string('update_stock')->nullable();
             $table->string('status')->nullable();
-            $table->string('emailed')->nullable();
+            // $table->string('emailed')->nullable();
             $table->date('date_sent')->nullable();
             $table->integer('created_by')->nullable();
             $table->date('purchase_date')->nullable();
@@ -25,7 +25,7 @@ class CreatePurchasesTable extends Migration
             $table->float('discount_total', 15, 2)->nullable();
             $table->string('show_quantity_as')->nullable();
             $table->string('total_tax')->nullable();
-            $table->float('tax', 15, 2)->nullable();
+            // $table->float('tax', 15, 2)->nullable();
             $table->longText('notes')->nullable();
             $table->timestamps();
             $table->softDeletes();

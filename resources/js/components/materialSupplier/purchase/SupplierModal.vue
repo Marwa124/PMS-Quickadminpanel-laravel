@@ -1,12 +1,12 @@
 <template>
     <div>
         <div class="d-flex justify-content-between align-items-center form-group">
-            <div class="col-auto">
+            <div class="col">
                 <label for="supplier" class="col-form-label required" v-text="$t('suppliers.supplier')"></label>
             </div>
-            <div class="col-auto d-flex">
+            <div class="col d-flex">
                 <multiselect
-                    v-model="form.supplier"
+                    v-model="form.supplier_id"
                     :options="suppliers"
                     :searchable="true"
                     :close-on-select="true"
@@ -22,6 +22,12 @@
                         <i class="fas fa-plus"></i>
                     </button>
 
+
+                    <div style="position: relative;">
+                        <alert-success :form="supplierForm" message="Your changes have been saved!"></alert-success>
+                        <alert-errors :form="supplierForm" message="There were some problems with your input."></alert-errors>
+                    </div>
+
                     <!-- Modal -->
                     <form @submit.prevent="supplierNew" @keydown="supplierForm.onKeydown($event)">
 
@@ -36,42 +42,42 @@
                             </div>
                             <div class="modal-body">
                                 <div class="row g-3 align-items-center">
-                                    <div class="col-auto">
+                                    <div class="col">
                                         <label class="col-form-label required" v-text="$t('suppliers.fields.name')"></label>
                                     </div>
-                                    <div class="col-auto">
+                                    <div class="col">
                                         <input type="text" v-model="supplierForm.name" class="form-control">
                                     </div>
                                 </div>
                                 <div class="row g-3 align-items-center">
-                                    <div class="col-auto">
+                                    <div class="col">
                                         <label class="col-form-label required" v-text="$t('suppliers.fields.mobile')"></label>
                                     </div>
-                                    <div class="col-auto">
+                                    <div class="col">
                                         <input type="text" v-model="supplierForm.mobile" class="form-control">
                                     </div>
                                 </div>
                                 <div class="row g-3 align-items-center">
-                                    <div class="col-auto">
+                                    <div class="col">
                                         <label class="col-form-label" v-text="$t('suppliers.fields.phone')"></label>
                                     </div>
-                                    <div class="col-auto">
+                                    <div class="col">
                                         <input type="text" v-model="supplierForm.phone" class="form-control">
                                     </div>
                                 </div>
                                 <div class="row g-3 align-items-center">
-                                    <div class="col-auto">
+                                    <div class="col">
                                         <label class="col-form-label required" v-text="$t('suppliers.fields.email')"></label>
                                     </div>
-                                    <div class="col-auto">
+                                    <div class="col">
                                         <input type="email" v-model="supplierForm.email" class="form-control">
                                     </div>
                                 </div>
                                 <div class="row g-3 align-items-center">
-                                    <div class="col-auto">
+                                    <div class="col">
                                         <label class="col-form-label" v-text="$t('suppliers.fields.address')"></label>
                                     </div>
-                                    <div class="col-auto">
+                                    <div class="col">
                                         <textarea v-model="supplierForm.address" class="form-control"></textarea>
                                     </div>
                                 </div>
@@ -91,7 +97,7 @@
                     </form>
                 </div>
             </div>
-            <has-error :form="form" field="supplier"></has-error>
+            <has-error :form="supplierForm" field="supplier"></has-error>
         </div>
     </div>
 </template>
@@ -120,9 +126,14 @@ export default {
     methods: {
         getSuppliers() {
             axios.get(this.urlGetSuppliers).then(response => {
-                const data = response.data;
-                this.suppliers = data.data;
-                // console.log(this.suppliers);
+                const data = response.data.data;
+                var result = data.map(item => {
+                    return {
+                        id: item.id,
+                        name: item.name
+                    }
+                })
+                this.suppliers = result;
             });
         },
         // Create a new Supplier Form Subbmission
