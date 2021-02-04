@@ -21,7 +21,7 @@
             <a class="float-left" id="not_started" type="button">
                 <div class="card-body ">
                     {{trans('cruds.status.not_started')}}
-                    <span class="float-right">{{$tasks->where('status','Not Started')->count().'/'.$tasks->count()}}</span><br>
+                    <span class="float-right">{{$tasks->where('status','not_started')->count().'/'.$tasks->count()}}</span><br>
                     @if($tasks->count() >0)
                         <div class="progress" style="width: auto">
                             <div class="progress-bar bg-info" role="progressbar"
@@ -38,7 +38,7 @@
             <a class="float-left" id="in_progress" type="button">
                 <div class="card-body ">
                     {{trans('cruds.status.in_progress')}}
-                    <span class="float-right">{{$tasks->where('status','In Progress')->count().'/'.$tasks->count()}}</span><br>
+                    <span class="float-right">{{$tasks->where('status','in_progress')->count().'/'.$tasks->count()}}</span><br>
                     @if($tasks->count() >0)
                         <div class="progress" style="width: auto">
                             <div class="progress-bar bg-warning" role="progressbar"
@@ -55,7 +55,7 @@
             <a class="float-left" id="completed" type="button">
                 <div class="card-body ">
                     {{trans('cruds.status.completed')}}
-                    <span class="float-right">{{$tasks->where('status','Completed')->count().'/'.$tasks->count()}}</span><br>
+                    <span class="float-right">{{$tasks->where('status','completed')->count().'/'.$tasks->count()}}</span><br>
                     @if($tasks->count() >0)
                         <div class="progress" style="width: auto">
                             <div class="progress-bar bg-success" role="progressbar"
@@ -72,7 +72,7 @@
             <a class="float-left" id="deffered" type="button">
                 <div class="card-body ">
                     {{trans('cruds.status.deffered')}}
-                    <span class="float-right">{{$tasks->where('status','Deffered')->count().'/'.$tasks->count()}}</span><br>
+                    <span class="float-right">{{$tasks->where('status','deffered')->count().'/'.$tasks->count()}}</span><br>
                     @if($tasks->count() >0)
                         <div class="progress" style="width: auto">
                             <div class="progress-bar bg-danger" role="progressbar"
@@ -89,7 +89,7 @@
             <a class="float-left" id="waiting_someone" type="button">
                 <div class="card-body ">
                     {{trans('cruds.status.waiting_someone')}}
-                    <span class="float-right">{{$tasks->where('status','Waiting For Someone')->count().'/'.$tasks->count()}}</span><br>
+                    <span class="float-right">{{$tasks->where('status','waiting_someone')->count().'/'.$tasks->count()}}</span><br>
                     @if($tasks->count() >0)
                         <div class="progress" style="width: auto">
                             <div class="progress-bar bg-dark" role="progressbar"
@@ -177,6 +177,12 @@
                         <th>
                             {{ trans('cruds.task.fields.name') }}
                         </th>
+{{--                        <th>--}}
+{{--                            {{ trans('cruds.task.fields.name_en') }}--}}
+{{--                        </th>--}}
+{{--                        <th>--}}
+{{--                            {{ trans('cruds.task.fields.name_ar') }}--}}
+{{--                        </th>--}}
                         <th>
                             {{ trans('cruds.task.fields.status') }}
                         </th>
@@ -211,7 +217,7 @@
                                 <td>
                                     <a href="{{ route('projectmanagement.admin.tasks.show', $task->id) }}">
 
-                                        {{ $task->name ?? '' }}
+                                        {{ $task->name_.app()->getLocale() ? $task->name_.app()->getLocale() : '' }}
                                     </a>
                                     <div class="progress">
                                         <div
@@ -223,8 +229,38 @@
                                         </div>
                                     </div>
                                 </td>
+{{--                                <td>--}}
+{{--                                    <a href="{{ route('projectmanagement.admin.tasks.show', $task->id) }}">--}}
+
+{{--                                        {{ $task->name_en ?? '' }}--}}
+{{--                                    </a>--}}
+{{--                                    <div class="progress">--}}
+{{--                                        <div--}}
+{{--                                            class="progress-bar {{$task->calculate_progress < 50 ? 'bg-danger':'bg-success'}}"--}}
+{{--                                            role="progressbar"--}}
+{{--                                            style="width: {{$task->calculate_progress}}%; display: {{$task->calculate_progress?:'none'}}"--}}
+{{--                                            aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">--}}
+{{--                                            {{$task->calculate_progress}}%--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+{{--                                </td>--}}
+{{--                                <td>--}}
+{{--                                    <a href="{{ route('projectmanagement.admin.tasks.show', $task->id) }}">--}}
+
+{{--                                        {{ $task->name_ar ?? '' }}--}}
+{{--                                    </a>--}}
+{{--                                    <div class="progress">--}}
+{{--                                        <div--}}
+{{--                                            class="progress-bar {{$task->calculate_progress < 50 ? 'bg-danger':'bg-success'}}"--}}
+{{--                                            role="progressbar"--}}
+{{--                                            style="width: {{$task->calculate_progress}}%; display: {{$task->calculate_progress?:'none'}}"--}}
+{{--                                            aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">--}}
+{{--                                            {{$task->calculate_progress}}%--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
+{{--                                </td>--}}
                                 <td>
-                                    {{ $task->status ?? '' }}
+                                    {{ $task->status ? trans('cruds.status.'.$task->status): '' }}
                                 </td>
                                 <td>
                                     @forelse($task->tags as $key => $item)
@@ -240,7 +276,7 @@
                                 </td>
 
                                 <td>
-                                    {{ $task->project->name ?? '' }}
+                                    {{ $task->project->name ? $task->project->name_.app()->getLocale(): '' }}
                                 </td>
                                 <td>
                                     @if(!$trashed)
@@ -411,35 +447,35 @@
             $('#not_started').on('click', function () {
                 table
                     .columns(3)
-                    .search('Not Started')
+                    .search('{{trans('cruds.status.not_started')}}')
                     .draw()
             })
 
             $('#in_progress').on('click', function () {
                 table
                     .columns(3)
-                    .search('In Progress')
+                    .search('{{trans('cruds.status.in_progress')}}')
                     .draw()
             })
 
             $('#completed').on('click', function () {
                 table
                     .columns(3)
-                    .search('Completed')
+                    .search('{{trans('cruds.status.completed')}}')
                     .draw()
             })
 
             $('#deffered').on('click', function () {
                 table
                     .columns(3)
-                    .search('Deffered')
+                    .search('{{trans('cruds.status.deffered')}}')
                     .draw()
             })
 
             $('#waiting_someone').on('click', function () {
                 table
                     .columns(3)
-                    .search('Waiting For Someone')
+                    .search('{{trans('cruds.status.waiting_someone')}}')
                     .draw()
             })
 

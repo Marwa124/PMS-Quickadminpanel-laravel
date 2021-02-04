@@ -25,7 +25,7 @@ class StoreProposalsItemRequest extends FormRequest
             'name'             => [
                 'string',
                 'required',
-                'unique:proposals_items',
+                // 'unique:proposals_items',
             ],
             'customer_group_id'       => [
                 'integer',

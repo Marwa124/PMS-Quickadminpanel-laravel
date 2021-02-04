@@ -13,6 +13,7 @@
         "barryvdh/laravel-dompdf": "^0.8.7",
         "barryvdh/laravel-translation-manager": "^0.5.9",
         "bugsnag/bugsnag-laravel": "^2.18",
+        "carlos-meneses/laravel-mpdf": "^2.1",
         "doctrine/dbal": "^2.10",
         "fideloper/proxy": "^4.2",
         "fruitcake/laravel-cors": "^1.0",

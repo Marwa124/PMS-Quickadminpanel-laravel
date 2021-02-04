@@ -14,10 +14,11 @@ class CreateTransfersTable extends Migration
             $table->integer('from_account');
             $table->decimal('amount', 15, 2);
             $table->string('reference')->nullable();
-            $table->string('status');
+            $table->string('status')->nullable();
             $table->longText('notes')->nullable();
             $table->date('date')->nullable();
-            $table->string('type');
+            $table->string('type')->nullable();
+            $table->string('bank_balance')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

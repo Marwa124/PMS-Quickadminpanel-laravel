@@ -1,0 +1,13 @@
+{
+    "name": "Finance",
+    "alias": "finance",
+    "description": "",
+    "keywords": [],
+    "order": 0,
+    "providers": [
+        "Modules\\Finance\\Providers\\FinanceServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

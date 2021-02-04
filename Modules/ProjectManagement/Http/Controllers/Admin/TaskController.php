@@ -6,6 +6,7 @@ use App\Events\NewNotification;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\MediaUploadingTrait;
 use App\Notifications\ProjectManagementNotification;
+use Illuminate\Support\Facades\DB;
 use Modules\HR\Entities\AccountDetail;
 use Modules\ProjectManagement\Entities\Milestone;
 use Modules\ProjectManagement\Entities\TimeSheet;
@@ -28,16 +29,16 @@ use Symfony\Component\HttpFoundation\Response;
 
 class TaskController extends Controller
 {
-    use MediaUploadingTrait,ProjectManagementHelperTrait;
+    use MediaUploadingTrait, ProjectManagementHelperTrait;
 
     public function __construct()
     {
-        $this->middleware('AllowAccessShowAndEditPages:Task',['only' => ['show','edit','getAssignTo','update_task_timer']]);
+        $this->middleware('AllowAccessShowAndEditPages:Task', ['only' => ['show', 'edit', 'getAssignTo', 'update_task_timer']]);
     }
 
     public function index()
     {
-        abort_if(Gate::denies('task_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('task_access'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
         $task_statuses = TaskStatus::get();
 
@@ -47,71 +48,111 @@ class TaskController extends Controller
 
         $milestones = Milestone::get();
 
-        if (request()->segment(count(request()->segments())) == 'trashed'){
+        if (request()->segment(count(request()->segments())) == 'trashed') {
 
-            abort_if(Gate::denies('task_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+            abort_if(Gate::denies('task_delete'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
             $trashed = true;
 
-            $tasks = auth()->user()->getUserTasksByUserID(auth()->user()->id,$trashed);
+            $tasks = auth()->user()->getUserTasksByUserID(auth()->user()->id, $trashed);
 
-            return view('projectmanagement::admin.tasks.index', compact('tasks','trashed', 'task_statuses', 'task_tags', 'projects', 'milestones'));
+            return view('projectmanagement::admin.tasks.index', compact('tasks', 'trashed', 'task_statuses', 'task_tags', 'projects', 'milestones'));
 
         }
 
         $trashed = false;
 
-        $tasks = auth()->user()->getUserTasksByUserID(auth()->user()->id,$trashed);
+        $tasks = auth()->user()->getUserTasksByUserID(auth()->user()->id, $trashed);
 
-        return view('projectmanagement::admin.tasks.index', compact('tasks','trashed', 'task_statuses', 'task_tags', 'projects', 'milestones'));
+        return view('projectmanagement::admin.tasks.index', compact('tasks', 'trashed', 'task_statuses', 'task_tags', 'projects', 'milestones'));
     }
 
     public function create($id = null)
     {
         // $id refer to task_id in case and refer to milestone id in anther case depend on route
 
-        abort_if(Gate::denies('task_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('task_create'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
         //$statuses = TaskStatus::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $tags = TaskTag::all()->pluck('name', 'id');
+        $tags = TaskTag::all()->pluck('name_'.app()->getLocale(), 'id');
 
-        $projects = Project::all()->pluck('name', 'id');
+        //$projects = Project::all()->pluck('name', 'id');
+        $projects = auth()->user()->getUserProjectsByUserID(auth()->user()->id)->pluck('name_'.app()->getLocale(), 'id');
 
-        $milestones = Milestone::with('project')->get();
+//        $milestones = Milestone::with('project')->get();
+        $milestones = auth()->user()->getUserMilestonesByUserID(auth()->user()->id);
+        foreach ($milestones as $milestone){
 
-        $tasks = Task::all()->pluck('name', 'id');
+            $milestone->load('project');
+        }
+        //dd($milestones);
 
-        $task       = null;
-        $milestone  = null;
-        $project    = null;
+//        $tasks = Task::all()->pluck('name', 'id');
+        $tasks = auth()->user()->getUserTasksByUserID(auth()->user()->id, false, true)->pluck('name_'.app()->getLocale(), 'id');
 
-        if (request()->segment(count(request()->segments())-1) == 'milestone-task')
-        {
 
+        $task = null;
+        $milestone = null;
+        $project = null;
+
+
+        if (request()->segment(count(request()->segments()) - 1) == 'project-task') {
+            $project = Project::findOrFail($id);
+
+            // check if user can access this project or not
+            $all_projects = auth()->user()->getUserProjectsByUserID(auth()->user()->id)->pluck('id');
+
+            if (!in_array($project->id, $all_projects->toArray())) {
+
+                return abort(Response::HTTP_FORBIDDEN, trans('global.forbidden_page_not_allow_to_you'));
+            }
+            //$projects = auth()->user()->getUserProjectsByUserID(auth()->user()->id)->pluck('name', 'id');
+//            return view('projectmanagement::admin.tasks.create', compact('statuses', 'tags', 'projects', 'milestones','task','tasks','milestone'));
+        }
+
+        if (request()->segment(count(request()->segments()) - 1) == 'milestone-task') {
             $milestone = Milestone::findOrFail($id);
-            $milestones = Milestone::where('project_id',$milestone->project->id)->pluck('name', 'id');
+
+            // check if user can access this milestone or not
+            $all_milestones = auth()->user()->getUserMilestonesByUserID(auth()->user()->id)->pluck('id');
+
+            if (!in_array($milestone->id, $all_milestones->toArray())) {
+
+                return abort(Response::HTTP_FORBIDDEN, trans('global.forbidden_page_not_allow_to_you'));
+            }
+
+//            $milestones = Milestone::where('project_id',$milestone->project->id)->pluck('name', 'id');
+            //$milestones = auth()->user()->getUserMilestonesByUserID(auth()->user()->id);
 
             //return view('projectmanagement::admin.tasks.create', compact('statuses', 'tags', 'projects', 'milestones','task','tasks','milestone','project'));
         }
 
-        if (request()->segment(count(request()->segments())-1) == 'project-task')
-        {
-            $project = Project::findOrFail($id);
-//            return view('projectmanagement::admin.tasks.create', compact('statuses', 'tags', 'projects', 'milestones','task','tasks','milestone'));
-        }
-
-        if (request()->segment(count(request()->segments())-1) == 'sub-task')
-        {
+        if (request()->segment(count(request()->segments()) - 1) == 'sub-task') {
             $task = Task::findOrFail($id);
-            $tasks = Task::where('milestone_id',$task->milestone->id)->pluck('name', 'id');
+
+            // check if user can access this task or not
+            $all_tasks = auth()->user()->getUserTasksByUserID(auth()->user()->id, false, true)->pluck('id');
+
+            if (!in_array($task->id, $all_tasks->toArray())) {
+
+                return abort(Response::HTTP_FORBIDDEN, trans('global.forbidden_page_not_allow_to_you'));
+            }
+
+//            $tasks = Task::where('milestone_id',$task->milestone->id)->pluck('name', 'id');
+            //$tasks = auth()->user()->getUserTasksByUserID(auth()->user()->id,false,true)->pluck('name', 'id');
         }
 
-        return view('projectmanagement::admin.tasks.create', compact('tags', 'projects', 'milestones','task','tasks','milestone','project'));
+        return view('projectmanagement::admin.tasks.create', compact('tags', 'projects', 'milestones', 'task', 'tasks', 'milestone', 'project'));
     }
 
     public function store(StoreTaskRequest $request)
     {
+        abort_if(Gate::denies('task_create'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
+
+        try {
+            // Begin a transaction
+            DB::beginTransaction();
         unset($request['created_by']);
         $request['created_by'] = auth()->user()->id;
 
@@ -126,39 +167,52 @@ class TaskController extends Controller
             Media::whereIn('id', $media)->update(['model_id' => $task->id]);
         }
 
-        setActivity('task',$task->id,'Save Task Details',$task->name);
+        setActivity('task', $task->id, 'Save Task Details', 'حقظ تفاصيل المهمه', $task->name_en, $task->name_ar);
+
+            // Commit the transaction
+            DB::commit();
+
+        }catch(\Exception $e){
+            // An error occured; cancel the transaction...
+            DB::rollback();
+
+            // and throw the error again.
+            throw $e;
+        }
 
         return redirect()->route('projectmanagement.admin.tasks.index');
     }
 
-        public function edit(Task $task)
+    public function edit(Task $task)
     {
-        abort_if(Gate::denies('task_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('task_edit'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
+        // check if user can access this task or not
+        $tasks = auth()->user()->getUserTasksByUserID(auth()->user()->id, false, true)->pluck('id');
 
-        $tasks = auth()->user()->getUserTasksByUserID(auth()->user()->id,false,true)->pluck('id');
-
-        if (in_array($task->id,$tasks->toArray())){
+        if (in_array($task->id, $tasks->toArray())) {
 
             $tags = TaskTag::all()->pluck('name', 'id');
 
-            $projects = Project::all()->pluck('name', 'id');
+            $projects = auth()->user()->getUserProjectsByUserID(auth()->user()->id)->pluck('name', 'id');
 
             $milestones = Milestone::with('project')->get();
 
             $tasks = Task::with('milestone')->get();
 
-            $task->load( 'tags', 'assigned_to', 'project', 'milestone');
+            $task->load('tags', 'assigned_to', 'project', 'milestone');
 
-            return view('projectmanagement::admin.tasks.edit', compact('tags', 'projects', 'milestones', 'task','tasks'));
+            return view('projectmanagement::admin.tasks.edit', compact('tags', 'projects', 'milestones', 'task', 'tasks'));
 
         }
 
-        abort(Response::HTTP_FORBIDDEN, '403 Forbidden This Page Not Allow To You');
+        return abort(Response::HTTP_FORBIDDEN, trans('global.forbidden_page_not_allow_to_you'));
     }
 
     public function update(UpdateTaskRequest $request, Task $task)
     {
+        abort_if(Gate::denies('task_edit'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
+
         $task->update($request->all());
         $task->tags()->sync($request->input('tags', []));
 
@@ -175,71 +229,73 @@ class TaskController extends Controller
         }
 
         // Notify User
-        foreach ($task->accountDetails as $accountUser)
-        {
+        foreach ($task->accountDetails as $accountUser) {
             $user = $accountUser->user;
             $dataMail = [
-                'subjectMail'    => 'Update Task '.$task->name,
-                'bodyMail'       => 'Update The Task '.$task->name,
-                'action'         => route("projectmanagement.admin.tasks.show", $task->id)
+                'subjectMail' => 'Update Task ' . $task->name,
+                'bodyMail' => 'Update The Task ' . $task->name,
+                'action' => route("projectmanagement.admin.tasks.show", $task->id)
             ];
 
             $dataNotification = [
-                'message'       => 'Update The Task : '.$task->name,
-                'route_path'    => 'admin/projectmanagement/tasks',
+                'message' => 'Update The Task : ' . $task->name,
+                'route_path' => 'admin/projectmanagement/tasks',
             ];
 
-            $user->notify(new ProjectManagementNotification($task,$user,$dataMail,$dataNotification));
+            $user->notify(new ProjectManagementNotification($task, $user, $dataMail, $dataNotification));
             $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
             event(new NewNotification($userNotify));
         }
 
-        setActivity('task',$task->id,'Update Task Details',$task->name);
+        setActivity('task', $task->id, 'Update Task Details', $task->name);
 
         return redirect()->route('projectmanagement.admin.tasks.index');
     }
 
     public function show(Task $task)
     {
-        abort_if(Gate::denies('task_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('task_show'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
-        $tasks = auth()->user()->getUserTasksByUserID(auth()->user()->id,false,true)->pluck('id');
+        // check if user can access this task or not
+        $tasks = auth()->user()->getUserTasksByUserID(auth()->user()->id, false, true)->pluck('id');
 
-        if (in_array($task->id,$tasks->toArray())){
+        if (in_array($task->id, $tasks->toArray())) {
 
-            $task->load('tags', 'project', 'milestone','createBy','TimeSheetOn','TimeSheet');
+            $task->load('tags', 'project', 'milestone', 'createBy', 'TimeSheetOn', 'TimeSheet');
 
             return view('projectmanagement::admin.tasks.show', compact('task'));
         }
 
-        abort(Response::HTTP_FORBIDDEN, '403 Forbidden This Page Not Allow To You');
+        return abort(Response::HTTP_FORBIDDEN, trans('global.forbidden_page_not_allow_to_you'));
 
     }
 
     public function destroy(Task $task)
     {
-        abort_if(Gate::denies('task_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('task_delete'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
         $task->delete();
 
-        setActivity('task',$task->id,'Delete Task',$task->name);
+        setActivity('task', $task->id, 'Delete Task', $task->name);
 
         return back();
     }
 
     public function massDestroy(MassDestroyTaskRequest $request)
     {
+        abort_if(Gate::denies('task_delete'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
+
         //Task::whereIn('id', request('ids'))->delete();
 
         $ids = request('ids');
 
-        foreach ($ids as $id){
-            $task = Task::where('id',$id)->first();
+        foreach ($ids as $id) {
+            $task = Task::where('id', $id)->first();
 
             $task->delete();
 
             //$project->accountDetails()->detach();
-            setActivity('task',$task->id,'Delete Task',$task->name);
+            setActivity('task', $task->id, 'Delete Task', $task->name);
         }
 
         return response(null, Response::HTTP_NO_CONTENT);
@@ -247,12 +303,12 @@ class TaskController extends Controller
 
     public function storeCKEditorImages(Request $request)
     {
-        abort_if(Gate::denies('task_create') && Gate::denies('task_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('task_create') && Gate::denies('task_edit'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
-        $model         = new Task();
-        $model->id     = $request->input('crud_id', 0);
+        $model = new Task();
+        $model->id = $request->input('crud_id', 0);
         $model->exists = true;
-        $media         = $model->addMediaFromRequest('upload')->toMediaCollection('ck-media');
+        $media = $model->addMediaFromRequest('upload')->toMediaCollection('ck-media');
 
         return response()->json(['id' => $media->id, 'url' => $media->getUrl()], Response::HTTP_CREATED);
     }
@@ -260,19 +316,29 @@ class TaskController extends Controller
     public function getAssignTo($id)
     {
 
-        abort_if(Gate::denies('task_assign_to'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        $task = Task::findOrFail($id);
-        $department = $task->project->department;
+        abort_if(Gate::denies('task_assign_to'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
-        if (!$department){
-            abort(404,"this project don't have department ");
+        // check if user can access this task or not
+        $tasks = auth()->user()->getUserTasksByUserID(auth()->user()->id, false, true)->pluck('id');
+
+        if (in_array($id, $tasks->toArray())) {
+
+            $task = Task::findOrFail($id);
+            $department = $task->project->department;
+
+            if (!$department) {
+                abort(404, trans('cruds.messages.project_of_task_not_have_department'));
+            }
+
+            return view('projectmanagement::admin.tasks.assignto', compact('task', 'department'));
         }
 
-        return view('projectmanagement::admin.tasks.assignto',compact('task','department'));
+        return abort(Response::HTTP_FORBIDDEN, trans('global.forbidden_page_not_allow_to_you'));
     }
 
     public function storeAssignTo(Request $request)
     {
+        abort_if(Gate::denies('task_assign_to'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
         $task = Task::findOrFail($request->task_id);
         if ($request->accounts) {
@@ -282,8 +348,8 @@ class TaskController extends Controller
             // set permission to users
             $accounts = AccountDetail::whereIn('id', $request->accounts)->with('user.department')->get();
 
-            $task_permissions_head_names = ['project_management_access','task_access','task_create', 'task_show','task_edit','task_assign_to'];
-            $task_permissions_notToMember_names = ['task_create','task_assign_to'];
+            $task_permissions_head_names = ['project_management_access', 'task_access', 'task_create', 'task_show', 'task_edit', 'task_assign_to'];
+            $task_permissions_notToMember_names = ['task_create', 'task_assign_to'];
 //            $task_permissions_head_names = ['project_management_access', 'task_access', 'task_create', 'task_show', 'task_edit'];
 //            $task_permissions_notToMember_names = ['task_create'];
             $task_permissions_toMember_names = ['project_management_access', 'task_access', 'task_show', 'task_edit'];
@@ -310,96 +376,108 @@ class TaskController extends Controller
                     }
                 }
             }
-        }else{
+        } else {
             $task->accountDetails()->detach();
         }
 
         // Notify User
-        foreach ($task->accountDetails as $accountUser)
-        {
+        foreach ($task->accountDetails as $accountUser) {
             $user = $accountUser->user;
             $dataMail = [
-                'subjectMail'    => 'New Task Assign To You',
-                'bodyMail'       => 'Assign The Task : '.$task->name.' To '.$user->name,
-                'action'         => route("projectmanagement.admin.tasks.show", $task->id)
+                'subjectMail' => 'New Task Assign To You',
+                'bodyMail' => 'Assign The Task : ' . $task->name . ' To ' . $user->name,
+                'action' => route("projectmanagement.admin.tasks.show", $task->id)
             ];
 
             $dataNotification = [
-                'message'       => 'Assign The Task : '.$task->name.' To '.$user->name,
-                'route_path'    => 'admin/projectmanagement/tasks',
+                'message' => 'Assign The Task : ' . $task->name . ' To ' . $user->name,
+                'route_path' => 'admin/projectmanagement/tasks',
             ];
 
-            $user->notify(new ProjectManagementNotification($task,$user,$dataMail,$dataNotification));
+            $user->notify(new ProjectManagementNotification($task, $user, $dataMail, $dataNotification));
             $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
             event(new NewNotification($userNotify));
         }
 
-        setActivity('task',$task->id,'Update Assign to',$task->name);
+        setActivity('task', $task->id, 'Update Assign to', $task->name);
 
         return redirect()->route('projectmanagement.admin.tasks.index');
     }
 
     public function update_note(Request $request)
     {
+        abort_if(Gate::denies('task_edit'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
+
         $task = Task::findOrFail($request->task_id);
         //$project->notes = $request->notes;
         $task->update($request->all());
 
         // Notify User
-        foreach ($task->accountDetails as $accountUser)
-        {
+        foreach ($task->accountDetails as $accountUser) {
             $user = $accountUser->user;
             $dataMail = [
-                'subjectMail'    => 'Update Task '.$task->name,
-                'bodyMail'       => 'Update Note Of Task '.$task->name,
-                'action'         => route("projectmanagement.admin.tasks.show", $task->id)
+                'subjectMail' => 'Update Task ' . $task->name,
+                'bodyMail' => 'Update Note Of Task ' . $task->name,
+                'action' => route("projectmanagement.admin.tasks.show", $task->id)
             ];
 
             $dataNotification = [
-                'message'       => 'Update Note Of Task : '.$task->name,
-                'route_path'    => 'admin/projectmanagement/tasks',
+                'message' => 'Update Note Of Task : ' . $task->name,
+                'route_path' => 'admin/projectmanagement/tasks',
             ];
 
-            $user->notify(new ProjectManagementNotification($task,$user,$dataMail,$dataNotification));
+            $user->notify(new ProjectManagementNotification($task, $user, $dataMail, $dataNotification));
             $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
             event(new NewNotification($userNotify));
         }
 
-        setActivity('task',$task->id,'Update Note ',$task->name);
+        setActivity('task', $task->id, 'Update Note ', $task->name);
 
         return redirect()->back();
     }
 
     public function update_task_timer($task_id)
     {
-        $user_id = auth()->user()->id;
-        $taskTimer = TimeSheet::where('module','=','task')->where('module_field_id',$task_id)->where('user_id',$user_id)->where('timer_status','on')->first();
+        abort_if(Gate::denies('task_edit'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
-        if (!$taskTimer)
-        {
-            $Timer = [
-                'user_id'       => $user_id,
-                'module'            => 'task',
-                'module_field_id'    => $task_id,
-                'timer_status'  => 'on',
-                'start_time'    => time(),
-            ];
+        // check if user can access this task or not
+        $tasks = auth()->user()->getUserTasksByUserID(auth()->user()->id, false, true)->pluck('id');
 
-            $taskTimer = TimeSheet::create($Timer);
+        if (in_array($task_id, $tasks->toArray())) {
 
-        }else{
+            $user_id = auth()->user()->id;
+            $taskTimer = TimeSheet::where('module', '=', 'task')->where('module_field_id', $task_id)->where('user_id', $user_id)->where('timer_status', 'on')->first();
 
-            $taskTimer->update(['timer_status' => 'off','end_time' => time()]);
+            if (!$taskTimer) {
+                $Timer = [
+                    'user_id' => $user_id,
+                    'module' => 'task',
+                    'module_field_id' => $task_id,
+                    'timer_status' => 'on',
+                    'start_time' => time(),
+                ];
+
+                $taskTimer = TimeSheet::create($Timer);
+
+            } else {
+
+                $taskTimer->update(['timer_status' => 'off', 'end_time' => time()]);
+            }
+
+            setActivity('task', $task_id, 'Timer ' . ucfirst($taskTimer->timer_status), $taskTimer->task->name);
+
+
+            return redirect()->back();
         }
 
-        setActivity('task',$task_id,'Timer '.ucfirst($taskTimer->timer_status),$taskTimer->task->name);
+        return abort(Response::HTTP_FORBIDDEN, trans('global.forbidden_page_not_allow_to_you'));
 
-
-        return redirect()->back();
     }
 
-    public function forceDelete(Request $request,$id)
+    public function forceDelete(Request $request, $id)
     {
+        abort_if(Gate::denies('task_delete'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
+
         //dd($request->all(),$id);
         $action = $request->action;
 
@@ -414,7 +492,7 @@ class TaskController extends Controller
             Task::onlyTrashed()->where('id', $id)->restore();
             $task = Task::findOrFail($id);
 
-            setActivity('task',$task->id,'Restore Task',$task->name);
+            setActivity('task', $task->id, 'Restore Task', $task->name);
 
         }
 
@@ -424,31 +502,39 @@ class TaskController extends Controller
 
     public function task_clone($task_id)
     {
+        abort_if(Gate::denies('task_create'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
-        // get Task by id
-        $task = Task::findOrFail($task_id);
+        // check if user can access this task or not
+        $tasks = auth()->user()->getUserTasksByUserID(auth()->user()->id, false, true)->pluck('id');
 
-        // clone Task as new Task
+        if (in_array($task_id, $tasks->toArray())) {
 
-        $newtask = $task->cloneTask();
+            // get Task by id
+            $task = Task::findOrFail($task_id);
 
-        return redirect()->route('projectmanagement.admin.tasks.show',$newtask->id);
+            // clone Task as new Task
 
+            $newtask = $task->cloneTask();
+
+            return redirect()->route('projectmanagement.admin.tasks.show', $newtask->id);
+        }
+
+        return abort(Response::HTTP_FORBIDDEN, trans('global.forbidden_page_not_allow_to_you'));
     }
 
     public function task_report()
     {
-        $user = User::findOrFail(auth()->user()->id);
+        abort_if(Gate::denies('task_report_access'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
-        if ($user->hasrole(['Admin','Super Admin']))
-        {
+//        $user = User::findOrFail(auth()->user()->id);
+//        if ($user->hasrole(['Admin', 'Super Admin'])) {
             $tasks = Task::all();
 
             return view('projectmanagement::admin.tasks.task_report', compact('tasks'));
 
-        }
-
-        return abort(Response::HTTP_FORBIDDEN, '403 Forbidden .., This Page Allow To Admin Only');
+//        }
+//
+//        return abort(Response::HTTP_FORBIDDEN, trans('global.forbidden_page_not_allow_to_you'));
     }
 
 

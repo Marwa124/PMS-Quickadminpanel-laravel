@@ -72,11 +72,11 @@
 
                                 <td>
                                     <a  href="{{ route('projectmanagement.admin.milestones.show', $milestone->id) }}">
-                                        {{ $milestone->name ?? '' }}
+                                        {{ $milestone->{'name_'.app()->getLocale()} ? $milestone->{'name_'.app()->getLocale()} : '' }}
                                     </a>
                                 </td>
                                 <td>
-                                    {{ $milestone->project->name ?? '' }}
+                                    {{ $milestone->project->{'name_'.app()->getLocale()} ? $milestone->project->{'name_'.app()->getLocale()} : '' }}
                                 </td>
                                 <td>
                                     {{ $milestone->start_date ?? '' }}

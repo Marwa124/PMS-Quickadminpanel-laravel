@@ -14,7 +14,8 @@ class AddSubjectToWorkTrackingsTable extends Migration
     public function up()
     {
         Schema::table('work_trackings', function (Blueprint $table) {
-            $table->string('subject');
+            $table->string('subject_en');
+            $table->string('subject_ar');
         });
     }
 

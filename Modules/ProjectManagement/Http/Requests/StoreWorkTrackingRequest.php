@@ -6,6 +6,7 @@ use App\Models\WorkTracking;
 use Gate;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Response;
+use Illuminate\Validation\Rule;
 
 class StoreWorkTrackingRequest extends FormRequest
 {
@@ -24,9 +25,14 @@ class StoreWorkTrackingRequest extends FormRequest
             'subject'           => [
                 'required',
                 'string',
+                Rule::unique('work_trackings','subject')->where(function($query) {
+
+                    $query->where('work_type_id', '=', request()->work_type_id);
+
+                }),
             ],
             'achievement'            => [
-                'nullable',
+                'required',
                 'integer',
                 'min:-2147483648',
                 'max:2147483647',
@@ -38,6 +44,7 @@ class StoreWorkTrackingRequest extends FormRequest
             'end_date'               => [
                 'required',
                 'date_format:' . config('panel.date_format'),
+                'after_or_equal:start_date',
             ],
             'notify_work_achive'     => [
                 'string',

@@ -26,10 +26,15 @@ class UpdateMilestoneRequest extends FormRequest
                 'integer',
             ],
             // milestone name unique for same project only
-            'name'       => [
+            'name_en'       => [
                 'string',
                 'required',
-                'unique:milestones,name,'. request()->route('milestone')->id.',id,project_id,'.request()->project_id,
+                'unique:milestones,name_en,'. request()->route('milestone')->id.',id,project_id,'.request()->project_id,
+            ],
+            'name_ar'       => [
+                'string',
+                'required',
+                'unique:milestones,name_ar,'. request()->route('milestone')->id.',id,project_id,'.request()->project_id,
             ],
             'start_date' => [
                 'required',
@@ -38,6 +43,7 @@ class UpdateMilestoneRequest extends FormRequest
             'end_date'   => [
                 'required',
                 'date_format:' . config('panel.date_format'),
+                'after_or_equal:start_date',
             ],
         ];
     }

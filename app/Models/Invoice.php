@@ -40,7 +40,7 @@ class Invoice extends Model implements HasMedia
         'paid'              => 'Paid',
         'draft'             => 'Draft',
         'partially_paid'    => 'Partially Paid',
-        'waiting_app_roval' => 'Waiting App Roval',
+        'waiting_approval'  => 'Waiting Approval',
         'approved'          => 'Approved',
         'rejected'          => 'Rejected',
     ];
@@ -57,18 +57,25 @@ class Invoice extends Model implements HasMedia
         'notes',
         'tax',
         'total_tax',
+        'adjustment',
+        'after_discount',
+        'before_discount',
+        'discount_total',
+        'discount_status',
         'discount_percent',
+        'total_amount',
         'recurring',
         'recurring_frequency',
         'recur_frequency',
         'recur_next_date',
-        'currerncy',
+        'currency',
         'status',
         'archived',
         'date_sent',
         'created_at',
         'updated_at',
         'deleted_at',
+        'user_id',
     ];
 
     protected function serializeDate(DateTimeInterface $date)
@@ -105,6 +112,10 @@ class Invoice extends Model implements HasMedia
     public function client()
     {
         return $this->belongsTo(Client::class, 'client_id');
+    }
+    public function added_by()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function project()
@@ -174,5 +185,70 @@ class Invoice extends Model implements HasMedia
 //            $result = '0';
 //        }
         return $amount;
+    }
+
+
+    public function items(){
+
+        return $this->belongsToMany('Modules\Sales\Entities\ProposalsItem',
+            'item_invoice_relations','invoices_id','item_id') ->withPivot(
+            'id',
+            'item_name',
+            'item_desc',
+            'group_name',
+            'brand',
+            'delivery',
+            'part',
+            'quantity',
+            'unit_cost',
+            'margin',
+            'selling_price',
+            'total_cost_price',
+            'tax_rate',
+            'tax_name',
+            'tax_total',
+            'tax_cost',
+            'order',
+            'unit',
+            'hsn_code'
+        )->orderBy('order','asc');
+
+    }
+
+    public function itemtaxs()
+    {
+        return $this->hasMany(InvoiceItemTax::class, 'invoices_id', 'id');
+    }
+
+    public function gettaxesarray($taxes)
+    {
+
+        $unique_taxes_ids = array_unique($taxes->itemtaxs->pluck('taxs_id')->toArray());
+        $turned_into_keys = array_fill_keys($unique_taxes_ids,null);
+
+        foreach($taxes->items as $key => $value){
+
+            $items_tax = 0;
+
+            foreach($taxes->itemtaxs->where('item_id',$value->pivot->id)->pluck('taxs_id') as $tax){
+                // dd($unique_taxes_ids,$turned_into_keys,$taxes->itemtaxs->where('item_id',$value->pivot->id)->pluck('taxs_id'),$tax,$value->pivot->selling_price, $value->pivot->quantity);
+                if(array_key_exists($tax,$turned_into_keys)){
+                    $sallingprice = $value->pivot->selling_price * $value->pivot->quantity;
+                   
+                    if($taxes->discount_percent != 0){
+                        $old =$sallingprice * (get_taxes($tax)->rate_percent/100) ;
+                        $items_tax = $old-( $old * ($taxes->discount_percent / 100)) ;
+                    }else{
+
+                        $items_tax = $sallingprice * (get_taxes($tax)->rate_percent/100) ;
+                    }
+                    $turned_into_keys[$tax][]=$items_tax;
+                }
+            }
+
+        }
+
+        return  $turned_into_keys;
+
     }
 }

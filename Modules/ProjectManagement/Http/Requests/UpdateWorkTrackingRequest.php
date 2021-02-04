@@ -24,9 +24,10 @@ class UpdateWorkTrackingRequest extends FormRequest
             'subject'           => [
                 'required',
                 'string',
+                'unique:work_trackings,subject,'. request()->route('work_tracking')->id.',id,work_type_id,'.request()->work_type_id,
             ],
             'achievement'            => [
-                'nullable',
+                'required',
                 'integer',
                 'min:-2147483648',
                 'max:2147483647',
@@ -38,6 +39,7 @@ class UpdateWorkTrackingRequest extends FormRequest
             'end_date'               => [
                 'required',
                 'date_format:' . config('panel.date_format'),
+                'after_or_equal:start_date',
             ],
             'notify_work_achive'     => [
                 'string',

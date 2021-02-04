@@ -10,8 +10,8 @@ class CreateProposalsItemsTable extends Migration
     {
         Schema::create('proposals_items', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->unique();
-            $table->longText('description')->nullable();
+            $table->string('item_name')->nullable();
+            $table->longText('item_desc')->nullable();
             $table->string('group_name')->nullable();
             $table->string('brand')->nullable();
             $table->string('delivery')->nullable();

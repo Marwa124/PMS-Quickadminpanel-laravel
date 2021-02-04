@@ -11,8 +11,10 @@ class CreateBugsTable extends Migration
         Schema::create('bugs', function (Blueprint $table) {
             $table->increments('id');
             $table->string('issue_no')->nullable();
-            $table->string('name');
-            $table->longText('description')->nullable();
+            $table->string('name_en')->nullable();
+            $table->string('name_ar')->nullable();
+            $table->longText('description_en')->nullable();
+            $table->longText('description_ar')->nullable();
             $table->string('status')->nullable();
             $table->longText('notes')->nullable();
             $table->string('priority');

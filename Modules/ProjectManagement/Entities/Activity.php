@@ -9,7 +9,8 @@ use Modules\ProjectManagement\Entities\Project;
 class Activity extends Model
 {
     protected $table = "activities";
-    protected $fillable = ['user_id','module','module_field_id','activity','activity_date','icon','link','value1','value2'];
+    protected $fillable = ['user_id','module','module_field_id','activity_en','activity_ar','activity_date',
+                            'icon','link','value1_en','value1_ar','value2_en','value2_ar'];
 
 
     public function user()

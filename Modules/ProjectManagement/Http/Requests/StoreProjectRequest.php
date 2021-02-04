@@ -17,10 +17,15 @@ class StoreProjectRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'               => [
+            'name_en'               => [
                 'string',
                 'required',
-                'unique:projects',
+                'unique:projects,name_en',
+            ],
+            'name_ar'               => [
+                'string',
+                'required',
+                'unique:projects,name_ar',
             ],
             'client_id'          => [
                 'required',
@@ -41,11 +46,8 @@ class StoreProjectRequest extends FormRequest
             'end_date'           => [
                 'required',
                 'date_format:' . config('panel.date_format'),
+                'after_or_equal:start_date',
             ],
-//            'actual_completion'  => [
-//                'string',
-//                'required',
-//            ],
             'alert_overdue'      => [
                 'required',
                 'integer',
@@ -53,6 +55,7 @@ class StoreProjectRequest extends FormRequest
                 'max:1',
             ],
             'project_cost'       => [
+                'required',
                 'numeric',
             ],
             'demo_url'           => [
@@ -60,24 +63,9 @@ class StoreProjectRequest extends FormRequest
                 'nullable',
             ],
             'project_status'     => [
+                'required',
                 'string',
-                'nullable',
             ],
-//            'timer_started_by'   => [
-//                'nullable',
-//                'integer',
-//                'min:-2147483648',
-//                'max:2147483647',
-//            ],
-//            'permissions.*'      => [
-//                'integer',
-//            ],
-//            'permissions'        => [
-//                'array',
-//            ],
-//            'with_tasks'         => [
-//                'required',
-//            ],
             'estimate_hours'     => [
                 'string',
                 'nullable',

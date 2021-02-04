@@ -27,7 +27,7 @@ class TicketsController extends Controller
 
     public function index()
     {
-        abort_if(Gate::denies('ticket_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('ticket_access'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
         //$projects = Project::get();
 
@@ -35,7 +35,7 @@ class TicketsController extends Controller
 
         if (request()->segment(count(request()->segments())) == 'trashed'){
 
-            abort_if(Gate::denies('ticket_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+            abort_if(Gate::denies('ticket_delete'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
             $trashed = true;
             //$tickets = Ticket::onlyTrashed()->get();
@@ -56,25 +56,31 @@ class TicketsController extends Controller
     {
         // $id  refer to project id in case
 
-        abort_if(Gate::denies('ticket_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('ticket_create'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
-        $projects = Project::all()->pluck('name', 'id');
+        $projects = auth()->user()->getUserProjectsByUserID(auth()->user()->id)->pluck('name', 'id');
         $project = null;
 
         if (request()->segment(count(request()->segments())-1) == 'project-ticket')
         {
             $project = Project::findOrFail($id);
+
+            // check if user can access this project or not
+            $all_projects = auth()->user()->getUserProjectsByUserID(auth()->user()->id)->pluck('id');
+
+            if (!in_array($project->id,$all_projects->toArray())){
+
+                return abort(Response::HTTP_FORBIDDEN, trans('global.forbidden_page_not_allow_to_you'));
+            }
         }
-
-        //$departments = Department::all()->pluck('department_name', 'id')->prepend(trans('global.pleaseSelect'), '');
-
-//        $permissions = Permission::all()->pluck('title', 'id');
 
         return view('projectmanagement::admin.tickets.create', compact('projects','project'));
     }
 
     public function store(StoreTicketRequest $request)
     {
+        abort_if(Gate::denies('ticket_create'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
+
         $request['reporter'] = auth()->user()->id;
         $request['ticket_code'] = 'tick'.substr(time(),-7);           //pms + time function to be sure this num is unique
 
@@ -94,26 +100,28 @@ class TicketsController extends Controller
 
     public function edit(Ticket $ticket)
     {
-        abort_if(Gate::denies('ticket_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('ticket_edit'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
         $tickets = auth()->user()->getUserTicketsByUserID(auth()->user()->id)->pluck('id');
         if (in_array($ticket->id,$tickets->toArray()))
         {
 
-            $projects = Project::all()->pluck('name', 'id');
+            $projects = auth()->user()->getUserProjectsByUserID(auth()->user()->id)->pluck('name', 'id');
 
 
             $ticket->load('project', 'department');
 
             return view('projectmanagement::admin.tickets.edit', compact('projects', 'ticket'));
         }
-        
-        abort(Response::HTTP_FORBIDDEN, '403 Forbidden This Page Not Allow To You');
+
+        abort(Response::HTTP_FORBIDDEN, trans('global.forbidden_page_not_allow_to_you'));
 
     }
 
     public function update(UpdateTicketRequest $request, Ticket $ticket)
     {
+        abort_if(Gate::denies('ticket_edit'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
+
         $ticket->update($request->all());
         //$ticket->permissions()->sync($request->input('permissions', []));
 
@@ -154,7 +162,7 @@ class TicketsController extends Controller
 
     public function show(Ticket $ticket)
     {
-        abort_if(Gate::denies('ticket_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('ticket_show'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
         $tickets = auth()->user()->getUserTicketsByUserID(auth()->user()->id)->pluck('id');
         if (in_array($ticket->id,$tickets->toArray()))
@@ -165,13 +173,13 @@ class TicketsController extends Controller
             return view('projectmanagement::admin.tickets.show', compact('ticket'));
         }
 
-        abort(Response::HTTP_FORBIDDEN, '403 Forbidden This Page Not Allow To You');
+        abort(Response::HTTP_FORBIDDEN,  trans('global.forbidden_page_not_allow_to_you'));
 
     }
 
     public function destroy(Ticket $ticket)
     {
-        abort_if(Gate::denies('ticket_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('ticket_delete'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
         $ticket->delete();
 
@@ -180,6 +188,8 @@ class TicketsController extends Controller
 
     public function massDestroy(MassDestroyTicketRequest $request)
     {
+        abort_if(Gate::denies('ticket_delete'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
+
         Ticket::whereIn('id', request('ids'))->delete();
 
         return response(null, Response::HTTP_NO_CONTENT);
@@ -187,7 +197,7 @@ class TicketsController extends Controller
 
     public function storeCKEditorImages(Request $request)
     {
-        abort_if(Gate::denies('ticket_create') && Gate::denies('ticket_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('ticket_create') && Gate::denies('ticket_edit'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
         $model         = new Ticket();
         $model->id     = $request->input('crud_id', 0);
@@ -199,19 +209,19 @@ class TicketsController extends Controller
 
     public function getAssignTo($id){
 
-        abort_if(Gate::denies('ticket_assign_to'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('ticket_assign_to'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
         $ticket = Ticket::findOrFail($id);
 
         if (!$ticket->project){
 
-            abort(404,"this Ticket don't have project ");
+            abort(404,trans('cruds.messages.ticket_not_have_project'));
         }
 
         $department = $ticket->project->department;
 
         if (!$department){
-            abort(404,"this Ticket project don't have Department ");
+            abort(404,trans('cruds.messages.project_of_ticket_not_have_department'));
 
         }
 
@@ -221,6 +231,8 @@ class TicketsController extends Controller
 
     public function storeAssignTo(Request $request)
     {
+        abort_if(Gate::denies('ticket_assign_to'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
+
         $ticket = Ticket::findOrFail($request->ticket_id);
         if ($request->accounts){
 
@@ -328,6 +340,8 @@ class TicketsController extends Controller
 
     public function change_status(Request $request)
     {
+        abort_if(Gate::denies('ticket_edit'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
+
         //dd($request->all());
 
         $ticket = Ticket::findOrFaiL($request->ticket_id);
@@ -360,6 +374,8 @@ class TicketsController extends Controller
 
     public function forceDelete(Request $request,$id)
     {
+        abort_if(Gate::denies('ticket_delete'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
+
         //dd($request->all(),$id);
         $action = $request->action;
 
@@ -376,5 +392,45 @@ class TicketsController extends Controller
 
         return back();
 
+    }
+
+    public function ticket_report()
+    {
+        abort_if(Gate::denies('ticket_report_access'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
+
+//        $user = User::findOrFail(auth()->user()->id);
+//        if ($user->hasrole(['Admin','Super Admin']))
+//        {
+        $tickets = Ticket::all();
+
+        $yearly_report = $this->get_project_report_by_month(true);
+
+        $openedArray = [];
+        $answeredArray = [];
+        $in_progressArray = [];
+        $closedArray = [];
+        $reopenArray = [];
+
+        foreach($yearly_report as $report)
+        {
+            array_push($openedArray,$report->where('status','opened')->count());
+            array_push($answeredArray,$report->where('status','answered')->count());
+            array_push($in_progressArray,$report->where('status','in_progress')->count());
+            array_push($closedArray,$report->where('status','closed')->count());
+            array_push($reopenArray,$report->where('status','reopen')->count());
+        }
+
+
+        $openedArray = implode(',',$openedArray);
+        $answeredArray = implode(',',$answeredArray);
+        $in_progressArray = implode(',',$in_progressArray);
+        $closedArray = implode(',',$closedArray);
+        $reopenArray = implode(',',$reopenArray);
+
+        return view('projectmanagement::admin.tickets.ticket_report', compact('tickets','openedArray','answeredArray','in_progressArray','closedArray','reopenArray'));
+
+//        }
+//
+//        return abort(Response::HTTP_FORBIDDEN, trans('global.forbidden_page_not_allow_to_you'));
     }
 }

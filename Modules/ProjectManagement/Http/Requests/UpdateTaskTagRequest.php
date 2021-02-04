@@ -17,9 +17,15 @@ class UpdateTaskTagRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => [
+            'name_en' => [
                 'string',
                 'required',
+                'unique:task_tags,name_en,' . request()->route('task_tag')->id,
+            ],
+            'name_ar' => [
+                'string',
+                'required',
+                'unique:task_tags,name_ar,' . request()->route('task_tag')->id,
             ],
         ];
     }

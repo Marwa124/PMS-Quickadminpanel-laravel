@@ -119,6 +119,43 @@
                 'evaluations',
 
             ],
+            // finance
+            'finance' => [
+                'finance_access', // done
+                'bank_cash', // done
+                'balance_sheet', // done
+                'payment_method', // done
+                'payment_method_delete', // done
+                'payment_method_edit', // done
+                'payment_method_create', // done
+                'payment_method', // done
+                'transfer', // done
+                'transfer_create', // done
+                'transfer_edit', // done
+                'transfer_delete', // done
+                'expenses_category', // done
+                'expenses_category_create', // done
+                'expenses_category_edit', // done
+                'expenses_category_delete', // done
+                'expenses', // done
+                'expenses_create', // done
+                'expenses_edit', // done
+                'expenses_delete', // done
+                'deposits_category', // done
+                'deposits_category_create', // done
+                'deposits_category_edit', // done
+                'deposits_category_delete', // done
+                'deposits', // done
+                'deposits_create', // done
+                'deposits_edit', // done
+                'deposits_delete', // done
+                'invoice', // done
+                'invoice_create', // done
+                'invoice_access', // done
+                'invoice_edit', // done
+                'invoice_delete', // done
+                'invoice_show', // done
+            ],
 
             'penalty_category' => [
                 'penalty_category_access',
@@ -321,6 +358,7 @@
                 'work_tracking_show',
                 'work_tracking_delete',
                 'work_tracking_access',
+                'work_tracking_assign_to',
             ],
 
             'milestones' => [
@@ -599,6 +637,14 @@
                         'time_sheet_edit',
                         'time_sheet_delete',
                     ],
+
+
+            'reports' => [
+                'project_report_access',
+                'task_report_access',
+                'bug_report_access',
+                'ticket_report_access',
+            ],
         ]
 
     ];

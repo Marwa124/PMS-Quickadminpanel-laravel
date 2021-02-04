@@ -2,7 +2,11 @@
 
 namespace Modules\ProjectManagement\Http\Controllers\Admin;
 
+use App\Events\NewNotification;
 use App\Http\Controllers\Controller;
+use App\Notifications\ProjectManagementNotification;
+use Modules\HR\Entities\Department;
+use Modules\HR\Entities\Designation;
 use Modules\ProjectManagement\Entities\Task;
 use Modules\ProjectManagement\Entities\TaskStatus;
 use Modules\ProjectManagement\Http\Controllers\Traits\ProjectManagementHelperTrait;
@@ -23,30 +27,29 @@ class WorkTrackingController extends Controller
 
     public function index()
     {
-        abort_if(Gate::denies('work_tracking_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('work_tracking_access'), Response::HTTP_FORBIDDEN,  trans('global.forbidden_page'));
 
         if (request()->segment(count(request()->segments())) == 'trashed') {
 
-            abort_if(Gate::denies('work_tracking_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+            abort_if(Gate::denies('work_tracking_delete'), Response::HTTP_FORBIDDEN,  trans('global.forbidden_page'));
 
             $trashed = true;
 
-            $workTrackings = WorkTracking::onlyTrashed()->get();
+            $workTrackings = auth()->user()->getUserWorkTrackingByUserID(auth()->user()->id,$trashed);
 
             return view('projectmanagement::admin.workTrackings.index', compact('workTrackings', 'trashed'));
         }
 
-
         $trashed = false;
 
-        $workTrackings = WorkTracking::all();
+        $workTrackings = auth()->user()->getUserWorkTrackingByUserID(auth()->user()->id,$trashed);
 
         return view('projectmanagement::admin.workTrackings.index', compact('workTrackings', 'trashed'));
     }
 
     public function create()
     {
-        abort_if(Gate::denies('work_tracking_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('work_tracking_create'), Response::HTTP_FORBIDDEN,  trans('global.forbidden_page'));
 
         $work_types = TimeWorkType::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
@@ -57,6 +60,8 @@ class WorkTrackingController extends Controller
 
     public function store(StoreWorkTrackingRequest $request)
     {
+        abort_if(Gate::denies('work_tracking_create'), Response::HTTP_FORBIDDEN,  trans('global.forbidden_page'));
+
         $workTracking = WorkTracking::create($request->all());
 
         setActivity('workTracking',$workTracking->id,'Create Work Tracking Details',$workTracking->subject);
@@ -66,13 +71,9 @@ class WorkTrackingController extends Controller
 
     public function edit(WorkTracking $workTracking)
     {
-        abort_if(Gate::denies('work_tracking_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('work_tracking_edit'), Response::HTTP_FORBIDDEN,  trans('global.forbidden_page'));
 
         $work_types = TimeWorkType::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
-
-        //$permissions = Permission::all()->pluck('title', 'id');
-
-        //$accounts = Account::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
         $workTracking->load('work_type');
 
@@ -81,8 +82,9 @@ class WorkTrackingController extends Controller
 
     public function update(UpdateWorkTrackingRequest $request, WorkTracking $workTracking)
     {
+        abort_if(Gate::denies('work_tracking_edit'), Response::HTTP_FORBIDDEN,  trans('global.forbidden_page'));
+
         $workTracking->update($request->all());
-        //$workTracking->permissions()->sync($request->input('permissions', []));
 
         setActivity('workTracking',$workTracking->id,'Update Work Tracking Details',$workTracking->subject);
 
@@ -91,12 +93,12 @@ class WorkTrackingController extends Controller
 
     public function show(WorkTracking $workTracking)
     {
-        abort_if(Gate::denies('work_tracking_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('work_tracking_show'), Response::HTTP_FORBIDDEN,  trans('global.forbidden_page'));
 
         $workTracking->load('work_type');
         $result = $this->get_progress_ofWorkTracking($workTracking);
         $today = date('Y-m-d');
-//        dd($result);
+
         if ($workTracking->end_date > $today){
 
             $workTrakingStatus = 'On Going';
@@ -113,14 +115,13 @@ class WorkTrackingController extends Controller
             }
 
         }
-        //dd($result);
 
         return view('projectmanagement::admin.workTrackings.show', compact('workTracking','result','workTrakingStatus','color'));
     }
 
     public function destroy(WorkTracking $workTracking)
     {
-        abort_if(Gate::denies('work_tracking_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('work_tracking_delete'), Response::HTTP_FORBIDDEN,  trans('global.forbidden_page'));
 
         $workTracking->delete();
 
@@ -131,6 +132,8 @@ class WorkTrackingController extends Controller
 
     public function massDestroy(MassDestroyWorkTrackingRequest $request)
     {
+        abort_if(Gate::denies('work_tracking_delete'), Response::HTTP_FORBIDDEN,  trans('global.forbidden_page'));
+
         $ids = request('ids');
 
         foreach ($ids as $id){
@@ -151,6 +154,8 @@ class WorkTrackingController extends Controller
 
     public function forceDelete(Request $request, $id)
     {
+        abort_if(Gate::denies('work_tracking_delete'), Response::HTTP_FORBIDDEN,  trans('global.forbidden_page'));
+
         //dd($request->all(),$id);
         $action = $request->action;
 
@@ -171,5 +176,92 @@ class WorkTrackingController extends Controller
 
         return back();
 
+    }
+
+    public function getAssignTo($id)
+    {
+
+        abort_if(Gate::denies('work_tracking_assign_to'), Response::HTTP_FORBIDDEN,  trans('global.forbidden_page'));
+
+        $workTracking = WorkTracking::findOrFail($id);
+        $designations = Designation::all();
+
+        return view('projectmanagement::admin.workTrackings.assignto',compact('workTracking','designations'));
+
+    }
+
+
+    public function storeAssignTo(Request $request)
+    {
+        abort_if(Gate::denies('work_tracking_assign_to'), Response::HTTP_FORBIDDEN,  trans('global.forbidden_page'));
+
+        $workTracking = WorkTracking::findOrFail($request->workTracking_id);
+        if ($request->accounts) {
+
+
+            $workTracking->accountDetails()->sync($request->accounts);
+            //$project->accountDetails()->syncWithoutDetaching($request->accounts);
+
+            // set permission to users
+            $accounts = AccountDetail::whereIn('id', $request->accounts)->get();
+
+//            $workTracking_permissions_head_names = ['project_management_access', 'work_tracking_access', 'work_tracking_create', 'work_tracking_show', 'work_tracking_edit', 'work_tracking_assign_to'];
+//            $workTracking_permissions_notToMember_names = ['work_tracking_create', 'work_tracking_edit', 'work_tracking_assign_to'];
+            $workTracking_permissions_toMember_names = ['project_management_access', 'work_tracking_access', 'work_tracking_show'];
+
+//            $project_permissions_head = $this->getPermissionID($project_permissions_head_names);
+//            $project_permissions_notToMember = $this->getPermissionID($project_permissions_notToMember_names);
+            $workTracking_permissions_toMember = $this->getPermissionID($workTracking_permissions_toMember_names);
+
+            foreach ($accounts as $account) {
+
+                if (!$account->user->hasrole(['Admin','Super Admin'])) {
+
+//                    foreach ($account->user->permissions as $permission) {
+//
+//                        if (in_array($permission->name, $project_permissions_notToMember_names)) {
+//                            $account->user->permissions()->detach($project_permissions_notToMember);
+//                        }
+//                    }
+                    $account->user->permissions()->syncWithoutDetaching($workTracking_permissions_toMember);
+
+//                    foreach ($account->user->department as $department) {
+//                        if ($department->department_name == $project->department->department_name) {
+//                            $account->user->permissions()->syncWithoutDetaching($project_permissions_head);
+//
+//                            break;
+//                        }
+//                    }
+                }
+            }
+        }else{
+            $workTracking->accountDetails()->detach();
+        }
+
+        // Notify User
+//        foreach ($workTracking->accountDetails as $accountUser)
+//        {
+//            $user = $accountUser->user;
+//
+//            $dataMail = [
+//                'subjectMail'    => 'New Work Tracking Assign To You',
+//                'bodyMail'       => 'Assign The Work Tracking '.$workTracking->subject.' To '.$user->name,
+//                'action'         => route("projectmanagement.admin.work-trackings.show", $workTracking->id)
+//            ];
+//
+//            $dataNotification = [
+//                'message'       => 'Assign The Work Tracking : '.$workTracking->subject.' To '.$user->name,
+//                'route_path'    => 'admin/projectmanagement/work-trackings',
+//            ];
+//
+//            $user->notify(new ProjectManagementNotification($workTracking,$user,$dataMail,$dataNotification));
+//            $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
+//            event(new NewNotification($userNotify));
+//        }
+
+        setActivity('workTracking',$workTracking->id,'Update Assign to ',$workTracking->subject);
+
+
+        return redirect()->route('projectmanagement.admin.work-trackings.index');
     }
 }

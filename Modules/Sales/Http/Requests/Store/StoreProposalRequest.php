@@ -29,6 +29,10 @@ class StoreProposalRequest extends FormRequest
                 'string',
                 'required',
             ],
+            'module_id'         => [
+                'integer',
+                'required',
+            ],
             'proposal_date'  => [
                 'required',
                 'date_format:' . config('panel.date_format'),

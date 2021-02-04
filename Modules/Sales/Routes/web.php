@@ -18,13 +18,17 @@
 Route::group(['as' => 'sales.admin.', 'prefix' => 'admin/sales', 'namespace' => 'Admin', 'middleware' => ['auth']],function() {
      // Proposals
     Route::delete('proposals/destroy', 'ProposalsController@massDestroy')->name('proposals.massDestroy');
+    Route::post('proposals/changestatus', 'ProposalsController@changestatus')->name('proposals.changestatus');
     Route::post('proposals/getmodule', 'ProposalsController@getmodule')->name('proposals.getmodule');
+    Route::post('proposals/Clone/{proposal}', 'ProposalsController@cloneproposal')->name('proposals.cloneproposal');
+    Route::get('proposals/history/{proposal}', 'ProposalsController@historyproposal')->name('proposals.historyproposal');
     Route::post('proposals/get_taxes', 'ProposalsController@get_taxes_ajax')->name('proposals.get_taxes_ajax');
     Route::post('proposals/getproposalitem', 'ProposalsController@get_item_by_id')->name('proposals.getproposalitem');
     Route::post('proposals/media', 'ProposalsController@storeMedia')->name('proposals.storeMedia');
     Route::post('proposals/ckmedia', 'ProposalsController@storeCKEditorImages')->name('proposals.storeCKEditorImages');
     Route::resource('proposals', 'ProposalsController');
-
+    // Proposals Items
+    Route::get('proposals/getpdf/{id}', 'PdfController@pdf')->name('proposals.pdf');
     // Proposals Items
     Route::delete('proposals-items/destroy', 'ProposalsItemsController@massDestroy')->name('proposals-items.massDestroy');
     Route::post('proposals-items/media', 'ProposalsItemsController@storeMedia')->name('proposals-items.storeMedia');

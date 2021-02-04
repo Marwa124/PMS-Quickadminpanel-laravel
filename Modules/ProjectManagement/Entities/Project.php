@@ -50,7 +50,8 @@ class Project extends Model implements HasMedia
     ];
 
     protected $fillable = [
-        'name',
+        'name_en',
+        'name_ar',
         'client_id',
         'department_id',
         'progress',
@@ -62,7 +63,8 @@ class Project extends Model implements HasMedia
         'project_cost',
         'demo_url',
         'project_status',
-        'description',
+        'description_en',
+        'description_ar',
         'notify_client',
         'timer_status',
         'timer_started_by',

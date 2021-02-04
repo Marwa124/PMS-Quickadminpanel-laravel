@@ -18,10 +18,19 @@ class StoreTaskRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'               => [
+            'name_en'               => [
                 'string',
                 'required',
-                Rule::unique('tasks','name')->where(function($query) {
+                Rule::unique('tasks','name_en')->where(function($query) {
+
+                    $query->where('milestone_id', '=', request()->milestone_id);
+
+                }),
+            ],
+            'name_ar'               => [
+                'string',
+                'required',
+                Rule::unique('tasks','name_ar')->where(function($query) {
 
                     $query->where('milestone_id', '=', request()->milestone_id);
 
@@ -42,8 +51,9 @@ class StoreTaskRequest extends FormRequest
                 'date_format:' . config('panel.date_format'),
             ],
             'due_date'           => [
+                'required',
                 'date_format:' . config('panel.date_format'),
-                'nullable',
+                'after_or_equal:start_date',
             ],
             'project_id'           => [
                 'required',
@@ -66,56 +76,17 @@ class StoreTaskRequest extends FormRequest
                 'string',
                 'nullable',
             ],
-//            'timer_status'       => [
-//                'required',
-//            ],
-//            'timer_started_by'   => [
-//                'nullable',
-//                'integer',
-//                'min:-2147483648',
-//                'max:2147483647',
-//            ],
-//            'start_timer'        => [
-//                'nullable',
-//                'integer',
-//                'min:-2147483648',
-//                'max:2147483647',
-//            ],
-//            'logged_timer'       => [
-//                'nullable',
-//                'integer',
-//                'min:-2147483648',
-//                'max:2147483647',
-//            ],
             'created_by'         => [
                 'nullable',
                 'integer',
                 'min:-2147483648',
                 'max:2147483647',
             ],
-//            'permissions.*'      => [
-//                'integer',
-//            ],
-//            'permissions'        => [
-//                'array',
-//            ],
-//            'client_visible'     => [
-//                'string',
-//                'nullable',
-//            ],
+
             'hourly_rate'        => [
                 'numeric',
             ],
-//            'billable'           => [
-//                'string',
-//                'required',
-//            ],
-//            'index_no'           => [
-//                'nullable',
-//                'integer',
-//                'min:-2147483648',
-//                'max:2147483647',
-//            ],
+
         ];
     }
 }

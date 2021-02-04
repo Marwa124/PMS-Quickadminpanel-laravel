@@ -526,16 +526,6 @@
                         });
 
 
-                        // form.items[this.fetchRowIndex].taxes.map(tax => {
-
-                        //     console.log(tax.name);
-                        // });
-
-
-
-                            // console.log(tax.name);
-
-
                     }
                 },
                 deep: true

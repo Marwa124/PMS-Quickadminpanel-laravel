@@ -6,6 +6,7 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\ProjectManagement\Entities\TimeSheet;
+use Session;
 
 class TimeSheetController extends Controller
 {
@@ -40,58 +41,62 @@ class TimeSheetController extends Controller
         $start = strtotime($request->start_date . ' ' . $request->start_time);
         $end = strtotime($request->end_date . ' ' . $request->end_time);
 
+        if ($start <= $end){
 
-        //dd($request->module_field_id);
-        if ($request->timesheet_id)
-        {
+            if ($request->timesheet_id)
+            {
 
-            $timeSheet = TimeSheet::findOrFail($request->timesheet_id);
-            $timeSheet->update([
-//                'module'            => 'project',
-//                'module_field_id'   => $request->project_id,
-                'timer_status'      => 'off',
-                'start_time'        => $start,
-                'end_time'          => $end,
-                'reason'            => $request->reason,
-                'edited_by'         => $user_id,
-            ]);
+                $timeSheet = TimeSheet::findOrFail($request->timesheet_id);
+                $timeSheet->update([
+    //                'module'            => 'project',
+    //                'module_field_id'   => $request->project_id,
+                    'timer_status'      => 'off',
+                    'start_time'        => $start,
+                    'end_time'          => $end,
+                    'reason'            => $request->reason,
+                    'edited_by'         => $user_id,
+                ]);
 
-            if($request->module == 'project'){
+                if($request->module == 'project'){
 
-                $module_name =  $timeSheet->project->name ;
+                    $module_name =  $timeSheet->project->name ;
 
-            }elseif($request->module == 'task'){
+                }elseif($request->module == 'task'){
 
-                $module_name =  $timeSheet->task->name ;
+                    $module_name =  $timeSheet->task->name ;
+                }
+
+                setActivity($request->module,$request->module_field_id,'Update Time Sheet',$module_name);
+            }else{
+
+                $timer = [
+                    'user_id'           => $user_id,
+                    'module'            => $request->module,
+                    'module_field_id'   => $request->module_field_id,
+                    'timer_status'      => 'off',
+                    'start_time'        => $start,
+                    'end_time'          => $end,
+                    'reason'            => $request->reason,
+                ];
+
+                $timeSheet = TimeSheet::create($timer);
+                //dd( $timeSheet,'dd');
+                if($request->module == 'project'){
+
+                    $module_name =  $timeSheet->project->name ;
+
+                }elseif($request->module == 'task'){
+
+                    $module_name =  $timeSheet->task->name ;
+                }
+
+                setActivity($request->module,$request->module_field_id,'Create Time Sheet',$module_name);
             }
-
-            setActivity($request->module,$request->module_field_id,'Update Time Sheet',$module_name);
         }else{
 
-            $timer = [
-                'user_id'           => $user_id,
-                'module'            => $request->module,
-                'module_field_id'   => $request->module_field_id,
-                'timer_status'      => 'off',
-                'start_time'        => $start,
-                'end_time'          => $end,
-                'reason'            => $request->reason,
-            ];
-
-            $timeSheet = TimeSheet::create($timer);
-            //dd( $timeSheet,'dd');
-            if($request->module == 'project'){
-
-                $module_name =  $timeSheet->project->name ;
-
-            }elseif($request->module == 'task'){
-
-                $module_name =  $timeSheet->task->name ;
-            }
-
-            setActivity($request->module,$request->module_field_id,'Create Time Sheet',$module_name);
+            Session::flash('messages', 'The Time Of End Date Must Be After Or Equal ');
+           // Session::flash('alert-class', 'alert-danger');
         }
-
 
         return redirect()->back();
     }

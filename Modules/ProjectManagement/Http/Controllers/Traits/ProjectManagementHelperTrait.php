@@ -3,6 +3,7 @@
 namespace Modules\ProjectManagement\Http\Controllers\Traits;
 
 //use App\Models\Permission;
+use Modules\ProjectManagement\Entities\Bug;
 use Modules\ProjectManagement\Entities\Milestone;
 use Modules\ProjectManagement\Entities\Task;
 use Modules\ProjectManagement\Entities\Project;
@@ -10,6 +11,7 @@ use Modules\ProjectManagement\Entities\TaskStatus;
 use Modules\ProjectManagement\Entities\Ticket;
 use Modules\ProjectManagement\Entities\TicketReplay;
 use Spatie\Permission\Models\Permission;
+use MPDF;
 
 trait ProjectManagementHelperTrait
 {
@@ -120,5 +122,50 @@ trait ProjectManagementHelperTrait
             'achievement_WorkTracking' => $achievement_WorkTracking,
         ];
         return $result;
+    }
+
+    //report tickets and bugs
+    public function get_project_report_by_month($tickets = null)
+    {
+        // this function is to create get monthly recap report
+        $get_result = [];
+        for ($i = 1; $i <= 12; $i++) { // query for months
+            if ($i >= 1 && $i <= 9) { // if i<=9 concate with Mysql.becuase on Mysql query fast in two digit like 01.
+                $start_date = date('Y') . "-" . '0' . $i . '-' . '01';
+                $end_date = date('Y') . "-" . '0' . $i . '-' . '31';
+            } else {
+                $start_date = date('Y') . "-" . $i . '-' . '01';
+                $end_date = date('Y') . "-" . $i . '-' . '31';
+            }
+            if (!empty($tickets)) {
+//                $where = array('created >=' => $start_date . ' 00:00:00', 'created <=' => $end_date . ' 23:59:59');
+//                $get_result[$i] = $this->db->where($where)->get('tbl_tickets')->result();; // get all report by start date and in date
+                $get_result[$i] = Ticket::where('created_at','>=',$start_date. ' 00:00:00')->where('created_at','<=',$end_date. ' 23:59:59')->get(); // get all report by start date and in date
+            } else {
+                // $where = array('created_at' => '>'.$start_date, 'created_at <=' => $end_date);
+                //$get_result[$i] = $this->db->where($where)->get('tbl_bug')->result();; // get all report by start date and in date
+                //dd(Bug::where('created_at','>=',$start_date. ' 00:00:00')->where('created_at','<=',$end_date. ' 23:59:59')->get(),$start_date,$end_date);
+                $get_result[$i] = Bug::where('created_at','>=',$start_date. ' 00:00:00')->where('created_at','<=',$end_date. ' 23:59:59')->get(); // get all report by start date and in date
+
+            }
+        }
+        //dd($get_result);
+        return $get_result; // return the result
+    }
+
+    public function download_pdf($view,$compact,$title=null)
+    {
+        extract($compact);
+
+        $pdf = MPDF::loadView( $view,compact(array_keys($compact)));
+        return $pdf->download($title);
+    }
+
+    public function stream_pdf($view,$compact,$title=null)
+    {
+        extract($compact);
+
+        $pdf = MPDF::loadView( $view,compact(array_keys($compact)));
+        return $pdf->stream($title);
     }
 }
