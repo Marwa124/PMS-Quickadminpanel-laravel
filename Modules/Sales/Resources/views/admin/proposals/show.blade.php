@@ -4,7 +4,7 @@
 
 
     <div class="mb-2">
-            @if($proposal->status != 'accepted' || $proposal->status != 'Approved')
+            @if($proposal->status == 'accepted' || $proposal->status == 'Approved')
              
             <!-- Secondary, outline button -->
             <button type="button" class="btn btn-secondary"  data-toggle="modal" data-target="#primaryModal" >Clone</button>
@@ -39,9 +39,7 @@
                   <a class="dropdown-item changestatus" data-status="declined">{{ trans('cruds.proposal.fields.Mark_As') }} {{trans('cruds.proposal.fields.declined')}}</a>
                   <a class="dropdown-item changestatus" data-status="accepted">{{ trans('cruds.proposal.fields.Mark_As') }} {{trans('cruds.proposal.fields.accepted')}}</a>
                   <hr>
-                  <a class="dropdown-item" href="http://localhost/PMS/admin/proposals/index/edit_proposals/215"> {{ trans('global.edit') }} {{ trans('cruds.proposal.title_singular') }}</a>
-                      
-               
+                  <a class="dropdown-item" href="{{ route('sales.admin.proposals.edit', $proposal->id) }}"> {{ trans('global.edit') }} {{ trans('cruds.proposal.title_singular') }}</a>
               </div>
             </div>
             <!-- /btn-group -->
@@ -51,7 +49,6 @@
 
 
           <!-- Indicates a successful or positive action -->
-          <button type="button" class="btn btn-success >{{trans('cruds.proposal.fields.accepted')}}</button>
           <button type="button" class="btn btn-success changestatus" data-status="accepted">{{trans('cruds.proposal.fields.accepted')}}</button>
         
           <!-- Indicates caution should be taken with this action -->
@@ -177,12 +174,14 @@
               <thead>
                 <tr>
                   <th class="center">#</th>
+                 
                   <th>Item</th>
                   <th>Description</th>
+                  <th>Unit</th>
+                  <th>Brand</th>
+                  <th>Part</th>
+                  <th>Delivery</th>
                   <th class="center">Quantity</th>
-                  <th class="right">margin</th>
-                  <th class="right">Unit Cost</th>
-                  <th class="right">Margin</th>
                   <th class="right">Selling Price</th>
                   <th class="right">Total</th>
                 </tr>
@@ -195,10 +194,11 @@
                   <td class="center">{{ $loop->iteration }}</td>
                   <td class="left">{{ $item->pivot->item_name }}</td>
                   <td class="left">{{ $item->pivot->item_desc }}</td>
+                  <td class="left">{{ $item->pivot->unit }}</td>
+                  <td class="left">{{ $item->pivot->brand }}</td>
+                  <td class="left">{{ $item->pivot->part }}</td>
+                  <td class="left">{{ $item->pivot->delivery }}</td>
                   <td class="center">{{ $item->pivot->quantity }}</td>
-                  <td class="right">{{ $item->pivot->margin }}</td>
-                  <td class="right">{{ $item->pivot->unit_cost }}</td>
-                  <td class="right">{{ $item->pivot->margin }}</td>
                   <td class="right">{{ $item->pivot->selling_price  }}</td>
                   <td class="right">{{ $item->pivot->selling_price * $item->pivot->quantity}}</td>
                  </tr>

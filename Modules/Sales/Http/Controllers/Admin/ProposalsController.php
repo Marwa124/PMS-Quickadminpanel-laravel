@@ -153,7 +153,7 @@ class ProposalsController extends Controller
         $after_discount=$request->after_discount ? $request->after_discount : 0;
         $total=$request->total ? $request->total : 0;
         $discount_percent=$request->discount_percent ? $request->discount_percent : 0;
-        $request->merge(['total_cost_price'=>$total,'total_tax'=>$total_tax,'after_discount'=>$after_discount,'discount_percent'=>$discount_percent]);
+        $request->merge(['total_cost_price'=>$total,'status'=>'Waiting_approval','total_tax'=>$total_tax,'after_discount'=>$after_discount,'discount_percent'=>$discount_percent]);
         // dd($request->all(),$request->item_relation_id,isset($request->item_relation_id),ItemPorposalRelations::whereIn('id',$request->item_relation_id)->get());
         $proposal->update($request->only([
         'reference_no',
@@ -233,6 +233,7 @@ class ProposalsController extends Controller
             return redirect()->back();
         }
 
+        
         
     }
 
