@@ -54,12 +54,10 @@
 
 
 <script>
-import Vue from 'vue';
 import MixinsTable from '../../mixinsTable'
-import Axios from 'axios';
 export default {
     mixins: [MixinsTable],
-    
+
     props:  ['canPrint', 'canDelete'],
 
     data() {

@@ -44,11 +44,12 @@ class EvaluationsApiController extends Controller
             unset($item->created_at);
             unset($item->updated_at);
             $item->user_id = AccountDetail::where('user_id', $item->user_id)->select('fullname')->first()->fullname;
-            $item->manager_id = AccountDetail::where('user_id', $item->manager_id)->select('fullname')->first()->fullname;
-            
+            $item->manager_id = (AccountDetail::where('user_id', $item->manager_id)->first() ?
+                AccountDetail::where('user_id', $item->manager_id)->select('fullname')->first()->fullname :
+                User::findOrFail($item->manager_id)->name);
+
             return $item;
         });
-
 
         $columns    = Evaluation::$columns;
         $searchable = Evaluation::$searchable;
