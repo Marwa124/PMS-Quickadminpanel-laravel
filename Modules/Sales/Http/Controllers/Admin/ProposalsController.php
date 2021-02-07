@@ -242,8 +242,10 @@ class ProposalsController extends Controller
         abort_if(Gate::denies('proposal_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $ProposalsItem = ProposalsItem::all();
-
-        return view('sales::admin.proposals.show', compact('proposal','ProposalsItem'));
+        $taxRates = TaxRate::all();
+        $clients = Client::all();
+        $projects = [];
+        return view('sales::admin.proposals.show', compact('proposal','ProposalsItem','taxRates','clients','projects'));
     }
 
     public function destroy(Proposal $proposal)
@@ -330,7 +332,7 @@ class ProposalsController extends Controller
                 'status'=>$request->status,
             ]);
         }
-        setActivity('proposal',$proposal->id,'Change Status proposal #',$proposal->reference_no);
+        setActivity('proposal',$proposal->id,'Change Status proposal #','تم تغير حالة العرض #',$proposal->reference_no,$proposal->reference_no);
         return response()->json(Response::HTTP_CREATED);
      }
 

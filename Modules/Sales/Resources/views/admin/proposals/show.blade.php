@@ -18,8 +18,8 @@
               <button type="button" class="btn btn-success  dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Convert To
               </button>
               <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 34px, 0px); top: 0px; left: 0px; will-change: transform;">
-                <a class="dropdown-item" href="#">Invoice</a>
-                <a class="dropdown-item" href="#">Estimate</a>
+                <a class="dropdown-item" href="#"  data-toggle="modal" data-target="#invoiceModal" >Invoice</a>
+                <a class="dropdown-item" href="#"  data-toggle="modal" data-target="#primaryModal">Estimate</a>
                
               </div>
             </div>
@@ -267,77 +267,108 @@
     <!-- ****************************************************modal****************************************************** -->
     <!-- /.modal -->
 
-<div class="modal fade" id="primaryModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-primary" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title"> {{ trans('global.clone') }} {{ trans('cruds.customerGroup.title_singular') }}
-                </h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
+    <div class="modal fade" id="primaryModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-primary" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title"> {{ trans('global.clone') }} {{ trans('cruds.customerGroup.title_singular') }}
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
 
-             <form method="POST" action="{{ route('sales.admin.proposals.cloneproposal', [$proposal->id]) }}" id="form2">
-                    @csrf
-            <div class="modal-body">
-              <div class="form-group row">
-                <div class="col-md-12">
-                  <label class="required" for="module ">{{ trans('cruds.proposal.fields.Related_To') }}</label>
-                  <select class="form-control  {{ $errors->has('module') ? 'is-invalid' : '' }}" name="module"
-                      onchange="get_related_moduleName(this.value, true)" id="module" required>
-                      <option value="" selected="">{{trans('global.pleaseSelect')}}</option>
-                      <option value="client">{{trans('cruds.proposal.fields.client')}}</option>
-                      <option value="opportunities">{{trans('cruds.proposal.fields.opportunities')}}</option>
-                  </select>
-                    @if($errors->has('module'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('module') }}
+                <form method="POST" action="{{ route('sales.admin.proposals.cloneproposal', [$proposal->id]) }}" id="form2">
+                        @csrf
+                <div class="modal-body">
+                  <div class="form-group row">
+                    <div class="col-md-12">
+                      <label class="required" for="module ">{{ trans('cruds.proposal.fields.Related_To') }}</label>
+                      <select class="form-control  {{ $errors->has('module') ? 'is-invalid' : '' }}" name="module"
+                          onchange="get_related_moduleName(this.value, true)" id="module" required>
+                          <option value="" selected="">{{trans('global.pleaseSelect')}}</option>
+                          <option value="client">{{trans('cruds.proposal.fields.client')}}</option>
+                          <option value="opportunities">{{trans('cruds.proposal.fields.opportunities')}}</option>
+                      </select>
+                        @if($errors->has('module'))
+                        <div class="invalid-feedback">
+                            {{ $errors->first('module') }}
+                        </div>
+                        @endif
+                        <span class="help-block">{{ trans('cruds.proposal.fields.Related_To_helper') }}</span>
                     </div>
-                    @endif
-                    <span class="help-block">{{ trans('cruds.proposal.fields.Related_To_helper') }}</span>
-                </div>
-                  <input type="hidden" name="proposal_id" value="{{$proposal->id}}">
-                  <div class="col-md-12" id="related_to">
-                  </div>
-          
-                <div class="col-md-6">
-                    <label class="required"
-                        for="proposal_date">{{ trans('cruds.proposal.fields.proposal_date') }}</label>
-                    <input class="form-control date {{ $errors->has('proposal_date') ? 'is-invalid' : '' }}" type="text"
-                        name="proposal_date" id="proposal_date" value="{{ old('proposal_date',$proposal->proposal_date) }}" required>
-                    @if($errors->has('proposal_date'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('proposal_date') }}
+                      <input type="hidden" name="proposal_id" value="{{$proposal->id}}">
+                      <div class="col-md-12" id="related_to">
+                      </div>
+              
+                    <div class="col-md-6">
+                        <label class="required"
+                            for="proposal_date">{{ trans('cruds.proposal.fields.proposal_date') }}</label>
+                        <input class="form-control date {{ $errors->has('proposal_date') ? 'is-invalid' : '' }}" type="text"
+                            name="proposal_date" id="proposal_date" value="{{ old('proposal_date',$proposal->proposal_date) }}" required>
+                        @if($errors->has('proposal_date'))
+                        <div class="invalid-feedback">
+                            {{ $errors->first('proposal_date') }}
+                        </div>
+                        @endif
+                        <span class="help-block">{{ trans('cruds.proposal.fields.proposal_date_helper') }}</span>
                     </div>
-                    @endif
-                    <span class="help-block">{{ trans('cruds.proposal.fields.proposal_date_helper') }}</span>
-                </div>
-                <div class="col-md-6">
-                    <label for="expire_date">{{ trans('cruds.proposal.fields.expire_date') }}</label>
-                    <input class="form-control date {{ $errors->has('expire_date') ? 'is-invalid' : '' }}" type="text"
-                        name="expire_date" id="expire_date" value="{{ old('expire_date',$proposal->expire_date) }}">
-                    @if($errors->has('expire_date'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('expire_date') }}
+                    <div class="col-md-6">
+                        <label for="expire_date">{{ trans('cruds.proposal.fields.expire_date') }}</label>
+                        <input class="form-control date {{ $errors->has('expire_date') ? 'is-invalid' : '' }}" type="text"
+                            name="expire_date" id="expire_date" value="{{ old('expire_date',$proposal->expire_date) }}">
+                        @if($errors->has('expire_date'))
+                        <div class="invalid-feedback">
+                            {{ $errors->first('expire_date') }}
+                        </div>
+                        @endif
+                        <span class="help-block">{{ trans('cruds.proposal.fields.expire_date_helper') }}</span>
                     </div>
-                    @endif
-                    <span class="help-block">{{ trans('cruds.proposal.fields.expire_date_helper') }}</span>
+                  
                 </div>
-               
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" id="customgroupsubmit">
+                        {{ trans('global.save') }}</button>
+                </div>
+                </form>
             </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" id="customgroupsubmit">
-                    {{ trans('global.save') }}</button>
-            </div>
-            </form>
-        </div>
-        <!-- /.modal-content -->
-</div>
-<!-- /.modal-dialog -->
+            <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
     <!-- ****************************************************/modal****************************************************** -->
+    <!-- ****************************************************invoice_modal****************************************************** -->
+    <!-- /.modal -->
+
+    <div class="modal fade" id="invoiceModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true">
+        <div class="modal-dialog modal-success" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title"> {{ trans('global.clone') }} {{ trans('cruds.customerGroup.title_singular') }}
+                    </h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+
+                <form method="POST" action="#" id="form3">
+                        @csrf
+                    <div class="modal-body">
+                      {{-- @include('sales::admin.proposals.invoicemodels', ['taxRates' => $taxRates,'clients'=>$clients,'projects'=>$projects]) --}}
+                      hello
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" id="customgroupsubmit2">
+                            {{ trans('global.save') }}</button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+    <!-- ****************************************************/invoice_modal****************************************************** -->
 @section('scripts')
 <script src="{{ asset('js/proposals.js') }}"></script>
 <script>
