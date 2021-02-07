@@ -127,7 +127,11 @@ class AccountDetailsController extends Controller
     {
         abort_if(Gate::denies('account_detail_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $users = AccountDetail::all()->pluck('fullname', 'user_id')->prepend(trans('global.pleaseSelect'), '');
+        // $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        // $users = AccountDetail::all()->pluck('fullname', 'user_id')->prepend(trans('global.pleaseSelect'), '');
+        $users = User::fetchUnbannedUsers();
+
+        dd($users);
 
         $designations = Designation::all()->pluck('designation_name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
@@ -160,7 +164,7 @@ class AccountDetailsController extends Controller
     {
         abort_if(Gate::denies('account_detail_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $users = AccountDetail::all()->pluck('fullname', 'user_id')->prepend(trans('global.pleaseSelect'), '');
+        $users = User::fetchUnbannedUsers();
 
         $designations = Designation::all()->pluck('designation_name', 'id')->prepend(trans('global.pleaseSelect'), '');
 

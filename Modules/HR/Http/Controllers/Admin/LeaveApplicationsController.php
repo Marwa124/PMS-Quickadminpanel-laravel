@@ -175,11 +175,12 @@ class LeaveApplicationsController extends Controller
     {
         $leaves = LeaveApplication::where('application_status', 'accepted')->get();
 
-        $annual = checkAvailableLeaves(23, date('Y-m'), LeaveCategory::categoryId('Annual Leave'));
-        $emergency = checkAvailableLeaves(23, date('Y-m'), LeaveCategory::categoryId('Emergency Leave'));
-        $sick = checkAvailableLeaves(23, date('Y-m'), LeaveCategory::categoryId('Sick Leave'));
-        $home = checkAvailableLeaves(23, date('Y-m'), LeaveCategory::categoryId('Working From Home'));
-        $clockLate = checkAvailableLeaves(23, date('Y-m'), LeaveCategory::categoryId('Clock in late'));
+        $user_id = auth()->user()->id;
+        $annual = checkAvailableLeaves($user_id, date('Y-m'), LeaveCategory::categoryId('Annual Leave'));
+        $emergency = checkAvailableLeaves($user_id, date('Y-m'), LeaveCategory::categoryId('Emergency Leave'));
+        $sick = checkAvailableLeaves($user_id, date('Y-m'), LeaveCategory::categoryId('Sick Leave'));
+        $home = checkAvailableLeaves($user_id, date('Y-m'), LeaveCategory::categoryId('Working From Home'));
+        $clockLate = checkAvailableLeaves($user_id, date('Y-m'), LeaveCategory::categoryId('Clock in late'));
 
         return view('hr::admin.leaveApplications.leave_report', compact('annual', 'emergency', 'sick', 'home', 'clockLate'));
     }

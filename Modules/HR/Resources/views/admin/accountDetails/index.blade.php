@@ -460,11 +460,7 @@ $('.updateUserSalary').on('click', function(){
     var amount = $(this).closest('.modal').find('input[name="amount"]').val();
     var month  = $(this).closest('.modal').find('input[name="month"]').val();
     var reason = $(this).closest('.modal').find('input[name="reason"]').val() ?? '';
-    console.log(type);
-    console.log(userId);
-    console.log(amount);
-    console.log(month);
-    console.log(reason);
+    
         $.ajax({
         url: '{{url('admin/hr/account-details/advanced-salary')}}/' + userId,
         type: 'post',
@@ -484,7 +480,6 @@ $('.updateUserSalary').on('click', function(){
             $('.displayMsg').css('display', 'block');
             $('.displayMsg .alert-success').html('Updated Salary Successfully');
             $('.displayMsg').delay(2000).slideUp(1000);
-            // console.log(res);
         },
         error: function(error) {
             $('.displayMsg .alert-danger').html(``);

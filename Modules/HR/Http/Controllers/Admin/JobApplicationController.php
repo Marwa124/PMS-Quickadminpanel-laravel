@@ -70,41 +70,6 @@ class JobApplicationController extends Controller
        AnonyPDF::HTML($pdfarr);
     }
 
-    // public function create()
-    // {
-    //     abort_if(Gate::denies('job_application_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-    //     $job_circulars = JobCircular::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
-
-    //     return view('hr::admin.jobApplications.create', compact('job_circulars'));
-    // }
-
-    // public function store(StoreJobApplicationRequest $request)
-    // {
-    //     $jobApplication = JobApplication::create($request->all());
-
-    //     if ($request->input('resume', false)) {
-    //         $jobApplication->addMedia(storage_path('tmp/uploads/' . $request->input('resume')))->toMediaCollection('resume');
-    //     }
-
-    //     if ($media = $request->input('ck-media', false)) {
-    //         Media::whereIn('id', $media)->update(['model_id' => $jobApplication->id]);
-    //     }
-
-    //     return redirect()->route('hr.admin.job-applications.index');
-    // }
-
-    // public function edit(JobApplication $jobApplication)
-    // {
-    //     abort_if(Gate::denies('job_application_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-    //     $job_circulars = JobCircular::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
-
-    //     $jobApplication->load('job_circular');
-
-    //     return view('hr::admin.jobApplications.edit', compact('job_circulars', 'jobApplication'));
-    // }
-
     // Update Application Status
     public function update(JobApplication $jobApplication)
     {

@@ -63,11 +63,6 @@
             </a>
         </li>
     </ul>
-    <div class="tab-content">
-        <div class="tab-pane" role="tabpanel" id="role_employees">
-            @includeIf('admin.roles.relationships.roleEmployees', ['employees' => $role->roleEmployees])
-        </div>
-    </div>
 </div>
 
 @endsection

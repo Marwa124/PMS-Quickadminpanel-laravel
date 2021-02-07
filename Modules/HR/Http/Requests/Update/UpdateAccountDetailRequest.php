@@ -20,10 +20,16 @@ class UpdateAccountDetailRequest extends FormRequest
             'user_id'         => [
                 'required',
                 'integer',
+                'exists:users,id'
             ],
             'fullname'        => [
                 'string',
                 'required',
+            ],
+            'designation_id'  => [
+                'required',
+                'integer',
+                'exists:designations,id'
             ],
             'company'         => [
                 'string',

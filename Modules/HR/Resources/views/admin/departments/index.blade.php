@@ -23,7 +23,7 @@
                 }
             }
         ?>
-        <div style="position: absolute">{{$roleMembers->name}}</div>
+        <div style="position: absolute">{{$roleMembers ? $roleMembers->name : ''}}</div>
         <ul>
             @foreach ($boardMembers as $item)
             <?php $accountDetail = $item->accountDetail()->first(); ?>

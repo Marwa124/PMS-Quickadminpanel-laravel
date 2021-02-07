@@ -351,7 +351,6 @@
                     discount_total: '',
                     discount_percent: '',
                     adjustment: '',
-                    total_tax: '',
                     taxRate_total: {},
                     total: '',
 
@@ -520,30 +519,6 @@
 
                     }
                 });
-
-    //////////////// Total Tax /////////////////////////
-
-                    var totalTaxAmount = 0;
-// if(!this.form.items[0]) {
-//     if(this.form.taxRate_total.length != 0) {
-
-//         // for (let [x, y] of Object.entries(this.form.taxRate_total))
-//         // {
-//         //     if(y.value) this.form.total_tax += y.value
-//         //     // console.log(x, y.value);
-
-//         // }
-//         Object.keys(this.form.taxRate_total).map(function(key, index) {
-//             console.log(this.form.taxRate_total[key]);
-//         });
-
-//     }
-
-// }
-    //////////////// Total Tax /////////////////////////
-
-
-
             },
         },
         watch: {
@@ -567,16 +542,16 @@
                         }, {});
                         form.sub_total = result
 
-                        form.discount_total = parseFloat((form.discount_percent * subTotal * (1/100)).toFixed(2))
+                        form.discount_total = -parseFloat((form.discount_percent * subTotal * (1/100)).toFixed(2))
 
                         this.calculateTotalTaxes()
 
-    //////////////// Total Tax /////////////////////////
-                   
-
-    //////////////// Total Tax /////////////////////////
-
-                        // form.total = form.sub_total + form.total_tax
+                    //////////////// Total Tax /////////////////////////
+                        for(let [x, y] of Object.entries(form.taxRate_total)) {
+                            if(y.value != 0)  form.total = form.sub_total + y.value - form.discount_total + form.adjustment
+                            else if(y.value == 0) form.total = form.sub_total - form.discount_total + form.adjustment
+                        }
+                    //////////////// Total Tax /////////////////////////
                     }
                 },
                 deep: true

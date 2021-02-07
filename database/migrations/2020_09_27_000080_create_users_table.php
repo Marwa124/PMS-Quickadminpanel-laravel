@@ -14,12 +14,11 @@ class CreateUsersTable extends Migration
             $table->string('email')->nullable()->unique();
             $table->datetime('email_verified_at')->nullable();
             $table->string('password')->nullable();
-            // $table->integer('role_id')->nullable();
             $table->string('remember_token')->nullable();
             $table->string('username')->nullable();
             $table->integer('set_time_id')->unsigned()->nullable();
             $table->enum('job_type', ['full_time', 'part_time', 'freelance'])->default('full_time')->nullable();
-            $table->string('activated')->nullable();
+            $table->string('activated')->default(1)->nullable();
             $table->string('banned')->default(0)->nullable();
             $table->longText('ban_reason')->nullable();
             $table->string('last_ip')->nullable();
