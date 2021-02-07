@@ -10383,8 +10383,9 @@ base-chart.chart {
 
 .tab-content {
   margin-top: -1px;
-  background: #fff;
-  border: 1px solid #c2cfd6; }
+  /* background: #fff;
+  border: 1px solid #c2cfd6;  */
+}
   .tab-content .tab-pane {
     padding: 1rem; }
 

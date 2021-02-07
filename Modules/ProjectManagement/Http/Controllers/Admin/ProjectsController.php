@@ -604,7 +604,7 @@ class ProjectsController extends Controller
                     $paid_expense += Invoice::get_invoice_paid_amount($v_expenses->invoices_id);
                 }
             }
-
+ 
             $title = $project->name . '-project.pdf';
             $compact = [
                 'project'   => $project,

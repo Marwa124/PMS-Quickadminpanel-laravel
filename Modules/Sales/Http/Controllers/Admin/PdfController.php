@@ -6,7 +6,7 @@ namespace Modules\Sales\Http\Controllers\Admin;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use PDF;
+use MPDF;
 use Modules\Sales\Entities\Proposal;
 class PdfController extends Controller
 {
@@ -17,10 +17,8 @@ class PdfController extends Controller
     public function pdf(Request $request)
     {
            $proposals_info = Proposal::findOrFail($request->id);
-        //    $options = new Options();
-        //    $options->set('defaultFont', 'Cairo');
-        dd( PDF::loadView('sales::admin.proposals.pdf', compact('proposals_info')));
-           $loadpdf = PDF::loadView('sales::admin.proposals.pdf', compact('proposals_info'))
+          
+           $loadpdf = MPDF::loadView('sales::admin.proposals.pdf', compact('proposals_info'))
            ->stream('PDF-Report.pdf');;
         //    $loadpdf = PDF::loadView('sales::admin.proposals.pdf', compact('proposal'))->stream('proposals.pdf');
         //    $pdf=$loadpdf::loadView('sales::admin.proposals.pdf', compact('proposal'));
