@@ -189,7 +189,6 @@ if (!function_exists('get_taxes')) {
        return $taxes;
     }
 }
-<<<<<<< HEAD
 
 //change color of activity
 if (!function_exists('ratingColor')) {
@@ -201,5 +200,3 @@ if (!function_exists('ratingColor')) {
 }
 
 
-=======
->>>>>>> 949060c8326e0e27113baf1af5cc316bd6122e39
