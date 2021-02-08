@@ -1,4 +1,7 @@
 @extends('layouts.admin')
+@section('title')
+| {{ trans('cruds.clientMeeting.title_singular') }}
+@endsection
 @section('content')
 @inject('clientMeetingModel', 'Modules\HR\Entities\ClientMeeting')
 @inject('accountDetailModel', 'Modules\HR\Entities\AccountDetail')
@@ -27,7 +30,6 @@
 
     <div class="card-body">
         <div class="table-responsive">
-            <!-- <table class=" table table-bordered table-striped table-hover ajaxTable datatable datatable-ClientMeeting"> -->
             <table class=" table table-bordered table-striped table-hover datatable datatable-ClientMeeting">
                 <thead>
                     <tr>
@@ -94,12 +96,6 @@
                                 {{ $clientMeetingModel::STATUS_SELECT[$meeting->status] ?? '' }}
                             </td>
                             <td>
-                                {{-- @can('employee_request_show')
-                                    <a class="btn btn-xs btn-primary" href="{{ route('hr.admin.requests.show', $meeting->id) }}">
-                                        {{ trans('global.view') }}
-                                    </a>
-                                @endcan --}}
-
                                 @can('employee_request_edit')
                                     <a class="btn btn-xs btn-info" href="{{ route('hr.admin.requests.edit', $meeting->id) }}">
                                         {{ trans('global.edit') }}
@@ -174,7 +170,6 @@
     pageLength: 25,
   };
   let table = $('.datatable-ClientMeeting:not(.ajaxTable)').DataTable(dtOverrideGlobals);
-//   let table = $('.datatable-ClientMeeting:not(.ajaxTable)').DataTable({ buttons: dtButtons });
   $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e){
       $($.fn.dataTable.tables(true)).DataTable()
           .columns.adjust();

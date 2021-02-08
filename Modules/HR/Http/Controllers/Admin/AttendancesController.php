@@ -80,6 +80,7 @@ class AttendancesController extends Controller
                             ->where('time', request('oldTimeValue'))->update([
                                 'time' => request('inputVal')
                             ]);
+
         return response(null, Response::HTTP_NO_CONTENT);
     }
 

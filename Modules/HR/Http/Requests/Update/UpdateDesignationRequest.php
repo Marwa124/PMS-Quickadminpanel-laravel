@@ -19,19 +19,28 @@ class UpdateDesignationRequest extends FormRequest
             'designation_name' => [
                 'string',
                 'required',
-                // 'unique:designations,designation_name',
             ],
             'designation_name_ar' => [
                 'string',
                 'nullable',
-                // 'unique:designations,designation_name_ar',
             ],
-            // 'permissions.*'    => [
-            //     'integer',
-            // ],
-            // 'permissions'      => [
-            //     'array',
-            // ],
+            'department_id' => [
+                'integer',
+                'required',
+                'exists:departments,id',
+            ],
+            'designation_leader_id' => [
+                'integer',
+                'nullable',
+                'exists:users,id',
+            ],
+            'permissions.*'    => [
+                'string',
+                'exists:permissions,name'
+            ],
+            'permissions'      => [
+                'array',
+            ],
         ];
     }
 }

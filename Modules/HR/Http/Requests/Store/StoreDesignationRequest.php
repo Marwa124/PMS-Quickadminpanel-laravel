@@ -31,10 +31,12 @@ class StoreDesignationRequest extends FormRequest
             'department_id' => [
                 'integer',
                 'required',
+                'exists:departments,id',
             ],
             'designation_leader_id' => [
                 'integer',
                 'nullable',
+                'exists:users,id',
             ],
         ];
     }

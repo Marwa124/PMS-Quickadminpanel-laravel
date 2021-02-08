@@ -13,7 +13,7 @@
             <div class="form-group">
                 <label class="required">{{ trans('cruds.meetingMinute.fields.attendees') }}</label>
                 <select class="form-control" name="users[]" id="attendees" multiple="multiple">
-                    <option value="" disabled selected>{{trans('global.pleaseSelect')}}</option>
+                    <option value="" disabled>{{trans('global.pleaseSelect')}}</option>
                     
                     @foreach($users as $key => $label)
                         @foreach ($label as $key => $item)

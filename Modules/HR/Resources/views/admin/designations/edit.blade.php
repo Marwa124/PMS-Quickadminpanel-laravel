@@ -145,12 +145,14 @@
                         <div class="col-md-3">
                             <div class="custom-control custom-switch">
                                 <label>
-                                    {{-- <input
+                                    <input
                                     type="checkbox"
-                                    class="checkbox"
-                                    value="{{$item->id}}"
-                                    name="permission_name[]"
-                                    > --}}
+                                    class="checkbox permissionCheck"
+                                    {{ (in_array($item->name, $userPermissions) == $item->name) ? 'checked' : ''}}
+                                    value="{{$item->name}}"
+                                    name="permissions[]"
+                                    hidden
+                                    >
                                     <div class="d-flex align-items-center">
                                         <div class="switch"></div>
                                         <div class="pl-1" style="cursor: pointer !important;">{{$item->name}}</div>
@@ -191,9 +193,20 @@
             $(this).closest('.wrapper-group').find('.switch').addClass("switchOn");
             $(this).closest('.wrapper-group').find('.checkbox').attr("checked", true);
 
-            // console.log($(this).data('group'));
             $(this).data('group');
         });
+
+        for(let x of $('.permissionCheck').attr('checked')) {
+            
+            console.log("dfafd");
+            // $(this).closest('.custom-switch').find('.switch').addClass('switchOn');
+            // console.log($(this).closest('.custom-switch').find('.switch').addClass('switchOn'));
+        }
+        if ( $('.permissionCheck').attr('checked') == 'checked') {
+            console.log('mmmm');
+            $(this).closest('.custom-switch').find('.switch').addClass('switchOn');
+            console.log($(this).closest('.custom-switch').find('.switch').addClass('switchOn'));
+        }
 
     });
 

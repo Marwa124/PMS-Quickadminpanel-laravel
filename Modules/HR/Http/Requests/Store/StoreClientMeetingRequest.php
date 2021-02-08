@@ -19,9 +19,14 @@ class StoreClientMeetingRequest extends FormRequest
         return [
             'users'     => [
                 'required',
+                'array',
             ],
+
+            'users.*' => ['exists:users,id'],
+
             'request_type' => [
                 'required',
+                'in:survey,client_meeting'
             ],
             'day' => [
                 'date_format:' . config('panel.date_format'),
@@ -29,6 +34,7 @@ class StoreClientMeetingRequest extends FormRequest
             ],
             'day_hour'    => [
                 'string',
+                'in:day,hour',
                 'nullable',
             ],
             'comments'     => [
@@ -37,12 +43,12 @@ class StoreClientMeetingRequest extends FormRequest
                 'min:-2147483648',
                 'max:2147483647',
             ],
-            'encryption'      => [
-                'string',
+            'from_time'      => [
+                // 'date_format:' . config('panel.time_format_hour'),
                 'nullable',
             ],
-            'host'            => [
-                'string',
+            'to_time'            => [
+                // 'date_format:' . config('panel.time_format_hour'),
                 'nullable',
             ],
         ];

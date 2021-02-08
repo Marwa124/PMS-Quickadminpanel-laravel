@@ -218,7 +218,7 @@
             <main class="c-main">
 
                 <div class="container-fluid">
-                    {{-- @if(session('message'))
+                    @if(session('message'))
                         <div class="row mb-2">
                             <div class="col-lg-12">
                                 <div class="alert alert-success" role="alert">{{ session('message') }}</div>
@@ -234,7 +234,7 @@
                             </ul>
                         </div>
                     @endif
-{{--                        to get current localization (language)--}}
+                    {{-- to get current localization (language) --}}
                         <input type="hidden" name="getLocale" id="getLocale" value="{{app()->getLocale()}}"/>
                         @yield('content')
 

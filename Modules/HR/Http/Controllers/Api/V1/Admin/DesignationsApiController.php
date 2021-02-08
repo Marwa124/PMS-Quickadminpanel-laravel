@@ -6,11 +6,10 @@ use Modules\HR\Http\Controllers\Controller;
 use Modules\HR\Http\Resources\Admin\DesignationResource;
 
 use Modules\HR\Entities\Designation;
-use Modules\HR\Http\Request\Update\UpdateDesignationRequest;
 use Modules\HR\Http\Requests\Store\StoreDesignationRequest;
 
 use Gate;
-use Illuminate\Http\Request;
+use Modules\HR\Http\Requests\Update\UpdateDesignationRequest;
 use Symfony\Component\HttpFoundation\Response;
 
 class DesignationsApiController extends Controller

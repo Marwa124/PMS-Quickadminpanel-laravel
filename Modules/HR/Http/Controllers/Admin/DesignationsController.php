@@ -48,20 +48,23 @@ class DesignationsController extends Controller
         abort_if(Gate::denies('designation_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $departments = Department::all()->pluck('department_name', 'id')->prepend(trans('global.pleaseSelect'), '');
-        $designation = Designation::find($id);
+        $designation = Designation::findOrFail($id);
         $users = AccountDetail::all()->pluck('fullname', 'user_id')->prepend(trans('global.pleaseSelect'), '');
 
         $permissions = Permission::get()->groupBy('permission_group_id');
 
-        return view('hr::admin.designations.edit', compact('departments', 'users', 'designation', 'permissions'));
+        $userLead = $designation->designationLeader()->first();
+        $userPermissions = $userLead ? $userLead->getPermissionNames()->toArray() : [];
+
+        return view('hr::admin.designations.edit', compact('departments', 'users', 'designation', 'permissions', 'userPermissions'));
     }
 
-    // public function update(Request $request, Designation $designation)
     public function update(UpdateDesignationRequest $request, Designation $designation)
     {
-        dd($designation->designationLeader()->first());
-        // syncPermissions(request()->permission_name);
-        $designation->update($request->all());
+        $user = $designation->designationLeader()->first();
+        $user->syncPermissions(request()->permissions);
+
+        $designation->update($request->except(['permissions']));
 
         return redirect()->route('hr.admin.designations.index');
     }
