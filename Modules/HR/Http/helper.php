@@ -110,14 +110,3 @@ if (!function_exists('getArabicDayName')) {
         }
     }
 }
-
-
-
-
-if (!function_exists('settings')) {
-    function settings($key, $alt = null)
-    {
-        $config = Config::where('key', $key)->first();
-        return $config ? $config->value : $alt;
-    }
-}
