@@ -7,7 +7,6 @@ use Modules\HR\Http\Requests\Destroy\MassDestroyHolidayRequest;
 use Modules\HR\Http\Requests\Store\StoreHolidayRequest;
 use Modules\HR\Http\Requests\Update\UpdateHolidayRequest;
 use Modules\HR\Entities\Holiday;
-use App\Models\User;
 use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,7 +23,7 @@ class HolidaysController extends Controller
             $table = Datatables::of($query);
 
             $table->addColumn('placeholder', '&nbsp;');
-            // $table->addColumn('actions', '&nbsp;');
+            $table->addColumn('actions', '&nbsp;');
 
             $table->editColumn('actions', function ($row) {
                 $viewGate      = '';  //holiday_show
@@ -43,9 +42,6 @@ class HolidaysController extends Controller
                 ));
             });
 
-            $table->addColumn('id', function ($row) {
-                return $row->id ? $row->id : "";
-            });
             $table->editColumn('name', function ($row) {
                 return $row->name ? $row->name : "";
             });
@@ -59,7 +55,7 @@ class HolidaysController extends Controller
                 return $row->end_date ? $row->end_date : "";
             });
 
-            $table->rawColumns(['placeholder', 'actions', 'id']);
+            $table->rawColumns(['placeholder', 'actions']);
 
             return $table->make(true);
         }
@@ -78,7 +74,13 @@ class HolidaysController extends Controller
     {
         $holiday = Holiday::create($request->all());
 
-        return redirect()->route('hr.admin.holidays.index');
+        $message = array(
+            'message'    =>  ' Created Successfully',
+            'alert-type' =>  'success'
+        );
+        $flashMsg = flash($message['message'], $message['alert-type']);
+
+        return redirect()->route('hr.admin.holidays.index')->with($flashMsg);
     }
 
     public function edit(Holiday $holiday)
@@ -92,7 +94,13 @@ class HolidaysController extends Controller
     {
         $holiday->update($request->all());
 
-        return redirect()->route('hr.admin.holidays.index');
+        $message = array(
+            'message'    =>  ' Updated Successfully',
+            'alert-type' =>  'success'
+        );
+        $flashMsg = flash($message['message'], $message['alert-type']);
+
+        return redirect()->route('hr.admin.holidays.index')->with($flashMsg);
     }
 
     public function show(Holiday $holiday)

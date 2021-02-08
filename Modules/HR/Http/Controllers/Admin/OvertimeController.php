@@ -47,7 +47,13 @@ class OvertimeController extends Controller
             Media::whereIn('id', $media)->update(['model_id' => $overtime->id]);
         }
 
-        return redirect()->route('hr.admin.overtimes.index');
+        $message = array(
+            'message'    =>  ' Created Successfully',
+            'alert-type' =>  'success'
+        );
+        $flashMsg = flash($message['message'], $message['alert-type']);
+
+        return redirect()->route('hr.admin.overtimes.index')->with($flashMsg);
     }
 
     public function edit(Overtime $overtime)
@@ -58,7 +64,7 @@ class OvertimeController extends Controller
         foreach (User::where('banned', 0)->get() as $key => $value) {
             $users[] = $value->accountDetail()->where('employment_id', '!=', null)->pluck('fullname', 'user_id')->prepend(trans('global.pleaseSelect'), '');
         }
-
+        
         $overtime->load('user');
 
         return view('hr::admin.overtimes.edit', compact('users', 'overtime'));
@@ -67,8 +73,14 @@ class OvertimeController extends Controller
     public function update(UpdateOvertimeRequest $request, Overtime $overtime)
     {
         $overtime->update($request->all());
+        
+        $message = array(
+            'message'    =>  ' Updated Successfully',
+            'alert-type' =>  'success'
+        );
+        $flashMsg = flash($message['message'], $message['alert-type']);
 
-        return redirect()->route('hr.admin.overtimes.index');
+        return redirect()->route('hr.admin.overtimes.index')->with($flashMsg);
     }
 
     public function show(Overtime $overtime)

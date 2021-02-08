@@ -95,6 +95,21 @@
                 <span class="help-block">{{ trans('cruds.training.fields.training_cost_helper') }}</span>
             </div>
             <div class="form-group">
+                <label>{{ trans('cruds.training.fields.status') }}</label>
+                <select class="form-control {{ $errors->has('status') ? 'is-invalid' : '' }}" name="status" id="status">
+                    <option value disabled {{ old('status', null) === null ? 'selected' : '' }}>{{ trans('global.pleaseSelect') }}</option>
+                    @foreach($trainingModel::STATUS_SELECT as $key => $label)
+                        <option value="{{ $key }}" {{ old('status', '') === (string) $key ? 'selected' : '' }}>{{ $label }}</option>
+                    @endforeach
+                </select>
+                @if($errors->has('status'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('status') }}
+                    </div>
+                @endif
+                <span class="help-block">{{ trans('cruds.training.fields.status_helper') }}</span>
+            </div>
+            <div class="form-group">
                 <label for="uploaded_file">{{ trans('cruds.training.fields.uploaded_file') }}</label>
                 <div class="needsclick dropzone {{ $errors->has('uploaded_file') ? 'is-invalid' : '' }}" id="uploaded_file-dropzone">
                 </div>

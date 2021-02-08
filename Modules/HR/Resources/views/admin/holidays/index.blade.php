@@ -1,4 +1,7 @@
 @extends('layouts.admin')
+@section('title')
+| {{ trans('cruds.holiday.title_singular') }} 
+@endsection
 @section('content')
 @can('holiday_create')
     <div style="margin-bottom: 10px;" class="row">
@@ -20,9 +23,6 @@
                 <tr>
                     <th width="10">
 
-                    </th>
-                    <th>
-                        {{ trans('cruds.holiday.fields.id') }}
                     </th>
                     <th>
                         {{ trans('cruds.holiday.fields.name') }}
@@ -92,7 +92,6 @@
     ajax: "{{ route('hr.admin.holidays.index') }}",
     columns: [
       { data: 'placeholder', name: 'placeholder' },
-{ data: 'id', name: 'id' },
 { data: 'name', name: 'name' },
 { data: 'description', name: 'description' },
 { data: 'start_date', name: 'start_date' },

@@ -196,17 +196,12 @@
             $(this).data('group');
         });
 
-        for(let x of $('.permissionCheck').attr('checked')) {
-            
-            console.log("dfafd");
-            // $(this).closest('.custom-switch').find('.switch').addClass('switchOn');
-            // console.log($(this).closest('.custom-switch').find('.switch').addClass('switchOn'));
-        }
-        if ( $('.permissionCheck').attr('checked') == 'checked') {
-            console.log('mmmm');
+
+        $('input[type=checkbox]:checked').each(function () {
             $(this).closest('.custom-switch').find('.switch').addClass('switchOn');
             console.log($(this).closest('.custom-switch').find('.switch').addClass('switchOn'));
-        }
+        });
+
 
     });
 

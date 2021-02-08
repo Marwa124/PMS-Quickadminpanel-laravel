@@ -21,6 +21,7 @@ class StoreHolidayRequest extends FormRequest
             'name'       => [
                 'string',
                 'required',
+                'unique:holidays,name'
             ],
             'start_date' => [
                 'required',

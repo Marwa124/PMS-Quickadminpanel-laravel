@@ -1,4 +1,7 @@
 @extends('layouts.admin')
+@section('title')
+| {{ trans('cruds.leaveApplication.title_singular') }}
+@endsection
 @section('content')
 <div class="row">
     @can('leave_application_create')
@@ -67,7 +70,7 @@
                         {{ trans('cruds.leaveApplication.fields.leave_end_date') }}
                     </th>
                     <th>
-                        {{ trans('cruds.leaveApplication.fields.attachment') }}
+                        {{ trans('cruds.leaveApplication.fields.attachments') }}
                     </th>
                     <th>
                         &nbsp;
@@ -109,11 +112,11 @@
           method: 'POST',
           url: config.url,
           data: { ids: ids, _method: 'DELETE' }})
-          .done(function (data) { 
-            //   location.reload() 
+          .done(function (data) {
+            //   location.reload()
                 for (let x = 0; x < data.ids.length; x++) {
                     $("tbody").find(`[data-entry-id='${data.ids[x]}']`).remove();
-                }  
+                }
             })
       }
     }
@@ -181,7 +184,7 @@ console.log(e.target.value);
                 window.location.href = "/admin/hr/leave-applications/leave-report"
             }
         });
-        
+
     }else {
         // leaveTypes= e.target.value;
         // table.ajax.reload();

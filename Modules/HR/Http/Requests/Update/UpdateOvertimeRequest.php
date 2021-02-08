@@ -20,6 +20,7 @@ class UpdateOvertimeRequest extends FormRequest
             'user_id'        => [
                 'required',
                 'integer',
+                'exists:users,id'
             ],
             'overtime_date'  => [
                 'required',

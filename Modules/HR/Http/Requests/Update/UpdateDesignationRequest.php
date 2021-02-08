@@ -31,7 +31,7 @@ class UpdateDesignationRequest extends FormRequest
             ],
             'designation_leader_id' => [
                 'integer',
-                'nullable',
+                'required',
                 'exists:users,id',
             ],
             'permissions.*'    => [

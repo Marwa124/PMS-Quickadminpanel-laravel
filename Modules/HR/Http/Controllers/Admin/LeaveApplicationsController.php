@@ -133,7 +133,6 @@ class LeaveApplicationsController extends Controller
             });
             $table->editColumn('leave_category_name', function ($row) {
                 return $row->leave_category && $row->leave_category->name ? $row->leave_category->name : '';
-                // return  $row;
             });
             $table->editColumn('leave_start_date', function ($row) {
                 return $row->leave_start_date ? $row->leave_start_date : "";
@@ -207,7 +206,6 @@ class LeaveApplicationsController extends Controller
 
     public function markNotificationAsRead($id)
     {
-        // dd(Request()->application_id);
         $user = User::findOrFail($id);
         if ($notifyId = Request()->application_id) {
             $user->notifications->find($notifyId)->markAsRead();
@@ -218,7 +216,6 @@ class LeaveApplicationsController extends Controller
     {
         abort_if(Gate::denies('leave_application_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        // $users = AccountDetail::all()->pluck('fullname', 'user_id')->prepend(trans('global.pleaseSelect'), '');
         $users = [];
         $activeUsers = User::where('banned', 0)->get();
         if (auth()->user()->hasAnyRole(['Admin', 'Board Members'])) {
@@ -289,8 +286,13 @@ class LeaveApplicationsController extends Controller
         // }
         /* !!!: End Notification (db, mail) via Laravel $user->notify() */
         /* !!!: End Sending Emails for each User admin and Depart. Head */
+        $message = array(
+            'message'    =>  ' Created Successfully',
+            'alert-type' =>  'success'
+        );
+        $flashMsg = flash($message['message'], $message['alert-type']);
 
-        return redirect()->route('hr.admin.leave-applications.index');
+        return redirect()->route('hr.admin.leave-applications.index')->with($flashMsg);
     }
 
     public function markAttendance($id)
@@ -309,16 +311,16 @@ class LeaveApplicationsController extends Controller
 
     public function approveReject($id, $status)
     {
-        $leaveApplication = LeaveApplication::find($id);
+        $leaveApplication = LeaveApplication::findOrFail($id);
         $leaveApplication->update(['application_status' => $status]);
 
         $user = User::find($leaveApplication->user_id);
         $leaveCategory = $leaveApplication->leave_category()->first();
-        // $user->notify(new ApproveRejectLeaveNotification($leaveApplication, $leaveCategory, $status));
+        $user->notify(new ApproveRejectLeaveNotification($leaveApplication, $leaveCategory, $status));
         /* !!!: End Notification (db, mail) via Laravel $user->notify() */
 
-        // $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
-        // event(new NewNotification($userNotify));
+        $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
+        event(new NewNotification($userNotify));
 
         return redirect()->route('hr.admin.leave-applications.index');
     }
@@ -349,7 +351,6 @@ class LeaveApplicationsController extends Controller
     {
         abort_if(Gate::denies('leave_application_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        // dd($request->all());
         $id = $request->id;
         $action = $request->action;
 

@@ -2,6 +2,10 @@
 @inject('trainingModel', 'Modules\HR\Entities\Training')
 @inject('accountDetailModel', 'Modules\HR\Entities\AccountDetail')
 
+@section('title')
+| {{ trans('cruds.holiday.title_singular') }} 
+@endsection
+
 @section('content')
 @can('training_create')
     <div style="margin-bottom: 10px;" class="row">
@@ -24,9 +28,6 @@
                     <tr>
                         <th width="10">
 
-                        </th>
-                        <th>
-                            {{ trans('cruds.training.fields.id') }}
                         </th>
                         <th>
                             {{ trans('cruds.training.fields.user') }}
@@ -59,9 +60,6 @@
                         <tr data-entry-id="{{ $training->id }}">
                             <td>
 
-                            </td>
-                            <td>
-                                {{ $training->id ?? '' }}
                             </td>
                             <td>
                                 @php

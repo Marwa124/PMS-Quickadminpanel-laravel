@@ -20,16 +20,20 @@ class StoreLeaveApplicationRequest extends FormRequest
             'user_id'           => [
                 'required',
                 'integer',
+                'exists:users,id'
             ],
             'leave_category_id' => [
                 'required',
                 'integer',
+                'exists:leave_categories,id'
             ],
             'leave_type'        => [
                 'required',
+                'in:single_day, multi_days, hours'
             ],
             'hours'             => [
                 'integer',
+                'min:1',
                 'nullable',
             ],
             'leave_start_date'  => [

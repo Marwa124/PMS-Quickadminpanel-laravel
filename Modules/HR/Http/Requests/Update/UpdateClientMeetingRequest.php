@@ -19,24 +19,36 @@ class UpdateClientMeetingRequest extends FormRequest
         return [
             'users'     => [
                 'required',
+                'array',
             ],
+
+            'users.*' => ['exists:users,id'],
+
             'request_type' => [
                 'required',
+                'in:survey,client_meeting'
             ],
-            'status' => [
+            'day' => [
+                'date_format:' . config('panel.date_format'),
+                'required',
+            ],
+            'day_hour'    => [
                 'string',
+                'in:day,hour',
                 'nullable',
             ],
-            'approved_by' => [
+            'comments'     => [
+                'nullable',
                 'string',
+                'min:-2147483648',
+                'max:2147483647',
+            ],
+            'from_time'      => [
+                // 'date_format:' . config('panel.time_format'),
                 'nullable',
             ],
-            'encryption'      => [
-                'string',
-                'nullable',
-            ],
-            'host'            => [
-                'string',
+            'to_time'            => [
+                // 'date_format:' . config('panel.time_format'),
                 'nullable',
             ],
         ];

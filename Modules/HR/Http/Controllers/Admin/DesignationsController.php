@@ -61,7 +61,12 @@ class DesignationsController extends Controller
 
     public function update(UpdateDesignationRequest $request, Designation $designation)
     {
-        $user = $designation->designationLeader()->first();
+        $user = User::findOrFail(request()->designation_leader_id);
+
+        if (!$request->designation_leader_id) {
+            $user = $designation->designationLeader()->first();
+        }
+
         $user->syncPermissions(request()->permissions);
 
         $designation->update($request->except(['permissions']));

@@ -37,9 +37,9 @@
                         <th>
                             {{ trans('cruds.overtime.fields.overtime_hours') }}
                         </th>
-                        <th>
+                        {{-- <th>
                             {{ trans('cruds.overtime.fields.status') }}
-                        </th>
+                        </th> --}}
                         <th>
                             &nbsp;
                         </th>
@@ -66,9 +66,9 @@
                             <td>
                                 {{ $overtime->overtime_hours ?? '' }}
                             </td>
-                            <td>
+                            {{-- <td>
                                 {{ $overtimeModel::STATUS_SELECT[$overtime->status] ?? '' }}
-                            </td>
+                            </td> --}}
                             <td>
                                 @can('overtime_show')
                                     <a class="btn btn-xs btn-primary" href="{{ route('hr.admin.overtimes.show', $overtime->id) }}">

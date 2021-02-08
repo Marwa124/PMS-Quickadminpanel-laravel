@@ -17,9 +17,21 @@ class StoreTrainingRequest extends FormRequest
     public function rules()
     {
         return [
+            'user_id'       => [
+                'required',
+                'exists:users,id'
+            ],
             'training_name' => [
                 'string',
-                'nullable',
+                'required',
+            ],
+            'training_cost' => [
+                'numeric',
+                'min:0'
+            ],
+            'performance'   => [
+                'required',
+                'in:concluded,satisfactory,average,poor,excellent'
             ],
             'vendor_name'   => [
                 'string',
@@ -33,12 +45,10 @@ class StoreTrainingRequest extends FormRequest
                 'date_format:' . config('panel.date_format'),
                 'nullable',
             ],
-            // 'permissions.*' => [
-            //     'integer',
-            // ],
-            // 'permissions'   => [
-            //     'array',
-            // ],
+            'status' => [
+                'required',
+                'in:pending,started,completed,terminated'
+            ]
         ];
     }
 }

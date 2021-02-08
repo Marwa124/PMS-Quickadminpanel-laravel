@@ -7,12 +7,10 @@ use App\Http\Controllers\Traits\MediaUploadingTrait;
 use Modules\HR\Http\Requests\Destroy\MassDestroyTrainingRequest;
 use Modules\HR\Http\Requests\Store\StoreTrainingRequest;
 use Modules\HR\Http\Requests\Update\UpdateTrainingRequest;
-use App\Models\Permission;
 use Modules\HR\Entities\Training;
 use App\Models\User;
 use Gate;
 use Illuminate\Http\Request;
-use Modules\HR\Entities\AccountDetail;
 use Spatie\MediaLibrary\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -52,15 +50,20 @@ class TrainingsController extends Controller
         if ($media = $request->input('ck-media', false)) {
             Media::whereIn('id', $media)->update(['model_id' => $training->id]);
         }
+        
+        $message = array(
+            'message'    =>  ' Created Successfully',
+            'alert-type' =>  'success'
+        );
+        $flashMsg = flash($message['message'], $message['alert-type']);
 
-        return redirect()->route('hr.admin.trainings.index');
+        return redirect()->route('hr.admin.trainings.index')->with($flashMsg);
     }
 
     public function edit(Training $training)
     {
         abort_if(Gate::denies('training_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        // $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
         $users = [];
         foreach (User::where('banned', 0)->get() as $key => $value) {
             $users[] = $value->accountDetail()->where('employment_id', '!=', null)->pluck('fullname', 'user_id')->prepend(trans('global.pleaseSelect'), '');
@@ -87,7 +90,13 @@ class TrainingsController extends Controller
             $training->uploaded_file->delete();
         }
 
-        return redirect()->route('hr.admin.trainings.index');
+        $message = array(
+            'message'    =>  ' Updated Successfully',
+            'alert-type' =>  'success'
+        );
+        $flashMsg = flash($message['message'], $message['alert-type']);
+
+        return redirect()->route('hr.admin.trainings.index')->with($flashMsg);
     }
 
     public function show(Training $training)

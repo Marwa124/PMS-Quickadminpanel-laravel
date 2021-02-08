@@ -44,11 +44,11 @@ class StoreClientMeetingRequest extends FormRequest
                 'max:2147483647',
             ],
             'from_time'      => [
-                // 'date_format:' . config('panel.time_format_hour'),
+                // 'date_format:' . config('panel.time_format'),
                 'nullable',
             ],
             'to_time'            => [
-                // 'date_format:' . config('panel.time_format_hour'),
+                // 'date_format:' . config('panel.time_format'),
                 'nullable',
             ],
         ];

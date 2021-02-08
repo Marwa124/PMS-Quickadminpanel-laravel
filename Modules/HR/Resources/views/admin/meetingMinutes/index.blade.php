@@ -1,4 +1,7 @@
 @extends('layouts.admin')
+@section('title')
+| {{ trans('cruds.meetingMinute.title_singular') }}
+@endsection
 @section('content')
 @inject('meetingMinute', 'Modules\HR\Entities\MeetingMinute')
 @inject('accountDetailModel', 'Modules\HR\Entities\AccountDetail')

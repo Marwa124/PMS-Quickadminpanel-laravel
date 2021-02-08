@@ -16,9 +16,21 @@ class UpdateTrainingRequest extends FormRequest
     public function rules()
     {
         return [
+            'user_id'       => [
+                'required',
+                'exists:users,id'
+            ],
             'training_name' => [
                 'string',
-                'nullable',
+                'required',
+            ],
+            'training_cost' => [
+                'numeric',
+                'min:0'
+            ],
+            'performance'   => [
+                'required',
+                'in:concluded,satisfactory,average,poor,excellent'
             ],
             'vendor_name'   => [
                 'string',
@@ -32,16 +44,10 @@ class UpdateTrainingRequest extends FormRequest
                 'date_format:' . config('panel.date_format'),
                 'nullable',
             ],
-            'remarks'       => [
-                'string',
-                'nullable',
-            ],
-            'permissions.*' => [
-                'integer',
-            ],
-            'permissions'   => [
-                'array',
-            ],
+            'status' => [
+                'required',
+                'in:pending,started,completed,terminated'
+            ]
         ];
     }
 }

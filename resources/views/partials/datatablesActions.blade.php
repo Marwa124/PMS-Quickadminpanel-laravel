@@ -9,7 +9,7 @@
     $approveReject = $approveReject ?? '';
 ?>
     @if ($admins && $row->application_status == 'pending')
-        <a href="{{route('hr.admin.leave-applications.approveReject', [$row->id, 'accepted'])}}" class="text-success approve_leave">Approve</a>/
+        <a href="{{route('hr.admin.leave-applications.approveReject', [$row->id, 'accepted'])}}" onclick="return confirm('Approve ?')" class="text-success approve_leave">Approve</a>/
         <a href="{{route('hr.admin.leave-applications.approveReject', [$row->id, 'rejected'])}}" onclick="return confirm('Are you sure?')" class="text-danger reject_leave">Reject</a>
     @endif
 @endif
