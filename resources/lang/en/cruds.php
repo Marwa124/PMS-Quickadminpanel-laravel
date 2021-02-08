@@ -1304,7 +1304,7 @@ return [
             'companyaddress_helper' => ' ',
             'companyphone'       => 'Company Phone',
             'companyphone_helper' => ' ',
-            'Opportunity_INFO'       => 'Opportunity_INFO',
+            'Opportunity_INFO'       => 'Opportunity INFO',
             'Opportunity_INFO_helper' => ' ',
             'materials_supply_delivery'=> 'Materials Supply Delivery',
             'materials_supply_delivery_helper' => ' ',

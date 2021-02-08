@@ -105,9 +105,14 @@ class InvoicesController extends Controller
 
                     if ($newitem && isset($value['tax'])) {
                         foreach ($value['tax'] as $index => $newtax) {
+                            if(is_array($request->total_tax)){
+                                $taxcost=$request->total_tax[$index] ? $request->total_tax[$index]: $request->total_tax;
+                            }else{
+                                $taxcost=$request->total_tax;
+                            }
                             $addtaxes = new InvoiceItemTax;
 //                            $addtaxes->tax_cost = $invoice['id'];
-                            $addtaxes->tax_cost = $request->total_tax[$index] ? $request->total_tax[$index]: $request->total_tax ;
+                            $addtaxes->tax_cost = $taxcost;
                             $addtaxes->taxs_id = $newtax;
                             $addtaxes->invoices_id = $invoice['id'];
                             $addtaxes->item_id = $newitem->id;
@@ -207,9 +212,15 @@ class InvoicesController extends Controller
                     ]);
 
                     if ($newitem && isset($value['tax'])) {
-                        foreach ($value['tax'] as $newtax) {
+                        foreach ($value['tax'] as $index => $newtax) {
+                            if(is_array($request->total_tax)){
+                                $taxcost=$request->total_tax[$index] ? $request->total_tax[$index]: $request->total_tax;
+                            }else{
+                                $taxcost=$request->total_tax;
+                            }
+
                             $addtaxes = new InvoiceItemTax;
-                            $addtaxes->tax_cost = $invoice['id'];
+                            $addtaxes->tax_cost = $taxcost;
                             $addtaxes->taxs_id = $newtax;
                             $addtaxes->invoices_id = $invoice['id'];
                             $addtaxes->item_id = $newitem->id;

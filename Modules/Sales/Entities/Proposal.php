@@ -12,6 +12,7 @@ use Spatie\MediaLibrary\Models\Media;
 use App\Models\User;
 use App\Models\Opportunity;
 use App\Models\Client;
+use App\Models\Invoice;
 use  Modules\Sales\Entities\ProposalItemTax;
 use  Modules\ProjectManagement\Entities\Activity;
 use \DateTimeInterface;
@@ -100,6 +101,10 @@ class Proposal extends Model implements HasMedia
     {
         return $this->belongsTo(Client::class,'module_id');
     }
+    public function invoice()
+    {
+        return $this->belongsTo(Invoice::class,'convert_module_id');
+    }
    
     public function getclient()
     {
@@ -108,6 +113,10 @@ class Proposal extends Model implements HasMedia
     public function getopportunity()
     {
         return $this->where('proposals.module','=','opportunities')->first()->opportunity();
+    }
+    public function getinvioce()
+    {
+        return $this->where('proposals.convert_module','=','invoice')->first()->invoice();
     }
    
     protected function serializeDate(DateTimeInterface $date)
