@@ -235,12 +235,18 @@ class Invoice extends Model implements HasMedia
                 if(array_key_exists($tax,$turned_into_keys)){
                     $sallingprice = $value->pivot->selling_price * $value->pivot->quantity;
                    
-                    if($taxes->discount_percent != 0){
-                        $old =$sallingprice * (get_taxes($tax)->rate_percent/100) ;
-                        $items_tax = $old-( $old * ($taxes->discount_percent / 100)) ;
-                    }else{
+                    if($taxes->discount_status == 'after_tax' ){
+                        if($taxes->discount_percent != 0){
+                            $old =$sallingprice * (get_taxes($tax)->rate_percent/100) ;
+                            $items_tax = $old-( $old * ($taxes->discount_percent / 100)) ;
+                        }else{
 
+                            $items_tax = $sallingprice * (get_taxes($tax)->rate_percent/100) ;
+                        }
+                    }
+                    else{
                         $items_tax = $sallingprice * (get_taxes($tax)->rate_percent/100) ;
+
                     }
                     $turned_into_keys[$tax][]=$items_tax;
                 }

@@ -153,7 +153,6 @@
             <th class="center">#</th>
             <th>Item</th>
             <th class="center">Quantity</th>
-            <th class="right">Unit Cost</th>
             <th class="right">Selling Price</th>
             <th class="right">Total</th>
           </tr>
@@ -169,8 +168,7 @@
                 <td class="center">{{ $loop->iteration }}</td>
                 <td class="left">{{ $item->pivot->item_name }}</td>
                 <td class="center">{{ $item->pivot->quantity }}</td>
-                <td class="right">{{ $item->pivot->unit_cost }} <b>EGP</b></td>
-                <td class="right">{{ $item->pivot->unit_cost }} <b>EGP</b></td>
+                <td class="right">{{ $item->pivot->selling_price }} <b>EGP</b></td>
                 <td class="right">{{ round($item->pivot->total_cost_price)}} <b>EGP</b></td>
               </tr>
               {{--@php--}}
@@ -219,11 +217,7 @@
                   <strong>{{get_taxes($key)->name }} ({{ get_taxes($key)->rate_percent }}%)</strong>
                 </td>
                 <td class="right">
-                  @if($invoice->discount_status == 'after_tax')
-                    {{ $invoice->after_discount * ( get_taxes($key)->rate_percent / 100 )}}
-                  @else
                     {{ array_sum($taxold) }}
-                  @endif
                 </td>
               </tr>
             @endforeach

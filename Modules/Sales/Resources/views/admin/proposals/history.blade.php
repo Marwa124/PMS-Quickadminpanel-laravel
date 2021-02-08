@@ -1,7 +1,6 @@
 
 @extends('layouts.admin')
 @section('content')
-
 <div class="card">
     <div class="card-header">
         {{ trans('global.edit') }} {{ trans('cruds.proposal.title_singular') }}
@@ -22,7 +21,7 @@
                     <h4>{{$activity->user->name ?? ''}}</h4>
                 
               </div>
-              <div> {{$activity->activity ?? ''}}
+              <div> {{$activity->activity_en ?? ''}}
                 <strong> {{$activity->value1 ?? ''}} </strong>
               </div>
               <small class="text-muted mr-3"><i class="icon-calendar"></i>&nbsp;{{$activity->activity_date ?? ''}}</small>

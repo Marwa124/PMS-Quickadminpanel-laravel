@@ -6,18 +6,13 @@ use Modules\HR\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\MediaUploadingTrait;
 use App\Models\User;
 use Modules\HR\Http\Requests\Destroy\MassDestroyJobApplicationRequest;
-use Modules\HR\Http\Requests\Store\StoreJobApplicationRequest;
-use Modules\HR\Http\Requests\Update\UpdateJobApplicationRequest;
 use Modules\HR\Entities\JobApplication;
-use Modules\HR\Entities\JobCircular;
 use Gate;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Modules\HR\Entities\AccountDetail;
 use Modules\HR\Entities\Designation;
 use PDFAnony\TCPDF\Facades\AnonyPDF;
-use Spatie\MediaLibrary\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
 // use PDF;
 

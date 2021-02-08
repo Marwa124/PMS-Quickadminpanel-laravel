@@ -10,7 +10,7 @@ class CreateStockSubCategoriesTable extends Migration
     {
         Schema::create('stock_sub_categories', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->unique();
+            $table->string('name');
             $table->timestamps();
             $table->softDeletes();
         });

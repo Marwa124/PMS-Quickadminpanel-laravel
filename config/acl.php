@@ -128,7 +128,6 @@
                 'payment_method_delete', // done
                 'payment_method_edit', // done
                 'payment_method_create', // done
-                'payment_method', // done
                 'transfer', // done
                 'transfer_create', // done
                 'transfer_edit', // done
@@ -155,6 +154,11 @@
                 'invoice_edit', // done
                 'invoice_delete', // done
                 'invoice_show', // done
+                'office_asset', // done
+                'stock_category', // done
+                'stock_category_delete', // done
+                'stock_category_edit', // done
+                'stock_category_create', // done
             ],
 
             'penalty_category' => [

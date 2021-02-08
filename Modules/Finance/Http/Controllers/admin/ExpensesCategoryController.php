@@ -15,7 +15,7 @@ class ExpensesCategoryController extends Controller
     {
         abort_if(Gate::denies('expenses_category'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $expenses_category = ExpenseCategory::all();
-        return view('finance::admin.expenses_category.index',compact('expenses_category'));
+        return view('finance::admin.expenses_category.index', compact('expenses_category'));
     }
 
 
@@ -29,24 +29,32 @@ class ExpensesCategoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name'  => 'required'
+            'name' => ['required',
+                'string',
+                'max:15',
+                'regex:/^[a-zA-Z]*([a-zA-Z][a-zA-Z])[a-zA-Z]*$/'
+            ]
         ]);
         ExpenseCategory::create($request->all());
 
         return redirect()->route('finance.admin.expenses_category.index');
     }
 
-    public function edit( $payment)
+    public function edit($payment)
     {
         abort_if(Gate::denies('expenses_category_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $payment = ExpenseCategory::findOrFail($payment);
         return view('finance::admin.expenses_category.edit', compact('payment'));
     }
 
-    public function update(Request $request,$id)
+    public function update(Request $request, $id)
     {
         $request->validate([
-            'name'  => 'required'
+            'name' => ['required',
+                'string',
+                'max:15',
+                'regex:/^[a-zA-Z]*([a-zA-Z][a-zA-Z])[a-zA-Z]*$/'
+            ]
         ]);
         ExpenseCategory::findOrFail($id)->update($request->all());
 
@@ -57,7 +65,6 @@ class ExpensesCategoryController extends Controller
     {
 
     }
-
 
 
     public function destroy($id)

@@ -1,6 +1,9 @@
 @extends('layouts.admin')
 
 @section('content')
+@section('title')
+| {{ trans('cruds.attendances.title_singular') }} 
+@endsection
 @can('attendances_create')
     <div style="margin-bottom: 10px;" class="row">
         <div class="col-lg-12">

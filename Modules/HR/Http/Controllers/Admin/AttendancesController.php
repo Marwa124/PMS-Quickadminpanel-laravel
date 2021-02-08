@@ -38,28 +38,39 @@ class AttendancesController extends Controller
 
     public function store(StoreAttendancesRequest $request)
     {
-        if ($request->date_in) {
-            $attendances = FingerprintAttendance::create($request->except('date_out', 'date_in'));
-            $attendances->update(['time' => $request->date_in]);
-        }
-        if ($request->date_out) {
-            $attendances = FingerprintAttendance::create($request->except('date_out', 'date_in'));
-            $attendances->update(['time' => $request->date_out]);
+        DB::beginTransaction();
+        $message = [];
+        $flashMsg='';
+        try{
+            if ($request->date_in) {
+                $attendances = FingerprintAttendance::create($request->except('date_out', 'date_in'));
+                $attendances->update(['time' => $request->date_in]);
+            }
+            if ($request->date_out) {
+                $attendances = FingerprintAttendance::create($request->except('date_out', 'date_in'));
+                $attendances->update(['time' => $request->date_out]);
+            }
+            DB::commit();
+            $message = array(
+                'message'    =>  ' Created Successfully',
+                'alert-type' =>  'success'
+            );
+            $flashMsg = flash($message['message'], $message['alert-type']);
+
+            if($request->input('date_out') == '' && $request->input('date_in') == '') {
+                $message = array(
+                    'message'    =>  ' No Data Entered',
+                    'alert-type' =>  'danger'
+                );
+                $flashMsg = flash($message['message'], $message['alert-type']);
+            }
+        }catch(\Exception $e) {
+            DB::rollback();
         }
 
-        return redirect()->route('hr.admin.attendances.index');
+        return redirect()->route('hr.admin.attendances.index')->with($flashMsg);
+        // return redirect()->route('hr.admin.attendances.index')->with(flash($message['message'], $message['alert-type']));
     }
-
-    // public function edit(FingerprintAttendance $attendances)
-    // {
-    //     abort_if(Gate::denies('attendances_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-    //     $users = AccountDetail::all()->pluck('fullname', 'user_id')->prepend(trans('global.pleaseSelect'), '');
-
-    //     $attendances->load('user', 'leave_application');
-
-    //     return view('hr::admin.attendances.edit', compact('users', 'attendances'));
-    // }
 
     public function update($id)
     {

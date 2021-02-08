@@ -172,6 +172,8 @@
                             </a>
                         </li>
                     @endcan
+
+
                     @can('expenses')
                         <li class="c-sidebar-nav-item">
                             <a href="{{ route("finance.admin.expenses_category.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/expenses_category") || request()->is("admin/finance/*") ? "active" : "" }}">
@@ -219,7 +221,16 @@
                         </li>
                     @endcan
 
+                        @can('office_asset')
+                            <li class="c-sidebar-nav-item">
+                                <a href="{{ route("finance.admin.stock_category.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/stock_category") || request()->is("admin/finance/*") ? "active" : "" }}">
+                                    <i class="fa-fw fas fa-trademark c-sidebar-nav-icon self-item-link">
 
+                                    </i>
+                                    {{ trans('cruds.finance.stock_category') }}
+                                </a>
+                            </li>
+                        @endcan
 
 
 
@@ -1210,116 +1221,33 @@
             </li>
         @endcan
         @can('setting_access')
-            <li class="c-sidebar-nav-dropdown">
-                <a class="c-sidebar-nav-dropdown-toggle" href="#">
+            <li class="c-sidebar-nav-item">
+                <a href="{{ route("admin.settings.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/settings") || request()->is("admin/settings/*") ? "active" : "" }}">
                     <i class="fa-fw fas fa-users-cog c-sidebar-nav-icon">
 
                     </i>
                     {{ trans('cruds.setting.title') }}
                 </a>
-                <ul class="c-sidebar-nav-dropdown-items">
 
-                    <li class="c-sidebar-nav-item">
-                        <a href="{{ route("setting.config.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/company-details") || request()->is("admin/company-details/*") ? "active" : "" }}">
-                            <i class="fa-fw fas fa-cogs c-sidebar-nav-icon">
 
-                            </i>
-                            {{ trans('cruds.companyDetail.title') }}
-                        </a>
-                    </li>
-                    @can('client_menu_access')
-                        <li class="c-sidebar-nav-item">
-                            <a href="{{ route("admin.client-menus.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/client-menus") || request()->is("admin/client-menus/*") ? "active" : "" }}">
-                                <i class="fa-fw fas fa-cogs c-sidebar-nav-icon">
+                @can('local_access')
+                <li class="c-sidebar-nav-item">
+                    <a href="{{ url("translations") }}" class="c-sidebar-nav-link {{ request()->is("admin/locals") || request()->is("admin/locals/*") ? "active" : "" }}">
+                        <i class="fa-fw fas fa-globe c-sidebar-nav-icon">
 
-                                </i>
-                                {{ trans('cruds.clientMenu.title') }}
-                            </a>
-                        </li>
-                    @endcan
-                    @can('menu_access')
-                        <li class="c-sidebar-nav-item">
-                            <a href="{{ route("admin.menus.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/menus") || request()->is("admin/menus/*") ? "active" : "" }}">
-                                <i class="fa-fw fas fa-cogs c-sidebar-nav-icon">
-
-                                </i>
-                                {{ trans('cruds.menu.title') }}
-                            </a>
-                        </li>
-                    @endcan
-                    @can('local_access')
-                        <li class="c-sidebar-nav-item">
-                            <a href="{{ url("translations") }}" class="c-sidebar-nav-link {{ request()->is("admin/locals") || request()->is("admin/locals/*") ? "active" : "" }}">
-                                <i class="fa-fw fas fa-globe c-sidebar-nav-icon">
-
-                                </i>
-                                {{ trans('cruds.local.title') }}
-                            </a>
-                        </li>
-                    @endcan
-                    @can('performance_indicator_access')
-                        <li class="c-sidebar-nav-item">
-                            <a href="{{ route("admin.performance-indicators.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/performance-indicators") || request()->is("admin/performance-indicators/*") ? "active" : "" }}">
-                                <i class="fa-fw fas fa-rupee-sign c-sidebar-nav-icon">
-
-                                </i>
-                                {{ trans('cruds.performanceIndicator.title') }}
-                            </a>
-                        </li>
-                    @endcan
-                    @can('technical_category_access')
-                        <li class="c-sidebar-nav-item">
-                            <a href="{{ route("admin.technical-categories.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/technical-categories") || request()->is("admin/technical-categories/*") ? "active" : "" }}">
-                                <i class="fa-fw fas fa-cogs c-sidebar-nav-icon">
-
-                                </i>
-                                {{ trans('cruds.technicalCategory.title') }}
-                            </a>
-                        </li>
-                    @endcan
-                    @can('quotation_form_access')
-                        <li class="c-sidebar-nav-item">
-                            <a href="{{ route("admin.quotation-forms.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/quotation-forms") || request()->is("admin/quotation-forms/*") ? "active" : "" }}">
-                                <i class="fa-fw fab fa-quora c-sidebar-nav-icon">
-
-                                </i>
-                                {{ trans('cruds.quotationForm.title') }}
-                            </a>
-                        </li>
-                    @endcan
-                    @can('quotation_access')
-                        <li class="c-sidebar-nav-item">
-                            <a href="{{ route("admin.quotations.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/quotations") || request()->is("admin/quotations/*") ? "active" : "" }}">
-                                <i class="fa-fw fab fa-quora c-sidebar-nav-icon">
-
-                                </i>
-                                {{ trans('cruds.quotation.title') }}
-                            </a>
-                        </li>
-                    @endcan
-                    @can('quotation_detail_access')
-                        <li class="c-sidebar-nav-item">
-                            <a href="{{ route("admin.quotation-details.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/quotation-details") || request()->is("admin/quotation-details/*") ? "active" : "" }}">
-                                <i class="fa-fw fab fa-quora c-sidebar-nav-icon">
-
-                                </i>
-                                {{ trans('cruds.quotationDetail.title') }}
-                            </a>
-                        </li>
-                    @endcan
-                    @can('dashboard_setting_access')
-                        <li class="c-sidebar-nav-item">
-                            <a href="{{ route("admin.dashboard-settings.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/dashboard-settings") || request()->is("admin/dashboard-settings/*") ? "active" : "" }}">
-                                <i class="fa-fw fas fa-tachometer-alt c-sidebar-nav-icon">
-
-                                </i>
-                                {{ trans('cruds.dashboardSetting.title') }}
-                            </a>
-                        </li>
-                    @endcan
-                </ul>
+                        </i>
+                        {{ trans('cruds.local.title') }}
+                    </a>
+                </li>
+                @endcan
             </li>
+
+
         @endcan
+
+
+
+
         @can('private_chat_access')
             <li class="c-sidebar-nav-item">
                 <a href="{{ route("admin.private-chats.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/private-chats") || request()->is("admin/private-chats/*") ? "active" : "" }}">

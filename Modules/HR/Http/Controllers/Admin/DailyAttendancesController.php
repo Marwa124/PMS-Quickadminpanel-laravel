@@ -24,7 +24,7 @@ class DailyAttendancesController extends Controller
     public function index(Request $request)
     {
         abort_if(Gate::denies('daily_attendance_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        
+
         if($request->has('date')) {
             $request->validate([
                 'date' => 'required|date_format:Y-m-d',

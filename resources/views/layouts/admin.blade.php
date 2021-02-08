@@ -11,7 +11,7 @@
         {{-- {{ trans('panel.site_title') }} --}}
         PMS
         @yield('title')
-        </title>
+    </title>
     {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script> --}}
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" />
@@ -28,6 +28,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/1.5.0/css/perfect-scrollbar.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.datatables.net/fixedheader/3.1.7/css/fixedHeader.dataTables.min.css">
 
+    <script src="{{ asset('js/toast.min.js') }}"></script>
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/toast.min.css') }}">
     {{--<script src="{{ asset('jquery_cdn/jquery.js') }}"></script>--}}
     {{--<link href="{{ asset('jquery_cdn/bootstrap.min.css') }}" rel="stylesheet" />--}}
     {{--<link href="{{ asset('jquery_cdn/font-awesome.css') }}" rel="stylesheet" />--}}
@@ -98,7 +100,7 @@
             </button>
             <a class="c-header-brand d-lg-none" href="#">{{ trans('panel.site_title') }}</a>
 
-            {{auth()->user()->name}}
+            {{-- {{auth()->user()->name}} --}}
 
             <button class="c-header-toggler c-class-toggler mfs-3 d-md-down-none" type="button" data-target="#sidebar" data-class="c-sidebar-lg-show" responsive="true">
                 <i class="fas fa-fw fa-bars"></i>
@@ -216,7 +218,7 @@
             <main class="c-main">
 
                 <div class="container-fluid">
-                    @if(session('message'))
+                    {{-- @if(session('message'))
                         <div class="row mb-2">
                             <div class="col-lg-12">
                                 <div class="alert alert-success" role="alert">{{ session('message') }}</div>
@@ -531,6 +533,22 @@
 
     {{-- Social Media Share Links --}}
     <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5fa91eb31c6d29d3"></script>
+
+    @if(Session::has('message'))
+            <script>
+
+            var type = "{{ Session::get('alert-type', 'info') }}";
+
+                new Toast({
+                        message: '{{ session('message') }}',
+                        type: type
+                        });
+
+
+            
+            
+            </script>
+    @endif
 </body>
 
 </html>
