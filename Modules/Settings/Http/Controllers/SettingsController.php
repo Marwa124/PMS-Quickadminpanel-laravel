@@ -97,12 +97,7 @@ class SettingsController extends Controller
 
             if ($validator->fails()) {
 
-                $notification = array(
-                    'message' => $validator->errors()->all()[0],
-                    'alert-type' => 'danger'
-                );
-
-                return back()->withInput()->with($notification);
+                return back()->withInput()->with(flash($validator->errors()->all()[0], 'danger'));
             }
 
             // unset($validator->getData()['_token']);

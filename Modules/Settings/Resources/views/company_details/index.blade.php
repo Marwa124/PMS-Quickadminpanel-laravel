@@ -151,26 +151,4 @@ body{
     </div>
 @endsection
 
-@section('scripts')
-@if(Session::has('message'))
-            <script>
-
-
-            var type = "{{ Session::get('alert-type', 'info') }}";
-
-                new Toast({
-                        message: '{{ session('message') }}',
-                        type: type
-                        });
-
-
-            
-            
-            </script>
-            @endif
-
- 
-
-
-@endsection
 

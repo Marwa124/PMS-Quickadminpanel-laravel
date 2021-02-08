@@ -110,3 +110,24 @@ if (!function_exists('getArabicDayName')) {
         }
     }
 }
+
+
+if (!function_exists('settings')) {
+    function settings($key, $alt = null)
+    {
+        $config = Config::where('key', $key)->first();
+        return $config ? $config->value : $alt;
+    }
+}
+
+
+if (!function_exists('flash')) {
+    function flash($message = 'No Message Set', $type = 'info')
+    {
+
+        return [
+            'message' => $message,
+            'alert-type' => $type
+        ];
+    }
+}
