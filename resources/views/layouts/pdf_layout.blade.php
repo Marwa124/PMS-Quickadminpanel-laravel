@@ -1,18 +1,20 @@
 <!DOCTYPE>
-<html>
+<html >
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title')</title>
     <link rel="shortcut icon" href="">
 
     <style>
         @font-face {
-            font-family: 'ARIALUNI';
-            src: url(data:font/truetype;charset=utf-8;base64,<BASE64-ENCODED-DATA>);
+            font-family: 'XBRiyaz', sans-serif;
             }
+        body {
+            font-family: 'XBRiyaz', sans-serif;
+        }
         body, h1 {
-        font-family: 'ARIALUNI', sans-serif;
+            font-family: 'XBRiyaz', sans-serif;
         }
         hr {
             height: 0;
@@ -31,7 +33,7 @@
             border-collapse: collapse;
         }
 
-        th, td{ font-size: 12px; padding: 0px 5px; font-family: Tahoma, Helvetica, Arial; /*text-align: right*/}
+        th, td{ font-size: 12px; padding: 0px 5px; font-family: 'XBRiyaz', sans-serif; /*text-align: right*/}
 
         th { background-color: #222D32; color: #fff; }
 
@@ -76,12 +78,16 @@
             line-height: 20px;
         }
 
+        @page {
+            header: page-header;
+            footer: page-footer;
+        }
     </style>
 
 </head>
 
 <body>
-    <div class="page-break" dir="ltr">
+    <div class="page-break" dir="auto">
 
         <table class="table borderless tbl_header">
             <tr>

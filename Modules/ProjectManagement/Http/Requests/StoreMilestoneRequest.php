@@ -26,11 +26,23 @@ class StoreMilestoneRequest extends FormRequest
                 'required',
                 'integer',
             ],
-            'name'       => [
+            'name_en'   => [
                 'string',
                 'required',
                 //'unique:milestones,name,'.request()->project_id.',project_id',
-                Rule::unique('milestones','name')->where(function($query) {
+                Rule::unique('milestones','name_en')->where(function($query) {
+
+                    $query->where('project_id', '=', request()->project_id);
+
+                }),
+
+               // Rule::unique('milestones','name')->ignore(request()->project_id,'project_id'),
+            ],
+            'name_ar'       => [
+                'string',
+                'required',
+                //'unique:milestones,name,'.request()->project_id.',project_id',
+                Rule::unique('milestones','name_ar')->where(function($query) {
 
                     $query->where('project_id', '=', request()->project_id);
 

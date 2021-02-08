@@ -10,7 +10,8 @@ class CreateTaskTagsTable extends Migration
     {
         Schema::create('task_tags', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->nullable();
+            $table->string('name_en')->nullable();
+            $table->string('name_ar')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

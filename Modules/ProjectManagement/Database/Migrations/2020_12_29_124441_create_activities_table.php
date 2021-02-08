@@ -18,12 +18,15 @@ class CreateActivitiesTable extends Migration
             $table->unsignedInteger('user_id')->nullable();
             $table->string('module')->nullable();
             $table->unsignedInteger('module_field_id')->nullable();
-            $table->string('activity')->nullable();
+            $table->string('activity_en')->nullable();
+            $table->string('activity_ar')->nullable();
             $table->timestamp('activity_date')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->string('icon')->nullable();
             $table->string('link')->nullable();
-            $table->text('value1')->nullable();
-            $table->text('value2')->nullable();
+            $table->text('value1_en')->nullable();
+            $table->text('value1_ar')->nullable();
+            $table->text('value2_en')->nullable();
+            $table->text('value2_ar')->nullable();
 
             $table->timestamps();
         });

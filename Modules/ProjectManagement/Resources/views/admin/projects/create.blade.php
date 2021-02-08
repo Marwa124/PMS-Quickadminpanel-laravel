@@ -110,14 +110,24 @@
 
 
                 <div class="form-group ">
-                    <label class="required" for="name">{{ trans('cruds.project.fields.name') }}</label>
-                    <input class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" type="text" name="name" id="name" value="{{ old('name', '') }}" required>
-                    @if($errors->has('name'))
+                    <label class="required" for="name_en">{{ trans('cruds.project.fields.name_en') }}</label>
+                    <input class="form-control {{ $errors->has('name_en') ? 'is-invalid' : '' }}" type="text" name="name_en" id="name_en" value="{{ old('name_en', '') }}" required>
+                    @if($errors->has('name_en'))
                         <div class="invalid-feedback">
-                            {{ $errors->first('name') }}
+                            {{ $errors->first('name_en') }}
                         </div>
                     @endif
-                    <span class="help-block">{{ trans('cruds.project.fields.name_helper') }}</span>
+                    <span class="help-block">{{ trans('cruds.project.fields.name_en_helper') }}</span>
+                </div>
+                <div class="form-group ">
+                    <label class="required" for="name_ar">{{ trans('cruds.project.fields.name_ar') }}</label>
+                    <input class="form-control {{ $errors->has('name_ar') ? 'is-invalid' : '' }}" type="text" name="name_ar" id="name_ar" value="{{ old('name_ar', '') }}" required>
+                    @if($errors->has('name_ar'))
+                        <div class="invalid-feedback">
+                            {{ $errors->first('name_ar') }}
+                        </div>
+                    @endif
+                    <span class="help-block">{{ trans('cruds.project.fields.name_ar_helper') }}</span>
                 </div>
                 <div class="form-group">
                     <label for="client_id">{{ trans('cruds.project.fields.client') }}</label>
@@ -252,14 +262,24 @@
             <div class="clearfix"></div>
 
             <div class="form-group col-md-12">
-                <label for="description">{{ trans('cruds.project.fields.description') }}</label>
-                <textarea class="form-control ckeditor {{ $errors->has('description') ? 'is-invalid' : '' }}" name="description" id="description">{!! old('description') !!}</textarea>
-                @if($errors->has('description'))
+                <label for="description_en">{{ trans('cruds.project.fields.description_en') }}</label>
+                <textarea class="form-control ckeditor {{ $errors->has('description_en') ? 'is-invalid' : '' }}" name="description_en" id="description_en">{!! old('description_en') !!}</textarea>
+                @if($errors->has('description_en'))
                     <div class="invalid-feedback">
-                        {{ $errors->first('description') }}
+                        {{ $errors->first('description_en') }}
                     </div>
                 @endif
-                <span class="help-block">{{ trans('cruds.project.fields.description_helper') }}</span>
+                <span class="help-block">{{ trans('cruds.project.fields.description_en_helper') }}</span>
+            </div>
+            <div class="form-group col-md-12">
+                <label for="description_ar">{{ trans('cruds.project.fields.description_ar') }}</label>
+                <textarea class="form-control ckeditor {{ $errors->has('description_ar') ? 'is-invalid' : '' }}" name="description_ar" id="description_ar">{!! old('description_ar') !!}</textarea>
+                @if($errors->has('description_ar'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('description_ar') }}
+                    </div>
+                @endif
+                <span class="help-block">{{ trans('cruds.project.fields.description_ar_helper') }}</span>
             </div>
             <div class="form-group col-md-12">
                 <button class="btn btn-danger float-right" type="submit">

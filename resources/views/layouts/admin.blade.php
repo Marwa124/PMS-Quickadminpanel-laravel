@@ -42,9 +42,10 @@
     {{--<link rel="stylesheet" href="{{ asset('jquery_cdn/fixedHeader.dataTables.min.css') }}">--}}
 
     <link href="{{ asset('css/app.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.min.css">
-    
+
     @yield('styles')
 
 <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
@@ -230,7 +231,9 @@
                             </ul>
                         </div>
                     @endif
-                    @yield('content')
+{{--                        to get current localization (language)--}}
+                        <input type="hidden" name="getLocale" id="getLocale" value="{{app()->getLocale()}}"/>
+                        @yield('content')
 
                 </div>
 
@@ -285,7 +288,7 @@
         $(document).ready(function() {
            $('.selectpicker').selectpicker('refresh');
    });
-      
+
    </script>
     <script>
         $(function() {

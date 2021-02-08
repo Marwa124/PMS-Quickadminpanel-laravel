@@ -55,7 +55,7 @@ class MilestonesController extends Controller
 
         abort_if(Gate::denies('milestone_create'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
-        $projects = auth()->user()->getUserProjectsByUserID(auth()->user()->id)->pluck('name', 'id');
+        $projects = auth()->user()->getUserProjectsByUserID(auth()->user()->id)->pluck('name_'.app()->getLocale(), 'id');
         $project = null;
 
         if (request()->segment(count(request()->segments())-1) == 'project-milestone' || $id)
@@ -91,7 +91,7 @@ class MilestonesController extends Controller
         if (in_array($milestone->id,$milestones->toArray()))
         {
 
-            $projects = auth()->user()->getUserProjectsByUserID(auth()->user()->id)->pluck('name', 'id');
+            $projects = auth()->user()->getUserProjectsByUserID(auth()->user()->id)->pluck('name_'.app()->getLocale(), 'id');
 
             $milestone->load('accountDetails', 'project');
 

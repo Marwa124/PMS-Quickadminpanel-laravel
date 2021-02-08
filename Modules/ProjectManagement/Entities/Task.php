@@ -39,8 +39,10 @@ class Task extends Model implements HasMedia
     ];
 
     protected $fillable = [
-        'name',
-        'description',
+        'name_en',
+        'name_ar',
+        'description_en',
+        'description_ar',
         //'status_id',
         'status',
         'start_date',
