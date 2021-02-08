@@ -7,17 +7,14 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-<<<<<<< HEAD
-    <title>{{--{{ trans('cruds.'.substr(request()->segment(3), 0, -1).'.title')}}--}}{{request()->segment(3)}} - {{ trans('panel.site_title') }}</title>
-    <link rel="icon" href="{{asset('images/image001.png')}}">
 
-=======
+    {{--<link rel="icon" href="{{asset('images/image001.png')}}">--}}
+
     <title>
         {{-- {{ trans('panel.site_title') }} --}}
         PMS
         @yield('title')
     </title>
->>>>>>> f858b82c81b6d6e635c02465f577f02806b34bab
     {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script> --}}
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" />

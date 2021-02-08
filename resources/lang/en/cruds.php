@@ -3623,13 +3623,11 @@ return [
         'milestone_not_have_project'                => 'This Milestone don\'t have Project',
         'project_of_milestone_not_have_department'  => 'The Project Of Milestone don\'t have Department',
         'project_of_task_not_have_department'       => 'The Project Of Task don\'t have Department',
-<<<<<<< HEAD
         'time_date_after_or_equal'                  => 'The Time Of End Date Must Be After Or Equal ',
-    ]
 
-=======
     ],
->>>>>>> f858b82c81b6d6e635c02465f577f02806b34bab
+
+
 
     'form' => [
         'dismatch_password' => 'Password dose not match',
