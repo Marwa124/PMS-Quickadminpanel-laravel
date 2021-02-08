@@ -144,26 +144,63 @@ table.dataTable thead .sorting_desc {
 }
 
 .c-header {
-    background: #ec2121 !important;
+    background: #fff !important;
 }
 .c-header-nav-link {
-    color: #ffffff !important;
+    /* color: #ffffff !important; */
 }
 
 #sidebar {
-    background-color: #3a3f51 !important;
+    background-color: #efefef;
 }
 
+/* Search */
+.sidebar-search{
+    background: #EBEBEB;
+}
+
+.sidebar-search__input {
+    background: none;
+    border: none;
+}
+.sidebar-search__input:focus {
+    color: #768192;
+    border: none;
+    background: none;
+    outline: 0;
+    box-shadow: none;
+}
+
+.input-group-text {
+    border: none;
+}
+
+.c-sidebar .c-sidebar-brand,
+.c-sidebar .c-sidebar-header {
+    background-color: #efefef;
+}
+
+.c-sidebar-nav {
+    padding-right: 0.5rem;
+}
+
+.c-sidebar .c-sidebar-nav-dropdown-toggle,
+.c-sidebar .c-sidebar-nav-link {
+    color: #23282c !important;
+}
+
+html:not([dir="rtl"]) .c-sidebar-nav-icon:first-child {
+    color: #707070;
+}
 .c-sidebar .c-active.c-sidebar-nav-dropdown-toggle,
 .c-sidebar .c-sidebar-nav-link.c-active {
-    color: #f05050 !important;
-    background-color: unset !important;
-    background: unset !important;
+    color: #fff !important;
+    background: #8a0000;
 }
 .c-sidebar .c-sidebar-nav-dropdown-toggle:hover,
 .c-sidebar .c-sidebar-nav-link:hover {
-    color: #f05050 !important;
-    background: unset !important;
+    color: #fff !important;
+    background: #8a0000;
 }
 
 .select2-container .select2-selection--single {

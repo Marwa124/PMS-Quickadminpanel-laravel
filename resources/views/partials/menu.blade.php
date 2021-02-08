@@ -2,15 +2,26 @@
 
     <div class="c-sidebar-brand d-md-down-none">
         <a class="c-sidebar-brand-full h4" href="#">
-            {{ trans('panel.site_title') }}
+            <!-- {{ trans('panel.site_title') }} -->
+            <div style="width:100px; margin:10px">
+                <img style="width:100%;" src="https://onetecgroup.com/setting/OTG_1605774993.png" alt="company logo">
+            </div>
         </a>
     </div>
 
     <ul class="c-sidebar-nav">
         <li>
-            <select class="searchable-field form-control">
-
-            </select>
+            <div class="input-group sidebar-search mb-3">
+                <input type="text" class="form-control sidebar-search__input" placeholder="Search in menu" aria-label="Search in menu" aria-describedby="basic-addon2">
+                <div class="input-group-append">
+                    <span class="input-group-text" id="basic-addon2">
+                        <i class="fas fa-search"></i>
+                    </span>
+                </div>
+            </div>
+        </li>
+        <li>
+            
         </li>
         <li class="c-sidebar-nav-item">
             <a href="{{ route("admin.home") }}" class="c-sidebar-nav-link">
