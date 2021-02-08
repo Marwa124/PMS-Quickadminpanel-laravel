@@ -9,7 +9,7 @@
         </div>
         <div class="col-sm-4"></div>
         <div class="col-sm-4">
-            <h6 class="mb-3"> Reference No:</h6>
+            <h3 > Reference No:</h3>
             <div><strong>#{{$proposal->reference_no ?? '' }}</strong></div>
             <div>{{ trans('cruds.proposal.fields.subject') }} : {{ $proposal->subject }}</div>
             <div>{{ trans('cruds.proposal.fields.proposal_date') }} : {{ $proposal->proposal_date }}</div>
@@ -215,7 +215,7 @@
                         <td></td>
                     </tr>
                     <tr>
-                        <td colspan="2" style="padding: 0px 0px 0px 20px;"> {{  nl2br($proposal->payment_terms) }}
+                        <td colspan="2" style="padding: 0px 0px 0px 20px;"> {!!  $proposal->payment_terms !!}
 
                         </td>
                     </tr>
