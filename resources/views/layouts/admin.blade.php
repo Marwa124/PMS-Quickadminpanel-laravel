@@ -516,6 +516,22 @@
 
     {{-- Social Media Share Links --}}
     <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5fa91eb31c6d29d3"></script>
+
+    @if(Session::has('message'))
+            <script>
+
+            var type = "{{ Session::get('alert-type', 'info') }}";
+
+                new Toast({
+                        message: '{{ session('message') }}',
+                        type: type
+                        });
+
+
+            
+            
+            </script>
+    @endif
 </body>
 
 </html>

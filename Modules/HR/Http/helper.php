@@ -121,3 +121,15 @@ if (!function_exists('settings')) {
         return $config ? $config->value : $alt;
     }
 }
+
+
+if (!function_exists('flash')) {
+    function flash($message = 'No Message Set', $type = 'info')
+    {
+
+        return [
+            'message' => $message,
+            'alert-type' => $type
+        ];
+    }
+}
