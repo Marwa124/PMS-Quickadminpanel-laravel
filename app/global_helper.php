@@ -12,7 +12,6 @@ if (!function_exists('globalNotificationId')) {
     function globalNotificationId($user_id)
     {
         $departHead = User::find($user_id)->department()->first() ?
-            // User::find($user_id)->department->department_head()->select('department_head_id')->first()->department_head_id : '';
             User::find($user_id)->accountDetail->designation->department->department_head()->first()->department_head_id : '';
 
         $userHead   = User::find($departHead);

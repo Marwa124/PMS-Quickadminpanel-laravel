@@ -1,6 +1,9 @@
 @extends('layouts.admin')
-@inject('attendanceModel', 'Modules\HR\Entities\Attendance')
+
 @section('content')
+@section('title')
+| {{ trans('cruds.attendances.title_singular') }} 
+@endsection
 @can('attendances_create')
     <div style="margin-bottom: 10px;" class="row">
         <div class="col-lg-12">
@@ -21,14 +24,10 @@
                 <thead>
                     <tr>
                         <th width="10">
-
                         </th>
                         <th>
                             {{ trans('cruds.attendances.fields.user') }}
                         </th>
-                        {{-- <th>
-                            {{ trans('cruds.attendances.fields.leave_application') }}
-                        </th> --}}
                         <th>
                             {{ trans('cruds.attendances.fields.date_in') }}
                         </th>
@@ -38,9 +37,6 @@
                         <th>
                             Day
                         </th>
-                        {{-- <th>
-                            {{ trans('cruds.attendances.fields.attendance_status') }}
-                        </th> --}}
                         <th>
                             &nbsp;
                         </th>
@@ -49,14 +45,16 @@
                 <tbody>
                     @foreach($attendances as $key => $attendance)
                     {{-- Get attendance Day --}}
-                        @foreach ($attendance as $index => $item)
-                        {{-- Get the min and max time clock  --}}
+                    @foreach ($attendance as $index => $item)
+                    {{-- Get the min and max time clock  --}}
                         <?php
                             $clockIn = '';
                             $clockOut = '';
                             $idClockIn = '';
                             $idClockOut = '';
+                            $fingerDate = '';
                             foreach ($item as $val => $timeObject) {
+                                $fingerDate = $timeObject->date;
                                 if (date($clockIn) > date($clockOut) ) {
                                     $clockOut = $timeObject->time;
                                     $idClockOut = $timeObject->id;
@@ -67,36 +65,42 @@
                             }
                         ?>
                         {{-- <tr data-entry-id="{{ $idClockIn.'-'.$idClockOut }}"> --}}
-                        <tr data-entry-id="{{ $key.'_'.$index }}" data-userId="{{$index}}">
+                        <tr data-entry-id="{{ $fingerDate.'_'.$index }}" data-user-id="{{$index}}">
                             <td>
                             </td>
                             <td>
                                 {{ $item[0]->user->accountDetail->fullname ?? '' }}
                             </td>
                             <td class="attendance_clockIn clock_attendance">
-                                {{ $clockIn ?? '' }}
+                                <div class="clockTime">
+                                    {{ $clockIn ?? '' }}
+                                </div>
+                                @can('attendances_edit')
+                                    <div class="form-group display"> {{-- Edit Clock --}}
+                                        <input class="form-control" 
+                                            type="time" name="date_in" id="date_in" value="{{ $clockIn ?? '' }}">
+                                    </div>
+                                @endcan
                             </td>
                             <td class="attendance_clockOut clock_attendance">
-                                {{ $clockOut ?? '' }}
+                                <div class="clockTime">
+                                    {{ $clockOut ?? '' }}
+                                </div>
+                                @can('attendances_edit')
+                                    <div class="form-group display"> {{-- Edit Clock --}}
+                                        <input class="form-control" 
+                                            type="time" name="date_out" id="date_out" value="{{ $clockOut ?? '' }}">
+                                    </div>
+                                @endcan
+
                             </td>
                             <td class="attendance_day">
                                 {{ $key ?? '' }}
                             </td>
                             <td>
-                                {{-- @can('attendances_show')
-                                    <a class="btn btn-xs btn-primary" href="{{ route('admin.attendances.show', $attendances->id) }}">
-                                        {{ trans('global.view') }}
-                                    </a>
-                                @endcan --}}
-
-                                {{-- @can('attendances_edit')
-                                    <a class="btn btn-xs btn-info" href="{{ route('hr.admin.attendances.edit', $attendances->id) }}">
-                                        {{ trans('global.edit') }}
-                                    </a>
-                                @endcan --}}
 
                                 @can('attendances_delete')
-                                    <form action="{{ route('hr.admin.attendances.destroy', [$idClockIn ?? ''.'.'.$idClockOut ?? '']) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                    <form action="{{ route('hr.admin.attendances.destroy', $fingerDate.'_'.$index) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
                                         <input type="hidden" name="_method" value="DELETE">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                         <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
@@ -104,30 +108,6 @@
                                 @endcan
 
                             </td>
-
-                            {{-- Edit Clock in Modal --}}
-                            @can('attendances_edit')
-                            <!-- Modal -->
-                            <div class="modal fade" id="fullName{{$idClockIn.'_'.$idClockOut}}" tabindex="-1" role="dialog" aria-labelledby="fullNameTitle{{$idClockIn.'_'.$idClockOut}}" aria-hidden="true">
-                               <div class="modal-dialog modal-dialog-centered" role="document">
-                                   <div class="modal-content">
-                                       <div class="modal-body">
-                                           <div class="form-group">
-                                               <input type="text" class="form-control timepiker"
-                                               value="" name="date">
-                                           </div>
-
-                                           <input type="button" class="btn btn-xs btn-primary updateUserFullname" value="Update"
-                                           data-dismiss="" aria-label="Close">
-                                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                               <span aria-hidden="true">&times;</span>
-                                           </button>
-                                       </div>
-                                   </div>
-                               </div>
-                           </div>
-                           @endcan
-                           {{-- End Edit Clock in Modal --}}
 
                         </tr>
 
@@ -148,7 +128,24 @@
 @section('scripts')
 @parent
 <script>
-    $(function () {
+$(function () {
+
+    const getRowData = ids => {
+        var arrayRowIds = [];
+        var arrayRowUsers = [];
+        ids.forEach(id => {
+            var n = id.search("_");
+            var user = id.substring(n+1);
+            var date = id.substr(0, n);
+
+            arrayRowIds.push(user)
+            arrayRowUsers.push(date)
+        });
+
+        return [arrayRowIds, arrayRowUsers];
+    }
+
+
   let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
 @can('attendances_delete')
   let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
@@ -161,9 +158,9 @@
           return $(entry).data('entry-id')
       });
 
-      if (ids.length === 0) {
-        alert('{{ trans('global.datatables.zero_selected') }}')
 
+       if (ids.length === 0) {
+        alert('{{ trans('global.datatables.zero_selected') }}')
         return
       }
 
@@ -172,8 +169,16 @@
           headers: {'x-csrf-token': _token},
           method: 'POST',
           url: config.url,
-          data: { ids: ids, _method: 'DELETE' }})
-          .done(function () { location.reload() })
+          data: {
+                users: getRowData(ids)[0],
+                ids: getRowData(ids)[1],
+                _method: 'DELETE'
+            }})
+          .done(function (data) {
+              for (let x = 0; x < data.ids.length; x++) {
+                  $("tbody").find(`[data-entry-id='${data.ids[x]}_${data.users[x]}']`).remove();
+              }
+            })
       }
     }
   }
@@ -191,19 +196,51 @@
           .columns.adjust();
   });
 
+
+
+  // Edit Clock Attendance Modal
+  $('.clock_attendance').dblclick(function() {
+      let day = $(this).closest('tr').find('.attendance_day').text().trim();
+      let userId = $(this).closest('tr').attr('data-user-id');
+      let oldTimeValue = $(this).closest('td').find('.clockTime').html().trim();
+      if ($(this).find('.form-group').length != 0) {
+        $(this).find('.clockTime').toggleClass('display');
+        $(this).find('.form-group').toggleClass('display');
+        $(this).find('.form-group input').val();
+        $(this).find('.form-group input').on('change', function (e) {
+            let inputVal = $(this).val();
+            let timeInput = $(this).closest('td').find('.clockTime');
+            $.ajax({
+                url: `attendances/${day}_${userId}`,
+                method: 'put',
+                data:{
+                    _token: '{{csrf_token()}}',
+                    oldTimeValue,
+                    inputVal
+                },
+                success: function (res) {
+                    timeInput.html(inputVal);
+                }
+            })
+        })
+      }
+
+  })
+
 })
 
 
 
-// Edit Clock Attendance Modal
-$('.clock_attendance').click(function() {
-    let day = $(this).closest('tr').find('.attendance_day').text();
-    // let userId = $(this).closest('tr').attr('data-entry-id');
-    let userId = $(this).closest('tr').attr('data-userId');
-    // console.log(day.trim());
-    console.log(userId);
-})
+
 
 
 </script>
+@endsection
+
+@section('styles')
+    <style>
+        .display {
+            display: none;
+        }
+    </style>
 @endsection

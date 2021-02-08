@@ -25,9 +25,6 @@
                         <th>
                             {{ trans('cruds.role.fields.title') }}
                         </th>
-                        {{-- <th>
-                            {{ trans('cruds.role.fields.permissions') }}
-                        </th> --}}
                         <th>
                             &nbsp;
                         </th>
@@ -42,11 +39,6 @@
                             <td>
                                 {{ $role->name ?? '' }}
                             </td>
-                            {{-- <td>
-                                @foreach($role->permissions()->get() as $key => $item)
-                                    <span class="badge badge-info">{{ $item->name }}</span>
-                                @endforeach
-                            </td> --}}
                             <td>
                                 @can('role_edit')
                                     <a class="btn btn-xs btn-info" href="{{ route('admin.roles-management.edit', $role->id) }}">
@@ -55,7 +47,7 @@
                                 @endcan
 
                                 @can('role_delete')
-                                    <form action="{{ route('admin.roles.destroy', $role->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                    <form action="{{ route('admin.roles-management.destroy', $role->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
                                         <input type="hidden" name="_method" value="DELETE">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                         <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">

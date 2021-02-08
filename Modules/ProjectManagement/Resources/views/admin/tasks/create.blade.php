@@ -158,7 +158,7 @@
                             <select class="form-control select2 {{ $errors->has('milestone_id') ? 'is-invalid' : '' }}" name="milestone_id" id="milestone_id_task">
                                 @if($milestones)
                                     @forelse($milestones as $id => $v_milestone)
-                                        <option value="{{ $id }}" {{ old('milestone_id') == $id ? 'selected' : ($milestone->id == $id ? 'selected' : 'disabled') }} >{{ $v_milestone }}</option>
+                                        <option value="{{ $id }}" {{ old('milestone_id') == $id ? 'selected' : ($milestone->id == $id ? 'selected' : 'disabled') }} >{{ $v_milestone->{'name_'.app()->getLocale()} }}</option>
                                     @empty
                                     @endforelse
                                 @endif

@@ -15,7 +15,7 @@ class ExpenseCategoryController extends Controller
 {
     public function index()
     {
-        abort_if(Gate::denies('expense_category_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        // abort_if(Gate::denies('expense_category_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $expenseCategories = ExpenseCategory::all();
 
@@ -24,7 +24,7 @@ class ExpenseCategoryController extends Controller
 
     public function create()
     {
-        abort_if(Gate::denies('expense_category_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        // abort_if(Gate::denies('expense_category_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return view('admin.expenseCategories.create');
     }
@@ -38,7 +38,7 @@ class ExpenseCategoryController extends Controller
 
     public function edit(ExpenseCategory $expenseCategory)
     {
-        abort_if(Gate::denies('expense_category_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        // abort_if(Gate::denies('expense_category_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return view('admin.expenseCategories.edit', compact('expenseCategory'));
     }
@@ -52,14 +52,14 @@ class ExpenseCategoryController extends Controller
 
     public function show(ExpenseCategory $expenseCategory)
     {
-        abort_if(Gate::denies('expense_category_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        // abort_if(Gate::denies('expense_category_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return view('admin.expenseCategories.show', compact('expenseCategory'));
     }
 
     public function destroy(ExpenseCategory $expenseCategory)
     {
-        abort_if(Gate::denies('expense_category_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        // abort_if(Gate::denies('expense_category_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $expenseCategory->delete();
 

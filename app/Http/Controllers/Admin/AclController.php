@@ -25,7 +25,7 @@ class AclController extends Controller
     {
         $request->validate([
             'name' => 'required|unique:roles,name|string|max:180',
-            'permissions' => 'array|required|min:1'
+            'permissions' => 'array|required|min:1|exists:permissions,name'
         ]);
         Acl::createRole($request);
         return resHandel();
@@ -33,10 +33,10 @@ class AclController extends Controller
 
     public function update($id, Request $request)
     {
-        $role = Role::find($id);
+        $role = Role::findOrFail($id);
         $request->validate([
             'name' => 'required|string|max:180|unique:roles,name,' . $id,
-            'permissions' => 'array|required|min:1'
+            'permissions' => 'array|required|min:1|exists:permissions,name'
         ]);
         Acl::updateRole($role, $request);
         return resHandel(Acl::listRole());

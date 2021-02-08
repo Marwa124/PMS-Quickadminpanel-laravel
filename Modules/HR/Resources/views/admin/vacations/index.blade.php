@@ -23,13 +23,19 @@
 
                         </th>
                         <th>
+                            {{ trans('cruds.vacation.fields.user') }}
+                        </th>
+                        <th>
                             {{ trans('cruds.vacation.fields.start_date') }}
                         </th>
                         <th>
                             {{ trans('cruds.vacation.fields.end_date') }}
                         </th>
                         <th>
-                            {{ trans('cruds.vacation.fields.user') }}
+                            {{ trans('cruds.leaveApplication.fields.attachments') }}
+                        </th>
+                        <th>
+                            {{ trans('cruds.vacation.fields.description') }}
                         </th>
                         <th>
                             &nbsp;
@@ -43,20 +49,31 @@
 
                             </td>
                             <td>
+                                {{ $vacation->user->accountDetail->fullname ?? '' }}
+                            </td>
+                            <td>
                                 {{ $vacation->start_date ?? '' }}
                             </td>
                             <td>
                                 {{ $vacation->end_date ?? '' }}
                             </td>
                             <td>
-                                {{ $vacation->user->accountDetail->fullname ?? '' }}
+                                @php
+                                    $attachment = $vacation->attachments ? asset($vacation->attachments->getUrl()) : '';
+                                @endphp
+                                @if($attachment) 
+                                    <a href="{{$attachment}}" target="_blank">View File</a>
+                                @endif
                             </td>
                             <td>
-                                @can('vacation_show')
+                                {{ strip_tags($vacation->description) ?? '' }}
+                            </td>
+                            <td>
+                                {{-- @can('vacation_show')
                                     <a class="btn btn-xs btn-primary" href="{{ route('hr.admin.vacations.show', $vacation->id) }}">
                                         {{ trans('global.view') }}
                                     </a>
-                                @endcan
+                                @endcan --}}
 
                                 @can('vacation_edit')
                                     <a class="btn btn-xs btn-info" href="{{ route('hr.admin.vacations.edit', $vacation->id) }}">
@@ -113,7 +130,12 @@
           method: 'POST',
           url: config.url,
           data: { ids: ids, _method: 'DELETE' }})
-          .done(function () { location.reload() })
+          .done(function (data) { 
+            //   location.reload() 
+                for (let x = 0; x < data.ids.length; x++) {
+                    $("tbody").find(`[data-entry-id='${data.ids[x]}']`).remove();
+                }
+            })
       }
     }
   }

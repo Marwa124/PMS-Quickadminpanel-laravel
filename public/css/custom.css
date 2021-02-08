@@ -144,7 +144,7 @@ table.dataTable thead .sorting_desc {
 }
 
 .c-header {
-    background: #ec2121 !important;
+    /* background: #ec2121 !important; */
 }
 .c-header-nav-link {
     color: #ffffff !important;
@@ -181,3 +181,16 @@ table.dataTable thead .sorting_desc {
     color: black !important;
     font-weight: bold !important;
 }
+
+
+/*
+.error_session_response{
+    transition: all 0.4s ease-in-out;
+}
+.slideUp {
+    height: 0;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    color: transparent;
+} */

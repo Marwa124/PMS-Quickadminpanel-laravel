@@ -91,91 +91,93 @@
                                 {{ $jobCircularModel::STATUS_SELECT[$jobCircular->status] ?? '' }}
                             </td>
                             <td>
+                            
+                            @can('job_circular_edit')
 
-                                @can('job_circular_edit')
+                            <?php
+                                $sharingLinks = '';
+                                if (request()->session()->exists('sharingLinks'.$jobCircular->id)) {
+                                    $sharingLinks = request()->session()->get('sharingLinks'.$jobCircular->id);
+                                }
+                            ?>
+                            @if ($sharingLinks)
 
-                                <?php
-                                    $sharingLinks = '';
-                                    if (request()->session()->exists('sharingLinks'.$jobCircular->id)) {
-                                        $sharingLinks = request()->session()->get('sharingLinks'.$jobCircular->id);
-                                    }
-                                ?>
-                                @if ($sharingLinks)
+                            <button type="button" class="social-links btn-info btn-xs"
+                                data-shares="{{$sharingLinks ? $sharingLinks->getHtml() : ''}}" data-toggle="modal"
+                                data-target="#shareLinksHtml{{$jobCircular->id}}">
+                                Publish
+                                {{-- <div id="social-links" class="inputShares row">
+                                    <ul class="p-3" style="list-style:none"></ul>
+                                </div> --}}
+                            </button>
 
-                                    <button type="button" class="social-links btn-info btn-xs"
-                                        data-shares="{{$sharingLinks ? $sharingLinks->getHtml() : ''}}" data-toggle="modal" data-target="#shareLinksHtml{{$jobCircular->id}}">
-                                        Publish
-                                        {{-- <div id="social-links" class="inputShares row">
-                                            <ul class="p-3" style="list-style:none"></ul>
-                                        </div> --}}
-                                    </button>
-
-
-                                    <!-- Modal -->
-                                    {{-- style="z-index: 9999; position: absolute; top: 4%;" --}}
-                                    <div class="modal fade"
-                                    id="shareLinksHtml{{$jobCircular->id}}" tabindex="-1" role="dialog" aria-labelledby="shareLinksHtmlLabel" aria-hidden="true">
-                                        <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
+                            <!-- Modal -->
+                            {{-- style="z-index: 9999; position: absolute; top: 4%;" --}}
+                            <div class="modal fade" id="shareLinksHtml{{$jobCircular->id}}" tabindex="-1" role="dialog"
+                                aria-labelledby="shareLinksHtmlLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
                                             <h5 class="modal-title" id="exampleModalLabel">Share with</h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div id="social-links">
-                                                    <ul style="list-style:none" class="p-3 inputShares d-flex justify-content-between fa-2x">
-                                                        {{-- <li><a href="https://www.facebook.com/sharer/sharer.php?u=http://jorenvanhocht.be" class="social-button " id=""><span class="fa fa-facebook-official"></span></a></li>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div id="social-links">
+                                                <ul style="list-style:none"
+                                                    class="p-3 inputShares d-flex justify-content-between fa-2x">
+                                                    {{-- <li><a href="https://www.facebook.com/sharer/sharer.php?u=http://jorenvanhocht.be" class="social-button " id=""><span class="fa fa-facebook-official"></span></a></li>
                                                         <li><a href="https://twitter.com/intent/tweet?text=my share text&amp;url=http://jorenvanhocht.be" class="social-button " id=""><span class="fa fa-twitter"></span></a></li>
                                                         <li><a href="http://www.linkedin.com/shareArticle?mini=true&amp;url=http://jorenvanhocht.be&amp;title=my share text&amp;summary=dit is de linkedin summary" class="social-button " id=""><span class="fa fa-linkedin"></span></a></li>
                                                         <li><a href="https://wa.me/?text=http://jorenvanhocht.be" class="social-button " id=""><span class="fa fa-whatsapp"></span></a></li>    --}}
-                                                    </ul>
-                                                </div>
+                                                </ul>
                                             </div>
                                         </div>
-                                        </div>
                                     </div>
+                                </div>
+                            </div>
 
-                                    @endif
+                            @endif
 
-                                @endCan
+                            @endCan
 
+                            @can('job_application_access')
+                            <a href="{{ route("hr.admin.job-applications.index", $jobCircular->id) }}"
+                                class="btn btn-xs btn-warning text-white">
+                                {{ trans('cruds.jobApplication.all_job_applications') }}
+                            </a>
+                            @endcan
+                            {{-- @can('job_circular_show')
+                                                    <a class="btn btn-xs btn-primary" href="{{ route('hr.admin.job-circulars.show', $jobCircular->id) }}">
+                            {{ trans('global.view') }}
+                            </a>
+                            @endcan --}}
 
-
-                                @can('job_application_access')
-                                    <a href="{{ route("hr.admin.job-applications.index", $jobCircular->id) }}" class="btn btn-xs btn-warning text-white">
-                                        {{ trans('cruds.jobApplication.all_job_applications') }}
-                                    </a>
-                                @endcan
-                                {{-- @can('job_circular_show')
-                                    <a class="btn btn-xs btn-primary" href="{{ route('hr.admin.job-circulars.show', $jobCircular->id) }}">
-                                        {{ trans('global.view') }}
-                                    </a>
-                                @endcan --}}
-
-                                @if ($jobCircular->last_date < date('Y-m-d'))
-                                    <a class="btn btn-xs btn-dark disabled" href="javascript:void(0)">
-                                        Expired date
-                                    </a>
+                            @if ($jobCircular->last_date < date('Y-m-d')) <a class="btn btn-xs btn-dark disabled"
+                                href="javascript:void(0)">
+                                Expired date
+                                </a>
                                 @else
-                                    <a class="btn btn-xs btn-dark" href="{{ route('front.circular_details', $jobCircular->id) }}">
-                                        Details & Apply
-                                    </a>
+                                <a class="btn btn-xs btn-dark" href="{{ route('front.circular_details', $jobCircular->id) }}">
+                                    Details & Apply
+                                </a>
                                 @endif
-                                {{-- @can('job_circular_edit')
-                                    <a class="btn btn-xs btn-info" href="{{ route('hr.admin.job-circulars.edit', $jobCircular->id) }}">
-                                        {{ trans('global.edit') }}
-                                    </a>
-                                @endcan --}}
+                                @can('job_circular_edit')
+                                <a class="btn btn-xs btn-info" href="{{ route('hr.admin.job-circulars.edit', $jobCircular->id) }}">
+                                    {{ trans('global.edit') }}
+                                </a>
+                                @endcan
 
                                 @can('job_circular_delete')
-                                    <form action="{{ route('hr.admin.job-circulars.destroy', $jobCircular->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
-                                        <input type="hidden" name="_method" value="DELETE">
-                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                        <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
-                                    </form>
+                                <form action="{{ route('hr.admin.job-circulars.destroy', $jobCircular->id) }}" method="POST"
+                                    onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                    <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
+                                </form>
                                 @endcan
+
                             </td>
                         </tr>
                     @endforeach
@@ -217,7 +219,12 @@
           method: 'POST',
           url: config.url,
           data: { ids: ids, _method: 'DELETE' }})
-          .done(function () { location.reload() })
+          .done(function (data) { 
+            //   l0ocation.reload() 
+                for (let x = 0; x < data.ids.length; x++) {
+                    $("tbody").find(`[data-entry-id='${data.ids[x]}']`).remove();
+                }
+            })
       }
     }
   }
@@ -252,7 +259,6 @@ $('.social-links').on('click', function(){
         $('.modal-body #social-links .social-button').html("flahdkj");
         
         $('.fa-facebook-official').addClass('fa-facebook');
-        console.log("sdaf");
 
     });
 </script>

@@ -33,12 +33,12 @@ class StoreTrainingRequest extends FormRequest
                 'date_format:' . config('panel.date_format'),
                 'nullable',
             ],
-            'permissions.*' => [
-                'integer',
-            ],
-            'permissions'   => [
-                'array',
-            ],
+            // 'permissions.*' => [
+            //     'integer',
+            // ],
+            // 'permissions'   => [
+            //     'array',
+            // ],
         ];
     }
 }

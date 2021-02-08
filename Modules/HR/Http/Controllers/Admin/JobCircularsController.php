@@ -88,9 +88,7 @@ class JobCircularsController extends Controller
 
         $designations = Designation::all()->pluck('designation_name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        // $permissions = Permission::all()->pluck('title', 'id');
-
-        $jobCircular->load('designation', 'permissions');
+        $jobCircular->load('designation');
 
         return view('hr::admin.jobCirculars.edit', compact('designations', 'jobCircular'));
     }
@@ -126,16 +124,19 @@ class JobCircularsController extends Controller
     {
         abort_if(Gate::denies('job_circular_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $jobCircular->delete();
+        $jobCircular->forceDelete();
 
         return back();
     }
 
     public function massDestroy(MassDestroyJobCircularRequest $request)
     {
-        JobCircular::whereIn('id', request('ids'))->delete();
+        JobCircular::whereIn('id', request('ids'))->forceDelete();
 
-        return response(null, Response::HTTP_NO_CONTENT);
+        return response()->json([
+            'ids'   => request('ids'),
+        ]);
+        // return response(null, Response::HTTP_NO_CONTENT);
     }
 
     public function storeCKEditorImages(Request $request)

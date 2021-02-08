@@ -93,8 +93,9 @@ class Milestone extends Model
 
     public function cloneMilestone($newproject =null)
     {
-        $new_milestone              = $this->replicate();
-        $new_milestone->name        = $this->name.'-copy'.substr(time(),-4);
+        $new_milestone                 = $this->replicate();
+        $new_milestone->name_en        = $this->name_en.'-copy'.substr(time(),-4);
+        $new_milestone->name_ar        = $this->name_ar.'-نسخ'.substr(time(),-4);
         if ($newproject){
 
             $new_milestone->project_id  = $newproject->id;

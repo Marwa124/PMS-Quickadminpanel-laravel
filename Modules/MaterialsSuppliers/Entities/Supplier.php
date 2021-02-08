@@ -38,7 +38,7 @@ class Supplier extends Model
 
     public function customer_group()
     {
-        return $this->belongsTo(\App\Models\CustomerGroup::class, 'customer_group_id');
+        return $this->belongsTo(CustomerGroup::class, 'customer_group_id');
     }
 
     

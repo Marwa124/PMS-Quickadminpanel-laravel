@@ -97,13 +97,9 @@
                                                 <div class="row">
                                                     <div class="col-md-5 d-flex justify-content-center align-self-center">
                                                         @if($detail->avatar )
-                                                            {{-- <a href="{{ str_replace('storage', 'public/storage', $detail->avatar->getUrl()) }}" target="_blank">
+                                                            <a href="{{ $detail->avatar->getUrl() }}" target="_blank">
                                                                 <img class="rounded-circle img-thumbnail d-flex m-auto"
-                                                                src="{{ str_replace('storage', 'public/storage', $detail->avatar->getUrl('thumb')) }}">
-                                                            </a> --}}
-                                                            <a href="{{ str_replace('storage', 'storage/app/public', $detail->avatar->getUrl()) }}" target="_blank">
-                                                                <img class="rounded-circle img-thumbnail d-flex m-auto"
-                                                                src="{{ str_replace('storage', 'storage/app/public', $detail->avatar->getUrl('thumb')) }}">
+                                                                src="{{ $detail->avatar->getUrl('thumb') }}">
                                                             </a>
                                                         @else
                                                             <a href="javascript:void(0)" style="display: inline-block">
@@ -118,7 +114,7 @@
                                                     </div>
                                                     <div class="col-md-7">
                                                         <h4 class="font-weight-bold">{{$detail->fullname}}</h4>
-                                                        <hr>
+                                                        {{-- <hr> --}}
                                                         <div class="row">
                                                             <div class="col-md-5">EMP ID: </div>
                                                             <div class="col-md-7">{{ $detail->employment_id }}</div>
@@ -165,13 +161,13 @@
 
 
                                     @endcan
-                                    @can('salary_payment_detail_delete')
+                                    {{-- @can('salary_payment_detail_delete')
                                         <form action="{{ route('payroll.admin.salary-payment-details.destroy', $detail->user_id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
                                             <input type="hidden" name="_method" value="DELETE">
                                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                             <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
                                         </form>
-                                    @endcan
+                                    @endcan --}}
                                 </td>
 
                             </tr>
@@ -193,35 +189,35 @@
 <script>
     $(function () {
   let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-@can('salary_payment_detail_delete')
-  let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
-  let deleteButton = {
-    text: deleteButtonTrans,
-    url: "{{ route('payroll.admin.salary-payment-details.massDestroy') }}",
-    className: 'btn-danger',
-    action: function (e, dt, node, config) {
-      var ids = $.map(dt.rows({ selected: true }).nodes(), function (entry) {
-          return $(entry).data('entry-id')
-      });
+// @can('salary_payment_detail_delete')
+//   let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
+//   let deleteButton = {
+//     text: deleteButtonTrans,
+//     url: "{{ route('payroll.admin.salary-payment-details.massDestroy') }}",
+//     className: 'btn-danger',
+//     action: function (e, dt, node, config) {
+//       var ids = $.map(dt.rows({ selected: true }).nodes(), function (entry) {
+//           return $(entry).data('entry-id')
+//       });
 
-      if (ids.length === 0) {
-        alert('{{ trans('global.datatables.zero_selected') }}')
+//       if (ids.length === 0) {
+//         alert('{{ trans('global.datatables.zero_selected') }}')
 
-        return
-      }
+//         return
+//       }
 
-      if (confirm('{{ trans('global.areYouSure') }}')) {
-        $.ajax({
-          headers: {'x-csrf-token': _token},
-          method: 'POST',
-          url: config.url,
-          data: { ids: ids, _method: 'DELETE' }})
-          .done(function () { location.reload() })
-      }
-    }
-  }
-  dtButtons.push(deleteButton)
-@endcan
+//       if (confirm('{{ trans('global.areYouSure') }}')) {
+//         $.ajax({
+//           headers: {'x-csrf-token': _token},
+//           method: 'POST',
+//           url: config.url,
+//           data: { ids: ids, _method: 'DELETE' }})
+//           .done(function () { location.reload() })
+//       }
+//     }
+//   }
+//   dtButtons.push(deleteButton)
+// @endcan
 
   $.extend(true, $.fn.dataTable.defaults, {
     orderCellsTop: true,

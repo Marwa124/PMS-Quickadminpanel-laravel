@@ -25,9 +25,6 @@
                         <th width="10">
 
                         </th>
-                        {{-- <th>
-                            {{ trans('cruds.jobApplication.fields.id') }}
-                        </th> --}}
                         <th>
                             {{ trans('cruds.jobApplication.fields.job_circular') }}
                         </th>
@@ -82,9 +79,6 @@
                             <td>
 
                             </td>
-                            {{-- <td>
-                                {{ $jobApplication->id ?? '' }}
-                            </td> --}}
                             <td>
                                 {{ $jobApplication->job_circular->name ?? '' }}
                             </td>
@@ -101,6 +95,15 @@
                                 {{ $jobApplicationModel::APPLICATION_STATUS_SELECT[$jobApplication->application_status] ?? '' }}
                             </td>
                             <td>
+
+                                {{-- @can('generate_hr_letter') --}}
+                                    <a href="{{ route('hr.admin.job-applications-pdf', [$jobApplication->id, app()->getLocale()]) }}"
+                                       class="btn btn-xs btn-dark" tabindex="0" data-toggle="tooltip"
+                                       data-placement="left" title="{{trans('Generate_HR_Letter')}}">
+                                        <i class="fas fa-file-pdf"></i>
+                                    </a>
+                                {{-- @endcan --}}
+
                                 @can('job_application_show')
                                     @if ($jobApplication->resume)
                                         <a target="_blank" class="btn btn-xs btn-secondary download_resume" href="{{str_replace('public/storage', 'storage/app/public', $jobApplication->resume->getUrl())}}">
@@ -118,44 +121,6 @@
                                         Change Status
                                     </button>
 
-                                    <!-- Modal -->
-                                    <div class="modal-sm fade"
-                                        style="z-index: 9999; position: absolute; margin: auto;
-                                        width: 100%; left: calc(100% - 70%);"
-                                    id="changeStatus{{$jobApplication->id}}" tabindex="-1" role="dialog" aria-labelledby="changeStatus{{$jobApplication->id}}Label" aria-hidden="true">
-                                        <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Change Status</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <select class="form-control" name="application_status" id="application_status">
-                                                    <option value disabled {{ old('application_status', $jobApplicationModel::APPLICATION_STATUS_SELECT[$jobApplication->application_status] ?? '') === null ? 'selected' : '' }}>{{ trans('global.pleaseSelect') }}</option>
-                                                    @foreach($jobApplicationModel::APPLICATION_STATUS_SELECT as $key => $label)
-                                                        <option value="{{ $key }}" {{ old('application_status', 'pending') === (string) $key ? 'selected' : '' }}>{{ $label }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                            <div class="modal-footer">
-                                            {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
-                                            <button type="button" class="btn-sm btn-primary updateStatusBtn">Update</button>
-                                            </div>
-                                        </div>
-                                        </div>
-                                    </div>
-
-
-
-
-
-
-
-
-
-
                                     {{-- <a class="btn btn-xs btn-info" href="{{ route('hr.admin.job-applications.edit', $jobApplication->id) }}">
                                         {{ trans('global.edit') }}
                                     </a> --}}
@@ -170,6 +135,43 @@
                                 @endcan
 
                             </td>
+
+
+
+
+                            <!-- Modal -->
+                            <div class="modal-sm fade"
+                                style="z-index: 9999; position: absolute; margin: auto;
+                                width: 100%; left: calc(100% - 70%);"
+                                id="changeStatus{{$jobApplication->id}}"
+                                data-app-id="{{$jobApplication->id}}"
+                                tabindex="-1" role="dialog" aria-labelledby="changeStatus{{$jobApplication->id}}Label" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Change Status</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <select class="form-control" name="application_status" id="application_status">
+                                            <option value disabled {{ old('application_status', $jobApplicationModel::APPLICATION_STATUS_SELECT[$jobApplication->application_status] ?? '') === null ? 'selected' : '' }}>
+                                                {{ trans('global.pleaseSelect') }}
+                                            </option>
+                                            @foreach($jobApplicationModel::APPLICATION_STATUS_SELECT as $key => $label)
+                                                <option value="{{ $key }}" {{ old('application_status', 'pending') === (string) $key ? 'selected' : '' }}>{{ $label }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="modal-footer">
+                                    {{-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> --}}
+                                    <button type="button" class="btn-sm btn-primary updateStatusBtn">Update</button>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+
 
                         </tr>
                     @endforeach
@@ -239,19 +241,28 @@
         .draw()
   });
 
-  $('#changeStatusBtn').click(function() {
-      $('.changeStatus').css('display', 'block');
+  $('.changeStatusBtn').click(function() {
+    //   $('.changeStatus').css('display', 'block');
+      var customApplicationId = $(this).closest('tr').data('entry-id');
+      $(`#changeStatus${customApplicationId}`).modal('show');
+    //   $('body').addClass('modal-open');
+    //   console.log($(`#changeStatus${customApplicationId}`).modal('show'));
   })
 
 
 
   $('.updateStatusBtn').click(function(){
-    let selectedStatus = $(this).closest('td').find('select[name="application_status"]').val();
-   
-    let applicationId = $(this).closest('tr').attr('data-entry-id');
-    let applicationColor = $(this).closest('tr').find('.applicationColor');
+    let selectedStatus = $(this).closest('.modal-sm').find('select[name="application_status"]').val();
 
-    $('#changeStatus'+applicationId).modal('toggle');
+    // var applicationId = this.closest('tr').data('entry-id');
+    let applicationId = $(this).closest('.modal-sm').attr('data-app-id');
+    // let applicationColor = $(this).closest('tr').find('.applicationColor');
+    let applicationColor = $(`tr[data-entry-id="${applicationId}"]`).find('.applicationColor');
+
+    $('body').removeClass('modal-open');
+    $('#changeStatus'+applicationId).removeClass('show');
+    $('#changeStatus'+applicationId).css('display', 'none');
+    // $('#changeStatus'+applicationId).modal('hide');
     $('div.modal-backdrop').removeClass('fade show modal-backdrop');
 
     $.ajax({

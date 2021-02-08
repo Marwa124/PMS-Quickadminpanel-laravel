@@ -14,14 +14,24 @@
 
                 <div class="col-sm-6 float-left">
                     <div class="form-group">
-                        <label class="required" for="name">{{ trans('cruds.bug.fields.name') }}</label>
-                        <input class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" type="text" name="name" id="name" value="{{ old('name', $bug->name) }}" required>
-                        @if($errors->has('name'))
+                        <label class="required" for="name_en">{{ trans('cruds.bug.fields.name_en') }}</label>
+                        <input class="form-control {{ $errors->has('name_en') ? 'is-invalid' : '' }}" type="text" name="name_en" id="name_en" value="{{ old('name_en', $bug->name_en) }}" required>
+                        @if($errors->has('name_en'))
                             <div class="invalid-feedback">
-                                {{ $errors->first('name') }}
+                                {{ $errors->first('name_en') }}
                             </div>
                         @endif
-                        <span class="help-block">{{ trans('cruds.bug.fields.name_helper') }}</span>
+                        <span class="help-block">{{ trans('cruds.bug.fields.name_en_helper') }}</span>
+                    </div>
+                    <div class="form-group">
+                        <label class="required" for="name_ar">{{ trans('cruds.bug.fields.name_ar') }}</label>
+                        <input class="form-control {{ $errors->has('name_ar') ? 'is-invalid' : '' }}" type="text" name="name_ar" id="name_ar" value="{{ old('name_ar', $bug->name_ar) }}" required>
+                        @if($errors->has('name_ar'))
+                            <div class="invalid-feedback">
+                                {{ $errors->first('name_ar') }}
+                            </div>
+                        @endif
+                        <span class="help-block">{{ trans('cruds.bug.fields.name_ar_helper') }}</span>
                     </div>
 
                     <div class="form-group">
@@ -40,20 +50,7 @@
                         @endif
                         <span class="help-block">{{ trans('cruds.bug.fields.project_helper') }}</span>
                     </div>
-        {{--            <div class="form-group">--}}
-        {{--                <label for="opportunities_id">{{ trans('cruds.bug.fields.opportunities') }}</label>--}}
-        {{--                <select class="form-control select2 {{ $errors->has('opportunities') ? 'is-invalid' : '' }}" name="opportunities_id" id="opportunities_id">--}}
-        {{--                    @foreach($opportunities as $id => $opportunities)--}}
-        {{--                        <option value="{{ $id }}" {{ (old('opportunities_id') ? old('opportunities_id') : $bug->opportunities->id ?? '') == $id ? 'selected' : '' }}>{{ $opportunities }}</option>--}}
-        {{--                    @endforeach--}}
-        {{--                </select>--}}
-        {{--                @if($errors->has('opportunities'))--}}
-        {{--                    <div class="invalid-feedback">--}}
-        {{--                        {{ $errors->first('opportunities') }}--}}
-        {{--                    </div>--}}
-        {{--                @endif--}}
-        {{--                <span class="help-block">{{ trans('cruds.bug.fields.opportunities_helper') }}</span>--}}
-        {{--            </div>--}}
+
 {{--                    <div class="form-group"  id="task_div">--}}
 {{--                        <label for="task_id">{{ trans('cruds.bug.fields.task') }}</label>--}}
 {{--                        <input type="hidden" name="old_task" id="old_task" value="{{old('task_id') ?? $bug->task->id}}"/>--}}
@@ -70,14 +67,24 @@
 {{--                    </div>--}}
 
                     <div class="form-group">
-                        <label for="description">{{ trans('cruds.bug.fields.description') }}</label>
-                        <textarea class="form-control ckeditor {{ $errors->has('description') ? 'is-invalid' : '' }}" name="description" id="description">{!! old('description', $bug->description) !!}</textarea>
-                        @if($errors->has('description'))
+                        <label for="description_en">{{ trans('cruds.bug.fields.description_en') }}</label>
+                        <textarea class="form-control ckeditor {{ $errors->has('description_en') ? 'is-invalid' : '' }}" name="description_en" id="description_en">{!! old('description_en', $bug->description_en) !!}</textarea>
+                        @if($errors->has('description_en'))
                             <div class="invalid-feedback">
-                                {{ $errors->first('description') }}
+                                {{ $errors->first('description_en') }}
                             </div>
                         @endif
-                        <span class="help-block">{{ trans('cruds.bug.fields.description_helper') }}</span>
+                        <span class="help-block">{{ trans('cruds.bug.fields.description_en_helper') }}</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="description_ar">{{ trans('cruds.bug.fields.description_ar') }}</label>
+                        <textarea class="form-control ckeditor {{ $errors->has('description_ar') ? 'is-invalid' : '' }}" name="description_ar" id="description_ar">{!! old('description_ar', $bug->description_ar) !!}</textarea>
+                        @if($errors->has('description_ar'))
+                            <div class="invalid-feedback">
+                                {{ $errors->first('description_ar') }}
+                            </div>
+                        @endif
+                        <span class="help-block">{{ trans('cruds.bug.fields.description_ar_helper') }}</span>
                     </div>
                 </div>
                 <div class="col-sm-6 float-right">
@@ -122,8 +129,8 @@
                             <option value="" selected disabled>{{trans('global.pleaseSelect')}}</option>
                             <option value="minor"           {{ old('severity', $bug->severity) == 'minor'        ? 'selected' : '' }}>{{trans('cruds.status.minor')}}</option>
                             <option value="major"           {{ old('severity', $bug->severity) == 'major'        ? 'selected' : '' }}>{{trans('cruds.status.major')}}</option>
-                            <option value="show stopper"    {{ old('severity', $bug->severity) == 'show stopper' ? 'selected' : '' }}>{{trans('cruds.status.show_stopper')}}</option>
-                            <option value="must be fixed"   {{ old('severity', $bug->severity) == 'must be fixed'? 'selected' : '' }}>{{trans('cruds.status.must_fixed')}}</option>
+                            <option value="show_stopper"    {{ old('severity', $bug->severity) == 'show stopper' ? 'selected' : '' }}>{{trans('cruds.status.show_stopper')}}</option>
+                            <option value="must_fixed"      {{ old('severity', $bug->severity) == 'must be fixed'? 'selected' : '' }}>{{trans('cruds.status.must_fixed')}}</option>
                         </select>
 {{--                        <input class="form-control {{ $errors->has('severity') ? 'is-invalid' : '' }}" type="text" name="severity" id="severity" value="{{ old('severity', $bug->severity) }}">--}}
                         @if($errors->has('severity'))
@@ -143,27 +150,6 @@
                         @endif
                         <span class="help-block">{{ trans('cruds.bug.fields.reproducibility_helper') }}</span>
                     </div>
-        {{--            <div class="form-group">--}}
-        {{--                <label for="reporter">{{ trans('cruds.bug.fields.reporter') }}</label>--}}
-        {{--                <input class="form-control {{ $errors->has('reporter') ? 'is-invalid' : '' }}" type="number" name="reporter" id="reporter" value="{{ old('reporter', $bug->reporter) }}" step="1">--}}
-        {{--                @if($errors->has('reporter'))--}}
-        {{--                    <div class="invalid-feedback">--}}
-        {{--                        {{ $errors->first('reporter') }}--}}
-        {{--                    </div>--}}
-        {{--                @endif--}}
-        {{--                <span class="help-block">{{ trans('cruds.bug.fields.reporter_helper') }}</span>--}}
-        {{--            </div>--}}
-
-        {{--            <div class="form-group">--}}
-        {{--                <label for="client_visible">{{ trans('cruds.bug.fields.client_visible') }}</label>--}}
-        {{--                <input class="form-control {{ $errors->has('client_visible') ? 'is-invalid' : '' }}" type="text" name="client_visible" id="client_visible" value="{{ old('client_visible', $bug->client_visible) }}">--}}
-        {{--                @if($errors->has('client_visible'))--}}
-        {{--                    <div class="invalid-feedback">--}}
-        {{--                        {{ $errors->first('client_visible') }}--}}
-        {{--                    </div>--}}
-        {{--                @endif--}}
-        {{--                <span class="help-block">{{ trans('cruds.bug.fields.client_visible_helper') }}</span>--}}
-        {{--            </div>--}}
                 </div>
             </div>
             <div class="clearfix"></div>

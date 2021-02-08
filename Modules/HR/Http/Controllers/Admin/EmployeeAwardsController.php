@@ -27,7 +27,10 @@ class EmployeeAwardsController extends Controller
     {
         abort_if(Gate::denies('employee_award_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $users = [];
+        foreach (User::where('banned', 0)->get() as $key => $value) {
+            $users[] = $value->accountDetail()->where('employment_id', '!=', null)->pluck('fullname', 'user_id')->prepend(trans('global.pleaseSelect'), '');
+        }
 
         return view('hr::admin.employeeAwards.create', compact('users'));
     }
@@ -43,8 +46,10 @@ class EmployeeAwardsController extends Controller
     {
         abort_if(Gate::denies('employee_award_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
-
+        $users = [];
+        foreach (User::where('banned', 0)->get() as $key => $value) {
+            $users[] = $value->accountDetail()->where('employment_id', '!=', null)->pluck('fullname', 'user_id')->prepend(trans('global.pleaseSelect'), '');
+        }
         $employeeAward->load('user');
 
         return view('hr::admin.employeeAwards.edit', compact('users', 'employeeAward'));
@@ -57,14 +62,12 @@ class EmployeeAwardsController extends Controller
         return redirect()->route('hr.admin.employee-awards.index');
     }
 
-    public function show(EmployeeAward $employeeAward)
-    {
-        abort_if(Gate::denies('employee_award_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        $employeeAward->load('user');
-
-        return view('hr::admin.employeeAwards.show', compact('employeeAward'));
-    }
+    // public function show(EmployeeAward $employeeAward)
+    // {
+    //     abort_if(Gate::denies('employee_award_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+    //     $employeeAward->load('user');
+    //     return view('hr::admin.employeeAwards.show', compact('employeeAward'));
+    // }
 
     public function destroy(EmployeeAward $employeeAward)
     {

@@ -86,8 +86,8 @@
  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 </head>
 
-<body>
-    <div class="page-break" dir="auto">
+<body dir="{{app()->getLocale() == 'ar' ? 'rtl' : 'ltr'}}">
+    <div class="page-break" dir="{{app()->getLocale() == 'ar' ? 'rtl' : 'ltr'}}">
 
         <table class="table borderless tbl_header">
             <tr>

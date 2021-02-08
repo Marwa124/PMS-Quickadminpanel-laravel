@@ -2,6 +2,11 @@
     <div>
 <!-- <h2>{{ this.$route }}</h2> -->
         <!-- /.content-header -->
+        <div style="position: relative;">
+            <alert-success :form="form" message="Your changes have been saved!"></alert-success>
+            <alert-errors :form="form" message="There were some problems with your input."></alert-errors>
+        </div>
+
         <section class="content">
             <div class="container-fulid">
                 <div class="card">
@@ -132,11 +137,12 @@
 
 <script>
 import Vue from 'vue'
-import { Form, HasError, AlertError } from 'vform'
+import { Form, HasError, AlertError, AlertErrors, AlertSuccess } from 'vform'
 const axios = require('axios').default;
 var id = window.location.href.split('/').pop();
 // import MixinChangeLocaleMessages from "./../../../mixins/MixinChangeLocaleMessages"
 export default {
+    components: {AlertErrors, AlertSuccess},
     props: ['userId'],
     mixins: [
         // MixinChangeLocaleMessages

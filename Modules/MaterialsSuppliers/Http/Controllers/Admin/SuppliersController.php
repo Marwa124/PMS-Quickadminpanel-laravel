@@ -8,7 +8,6 @@ use Modules\MaterialsSuppliers\Http\Requests\Destroy\MassDestroySupplierRequest;
 use Modules\MaterialsSuppliers\Http\Requests\Store\StoreSupplierRequest;
 use Modules\MaterialsSuppliers\Http\Requests\Update\UpdateSupplierRequest;
 use Modules\MaterialsSuppliers\Entities\CustomerGroup;
-use Spatie\Permission\Models\Permission;
 use Modules\MaterialsSuppliers\Entities\Supplier;
 use Gate;
 use Illuminate\Http\Request;
@@ -24,7 +23,6 @@ class SuppliersController extends Controller
         $suppliers = Supplier::all();
 
         $customer_groups = CustomerGroup::get();
-
         // $permissions = Permission::get();
 
         return view('materialssuppliers::admin.suppliers.index', compact('suppliers', 'customer_groups'));

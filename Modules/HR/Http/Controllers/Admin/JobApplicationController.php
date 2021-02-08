@@ -6,17 +6,15 @@ use Modules\HR\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\MediaUploadingTrait;
 use App\Models\User;
 use Modules\HR\Http\Requests\Destroy\MassDestroyJobApplicationRequest;
-use Modules\HR\Http\Requests\Store\StoreJobApplicationRequest;
-use Modules\HR\Http\Requests\Update\UpdateJobApplicationRequest;
 use Modules\HR\Entities\JobApplication;
-use Modules\HR\Entities\JobCircular;
 use Gate;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Modules\HR\Entities\AccountDetail;
-use Spatie\MediaLibrary\Models\Media;
+use Modules\HR\Entities\Designation;
+use PDFAnony\TCPDF\Facades\AnonyPDF;
 use Symfony\Component\HttpFoundation\Response;
+// use PDF;
 
 class JobApplicationController extends Controller
 {
@@ -26,7 +24,7 @@ class JobApplicationController extends Controller
     {
         abort_if(Gate::denies('job_application_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $jobApplications = JobApplication::all();
+        $jobApplications = JobApplication::orderBy('created_at', 'desc')->get();
 
         $circularId = '';
         if (count(request()->all()) > 0) {
@@ -39,40 +37,33 @@ class JobApplicationController extends Controller
         return view('hr::admin.jobApplications.index', compact('jobApplications', 'circularId'));
     }
 
-    // public function create()
-    // {
-    //     abort_if(Gate::denies('job_application_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+    public function generatePDF($application_id, $local)
+    {
+        // abort_if(Gate::denies('generate_hr_letter'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-    //     $job_circulars = JobCircular::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $detail['details'] = JobApplication::find($application_id);
+        if ($local == 'ar') {
+            $html = view('hr::admin.jobApplications.pdf_ar', $detail)->render(); // file render
+        }else {
+            $html = view('hr::admin.jobApplications.pdf_ar', $detail)->render(); // file render
+            // $html = view('hr::admin.jobApplications.pdf_en', $detail)->render(); // file render
+        }
 
-    //     return view('hr::admin.jobApplications.create', compact('job_circulars'));
-    // }
+        $pdfarr = [
+            'title'=>'HR Letter',
+            'data'=>$html,
+            'header'=>['show'=>false], 
+            'footer'=>['show'=>false], 
+            'font'=>'aealarabiya', //  dejavusans, aefurat ,aealarabiya ,times
+            'font-size'=>12,
+            'text'=>'',
+            'rtl'=>($local == 'ar') ? true : false ,
+            'filename'=>'HR Letter_'.rand(1, 999).'.pdf',
+            'display'=>'download', // stream , download , print
+        ];
 
-    // public function store(StoreJobApplicationRequest $request)
-    // {
-    //     $jobApplication = JobApplication::create($request->all());
-
-    //     if ($request->input('resume', false)) {
-    //         $jobApplication->addMedia(storage_path('tmp/uploads/' . $request->input('resume')))->toMediaCollection('resume');
-    //     }
-
-    //     if ($media = $request->input('ck-media', false)) {
-    //         Media::whereIn('id', $media)->update(['model_id' => $jobApplication->id]);
-    //     }
-
-    //     return redirect()->route('hr.admin.job-applications.index');
-    // }
-
-    // public function edit(JobApplication $jobApplication)
-    // {
-    //     abort_if(Gate::denies('job_application_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-    //     $job_circulars = JobCircular::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
-
-    //     $jobApplication->load('job_circular');
-
-    //     return view('hr::admin.jobApplications.edit', compact('job_circulars', 'jobApplication'));
-    // }
+       AnonyPDF::HTML($pdfarr);
+    }
 
     // Update Application Status
     public function update(JobApplication $jobApplication)
@@ -89,13 +80,20 @@ class JobApplicationController extends Controller
                     'name' => explode(' ', $jobApplication->name)[0],
                     'email' => $jobApplication->email,
                     'password' => Hash::make(explode(' ', $jobApplication->name)[0] . '@123'),
+                    'banned' => 0,
                 ]);
-    
+
+                $designation_id = $jobApplication->job_circular()->first()->designation_id;
+                $incrementId = Designation::find($designation_id)->accountDetails()->get()->count()+1;
+
+                $designationHasDepartment = Designation::find($designation_id)->department()->first(); 
+                $department_id  = $designationHasDepartment ? $designationHasDepartment->id : '';
                 AccountDetail::create([
                     'fullname' => $jobApplication->name,
                     'mobile'   => $jobApplication->mobile,
                     'user_id'  => $userObject->id,
-                    'designation_id' => $jobApplication->job_circular()->first()->designation_id,
+                    'employment_id' => $department_id . sprintf('%02d', $incrementId+1),
+                    'designation_id' => $designation_id,
                 ]);
                 DB::commit();
 

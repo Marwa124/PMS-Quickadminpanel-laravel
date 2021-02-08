@@ -21,6 +21,12 @@ class StoreDesignationRequest extends FormRequest
             'designation_name' => [
                 'string',
                 'required',
+                'unique:designations,designation_name',
+            ],
+            'designation_name_ar' => [
+                'string',
+                'nullable',
+                'unique:designations,designation_name_ar',
             ],
             'department_id' => [
                 'integer',
@@ -29,12 +35,6 @@ class StoreDesignationRequest extends FormRequest
             'designation_leader_id' => [
                 'integer',
                 'nullable',
-            ],
-            'permissions.*'    => [
-                'integer',
-            ],
-            'permissions'      => [
-                'array',
             ],
         ];
     }

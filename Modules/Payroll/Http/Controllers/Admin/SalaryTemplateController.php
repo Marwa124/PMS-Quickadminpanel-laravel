@@ -88,16 +88,18 @@ class SalaryTemplateController extends Controller
         $salaryItem->update($request->all());
 
         // !!!: Add data to Salary Allowances
-        try {
-            foreach ($request->allowance as $key => $value) {
-                SalaryAllowance::create([
-                    'name' => $key,
-                    'value' => $value,
-                    'salary_template_id' => $id
-                ]);
+        if ($request->allowance) {
+            try {
+                foreach ($request->allowance as $key => $value) {
+                    SalaryAllowance::create([
+                        'name' => $key,
+                        'value' => $value,
+                        'salary_template_id' => $id
+                    ]);
+                }
+            } catch (\Exception $e) {
+                return $e->getMessage();
             }
-        } catch (\Exception $e) {
-            return $e->getMessage();
         }
         // !!!: Add data to Salary Deductions
         try {
