@@ -122,11 +122,7 @@ if (!function_exists('time_ago')) {
 
 if (!function_exists('setActivity')) {
 
-<<<<<<< HEAD
     function setActivity($module,$module_field_id,$activity_en,$activity_ar,$module_value_en,$module_value_ar,$link=null)
-=======
-    function setActivity($module, $module_field_id, $activity, $module_value)
->>>>>>> d6251d847fc8fb7c452f5751587921bdcfbc35f6
     {
         $activityData = [
             'user_id'           =>  auth()->user()->id,
@@ -150,11 +146,7 @@ if (!function_exists('generate_proposal_number')) {
     function generate_proposal_number()
     {
 
-<<<<<<< HEAD
-        $lastrecorder=Proposal::max('id');
-=======
         $lastrecorder = Proposal::max('id'); //10
->>>>>>> d6251d847fc8fb7c452f5751587921bdcfbc35f6
         $date = \Carbon\Carbon::now();
         if ($lastrecorder == null) {
             $nextPoNumber = 'PRO-' . $date->isoFormat('D/MMM/Y') . '/' . '0001';
@@ -192,7 +184,6 @@ if (!function_exists('get_taxes')) {
     function get_taxes($id)
     {
 
-<<<<<<< HEAD
         $taxes=TaxRate::findOrFail($id);
 
        return $taxes;
@@ -204,10 +195,7 @@ if (!function_exists('ratingColor')) {
     function ratingColor($rating)  {
         $colors = ['warning','info','danger','success','primary'];
         return $colors[$rating - 1];
-=======
-        $taxes = TaxRate::findOrFail($id);
-
-        return $taxes;
+    
     }
 }
 
@@ -219,6 +207,5 @@ if (!function_exists('settings')) {
     {
         $config = Config::where('key', $key)->first();
         return $config ? $config->value : $alt;
->>>>>>> d6251d847fc8fb7c452f5751587921bdcfbc35f6
     }
 }
