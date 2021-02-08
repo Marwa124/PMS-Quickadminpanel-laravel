@@ -59,19 +59,21 @@ class StockCategoryController extends Controller
         return view('finance::admin.stock_category.edit', compact('payment'));
     }
 
-    public function update(Request $request,$id)
+    public function update(Request $request)
     {
+
         $request->validate([
             'name'  => 'required'
         ]);
-        StockCategory::findOrFail($id)->update($request->all());
+        StockCategory::findOrFail($request->id)->update($request->all());
 
         return redirect()->route('finance.admin.stock_category.index');
     }
 
     public function show($id)
     {
-
+        $stock = StockCategory::findOrFail($id);
+        return  response()->json($stock);
     }
 
 

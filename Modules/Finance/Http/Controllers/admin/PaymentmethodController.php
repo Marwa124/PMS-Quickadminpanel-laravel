@@ -28,7 +28,11 @@ class PaymentmethodController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name'  => 'required'
+            'name'  => ['required',
+                'string',
+                'max:15',
+                'regex:/^[a-zA-Z]*([a-zA-Z][a-zA-Z])[a-zA-Z]*$/'
+            ]
         ]);
          PaymentMethod::create($request->all());
 
@@ -45,7 +49,11 @@ class PaymentmethodController extends Controller
     public function update(Request $request,$id)
     {
         $request->validate([
-            'name'  => 'required'
+            'name'  => ['required',
+                'string',
+                'max:15',
+                'regex:/^[a-zA-Z]*([a-zA-Z][a-zA-Z])[a-zA-Z]*$/'
+            ]
         ]);
         PaymentMethod::findOrFail($id)->update($request->all());
 
