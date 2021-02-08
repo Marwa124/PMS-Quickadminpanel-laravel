@@ -230,15 +230,10 @@
                                 @endforeach
                             </ul>
                         </div>
-<<<<<<< HEAD
                     @endif
 {{--                        to get current localization (language)--}}
                         <input type="hidden" name="getLocale" id="getLocale" value="{{app()->getLocale()}}"/>
                         @yield('content')
-=======
-                    @endif --}}
-                    @yield('content')
->>>>>>> d6251d847fc8fb7c452f5751587921bdcfbc35f6
 
                 </div>
 

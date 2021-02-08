@@ -52,20 +52,45 @@ class StockCategoryController extends Controller
         return redirect()->route('finance.admin.stock_category.index');
     }
 
-    public function edit( $payment)
+    public function edit($id)
     {
         abort_if(Gate::denies('stock_category_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        $payment = StockCategory::findOrFail($payment);
-        return view('finance::admin.stock_category.edit', compact('payment'));
+        $all_categories = StockCategory::all();
+        $sub_category = StockSubCategory::findOrFail($id);
+        return view('finance::admin.stock_category.edit', compact('sub_category','all_categories'));
     }
 
     public function update(Request $request)
     {
 
         $request->validate([
-            'name'  => 'required'
+            'name_sub_category'  => 'required'
         ]);
-        StockCategory::findOrFail($request->id)->update($request->all());
+
+
+        if($request->sub_category == null){
+
+            $request->validate([
+                'name'  => 'required|string'
+            ]);
+            StockSubCategory::findOrFail($request->id)->delete();
+
+            $parent = StockCategory::create([
+                'name'                  => $request->name
+            ]);
+            StockSubCategory::create([
+                'name'                  => $request->name_sub_category,
+                'stock_category_id'     => $parent->id
+            ]);
+
+        }else{
+
+            StockSubCategory::findOrFail($request->id)->update([
+                'name'      => $request->name_sub_category,
+                'stock_category_id'      => $request->sub_category,
+            ]);
+
+        }
 
         return redirect()->route('finance.admin.stock_category.index');
     }
@@ -102,6 +127,18 @@ class StockCategoryController extends Controller
         StockSubCategory::whereIn('id', request('ids'))->delete();
 
         return response(null, Response::HTTP_NO_CONTENT);
+    }
+
+
+    public function update_main_category(Request $request)
+    {
+
+        $request->validate([
+            'name'  => 'required'
+        ]);
+        StockCategory::findOrFail($request->id)->update($request->all());
+
+        return redirect()->route('finance.admin.stock_category.index');
     }
 
 }
