@@ -598,13 +598,7 @@ class ProjectsController extends Controller
                     $paid_expense += Invoice::get_invoice_paid_amount($v_expenses->invoices_id);
                 }
             }
-<<<<<<< HEAD
-
             $title = $project->{'name_'.app()->getLocale()} . '-project.pdf';
-=======
- 
-            $title = $project->name . '-project.pdf';
->>>>>>> f858b82c81b6d6e635c02465f577f02806b34bab
             $compact = [
                 'project'   => $project,
                 'total_expense' => $total_expense,
