@@ -18,11 +18,11 @@ table.dataTable tbody th.select-checkbox::after {
 .dataTables_filter,
 .dt-buttons {
     margin-bottom: 0.333em;
-    margin-top: .2rem;
+    margin-top: 0.2rem;
 }
 
 .dataTables_filter {
-    margin-right: .2rem;
+    margin-right: 0.2rem;
 }
 
 .dt-buttons .btn {
@@ -79,7 +79,7 @@ table.dataTable thead .sorting_desc {
 
 .btn-default.focus,
 .btn-default:focus {
-    box-shadow: 0 0 0 .2rem rgba(209, 213, 215, .5);
+    box-shadow: 0 0 0 0.2rem rgba(209, 213, 215, 0.5);
 }
 
 .btn-default:hover {
@@ -100,12 +100,12 @@ table.dataTable thead .sorting_desc {
     font-weight: bold;
 }
 .searchable-fields {
-    padding-left:5px;
+    padding-left: 5px;
 }
 .searchable-link {
-    padding:0 5px 0 5px;
+    padding: 0 5px 0 5px;
 }
-.searchable-link:hover   {
+.searchable-link:hover {
     cursor: pointer;
     background: #eaeaea;
 }
@@ -126,18 +126,71 @@ table.dataTable thead .sorting_desc {
 .c-sidebar-brand .c-sidebar-brand-full:hover {
     color: inherit;
 }
-.c-sidebar .c-active.c-sidebar-nav-dropdown-toggle, .c-sidebar .c-sidebar-nav-link.c-active{
-    background-color: blue !important;
+.c-sidebar .c-active.c-sidebar-nav-dropdown-toggle,
+.c-sidebar .c-sidebar-nav-link.c-active {
+    background-color: blue;
 }
 
-.sub-dropdown{
+.sub-dropdown {
     margin-left: -22px !important;
 }
 
-.self-item-link{
+.self-item-link {
     margin-left: -40px !important;
 }
 
-.sub-parent-dropdown{
+.sub-parent-dropdown {
     margin-left: -36px !important;
 }
+
+.c-header {
+    /* background: #ec2121 !important; */
+}
+.c-header-nav-link {
+    color: #ffffff !important;
+}
+
+#sidebar {
+    background-color: #3a3f51 !important;
+}
+
+.c-sidebar .c-active.c-sidebar-nav-dropdown-toggle,
+.c-sidebar .c-sidebar-nav-link.c-active {
+    color: #f05050 !important;
+    background-color: unset !important;
+    background: unset !important;
+}
+.c-sidebar .c-sidebar-nav-dropdown-toggle:hover,
+.c-sidebar .c-sidebar-nav-link:hover {
+    color: #f05050 !important;
+    background: unset !important;
+}
+
+.select2-container .select2-selection--single {
+    height: 44px !important;
+}
+.select2-container--default .select2-selection--single {
+    border-radius: 0px !important;
+}
+
+.toastjs-container {
+    z-index: 9999 !important;
+}
+.toastjs-container p {
+    font-size: 15px !important;
+    color: black !important;
+    font-weight: bold !important;
+}
+
+
+/*
+.error_session_response{
+    transition: all 0.4s ease-in-out;
+}
+.slideUp {
+    height: 0;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    color: transparent;
+} */

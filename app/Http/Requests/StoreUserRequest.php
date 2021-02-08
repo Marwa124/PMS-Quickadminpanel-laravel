@@ -34,16 +34,11 @@ class StoreUserRequest extends FormRequest
             'roles'                => [
                 'required',
                 'array',
+                'exists:roles,id'
             ],
             'username'             => [
                 'string',
                 'nullable',
-            ],
-            'permissions.*'        => [
-                'integer',
-            ],
-            'permissions'          => [
-                'array',
             ],
             'smtp_email_type'      => [
                 'string',

@@ -12,6 +12,7 @@ class UpdateHourlyRateRequest extends FormRequest
     public function authorize()
     {
         return Gate::allows('hourly_rate_edit');
+        // return true;
     }
 
     public function rules()
@@ -22,7 +23,7 @@ class UpdateHourlyRateRequest extends FormRequest
                 'required',
             ],
             'hourly_rate'  => [
-                'string',
+                'integer',
                 'required',
             ],
         ];

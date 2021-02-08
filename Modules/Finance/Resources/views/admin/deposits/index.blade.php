@@ -1,4 +1,5 @@
 @extends('layouts.admin')
+
 @section('content')
     @can('deposits_create')
         <div style="margin-bottom: 10px;" class="row">

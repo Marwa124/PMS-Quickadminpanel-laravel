@@ -2,7 +2,25 @@
 <project version="4">
   <component name="PublishConfigData">
     <serverData>
+<<<<<<< HEAD
       <paths name="pms_ftp">
+=======
+      <paths name="EGO">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="Health-Tech">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="OTG">
+>>>>>>> f858b82c81b6d6e635c02465f577f02806b34bab
         <serverdata>
           <mappings>
             <mapping local="$PROJECT_DIR$" web="/" />

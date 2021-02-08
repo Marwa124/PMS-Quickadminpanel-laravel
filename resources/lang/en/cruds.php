@@ -996,9 +996,9 @@ return [
             'user_helper'              => ' ',
             'leave_application'        => 'Leave Application',
             'leave_application_helper' => ' ',
-            'date_in'                  => 'Date In',
+            'date_in'                  => 'Time In',
             'date_in_helper'           => ' ',
-            'date_out'                 => 'Date Out',
+            'date_out'                 => 'Time Out',
             'date_out_helper'          => ' ',
             'attendance_status'        => 'Attendance Status',
             'attendance_status_helper' => ' ',
@@ -1010,6 +1010,8 @@ return [
             'updated_at_helper'        => ' ',
             'deleted_at'               => 'Deleted at',
             'deleted_at_helper'        => ' ',
+            'date'                  => 'Date',
+            'date_helper'               => ' ',
         ],
     ],
     ////////////Employee Requests Meetings///////////////
@@ -3576,6 +3578,13 @@ return [
         'achieved'               => 'Achieved',
         'failed'                 => 'Failed',
 
+        'annual'                 => 'Annual Leave',
+        'emergency'              => 'Emergency Leave',
+        'sick'                   => 'Sick Leave',
+        'home'                   => 'Working From Home',
+        'clockLate'              => 'Clock in Late',
+        'token'                  => 'Token',
+
     ],
 
     'messages' => [
@@ -3614,8 +3623,18 @@ return [
         'milestone_not_have_project'                => 'This Milestone don\'t have Project',
         'project_of_milestone_not_have_department'  => 'The Project Of Milestone don\'t have Department',
         'project_of_task_not_have_department'       => 'The Project Of Task don\'t have Department',
+<<<<<<< HEAD
         'time_date_after_or_equal'                  => 'The Time Of End Date Must Be After Or Equal ',
     ]
 
+=======
+    ],
+>>>>>>> f858b82c81b6d6e635c02465f577f02806b34bab
 
+    'form' => [
+        'dismatch_password' => 'Password dose not match',
+        'old_password_required' => 'Old Password Required',
+        'new_password_required' => 'New password required',
+        'new_password_confirm' => 'New password Confirmation required',
+    ],
 ];

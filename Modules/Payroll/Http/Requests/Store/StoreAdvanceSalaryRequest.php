@@ -11,56 +11,43 @@ class StoreAdvanceSalaryRequest extends FormRequest
 {
     public function authorize()
     {
-        // return Gate::allows('advance_salary_create');
-        return true;
+        return Gate::allows('advance_salary_create');
+        // return true;
     }
 
     public function rules()
     {
         return [
-            'user_id'        => [
+            'user_id' => [
                 'required',
                 'integer',
             ],
             'amount' => [
-                'float',
+                'integer',
                 'required',
             ],
-            'month'   => [
+            'month' => [
                 'string',
                 'nullable',
             ],
-            'reason'   => [
+            'reason' => [
                 'string',
                 'nullable',
             ],
-            'type'   => [
+            'type' => [
                 'string',
                 'required',
             ],
-            // 'request_date'   => [
-            //     'required',
-            //     'date_format:' . config('panel.date_format'),
-            // ],
-            // 'status'         => [
-            //     'required',
-            //     'integer',
-            //     'min:-2147483648',
-            //     'max:2147483647',
-            // ],
-            // 'approve_by'     => [
-            //     'nullable',
-            //     'integer',
-            //     'min:-2147483648',
-            //     'max:2147483647',
-            // ],
         ];
     }
 
-    // public function messages()
-    // {
-    //     return [
-    //         'type.required' => 'IT\'s a required field',
-    //     ];
-    // }
+    public function messages()
+    {
+        return [
+            'amount.required' => trans('cruds.accountDetail.salaryForm.amount'),
+            'amount.integer' => trans('cruds.accountDetail.salaryForm.amount_int'),
+            'type.required'   => trans('cruds.accountDetail.salaryForm.type'),
+            'type.string'   => trans('cruds.accountDetail.salaryForm.type_str'),
+        ];
+    }
 }

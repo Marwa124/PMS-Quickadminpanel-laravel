@@ -9,7 +9,7 @@ class AddRelationshipFieldsToSuppliersTable extends Migration
     public function up()
     {
         Schema::table('suppliers', function (Blueprint $table) {
-            $table->unsignedInteger('customer_group_id');
+            $table->unsignedInteger('customer_group_id')->nullable();
             $table->foreign('customer_group_id', 'customer_group_fk_2178477')->references('id')->on('customer_groups');
         });
     }

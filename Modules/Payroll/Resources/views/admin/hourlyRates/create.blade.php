@@ -21,7 +21,9 @@
             </div>
             <div class="form-group">
                 <label class="required" for="hourly_rate">{{ trans('cruds.hourlyRate.fields.hourly_rate') }}</label>
-                <input class="form-control {{ $errors->has('hourly_rate') ? 'is-invalid' : '' }}" type="text" name="hourly_rate" id="hourly_rate" value="{{ old('hourly_rate', '') }}" required>
+                <input class="form-control {{ $errors->has('hourly_rate') ? 'is-invalid' : '' }}" 
+                    type="integer" name="hourly_rate" id="hourly_rate" value="{{ old('hourly_rate', '') }}" 
+                    placeholder="ex: 2000" required>
                 @if($errors->has('hourly_rate'))
                     <div class="invalid-feedback">
                         {{ $errors->first('hourly_rate') }}

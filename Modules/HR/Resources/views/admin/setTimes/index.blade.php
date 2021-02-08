@@ -70,11 +70,11 @@
                                 {{ $setTime->allow_leave_early ?? '' }}
                             </td>
                             <td>
-                                @can('set_time_show')
+                                {{-- @can('set_time_show')
                                     <a class="btn btn-xs btn-primary" href="{{ route('hr.admin.set-times.show', $setTime->id) }}">
                                         {{ trans('global.view') }}
                                     </a>
-                                @endcan
+                                @endcan --}}
 
                                 @can('set_time_edit')
                                     <a class="btn btn-xs btn-info" href="{{ route('hr.admin.set-times.edit', $setTime->id) }}">

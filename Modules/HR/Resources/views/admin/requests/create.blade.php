@@ -13,7 +13,9 @@
             <div class="form-group">
                 <label class="required">{{ trans('cruds.meetingMinute.fields.attendees') }}</label>
                 <select class="form-control" name="users[]" id="attendees" multiple="multiple">
-                    @foreach($users as $label)
+                    <option value="" disabled selected>{{trans('global.pleaseSelect')}}</option>
+                    
+                    @foreach($users as $key => $label)
                         @foreach ($label as $key => $item)
                            @if ($key != 0)
                             <option value="{{ $key }}" {{ old('users') === (string) $key ? 'selected' : '' }} {{ $key == 0 ? 'disabled' : '' }}>{{ $item }}</option>

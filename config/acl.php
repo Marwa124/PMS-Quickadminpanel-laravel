@@ -128,7 +128,6 @@
                 'payment_method_delete', // done
                 'payment_method_edit', // done
                 'payment_method_create', // done
-                'payment_method', // done
                 'transfer', // done
                 'transfer_create', // done
                 'transfer_edit', // done
@@ -155,23 +154,26 @@
                 'invoice_edit', // done
                 'invoice_delete', // done
                 'invoice_show', // done
+                'office_asset', // done
+                'stock_category', // done
+                'stock_category_delete', // done
+                'stock_category_edit', // done
+                'stock_category_create', // done
             ],
 
             'penalty_category' => [
                 'penalty_category_access',
                 'penalty_category_create',
                 'penalty_category_delete',
-
+                'penalty_category_edit',
             ],
 
             // Evaluations
             'evaluation' => [
                 'evaluation_access',
                 'evaluation_create',
-            ],
-
-            'employee_evaluation' => [
-                'employee_evaluation_access',
+                'evaluation_print',
+                'evaluation_delete',
             ],
             // End Evaluations
 
@@ -259,6 +261,8 @@
                 'employee_award_delete',
                 'employee_award_access',
                 'employees_access',
+                'appointment_letter',
+                'account_detail_evaluate',
             ],
 
             'requests' => [
@@ -279,7 +283,7 @@
                 'training_access',
                 'employee_request_create',
                 'employee_request_edit',
-                'employee_request_show',
+                // 'employee_request_show',
                 'employee_request_delete',
                 'employee_request_access',
             ],
@@ -324,6 +328,7 @@
                 'job_application_show',
                 'job_application_delete',
                 'job_application_access',
+                'generate_hr_letter',
             ],
 
             'proposals' => [
@@ -411,6 +416,7 @@
                 'salary_payslip_delete',
                 'salary_payslip_access',
                 'hourly_rate_create',
+                'hourly_rate_edit',
                 'hourly_rate_delete',
                 'hourly_rate_access',
                 'online_payment_create',
@@ -565,14 +571,6 @@
             //     'index-sales_returns'
             // ],
 
-            // 'purchases' => [
-            //     'index-purchases'
-            // ],
-
-            // 'purchase_returns' => [
-            //     'index-purchase_returns'
-            // ],
-
             'suppliers' => [
                 'materials_supplier_access',
                 'supplier_access',
@@ -609,6 +607,14 @@
                 'purchase_payment_delete',
             ],
 
+            'purchase' => [
+                'purchase_access',
+                'purchase_create',
+                'purchase_edit',
+                'purchase_show',
+                'purchase_delete'
+            ],
+
             // 'expenses' => [
             //     'index-expenses',
             //     'create-expenses',
@@ -621,14 +627,6 @@
             //     'create-fixed_assets',
             //     'edit-fixed_assets',
             //     'delete-fixed_assets',
-            // ],
-
-            // 'purchase_orders' => [
-            //     'index-purchase_orders',
-            //     'create-purchase_orders',
-            //     'edit-purchase_orders',
-            //     'profile-purchase_orders',
-            //     'delete-purchase_orders',
             // ],
 
             // 'todos' => [

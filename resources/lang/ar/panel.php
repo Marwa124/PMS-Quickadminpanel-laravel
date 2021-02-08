@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'site_title' => 'laravel_pms',
+    'site_title' => 'OneTecGroup PMS',
 ];

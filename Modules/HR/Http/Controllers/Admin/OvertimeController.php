@@ -31,7 +31,10 @@ class OvertimeController extends Controller
     {
         abort_if(Gate::denies('overtime_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $users = [];
+        foreach (User::where('banned', 0)->get() as $key => $value) {
+            $users[] = $value->accountDetail()->where('employment_id', '!=', null)->pluck('fullname', 'user_id')->prepend(trans('global.pleaseSelect'), '');
+        }
 
         return view('hr::admin.overtimes.create', compact('users'));
     }
@@ -51,7 +54,10 @@ class OvertimeController extends Controller
     {
         abort_if(Gate::denies('overtime_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $users = [];
+        foreach (User::where('banned', 0)->get() as $key => $value) {
+            $users[] = $value->accountDetail()->where('employment_id', '!=', null)->pluck('fullname', 'user_id')->prepend(trans('global.pleaseSelect'), '');
+        }
 
         $overtime->load('user');
 
@@ -78,14 +84,14 @@ class OvertimeController extends Controller
     {
         abort_if(Gate::denies('overtime_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $overtime->delete();
+        $overtime->forceDelete();
 
         return back();
     }
 
     public function massDestroy(MassDestroyOvertimeRequest $request)
     {
-        Overtime::whereIn('id', request('ids'))->delete();
+        Overtime::whereIn('id', request('ids'))->forceDelete();
 
         return response(null, Response::HTTP_NO_CONTENT);
     }

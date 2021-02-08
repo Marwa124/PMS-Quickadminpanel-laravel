@@ -182,6 +182,11 @@ return [
         LaravelFCM\FCMServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         App\Providers\ViewServiceProvider::class,
+
+        PDFAnony\TCPDF\AnonyServiceProvider::class,
+        
+        Barryvdh\TranslationManager\ManagerServiceProvider::class,
+
     ],
 
     /*
@@ -238,6 +243,9 @@ return [
         'FCM'      => LaravelFCM\Facades\FCM::class,
         'FCMGroup' => LaravelFCM\Facades\FCMGroup::class, // Optional
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+
+        'PDF' =>  PDFAnony\TCPDF\Facades\AnonyPDF::class,
+
         'MPDF' => Meneses\LaravelMpdf\Facades\LaravelMpdf::class
     ],
 

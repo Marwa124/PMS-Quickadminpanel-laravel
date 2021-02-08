@@ -84,6 +84,15 @@
                 <span class="help-block">{{ trans('cruds.designation.fields.designation_name_helper') }}</span>
             </div>
             <div class="form-group">
+                <label class="required" for="designation_name_ar">{{ trans('cruds.designation.fields.designation_name_ar') }}</label>
+                <input class="form-control {{ $errors->has('designation_name_ar') ? 'is-invalid' : '' }}" type="text" name="designation_name_ar" id="designation_name_ar" value="{{ old('designation_name_ar', $designation->designation_name_ar) }}" required>
+                @if($errors->has('designation_name_ar'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('designation_name_ar') }}
+                    </div>
+                @endif
+            </div>
+            <div class="form-group">
                 <label for="designation_leader_id">Select Designation Leader</label>
                 <select class="form-control select2 {{ $errors->has('leaderId') ? 'is-invalid' : '' }}" name="designation_leader_id" id="designation_leader_id">
                     @foreach($users as $id => $user)

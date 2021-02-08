@@ -1,4 +1,8 @@
 @extends('layouts.admin')
+@section('styles')
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/css/datepicker.min.css" rel="stylesheet">
+@endsection
+
 @section('content')
 @inject('salaryTemplateModel', 'Modules\Payroll\Entities\SalaryTemplate')
 @inject('salaryDeductionModel', 'Modules\Payroll\Entities\SalaryDeduction')
@@ -36,7 +40,7 @@
             </div>
             <div class="form-group margin d-flex justify-content-center">
                 <div class="nav-link mr-2"><i class="fa fa-calendar"></i></div>
-                <input class="form-control w-50" type="text" name="date" id="datepicker" value="{{ $date }}" required>
+                <input class="form-control w-50 datepicker" type="text" name="date" id="datepicker" value="{{ $date }}" required>
               </span>
           </div>
 
@@ -261,6 +265,8 @@
 @endsection
 @section('scripts')
 @parent
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/js/bootstrap-datepicker.min.js"></script>
+
 <script>
     $(function () {
   let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)

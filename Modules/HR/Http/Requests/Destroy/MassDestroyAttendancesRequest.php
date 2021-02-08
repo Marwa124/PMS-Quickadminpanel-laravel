@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\HR\Http\Request\Destroy;
+namespace Modules\HR\Http\Requests\Destroy;
 
 use Gate;
 use Illuminate\Foundation\Http\FormRequest;
@@ -10,7 +10,7 @@ class MassDestroyAttendancesRequest extends FormRequest
 {
     public function authorize()
     {
-        abort_if(Gate::denies('attendances_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        // abort_if(Gate::denies('attendances_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return true;
     }

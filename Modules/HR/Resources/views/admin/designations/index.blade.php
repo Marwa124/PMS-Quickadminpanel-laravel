@@ -29,6 +29,9 @@
                             {{ trans('cruds.designation.fields.designation_name') }}
                         </th>
                         <th>
+                            {{ trans('cruds.designation.fields.designation_name_ar') }}
+                        </th>
+                        <th>
                             &nbsp;
                         </th>
                     </tr>
@@ -46,15 +49,18 @@
                                 {{ $designation->designation_name ?? '' }}
                             </td>
                             <td>
-                                @can('designation_show')
+                                {{ $designation->designation_name_ar ?? '' }}
+                            </td>
+                            <td>
+                                {{-- @can('designation_show')
                                     <a class="btn btn-xs btn-primary" href="{{ route('hr.admin.designations.show', $designation->id) }}">
                                         {{ trans('global.view') }}
                                     </a>
-                                @endcan
+                                @endcan --}}
 
                                 @can('designation_edit')
                                     <a class="btn btn-xs btn-info" href="{{ route('hr.admin.designations.edit', $designation->id) }}">
-                                        {{ trans('global.edit') }}
+                                        {{ trans('global.view') }} & {{ trans('global.edit') }}
                                     </a>
                                 @endcan
 

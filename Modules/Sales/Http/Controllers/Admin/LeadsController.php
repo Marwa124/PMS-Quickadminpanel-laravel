@@ -71,11 +71,10 @@ class LeadsController extends Controller
      */
     public function index()
     {
-        // $users = DB::connection('mysql2')->table('tbl_users')->get();
+
         $types = Type::all();
         $codes = Country::all();
         $users = User::with('accountDetail')->get();
-        // dd($users->first());
         return view('sales::admin.leads.index',compact('users','types','codes'));
     }
 
@@ -86,7 +85,7 @@ class LeadsController extends Controller
         if ($request->ajax()) {
 
             $leads = Lead::with('type','firstCall','secondCall','secondassign','addby')->select('leads.*');
-            // dd($leads);
+
                     $company = (!empty($request->get('company'))) ? ($request->get('company')) : ('');
                     if($company){
                      $leads->where('leads.company','like', '%' .$company. '%');
@@ -144,10 +143,6 @@ class LeadsController extends Controller
 
                     return DataTables::of($leads)
                     ->addIndexColumn()
-                    // ->editColumn('assign', function ($request) { 
-                    //      $requestActions = '';
-                    //    return $requestActions;
-                    //      }) 
                          ->editColumn('actions', function($request){
                             $actions =' <form class="text-center" action="'.route('sales.admin.leads.destroy',$request->id).'" method="post">
                             <a href="'.route('sales.admin.leads.edit',$request->id).'" calss="leads_edit" data-id="'.$request->id.'" data-toggle="modal" data-target="#exampleModal" 
@@ -202,7 +197,7 @@ class LeadsController extends Controller
                             // return '<a data-toggle="modal" data-target="#modal_first_assign" href="#">' . $data. '</a>';
                          })
                         ->editColumn('secondassign', function ($request) {
-                            // dd($request->secondassign);
+
                             $data =$request->secondassign && $request->secondassign->leaduser ? $request->secondassign->leaduser->fullname : '';
                              return $data;
                          })
@@ -353,23 +348,6 @@ class LeadsController extends Controller
             $lead->update($data);
 
 
-            // DB::connection('mysql2')->table('tbl_leads')->where('leads_id', $lead->client_id_on_pms)->update([
-            //     'leads_id' =>  $lead->client_id_on_pms,
-            //     'type_id' => $data['type_id'],
-            //     'product' => $data['product'],
-            //     'company_name' => $data['company'],
-            //     'site_url' => $data['site_url'],
-            //     'phone' => $data['phone1'],
-            //     'phone2' => $data['phone2'],
-            //     'email' => $data['email'],
-            //     'way_of_communication' => $data['way_of_communication'],
-            //     'notes' => $data['notes'],
-            //     'priority' => $data['priority'],
-            //     'lead_name' => $data['client_name'],
-            //     'contracted' => $data['contracted'],
-            //     'next_action_date' => $data['next_action_date'],
-            // ]);
-
 
 
             DB::commit();
@@ -397,9 +375,6 @@ class LeadsController extends Controller
             $call = Call::where('lead_id',$id)->delete();
             $lead = Lead::where('id', $id)->delete();
 
-            // DB::connection('mysql2')->table('tbl_leads')->where('leads_id', $id)->delete();
-
-
             DB::commit();
             return redirect()->route('sales.admin.leads.index');
 
@@ -411,19 +386,12 @@ class LeadsController extends Controller
 
 
 
-    //   public function assignLeadsView(){
-    //     $leads = Lead::all();
-    //     $users = DB::connection('mysql2')->table('tbl_users')->get();
-
-    //     return view('sales::admin.assign.create',compact('leads','users'));
-    //   }
-
 
 
           public function assignLeadsProcess(AssignLeadRequest $request){
 
-            //   try
-            //   {
+              try
+              {
                
 
                   foreach (request('ids') as $lead){
@@ -436,11 +404,11 @@ class LeadsController extends Controller
                       }
                   }
                   return response(null, Response::HTTP_NO_CONTENT);
-            //       return redirect(route('sales.admin.leads.index'));
-            //   }
-            //   catch (\Exception $e){
-            //       return back();
-            //   }
+                  return redirect(route('sales.admin.leads.index'));
+              }
+              catch (\Exception $e){
+                  return back();
+              }
           }
 
 

@@ -1,5 +1,7 @@
 @extends('layouts.admin')
 @section('content')
+@inject('trainingModel', 'Modules\HR\Entities\Training')
+@inject('accountDetailModel', 'Modules\HR\Entities\AccountDetail')
 
 <div class="card">
     <div class="card-header">
@@ -28,7 +30,10 @@
                             {{ trans('cruds.training.fields.user') }}
                         </th>
                         <td>
-                            {{ $training->user->name ?? '' }}
+                            @php
+                                $accountDetails = $accountDetailModel::where('user_id', $training->user->id)->select('fullname')->first();
+                            @endphp
+                            {{ $accountDetails->fullname ?? '' }}
                         </td>
                     </tr>
                     <tr>
@@ -36,7 +41,7 @@
                             {{ trans('cruds.training.fields.assigned_by') }}
                         </th>
                         <td>
-                            {{ App\Models\Training::ASSIGNED_BY_SELECT[$training->assigned_by] ?? '' }}
+                            {{ $trainingModel::ASSIGNED_BY_SELECT[$training->assigned_by] ?? '' }}
                         </td>
                     </tr>
                     <tr>
@@ -84,7 +89,7 @@
                             {{ trans('cruds.training.fields.status') }}
                         </th>
                         <td>
-                            {{ App\Models\Training::STATUS_SELECT[$training->status] ?? '' }}
+                            {{ $trainingModel::STATUS_SELECT[$training->status] ?? '' }}
                         </td>
                     </tr>
                     <tr>
@@ -92,7 +97,7 @@
                             {{ trans('cruds.training.fields.performance') }}
                         </th>
                         <td>
-                            {{ App\Models\Training::Performance_SELECT[$training->performance] ?? '' }}
+                            {{ $trainingModel::Performance_SELECT[$training->performance] ?? '' }}
                         </td>
                     </tr>
                     <tr>
@@ -113,16 +118,6 @@
                                     {{ trans('global.view_file') }}
                                 </a>
                             @endif
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.training.fields.permission') }}
-                        </th>
-                        <td>
-                            @foreach($training->permissions as $key => $permission)
-                                <span class="label label-info">{{ $permission->title }}</span>
-                            @endforeach
                         </td>
                     </tr>
                 </tbody>

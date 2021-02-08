@@ -29,51 +29,74 @@ class EvaluationController extends Controller
         return view('hr::admin.evaluations.index', compact('evaluations'));
     }
 
-    public function create()
-    {
-        // abort_if(Gate::denies('evaluation_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+    // public function create()
+    // {
+    //     // abort_if(Gate::denies('evaluation_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return view('hr::admin.evaluations.create');
-    }
+    //     return view('hr::admin.evaluations.create');
+    // }
 
-    public function store(StoreSetTimeRequest $request)
-    {
-        $setTime = SetTime::create($request->all());
+    // public function store(StoreSetTimeRequest $request)
+    // {
+    //     $setTime = SetTime::create($request->all());
 
-        if ($media = $request->input('ck-media', false)) {
-            Media::whereIn('id', $media)->update(['model_id' => $setTime->id]);
-        }
+    //     if ($media = $request->input('ck-media', false)) {
+    //         Media::whereIn('id', $media)->update(['model_id' => $setTime->id]);
+    //     }
 
-        return redirect()->route('hr.admin.set-times.index');
-    }
+    //     return redirect()->route('hr.admin.set-times.index');
+    // }
 
     public function edit($id)
     {
         // abort_if(Gate::denies('evaluation_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        
+
         $userAccount = AccountDetail::find($id);
         // $userAccount = AccountDetail::find($id)->load('user');
         $designation = $userAccount->designation()->first();
         $departmentTitle = $designation->department()->select('department_name', 'department_head_id')->first();
-        $departmentHead = AccountDetail::where('user_id', $departmentTitle->department_head_id)->select('fullname')->first();
+        $departmentHead = AccountDetail::where('user_id', $departmentTitle->department_head_id)->select('fullname', 'user_id')->first();
 
-        return view('hr::admin.evaluations.edit', compact('userAccount', 'designation', 'departmentTitle', 'departmentHead'));
+        $manager = 'false';
+        if($departmentTitle->department_head_id == $userAccount->user_id) {
+            $manager = 'true';
+        }
+
+        return view('hr::admin.evaluations.edit', compact('userAccount', 'designation', 'departmentTitle', 'departmentHead', 'manager'));
     }
 
-    public function update(UpdateSetTimeRequest $request, SetTime $setTime)
+    // public function update(UpdateSetTimeRequest $request, SetTime $setTime)
+    // {
+    //     $setTime->update($request->all());
+
+    //     return redirect()->route('hr.admin.set-times.index');
+    // }
+
+    public function show($id)
     {
-        $setTime->update($request->all());
+        // abort_if(Gate::denies('evaluation_pdf'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return redirect()->route('hr.admin.set-times.index');
-    }
+        $evaluation = Evaluation::find($id)->load('ratingEvaluations');
+        $userAccount = AccountDetail::where('user_id', $evaluation->user_id)->first();
+        $designation = $userAccount->designation()->first();
+        $departmentTitle = $designation->department()->select('department_name', 'department_head_id')->first();
+        $departmentHead = AccountDetail::where('user_id', $evaluation->manager_id)->select('fullname', 'user_id')->first();
 
-    public function show(SetTime $setTime)
-    {
-        abort_if(Gate::denies('set_time_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        $manager = 'false';
+        if($evaluation->type == 'manager') {
+            $manager = 'true';
+        }
+// dd($departmentHead);
+        return view('hr::admin.evaluations.show',
+            compact(
+                'evaluation',
+                'userAccount',
+                'designation',
+                'departmentTitle',
+                'departmentHead',
+                'manager'
+            ));
 
-        $setTime->load('user');
-
-        return view('hr::admin.setTimes.show', compact('setTime'));
     }
 
     public function destroy(SetTime $setTime)

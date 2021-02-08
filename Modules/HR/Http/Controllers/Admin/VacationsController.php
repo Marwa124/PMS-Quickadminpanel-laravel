@@ -22,7 +22,7 @@ class VacationsController extends Controller
     {
         abort_if(Gate::denies('vacation_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $vacations = Vacation::all();
+        $vacations = Vacation::get();
 
         return view('hr::admin.vacations.index', compact('vacations'));
     }
@@ -31,7 +31,10 @@ class VacationsController extends Controller
     {
         abort_if(Gate::denies('vacation_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $users = User::where('banned', 0)->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $users = [];
+        foreach (User::where('banned', 0)->get() as $key => $value) {
+            $users[] = $value->accountDetail()->where('employment_id', '!=', null)->pluck('fullname', 'user_id');
+        }
 
         return view('hr::admin.vacations.create', compact('users'));
     }
@@ -55,7 +58,10 @@ class VacationsController extends Controller
     {
         abort_if(Gate::denies('vacation_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $users = User::where('banned', 0)->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $users = [];
+        foreach (User::where('banned', 0)->get() as $key => $value) {
+            $users[] = $value->accountDetail()->where('employment_id', '!=', null)->pluck('fullname', 'user_id');
+        }
 
         $vacation->load('user');
 
@@ -71,8 +77,8 @@ class VacationsController extends Controller
                 if ($vacation->attachments) {
                     $vacation->attachments->delete();
                 }
-                $vacation->addMedia(storage_path('tmp\uploads\\' . $request->input('attachments')))->toMediaCollection('attachments');
             }
+            $vacation->addMedia(storage_path('tmp/uploads/' . $request->input('attachments')))->toMediaCollection('attachments');
         } elseif ($vacation->attachments) {
             $vacation->attachments->delete();
         }
@@ -80,29 +86,32 @@ class VacationsController extends Controller
         return redirect()->route('hr.admin.vacations.index');
     }
 
-    public function show(Vacation $vacation)
-    {
-        abort_if(Gate::denies('vacation_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+    // public function show(Vacation $vacation)
+    // {
+    //     abort_if(Gate::denies('vacation_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $vacation->load('user');
+    //     $vacation->load('user');
 
-        return view('hr::admin.vacations.show', compact('vacation'));
-    }
+    //     return view('hr::admin.vacations.show', compact('vacation'));
+    // }
 
     public function destroy(Vacation $vacation)
     {
         abort_if(Gate::denies('vacation_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $vacation->delete();
+        $vacation->forceDelete();
 
         return back();
     }
 
     public function massDestroy(MassDestroyVacationRequest $request)
     {
-        Vacation::whereIn('id', request('ids'))->delete();
-
-        return response(null, Response::HTTP_NO_CONTENT);
+        Vacation::whereIn('id', request('ids'))->forceDelete();
+        
+        return response()->json([
+            'ids'   => request('ids'),
+        ]);
+        // return response(null, Response::HTTP_NO_CONTENT);
     }
 
     public function storeCKEditorImages(Request $request)

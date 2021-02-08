@@ -17,9 +17,10 @@ class StoreRoleRequest extends FormRequest
     public function rules()
     {
         return [
-            'title'         => [
+            'name'         => [
                 'string',
                 'required',
+                'unique:roles,name'
             ],
             'permissions.*' => [
                 'integer',
@@ -27,6 +28,7 @@ class StoreRoleRequest extends FormRequest
             'permissions'   => [
                 'required',
                 'array',
+                'exists:permissions,id'
             ],
         ];
     }

@@ -55,7 +55,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     // Roles
     Route::delete('roles/destroy', 'RolesController@massDestroy')->name('roles.massDestroy');
     Route::resource('roles-management', 'RolesController');
-    // Route::resource('roles', 'RolesController');
 
     // Users
     Route::delete('users/destroy', 'UsersController@massDestroy')->name('users.massDestroy');
@@ -162,14 +161,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::post('invoices/ckmedia', 'InvoicesController@storeCKEditorImages')->name('invoices.storeCKEditorImages');
     Route::resource('invoices', 'InvoicesController');
 
-   
-
-    // Purchases
-    Route::delete('purchases/destroy', 'PurchaseController@massDestroy')->name('purchases.massDestroy');
-    Route::post('purchases/media', 'PurchaseController@storeMedia')->name('purchases.storeMedia');
-    Route::post('purchases/ckmedia', 'PurchaseController@storeCKEditorImages')->name('purchases.storeCKEditorImages');
-    Route::resource('purchases', 'PurchaseController');
-
     // Return Stocks
     Route::delete('return-stocks/destroy', 'ReturnStockController@massDestroy')->name('return-stocks.massDestroy');
     Route::post('return-stocks/media', 'ReturnStockController@storeMedia')->name('return-stocks.storeMedia');
@@ -215,10 +206,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::post('files/media', 'FilesController@storeMedia')->name('files.storeMedia');
     Route::post('files/ckmedia', 'FilesController@storeCKEditorImages')->name('files.storeCKEditorImages');
     Route::resource('files', 'FilesController', ['except' => ['edit', 'update']]);
-
-    // Penalty Categories
-    Route::delete('penalty-categories/destroy', 'PenaltyCategoriesController@massDestroy')->name('penalty-categories.massDestroy');
-    Route::resource('penalty-categories', 'PenaltyCategoriesController', ['except' => ['edit', 'update', 'show']]);
 
     // Private Chats
     Route::delete('private-chats/destroy', 'PrivateChatController@massDestroy')->name('private-chats.massDestroy');

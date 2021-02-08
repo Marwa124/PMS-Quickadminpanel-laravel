@@ -10,7 +10,7 @@ class UpdateAttendancesRequest extends FormRequest
 {
     public function authorize()
     {
-        return Gate::allows('attendancss_edit');
+        return Gate::allows('attendances_edit');
     }
 
     public function rules()
@@ -18,6 +18,7 @@ class UpdateAttendancesRequest extends FormRequest
         return [
             'user_id'         => [
                 'required',
+                'exists:users,id',
                 'integer',
             ],
             'date_in'         => [

@@ -15,7 +15,7 @@ class DepositsCategoryController extends Controller
     {
         abort_if(Gate::denies('deposits_category'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $deposits_category = DepositCategory::all();
-        return view('finance::admin.deposits_category.index',compact('deposits_category'));
+        return view('finance::admin.deposits_category.index', compact('deposits_category'));
     }
 
 
@@ -29,24 +29,32 @@ class DepositsCategoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name'  => 'required'
+            'name' => ['required',
+                'string',
+                'max:15',
+                'regex:/^[a-zA-Z]*([a-zA-Z][a-zA-Z])[a-zA-Z]*$/'
+            ]
         ]);
         DepositCategory::create($request->all());
 
         return redirect()->route('finance.admin.deposits_category.index');
     }
 
-    public function edit( $payment)
+    public function edit($payment)
     {
         abort_if(Gate::denies('deposits_category_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $payment = DepositCategory::findOrFail($payment);
         return view('finance::admin.deposits_category.edit', compact('payment'));
     }
 
-    public function update(Request $request,$id)
+    public function update(Request $request, $id)
     {
         $request->validate([
-            'name'  => 'required'
+            'name' => ['required',
+                'string',
+                'max:15',
+                'regex:/^[a-zA-Z]*([a-zA-Z][a-zA-Z])[a-zA-Z]*$/'
+            ]
         ]);
         DepositCategory::findOrFail($id)->update($request->all());
 
@@ -57,7 +65,6 @@ class DepositsCategoryController extends Controller
     {
 
     }
-
 
 
     public function destroy($id)

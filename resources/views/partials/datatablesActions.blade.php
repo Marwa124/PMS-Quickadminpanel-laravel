@@ -1,12 +1,17 @@
 {{-- Conserned only with leave Applications --}}
 <?php
+    $approveReject = $approveReject ?? '';
+?>
+@if ($approveReject)
+<?php
     $notifyUsers = globalNotificationId($row->user_id);
     $admins = in_array(auth()->user()->id, $notifyUsers);
     $approveReject = $approveReject ?? '';
 ?>
-@if ($approveReject && $admins && $row->application_status == 'pending')
-    <a href="{{route('hr.admin.leave-applications.approveReject', [$row->id, 'accepted'])}}" class="text-success approve_leave">Approve</a>/
-    <a href="{{route('hr.admin.leave-applications.approveReject', [$row->id, 'rejected'])}}" onclick="return confirm('Are you sure?')" class="text-danger reject_leave">Reject</a>
+    @if ($admins && $row->application_status == 'pending')
+        <a href="{{route('hr.admin.leave-applications.approveReject', [$row->id, 'accepted'])}}" class="text-success approve_leave">Approve</a>/
+        <a href="{{route('hr.admin.leave-applications.approveReject', [$row->id, 'rejected'])}}" onclick="return confirm('Are you sure?')" class="text-danger reject_leave">Reject</a>
+    @endif
 @endif
 {{-- End Conserned only with leave Applications --}}
 

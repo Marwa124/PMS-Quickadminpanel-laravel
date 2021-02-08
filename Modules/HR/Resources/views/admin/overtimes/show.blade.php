@@ -1,4 +1,7 @@
 @extends('layouts.admin')
+@inject('overtimeModel', 'Modules\HR\Entities\Overtime')
+@inject('accountDetailModel', 'Modules\HR\Entities\AccountDetail')
+
 @section('content')
 
 <div class="card">
@@ -28,7 +31,10 @@
                             {{ trans('cruds.overtime.fields.user') }}
                         </th>
                         <td>
-                            {{ $overtime->user->name ?? '' }}
+                            @php
+                                $accountDetails = $accountDetailModel::where('user_id', $overtime->user->id)->select('fullname')->first();
+                            @endphp
+                            {{ $accountDetails->fullname ?? '' }}
                         </td>
                     </tr>
                     <tr>
@@ -60,7 +66,7 @@
                             {{ trans('cruds.overtime.fields.status') }}
                         </th>
                         <td>
-                            {{ App\Models\Overtime::STATUS_SELECT[$overtime->status] ?? '' }}
+                            {{ $overtimeModel::STATUS_SELECT[$overtime->status] ?? '' }}
                         </td>
                     </tr>
                 </tbody>

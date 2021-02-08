@@ -14,10 +14,12 @@
             <input type="hidden" name="employment_id">
 
             <div class="form-group">
-                <label class="required" for="user_id">{{ trans('cruds.accountDetail.fields.user') }}</label>
+                <label class="required" for="user_id">{{ trans('cruds.leaveApplication.fields.user') }}</label>
                 <select class="form-control select2 {{ $errors->has('user') ? 'is-invalid' : '' }}" name="user_id" id="user_id" required>
-                    @foreach($users as $id => $user)
-                        <option value="{{ $id }}" {{ old('user_id') == $id ? 'selected' : '' }}>{{ $user }}</option>
+                    @foreach( $users as $key => $user)
+                        @foreach( $user as $id => $val)
+                            <option value="{{ $id }}" {{ old('user_id') == $id ? 'selected' : '' }}>{{ $val }}</option>
+                        @endforeach
                     @endforeach
                 </select>
                 @if($errors->has('user'))
@@ -25,8 +27,9 @@
                         {{ $errors->first('user') }}
                     </div>
                 @endif
-                <span class="help-block">{{ trans('cruds.accountDetail.fields.user_helper') }}</span>
+                <span class="help-block">{{ trans('cruds.leaveApplication.fields.user_helper') }}</span>
             </div>
+            
             <div class="form-group">
                 <label class="required" for="fullname">{{ trans('cruds.accountDetail.fields.fullname') }}</label>
                 <input class="form-control {{ $errors->has('fullname') ? 'is-invalid' : '' }}" type="text" name="fullname" id="fullname" value="{{ old('fullname', '') }}" required>

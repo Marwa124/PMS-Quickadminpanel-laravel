@@ -41,9 +41,7 @@ class HRController extends Controller
 
     public function jobApplicationStore(StoreJobApplicationRequest $request, $job_circular_id)
     {
-        // dd($job_circular_id);
         $request['job_circular_id'] = $job_circular_id;
-        // dd($request->all());
         $jobApplication = JobApplication::create($request->all());
 
         if ($request->input('resume', false)) {
@@ -54,8 +52,8 @@ class HRController extends Controller
             Media::whereIn('id', $media)->update(['model_id' => $jobApplication->id]);
         }
         $job_circular = JobCircular::find($job_circular_id)->name;
-        Mail::to('marwa120640@gmail.com')->cc("marwa120640@gmail.com")
-                ->send(new JobApplicationRequest($jobApplication, $job_circular));
+        // Mail::to('marwa120640@gmail.com')->cc("marwa120640@gmail.com")
+        //         ->send(new JobApplicationRequest($jobApplication, $job_circular));
 
         return redirect()->route('front.circular_details', $job_circular_id);
     }
