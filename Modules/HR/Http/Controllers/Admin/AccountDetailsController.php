@@ -127,11 +127,7 @@ class AccountDetailsController extends Controller
     {
         abort_if(Gate::denies('account_detail_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        // $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
-        // $users = AccountDetail::all()->pluck('fullname', 'user_id')->prepend(trans('global.pleaseSelect'), '');
         $users = User::fetchUnbannedUsers();
-
-        dd($users);
 
         $designations = Designation::all()->pluck('designation_name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
@@ -196,10 +192,10 @@ class AccountDetailsController extends Controller
     public function update(UpdateAccountDetailRequest $request, AccountDetail $accountDetail)
     {
         // Give the user the same permission for selected designation
-        if ($request->designation_id) {
-            $designationPermissions = Designation::find($request->designation_id)->permissions()->pluck('name', 'id')->toArray();
-            User::find($accountDetail->user_id)->syncPermissions($designationPermissions);
-        }
+        // if ($request->designation_id) {
+        //     $designationPermissions = Designation::find($request->designation_id)->permissions()->pluck('name', 'id')->toArray();
+        //     User::find($accountDetail->user_id)->givePermissionTo($designationPermissions);
+        // }
 
         $accountDetail->update($request->all());
 

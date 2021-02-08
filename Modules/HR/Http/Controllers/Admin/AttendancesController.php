@@ -19,7 +19,6 @@ class AttendancesController extends Controller
     {
         abort_if(Gate::denies('attendances_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        // $attendances = FingerprintAttendance::get()->groupBy('date');
         $attendances = FingerprintAttendance::orderBy('date', 'desc')->get()->groupBy(['date', 'user_id']);
 
         return view('hr::admin.attendances.index', compact('attendances'));
@@ -29,7 +28,6 @@ class AttendancesController extends Controller
     {
         abort_if(Gate::denies('attendances_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        // $users = AccountDetail::all()->pluck('fullname', 'user_id')->prepend(trans('global.pleaseSelect'), '');
         $users = [];
         foreach (User::where('banned', 0)->get() as $key => $value) {
             $users[] = $value->accountDetail()->where('employment_id', '!=', null)->pluck('fullname', 'user_id')->prepend(trans('global.pleaseSelect'), '');

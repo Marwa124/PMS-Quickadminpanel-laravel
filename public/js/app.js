@@ -2193,6 +2193,11 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -2201,6 +2206,10 @@ var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js")["d
 var id = window.location.href.split('/').pop(); // import MixinChangeLocaleMessages from "./../../../mixins/MixinChangeLocaleMessages"
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    AlertErrors: vform__WEBPACK_IMPORTED_MODULE_2__["AlertErrors"],
+    AlertSuccess: vform__WEBPACK_IMPORTED_MODULE_2__["AlertSuccess"]
+  },
   props: ['userId'],
   mixins: [// MixinChangeLocaleMessages
   ],
@@ -3207,11 +3216,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _mixinsTable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../mixinsTable */ "./resources/js/mixinsTable.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _mixinsTable__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../mixinsTable */ "./resources/js/mixinsTable.js");
 //
 //
 //
@@ -3267,11 +3272,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-
-
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  mixins: [_mixinsTable__WEBPACK_IMPORTED_MODULE_1__["default"]],
+  mixins: [_mixinsTable__WEBPACK_IMPORTED_MODULE_0__["default"]],
   props: ['canPrint', 'canDelete'],
   data: function data() {
     return {
@@ -4333,6 +4336,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -4341,6 +4349,10 @@ var axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js")["d
 
 var id = window.location.href.split('/').pop();
 /* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    AlertErrors: vform__WEBPACK_IMPORTED_MODULE_2__["AlertErrors"],
+    AlertSuccess: vform__WEBPACK_IMPORTED_MODULE_2__["AlertSuccess"]
+  },
   props: ['roleId', 'langKey'],
   data: function data() {
     return {
@@ -4454,19 +4466,16 @@ var id = window.location.href.split('/').pop();
 
           window.location.href = "/admin/roles-management";
 
-          _this3.cancelEditMode(getCurrentRole);
+          _this3.cancelEditMode(getCurrentRole); // ToastReq.fire({
+          //     text: this.success_msg
+          // })
 
-          ToastReq.fire({
-            text: _this3.success_msg
-          });
         }
-      })["catch"](function (response) {
-        ToastFailed.fire({
-          title: _this3.failed_title + "!",
-          text: _this3.failed_msg
-        });
-
-        _this3.$Progress.fail();
+      })["catch"](function (response) {// ToastFailed.fire({
+        //     title: this.failed_title + "!",
+        //     text: this.failed_msg,
+        // })
+        // this.$Progress.fail()
       });
     },
     deleteRole: function deleteRole(id) {
@@ -69360,6 +69369,24 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
+    _c(
+      "div",
+      { staticStyle: { position: "relative" } },
+      [
+        _c("alert-success", {
+          attrs: { form: _vm.form, message: "Your changes have been saved!" }
+        }),
+        _vm._v(" "),
+        _c("alert-errors", {
+          attrs: {
+            form: _vm.form,
+            message: "There were some problems with your input."
+          }
+        })
+      ],
+      1
+    ),
+    _vm._v(" "),
     _c("section", { staticClass: "content" }, [
       _c("div", { staticClass: "container-fulid" }, [
         _c("div", { staticClass: "card" }, [
@@ -73483,6 +73510,27 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
+    _c(
+      "div",
+      { staticStyle: { position: "relative" } },
+      [
+        _c("alert-success", {
+          attrs: {
+            form: _vm.roleForm,
+            message: "Your changes have been saved!"
+          }
+        }),
+        _vm._v(" "),
+        _c("alert-errors", {
+          attrs: {
+            form: _vm.roleForm,
+            message: "There were some problems with your input."
+          }
+        })
+      ],
+      1
+    ),
+    _vm._v(" "),
     _c("section", { staticClass: "content" }, [
       _c("div", { staticClass: "container-fulid" }, [
         _c("div", { staticClass: "card" }, [

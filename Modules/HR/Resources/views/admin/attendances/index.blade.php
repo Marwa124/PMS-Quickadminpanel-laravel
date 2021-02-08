@@ -34,9 +34,6 @@
                         <th>
                             Day
                         </th>
-                        {{-- <th>
-                            {{ trans('cruds.attendances.fields.attendance_status') }}
-                        </th> --}}
                         <th>
                             &nbsp;
                         </th>
@@ -201,10 +198,8 @@ $(function () {
   // Edit Clock Attendance Modal
   $('.clock_attendance').dblclick(function() {
       let day = $(this).closest('tr').find('.attendance_day').text().trim();
-      // let userId = $(this).closest('tr').attr('data-entry-id');
       let userId = $(this).closest('tr').attr('data-user-id');
       let oldTimeValue = $(this).closest('td').find('.clockTime').html().trim();
-    //   console.log(oldTimeValue);
       if ($(this).find('.form-group').length != 0) {
         $(this).find('.clockTime').toggleClass('display');
         $(this).find('.form-group').toggleClass('display');
@@ -221,14 +216,12 @@ $(function () {
                     inputVal
                 },
                 success: function (res) {
-                    // console.log(res);
                     timeInput.html(inputVal);
                 }
             })
         })
       }
 
-    //   console.log(userId);
   })
 
 })

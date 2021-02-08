@@ -2,11 +2,8 @@
 
 namespace Modules\HR\Http\Requests\Update;
 
-use Modules\HR\Entities\Holiday;
 use Gate;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Response;
-
 class UpdateSetTimeRequest extends FormRequest
 {
     public function authorize()
@@ -23,15 +20,19 @@ class UpdateSetTimeRequest extends FormRequest
             ],
             'in_time' => [
                 'required',
+                'date_format:' . config('panel.time_format_hour'),
             ],
             'out_time'   => [
                 'required',
+                'date_format:' . config('panel.time_format_hour'),
             ],
             'allow_clock_in_late' => [
                 'nullable',
+                'date_format:' . config('panel.time_format_hour'),
             ],
             'allow_leave_early'   => [
                 'nullable',
+                'date_format:' . config('panel.time_format_hour'),
             ],
         ];
     }

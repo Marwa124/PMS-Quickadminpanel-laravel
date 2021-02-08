@@ -24,7 +24,15 @@ class DailyAttendancesController extends Controller
     public function index(Request $request)
     {
         abort_if(Gate::denies('daily_attendance_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        
+        if($request->has('date')) {
+            $request->validate([
+                'date' => 'required|date_format:Y-m-d',
+            ]);
+        }
+
         $date = $request->date;
+
         if ($request['date'] == '') {
             $date = date('Y-m-d');
         }
@@ -93,10 +101,6 @@ class DailyAttendancesController extends Controller
             $fingerprintAttendances = FingerprintAttendance::where('date', $request['day'])->get();
             return view('hr::admin.dailyAttendances.index', compact('fingerprintAttendances'));
         }
-
-        // $dailyAttendance = DailyAttendance::create($request->all());
-
-        // return redirect()->route('hr.admin.daily-attendances.index');
     }
 
     public function edit(DailyAttendance $dailyAttendance)

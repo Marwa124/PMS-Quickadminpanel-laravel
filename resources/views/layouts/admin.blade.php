@@ -7,7 +7,11 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ trans('panel.site_title') }}</title>
+    <title>
+        {{-- {{ trans('panel.site_title') }} --}}
+        PMS
+        @yield('title')
+        </title>
     {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script> --}}
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" />
@@ -47,8 +51,7 @@
 
     @yield('styles')
 
-<script src="https://js.pusher.com/7.0/pusher.min.js"></script>
-    {{--<script src="{{ asset('jquery_cdn/pusher.min.js') }}"></script>--}}
+    <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
 
     <script>
 
@@ -208,7 +211,6 @@
 
             </ul>
         </header>
-
 
         <div class="c-body">
             <main class="c-main">

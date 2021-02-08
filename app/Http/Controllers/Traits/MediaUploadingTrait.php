@@ -21,7 +21,6 @@ trait MediaUploadingTrait
 //                'file' => 'max:' . request()->input('size') * 1024,
 //            ]);
         }
-//        dump('here');
 
 
 // If width or height is preset - we are validating it as an image
@@ -72,7 +71,6 @@ trait MediaUploadingTrait
 //                'file' => 'max:' . request()->input('size') * 1024,
 //            ]);
         }
-//        dump('here');
 
 
 // If width or height is preset - we are validating it as an image

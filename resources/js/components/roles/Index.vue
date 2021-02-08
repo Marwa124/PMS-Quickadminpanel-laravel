@@ -4,6 +4,11 @@
         <h1>{{langKey}}</h1> -->
 
         <!-- /.content-header -->
+        <div style="position: relative;">
+            <alert-success :form="roleForm" message="Your changes have been saved!"></alert-success>
+            <alert-errors :form="roleForm" message="There were some problems with your input."></alert-errors>
+        </div>
+
         <section class="content">
             <div class="container-fulid">
                 <div class="card">
@@ -151,11 +156,12 @@
 
 <script>
 import Vue from 'vue'
-import { Form, HasError, AlertError } from 'vform'
+import { Form, HasError, AlertError, AlertErrors, AlertSuccess} from 'vform'
 import i18n from '../../plugins/i18n';
 const axios = require('axios').default;
 var id = window.location.href.split('/').pop();
 export default {
+    components: {AlertErrors, AlertSuccess},
     props: ['roleId', 'langKey'],
     data() {
       return {
@@ -243,16 +249,16 @@ export default {
                     let getCurrentRole = this.role.find(role => role.id === id)
                     window.location.href = "/admin/roles-management"
                     this.cancelEditMode(getCurrentRole)
-                    ToastReq.fire({
-                        text: this.success_msg
-                    })
+                    // ToastReq.fire({
+                    //     text: this.success_msg
+                    // })
                 }
             }).catch(response => {
-                ToastFailed.fire({
-                    title: this.failed_title + "!",
-                    text: this.failed_msg,
-                })
-                this.$Progress.fail()
+                // ToastFailed.fire({
+                //     title: this.failed_title + "!",
+                //     text: this.failed_msg,
+                // })
+                // this.$Progress.fail()
             });
         },
         deleteRole(id) {

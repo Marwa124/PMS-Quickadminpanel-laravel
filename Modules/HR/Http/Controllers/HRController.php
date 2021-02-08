@@ -41,9 +41,7 @@ class HRController extends Controller
 
     public function jobApplicationStore(StoreJobApplicationRequest $request, $job_circular_id)
     {
-        // dd($job_circular_id);
         $request['job_circular_id'] = $job_circular_id;
-        // dd($request->all());
         $jobApplication = JobApplication::create($request->all());
 
         if ($request->input('resume', false)) {

@@ -31,6 +31,11 @@ class UpdateAccountDetailRequest extends FormRequest
                 'integer',
                 'exists:designations,id'
             ],
+            'set_time_id'     => [
+                'integer',
+                'required',
+                'exists:set_times,id'
+            ],  
             'company'         => [
                 'string',
                 'nullable',
@@ -69,6 +74,7 @@ class UpdateAccountDetailRequest extends FormRequest
             ],
             'joining_date'    => [
                 'date_format:' . config('panel.date_format'),
+                'date',
                 'nullable',
             ],
             'present_address' => [
@@ -77,13 +83,16 @@ class UpdateAccountDetailRequest extends FormRequest
             ],
             'date_of_birth'   => [
                 'date_format:' . config('panel.date_format'),
+                'date',
                 'nullable',
             ],
             'gender'          => [
                 'required',
+                'in:male,female'
             ],
             'martial_status'  => [
                 'required',
+                'in:unmarried,married,divorced,widower,widow'
             ],
             'father_name'     => [
                 'string',
