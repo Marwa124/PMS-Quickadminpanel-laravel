@@ -5,6 +5,9 @@ namespace Modules\Setting\Http\Controllers;
 use Gate;
 use App\Models\Config;
 use App\Models\Country;
+use App\Models\Currency;
+use App\Models\Language;
+use App\Models\Locale;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -21,9 +24,17 @@ class SettingController extends Controller
     {
         abort_if(Gate::denies('setting_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $countries = Country::all();
+        $countries  = Country::all();
+        $currencies = Currency::all();
+        $languages  = Language::all();
+        $locales    = Locale::all();
+        $timezones  = timezones();
 
-        return view('setting::company_details.index', compact('countries'));
+        // dd($locales);
+
+
+
+        return view('setting::company_details.index', compact('countries', 'currencies', 'languages', 'locales', 'timezones'));
     }
 
 
@@ -128,5 +139,11 @@ class SettingController extends Controller
 
             return back()->withInput()->with($notification);
         }
+    }
+
+
+    public function save_system()
+    {
+        dd('here');
     }
 }
