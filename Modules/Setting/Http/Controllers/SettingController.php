@@ -1,17 +1,17 @@
 <?php
 
-namespace Modules\SETTING\Http\Controllers;
+namespace Modules\Setting\Http\Controllers;
 
+use Gate;
 use App\Models\Config;
+use App\Models\Country;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Modules\Sales\Entities\Country;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Contracts\Support\Renderable;
 use Symfony\Component\HttpFoundation\Response;
 
-class SettingsController extends Controller
+class SettingController extends Controller
 {
     /**
      * Display a listing of the resource.

@@ -11,8 +11,9 @@
 |
 */
 
+
 Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
 
-    Route::get('settings', 'SettingsController@company_details')->name('admin.settings.index');
-    Route::post('save_details', 'SettingsController@save_details')->name('admin.details.store');
+    Route::get('settings', 'SettingController@company_details')->name('admin.settings.index');
+    Route::post('save_details', 'SettingController@save_details')->name('admin.details.store');
 });

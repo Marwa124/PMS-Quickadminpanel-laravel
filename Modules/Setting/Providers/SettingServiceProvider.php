@@ -1,16 +1,16 @@
 <?php
 
-namespace Modules\SETTING\Providers;
+namespace Modules\Setting\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Factory;
 
-class SETTINGServiceProvider extends ServiceProvider
+class SettingServiceProvider extends ServiceProvider
 {
     /**
      * @var string $moduleName
      */
-    protected $moduleName = 'SETTING';
+    protected $moduleName = 'Setting';
 
     /**
      * @var string $moduleNameLower
