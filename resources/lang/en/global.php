@@ -12,6 +12,7 @@ return [
     'delete'                               => 'Delete',
     'downloadFile'                         => 'Download file',
     'edit'                                 => 'Edit',
+    'edited'                               => 'Edited',
     'clone'                                => 'Clone',
     'emailVerificationSuccess'             => 'User email verified successfully',
     'entries'                              => 'Entries',

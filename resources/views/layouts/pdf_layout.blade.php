@@ -86,13 +86,13 @@
 
 </head>
 
-<body>
-    <div class="page-break" dir="auto">
+<body dir="{{app()->getLocale() == 'ar' ? 'rtl' : 'ltr'}}">
+    <div class="page-break" dir="{{app()->getLocale() == 'ar' ? 'rtl' : 'ltr'}}">
 
         <table class="table borderless tbl_header">
             <tr>
                 <td width="33.3%" class="text text-center" align="right">
-                    {{--<img src="{{asset('images/image001.png')}}" alt="">--}}
+                    {{--<img src="{{asset('images/image001.png')}}" alt="" style=" width:100px; max-width:100px;">--}}
                     <div>One Tec Group LLC</div>
                     {{--@dd(asset('images/image001.png'),asset('public/images/image001.png'))--}}
                 </td>

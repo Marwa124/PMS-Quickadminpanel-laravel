@@ -6,13 +6,10 @@ use App\Events\NewNotification;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\MediaUploadingTrait;
 use App\Models\Invoice;
-use App\Models\ProjectSetting;
-use App\Models\User;
 use App\Notifications\ProjectManagementNotification;
 use Illuminate\Support\Facades\DB;
 use Modules\HR\Entities\AccountDetail;
 use Modules\HR\Entities\Department;
-use Modules\ProjectManagement\Entities\ProjectSpecification;
 use Modules\ProjectManagement\Entities\TaskStatus;
 use Modules\ProjectManagement\Entities\TimeSheet;
 use Modules\ProjectManagement\Http\Controllers\Traits\ProjectManagementHelperTrait;
@@ -28,8 +25,6 @@ use Symfony\Component\HttpFoundation\Response;
 use PDF;
 use Modules\ProjectManagement\Entities\Milestone;
 use Modules\ProjectManagement\Entities\Task;
-use MPDF;
-
 
 class ProjectsController extends Controller
 {
@@ -77,6 +72,7 @@ class ProjectsController extends Controller
 
     public function store(StoreProjectRequest $request)
     {
+        //dd($request->all());
         abort_if(Gate::denies('project_create'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
         try {
             // Begin a transaction
@@ -148,7 +144,6 @@ class ProjectsController extends Controller
             // Notify User
             foreach ($project->accountDetails as $accountUser)
             {
-    //            dd($project->accountDetails());
                 $user = $accountUser->user;
                 //dd($user);
                 $dataMail = [
@@ -421,7 +416,6 @@ class ProjectsController extends Controller
             // Notify User
             foreach ($project->accountDetails as $accountUser)
             {
-    //            dd($project->accountDetails());
                 $user = $accountUser->user;
                 //dd($user);
                 $dataMail = [
@@ -472,7 +466,6 @@ class ProjectsController extends Controller
 
                 $user_id = auth()->user()->id;
                 $projectTimer = TimeSheet::where('module','=','project')->where('module_field_id',$project_id)->where('user_id',$user_id)->where('timer_status','on')->first();
-
                 if (!$projectTimer)
                 {
                     $Timer = [
@@ -491,14 +484,12 @@ class ProjectsController extends Controller
                 }
 
                 //setActivity('project',$project_id,'Timer '.ucfirst($projectTimer->timer_status),$projectTimer->project->name);
-                $timer_status = 'مغلق';
-                if($projectTimer->timer_status = 'on'){
+                $timer_status = trans('global.off');
+                if($projectTimer->timer_status == 'on'){
 
-                    $timer_status = 'مفتوح';
-
+                    $timer_status = trans('global.on');
                 }
-
-                setActivity('project',$project_id,'Timer '.ucfirst($projectTimer->timer_status),'المؤقت ' .$timer_status,$projectTimer->project->name_en,$projectTimer->project->name_ar);
+                setActivity('project',$project_id,'Timer '.$timer_status,'المؤقت ' .$timer_status,$projectTimer->project->name_en,$projectTimer->project->name_ar);
 
                 // Commit the transaction
                 DB::commit();
@@ -523,19 +514,22 @@ class ProjectsController extends Controller
 
         abort_if(Gate::denies('project_create'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
+        // get project by id
+        $project  = Project::findOrFail($project_id);
+
+
         // check if user can access this project or not
         $projects = auth()->user()->getUserProjectsByUserID(auth()->user()->id)->pluck('id');
-        if (in_array($project_id,$projects->toArray())){
 
-            // get project by id
-            $project  = Project::findOrFail($project_id);
+        if (!in_array($project_id,$projects->toArray())){
 
-            $newproject = $project->cloneProject();
-
-            return redirect()->route('projectmanagement.admin.projects.show',$newproject->id);
-
+            return abort(Response::HTTP_FORBIDDEN, trans('global.forbidden_page_not_allow_to_you'));
         }
-        return abort(Response::HTTP_FORBIDDEN, trans('global.forbidden_page_not_allow_to_you'));
+
+        $newproject = $project->cloneProject();
+
+        return redirect()->route('projectmanagement.admin.projects.show',$newproject->id);
+
 
     }
 
@@ -605,7 +599,7 @@ class ProjectsController extends Controller
                 }
             }
 
-            $title = $project->name . '-project.pdf';
+            $title = $project->{'name_'.app()->getLocale()} . '-project.pdf';
             $compact = [
                 'project'   => $project,
                 'total_expense' => $total_expense,
@@ -617,9 +611,6 @@ class ProjectsController extends Controller
             $view = 'projectmanagement::admin.projects.project_pdf';
             $this->download_pdf($view,$compact,$title);
             //$this->stream_pdf($view,$compact,$title);
-
-//            $pdf = MPDF::loadView( $html,compact($compact));
-//            return $pdf->download($title);
 
         }
 
@@ -678,15 +669,9 @@ class ProjectsController extends Controller
     {
         abort_if(Gate::denies('project_report_access'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
-//        $user = User::findOrFail(auth()->user()->id);
-//        if ($user->hasrole(['Admin','Super Admin']))
-//        {
-            $projects = Project::all();
+        $projects = Project::all();
 
-            return view('projectmanagement::admin.projects.project_report', compact('projects'));
+        return view('projectmanagement::admin.projects.project_report', compact('projects'));
 
-//        }
-//
-//        return abort(Response::HTTP_FORBIDDEN, trans('global.forbidden_page_not_allow_to_you'));
     }
 }

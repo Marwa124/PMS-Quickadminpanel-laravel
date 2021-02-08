@@ -718,6 +718,7 @@
                     @endcan
                     @can('project_access')
                         <li class="c-sidebar-nav-item">
+
                             <a href="{{ route("projectmanagement.admin.projects.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/projectmanagement/projects") || request()->is("admin/projectmanagement/projects/*") ? "active" : "" }}">
                                 <i class="fa-fw fas fa-folder-open c-sidebar-nav-icon">
 

@@ -22,7 +22,7 @@
                 <div class="tab-pane fade show active" id="v-pills-details" role="tabpanel"
                      aria-labelledby="v-pills-details-tab">
                     <div class="card">
-                        <h5 class="card-header">{{ $milestone->name }}
+                        <h5 class="card-header">{{ $milestone->{'name_'.app()->getLocale()} ?? '' }}
                             @can('milestone_edit')
                                 <a class="float-right small"
                                    href="{{ route('projectmanagement.admin.milestones.edit', $milestone->id) }}">
@@ -37,17 +37,17 @@
                                     <div class="pl-1 ">
                                         <div class="row"><p
                                                 class="font-bold col-md-6">{{ trans('cruds.milestone.fields.name') }}
-                                                :</p> <span class="col-md-6">{{ $milestone->name }}</span></div>
+                                                :</p> <span class="col-md-6">{{ $milestone->{'name_'.app()->getLocale()} ?? '' }}</span></div>
                                         <div class="row"><p
                                                 class="font-bold col-md-6">{{ trans('cruds.project.title') }} {{ trans('cruds.project.fields.name') }}
-                                                : </p><span class="col-md-6">{{ $milestone->project->name }}</span>
+                                                : </p><span class="col-md-6">{{ $milestone->project->{'name_'.app()->getLocale()} ?? '' }}</span>
                                         </div>
                                         <div class="row"><p
                                                 class="font-bold col-md-6">{{ trans('cruds.milestone.fields.start_date') }}
-                                                :</p> <span class="col-md-6">{{ $milestone->start_date }}</span></div>
+                                                :</p> <span class="col-md-6">{{ $milestone->start_date ?? '' }}</span></div>
                                         <div class="row"><p
                                                 class="font-bold col-md-6">{{ trans('cruds.milestone.fields.end_date') }}
-                                                :</p> <span class="col-md-6">{{ $milestone->end_date }}</span></div>
+                                                :</p> <span class="col-md-6">{{ $milestone->end_date ?? '' }}</span></div>
                                     </div>
                                 </div>
                             </div>
@@ -125,7 +125,7 @@
                                                             <a href="{{ route('projectmanagement.admin.tasks.show', $v_task->id) }}"
                                                                title="edit">
 
-                                                                {{ $v_task->name ?? '' }}
+                                                                {{ $v_task->{'name_'.app()->getLocale()} ?? '' }}
                                                             </a>
                                                             <div class="progress">
                                                                 <div
@@ -140,7 +140,7 @@
 
                                                         </td>
                                                         <td>
-                                                            {{ ucwords($v_task->status?? '') }}
+                                                            {{ $v_task->status ? trans('cruds.status.'.$v_task->status) : '' }}
                                                         </td>
                                                         {{--                                                        <td>--}}
                                                         {{--                                                            @forelse($v_task->tags as $key => $item)--}}
@@ -163,7 +163,7 @@
                                                         </td>
 
                                                         <td>
-                                                            {{ $v_task->project->name ?? '' }}
+                                                            {{ $v_task->project && $v_task->project->{'name_'.app()->getLocale()} ? $v_task->project->{'name_'.app()->getLocale()} : '' }}
                                                         </td>
 
                                                         <td>
@@ -177,9 +177,9 @@
 
                                                             @can('task_assign_to')
 
-                                                                <a class="btn btn-xs btn-success {{$v_task->project->department ? '' : 'disabled'}}"
+                                                                <a class="btn btn-xs btn-success {{ $v_task->project && $v_task->project->department ? '' : 'disabled'}}"
                                                                    href="{{ route('projectmanagement.admin.tasks.getAssignTo', $v_task->id) }}"
-                                                                   title="{{$v_task->project->department ? '' : 'add department to project'}}">
+                                                                   title="{{ $v_task->project && $v_task->project->department ? '' : 'add department to project'}}">
                                                                     {{ trans('global.assign_to') }}
                                                                 </a>
 

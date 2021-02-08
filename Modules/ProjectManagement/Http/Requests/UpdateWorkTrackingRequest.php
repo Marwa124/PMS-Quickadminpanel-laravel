@@ -20,11 +20,21 @@ class UpdateWorkTrackingRequest extends FormRequest
             'work_type_id'           => [
                 'required',
                 'integer',
+                'exists:work_trackings,id'
             ],
-            'subject'           => [
+            'subject_en'           => [
                 'required',
                 'string',
-                'unique:work_trackings,subject,'. request()->route('work_tracking')->id.',id,work_type_id,'.request()->work_type_id,
+                //'regex:/^[a-zA-Z ]+$/u',
+                'min:3|max:255',
+                'unique:work_trackings,subject_en,'. request()->route('work_tracking')->id.',id,work_type_id,'.request()->work_type_id,
+            ],
+            'subject_ar'           => [
+                'required',
+                'string',
+                //'regex:/^[ اأإء-ي ]+$/ui',
+                'min:3|max:255',
+                'unique:work_trackings,subject_ar,'. request()->route('work_tracking')->id.',id,work_type_id,'.request()->work_type_id,
             ],
             'achievement'            => [
                 'required',
@@ -44,15 +54,17 @@ class UpdateWorkTrackingRequest extends FormRequest
             'notify_work_achive'     => [
                 'string',
                 'nullable',
+                'in:on,off',
             ],
             'notify_work_not_achive' => [
                 'string',
                 'nullable',
+                'in:on,off',
             ],
-            'email_send'             => [
-                'string',
-                'nullable',
-            ],
+//            'email_send'             => [
+//                'string',
+//                'nullable',
+//            ],
         ];
     }
 }

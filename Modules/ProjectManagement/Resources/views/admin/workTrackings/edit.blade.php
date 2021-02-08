@@ -12,20 +12,30 @@
             @csrf
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label for="subject">{{ trans('cruds.workTracking.fields.subject') }}</label>
-                    <input class="form-control {{ $errors->has('subject') ? 'is-invalid' : '' }}" type="text" name="subject" id="subject" value="{{ old('subject',$workTracking->subject) }}" required>
-                    @if($errors->has('subject'))
+                    <label for="subject_en">{{ trans('cruds.workTracking.fields.subject_en') }}</label>
+                    <input class="form-control {{ $errors->has('subject_en') ? 'is-invalid' : '' }}" type="text" name="subject_en" id="subject_en" value="{{ old('subject_en',$workTracking->subject_en) }}" required>
+                    @if($errors->has('subject_en'))
                         <div class="invalid-feedback">
-                            {{ $errors->first('subject') }}
+                            {{ $errors->first('subject_en') }}
                         </div>
                     @endif
-                    <span class="help-block">{{ trans('cruds.workTracking.fields.subject_helper') }}</span>
+                    <span class="help-block">{{ trans('cruds.workTracking.fields.subject_en_helper') }}</span>
+                </div>
+                <div class="form-group">
+                    <label for="subject_ar">{{ trans('cruds.workTracking.fields.subject_ar') }}</label>
+                    <input class="form-control {{ $errors->has('subject_ar') ? 'is-invalid' : '' }}" type="text" name="subject_ar" id="subject_ar" value="{{ old('subject_ar',$workTracking->subject_ar) }}" required>
+                    @if($errors->has('subject_ar'))
+                        <div class="invalid-feedback">
+                            {{ $errors->first('subject_ar') }}
+                        </div>
+                    @endif
+                    <span class="help-block">{{ trans('cruds.workTracking.fields.subject_ar_helper') }}</span>
                 </div>
                 <div class="form-group">
                     <label class="required" for="work_type_id">{{ trans('cruds.workTracking.fields.work_type') }}</label>
                     <select class="form-control select2 {{ $errors->has('work_type') ? 'is-invalid' : '' }}" name="work_type_id" id="work_type_id" required>
                         @foreach($work_types as $id => $work_type)
-                            <option value="{{ $id }}" {{ (old('work_type_id') ? old('work_type_id') : $workTracking->work_type->id ?? '') == $id ? 'selected' : '' }}>{{ $work_type }}</option>
+                            <option value="{{ $id }}" {{ (old('work_type_id') ? old('work_type_id') : ($workTracking->work_type && $workTracking->work_type->id ? $workTracking->work_type->id : '')) == $id ? 'selected' : '' }}>{{ trans('cruds.timeWorkType.'.$work_type )  }}</option>
                         @endforeach
                     </select>
                     @if($errors->has('work_type'))
@@ -71,7 +81,8 @@
 
 
                         <input type="checkbox" name="notify_work_achive" id="notify_work_achive" value="{{ old('notify_work_achive', $workTracking->notify_work_achive) }}"
-                                {{ old('notify_work_achive', $workTracking->notify_work_achive) ? 'checked':''}}
+                                {{ old('notify_work_achive') == 'on' ? 'checked':''}}
+                                {{  $workTracking->notify_work_achive == 'on' ? 'checked':''}}
                         /> {{ trans('cruds.workTracking.fields.notify_work_achive') }}
 
                     {{--<input class="form-control {{ $errors->has('notify_work_achive') ? 'is-invalid' : '' }}" type="text" name="notify_work_achive" id="notify_work_achive" value="{{ old('notify_work_achive', $workTracking->notify_work_achive) }}">--}}
@@ -86,7 +97,8 @@
                     {{--<label for="notify_work_not_achive">{{ trans('cruds.workTracking.fields.notify_work_not_achive') }}</label>--}}
 
                     <input type="checkbox" name="notify_work_not_achive" id="notify_work_not_achive" value="{{ old('notify_work_not_achive', $workTracking->notify_work_not_achive) }}"
-                            {{ old('notify_work_not_achive', $workTracking->notify_work_not_achive) ? 'checked':''}}
+                            {{ old('notify_work_not_achive') == 'on' ? 'checked':''}}
+                            {{ $workTracking->notify_work_not_achive == 'on' ? 'checked':''}}
                     /> {{ trans('cruds.workTracking.fields.notify_work_not_achive') }}
 
                     {{--<input class="form-control {{ $errors->has('notify_work_not_achive') ? 'is-invalid' : '' }}" type="text" name="notify_work_not_achive" id="notify_work_not_achive" value="{{ old('notify_work_not_achive', $workTracking->notify_work_not_achive) }}">--}}
@@ -125,14 +137,24 @@
                 {{--</div>--}}
             </div>
             <div class="form-group col-md-12">
-                <label for="description">{{ trans('cruds.workTracking.fields.description') }}</label>
-                <textarea class="form-control {{ $errors->has('description') ? 'is-invalid' : '' }}" name="description" id="description">{{ old('description', $workTracking->description) }}</textarea>
-                @if($errors->has('description'))
+                <label for="description_en">{{ trans('cruds.workTracking.fields.description_en') }}</label>
+                <textarea class="form-control {{ $errors->has('description_en') ? 'is-invalid' : '' }}" name="description_en" id="description_en">{{ old('description_en', $workTracking->description_en) }}</textarea>
+                @if($errors->has('description_en'))
                     <div class="invalid-feedback">
-                        {{ $errors->first('description') }}
+                        {{ $errors->first('description_en') }}
                     </div>
                 @endif
-                <span class="help-block">{{ trans('cruds.workTracking.fields.description_helper') }}</span>
+                <span class="help-block">{{ trans('cruds.workTracking.fields.description_en_helper') }}</span>
+            </div>
+            <div class="form-group col-md-12">
+                <label for="description_ar">{{ trans('cruds.workTracking.fields.description_ar') }}</label>
+                <textarea class="form-control {{ $errors->has('description_ar') ? 'is-invalid' : '' }}" name="description_ar" id="description_ar">{{ old('description_ar', $workTracking->description_ar) }}</textarea>
+                @if($errors->has('description_ar'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('description_ar') }}
+                    </div>
+                @endif
+                <span class="help-block">{{ trans('cruds.workTracking.fields.description_ar_helper') }}</span>
             </div>
             <div class="form-group col-md-12">
                 <button class="btn btn-danger float-right" type="submit">

@@ -101,7 +101,9 @@
 
                                         @can('milestone_assign_to')
 
-                                            <a class="btn btn-xs btn-success" href="{{ route('projectmanagement.admin.milestones.getAssignTo', $milestone->id) }}" >
+                                            <a class="btn btn-xs btn-success {{$milestone->project && $milestone->project->department ? '' : 'disabled'}}"
+                                               href="{{ route('projectmanagement.admin.milestones.getAssignTo', $milestone->id) }}"
+                                               title="{{$milestone->project && $milestone->project->department ? '' : trans('cruds.messages.add_department_to_project')}}">
                                                 {{ trans('global.assign_to') }}
                                             </a>
 

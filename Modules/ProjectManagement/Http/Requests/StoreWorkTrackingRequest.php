@@ -21,11 +21,25 @@ class StoreWorkTrackingRequest extends FormRequest
             'work_type_id'           => [
                 'required',
                 'integer',
+                'exists:work_trackings,id'
             ],
-            'subject'           => [
+            'subject_en'           => [
                 'required',
                 'string',
-                Rule::unique('work_trackings','subject')->where(function($query) {
+                //'regex:/^[a-zA-Z ]+$/u',
+                'min:3|max:255',
+                Rule::unique('work_trackings','subject_en')->where(function($query) {
+
+                    $query->where('work_type_id', '=', request()->work_type_id);
+
+                }),
+            ],
+            'subject_ar'           => [
+                'required',
+                'string',
+                //'regex:/^[ اأإء-ي ]+$/ui',
+                'min:3|max:255',
+                Rule::unique('work_trackings','subject_ar')->where(function($query) {
 
                     $query->where('work_type_id', '=', request()->work_type_id);
 
@@ -49,15 +63,17 @@ class StoreWorkTrackingRequest extends FormRequest
             'notify_work_achive'     => [
                 'string',
                 'nullable',
+                'in:on,off',
             ],
             'notify_work_not_achive' => [
                 'string',
                 'nullable',
+                'in:on,off',
             ],
-            'email_send'             => [
-                'string',
-                'nullable',
-            ],
+//            'email_send'             => [
+//                'string',
+//                'nullable',
+//            ],
         ];
     }
 }
