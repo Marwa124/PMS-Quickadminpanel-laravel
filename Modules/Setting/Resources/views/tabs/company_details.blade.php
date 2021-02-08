@@ -181,4 +181,5 @@ aria-labelledby="v-pills-details-tab">
       
     </div>
 </div>
+</div>
 

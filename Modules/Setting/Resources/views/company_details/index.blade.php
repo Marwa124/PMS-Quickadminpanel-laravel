@@ -47,6 +47,10 @@ body{
 
     }
 
+    .select2-container--default .select2-selection--single{
+        height: 34px !important;
+    }
+
 </style>
 
 
@@ -77,75 +81,10 @@ body{
 
                 @include('setting::tabs.company_details')
 
-        
+
+                @include('setting::tabs.company_system')
 
 
-                <div class="tab-pane fade" id="v-pills-tasks" role="tabpanel" aria-labelledby="v-pills-tasks-tab">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="nav flex-row nav-pills" id="v-pills-tab" role="tablist"
-                                 aria-orientation="horizontal">
-                                <a class="nav-link active" id="v-pills-task-tab" data-toggle="pill" href="#v-pills-task"
-                                   role="tab" aria-controls="v-sub_pills-task"
-                                   aria-selected="true"> </a>
-                          
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade show active" id="v-pills-task" role="tabpanel"
-                         aria-labelledby="v-pills-task-tab">
-                        <div class="card">
-                            <div>
-                                <div class="card-header">
-
-                                    <div class="table-responsive">
-                                        <table
-                                            class=" table table-bordered table-striped table-hover datatable datatable-Task">
-                                            <thead>
-                                            <tr>
-
-                                                <th>
-                                                      
-                                                </th>
-                                                <th>
-                                                      
-                                                </th>
-                                                <th>
-                                                      
-                                                </th>
-                                                <th>
-                                                      
-                                                </th>
-                                                <th>
-                                                      
-                                                </th>
-                                                <th>
-                                                      
-                                                </th>
-                                                <th>
-
-                                                </th>
-                                            </tr>
-
-                                            </thead>
-                                            <tbody>
-                                     
-                                                <tr>
-                                                    <td colspan="7">
-                                                    </td>
-                                                </tr>
-                                     
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="tab-pane fade" id="v-pills-comments" role="tabpanel" aria-labelledby="v-pills-comments-tab">
-                    ...
-                </div>
             </div>
         </div>
     </div>
