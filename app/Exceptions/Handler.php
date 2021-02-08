@@ -4,7 +4,7 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
-
+use Illuminate\Support\Facades\Log;
 class Handler extends ExceptionHandler
 {
     /**
@@ -37,7 +37,9 @@ class Handler extends ExceptionHandler
     public function report(Throwable $exception)
     {
         parent::report($exception);
+        Log::channel('slack')->critical($exception);
     }
+
 
     /**
      * Render an exception into an HTTP response.

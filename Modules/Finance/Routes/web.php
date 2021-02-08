@@ -100,6 +100,7 @@ Route::group(['as' => 'finance.admin.', 'prefix' => 'admin/finance', 'namespace'
 
     ////////////////////////////////////STOCK CATEGORY//////////////////////////////////////////////////////////////
     Route::resource('stock_category','StockCategoryController');
+    Route::post('stock_category/update/data','StockCategoryController@update_main_category')->name('stock_category.update.form');
     Route::delete('stock_category_destroy','StockCategoryController@subCategoryDestroy')->name('sub_stock_category.destroy');
     Route::delete('stock_category_mass_destroy','StockCategoryController@massDestroy')->name('sub_stock_category.massDestroy');
     ////////////////////////////////END STOCK CATEGORY//////////////////////////////////////////////////////////////

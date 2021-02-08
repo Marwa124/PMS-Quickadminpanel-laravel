@@ -26,7 +26,8 @@ class Milestone extends Model
     protected $fillable = [
         'user_id',
         'project_id',
-        'name',
+        'name_en',
+        'name_ar',
         'start_date',
         'end_date',
         'client_visible',

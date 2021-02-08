@@ -11,6 +11,7 @@ use Modules\ProjectManagement\Entities\TaskStatus;
 use Modules\ProjectManagement\Entities\Ticket;
 use Modules\ProjectManagement\Entities\TicketReplay;
 use Spatie\Permission\Models\Permission;
+use MPDF;
 
 trait ProjectManagementHelperTrait
 {
@@ -150,5 +151,21 @@ trait ProjectManagementHelperTrait
         }
         //dd($get_result);
         return $get_result; // return the result
+    }
+
+    public function download_pdf($view,$compact,$title=null)
+    {
+        extract($compact);
+
+        $pdf = MPDF::loadView( $view,compact(array_keys($compact)));
+        return $pdf->download($title);
+    }
+
+    public function stream_pdf($view,$compact,$title=null)
+    {
+        extract($compact);
+
+        $pdf = MPDF::loadView( $view,compact(array_keys($compact)));
+        return $pdf->stream($title);
     }
 }

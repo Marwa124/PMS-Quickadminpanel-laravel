@@ -13,7 +13,8 @@ class CreateWorkTrackingsTable extends Migration
             $table->integer('achievement')->nullable();
             $table->date('start_date');
             $table->date('end_date');
-            $table->longText('description')->nullable();
+            $table->longText('description_en')->nullable();
+            $table->longText('description_ar')->nullable();
             $table->string('notify_work_achive')->nullable();
             $table->string('notify_work_not_achive')->nullable();
             $table->string('email_send')->nullable();

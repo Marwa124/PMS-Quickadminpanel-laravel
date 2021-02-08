@@ -13,6 +13,7 @@ use App\Models\User;
 use App\Models\Opportunity;
 use App\Models\Client;
 use  Modules\Sales\Entities\ProposalItemTax;
+use  Modules\ProjectManagement\Entities\Activity;
 use \DateTimeInterface;
 
 class Proposal extends Model implements HasMedia
@@ -186,24 +187,24 @@ class Proposal extends Model implements HasMedia
         return $this->hasMany(ProposalItemTax::class, 'proposals_id', 'id');
     }
 
-    public function gettaxesarray($taxes)
+    public function gettaxesarray($proposal)
     {
         
-        $unique_taxes_ids = array_unique($taxes->itemtaxs->pluck('taxs_id')->toArray());
+        $unique_taxes_ids = array_unique($proposal->itemtaxs->pluck('taxs_id')->toArray());
         $turned_into_keys = array_fill_keys($unique_taxes_ids,null);
 
-        foreach($taxes->items as $key => $value){
+        foreach($proposal->items as $key => $value){
         
             $items_tax = 0;    
         
-            foreach($taxes->itemtaxs->where('item_id',$value->pivot->id)->pluck('taxs_id') as $tax){
-                // dd($unique_taxes_ids,$turned_into_keys,$taxes->itemtaxs->where('item_id',$value->pivot->id)->pluck('taxs_id'),$tax,$value->pivot->selling_price, $value->pivot->quantity);
+            foreach($proposal->itemtaxs->where('item_id',$value->pivot->id)->pluck('taxs_id') as $tax){
+                // dd($unique_taxes_ids,$turned_into_keys,$proposal->itemtaxs->where('item_id',$value->pivot->id)->pluck('taxs_id'),$tax,$value->pivot->selling_price, $value->pivot->quantity);
                 if(array_key_exists($tax,$turned_into_keys)){
                     $sallingprice = $value->pivot->selling_price * $value->pivot->quantity;
                    
-                    if($taxes->discount_percent != 0){
+                    if($proposal->discount_percent != 0){
                         $old =$sallingprice * (get_taxes($tax)->rate_percent/100) ;
-                        $items_tax = $old-( $old * ($taxes->discount_percent / 100)) ;
+                        $items_tax = $old-( $old * ($proposal->discount_percent / 100)) ;
                     }else{
 
                         $items_tax = $sallingprice * (get_taxes($tax)->rate_percent/100) ;
@@ -218,6 +219,17 @@ class Proposal extends Model implements HasMedia
 
     }
     
-   
+    public function getSubtotal($proposal)
+    {
+        $items_tax = 0;    
+        foreach($proposal->items as $key => $value){
+            $items_tax += $value->pivot->selling_price * $value->pivot->quantity;
+        }
+        return $items_tax;
+    }
 
+    public function activities()
+    {
+        return $this->hasMany(Activity::class,'module_field_id')->where('module','=','proposal')->orderBy('id','desc');
+    }
 }

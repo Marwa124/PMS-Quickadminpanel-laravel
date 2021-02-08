@@ -6,6 +6,7 @@ use App\Events\NewNotification;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\MediaUploadingTrait;
 use App\Notifications\ProjectManagementNotification;
+use Illuminate\Support\Facades\DB;
 use Modules\HR\Entities\AccountDetail;
 use Modules\ProjectManagement\Entities\Milestone;
 use Modules\ProjectManagement\Entities\TimeSheet;
@@ -74,10 +75,10 @@ class TaskController extends Controller
 
         //$statuses = TaskStatus::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $tags = TaskTag::all()->pluck('name', 'id');
+        $tags = TaskTag::all()->pluck('name_'.app()->getLocale(), 'id');
 
         //$projects = Project::all()->pluck('name', 'id');
-        $projects = auth()->user()->getUserProjectsByUserID(auth()->user()->id)->pluck('name', 'id');
+        $projects = auth()->user()->getUserProjectsByUserID(auth()->user()->id)->pluck('name_'.app()->getLocale(), 'id');
 
 //        $milestones = Milestone::with('project')->get();
         $milestones = auth()->user()->getUserMilestonesByUserID(auth()->user()->id);
@@ -88,7 +89,7 @@ class TaskController extends Controller
         //dd($milestones);
 
 //        $tasks = Task::all()->pluck('name', 'id');
-        $tasks = auth()->user()->getUserTasksByUserID(auth()->user()->id, false, true)->pluck('name', 'id');
+        $tasks = auth()->user()->getUserTasksByUserID(auth()->user()->id, false, true)->pluck('name_'.app()->getLocale(), 'id');
 
 
         $task = null;
@@ -149,6 +150,9 @@ class TaskController extends Controller
     {
         abort_if(Gate::denies('task_create'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
+        try {
+            // Begin a transaction
+            DB::beginTransaction();
         unset($request['created_by']);
         $request['created_by'] = auth()->user()->id;
 
@@ -163,7 +167,18 @@ class TaskController extends Controller
             Media::whereIn('id', $media)->update(['model_id' => $task->id]);
         }
 
-        setActivity('task', $task->id, 'Save Task Details', $task->name);
+        setActivity('task', $task->id, 'Save Task Details', 'حقظ تفاصيل المهمه', $task->name_en, $task->name_ar);
+
+            // Commit the transaction
+            DB::commit();
+
+        }catch(\Exception $e){
+            // An error occured; cancel the transaction...
+            DB::rollback();
+
+            // and throw the error again.
+            throw $e;
+        }
 
         return redirect()->route('projectmanagement.admin.tasks.index');
     }

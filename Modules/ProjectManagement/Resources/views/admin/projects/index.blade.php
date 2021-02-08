@@ -165,7 +165,7 @@
                 {{ trans('cruds.project.title') }} {{ trans('global.list') }}
             </a>
         </div>
-
+{{--        <input type="hidden" name="getLocale" id="getLocale" value="{{app()->getLocale()}}"/>--}}
         <div class="card-body">
             <div class="table-responsive">
                 <table class=" table table-bordered table-striped table-hover datatable datatable-Project">
@@ -222,7 +222,7 @@
                                 <td>
                                     <a href="{{ route('projectmanagement.admin.projects.show', $project->id) }}"
                                        title=" {{ trans('global.view') }}">
-                                        {{ $project->name ?? '' }}<br>
+                                        {{ $project->{'name_'.app()->getLocale()} ? $project->{'name_'.app()->getLocale()} : '' }}<br>
                                     </a>
                                     <div class="progress" style="width: 150px">
                                         <div class="progress-bar {{$project->calculate_progress < 50 ? 'bg-danger':'bg-success'}}"
@@ -262,7 +262,7 @@
                                         {{--                                        </a>--}}
                                     @else
                                         <a class="btn btn-info disabled">
-                                            No Tasks
+                                            {{trans('cruds.task.fields.no_task')}}
                                         </a>
                                     @endif
                                 </td>
@@ -275,7 +275,8 @@
                                 </td>
 
                                 <td>
-                                    {{ $project->project_status ? ucwords(str_replace('_',' ',$project->project_status)) : '' }}
+{{--                                    {{ $project->project_status ? ucwords(str_replace('_',' ',$project->project_status)) : '' }}--}}
+                                    {{ $project->project_status ? trans("cruds.status.".$project->project_status)  : '' }}
                                 </td>
                                 <td>
                                     {{ $project->department->department_name ?? '' }}
@@ -633,6 +634,7 @@
             })
 
         })
+        var getLocale = document.getElementById('getLocale').value;
 
         function tasksModal(project_id) {
             var allprojects = document.getElementById('projects').value;
@@ -649,7 +651,20 @@
 
                         var showLink = '{{route("projectmanagement.admin.tasks.show", ":id") }}';
                         showLink = showLink.replace(':id', value.id);
-                        innerHtmlTasks += "<tr data-entry-id='" + value.id + "'><td>" + value.id + "</td><td><a href='" + showLink + "'>" + value.name + "</a></td><td>" + value.status + "</td><td><div class='progress'> <div class='progress-bar ' role='progressbar' style='width:" + value.calculate_progress + "%;  aria-valuenow='25' aria-valuemin='0' aria-valuemax='100'>" + value.calculate_progress + "%</div></div></td><td>" + value.due_date + "</td></tr>"
+
+                        {{--var trans_status = 'cruds.status.'+value.status;--}}
+
+                        {{--var xzxxcxc = '{{trans("cruds.status.:trans_status") }}';--}}
+                        {{--var status = xzxxcxc.replace(':trans_status', value.status);--}}
+                        {{--console.log(status,trans_status,value.status);--}}
+
+                        var name = value.name_en;
+
+                        if(getLocale == 'ar'){
+
+                            var name = value.name_ar;
+                        }
+                        innerHtmlTasks += "<tr data-entry-id='" + value.id + "'><td>" + value.id + "</td><td><a href='" + showLink + "'>" + name + "</a></td><td>" + value.status + "</td><td><div class='progress'> <div class='progress-bar ' role='progressbar' style='width:" + value.calculate_progress + "%;  aria-valuenow='25' aria-valuemin='0' aria-valuemax='100'>" + value.calculate_progress + "%</div></div></td><td>" + value.due_date + "</td></tr>"
                         // status.forEach(function (stat, key) {
                         //     if (stat.id == value.status_id) {
                         //
@@ -673,7 +688,16 @@
                     milestones.forEach(function (value, key) {
                         var showLink = '{{route("projectmanagement.admin.milestones.show", ":id") }}';
                         showLink = showLink.replace(':id', value.id);
-                        innerHtmlTasks += "<tr data-entry-id='" + value.id + "'><td>" + value.id + "</td><td><a href='" + showLink + "'>" + value.name + "</a></td><td>" + value.end_date + "</td></tr>"
+
+                        var name = value.name_en;
+
+                        if(getLocale == 'ar'){
+
+                            var name = value.name_ar;
+                        }
+
+                        innerHtmlTasks += `<tr data-entry-id='   ${value.id}  '><td>   ${value.id}  </td><td><a href=' ${showLink}'>   ${name} </a></td><td>   ${value.end_date} </td></tr>`
+                        {{--innerHtmlTasks += "<tr data-entry-id='" + value.id + "'><td>" + value.id + "</td><td><a href='" + showLink + "'>" + value.name_+'{{app()->getLocale()}}' + "</a></td><td>" + value.end_date + "</td></tr>"--}}
                     })
                     document.getElementById('milestoneModelTBody').innerHTML = innerHtmlTasks;
                 }

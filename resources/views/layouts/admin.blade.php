@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+
     <title>{{ trans('panel.site_title') }}</title>
     {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script> --}}
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" />
@@ -41,9 +42,10 @@
     {{--<link rel="stylesheet" href="{{ asset('jquery_cdn/fixedHeader.dataTables.min.css') }}">--}}
 
     <link href="{{ asset('css/app.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/custom.css') }}" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.min.css">
-    
+
     @yield('styles')
 
 <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
@@ -228,8 +230,10 @@
                                 @endforeach
                             </ul>
                         </div>
-                    @endif --}}
-                    @yield('content')
+                    @endif
+{{--                        to get current localization (language)--}}
+                        <input type="hidden" name="getLocale" id="getLocale" value="{{app()->getLocale()}}"/>
+                        @yield('content')
 
                 </div>
 
@@ -284,7 +288,7 @@
         $(document).ready(function() {
            $('.selectpicker').selectpicker('refresh');
    });
-      
+
    </script>
     <script>
         $(function() {

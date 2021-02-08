@@ -4,12 +4,13 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLocalsTable extends Migration
+class CreateLocalesTable extends Migration
 {
     public function up()
     {
-        Schema::create('locals', function (Blueprint $table) {
+        Schema::create('locales', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('locale')->nullable();
             $table->string('code')->nullable();
             $table->string('language')->nullable();
             $table->string('name');

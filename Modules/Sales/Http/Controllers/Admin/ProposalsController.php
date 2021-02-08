@@ -13,6 +13,10 @@ use Modules\Sales\Http\Requests;
 use Modules\Sales\Entities\ProposalsItem;
 use Modules\Sales\Entities\ProposalItemTax;
 use Modules\Sales\Entities\ItemPorposalRelations;
+use App\Models\Invoice;
+use App\Models\InvoiceItemTax;
+use App\Models\ItemInvoiceRelations;
+use Modules\Finance\Http\Requests\Store\StoreInvoiceRequest;
 use App\Models\Opportunity;
 use App\Models\Client;
 use App\Models\User;
@@ -121,7 +125,7 @@ class ProposalsController extends Controller
         if ($media = $request->input('ck-media', false)) {
             Media::whereIn('id', $media)->update(['model_id' => $proposal->id]);
         }
-
+        setActivity('proposal',$proposal->id,'Create proposal #','تم انشاء عرض الاقتراح#',$proposal->reference_no,$proposal->reference_no);
         DB::commit();
         return redirect()->route('sales.admin.proposals.index');
 
@@ -153,7 +157,7 @@ class ProposalsController extends Controller
         $after_discount=$request->after_discount ? $request->after_discount : 0;
         $total=$request->total ? $request->total : 0;
         $discount_percent=$request->discount_percent ? $request->discount_percent : 0;
-        $request->merge(['total_cost_price'=>$total,'total_tax'=>$total_tax,'after_discount'=>$after_discount,'discount_percent'=>$discount_percent]);
+        $request->merge(['total_cost_price'=>$total,'status'=>'Waiting_approval','total_tax'=>$total_tax,'after_discount'=>$after_discount,'discount_percent'=>$discount_percent]);
         // dd($request->all(),$request->item_relation_id,isset($request->item_relation_id),ItemPorposalRelations::whereIn('id',$request->item_relation_id)->get());
         $proposal->update($request->only([
         'reference_no',
@@ -222,7 +226,8 @@ class ProposalsController extends Controller
         if ($media = $request->input('ck-media', false)) {
             Media::whereIn('id', $media)->update(['model_id' => $proposal->id]);
         }
-
+        
+        setActivity('proposal',$proposal->id,'Update proposal #','تم تعديل عرض الاقتراح#',$proposal->reference_no,$proposal->reference_no);
         DB::commit();
         return redirect()->route('sales.admin.proposals.index');
 
@@ -233,6 +238,7 @@ class ProposalsController extends Controller
         }
 
         
+        
     }
 
     public function show(Proposal $proposal)
@@ -240,8 +246,10 @@ class ProposalsController extends Controller
         abort_if(Gate::denies('proposal_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $ProposalsItem = ProposalsItem::all();
-
-        return view('sales::admin.proposals.show', compact('proposal','ProposalsItem'));
+        $taxRates = TaxRate::all();
+        $clients = Client::all();
+        $projects = [];
+        return view('sales::admin.proposals.show', compact('proposal','ProposalsItem','taxRates','clients','projects'));
     }
 
     public function destroy(Proposal $proposal)
@@ -328,6 +336,7 @@ class ProposalsController extends Controller
                 'status'=>$request->status,
             ]);
         }
+        setActivity('proposal',$proposal->id,'Change Status proposal #','تم تغير حالة العرض #',$proposal->reference_no,$proposal->reference_no);
         return response()->json(Response::HTTP_CREATED);
      }
 
@@ -341,7 +350,7 @@ class ProposalsController extends Controller
             $proposal->load('items','itemtaxs');
             //fill data with i need
             $newproposal = $proposal->replicate()->fill([
-                'reference_no'=> $proposal->reference_no.'_Copy',
+                'reference_no'=> generate_proposal_number(),
                 'module'=>$request->module,
                 'module_id'=>$request->module_id,
                 'expire_date'=>$request->expire_date,
@@ -382,7 +391,8 @@ class ProposalsController extends Controller
                     
                    
                 }
-            
+                setActivity('proposal',$proposal->id,'Change Status proposal #','تم تغير حالة العرض #',$proposal->reference_no,$proposal->reference_no);       
+        // setActivity('proposal',$newproposal->id,'Change Status proposal #',$newproposal->reference_no);  
         DB::commit();
         return redirect()->route('sales.admin.proposals.index');
 
@@ -393,4 +403,113 @@ class ProposalsController extends Controller
         }
    
      }
+
+    /*** History od Project  */
+
+    public function historyproposal(Proposal $proposal){
+        return view('sales::admin.proposals.history', compact('proposal'));
+    }
+
+
+    public function invoice(StoreInvoiceRequest $request,Proposal $proposal)
+    {
+    //    dd($request->all(),$proposal);
+        DB::beginTransaction();
+
+        try {
+            $total_tax = $request->total_tax ? array_sum($request->total_tax) : 0;
+            $after_discount = $request->after_discount ? $request->after_discount : 0;
+            $total = $request->total ? $request->total : 0;
+            $discount_percent = $request->discount_percent ? $request->discount_percent : 0;
+            $request->merge(['total_cost_price' => $total, 'total_tax' => $total_tax, 'after_discount' => $after_discount, 'discount_percent' => $discount_percent]);
+
+
+            $data = [
+                'reference_no' => $request->reference_no,
+                'recurring' => $request->recurring,
+                'recur_start_date' => $request->recur_start_date,
+                'recur_end_date' => $request->recur_end_date,
+                'invoice_date' => $request->invoice_date,
+                'due_date' => $request->due_date,
+                'notes' => $request->notes,
+                'total_tax' => $request->total_tax,
+                'client_id' => $request->client_id,
+                'project_id' => $request->project_id,
+                'adjustment' => $request->adjustment,
+                'discount_status' => $request->discounts,
+                'discount_total' => $request->discount_total,
+                'before_discount' => $request->subtotal,
+                'after_discount' => $request->after_discount,
+                'total_amount' => floatval($request->total),
+                'discount_percent' => intval($request->discount_percent),
+                'user_id' => $request->user_id,
+                'currency' => 'EGP',
+            ];
+
+
+            $invoice = Invoice::create($data);
+            if ($request->items) {
+
+                foreach ($request->items as $key => $value) {
+                    $total_taxitem = 0;
+                    if (isset($value['tax'])) {
+                        # code...
+                        $taxRates = TaxRate::whereIN('id', $value['tax'])->pluck('rate_percent');
+                        if (!empty($taxRates)) {
+                            foreach ($taxRates as $ratevalue) {
+                                $total_taxitem = $total_taxitem + ($value['unit_cost'] * $value['total_qty'] * ($ratevalue / 100));
+                            }
+                        }
+                    }
+
+                    $newitem = ItemInvoiceRelations::create($value);
+                    $newitem->update([
+                        'invoices_id' => $invoice['id'],
+                        'item_id' => $value['saved_items_id'],
+                    ]);
+
+                    if ($newitem && isset($value['tax'])) {
+                        foreach ($value['tax'] as $index => $newtax) {
+                            $addtaxes = new InvoiceItemTax;
+//                            $addtaxes->tax_cost = $invoice['id'];
+                            $addtaxes->tax_cost = $request->total_tax[$index] ? $request->total_tax[$index]: $request->total_tax ;
+                            $addtaxes->taxs_id = $newtax;
+                            $addtaxes->invoices_id = $invoice['id'];
+                            $addtaxes->item_id = $newitem->id;
+                            $addtaxes->save();
+                        }
+
+                    }
+                }
+            }
+
+
+            if ($media = $request->input('ck-media', false)) {
+                Media::whereIn('id', $media)->update(['model_id' => $invoice->id]);
+            }
+
+            /***************************************after save set invoice at proposal***********************************************/ 
+                if($invoice){
+
+                    $proposal->update([
+                        'convert'=>'Yes',
+                        'convert_module'=>'invoice',
+                        'convert_module_id'=>$invoice['id'],
+                         ]);
+                }
+
+            setActivity('proposal',$proposal->id,'Create Invoice For Proposal #','انشاء فاتور للعرض  #',$proposal->reference_no,$proposal->reference_no);
+
+            /***************************************after save set invoice at proposal***********************************************/ 
+
+            DB::commit();
+            return redirect()->route('finance.admin.invoices.show', $invoice->id);
+
+        } catch (\Exception $e) {
+            DB::rollback();
+                        dd($e);
+            return redirect()->back();
+        }
+
+    }
 }

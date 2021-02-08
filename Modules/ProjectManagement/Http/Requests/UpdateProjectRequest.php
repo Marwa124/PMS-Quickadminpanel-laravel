@@ -17,10 +17,15 @@ class UpdateProjectRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'               => [
+            'name_en'               => [
                 'string',
                 'required',
-                'unique:projects,name,' . request()->route('project')->id,
+                'unique:projects,name_en,' . request()->route('project')->id,
+            ],
+            'name_ar'               => [
+                'string',
+                'required',
+                'unique:projects,name_ar,' . request()->route('project')->id,
             ],
             'client_id'          => [
                 'required',
@@ -43,10 +48,6 @@ class UpdateProjectRequest extends FormRequest
                 'date_format:' . config('panel.date_format'),
                 'after_or_equal:start_date',
             ],
-//            'actual_completion'  => [
-//                'string',
-//                'required',
-//            ],
             'alert_overdue'      => [
                 'required',
                 'integer',
@@ -64,39 +65,7 @@ class UpdateProjectRequest extends FormRequest
             'project_status'     => [
                 'required',
                 'string',
-                //'nullable',
             ],
-//            'timer_started_by'   => [
-//                'nullable',
-//                'integer',
-//                'min:-2147483648',
-//                'max:2147483647',
-//            ],
-//            'start_time'         => [
-//                'date_format:' . config('panel.time_format'),
-//                'nullable',
-//            ],
-//            'logged_time'        => [
-//                'date_format:' . config('panel.time_format'),
-//                'nullable',
-//            ],
-//            'permissions.*'      => [
-//                'integer',
-//            ],
-//            'permissions'        => [
-//                'array',
-//            ],
-//            'hourly_rate'        => [
-//                'string',
-//                'nullable',
-//            ],
-//            'fixed_rate'         => [
-//                'string',
-//                'nullable',
-//            ],
-//            'with_tasks'         => [
-//                'required',
-//            ],
             'estimate_hours'     => [
                 'string',
                 'nullable',

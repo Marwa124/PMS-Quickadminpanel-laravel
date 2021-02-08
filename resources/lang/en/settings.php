@@ -59,6 +59,17 @@ return [
     'company_vat_required'                   => 'Vat Is Required',
     'company_vat_integer'                    => 'Vat Should Be Integer',
 
-    'company_details_updated'                  => 'Compay Details Updated successfully'
+    'company_details_updated'                  => 'Compay Details Updated successfully',
+
+
+    'default_language'                       => 'Default Language',
+    'locale' => 'Locale',
+    'timezone' => 'Timezone',
+    'default_currency' => 'Default Currency',
+    'currency_position' => 'Currency Position',
+    'right'   => 'Right',
+    'left' => 'Left',
+
+
 
 ];

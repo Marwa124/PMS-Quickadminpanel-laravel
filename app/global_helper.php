@@ -122,17 +122,19 @@ if (!function_exists('time_ago')) {
 
 if (!function_exists('setActivity')) {
 
-    function setActivity($module, $module_field_id, $activity, $module_value)
+    function setActivity($module,$module_field_id,$activity_en,$activity_ar,$module_value_en,$module_value_ar,$link=null)
     {
         $activityData = [
             'user_id'           =>  auth()->user()->id,
             'module'            =>  $module,
             'module_field_id'   =>  $module_field_id,
-            'activity'          =>  $activity,
+            'activity_en'       =>  $activity_en,
+            'activity_ar'       =>  $activity_ar,
             //        'activity_date',
             //        'icon',
-            //        'link',
-            'value1'            =>  $module_value,
+            'link'              =>  $link,
+            'value1_en'         =>  $module_value_en,
+            'value1_ar'         =>  $module_value_ar,
             //        'value2'
         ];
 
@@ -182,8 +184,19 @@ if (!function_exists('get_taxes')) {
     function get_taxes($id)
     {
 
-        $taxes = TaxRate::findOrFail($id);
+        $taxes=TaxRate::findOrFail($id);
 
-        return $taxes;
+       return $taxes;
     }
 }
+
+//change color of activity
+if (!function_exists('ratingColor')) {
+    function ratingColor($rating)  {
+        $colors = ['warning','info','danger','success','primary'];
+        return $colors[$rating - 1];
+    
+    }
+}
+
+
