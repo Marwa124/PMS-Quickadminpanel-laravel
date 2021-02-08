@@ -96,7 +96,7 @@
             </button>
             <a class="c-header-brand d-lg-none" href="#">{{ trans('panel.site_title') }}</a>
 
-            {{auth()->user()->name}}
+            {{-- {{auth()->user()->name}} --}}
 
             <button class="c-header-toggler c-class-toggler mfs-3 d-md-down-none" type="button" data-target="#sidebar" data-class="c-sidebar-lg-show" responsive="true">
                 <i class="fas fa-fw fa-bars"></i>
@@ -215,7 +215,7 @@
             <main class="c-main">
 
                 <div class="container-fluid">
-                    @if(session('message'))
+                    {{-- @if(session('message'))
                         <div class="row mb-2">
                             <div class="col-lg-12">
                                 <div class="alert alert-success" role="alert">{{ session('message') }}</div>
@@ -230,10 +230,15 @@
                                 @endforeach
                             </ul>
                         </div>
+<<<<<<< HEAD
                     @endif
 {{--                        to get current localization (language)--}}
                         <input type="hidden" name="getLocale" id="getLocale" value="{{app()->getLocale()}}"/>
                         @yield('content')
+=======
+                    @endif --}}
+                    @yield('content')
+>>>>>>> d6251d847fc8fb7c452f5751587921bdcfbc35f6
 
                 </div>
 
