@@ -4,15 +4,16 @@ namespace Modules\Setting\Http\Controllers;
 
 use Gate;
 use App\Models\Config;
+use App\Models\Locale;
 use App\Models\Country;
 use App\Models\Currency;
 use App\Models\Language;
-use App\Models\Locale;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Contracts\Support\Renderable;
 use Symfony\Component\HttpFoundation\Response;
+use Modules\MaterialsSuppliers\Entities\TaxRate;
 
 class SettingController extends Controller
 {
@@ -30,12 +31,35 @@ class SettingController extends Controller
         $languages  = Language::all();
         $locales    = Locale::all();
         $timezones  = timezones();
+        $taxes = TaxRate::orderBy('rate_percent', 'ASC')->get();
+        $date_format = settings('date_format');
+        $default_tax = [];
 
-        // dd($locales);
+        $decimal_separator = settings('decimal_separator', 2);
+
+        $decimal = sprintf('%0' . $decimal_separator . 'd', 0);
+        if (settings('default_tax')) {
+            $default_tax = !is_numeric(settings('default_tax')) ? unserialize(settings('default_tax')) : settings('default_tax');
+        }
 
 
 
-        return view('setting::company_details.index', compact('countries', 'currencies', 'languages', 'locales', 'timezones'));
+        return view(
+            'setting::company_details.index',
+            compact(
+                'countries',
+                'currencies',
+                'languages',
+                'locales',
+                'timezones',
+                'taxes',
+                'default_tax',
+                'date_format',
+                'decimal_separator',
+                'decimal'
+
+            )
+        );
     }
 
 
@@ -218,10 +242,61 @@ class SettingController extends Controller
         return response()->json(['message' => trans('settings.currency_deleted')], 200);
     }
 
-    public function save_system()
+    public function save_system(Request $request)
     {
 
+        $timezones  = timezones();
 
-        dd('here');
+
+        if (!array_key_exists(request('timezone'), $timezones)) {
+
+            return back()->withInput()->with(flash(trans('settings.timezone_invalid'), 'danger'));
+        }
+
+
+
+        $validator = Validator::make($request->all(), [
+
+            'default_language' => 'required|exists:languages,id|string',
+            'locale' => 'required|exists:locales,locale|string',
+            'timezone' => 'required|string',
+            'default_currency' => 'required|exists:currencies,code|string',
+            'currency_position' => 'required|string|in:left,right',
+            'default_tax' => '2',
+            'tables_pagination_limit' => '50',
+            'date_format' => null,
+            'time_format' => null,
+            'money_format' => null,
+            'decimal_separator' => '2',
+            'allowed_files' => null,
+            'max_file_size' => null,
+            'google_api_key' => 'key',
+            'recaptcha_site_key' => 'site',
+            'recaptcha_secret_key' => 'key',
+            'auto_close_ticket' => '30',
+            'enable_languages' => 'true',
+            'allow_sub_tasks' => 'true',
+            'only_allowed_ip_can_clock' => 'true',
+            'allow_client_registration' => 'true',
+            'allow_apply_job_from_login' => 'true',
+        ], [
+            'code.required'                                => trans('settings.code_required'),
+            'code.string'                                  => trans('settings.code_string'),
+
+            'name.required'                                => trans('settings.name_required'),
+            'name.string'                                  => trans('settings.name_string'),
+
+            'symbol.required'                              => trans('settings.symbol_required'),
+            'symbol.string'                                => trans('settings.symbol_string'),
+        ]);
+
+
+        if ($validator->fails()) {
+
+            return response()->json(['message' => $validator->errors()->all()[0]], 400);
+        }
+
+
+        dd($request->all());
     }
 }
