@@ -17,7 +17,7 @@
 
                                 <form @submit.prevent="departmentId ? updateDepartment() : createDepartment()" @keydown="form.onKeydown($event)">
                                     <div class="form-group">
-                                        <label class="required" for="department_name" v-text="$t('cruds.department.fields.department_name')"></label>
+                                        <label class="required" for="department_name" v-text="$t('department.fields.department_name')"></label>
                                         <input v-model="form.department_name" :class="{ 'is-invalid': form.errors.has('department_name') }"
                                             class="form-control" type="text" name="department_name" id="department_name" required>
                                         <has-error :form="form" field="department_name"></has-error>
@@ -26,7 +26,7 @@
 
                                     <!-- Designations_list -->
                                     <div class="form-group">
-                                        <label for="designation_id" v-text="$t('cruds.department.fields.designations')"></label>
+                                        <label for="designation_id" v-text="$t('department.fields.designations')"></label>
                                         <multiselect
                                             :multiple="true"
                                             :close-on-select="false"
@@ -44,7 +44,7 @@
 
                                     <!-- department_head -->
                                     <div class="form-group">
-                                        <label for="user_head_department" v-text="$t('cruds.department.fields.department_head')"></label>
+                                        <label for="user_head_department" v-text="$t('department.fields.department_head')"></label>
                                         <multiselect
                                             v-model="form.user_head_department"
                                             :options="users"

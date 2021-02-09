@@ -3,7 +3,6 @@
 @inject('salaryTemplateModel', 'Modules\Payroll\Entities\SalaryTemplate')
 @inject('advanceSalaryModel', 'Modules\Payroll\Entities\AdvanceSalary')
 
-
 <div class="row">
     <div class="displayMsg">
         <div class="alert alert-success" role="alert">
@@ -117,7 +116,6 @@
                                 @endif
                             </td>
                             <td>
-                            {{-- <td  contenteditable="true"> --}}
                                 <a type="button" class="fullname" data-toggle="modal" data-target="#fullName{{$accountDetail->user_id}}">
                                     {{ $accountDetail->fullname ?? '' }}
                                 </a>
@@ -209,7 +207,6 @@
                                         @can('appointment_letter')
                                             @if ($accountDetail->user_id != auth()->user()->id)
                                                 @php
-                                                // dd(auth()->user()->accountDetail()->get());
                                                 $dep = '';
                                                 if (auth()->user()->accountDetail) {
                                                     $dep = auth()->user()->accountDetail->designation ? auth()->user()->accountDetail->designation->department->id : '';
@@ -233,9 +230,11 @@
                                         @endcan
 
                                         @can('account_detail_evaluate')
-                                            <a class="btn btn-xs btn-success my-1" href="{{ route('hr.admin.evaluations.edit', $accountDetail->id) }}">
-                                                Evaluate
-                                            </a>
+                                            @if ($accountDetail->designation()->count() > 0)
+                                                <a class="btn btn-xs btn-success my-1" href="{{ route('hr.admin.evaluations.edit', $accountDetail->id) }}">
+                                                    Evaluate
+                                                </a>
+                                            @endif
                                         @endcan
 
                                         {{-- Adjust User Salary --}}

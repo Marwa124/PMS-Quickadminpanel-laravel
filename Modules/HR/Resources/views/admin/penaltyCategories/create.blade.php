@@ -31,7 +31,7 @@
             </div>
             <div class="form-group">
                 <label class="required" for="penelty_days">{{ trans('cruds.penaltyCategory.fields.penelty_days') }}</label>
-                <input class="form-control {{ $errors->has('penelty_days') ? 'is-invalid' : '' }}" type="text" name="penelty_days" id="penelty_days" value="{{ old('penelty_days', '') }}" required>
+                <input class="form-control {{ $errors->has('penelty_days') ? 'is-invalid' : '' }}" type="number" name="penelty_days" id="penelty_days" value="{{ old('penelty_days', '') }}" required>
                 @if($errors->has('penelty_days'))
                     <div class="invalid-feedback">
                         {{ $errors->first('penelty_days') }}

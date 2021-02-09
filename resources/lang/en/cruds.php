@@ -873,6 +873,8 @@ return [
             'updated_at_helper'  => ' ',
             'deleted_at'         => 'Deleted at',
             'deleted_at_helper'  => ' ',
+            'deducted_amount_helper' => '',
+            'annual_monthly_helper' => '',
         ],
     ],
     'leaveApplication'       => [

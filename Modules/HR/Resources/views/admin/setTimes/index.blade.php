@@ -1,4 +1,7 @@
 @extends('layouts.admin')
+@section('title')
+| {{ trans('cruds.setTime.title_singular') }}
+@endsection
 @section('content')
 @can('set_time_create')
     <div style="margin-bottom: 10px;" class="row">
@@ -21,9 +24,6 @@
                     <tr>
                         <th width="10">
 
-                        </th>
-                        <th>
-                            {{ trans('cruds.setTime.fields.id') }}
                         </th>
                         <th>
                             {{ trans('cruds.setTime.fields.name') }}
@@ -50,9 +50,6 @@
                         <tr data-entry-id="{{ $setTime->id }}">
                             <td>
 
-                            </td>
-                            <td>
-                                {{ $setTime->id ?? '' }}
                             </td>
                             <td>
                                 {{ $setTime->name ?? '' }}

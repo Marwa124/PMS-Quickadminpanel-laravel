@@ -31,6 +31,7 @@ class UpdateVacationRequest extends FormRequest
             'user_id'    => [
                 'required',
                 'integer',
+                'exists:users,id'
             ],
         ];
     }

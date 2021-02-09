@@ -86,13 +86,6 @@
                             {{ $meetingMinute->location ?? '' }}
                         </td>
                         <td>
-                            {{-- @can('meeting_minute_show')
-                            <a class="btn btn-xs btn-primary"
-                                href="{{ route('hr.admin.meeting-minutes.show', $meetingMinute->id) }}">
-                                {{ trans('global.view') }}
-                            </a>
-                            @endcan --}}
-
                             @can('meeting_minute_edit')
                             <a class="btn btn-xs btn-info"
                                 href="{{ route('hr.admin.meeting-minutes.edit', $meetingMinute->id) }}">

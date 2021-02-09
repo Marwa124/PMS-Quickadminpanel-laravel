@@ -3094,7 +3094,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       handler: function handler(items) {
         var _this = this;
 
-        // console.log(items);
         var rateVals = [];
         var count = 0;
         items.data.forEach(function (item) {
@@ -3123,10 +3122,9 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       axios.get(this.urlGetEvaluationRatings).then(function (response) {
         var _this2$rates$data;
 
-        var data = response.data.data; // this.rates = data;
+        var data = response.data.data;
 
-        (_this2$rates$data = _this2.rates.data).push.apply(_this2$rates$data, _toConsumableArray(data)); // console.log(this.rates);
-
+        (_this2$rates$data = _this2.rates.data).push.apply(_this2$rates$data, _toConsumableArray(data));
       });
     },
     addRow: function addRow() {
@@ -3137,10 +3135,9 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       });
     },
     removeRow: function removeRow(index) {
-      this.rates.data.splice(index, 1); // this.rates.splice(index + 1, 0, {});
+      this.rates.data.splice(index, 1);
     },
     rateUserSubmission: function rateUserSubmission() {
-      // console.log(this.rates);
       this.spinnerUpdateDepart = true;
       $.ajax({
         url: this.urlGetEvaluationRatings,
@@ -3217,7 +3214,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _mixinsTable__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../mixinsTable */ "./resources/js/mixinsTable.js");
-//
 //
 //
 //
@@ -4601,7 +4597,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   watch: {
     'form': {
       handler: function handler(items) {
-        // console.log(items);
         this.permissionsForm.department_head = items.user_head_department;
       },
       deep: true
@@ -4619,8 +4614,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _context.next = 2;
                 return axios.get(_this.urlGetPermissions).then(function (response) {
                   if (response.status === 200) {
-                    var data = response.data;
-                    console.log(data.data);
+                    var data = response.data; // console.log(data.data);
 
                     if (_typeof(data) === 'object') {
                       _this.groups = data.data;
@@ -4648,8 +4642,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _this2 = this;
 
       axios.get(this.urlGetDepartment).then(function (response) {
-        var data = response.data;
-        console.log(data);
+        var data = response.data; // console.log(data);
 
         _this2.form.fill(data.department);
 
@@ -4673,8 +4666,20 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _this4 = this;
 
       axios.get(this.urlGetAccountDetails).then(function (response) {
-        var data = response.data.data;
-        _this4.users = data;
+        var data = response.data.data; // Fetch Unbanned Users
+
+        var result = [];
+        data.forEach(function (element) {
+          for (var _i = 0, _Object$entries = Object.entries(element); _i < _Object$entries.length; _i++) {
+            var x = _Object$entries[_i];
+            var item = {
+              user_id: x[0],
+              fullname: x[1]
+            };
+            result.push(item);
+          }
+        });
+        _this4.users = [].concat(result); // Fetch Unbanned Users
       });
     },
     userFullname: function userFullname(user_head_department) {
@@ -4745,8 +4750,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         _this5.spinnerUpdateDepart = false;
 
         if (data.status === 201) {
-          var result = data.data.data;
-          console.log(result);
+          var result = data.data.data; // console.log(result);
 
           _this5.form.fill(result);
 
@@ -4774,8 +4778,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         if (_this6.departmentId) _this6.updateDepartment();
         setTimeout(function () {
           window.location.href = "/admin/hr/departments/list";
-        }, 500);
-        console.log(data);
+        }, 500); // console.log(data);
       })["catch"](function (error) {
         _this6.spinnerAction = false;
         _this6.permissionError = "Department Head is Required";
@@ -70180,7 +70183,7 @@ var render = function() {
                           attrs: { for: "department_name" },
                           domProps: {
                             textContent: _vm._s(
-                              _vm.$t("cruds.department.fields.department_name")
+                              _vm.$t("department.fields.department_name")
                             )
                           }
                         }),
@@ -70234,7 +70237,7 @@ var render = function() {
                           attrs: { for: "designation_id" },
                           domProps: {
                             textContent: _vm._s(
-                              _vm.$t("cruds.department.fields.designations")
+                              _vm.$t("department.fields.designations")
                             )
                           }
                         }),
@@ -70271,7 +70274,7 @@ var render = function() {
                           attrs: { for: "user_head_department" },
                           domProps: {
                             textContent: _vm._s(
-                              _vm.$t("cruds.department.fields.department_head")
+                              _vm.$t("department.fields.department_head")
                             )
                           }
                         }),
@@ -70983,7 +70986,7 @@ var render = function() {
                           attrs: { for: "designation_id" },
                           domProps: {
                             textContent: _vm._s(
-                              _vm.$t("cruds.evaluation.fields.name")
+                              _vm.$t("evaluation.fields.name")
                             )
                           }
                         }),
@@ -71010,7 +71013,7 @@ var render = function() {
                           attrs: { for: "designation_id" },
                           domProps: {
                             textContent: _vm._s(
-                              _vm.$t("cruds.evaluation.fields.job_title")
+                              _vm.$t("evaluation.fields.job_title")
                             )
                           }
                         }),
@@ -71037,7 +71040,7 @@ var render = function() {
                           attrs: { for: "designation_id" },
                           domProps: {
                             textContent: _vm._s(
-                              _vm.$t("cruds.evaluation.fields.department")
+                              _vm.$t("evaluation.fields.department")
                             )
                           }
                         }),
@@ -71066,7 +71069,7 @@ var render = function() {
                           attrs: { for: "designation_id" },
                           domProps: {
                             textContent: _vm._s(
-                              _vm.$t("cruds.evaluation.fields.period")
+                              _vm.$t("evaluation.fields.period")
                             )
                           }
                         }),
@@ -71085,7 +71088,7 @@ var render = function() {
                             type: "text",
                             name: "period",
                             placeholder: _vm.$t(
-                              "cruds.evaluation.fields.review_period"
+                              "evaluation.fields.review_period"
                             )
                           },
                           domProps: { value: _vm.rates.period },
@@ -71113,7 +71116,7 @@ var render = function() {
                           attrs: { for: "designation_id" },
                           domProps: {
                             textContent: _vm._s(
-                              _vm.$t("cruds.evaluation.fields.employee_id")
+                              _vm.$t("evaluation.fields.employee_id")
                             )
                           }
                         }),
@@ -71136,7 +71139,7 @@ var render = function() {
                           attrs: { for: "designation_id" },
                           domProps: {
                             textContent: _vm._s(
-                              _vm.$t("cruds.evaluation.fields.date")
+                              _vm.$t("evaluation.fields.date")
                             )
                           }
                         }),
@@ -71151,43 +71154,49 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "form-group" }, [
-                    _c(
-                      "div",
-                      { staticClass: "d-flex justify-content-flex-end" },
-                      [
-                        _c("label", {
-                          attrs: { for: "designation_id" },
-                          domProps: {
-                            textContent: _vm._s(
-                              _vm.$t("cruds.evaluation.fields.manager")
-                            )
-                          }
-                        }),
-                        _vm._v(" "),
-                        _vm.departmentHead.fullname == _vm.user.fullname
-                          ? _c("input", {
-                              staticClass: "form-control w-75 d-flex ml-auto",
-                              attrs: {
-                                type: "text",
-                                name: "manager",
-                                disabled: ""
-                              },
-                              domProps: { value: "CEO" }
-                            })
-                          : _c("input", {
-                              staticClass: "form-control w-75 d-flex ml-auto",
-                              attrs: {
-                                type: "text",
-                                name: "manager",
-                                disabled: ""
-                              },
+                    _vm.departmentHead
+                      ? _c(
+                          "div",
+                          { staticClass: "d-flex justify-content-flex-end" },
+                          [
+                            _c("label", {
+                              attrs: { for: "designation_id" },
                               domProps: {
-                                value: _vm.departmentHead.fullname,
-                                textContent: _vm._s(_vm.departmentHead.user_id)
+                                textContent: _vm._s(
+                                  _vm.$t("evaluation.fields.manager")
+                                )
                               }
-                            })
-                      ]
-                    )
+                            }),
+                            _vm._v(" "),
+                            _vm.departmentHead.fullname == _vm.user.fullname
+                              ? _c("input", {
+                                  staticClass:
+                                    "form-control w-75 d-flex ml-auto",
+                                  attrs: {
+                                    type: "text",
+                                    name: "manager",
+                                    disabled: ""
+                                  },
+                                  domProps: { value: "CEO" }
+                                })
+                              : _c("input", {
+                                  staticClass:
+                                    "form-control w-75 d-flex ml-auto",
+                                  attrs: {
+                                    type: "text",
+                                    name: "manager",
+                                    disabled: ""
+                                  },
+                                  domProps: {
+                                    value: _vm.departmentHead.fullname,
+                                    textContent: _vm._s(
+                                      _vm.departmentHead.user_id
+                                    )
+                                  }
+                                })
+                          ]
+                        )
+                      : _vm._e()
                   ])
                 ])
               ])
@@ -88370,10 +88379,10 @@ module.exports = JSON.parse("{\"global\":{\"home\":\"الرئيسية\",\"dashbo
 /*!***********************************!*\
   !*** ./resources/js/lang/en.json ***!
   \***********************************/
-/*! exports provided: global, evaluation, messages, suppliers, purchase, items, sidebar, default */
+/*! exports provided: global, evaluation, department, messages, suppliers, purchase, items, sidebar, default */
 /***/ (function(module) {
 
-module.exports = JSON.parse("{\"global\":{\"home\":\"Home\",\"dashboard\":\"Dashboard\",\"user\":\"user\",\"name\":\"Name\",\"total\":\"Total\",\"info\":\"Info\",\"infor\":\"Information\",\"infors\":\"Informations\",\"company\":\"Company\",\"type\":\"type\",\"setting\":\"setting\",\"button\":\"Button\",\"new\":\"New\",\"error_response\":\"The selected item can't be deleted\",\"back\":\"Back\",\"logout\":\"Logout\",\"create\":\"Create\",\"edit\":\"Edit\",\"update\":\"update\",\"save\":\"Save\",\"read\":\"Read\",\"toggle\":\"Toggle\",\"actions\":\"Actions\",\"action\":\"Action\",\"add_all\":\"Add all\",\"all\":\"All\",\"read_more\":\"Read more\",\"more_info\":\"More info\",\"choose_image\":\"Choose image\",\"drag_msg\":\"Drag and drop file here\",\"choose_file\":\"Choose file\",\"download\":\"Download\",\"download_image\":\"Download image\",\"items\":\"Items\",\"item\":\"Item\",\"left\":\"Left\",\"active\":\"Active\",\"completed\":\"Completed\",\"clear_completed\":\"Clear completed\",\"disactive\":\"Disactive\",\"activate\":\"Activate\",\"activation\":\"Activation\",\"accepte\":\"Accepte\",\"done_at\":\"Done at\",\"in_progress\":\"In progress\",\"available\":\"Available\",\"unavailable\":\"Unavailable\",\"hidden\":\"Hidden\",\"visible\":\"Visible\",\"show\":\"Show\",\"send\":\"Send\",\"hide\":\"Hide\",\"view\":\"View\",\"donwload\":\"Donwload\",\"close\":\"Close\",\"display\":\"Display\",\"from\":\"From\",\"to\":\"To\",\"in\":\"In\",\"on\":\"On\",\"or\":\"Or\",\"with\":\"With\",\"yes\":\"Yes\",\"no\":\"No\",\"delete\":\"Delete\",\"deleted\":\"Deleted\",\"force_delete\":\"Force delete\",\"remove\":\"Remove\",\"removed\":\"Removed\",\"restore\":\"Restore\",\"restored\":\"Restored\",\"failed\":\"Failed\",\"cancel\":\"Cancel\",\"undefined\":\"Undefined\",\"meeting\":\"Meeting\",\"next_meeting\":\"Next meeting\",\"contract\":\"Contract\",\"payments\":\"Payments\",\"view_payments\":\"View payments\",\"invoice\":\"Invoice\",\"lead\":\"Lead\",\"client\":\"Client\",\"yes_delete_it\":\"Yes, delete it\",\"yes_remove_it\":\"Yes, remove it\",\"yes_restore_it\":\"Yes, restore it\",\"settings_table\":\"Settings table {model} on all screens\",\"notifications\":\"Notifications\",\"the_notifications\":\"Notifications\",\"notification\":\"Notification\",\"all_notifications\":\"All notifications\",\"the_messages\":\"Messages\",\"all_messages\":\"All messages\",\"latest_messages\":\"Latest Messages\",\"staff\":\"staff\",\"clients\":\"Clients\",\"vendors\":\"Vendors\",\"notif_create_user\":\"A new employee was created by\",\"currency\":\"EGP\",\"payment_methods\":{\"cash\":\"Cash\",\"bank\":\"Bank\",\"partner_drawing\":\"Partner drawing\"},\"\":\"\"},\"evaluation\":{\"evaluation_comments\":\"ADDITIONAL COMMENTS\",\"evaluation_goals\":\"GOALS\"},\"messages\":{\"delete_msg\":\"Are you sure to delete this element?\",\"delete_success_msg\":\"The element has been deleted.\",\"delete_failed_msg\":\"The element has not been deleted.\",\"force_delete_msg\":\"Are you sure to remove this element?\",\"force_delete_success_msg\":\"The element has been removed.\",\"force_delete_failed_msg\":\"The element has not been removed.\",\"restore_msg\":\"Are you sure to restore this element?\",\"restore_success_msg\":\"The element has been restored.\",\"restore_failed_msg\":\"The element has not been restored.\",\"multi_delete_msg\":\"Are you sure to delete all checked elements?\",\"multi_delete_success_msg\":\"All elements checked as deleted.\",\"multi_delete_failed_msg\":\"Not all checked elements have been deleted.\",\"multi_force_delete_msg\":\"Are you sure to permanently remove all checked elements?\",\"multi_force_delete_success_msg\":\"All checked elements have been permanently removed.\",\"multi_force_delete_failed_msg\":\"Not all checked elements have been removed.\",\"multi_restore_msg\":\"Are you sure to restore all checked elements?\",\"multi_restore_success_msg\":\"All elements checked as restored.\",\"multi_restore_failed_msg\":\"Not all checked elements have been restored.\",\"change_lead_status_success_msg\":\"Lead status has been successfully updated\",\"change_lead_status_failed_msg\":\"Lead status was not updated\",\"change_client_status_success_msg\":\"Client status has been successfully updated\",\"change_client_status_failed_msg\":\"Client status was not updated\",\"change_meeting_status_success_msg\":\"Meeting status has been successfully updated\",\"change_meeting_status_failed_msg\":\"Meeting status was not updated\",\"reason_status\":\"Reason change status\",\"change_meeting_status_to\":\"Change Meeting status to\",\"not_found_roles\":\"Not found roles\",\"msg_not_mail_lead_registerd\":\"This client does'nt have a registered email.\"},\"suppliers\":{\"supplier\":\"Supplier\",\"fields\":{\"name\":\"Name\",\"mobile\":\"Mobile\",\"phone\":\"Phone\",\"email\":\"Email\",\"address\":\"Address\"}},\"purchase\":{\"supplier\":\"Supplier\",\"fields\":{\"ref_no\":\"Ref No\",\"purchase_date\":\"Purchase Date\",\"due_date\":\"Due Date\",\"sales_agent\":\"Sales Agent\",\"stock\":\"Upload Stock\",\"discount_type\":\"Discount Type\",\"notes\":\"Notes\",\"quantity_as_qty\":\"Qty\",\"quantity_as_hours\":\"Hours\",\"quantity_as_qty_hours\":\"Qty/Hours\",\"show_qty_as\":\"Show Quantity As\",\"before_tax\":\"Before Tax\",\"after_tax\":\"After Tax\"}},\"items\":{\"fields\":{\"name\":\"Item Name\",\"description\":\"Description\",\"price\":\"Price\",\"tax_rate\":\"Tax Rate\",\"total\":\"Total\",\"unit_cost\":\"Unit Cost\"}},\"sidebar\":{\"choose_user\":\"Choose User\",\"choose_item\":\"Choose Item\",\"choose_supplier\":\"Choose Supplier\",\"choose_tax_rate\":\"Choose Tax Rate\",\"\":\"\"}}");
+module.exports = JSON.parse("{\"global\":{\"home\":\"Home\",\"dashboard\":\"Dashboard\",\"user\":\"user\",\"name\":\"Name\",\"total\":\"Total\",\"info\":\"Info\",\"infor\":\"Information\",\"infors\":\"Informations\",\"company\":\"Company\",\"type\":\"type\",\"setting\":\"setting\",\"button\":\"Button\",\"new\":\"New\",\"error_response\":\"The selected item can't be deleted\",\"back\":\"Back\",\"logout\":\"Logout\",\"create\":\"Create\",\"edit\":\"Edit\",\"update\":\"update\",\"save\":\"Save\",\"read\":\"Read\",\"toggle\":\"Toggle\",\"actions\":\"Actions\",\"action\":\"Action\",\"add_all\":\"Add all\",\"all\":\"All\",\"read_more\":\"Read more\",\"more_info\":\"More info\",\"choose_image\":\"Choose image\",\"drag_msg\":\"Drag and drop file here\",\"choose_file\":\"Choose file\",\"download\":\"Download\",\"download_image\":\"Download image\",\"items\":\"Items\",\"item\":\"Item\",\"left\":\"Left\",\"active\":\"Active\",\"completed\":\"Completed\",\"clear_completed\":\"Clear completed\",\"disactive\":\"Disactive\",\"activate\":\"Activate\",\"activation\":\"Activation\",\"accepte\":\"Accepte\",\"done_at\":\"Done at\",\"in_progress\":\"In progress\",\"available\":\"Available\",\"unavailable\":\"Unavailable\",\"hidden\":\"Hidden\",\"visible\":\"Visible\",\"show\":\"Show\",\"send\":\"Send\",\"hide\":\"Hide\",\"view\":\"View\",\"donwload\":\"Donwload\",\"close\":\"Close\",\"display\":\"Display\",\"from\":\"From\",\"to\":\"To\",\"in\":\"In\",\"on\":\"On\",\"or\":\"Or\",\"with\":\"With\",\"yes\":\"Yes\",\"no\":\"No\",\"delete\":\"Delete\",\"deleted\":\"Deleted\",\"force_delete\":\"Force delete\",\"remove\":\"Remove\",\"removed\":\"Removed\",\"restore\":\"Restore\",\"restored\":\"Restored\",\"failed\":\"Failed\",\"cancel\":\"Cancel\",\"undefined\":\"Undefined\",\"meeting\":\"Meeting\",\"next_meeting\":\"Next meeting\",\"contract\":\"Contract\",\"payments\":\"Payments\",\"view_payments\":\"View payments\",\"invoice\":\"Invoice\",\"lead\":\"Lead\",\"client\":\"Client\",\"yes_delete_it\":\"Yes, delete it\",\"yes_remove_it\":\"Yes, remove it\",\"yes_restore_it\":\"Yes, restore it\",\"settings_table\":\"Settings table {model} on all screens\",\"notifications\":\"Notifications\",\"the_notifications\":\"Notifications\",\"notification\":\"Notification\",\"all_notifications\":\"All notifications\",\"the_messages\":\"Messages\",\"all_messages\":\"All messages\",\"latest_messages\":\"Latest Messages\",\"staff\":\"staff\",\"clients\":\"Clients\",\"vendors\":\"Vendors\",\"notif_create_user\":\"A new employee was created by\",\"currency\":\"EGP\",\"payment_methods\":{\"cash\":\"Cash\",\"bank\":\"Bank\",\"partner_drawing\":\"Partner drawing\"},\"\":\"\"},\"evaluation\":{\"evaluation_comments\":\"ADDITIONAL COMMENTS\",\"evaluation_goals\":\"GOALS\",\"fields\":{\"employee_id\":\"Employee ID\",\"period\":\"Period\",\"review_period\":\"Review Period\",\"date\":\"Date\",\"manager\":\"Manager\",\"job_title\":\"Job Title\",\"department\":\"Department\"}},\"department\":{\"fields\":{\"department_name\":\"Department Name\",\"designations\":\"Designations\",\"department_head\":\"Department Head\",\"department\":\"Department\"}},\"messages\":{\"delete_msg\":\"Are you sure to delete this element?\",\"delete_success_msg\":\"The element has been deleted.\",\"delete_failed_msg\":\"The element has not been deleted.\",\"force_delete_msg\":\"Are you sure to remove this element?\",\"force_delete_success_msg\":\"The element has been removed.\",\"force_delete_failed_msg\":\"The element has not been removed.\",\"restore_msg\":\"Are you sure to restore this element?\",\"restore_success_msg\":\"The element has been restored.\",\"restore_failed_msg\":\"The element has not been restored.\",\"multi_delete_msg\":\"Are you sure to delete all checked elements?\",\"multi_delete_success_msg\":\"All elements checked as deleted.\",\"multi_delete_failed_msg\":\"Not all checked elements have been deleted.\",\"multi_force_delete_msg\":\"Are you sure to permanently remove all checked elements?\",\"multi_force_delete_success_msg\":\"All checked elements have been permanently removed.\",\"multi_force_delete_failed_msg\":\"Not all checked elements have been removed.\",\"multi_restore_msg\":\"Are you sure to restore all checked elements?\",\"multi_restore_success_msg\":\"All elements checked as restored.\",\"multi_restore_failed_msg\":\"Not all checked elements have been restored.\",\"change_lead_status_success_msg\":\"Lead status has been successfully updated\",\"change_lead_status_failed_msg\":\"Lead status was not updated\",\"change_client_status_success_msg\":\"Client status has been successfully updated\",\"change_client_status_failed_msg\":\"Client status was not updated\",\"change_meeting_status_success_msg\":\"Meeting status has been successfully updated\",\"change_meeting_status_failed_msg\":\"Meeting status was not updated\",\"reason_status\":\"Reason change status\",\"change_meeting_status_to\":\"Change Meeting status to\",\"not_found_roles\":\"Not found roles\",\"msg_not_mail_lead_registerd\":\"This client does'nt have a registered email.\"},\"suppliers\":{\"supplier\":\"Supplier\",\"fields\":{\"name\":\"Name\",\"mobile\":\"Mobile\",\"phone\":\"Phone\",\"email\":\"Email\",\"address\":\"Address\"}},\"purchase\":{\"supplier\":\"Supplier\",\"fields\":{\"ref_no\":\"Ref No\",\"purchase_date\":\"Purchase Date\",\"due_date\":\"Due Date\",\"sales_agent\":\"Sales Agent\",\"stock\":\"Upload Stock\",\"discount_type\":\"Discount Type\",\"notes\":\"Notes\",\"quantity_as_qty\":\"Qty\",\"quantity_as_hours\":\"Hours\",\"quantity_as_qty_hours\":\"Qty/Hours\",\"show_qty_as\":\"Show Quantity As\",\"before_tax\":\"Before Tax\",\"after_tax\":\"After Tax\"}},\"items\":{\"fields\":{\"name\":\"Item Name\",\"description\":\"Description\",\"price\":\"Price\",\"tax_rate\":\"Tax Rate\",\"total\":\"Total\",\"unit_cost\":\"Unit Cost\"}},\"sidebar\":{\"choose_user\":\"Choose User\",\"choose_item\":\"Choose Item\",\"choose_supplier\":\"Choose Supplier\",\"choose_tax_rate\":\"Choose Tax Rate\",\"\":\"\"}}");
 
 /***/ }),
 
@@ -88415,7 +88424,8 @@ __webpack_require__.r(__webpack_exports__);
       axios.get("".concat(this.urlDepartmentsList, "?column=").concat(this.query.column, "\n                    &direction=").concat(this.query.direction, "\n                    &page=").concat(this.query.page, "&per_page=").concat(this.query.per_page, "\n                    &search_input=").concat(this.query.search_input)).then(function (response) {
         Vue.set(vm.$data, 'model', response.data.model);
         Vue.set(vm.$data, 'columns', response.data.columns);
-        Vue.set(vm.$data, 'searchable', response.data.searchable);
+        Vue.set(vm.$data, 'searchable', response.data.searchable); // console.log(response.data.columns);
+
         _this.excelDataTables = response.data.dataExport; // 2D array
 
         var resultObject = response.data.dataExport;
@@ -88454,19 +88464,22 @@ __webpack_require__.r(__webpack_exports__);
 
       var dom = document.querySelector('.delete_model_row').closest('tr');
       var vm = this;
-      axios["delete"](this.urlModelLink + '/' + id).then(function (response) {
-        if (response.data.status == 406) {
-          _this2.errorResponse = vm.$t('global.error_response');
-        }
 
-        setTimeout(function () {
-          _this2.errorResponse = "";
-        }, 2000);
-        console.log(response);
-        if (response.status == 204) dom.remove();
-      })["catch"](function (error) {
-        console.log(error);
-      });
+      if (confirm("Do you really want to delete?")) {
+        axios["delete"](this.urlModelLink + '/' + id).then(function (response) {
+          if (response.data.status == 406) {
+            _this2.errorResponse = vm.$t('global.error_response');
+          }
+
+          setTimeout(function () {
+            _this2.errorResponse = "";
+          }, 2000);
+          console.log(response);
+          if (response.status == 204) dom.remove();
+        })["catch"](function (error) {
+          console.log(error);
+        });
+      }
     }
   },
   mounted: function mounted() {

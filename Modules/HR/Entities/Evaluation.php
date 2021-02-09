@@ -19,10 +19,10 @@ class Evaluation extends Model {
         'type'       => 'Type',
         'period'     => 'Period',
         'manager_id' => 'Manager',
+        'date'       => 'Date',
         'avg_rate'   => 'Avg Rate',
         'goal'       => 'Goal',
         'comment'    => 'Comment',
-        'date'       => 'Date',
         ''           => ''
     ];
 
@@ -39,6 +39,5 @@ class Evaluation extends Model {
     public function ratingEvaluations()
     {
         return $this->belongsToMany(RatingEvaluation::class)->withPivot(["rate", "comment"]);
-        // return $this->belongsToMany(RatingEvaluation::class, 'rating_evaluation_id')->withPivot(["rate", "comment"]);
     }
 }

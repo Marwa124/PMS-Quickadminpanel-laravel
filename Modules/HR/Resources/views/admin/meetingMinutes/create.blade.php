@@ -12,10 +12,12 @@
         <form method="POST" action="{{ route("hr.admin.meeting-minutes.store") }}" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
-                <label class="required" for="user_id">{{ trans('cruds.meetingMinute.fields.responsible') }}</label>
+                <label class="required" for="user_id">{{ trans('cruds.leaveApplication.fields.user') }}</label>
                 <select class="form-control select2 {{ $errors->has('user') ? 'is-invalid' : '' }}" name="user_id" id="user_id" required>
-                    @foreach($users as $id => $user)
-                        <option value="{{ $id }}" {{ old('user_id') == $id ? 'selected' : '' }}>{{ $user }}</option>
+                    @foreach( $users as $key => $user)
+                        @foreach( $user as $id => $val)
+                            <option value="{{ $id }}" {{ old('user_id') == $id ? 'selected' : '' }}>{{ $val }}</option>
+                        @endforeach
                     @endforeach
                 </select>
                 @if($errors->has('user'))
@@ -23,7 +25,7 @@
                         {{ $errors->first('user') }}
                     </div>
                 @endif
-                <span class="help-block">{{ trans('cruds.meetingMinute.fields.user_helper') }}</span>
+                <span class="help-block">{{ trans('cruds.leaveApplication.fields.user_helper') }}</span>
             </div>
             <div class="form-group">
                 <label class="required" for="name">{{ trans('cruds.meetingMinute.fields.name') }}</label>
@@ -35,11 +37,14 @@
                 @endif
                 <span class="help-block">{{ trans('cruds.meetingMinute.fields.name_helper') }}</span>
             </div>
+
             <div class="form-group">
-                <label>{{ trans('cruds.meetingMinute.fields.attendees') }}</label>
-                <select class="form-control" name="attendees[]" id="attendees" multiple="multiple">
-                    @foreach($users as $key => $label)
-                        <option value="{{ $key }}" {{ old('attendees') === (string) $key ? 'selected' : '' }} {{ $key == 0 ? 'disabled' : '' }}>{{ $label }}</option>
+                <label class="required" for="attendees">{{ trans('cruds.meetingMinute.fields.attendees') }}</label>
+                <select class="form-control {{ $errors->has('attendees') ? 'is-invalid' : '' }}" name="attendees[]" id="attendees" required multiple="multiple">
+                    @foreach( $users as $key => $user)
+                        @foreach( $user as $id => $val)
+                            <option value="{{ $id }}" {{ old('attendees') == $id ? 'selected' : '' }} {{ $key == 0 ? 'disabled' : '' }}>{{ $val }}</option>
+                        @endforeach
                     @endforeach
                 </select>
                 @if($errors->has('attendees'))
@@ -49,6 +54,7 @@
                 @endif
                 <span class="help-block">{{ trans('cruds.meetingMinute.fields.attendees_helper') }}</span>
             </div>
+
             <div class="form-group">
                 <label class="required" for="start_date">{{ trans('cruds.meetingMinute.fields.start_date') }}</label>
                 <input class="form-control datetime {{ $errors->has('start_date') ? 'is-invalid' : '' }}" type="text" name="start_date" id="start_date" value="{{ old('start_date') }}" required>

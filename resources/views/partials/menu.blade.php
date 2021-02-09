@@ -420,7 +420,7 @@
                             </ul>
                         </li>
                     @endcan
-                    @can('account_access')
+                    {{-- @can('account_access')
                         <li class="c-sidebar-nav-item">
                             <a href="{{ route("hr.admin.accounts.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/accounts") || request()->is("admin/accounts/*") ? "active" : "" }}">
                                 <i class="fa-fw fas fa-money-check-alt c-sidebar-nav-icon self-item-link">
@@ -429,7 +429,7 @@
                                 {{ trans('cruds.account.title') }}
                             </a>
                         </li>
-                    @endcan
+                    @endcan --}}
                     @can('vacation_access')
                         <li class="c-sidebar-nav-item">
                             <a href="{{ route("hr.admin.vacations.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/vacations") || request()->is("admin/vacations/*") ? "active" : "" }}">
@@ -1244,8 +1244,6 @@
 
 
         @endcan
-
-
 
 
         @can('private_chat_access')

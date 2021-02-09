@@ -21,19 +21,16 @@ class StoreSetTimeRequest extends FormRequest
             ],
             'in_time' => [
                 'required',
-                'date_format:' . config('panel.time_format_hour'),
+                // 'date_format:' . config('panel.time_format_hour'),
             ],
             'out_time'   => [
                 'required',
-                'date_format:' . config('panel.time_format_hour'),
             ],
             'allow_clock_in_late' => [
                 'nullable',
-                'date_format:' . config('panel.time_format_hour'),
             ],
             'allow_leave_early'   => [
                 'nullable',
-                'date_format:' . config('panel.time_format_hour'),
             ],
         ];
     }

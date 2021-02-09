@@ -7,7 +7,6 @@ use Modules\Payroll\Http\Requests\Destroy\MassDestroySalaryTemplateRequest;
 use Modules\Payroll\Http\Requests\Store\StoreSalaryTemplateRequest;
 use Modules\Payroll\Entities\SalaryTemplate;
 use Gate;
-use Illuminate\Http\Request;
 use Modules\Payroll\Entities\SalaryAllowance;
 use Modules\Payroll\Entities\SalaryDeduction;
 use Modules\Payroll\Http\Requests\Update\UpdateSalaryTemplateRequest;
@@ -60,11 +59,16 @@ class SalaryTemplateController extends Controller
             return $e->getMessage();
         }
 
-        return redirect()->route('payroll.admin.salary-templates.index');
+        $message = array(
+            'message'    =>  ' Created Successfully',
+            'alert-type' =>  'success'
+        );
+        $flashMsg = flash($message['message'], $message['alert-type']);
+
+        return redirect()->route('payroll.admin.salary-templates.index')->with($flashMsg);
     }
 
     public function show($id)
-    // public function show(SalaryTemplate $salaryTemplate)
     {
         abort_if(Gate::denies('salary_template_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
@@ -76,13 +80,12 @@ class SalaryTemplateController extends Controller
     public function edit($id)
     {
         abort_if(Gate::denies('salary_template_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        // $salaryTemplate->load('user');
+
         $salaryTemplate = SalaryTemplate::findOrFail($id);
 
         return view('payroll::admin.salaryTemplates.edit', compact('salaryTemplate'));
     }
 
-    // public function update(UpdateSalaryTemplateRequest $request, SalaryTemplate $setTime)
     public function update(UpdateSalaryTemplateRequest $request, SalaryTemplate $salaryItem, $id)
     {
         $salaryItem->update($request->all());
@@ -114,7 +117,13 @@ class SalaryTemplateController extends Controller
             return $e->getMessage();
         }
 
-        return redirect()->route('payroll.admin.salary-templates.index');
+        $message = array(
+            'message'    =>  ' Updated Successfully',
+            'alert-type' =>  'success'
+        );
+        $flashMsg = flash($message['message'], $message['alert-type']);
+
+        return redirect()->route('payroll.admin.salary-templates.index')->with($flashMsg);
     }
 
     public function destroy(SalaryTemplate $salaryTemplate)

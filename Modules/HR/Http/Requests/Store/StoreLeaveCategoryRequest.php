@@ -21,11 +21,19 @@ class StoreLeaveCategoryRequest extends FormRequest
                 'string',
                 'required',
             ],
+            'annual_monthly'        => [
+                'integer',
+                'in:1,0',
+            ],
+            'deducted_amount'        => [
+                'numeric',
+                'min:0',
+            ],
             'leave_quota' => [
                 'nullable',
                 'integer',
-                'min:-2147483648',
-                'max:2147483647',
+                'min:1',
+                'max:214',
             ],
         ];
     }

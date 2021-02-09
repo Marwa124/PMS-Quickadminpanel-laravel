@@ -9,7 +9,6 @@ use Modules\HR\Http\Requests\Store\StoreJobCircularRequest;
 use Modules\HR\Http\Requests\Update\UpdateJobCircularRequest;
 use Modules\HR\Entities\Designation;
 use Modules\HR\Entities\JobCircular;
-use App\Models\Permission;
 use Gate;
 use Illuminate\Http\Request;
 use Modules\HR\Entities\JobApplication;
@@ -53,15 +52,12 @@ class JobCircularsController extends Controller
 
         $designations = Designation::all()->pluck('designation_name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        // $permissions = Permission::all()->pluck('title', 'id');
-
         return view('hr::admin.jobCirculars.create', compact('designations'));
     }
 
     public function store(StoreJobCircularRequest $request)
     {
         $jobCircular = JobCircular::create($request->all());
-        // $jobCircular->permissions()->sync($request->input('permissions', []));
 
         if ($media = $request->input('ck-media', false)) {
             Media::whereIn('id', $media)->update(['model_id' => $jobCircular->id]);
@@ -79,7 +75,13 @@ class JobCircularsController extends Controller
             // dd(ShareFacade::page('http://jorenvanhocht.be', 'A New Job Vacancy')->twitter());
         }
 
-        return redirect()->route('hr.admin.job-circulars.index');
+        $message = array(
+            'message'    =>  ' Created Successfully',
+            'alert-type' =>  'success'
+        );
+        $flashMsg = flash($message['message'], $message['alert-type']);
+
+        return redirect()->route('hr.admin.job-circulars.index')->with($flashMsg);
     }
 
     public function edit(JobCircular $jobCircular)
@@ -96,7 +98,6 @@ class JobCircularsController extends Controller
     public function update(UpdateJobCircularRequest $request, JobCircular $jobCircular)
     {
         $jobCircular->update($request->all());
-        // $jobCircular->permissions()->sync($request->input('permissions', []));
 
         if ($request->status == 'published') {
             $sharingLinks = ShareFacade::page('http://01-pms-adminquickpanel.test/circular_details/'. $jobCircular->id, 'A New Job Vacancy')
@@ -108,7 +109,13 @@ class JobCircularsController extends Controller
             request()->session()->put('sharingLinks'. $jobCircular->id, $sharingLinks);
         }
 
-        return redirect()->route('hr.admin.job-circulars.index');
+        $message = array(
+            'message'    =>  ' Updated Successfully',
+            'alert-type' =>  'success'
+        );
+        $flashMsg = flash($message['message'], $message['alert-type']);
+
+        return redirect()->route('hr.admin.job-circulars.index')->with($flashMsg);
     }
 
     public function show(JobCircular $jobCircular)

@@ -17,16 +17,25 @@ class UpdateSalaryTemplateRequest extends FormRequest
     public function rules()
     {
         return [
+            'designation_id'    => [
+                'integer',
+                'required',
+                'exists:designations,id'
+            ],
             'salary_grade'    => [
                 'string',
                 'required',
             ],
             'basic_salary'    => [
-                'string',
+                'integer',
+                'min:0',
+                'max:2147483647',
                 'required',
             ],
             'overtime_salary' => [
-                'string',
+                'integer',
+                'min:0',
+                'max:2147483647',
                 'required',
             ],
         ];

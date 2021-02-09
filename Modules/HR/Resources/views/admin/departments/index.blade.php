@@ -3,6 +3,9 @@
 @section('styles')
     <link rel="stylesheet" href="{{asset('css/department.css')}}">
 @endsection
+@section('title')
+| Departments
+@endsection
 @section('content')
 @inject('accountDetailModel', 'Modules\HR\Entities\AccountDetail')
 @inject('userModel', 'App\Models\User')

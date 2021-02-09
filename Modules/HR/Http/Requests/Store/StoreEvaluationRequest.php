@@ -22,7 +22,9 @@ class StoreEvaluationRequest extends FormRequest
             'user_id'   => 'required|exists:users,id|integer',
             'type'      => 'required',
             'period'    => 'required',
-
+            'comments'  => 'nullable'|'string'|'min:-2147483648'|'max:2147483647',
+            'avg_rate'  => 'numeric|min:0',
+            'period'    => 'integer|min:0',
         ];
     }
 

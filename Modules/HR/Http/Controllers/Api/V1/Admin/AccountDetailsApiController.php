@@ -5,6 +5,7 @@ namespace Modules\HR\Http\Controllers\Api\V1\Admin;
 use Modules\HR\Http\Controllers\Controller;
 
 use App\Http\Controllers\Traits\MediaUploadingTrait;
+use App\Models\User;
 use Modules\HR\Http\Requests\Update\UpdateAccountDetailRequest;
 use Modules\HR\Http\Resources\Admin\AccountDetailResource;
 use Modules\HR\Entities\AccountDetail;
@@ -20,8 +21,10 @@ class AccountDetailsApiController extends Controller
     public function index()
     {
         abort_if(Gate::denies('account_detail_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        $users = User::fetchUnbannedUsers();
 
-        return new AccountDetailResource(AccountDetail::with(['user', 'designation'])->get());
+        return new AccountDetailResource(User::fetchUnbannedUsers());
+        // return new AccountDetailResource(AccountDetail::with(['user', 'designation'])->get());
     }
 
     public function store(StoreAccountDetailRequest $request)

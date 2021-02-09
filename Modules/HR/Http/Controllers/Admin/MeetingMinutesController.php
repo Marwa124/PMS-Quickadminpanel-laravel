@@ -32,42 +32,55 @@ class MeetingMinutesController extends Controller
     {
         abort_if(Gate::denies('meeting_minute_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $users = AccountDetail::where('employment_id', '!=', null)->pluck('fullname', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $users = User::fetchUnbannedUsers();
 
         return view('hr::admin.meetingMinutes.create', compact('users'));
     }
 
     public function store(StoreMeetingMinuteRequest $request)
     {
-        // $request->attendees = serialize($request->attendees);
-        // $v = serialize($request->attendees);
-        // unserialize($v);
-        // dd(implode(',', $request->attendees));
         $meetingMinute = MeetingMinute::create($request->all());
 
         if ($media = $request->input('ck-media', false)) {
             Media::whereIn('id', $media)->update(['model_id' => $meetingMinute->id]);
         }
 
-        return redirect()->route('hr.admin.meeting-minutes.index');
+        $message = array(
+            'message'    =>  ' Created Successfully',
+            'alert-type' =>  'success'
+        );
+        $flashMsg = flash($message['message'], $message['alert-type']);
+
+        return redirect()->route('hr.admin.meeting-minutes.index')->with($flashMsg);
     }
 
     public function edit(MeetingMinute $meetingMinute)
     {
         abort_if(Gate::denies('meeting_minute_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $users = AccountDetail::where('employment_id', '!=', null)->pluck('fullname', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $users = User::fetchUnbannedUsers();
 
+        $attendances = [];
+        foreach ($meetingMinute->attendees as $key => $value) {
+            $user = AccountDetail::where('user_id', $value)->select('user_id')->first()->user_id;
+            array_push($attendances, $user);
+        }
         $meetingMinute->load('user');
 
-        return view('hr::admin.meetingMinutes.edit', compact('users', 'meetingMinute'));
+        return view('hr::admin.meetingMinutes.edit', compact('users', 'meetingMinute', 'attendances'));
     }
 
     public function update(UpdateMeetingMinuteRequest $request, MeetingMinute $meetingMinute)
     {
         $meetingMinute->update($request->all());
 
-        return redirect()->route('hr.admin.meeting-minutes.index');
+        $message = array(
+            'message'    =>  ' Updated Successfully',
+            'alert-type' =>  'success'
+        );
+        $flashMsg = flash($message['message'], $message['alert-type']);
+
+        return redirect()->route('hr.admin.meeting-minutes.index')->with($flashMsg);
     }
 
     public function show(MeetingMinute $meetingMinute)

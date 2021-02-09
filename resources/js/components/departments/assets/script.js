@@ -38,7 +38,6 @@ export default {
     watch: {
         'form': {
             handler: function(items) {
-                // console.log(items);
                 this.permissionsForm.department_head = items.user_head_department
             },
             deep: true
@@ -49,7 +48,7 @@ export default {
             await axios.get(this.urlGetPermissions).then(response => {
                 if (response.status === 200) {
                     const data = response.data
-                    console.log(data.data);
+                    // console.log(data.data);
                     if (typeof data === 'object') {
                         this.groups = data.data
                     } else {
@@ -68,7 +67,7 @@ export default {
         getDepartment() {
             axios.get(this.urlGetDepartment).then(response => {
                 const data = response.data;
-                console.log(data);
+                // console.log(data);
                 this.form.fill(data.department);
                 this.user_head_department = data.department.department_head_account;
                 this.form.user_head_department = data.department.department_head_account;
@@ -88,7 +87,18 @@ export default {
         getAccountDetails() {
             axios.get(this.urlGetAccountDetails).then(response => {
                 const data = response.data.data
-                this.users = data
+                
+                // Fetch Unbanned Users
+                var result = [];
+                data.forEach(element => {
+                    for(let x of Object.entries(element)) {
+                        var item = {user_id: x[0], fullname: x[1]}
+                        result.push(item);
+                    }
+                });
+                this.users = [...result]
+                // Fetch Unbanned Users
+
             });
         },
         userFullname(user_head_department) {
@@ -160,7 +170,7 @@ export default {
                 this.spinnerUpdateDepart = false;
                 if (data.status === 201) {
                     const result = data.data.data
-                    console.log(result);
+                    // console.log(result);
                     this.form.fill(result);
                     this.form.user_head_department = result.department_head_account
                     this.form.designations = [...result.department_designations]
@@ -186,7 +196,7 @@ export default {
                         window.location.href = "/admin/hr/departments/list";
                     }, 500);
 
-                    console.log(data);
+                    // console.log(data);
                 }).catch(error => {
                     this.spinnerAction = false;
                     this.permissionError = "Department Head is Required"

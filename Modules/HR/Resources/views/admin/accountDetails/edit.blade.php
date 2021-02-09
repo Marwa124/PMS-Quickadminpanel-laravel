@@ -49,16 +49,6 @@
                 @endif
                 <span class="help-block">{{ trans('cruds.accountDetail.fields.company_helper') }}</span>
             </div>
-            {{-- <div class="form-group">
-                <label for="company">{{ trans('cruds.accountDetail.fields.company') }}</label>
-                <input class="form-control {{ $errors->has('company') ? 'is-invalid' : '' }}" type="text" name="company" id="company" value="{{ old('company', $accountDetail->company) }}">
-                @if($errors->has('company'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('company') }}
-                    </div>
-                @endif
-                <span class="help-block">{{ trans('cruds.accountDetail.fields.company_helper') }}</span>
-            </div> --}}
             <div class="form-group">
                 <label for="city">{{ trans('cruds.accountDetail.fields.city') }}</label>
                 <input class="form-control {{ $errors->has('city') ? 'is-invalid' : '' }}" type="text" name="city" id="city" value="{{ old('city', $accountDetail->city) }}">

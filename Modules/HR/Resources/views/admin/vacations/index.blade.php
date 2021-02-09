@@ -1,4 +1,7 @@
 @extends('layouts.admin')
+@section('title')
+| {{ trans('cruds.vacation.title_singular') }}
+@endsection
 @section('content')
 @can('vacation_create')
     <div style="margin-bottom: 10px;" class="row">

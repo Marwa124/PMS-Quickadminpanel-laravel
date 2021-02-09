@@ -121,7 +121,25 @@
 
     "evaluation": {
         "evaluation_comments": "ADDITIONAL COMMENTS",
-        "evaluation_goals": "GOALS"
+        "evaluation_goals": "GOALS",
+        "fields":   {
+            "employee_id": "Employee ID",
+            "period": "Period",
+            "review_period": "Review Period",
+            "date": "Date",
+            "manager": "Manager",
+            "job_title" : "Job Title",
+            "department" : "Department"
+        }
+    },
+
+    "department": {
+        "fields":   {
+            "department_name": "Department Name",
+            "designations": "Designations",
+            "department_head": "Department Head",
+            "department" : "Department"
+        }
     },
 
     "messages": {

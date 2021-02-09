@@ -37,7 +37,13 @@ class PenaltyCategoriesController extends Controller
     {
         $penaltyCategory = PenaltyCategory::create($request->all());
 
-        return redirect()->route('hr.admin.penalty-categories.index');
+        $message = array(
+            'message'    =>  ' Created Successfully',
+            'alert-type' =>  'success'
+        );
+        $flashMsg = flash($message['message'], $message['alert-type']);
+
+        return redirect()->route('hr.admin.penalty-categories.index')->with($flashMsg);
     }
 
     public function edit(PenaltyCategory $penaltyCategory)
@@ -51,7 +57,13 @@ class PenaltyCategoriesController extends Controller
     {
         $penaltyCategory->update($request->all());
 
-        return redirect()->route('hr.admin.penalty-categories.index');
+        $message = array(
+            'message'    =>  ' Updated Successfully',
+            'alert-type' =>  'success'
+        );
+        $flashMsg = flash($message['message'], $message['alert-type']);
+
+        return redirect()->route('hr.admin.penalty-categories.index')->with($flashMsg);
     }
 
     public function destroy(PenaltyCategory $penaltyCategory)

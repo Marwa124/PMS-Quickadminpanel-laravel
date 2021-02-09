@@ -1,4 +1,7 @@
 @extends('layouts.admin')
+@section('title')
+| {{ trans('cruds.leaveCategory.title_singular') }}
+@endsection
 @section('content')
 @can('leave_category_create')
     <div style="margin-bottom: 10px;" class="row">

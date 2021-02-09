@@ -42,7 +42,13 @@ class SetTimesController extends Controller
             Media::whereIn('id', $media)->update(['model_id' => $setTime->id]);
         }
 
-        return redirect()->route('hr.admin.set-times.index');
+        $message = array(
+            'message'    =>  ' Created Successfully',
+            'alert-type' =>  'success'
+        );
+        $flashMsg = flash($message['message'], $message['alert-type']);
+
+        return redirect()->route('hr.admin.set-times.index')->with($flashMsg);
     }
 
     public function edit(SetTime $setTime)
@@ -56,7 +62,13 @@ class SetTimesController extends Controller
     {
         $setTime->update($request->all());
 
-        return redirect()->route('hr.admin.set-times.index');
+        $message = array(
+            'message'    =>  ' Updated Successfully',
+            'alert-type' =>  'success'
+        );
+        $flashMsg = flash($message['message'], $message['alert-type']);
+
+        return redirect()->route('hr.admin.set-times.index')->with($flashMsg);
     }
 
     // public function show(SetTime $setTime)

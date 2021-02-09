@@ -21,12 +21,17 @@ class StoreMeetingMinuteRequest extends FormRequest
             'user_id'  => [
                 'required',
                 'integer',
+                'exists:users,id'
             ],
             'name'     => [
                 'string',
                 'required',
             ],
+            'attendees.*'     => [
+                'exists:users,id'
+            ],
             'attendees'     => [
+                'array',
                 'required',
             ],
             'start_date'  => [

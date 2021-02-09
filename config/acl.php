@@ -174,6 +174,8 @@
                 'evaluation_create',
                 'evaluation_print',
                 'evaluation_delete',
+                'evaluation_edit',
+                'evaluation_pdf'
             ],
             // End Evaluations
 

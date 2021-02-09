@@ -7,14 +7,12 @@ use App\Http\Controllers\Traits\MediaUploadingTrait;
 use Modules\HR\Http\Requests\Destroy\MassDestroyAccountDetailRequest;
 use Modules\HR\Http\Requests\Store\StoreAccountDetailRequest;
 use Modules\HR\Http\Requests\Update\UpdateAccountDetailRequest;
-use App\Http\Requests\UpdatePasswordRequest;
 use Modules\HR\Entities\AccountDetail;
 use Modules\HR\Entities\Designation;
 use Modules\HR\Entities\SetTime;
 use App\Models\User;
 use Gate;
 use Illuminate\Http\Request;
-use Modules\HR\Entities\Department;
 use Spatie\MediaLibrary\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
@@ -119,8 +117,6 @@ class AccountDetailsController extends Controller
         $designation = Designation::where('designation_name', $designation)->first();
         // $net_salary = $designation->salaryTemplate()
         // https://stackoverflow.com/questions/35672718/javascript-slideup-slidedown-one-button
-        // dd($designation);
-        // dd($id);
     }
 
     public function create()
@@ -218,7 +214,6 @@ class AccountDetailsController extends Controller
     {
         abort_if(Gate::denies('account_detail_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        // $accountDetail->load('user', 'designation', 'userUserAlerts');
         $accountDetail->load('user', 'designation', 'setTime');
 
         $categoryDetails = [];

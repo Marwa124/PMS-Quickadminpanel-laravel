@@ -33,7 +33,7 @@ export default {
                 Vue.set(vm.$data, 'columns', response.data.columns)
                 Vue.set(vm.$data, 'searchable', response.data.searchable)
 
-
+// console.log(response.data.columns);
                 this.excelDataTables = response.data.dataExport;
 
                 // 2D array
@@ -66,19 +66,24 @@ export default {
         deleteModelRow(id) {
             let dom = document.querySelector('.delete_model_row').closest('tr');
             let vm = this;
-            axios.delete(this.urlModelLink+'/'+id)
-                .then(response => {
-                    if(response.data.status == 406) {
-                        this.errorResponse = vm.$t('global.error_response')
-                    }
-                    setTimeout(() => {
-                        this.errorResponse = ""
-                    }, 2000);
-                    console.log(response);
-                    if(response.status == 204) dom.remove()
-                }).catch(error => {
-                    console.log(error);
-                })
+
+            if(confirm("Do you really want to delete?")){
+
+                axios.delete(this.urlModelLink+'/'+id)
+                    .then(response => {
+                        if(response.data.status == 406) {
+                            this.errorResponse = vm.$t('global.error_response')
+                        }
+                        setTimeout(() => {
+                            this.errorResponse = ""
+                        }, 2000);
+                        console.log(response);
+                        if(response.status == 204) dom.remove()
+                    }).catch(error => {
+                        console.log(error);
+                    })
+
+            }
         },
     },
     mounted() {

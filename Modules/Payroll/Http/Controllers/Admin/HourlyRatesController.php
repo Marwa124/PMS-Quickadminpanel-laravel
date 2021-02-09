@@ -33,7 +33,13 @@ class HourlyRatesController extends Controller
     {
         $hourlyRate = HourlyRate::create($request->all());
 
-        return redirect()->route('payroll.admin.hourly-rates.index');
+        $message = array(
+            'message'    =>  ' Created Successfully',
+            'alert-type' =>  'success'
+        );
+        $flashMsg = flash($message['message'], $message['alert-type']);
+
+        return redirect()->route('payroll.admin.hourly-rates.index')->with($flashMsg);
     }
 
     public function edit(HourlyRate $hourlyRate)
@@ -47,7 +53,13 @@ class HourlyRatesController extends Controller
     {
         $hourlyRate->update($request->all());
 
-        return redirect()->route('payroll.admin.hourly-rates.index');
+        $message = array(
+            'message'    =>  ' Updated Successfully',
+            'alert-type' =>  'success'
+        );
+        $flashMsg = flash($message['message'], $message['alert-type']);
+
+        return redirect()->route('payroll.admin.hourly-rates.index')->with($flashMsg);
     }
 
     public function destroy(HourlyRate $hourlyRate)

@@ -33,7 +33,13 @@ class LeaveCategoriesController extends Controller
     {
         $leaveCategory = LeaveCategory::create($request->all());
 
-        return redirect()->route('hr.admin.leave-categories.index');
+        $message = array(
+            'message'    =>  ' Created Successfully',
+            'alert-type' =>  'success'
+        );
+        $flashMsg = flash($message['message'], $message['alert-type']);
+
+        return redirect()->route('hr.admin.leave-categories.index')->with($flashMsg);
     }
 
     public function edit(LeaveCategory $leaveCategory)
@@ -47,7 +53,13 @@ class LeaveCategoriesController extends Controller
     {
         $leaveCategory->update($request->all());
 
-        return redirect()->route('hr.admin.leave-categories.index');
+        $message = array(
+            'message'    =>  ' Updated Successfully',
+            'alert-type' =>  'success'
+        );
+        $flashMsg = flash($message['message'], $message['alert-type']);
+
+        return redirect()->route('hr.admin.leave-categories.index')->with($flashMsg);
     }
 
     public function show(LeaveCategory $leaveCategory)

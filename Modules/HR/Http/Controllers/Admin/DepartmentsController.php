@@ -54,9 +54,7 @@ class DepartmentsController extends Controller
     {
         abort_if(Gate::denies('department_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $department_heads = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
-
-        return view('hr::admin.departments.create', compact('department_heads'));
+        return view('hr::admin.departments.create');
     }
 
     public function store(StoreDepartmentRequest $request)

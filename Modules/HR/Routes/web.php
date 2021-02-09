@@ -146,8 +146,6 @@ Route::group(['as' => 'hr.admin.', 'prefix' => 'admin/hr', 'namespace' => 'Admin
 
     // Job Applications
     Route::delete('job-applications/destroy', 'JobApplicationController@massDestroy')->name('job-applications.massDestroy');
-    // Route::post('job-applications/media', 'JobApplicationController@storeMedia')->name('job-applications.storeMedia');
-    // Route::post('job-applications/ckmedia', 'JobApplicationController@storeCKEditorImages')->name('job-applications.storeCKEditorImages');
     Route::get('job-applications-pdf/{id}/{local}','JobApplicationController@generatePDF')->name('job-applications-pdf');
     Route::resource('job-applications', 'JobApplicationController', ['except' => ['store', 'create']]);
 
@@ -157,5 +155,4 @@ Route::group(['as' => 'hr.admin.', 'prefix' => 'admin/hr', 'namespace' => 'Admin
 
 
 });
-// Route::get('/{any}', 'Admin\DepartmentsController@index')->where('any', '.*');
 

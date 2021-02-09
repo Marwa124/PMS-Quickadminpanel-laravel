@@ -2,10 +2,8 @@
 
 namespace Modules\Payroll\Http\Requests\Update;
 
-use App\Models\HourlyRate;
 use Gate;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Response;
 
 class UpdateHourlyRateRequest extends FormRequest
 {
@@ -25,6 +23,8 @@ class UpdateHourlyRateRequest extends FormRequest
             'hourly_rate'  => [
                 'integer',
                 'required',
+                'min:-2147483648',
+                'max:2147483647',
             ],
         ];
     }

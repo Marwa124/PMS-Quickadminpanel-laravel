@@ -31,7 +31,7 @@
             </div>
             <div class="form-group">
                 <label for="deducted_amount">{{ trans('cruds.leaveCategory.fields.deducted_amount') }}</label>
-                <input class="form-control {{ $errors->has('deducted_amount') ? 'is-invalid' : '' }}" type="text" name="deducted_amount" id="deducted_amount" value="{{ old('deducted_amount', '') }}" step="1">
+                <input class="form-control {{ $errors->has('deducted_amount') ? 'is-invalid' : '' }}" type="text" name="deducted_amount" id="deducted_amount" value="{{ old('deducted_amount', 0) }}" step="1">
                 @if($errors->has('deducted_amount'))
                     <div class="invalid-feedback">
                         {{ $errors->first('deducted_amount') }}

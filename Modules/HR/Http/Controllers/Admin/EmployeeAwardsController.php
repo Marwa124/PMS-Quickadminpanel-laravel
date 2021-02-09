@@ -9,7 +9,6 @@ use Modules\HR\Http\Requests\Update\UpdateEmployeeAwardRequest;
 use Modules\HR\Entities\EmployeeAward;
 use App\Models\User;
 use Gate;
-use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class EmployeeAwardsController extends Controller
@@ -38,8 +37,14 @@ class EmployeeAwardsController extends Controller
     public function store(StoreEmployeeAwardRequest $request)
     {
         $employeeAward = EmployeeAward::create($request->all());
+        
+        $message = array(
+            'message'    =>  ' Created Successfully',
+            'alert-type' =>  'success'
+        );
+        $flashMsg = flash($message['message'], $message['alert-type']);
 
-        return redirect()->route('hr.admin.employee-awards.index');
+        return redirect()->route('hr.admin.employee-awards.index')->with($flashMsg);
     }
 
     public function edit(EmployeeAward $employeeAward)
@@ -59,15 +64,14 @@ class EmployeeAwardsController extends Controller
     {
         $employeeAward->update($request->all());
 
-        return redirect()->route('hr.admin.employee-awards.index');
-    }
+        $message = array(
+            'message'    =>  ' Updated Successfully',
+            'alert-type' =>  'success'
+        );
+        $flashMsg = flash($message['message'], $message['alert-type']);
 
-    // public function show(EmployeeAward $employeeAward)
-    // {
-    //     abort_if(Gate::denies('employee_award_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-    //     $employeeAward->load('user');
-    //     return view('hr::admin.employeeAwards.show', compact('employeeAward'));
-    // }
+        return redirect()->route('hr.admin.employee-awards.index')->with($flashMsg);
+    }
 
     public function destroy(EmployeeAward $employeeAward)
     {

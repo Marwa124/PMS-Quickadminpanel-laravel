@@ -35,23 +35,33 @@ class UpdateJobCircularRequest extends FormRequest
             ],
             'employment_type' => [
                 'required',
+                'in:contractual,full_time,part_time'
             ],
             'experience'      => [
-                'string',
+                'integer',
+                'max:50',
+                'min:0',
                 'nullable',
             ],
             'age'             => [
-                'string',
+                'integer',
+                'max:59',
+                'min:18',
                 'nullable',
             ],
             'salary_range'    => [
-                'string',
+                'integer',
+                'max:50000',
+                'min:0',
                 'nullable',
             ],
             'last_date'       => [
                 'date_format:' . config('panel.date_format'),
                 'required',
             ],
+            'status'          => [
+                'in:unpublished, published'
+            ]
         ];
     }
 }

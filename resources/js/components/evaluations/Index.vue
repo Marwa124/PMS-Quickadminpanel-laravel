@@ -34,7 +34,6 @@
                             </a>
 
                             <button v-if="canDelete" class="btn btn-sm btn-danger text-white delete_model_row" @click="deleteModelRow(row.id)">
-                                <!-- :href="urlEvaluation+'/'+row.id" -->
                                 <i class="fas fa-trash-alt"></i>
                             </button>
                         </div>

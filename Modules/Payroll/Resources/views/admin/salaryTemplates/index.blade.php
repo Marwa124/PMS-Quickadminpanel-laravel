@@ -1,4 +1,7 @@
 @extends('layouts.admin')
+@section('title')
+| {{ trans('cruds.salaryTemplate.title_singular') }}
+@endsection
 @section('content')
 @can('salary_template_create')
     <div style="margin-bottom: 10px;" class="row">

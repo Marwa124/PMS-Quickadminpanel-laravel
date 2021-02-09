@@ -51,7 +51,13 @@ class VacationsController extends Controller
             Media::whereIn('id', $media)->update(['model_id' => $vacation->id]);
         }
 
-        return redirect()->route('hr.admin.vacations.index');
+        $message = array(
+            'message'    =>  ' Created Successfully',
+            'alert-type' =>  'success'
+        );
+        $flashMsg = flash($message['message'], $message['alert-type']);
+
+        return redirect()->route('hr.admin.vacations.index')->with($flashMsg);
     }
 
     public function edit(Vacation $vacation)
@@ -83,17 +89,14 @@ class VacationsController extends Controller
             $vacation->attachments->delete();
         }
 
-        return redirect()->route('hr.admin.vacations.index');
+        $message = array(
+            'message'    =>  ' Updated Successfully',
+            'alert-type' =>  'success'
+        );
+        $flashMsg = flash($message['message'], $message['alert-type']);
+
+        return redirect()->route('hr.admin.vacations.index')->with($flashMsg);
     }
-
-    // public function show(Vacation $vacation)
-    // {
-    //     abort_if(Gate::denies('vacation_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-    //     $vacation->load('user');
-
-    //     return view('hr::admin.vacations.show', compact('vacation'));
-    // }
 
     public function destroy(Vacation $vacation)
     {

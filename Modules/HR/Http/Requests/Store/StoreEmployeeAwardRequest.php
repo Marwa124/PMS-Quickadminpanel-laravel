@@ -23,6 +23,7 @@ class StoreEmployeeAwardRequest extends FormRequest
             ],
             'user_id'      => [
                 'required',
+                'exists:users,id',
                 'integer',
             ],
             'gift_item'    => [
@@ -31,6 +32,8 @@ class StoreEmployeeAwardRequest extends FormRequest
             ],
             'award_amount' => [
                 'required',
+                'min:0',
+                'numeric'
             ],
             'given_date'   => [
                 'date_format:' . config('panel.date_format'),

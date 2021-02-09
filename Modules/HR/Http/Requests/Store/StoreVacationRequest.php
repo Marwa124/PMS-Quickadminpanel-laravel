@@ -2,10 +2,8 @@
 
 namespace Modules\HR\Http\Requests\Store;
 
-use Modules\HR\Entities\Vacation;
 use Gate;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Response;
 
 class StoreVacationRequest extends FormRequest
 {
@@ -28,6 +26,7 @@ class StoreVacationRequest extends FormRequest
             'user_id'    => [
                 'required',
                 'integer',
+                'exists:users,id'
             ],
         ];
     }

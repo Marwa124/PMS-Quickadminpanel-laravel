@@ -1,4 +1,7 @@
 @extends('layouts.admin')
+@section('title')
+| {{ trans('cruds.jobCircular.title_singular') }}
+@endsection
 @section('content')
 @inject('jobCircularModel', 'Modules\HR\Entities\JobCircular')
 @can('job_circular_create')
@@ -25,9 +28,6 @@
                         <th width="10">
 
                         </th>
-                        {{-- <th>
-                            {{ trans('cruds.jobCircular.fields.id') }}
-                        </th> --}}
                         <th>
                             {{ trans('cruds.jobCircular.fields.name') }}
                         </th>
@@ -63,9 +63,6 @@
                             <td>
 
                             </td>
-                            {{-- <td>
-                                {{ $jobCircular->id ?? '' }}
-                            </td> --}}
                             <td>
                                 {{ $jobCircular->name ?? '' }}
                             </td>
@@ -148,11 +145,6 @@
                                 {{ trans('cruds.jobApplication.all_job_applications') }}
                             </a>
                             @endcan
-                            {{-- @can('job_circular_show')
-                                                    <a class="btn btn-xs btn-primary" href="{{ route('hr.admin.job-circulars.show', $jobCircular->id) }}">
-                            {{ trans('global.view') }}
-                            </a>
-                            @endcan --}}
 
                             @if ($jobCircular->last_date < date('Y-m-d')) <a class="btn btn-xs btn-dark disabled"
                                 href="javascript:void(0)">

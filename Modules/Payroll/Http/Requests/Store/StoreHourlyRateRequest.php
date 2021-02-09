@@ -24,6 +24,8 @@ class StoreHourlyRateRequest extends FormRequest
             'hourly_rate'  => [
                 'integer',
                 'required',
+                'min:-2147483648',
+                'max:2147483647',
             ],
         ];
     }

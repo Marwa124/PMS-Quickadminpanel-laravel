@@ -21,14 +21,14 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <div class="d-flex justify-content-flex-end">
-                                        <label for="designation_id" v-text="$t('cruds.evaluation.fields.name')"></label>
+                                        <label for="designation_id" v-text="$t('evaluation.fields.name')"></label>
                                         <input class="form-control w-75 d-flex ml-auto" type="text" name="user_name" disabled :value="user.fullname">
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <div class="d-flex justify-content-flex-end">
-                                        <label for="designation_id" v-text="$t('cruds.evaluation.fields.job_title')"></label>
+                                        <label for="designation_id" v-text="$t('evaluation.fields.job_title')"></label>
                                         <input class="form-control w-75 d-flex ml-auto" type="text" name="designation" disabled :value="designation.designation_name">
                                     </div>
                                 </div>
@@ -36,7 +36,7 @@
 
                                 <div class="form-group">
                                     <div class="d-flex justify-content-flex-end">
-                                        <label for="designation_id" v-text="$t('cruds.evaluation.fields.department')"></label>
+                                        <label for="designation_id" v-text="$t('evaluation.fields.department')"></label>
                                         <input class="form-control w-75 d-flex ml-auto" type="text" name="department" disabled :value="departmentTitle.department_name">
                                     </div>
                                 </div>
@@ -44,18 +44,18 @@
 
                                 <div class="form-group">
                                     <div class="d-flex justify-content-flex-end">
-                                        <label for="designation_id" v-text="$t('cruds.evaluation.fields.period')"></label>
+                                        <label for="designation_id" v-text="$t('evaluation.fields.period')"></label>
                                         <!-- required  -->
                                         <input class="form-control w-75 d-flex ml-auto" type="text" name="period"
                                         v-model="rates.period"
-                                        :placeholder="$t('cruds.evaluation.fields.review_period')">
+                                        :placeholder="$t('evaluation.fields.review_period')">
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <div class="d-flex justify-content-flex-end">
-                                        <label for="designation_id" v-text="$t('cruds.evaluation.fields.employee_id')"></label>
+                                        <label for="designation_id" v-text="$t('evaluation.fields.employee_id')"></label>
                                         <input class="form-control w-75 d-flex ml-auto" type="text" name="date" :value="user.employment_id" disabled>
                                     </div>
 
@@ -63,14 +63,14 @@
 
                                 <div class="form-group">
                                     <div class="d-flex justify-content-flex-end">
-                                        <label for="designation_id" v-text="$t('cruds.evaluation.fields.date')"></label>
+                                        <label for="designation_id" v-text="$t('evaluation.fields.date')"></label>
                                         <input class="form-control w-75 d-flex ml-auto" type="text" name="date" disabled :value="month+'-'+year">
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <div class="d-flex justify-content-flex-end">
-                                        <label for="designation_id" v-text="$t('cruds.evaluation.fields.manager')"></label>
+                                    <div class="d-flex justify-content-flex-end" v-if="departmentHead">
+                                        <label for="designation_id" v-text="$t('evaluation.fields.manager')"></label>
                                         <input v-if="departmentHead.fullname == user.fullname" class="form-control w-75 d-flex ml-auto"
                                              type="text" name="manager" disabled :value="'CEO'">
                                         <input v-else class="form-control w-75 d-flex ml-auto" type="text" name="manager"
@@ -272,7 +272,6 @@ export default {
     watch: {
         'rates': {
             handler: function(items) {
-                // console.log(items);
                 var rateVals = [];
                 var count = 0;
                 items.data.forEach(item => {
@@ -298,9 +297,7 @@ export default {
         getRatings(){
             axios.get(this.urlGetEvaluationRatings).then(response => {
                 const data = response.data.data
-                // this.rates = data;
                 this.rates.data.push(...data);
-                // console.log(this.rates);
             });
         },
         addRow(){
@@ -312,10 +309,8 @@ export default {
         },
         removeRow(index){
             this.rates.data.splice(index,1);
-            // this.rates.splice(index + 1, 0, {});
         },
         rateUserSubmission(){
-                // console.log(this.rates);
             this.spinnerUpdateDepart = true;
             $.ajax({
                 url: this.urlGetEvaluationRatings,

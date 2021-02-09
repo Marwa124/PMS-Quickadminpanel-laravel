@@ -3,23 +3,13 @@
 namespace Modules\HR\Http\Controllers\Api\V1\Admin;
 
 use App\Models\User;
-use Carbon\Carbon;
 use Modules\HR\Http\Controllers\Controller;
 
-use Modules\HR\Http\Resources\Admin\DepartmentResource;
-
-use Modules\HR\Entities\Department;
-use Modules\HR\Http\Requests\Update\UpdateDepartmentRequest;
-use Modules\HR\Http\Requests\Store\StoreDepartmentRequest;
-
 use Gate;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Modules\HR\Entities\AccountDetail;
-use Modules\HR\Entities\Designation;
 use Modules\HR\Entities\Evaluation;
 use Modules\HR\Entities\RatingEvaluation;
-use Modules\HR\Http\Controllers\Services\DepartmentExportServices;
 use Modules\HR\Http\Requests\Store\StoreEvaluationRequest;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -28,7 +18,7 @@ class EvaluationsApiController extends Controller
 
     public function index()
     {
-        // abort_if(Gate::denies('department_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('department_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         return response()->json([
             'data' => RatingEvaluation::all(),
         ]);
@@ -36,14 +26,16 @@ class EvaluationsApiController extends Controller
 
     public function evaluationList()
     {
-        // abort_if(Gate::denies('evaluation_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('evaluation_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $model = Evaluation::searchPaginateOrder();
 
         $model->each(function($item) {
             unset($item->created_at);
             unset($item->updated_at);
-            $item->user_id = AccountDetail::where('user_id', $item->user_id)->select('fullname')->first()->fullname;
+            $item->user_id = AccountDetail::where('user_id', $item->user_id)->select('fullname')->first() ? 
+                AccountDetail::where('user_id', $item->user_id)->select('fullname')->first()->fullname : '';
+
             $item->manager_id = (AccountDetail::where('user_id', $item->manager_id)->first() ?
                 AccountDetail::where('user_id', $item->manager_id)->select('fullname')->first()->fullname :
                 User::findOrFail($item->manager_id)->name);
@@ -67,6 +59,7 @@ class EvaluationsApiController extends Controller
 
     public function store(StoreEvaluationRequest $request)
     {
+
         DB::beginTransaction();
 
         try {
@@ -97,7 +90,6 @@ class EvaluationsApiController extends Controller
                         ]);
                     }
                 }
-                // $user->activities()->attach($activityIdOrModel, ['product_id' => $productId]);
                 DB::commit();
             }
 
@@ -110,7 +102,7 @@ class EvaluationsApiController extends Controller
 
     public function destroy(Evaluation $evaluation)
     {
-        // abort_if(Gate::denies('evaluation_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('evaluation_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $evaluation->ratingEvaluations()->detach();
         $evaluation->delete();

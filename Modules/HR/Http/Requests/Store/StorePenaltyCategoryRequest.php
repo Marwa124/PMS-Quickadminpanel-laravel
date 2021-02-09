@@ -28,7 +28,8 @@ class StorePenaltyCategoryRequest extends FormRequest
                 'max:2147483647',
             ],
             'penelty_days' => [
-                'string',
+                'integer',
+                'min:0',
                 'required',
             ],
         ];

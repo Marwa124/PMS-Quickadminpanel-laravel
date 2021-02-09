@@ -12,7 +12,6 @@ use Modules\HR\Http\Requests\Update\UpdateDepartmentRequest;
 use Modules\HR\Http\Requests\Store\StoreDepartmentRequest;
 
 use Gate;
-use Illuminate\Http\Request;
 use Modules\HR\Entities\Designation;
 use Modules\HR\Http\Controllers\Services\DepartmentExportServices;
 use Symfony\Component\HttpFoundation\Response;

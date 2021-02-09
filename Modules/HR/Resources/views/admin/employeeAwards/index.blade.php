@@ -1,7 +1,9 @@
 @extends('layouts.admin')
 @inject('employeeAwardModel', 'Modules\HR\Entities\EmployeeAward')
 @inject('accountDetailModel', 'Modules\HR\Entities\AccountDetail')
-
+@section('title')
+| {{ trans('cruds.employeeAward.title_singular') }}
+@endsection
 @section('content')
 @can('employee_award_create')
     <div style="margin-bottom: 10px;" class="row">
@@ -25,9 +27,6 @@
                         <th width="10">
 
                         </th>
-                        {{-- <th>
-                            {{ trans('cruds.employeeAward.fields.id') }}
-                        </th> --}}
                         <th>
                             {{ trans('cruds.employeeAward.fields.name') }}
                         </th>
@@ -40,9 +39,9 @@
                         <th>
                             {{ trans('cruds.employeeAward.fields.award_amount') }}
                         </th>
-                        <th>
+                        {{-- <th>
                             {{ trans('cruds.employeeAward.fields.view_status') }}
-                        </th>
+                        </th> --}}
                         <th>
                             {{ trans('cruds.employeeAward.fields.given_date') }}
                         </th>
@@ -57,9 +56,6 @@
                             <td>
 
                             </td>
-                            {{-- <td>
-                                {{ $employeeAward->id ?? '' }}
-                            </td> --}}
                             <td>
                                 {{ $employeeAward->name ?? '' }}
                             </td>
@@ -75,19 +71,13 @@
                             <td>
                                 {{ $employeeAward->award_amount ?? '' }}
                             </td>
-                            <td>
+                            {{-- <td>
                                 {{ $employeeAwardModel::VIEW_STATUS_RADIO[$employeeAward->view_status] ?? '' }}
-                            </td>
+                            </td> --}}
                             <td>
                                 {{ $employeeAward->given_date ?? '' }}
                             </td>
                             <td>
-                                {{-- @can('employee_award_show')
-                                    <a class="btn btn-xs btn-primary" href="{{ route('hr.admin.employee-awards.show', $employeeAward->id) }}">
-                                        {{ trans('global.view') }}
-                                    </a>
-                                @endcan --}}
-
                                 @can('employee_award_edit')
                                     <a class="btn btn-xs btn-info" href="{{ route('hr.admin.employee-awards.edit', $employeeAward->id) }}">
                                         {{ trans('global.edit') }}
