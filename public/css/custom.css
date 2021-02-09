@@ -71,6 +71,10 @@ table.dataTable thead .sorting_desc {
     cursor: pointer;
 }
 
+html:not([dir=rtl]) .c-sidebar-nav-dropdown-items .c-sidebar-nav-dropdown-toggle .c-sidebar-nav-icon, html:not([dir=rtl]) .c-sidebar-nav-dropdown-items .c-sidebar-nav-link .c-sidebar-nav-icon {
+    margin-left: -40px;
+}
+
 .btn-default {
     color: #23282c;
     background-color: #f0f3f5;
@@ -132,7 +136,7 @@ table.dataTable thead .sorting_desc {
 }
 
 .sub-dropdown {
-    margin-left: -22px !important;
+    /* margin-left: -22px !important; */
 }
 
 .self-item-link {
@@ -177,6 +181,7 @@ table.dataTable thead .sorting_desc {
 
 .input-group-text {
     border: none;
+    background: none;
 }
 
 .c-sidebar .c-sidebar-brand,
@@ -222,6 +227,14 @@ html:not([dir="rtl"]) .c-sidebar-nav-icon:first-child {
     color: black !important;
     font-weight: bold !important;
 }
+
+/* Action Buttons */
+
+.border-50 {
+    border-radius: 50%;
+}
+
+
 
 
 /*
