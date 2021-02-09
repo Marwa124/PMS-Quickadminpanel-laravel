@@ -27,7 +27,6 @@ class SalaryPaymentDetailsController extends Controller
         $users = [];
         foreach ($userAccounts as $key => $value) {
             $userRole = User::where('id', $value->user_id)->where('banned', 0)->first();
-            // dump($value->user_id);
             if ($userRole && !$userRole->hasRole('Board Members')) {
                 $users[] = User::where('id', $value->user_id)->where('banned', 0)->first()->accountDetail()
                     ->first();
@@ -38,37 +37,37 @@ class SalaryPaymentDetailsController extends Controller
         return view('payroll::admin.salaryPaymentDetails.index', compact('users'));
     }
 
-    public function create()
-    {
-        abort_if(Gate::denies('salary_payment_detail_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+    // public function create()
+    // {
+    //     abort_if(Gate::denies('salary_payment_detail_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $salary_payments = SalaryPayment::all()->pluck('payment_amount', 'id')->prepend(trans('global.pleaseSelect'), '');
+    //     $salary_payments = SalaryPayment::all()->pluck('payment_amount', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        return view('payroll::admin.salaryPaymentDetails.create', compact('salary_payments'));
-    }
+    //     return view('payroll::admin.salaryPaymentDetails.create', compact('salary_payments'));
+    // }
 
-    public function store(StoreSalaryPaymentDetailRequest $request)
-    {
-        $salaryPaymentDetail = SalaryPaymentDetail::create($request->all());
+    // public function store(StoreSalaryPaymentDetailRequest $request)
+    // {
+    //     $salaryPaymentDetail = SalaryPaymentDetail::create($request->all());
 
-        return redirect()->route('admin.payroll.salary-payment-details.index');
-    }
+    //     return redirect()->route('admin.payroll.salary-payment-details.index');
+    // }
 
-    public function destroy(SalaryPaymentDetail $salaryPaymentDetail)
-    {
-        abort_if(Gate::denies('salary_payment_detail_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+    // public function destroy(SalaryPaymentDetail $salaryPaymentDetail)
+    // {
+    //     abort_if(Gate::denies('salary_payment_detail_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $salaryPaymentDetail->delete();
+    //     $salaryPaymentDetail->delete();
 
-        return back();
-    }
+    //     return back();
+    // }
 
-    public function massDestroy(MassDestroySalaryPaymentDetailRequest $request)
-    {
-        SalaryPaymentDetail::whereIn('id', request('ids'))->delete();
+    // public function massDestroy(MassDestroySalaryPaymentDetailRequest $request)
+    // {
+    //     SalaryPaymentDetail::whereIn('id', request('ids'))->delete();
 
-        return response(null, Response::HTTP_NO_CONTENT);
-    }
+    //     return response(null, Response::HTTP_NO_CONTENT);
+    // }
 
     public function generatePDF($user_id)
     {

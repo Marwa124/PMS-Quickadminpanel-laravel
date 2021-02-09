@@ -2,12 +2,10 @@
 
 namespace Modules\ProjectManagement\Http\Controllers\Traits;
 
-//use App\Models\Permission;
 use Modules\ProjectManagement\Entities\Bug;
 use Modules\ProjectManagement\Entities\Milestone;
 use Modules\ProjectManagement\Entities\Task;
 use Modules\ProjectManagement\Entities\Project;
-use Modules\ProjectManagement\Entities\TaskStatus;
 use Modules\ProjectManagement\Entities\Ticket;
 use Modules\ProjectManagement\Entities\TicketReplay;
 use Spatie\Permission\Models\Permission;
@@ -105,7 +103,39 @@ trait ProjectManagementHelperTrait
 
             $tasks_count = Task::where('created_at', '>=', $start_date . " 00:00:00")
                 ->where('created_at', '<=', $end_date . " 00:00:00")
-                ->where('status', 'Completed')->count();
+                ->where('status', 'completed')->count();
+            $achievement_WorkTracking = $tasks_count;
+
+            if (!$workTracking->achievement){
+                $progress_WorkTracking = 0;
+            }elseif ($workTracking->achievement <= $achievement_WorkTracking) {
+                $progress_WorkTracking = 100;
+            } else {
+                $progress_WorkTracking = (int)($achievement_WorkTracking / ($workTracking->achievement) * 100);
+            }
+        }
+
+        if ($workTracking->work_type->tbl_name == 'projects') {
+
+            $tasks_count = Project::where('created_at', '>=', $start_date . " 00:00:00")
+                ->where('created_at', '<=', $end_date . " 00:00:00")
+                ->where('project_status', 'completed')->count();
+            $achievement_WorkTracking = $tasks_count;
+
+            if (!$workTracking->achievement){
+                $progress_WorkTracking = 0;
+            }elseif ($workTracking->achievement <= $achievement_WorkTracking) {
+                $progress_WorkTracking = 100;
+            } else {
+                $progress_WorkTracking = (int)($achievement_WorkTracking / ($workTracking->achievement) * 100);
+            }
+        }
+
+        if ($workTracking->work_type->tbl_name == 'bugs') {
+
+            $tasks_count = Bug::where('created_at', '>=', $start_date . " 00:00:00")
+                ->where('created_at', '<=', $end_date . " 00:00:00")
+                ->where('status', 'resolved')->count();
             $achievement_WorkTracking = $tasks_count;
 
             if (!$workTracking->achievement){
@@ -157,7 +187,13 @@ trait ProjectManagementHelperTrait
     {
         extract($compact);
 
-        $pdf = MPDF::loadView( $view,compact(array_keys($compact)));
+        $pdf = MPDF::loadView( $view,compact(array_keys($compact)), [],
+            //to convert pdf page to page landscape
+            [
+                'title' => 'Certificate',
+                'format' => 'A4-L',
+                'orientation' => 'L'
+            ]);
         return $pdf->download($title);
     }
 
@@ -165,7 +201,13 @@ trait ProjectManagementHelperTrait
     {
         extract($compact);
 
-        $pdf = MPDF::loadView( $view,compact(array_keys($compact)));
+        $pdf = MPDF::loadView( $view,compact(array_keys($compact)), [],
+            //to convert pdf page to page landscape
+            [
+                'title' => 'Certificate',
+                'format' => 'A4-L',
+                'orientation' => 'L'
+            ]);
         return $pdf->stream($title);
     }
 }

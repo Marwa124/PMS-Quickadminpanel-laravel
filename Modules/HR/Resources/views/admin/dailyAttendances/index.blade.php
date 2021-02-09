@@ -1,8 +1,11 @@
 @extends('layouts.admin')
+@section('title')
+| {{ __('Daily Attendance') }} 
+@endsection
 @section('content')
 <div class="card">
     <div class="card-header">
-        {{ trans('cruds.vacation.title_singular') }} {{ trans('global.list') }}
+        Daily {{ trans('global.list') }}
     </div>
 
     <!-- Main content -->

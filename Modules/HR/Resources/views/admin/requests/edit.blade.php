@@ -81,7 +81,6 @@
                 @endif
                 <span class="help-block">{{ trans('cruds.clientMeeting.fields.to_time_helper') }}</span>
             </div>
-            @if (!Auth::user()->id)
                 <div class="form-group">
                     <label>{{ trans('cruds.clientMeeting.fields.status') }}</label>
                     @foreach($clientMeetingModel::APPROVE_RADIO as $key => $label)
@@ -97,7 +96,6 @@
                     @endif
                     <span class="help-block">{{ trans('cruds.clientMeeting.fields.status_helper') }}</span>
                 </div>
-            @endif
             <div class="form-group">
                 <label for="comments">{{ trans('cruds.clientMeeting.fields.comments') }}</label>
                 <textarea class="form-control ckeditor {{ $errors->has('comments') ? 'is-invalid' : '' }}" name="comments" id="comments">{!! old('comments', $clientMeeting->comments) !!}</textarea>

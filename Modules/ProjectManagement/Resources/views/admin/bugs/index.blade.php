@@ -189,24 +189,24 @@
                                 </td>
                                 <td>
                                     <a href="{{ route('projectmanagement.admin.bugs.show', $bug->id) }}">
-                                        {{ $bug->name ?? '' }}
+                                        {{ $bug->{'name_'.app()->getLocale()} ?? '' }}
                                     </a>
 
                                 </td>
                                 <td>
-                                    {{ $bug->project->name ?? '' }}
+                                    {{ $bug->project->{'name_'.app()->getLocale()} ?? '' }}
                                 </td>
                                 <td>
-                                    {{ $bug->status ? ucwords($bug->status) :'' }}
+                                    {{ $bug->status ? trans("cruds.status.".$bug->status)  : '' }}
                                 </td>
                                 <td>
-                                    {{ $bug->priority ?? '' }}
+                                    {{ $bug->priority ? trans("cruds.status.".$bug->priority)  : '' }}
                                 </td>
                                 <td>
-                                    {{ $bug->severity ?? '' }}
+                                    {{ $bug->severity ? trans("cruds.status.".$bug->severity)  : '' }}
                                 </td>
                                 <td>
-                                    {{ $bug->reporterBy->name ?? '' }}
+                                    {{ $bug->reporterBy && $bug->reporterBy->name ? $bug->reporterBy->name : '' }}
                                 </td>
                                 <td>
                                     @if(!$trashed)
@@ -225,9 +225,9 @@
                                         @endcan
                                         @can('bug_assign_to')
 
-                                            <a class="btn btn-xs btn-success {{$bug->project->department ? '' : 'disabled'}}"
+                                            <a class="btn btn-xs btn-success {{$bug->project && $bug->project->department ? '' : 'disabled'}}"
                                                href="{{ route('projectmanagement.admin.bugs.getAssignTo', $bug->id) }}"
-                                               title="{{$bug->project->department ? '' : trans('cruds.messages.add_department_to_project')}}">
+                                               title="{{$bug->project && $bug->project->department ? '' : trans('cruds.messages.add_department_to_project')}}">
                                                 {{ trans('global.assign_to') }}
                                             </a>
 
@@ -353,35 +353,35 @@
             $('#unconfirm').on('click', function () {
                 table
                     .columns(4)
-                    .search('unconfirm')
+                    .search('{{trans('cruds.status.unconfirm')}}')
                     .draw()
             })
 
             $('#confirmed').on('click', function () {
                 table
                     .columns(4)
-                    .search('confirmed')
+                    .search('{{trans('cruds.status.confirmed')}}')
                     .draw()
             })
 
             $('#in_progress').on('click', function () {
                 table
                     .columns(4)
-                    .search('in progress')
+                    .search('{{trans('cruds.status.in_progress')}}')
                     .draw()
             })
 
             $('#resolved').on('click', function () {
                 table
                     .columns(4)
-                    .search('resolved')
+                    .search('{{trans('cruds.status.resolved')}}')
                     .draw()
             })
 
             $('#verified').on('click', function () {
                 table
                     .columns(4)
-                    .search('verified')
+                    .search('{{trans('cruds.status.verified')}}')
                     .draw()
             })
         })

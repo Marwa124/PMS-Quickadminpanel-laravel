@@ -25,7 +25,6 @@
         <div>One Tec Group LLC</div>
     </div>
     <hr>
-    {{-- <h1>Welcome to ItSolutionStuff.com - {{ $title }}</h1> --}}
 	<div class="modal fade" id="showModal{{$detail->user_id}}" tabindex="-1" role="dialog" aria-labelledby="showModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -36,21 +35,15 @@
             <div class="row">
                 <div class="col-md-5 d-flex justify-content-center align-self-center">
                     @if($detail->avatar )
-                        {{-- <a href="{{ str_replace('storage', 'public/storage', $detail->avatar->getUrl()) }}" target="_blank">
-                            <img class="rounded-circle img-thumbnail d-flex m-auto"
-                            src="{{ str_replace('storage', 'public/storage', $detail->avatar->getUrl('thumb')) }}">
-                        </a> --}}
-                        <a href="{{ str_replace('storage', 'storage/app/public', $detail->avatar->getUrl()) }}" target="_blank">
-                            <img class="rounded-circle img-thumbnail d-flex m-auto"
-                            src="{{ str_replace('storage', 'storage/app/public', $detail->avatar->getUrl('thumb')) }}">
+                        <a href="{{ $detail->avatar->getUrl() }}" target="_blank">
+                            <img
+                            style="width:150px; height: 150px; padding-top:30px"
+                            src="{{ asset($detail->avatar->getUrl('thumb')) }}">
                         </a>
                     @else
                         <a href="javascript:void(0)" style="display: inline-block">
-                            <img class="rounded-circle img-thumbnail d-flex m-auto"
-                            {{-- style="display: block;
-                                margin-left: auto;
-                                margin-right: auto;
-                                width: 30%;" --}}
+                            <img
+                            style="width:150px; height: 150px;"
                             src="{{ asset('images/default.png') }}">
                         </a>
                     @endif

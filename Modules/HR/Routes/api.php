@@ -18,16 +18,17 @@ use Illuminate\Http\Request;
 // });
 
 Route::group(['as' => 'api.', 'prefix' => 'v1/admin/hr', 'namespace' => 'Api\V1\Admin', 'middleware' => ['auth']], function () {
-    
+
     Route::apiResource('account-details', 'AccountDetailsApiController');
 
     // Departments Json Vuejs
     Route::get('departments/list-vue', 'DepartmentsApiController@departmentListVue')->name('departments.list-vue');
     Route::post('departments/set-permissions/{id?}', 'DepartmentsApiController@setDepartmentPermissions')->name('departments.setPermissions');
     Route::apiResource('departments', 'DepartmentsApiController');
-    
+
     Route::apiResource('designations', 'DesignationsApiController');
 
     // Evaluations
+    Route::get('evaluations/list', 'EvaluationsApiController@evaluationList')->name('evaluations.list');
     Route::apiResource('evaluations', 'EvaluationsApiController');
 });

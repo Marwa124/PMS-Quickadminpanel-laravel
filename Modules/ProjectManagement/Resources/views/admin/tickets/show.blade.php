@@ -27,23 +27,23 @@
                 <div class="card">
                     <div class="row" style="font-size:16px;font-weight:bold;">
                         <div class="col-md-12">
-                            <div class="card-header">{{trans('cruds.ticket.fields.subject')}} : {{ ucfirst($ticket->subject) }} <span class="float-right">{{ trans('cruds.ticket.fields.reporter') }} : {{ $ticket->reporterBy ? ($ticket->reporterBy->name ?? '') : ''}}</span></div>
-                            @if(preg_match("/\p{Arabic}/u", $ticket->body))
-                                <div class='col-md-12 mt-3 ' dir="rtl" style=" font-size: 17px;margin-left:6px;">
+                            <div class="card-header">{{trans('cruds.ticket.fields.subject')}} : {{ $ticket->{'subject_'.app()->getLocale()} ?? '' }} <span class="float-right">{{ trans('cruds.ticket.fields.reporter') }} : {{ $ticket->reporterBy ? ($ticket->reporterBy->name ?? '') : ''}}</span></div>
+                            {{--@if(preg_match("/\p{Arabic}/u", $ticket->body))--}}
+                                <div class='col-md-12 mt-3 ' dir="{{app()->getLocale() == 'ar' ? 'rtl' : ''}}" style=" font-size: 17px;margin-left:6px;">
 
-                                    {!! $ticket->body !!}
-
-                                </div>
-                            @else
-
-                                <div class='col-md-12 mt-3 ' style=" font-size: 17px;margin-left:6px;">
-
-                                    {!! $ticket->body !!}
+                                    {!! $ticket->{'body_'.app()->getLocale()} !!}
 
                                 </div>
-                            @endif
+                            {{--@else--}}
+
+                                {{--<div class='col-md-12 mt-3 ' style=" font-size: 17px;margin-left:6px;">--}}
+
+                                    {{--{!! $ticket->{'body_'.app()->getLocale()} !!}--}}
+
+                                {{--</div>--}}
+                            {{--@endif--}}
                             <div class='col-md-6 mt-3'>
-                                <button type="button" style="margin-left: 7px ;margin-top: 55px;" class="btn btn-secondary" data-toggle="modal" data-target="#info">
+                                <button type="button" style="margin-left: 7px ;margin-top: 55px;" class="btn btn-secondary" data-toggle="modal" data-target="#info" {{$ticket->file ? '' : 'disabled'}}>
                                     {{ trans('cruds.ticket.fields.attachments') }}
                                 </button></div>
 
@@ -203,7 +203,7 @@
                     @foreach($ticket->replies as $replay)
                         <div class="col-md-12 ml-1" style="margin-bottom: 40px;">
                             <div class="col-md-12">
-                                <img  class="img-thumbnail rounded-circle" title="{{ $replay->user->name }}" width="5%" src="{{ $replay->user->accountDetail->avatar ? str_replace('storage', 'storage', $replay->user->accountDetail->avatar->getUrl()) : asset('images/default.png') }}" alt="{{ $replay->user->accountDetail->fullname }}">
+                                <img  class="img-thumbnail rounded-circle" title="{{ $replay->user->name }}" width="5%" src="{{ $replay->user->accountDetail ? str_replace('storage', 'storage', $replay->user->accountDetail->avatar->getUrl()) : asset('images/default.png') }}" alt="{{ $replay->user->accountDetail->fullname ?? '' }}">
 
                                 {{$replay->user->name}}
 
@@ -219,7 +219,7 @@
 
                                 @foreach($replay->replay as $replay_of_replay)
                                     <div class="col-md-10 ml-5">
-                                        <img  class="img-thumbnail rounded-circle" title="{{ $replay_of_replay->user->name }}" width="5%" src="{{ $replay_of_replay->user->accountDetail->avatar ? str_replace('storage', 'storage', $replay_of_replay->user->accountDetail->avatar->getUrl()) : asset('images/default.png') }}" alt="{{ $replay_of_replay->user->accountDetail->fullname }}">
+                                        <img  class="img-thumbnail rounded-circle" title="{{ $replay_of_replay->user->name }}" width="5%" src="{{ $replay_of_replay->user->accountDetail ? str_replace('storage', 'storage', $replay_of_replay->user->accountDetail->avatar->getUrl()) : asset('images/default.png') }}" alt="{{ $replay_of_replay->user->accountDetail->fullname ?? '' }}">
 
                                         {{$replay_of_replay->user->name}}
 
@@ -376,154 +376,5 @@
         }
 
     </script>
-
-@endsection
-
-@section('content123')
-
-<div class="card">
-    <div class="card-header">
-        {{ trans('global.show') }} {{ trans('cruds.ticket.title') }}
-    </div>
-
-    <div class="card-body">
-        <div class="form-group">
-            <div class="form-group">
-                <a class="btn btn-default" href="{{ route('projectmanagement.admin.tickets.index') }}">
-                    {{ trans('global.back_to_list') }}
-                </a>
-            </div>
-            <table class="table table-bordered table-striped">
-                <tbody>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.ticket.fields.id') }}
-                        </th>
-                        <td>
-                            {{ $ticket->id }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.ticket.fields.project') }}
-                        </th>
-                        <td>
-                            {{ $ticket->project->name ?? '' }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.ticket.fields.ticket_code') }}
-                        </th>
-                        <td>
-                            {{ $ticket->ticket_code }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.ticket.fields.email') }}
-                        </th>
-                        <td>
-                            {{ $ticket->email }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.ticket.fields.subject') }}
-                        </th>
-                        <td>
-                            {{ $ticket->subject }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.ticket.fields.body') }}
-                        </th>
-                        <td>
-                            {!! $ticket->body !!}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.ticket.fields.status') }}
-                        </th>
-                        <td>
-                            {{ $ticket->status }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.ticket.fields.department') }}
-                        </th>
-                        <td>
-                            {{ $ticket->department->department_name ?? '' }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.ticket.fields.reporter') }}
-                        </th>
-                        <td>
-                            {{ $ticket->reporter }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.ticket.fields.priority') }}
-                        </th>
-                        <td>
-                            {{ $ticket->priority }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.ticket.fields.file') }}
-                        </th>
-                        <td>
-                            @if($ticket->file)
-                                <a href="{{ $ticket->file->getUrl() }}" target="_blank">
-                                    {{ trans('global.view_file') }}
-                                </a>
-                            @endif
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.ticket.fields.comment') }}
-                        </th>
-                        <td>
-                            {!! $ticket->comment !!}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            {{ trans('cruds.ticket.fields.last_reply') }}
-                        </th>
-                        <td>
-                            {{ $ticket->last_reply }}
-                        </td>
-                    </tr>
-{{--                    <tr>--}}
-{{--                        <th>--}}
-{{--                            {{ trans('cruds.ticket.fields.permissions') }}--}}
-{{--                        </th>--}}
-{{--                        <td>--}}
-{{--                            @foreach($ticket->permissions as $key => $permissions)--}}
-{{--                                <span class="label label-info">{{ $permissions->title }}</span>--}}
-{{--                            @endforeach--}}
-{{--                        </td>--}}
-{{--                    </tr>--}}
-                </tbody>
-            </table>
-            <div class="form-group">
-                <a class="btn btn-default" href="{{ route('projectmanagement.admin.tickets.index') }}">
-                    {{ trans('global.back_to_list') }}
-                </a>
-            </div>
-        </div>
-    </div>
-</div>
-
-
 
 @endsection

@@ -23,9 +23,6 @@
 
                         </th>
                         <th>
-                            {{ trans('cruds.salaryTemplate.fields.id') }}
-                        </th>
-                        <th>
                             {{ trans('cruds.salaryTemplate.fields.salary_grade') }}
                         </th>
                         <th>
@@ -44,9 +41,6 @@
                         <tr data-entry-id="{{ $salaryTemplate->id }}">
                             <td>
 
-                            </td>
-                            <td>
-                                {{ $salaryTemplate->id ?? '' }}
                             </td>
                             <td>
                                 {{ $salaryTemplate->salary_grade ?? '' }}

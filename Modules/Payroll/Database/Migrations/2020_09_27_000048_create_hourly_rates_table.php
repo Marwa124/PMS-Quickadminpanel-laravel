@@ -11,7 +11,7 @@ class CreateHourlyRatesTable extends Migration
         Schema::create('hourly_rates', function (Blueprint $table) {
             $table->increments('id');
             $table->string('hourly_grade');
-            $table->string('hourly_rate');
+            $table->integer('hourly_rate');
             $table->timestamps();
             $table->softDeletes();
         });

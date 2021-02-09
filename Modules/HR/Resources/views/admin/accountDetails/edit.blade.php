@@ -16,7 +16,9 @@
                 <label class="required" for="user_id">{{ trans('cruds.accountDetail.fields.user') }}</label>
                 <select class="form-control select2 {{ $errors->has('user') ? 'is-invalid' : '' }}" name="user_id" id="user_id" required>
                     @foreach($users as $id => $user)
-                        <option value="{{ $id }}" {{ (old('user_id') ? old('user_id') : $accountDetail->user->id ?? '') == $id ? 'selected' : '' }}>{{ $user }}</option>
+                        @foreach ($user as $item)
+                            <option value="{{ $id }}" {{ (old('user_id') ? old('user_id') : $accountDetail->user->id ?? '') == $id ? 'selected' : '' }}>{{ $item }}</option>
+                        @endforeach
                     @endforeach
                 </select>
                 @if($errors->has('user'))
@@ -26,6 +28,7 @@
                 @endif
                 <span class="help-block">{{ trans('cruds.accountDetail.fields.user_helper') }}</span>
             </div>
+            
             <div class="form-group">
                 <label class="required" for="fullname">{{ trans('cruds.accountDetail.fields.fullname') }}</label>
                 <input class="form-control {{ $errors->has('fullname') ? 'is-invalid' : '' }}" type="text" name="fullname" id="fullname" value="{{ old('fullname', $accountDetail->fullname) }}" required>

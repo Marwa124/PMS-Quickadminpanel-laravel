@@ -148,6 +148,22 @@
                       <td>{{$item->fine_deduction}}</td>
                       <td>{{(int) $subDeductions['net_salary'] - (int) $item->fine_deduction}}</td>
                     </tr>
+
+
+
+
+
+
+
+
+
+
+
+                    
+
+
+
+
                   @empty
                       <tr><td>No Data Found</td></tr>
                   @endforelse
@@ -167,7 +183,8 @@
 
 
                                     <!-- Modal -->
-                                    <div class="modal fade" id="deductionDetails{{$item->payment_month}}" tabindex="-1" role="dialog" aria-labelledby="deductionDetails{{$user->id}}Title" aria-hidden="true">
+                                    <div class="modal fade" id="deductionDetails{{$user->id}}" tabindex="-1" role="dialog" aria-labelledby="deductionDetails{{$user->id}}Title" aria-hidden="true">
+                                    {{-- <div class="modal fade" id="deductionDetails{{$item->payment_month}}" tabindex="-1" role="dialog" aria-labelledby="deductionDetails{{$user->id}}Title" aria-hidden="true"> --}}
                                         <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header" style="border-color: red;">

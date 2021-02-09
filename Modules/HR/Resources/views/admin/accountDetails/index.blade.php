@@ -10,6 +10,13 @@
         </div>
     </div>
 </div>
+
+@if(Session::has('error'))
+<div class="alert alert-danger error_session_response">
+  {{ Session::get('error')}}
+</div>
+@endif
+
 <div class="row">
     @can('account_detail_create')
         <div style="margin-bottom: 10px;" class="row">
@@ -43,6 +50,7 @@
     <div class="card-header">
         {{ trans('cruds.accountDetail.title_singular') }} {{ trans('global.list') }}
     </div>
+
     <div class="card-body">
         <div class="table-responsive" style="overflow-x: hidden !important;">
             <table class="display responsive nowrap table table-bordered table-striped table-hover datatable datatable-AccountDetail" style="width:100%">
@@ -93,19 +101,10 @@
                             </td>
                             <td>
                                 @if($accountDetail->avatar)
-                                    {{-- <a href="{{ str_replace('storage', 'public/storage', $accountDetail->avatar->getUrl()) }}" target="_blank">
-                                        <img class="rounded-circle img-thumbnail d-flex m-auto"
-                                        src="{{ str_replace('storage', 'public/storage', $accountDetail->avatar->getUrl('thumb')) }}">
-                                    </a> --}}
-
                                     <a href="{{ $accountDetail->avatar->getUrl() }}" target="_blank">
                                         <img class="rounded-circle img-thumbnail d-flex m-auto"
                                         src="{{$accountDetail->avatar->getUrl('thumb') }}">
                                     </a>
-                                    {{-- <a href="{{ $accountDetail->avatar->getUrl() }}" target="_blank">
-                                        <img class="rounded-circle img-thumbnail d-flex m-auto"
-                                        src="{{ $accountDetail->avatar->getUrl('thumb') }}">
-                                    </a> --}}
                                 @else
                                     <a href="javascript:void(0)" style="display: inline-block">
                                         <img class="rounded-circle img-thumbnail"
@@ -119,13 +118,9 @@
                             </td>
                             <td>
                             {{-- <td  contenteditable="true"> --}}
-                                {{-- <a>
-                                    {{ $accountDetail->fullname ?? '' }}
-                                </a> --}}
                                 <a type="button" class="fullname" data-toggle="modal" data-target="#fullName{{$accountDetail->user_id}}">
                                     {{ $accountDetail->fullname ?? '' }}
                                 </a>
-
 
                                 @can('account_detail_edit')
                                  <!-- Modal -->
@@ -149,7 +144,6 @@
                                     </div>
                                 </div>
                                 @endcan
-
 
                             </td>
                             <td>
@@ -212,18 +206,43 @@
                                             </a>
                                         @endcan
 
-                                        {{-- @can('account_detail_evaluate') --}}
-                                            <a class="btn btn-xs btn-info my-1" href="{{ route('hr.admin.evaluations.edit', $accountDetail->id) }}">
+                                        @can('appointment_letter')
+                                            @if ($accountDetail->user_id != auth()->user()->id)
+                                                @php
+                                                // dd(auth()->user()->accountDetail()->get());
+                                                $dep = '';
+                                                if (auth()->user()->accountDetail) {
+                                                    $dep = auth()->user()->accountDetail->designation ? auth()->user()->accountDetail->designation->department->id : '';
+                                                }
+                                                @endphp
+                                                @if ($dep)
+                                                    @php
+                                                        $designationIds = Modules\HR\Entities\Department::find($dep)->departmentDesignations()->pluck('id');
+                                                    @endphp
+                                                    @if ($designationIds->contains($accountDetail->designation_id))
+                                                        <a class="btn btn-xs btn-dark my-1" href="{{ route('hr.admin.appointment-letter-pdf', [
+                                                            $accountDetail->id,
+                                                            $accountDetail->designation->designation_name,
+                                                            $salary ? $salary->basic_salary : 'null'
+                                                        ]) }}">
+                                                            PDF Appointment Letter
+                                                        </a>
+                                                    @endif
+                                                @endif
+                                            @endif
+                                        @endcan
+
+                                        @can('account_detail_evaluate')
+                                            <a class="btn btn-xs btn-success my-1" href="{{ route('hr.admin.evaluations.edit', $accountDetail->id) }}">
                                                 Evaluate
                                             </a>
-                                        {{-- @endcan --}}
+                                        @endcan
 
                                         {{-- Adjust User Salary --}}
                                         @can('employee_award_access')
                                             <button type="button" class="btn btn-xs btn-secondary" data-toggle="modal" data-target="#advancedSalary{{$accountDetail->user_id}}">
                                                 Edit Salary
                                             </button>
-
                                             <?php
                                                 $advancedUserSalaray = $advanceSalaryModel::where('user_id', $accountDetail->user_id)->first();
                                             ?>
@@ -309,7 +328,7 @@
                 </select>
             </div>
             <div class="form-group">
-                <label class="required" for="">Amount</label>
+                <label class="required" for="">{{trans('cruds.accountDetail.fields.amount')}}</label>
                 <input name="amount" type="integer" class="form-control" placeholder="ex:1000 EGY" required
                 value="{{$advancedUserSalaray ? ((date('Y-m') == $advancedUserSalaray->month) ? $advancedUserSalaray->amount : '') : ''}}"
                 >
@@ -438,12 +457,10 @@ $.ajax({
 $('.updateUserSalary').on('click', function(){
     var userId = $(this).closest('.modal').find('input[name="user_id"]').val();
     var type   = $(this).closest('.modal').find('select[name="type"]').val();
-    var type   = $(this).closest('.modal').find('select[name="type"]').val();
     var amount = $(this).closest('.modal').find('input[name="amount"]').val();
     var month  = $(this).closest('.modal').find('input[name="month"]').val();
-    var reason = $(this).closest('.modal').find('input[name="reason"]').val();
-    console.log(type);
-    console.log(userId);
+    var reason = $(this).closest('.modal').find('input[name="reason"]').val() ?? '';
+    
         $.ajax({
         url: '{{url('admin/hr/account-details/advanced-salary')}}/' + userId,
         type: 'post',
@@ -463,7 +480,6 @@ $('.updateUserSalary').on('click', function(){
             $('.displayMsg').css('display', 'block');
             $('.displayMsg .alert-success').html('Updated Salary Successfully');
             $('.displayMsg').delay(2000).slideUp(1000);
-            // console.log(res);
         },
         error: function(error) {
             $('.displayMsg .alert-danger').html(``);
@@ -479,6 +495,10 @@ $('.updateUserSalary').on('click', function(){
     })
 
 });
+
+setTimeout(() => {
+    document.querySelector('.error_session_response').classList.toggle('slideUp');
+}, 3000);
 
 })
 

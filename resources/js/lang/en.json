@@ -12,10 +12,12 @@
         "type": "type",
         "setting": "setting",
         "button": "Button",
+        "new": "New",
+        "error_response": "The selected item can't be deleted",
+        "back"          : "Back",
 
         "logout": "Logout",
         "create": "Create",
-        "create_again": "Create Again",
         "edit": "Edit",
         "update": "update",
         "save": "Save",
@@ -25,37 +27,23 @@
         "action": "Action",
         "add_all": "Add all",
         "all": "All",
-        "n_all": "All",
         "read_more": "Read more",
         "more_info": "More info",
         "choose_image": "Choose image",
         "drag_msg": "Drag and drop file here",
         "choose_file": "Choose file",
         "download": "Download",
-        "download_all": "Download all",
-        "download_file": "Download file",
-        "download_logo_src": "Download logo source",
         "download_image": "Download image",
-        "to_mail": "to mail",
-        "to_whatsapp": "to whatsapp",
-        "renewal": "Renewal",
-
-        "none_status": "None status",
-
         "items": "Items",
         "item": "Item",
         "left": "Left",
-
         "active": "Active",
         "completed": "Completed",
         "clear_completed": "Clear completed",
         "disactive": "Disactive",
         "activate": "Activate",
         "activation": "Activation",
-        "activated_at": "Activated at",
-        "accepted_at": "Accepted at",
         "accepte": "Accepte",
-        "accepte_now": "Accepte now",
         "done_at": "Done at",
         "in_progress": "In progress",
         "available": "Available",
@@ -127,46 +115,14 @@
             "partner_drawing": "Partner drawing"
         },
 
-        "projects_posts_type": {
-            "single": "single",
-            "grouped": "grouped",
-            "cover_post": "cover post"
-        },
-
-        "requests_types": {
-            "1": "casual vacation",
-            "2": "medical issues",
-            "3": "travel",
-            "4": "permission",
-            "5": "check in",
-            "6": "check out"
-        },
-
-        "accounts_types": {
-            "saving": "Saving account",
-            "current": "Current account",
-            "joint": "Joint partner",
-            "recom": "Recommended partner"
-        },
-
-        "logo_profile": "Logo Details",
-        "hosting_profile": "Host profile",
-
-        "website_profile": "Website Details",
         "": "",
         "": ""
     },
-
-
-
-
 
     "evaluation": {
         "evaluation_comments": "ADDITIONAL COMMENTS",
         "evaluation_goals": "GOALS"
     },
-
-
 
     "messages": {
         "delete_msg": "Are you sure to delete this element?",
@@ -209,10 +165,57 @@
 
 
         "not_found_roles": "Not found roles",
-
-
-
         "msg_not_mail_lead_registerd": "This client does'nt have a registered email."
 
+    },
+
+    "suppliers": {
+        "supplier": "Supplier",
+        "fields": {
+            "name": "Name",
+            "mobile": "Mobile",
+            "phone": "Phone",
+            "email": "Email",
+            "address": "Address"
+        }
+    },
+
+    "purchase": {
+        "supplier": "Supplier",
+        "fields": {
+            "ref_no": "Ref No",
+            "purchase_date": "Purchase Date",
+            "due_date": "Due Date",
+            "sales_agent": "Sales Agent",
+            "stock": "Upload Stock",
+            "discount_type": "Discount Type",
+            "notes": "Notes",
+            "quantity_as_qty": "Qty",
+            "quantity_as_hours": "Hours",
+            "quantity_as_qty_hours": "Qty/Hours",
+            "show_qty_as": "Show Quantity As",
+            "before_tax": "Before Tax",
+            "after_tax": "After Tax"
+        }
+    },
+
+    "items": {
+        "fields": {
+            "name": "Item Name",
+            "description": "Description",
+            "price": "Price",
+            "tax_rate": "Tax Rate",
+            "total": "Total",
+            "unit_cost": "Unit Cost"
+        }
+    },
+
+    "sidebar": {
+        "choose_user": "Choose User",
+        "choose_item": "Choose Item",
+        "choose_supplier": "Choose Supplier",
+        "choose_tax_rate": "Choose Tax Rate",
+        "": "",
+        "": ""
     }
 }

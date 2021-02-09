@@ -1,4 +1,7 @@
 @extends('layouts.admin')
+@inject('employeeAwardModel', 'Modules\HR\Entities\EmployeeAward')
+@inject('accountDetailModel', 'Modules\HR\Entities\AccountDetail')
+
 @section('content')
 @can('employee_award_create')
     <div style="margin-bottom: 10px;" class="row">
@@ -22,9 +25,9 @@
                         <th width="10">
 
                         </th>
-                        <th>
+                        {{-- <th>
                             {{ trans('cruds.employeeAward.fields.id') }}
-                        </th>
+                        </th> --}}
                         <th>
                             {{ trans('cruds.employeeAward.fields.name') }}
                         </th>
@@ -54,14 +57,17 @@
                             <td>
 
                             </td>
-                            <td>
+                            {{-- <td>
                                 {{ $employeeAward->id ?? '' }}
-                            </td>
+                            </td> --}}
                             <td>
                                 {{ $employeeAward->name ?? '' }}
                             </td>
                             <td>
-                                {{ $employeeAward->user->name ?? '' }}
+                                @php
+                                    $accountDetails = $accountDetailModel::where('user_id', $employeeAward->user->id)->select('fullname')->first();
+                                @endphp
+                                {{ $accountDetails->fullname ?? '' }}
                             </td>
                             <td>
                                 {{ $employeeAward->gift_item ?? '' }}
@@ -70,17 +76,17 @@
                                 {{ $employeeAward->award_amount ?? '' }}
                             </td>
                             <td>
-                                {{ App\Models\EmployeeAward::VIEW_STATUS_RADIO[$employeeAward->view_status] ?? '' }}
+                                {{ $employeeAwardModel::VIEW_STATUS_RADIO[$employeeAward->view_status] ?? '' }}
                             </td>
                             <td>
                                 {{ $employeeAward->given_date ?? '' }}
                             </td>
                             <td>
-                                @can('employee_award_show')
+                                {{-- @can('employee_award_show')
                                     <a class="btn btn-xs btn-primary" href="{{ route('hr.admin.employee-awards.show', $employeeAward->id) }}">
                                         {{ trans('global.view') }}
                                     </a>
-                                @endcan
+                                @endcan --}}
 
                                 @can('employee_award_edit')
                                     <a class="btn btn-xs btn-info" href="{{ route('hr.admin.employee-awards.edit', $employeeAward->id) }}">

@@ -3,7 +3,8 @@
 
          <div style="position: relative;">
             <alert-success :form="permissionsForm" message="Your changes have been saved!"></alert-success>
-            <alert-errors :form="permissionsForm" message="There were some problems with your input."></alert-errors>
+            <!-- <alert-errors :form="permissionsForm" message="There were some problems with your input."></alert-errors> -->
+            <div class="alert alert-danger" v-if="permissionError" v-text="permissionError"></div>
         </div>
         <!-- /.content-header -->
         <section class="content">
@@ -13,7 +14,7 @@
                     <div class="card-body">
                         <div class="wrapper-roles show-roles">
                             <div class="wrapper-role">
-                                
+
                                 <form @submit.prevent="departmentId ? updateDepartment() : createDepartment()" @keydown="form.onKeydown($event)">
                                     <div class="form-group">
                                         <label class="required" for="department_name" v-text="$t('cruds.department.fields.department_name')"></label>
@@ -26,16 +27,16 @@
                                     <!-- Designations_list -->
                                     <div class="form-group">
                                         <label for="designation_id" v-text="$t('cruds.department.fields.designations')"></label>
-                                        <multiselect 
-                                            :multiple="true" 
-                                            :close-on-select="false" 
-                                            :clear-on-select="false" 
-                                            :preserve-search="true" 
-                                            :placeholder="$t('select_designation')" 
-                                            v-model="form.designations" 
+                                        <multiselect
+                                            :multiple="true"
+                                            :close-on-select="false"
+                                            :clear-on-select="false"
+                                            :preserve-search="true"
+                                            :placeholder="$t('select_designation')"
+                                            v-model="form.designations"
                                             :options="designations"
-                                            label="designation_name" 
-                                            track-by="id" 
+                                            label="designation_name"
+                                            track-by="id"
                                             :preselect-first="true"
                                         ></multiselect>
                                     </div>
@@ -44,13 +45,13 @@
                                     <!-- department_head -->
                                     <div class="form-group">
                                         <label for="user_head_department" v-text="$t('cruds.department.fields.department_head')"></label>
-                                        <multiselect 
-                                            v-model="form.user_head_department" 
-                                            :options="users" 
-                                            :searchable="true" 
-                                            :close-on-select="true" 
-                                            :show-labels="false" 
-                                            label="fullname" 
+                                        <multiselect
+                                            v-model="form.user_head_department"
+                                            :options="users"
+                                            :searchable="true"
+                                            :close-on-select="true"
+                                            :show-labels="false"
+                                            label="fullname"
                                             track-by="user_id"
                                             :placeholder="$t('sidebar.choose_user')"
                                             :preselect-first="true"
@@ -59,12 +60,20 @@
                                         <has-error :form="form" field="user_head_department"></has-error>
                                     </div>
 
-                                    <button class="btn btn-primary btn-sm buttonload"
-                                        type="submit" :disabled="form.busy">
-                                        <i v-if="spinnerUpdateDepart" class="fa fa-spinner fa-spin"></i>
-                                        <span v-text="departmentId ? $t('global.update') : $t('global.create')"
-                                        ></span>
-                                    </button>
+                                    <div class="d-flex">
+                                        <button class="btn btn-primary btn-sm buttonload"
+                                            type="submit" :disabled="form.busy">
+                                            <i v-if="spinnerUpdateDepart" class="fa fa-spinner fa-spin"></i>
+                                            <span v-text="departmentId ? $t('global.update') : $t('global.create')"
+                                            ></span>
+                                        </button>
+
+                                        <button class="btn btn-secondary btn-sm ml-1" @click="backLocation">
+                                            <span v-text="$t('global.back')"></span>
+                                        </button>
+                                    </div>
+
+
 
                                 </form>
 
@@ -92,7 +101,7 @@
                                                         <button class="btn btn-primary btn-sm buttonload"
                                                             type="submit" :disabled="permissionsForm.busy">
                                                             <i v-if="spinnerAction" class="fa fa-spinner fa-spin"></i>
-                                                            <span v-text="departmentId ? $t('global.update_department_permissions') : $t('global.add_department_permissions')" 
+                                                            <span v-text="departmentId ? $t('global.update_department_permissions') : $t('global.add_department_permissions')"
                                                             ></span>
                                                         </button>
                                                     </div>

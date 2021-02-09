@@ -38,7 +38,7 @@
                 <a class="float-left" id="opened" type="button">
                     <div class="card-body ">
                         <span>{{$tickets->where('status','opened')->count()}}</span><br>
-                        {{trans('cruds.status.open')}} {{ trans('cruds.ticket.title') }}
+                        {{trans('cruds.status.opened')}} {{ trans('cruds.ticket.title') }}
 
                     </div>
                 </a>
@@ -144,15 +144,15 @@
                             </td>
                             <td>
                                 <a href="{{ route('projectmanagement.admin.tickets.show', $ticket->id) }}">
-                                    {{ $ticket->subject ?? '' }}
+                                    {{ $ticket->{'subject_'.app()->getLocale()} ?? '' }}
 
                                 </a>
                             </td>
                             <td>
-                                {{ $ticket->project->name ?? '' }}
+                                {{ $ticket->project->{'name_'.app()->getLocale()} ?? '' }}
                             </td>
                             <td>
-                                {{ $ticket->status ? ucfirst($ticket->status) : '' }}
+                                {{ $ticket->status ? trans('cruds.status.'.$ticket->status) : '' }}
                             </td>
                             <td>
                                 {{ $ticket->reporterBy ? $ticket->reporterBy->name : '' }}
@@ -175,9 +175,9 @@
                                     @endcan
                                     @can('ticket_assign_to')
 
-                                        <a class="btn btn-xs btn-success {{$ticket->project->department ? '' : 'disabled'}}"
+                                        <a class="btn btn-xs btn-success {{$ticket->project && $ticket->project->department ? '' : 'disabled'}}"
                                            href="{{ route('projectmanagement.admin.tickets.getAssignTo', $ticket->id) }}"
-                                           title="{{$ticket->project->department ? '' : 'add department to project'}}">
+                                           title="{{$ticket->project && $ticket->project->department ? '' : 'add department to project'}}">
                                             {{ trans('global.assign_to') }}
                                         </a>
 
@@ -302,35 +302,35 @@
             $('#answered').on('click', function () {
                 table
                     .columns(5)
-                    .search('answered')
+                    .search('{{trans('cruds.status.answered')}}')
                     .draw()
             })
 
             $('#in_progress').on('click', function () {
                 table
                     .columns(5)
-                    .search('in progress')
+                    .search('{{trans('cruds.status.in_progress')}}')
                     .draw()
             })
 
             $('#opened').on('click', function () {
                 table
                     .columns(5)
-                    .search('opened')
+                    .search('{{trans('cruds.status.opened')}}')
                     .draw()
             })
 
             $('#closed').on('click', function () {
                 table
                     .columns(5)
-                    .search('closed')
+                    .search('{{trans('cruds.status.close')}}')
                     .draw()
             })
 
             $('#reopen').on('click', function () {
                 table
                     .columns(5)
-                    .search('reopen')
+                    .search('{{trans('cruds.status.reopen')}}')
                     .draw()
             })
         })

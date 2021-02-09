@@ -108,7 +108,7 @@
                 @endif
                 <span class="help-block">{{ trans('cruds.user.fields.ban_reason_helper') }}</span>
             </div>
-            <div class="form-group">
+            {{-- <div class="form-group">
                 <label for="permissions">{{ trans('cruds.user.fields.permissions') }}</label>
                 <div style="padding-bottom: 4px">
                     <span class="btn btn-info btn-xs select-all" style="border-radius: 0">{{ trans('global.select_all') }}</span>
@@ -125,7 +125,7 @@
                     </div>
                 @endif
                 <span class="help-block">{{ trans('cruds.user.fields.permissions_helper') }}</span>
-            </div>
+            </div> --}}
             <div class="form-group">
                 <label for="smtp_email_type">{{ trans('cruds.user.fields.smtp_email_type') }}</label>
                 <input class="form-control {{ $errors->has('smtp_email_type') ? 'is-invalid' : '' }}" type="text" name="smtp_email_type" id="smtp_email_type" value="{{ old('smtp_email_type', $user->smtp_email_type) }}">

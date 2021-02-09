@@ -19,9 +19,11 @@ use Spatie\MediaLibrary\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use Modules\HR\Entities\LeaveCategory;
 use Modules\Payroll\Entities\AdvanceSalary;
 use Modules\Payroll\Http\Requests\Store\StoreAdvanceSalaryRequest;
+use PDF;
 
 class AccountDetailsController extends Controller
 {
@@ -81,12 +83,18 @@ class AccountDetailsController extends Controller
             'password' => ['required', 'confirmed']
         ];
         $messages = [
-            // 'old-password.required' => '',
-            // 'new-password.required' => ''
+            'old_password.required' => trans('cruds.form.old_password_required'),
+            'password.required' => trans('cruds.form.new_password_required'),
+            'password.confirmed' => trans('cruds.form.new_password_confirm')
         ];
-        $this->validate($request, $rules, $messages);
 
-        $user = Auth::user()->role ? (Auth::user()->role->title == 'Admin' ? true : false) : false;
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors());
+        }
+
+        $user = Auth::user()->hasRole('Admin') ? true : false;
         $owner = (Auth::user()->id == $request->userId) ? true : false;
         $userObject = User::find($request->userId);
 
@@ -96,17 +104,30 @@ class AccountDetailsController extends Controller
                 //the password match..
                 $userObject->password = bcrypt($request->input('password'));
                 $userObject->save();
-                return response()->json('Password Updated Successfully');
+                return response()->json('success');
             }
-            return response()->json('Password Mismatch');
+            return response()->json(trans('cruds.form.dismatch_password'));
         }
+    }
+
+    public function generateAppointmentLetterPDF($id, $designation, $salary)
+    {
+        if($salary == 'null') {
+            return back()->withError(trans('cruds.accountDetail.user_salary_error'));
+        }
+        $accountDetail = AccountDetail::find($id);
+        $designation = Designation::where('designation_name', $designation)->first();
+        // $net_salary = $designation->salaryTemplate()
+        // https://stackoverflow.com/questions/35672718/javascript-slideup-slidedown-one-button
+        // dd($designation);
+        // dd($id);
     }
 
     public function create()
     {
         abort_if(Gate::denies('account_detail_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $users = AccountDetail::all()->pluck('fullname', 'user_id')->prepend(trans('global.pleaseSelect'), '');
+        $users = User::fetchUnbannedUsers();
 
         $designations = Designation::all()->pluck('designation_name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
@@ -139,7 +160,7 @@ class AccountDetailsController extends Controller
     {
         abort_if(Gate::denies('account_detail_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $users = AccountDetail::all()->pluck('fullname', 'user_id')->prepend(trans('global.pleaseSelect'), '');
+        $users = User::fetchUnbannedUsers();
 
         $designations = Designation::all()->pluck('designation_name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
@@ -160,13 +181,21 @@ class AccountDetailsController extends Controller
 
     }
 
+    public function generatePDF($user_id)
+    {
+        $detail['detail'] = AccountDetail::where('user_id', $user_id)->first();
+        $pdf = PDF::loadView('hr::admin.accountDetails.pdf', $detail);
+
+        return $pdf->download('Salary Details '.$detail['detail']->fullname.'.pdf');
+    }
+
     public function update(UpdateAccountDetailRequest $request, AccountDetail $accountDetail)
     {
         // Give the user the same permission for selected designation
-        if ($request->designation_id) {
-            $designationPermissions = Designation::find($request->designation_id)->permissions()->pluck('name', 'id')->toArray();
-            User::find($accountDetail->user_id)->syncPermissions($designationPermissions);
-        }
+        // if ($request->designation_id) {
+        //     $designationPermissions = Designation::find($request->designation_id)->permissions()->pluck('name', 'id')->toArray();
+        //     User::find($accountDetail->user_id)->givePermissionTo($designationPermissions);
+        // }
 
         $accountDetail->update($request->all());
 

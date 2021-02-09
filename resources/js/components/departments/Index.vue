@@ -11,6 +11,8 @@
             <!-- :dataTable="model.data" -->
         </data-tables>
 
+        <div v-if="errorResponse" class="alert alert-danger error_response" v-text="errorResponse"></div>
+
         <table class="table table-striped table-bordered table-responsive" ref="_vmAction">
             <table-head
                 :query="query"
@@ -42,20 +44,26 @@
                         </span>
                         <span v-else>
                             <div>
-                                <a :href="`${urlDepartments}/${row.id}/edit`" v-text="$t('global.dit')"
-                                    class="btn btn-primary btn-sm"></a>
+                                <a v-if="canEdit" :href="`${urlDepartments}/${row.id}/edit`" v-text="$t('global.edit')"
+                                    class="btn btn-primary btn-sm">
+                                </a>
+
+                                <button v-if="canDelete" class="btn btn-sm btn-danger text-white delete_model_row" @click="deleteModelRow(row.id)">
+                                    <!-- :href="urlEvaluation+'/'+row.id" -->
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
                             </div>
                         </span>
                     </td>
                 </tr>
             </tbody>
-            <pagination
-                :query="query"
-                :model="model"
-                @getAllDepartments="getAllDepartments()"
-            >
-            </pagination>
         </table>
+        <pagination
+            :query="query"
+            :model="model"
+            @getAllDepartments="getAllDepartments()"
+        >
+        </pagination>
     </div>
 </template>
 
@@ -64,15 +72,17 @@
 <script>
 import Vue from 'vue';
 import MixinsTable from '../../mixinsTable'
+
 export default {
     mixins: [MixinsTable],
-
+    props: ['canEdit', 'canDelete', 'langKey'],
     data() {
         return {
             urlDepartmentsList: '/api/v1/admin/hr/departments/list-vue',
+            urlModelLink: '/api/v1/admin/hr/departments',
             urlDepartments: '/admin/hr/departments',
             dataResult: {},
-            
+
             departmentRows: [],
             excelData: '',
 
@@ -83,8 +93,8 @@ export default {
         fireEditBtn(val){
             this.editDepartment = true;
             this.$router.push({name: 'departments-edit', params: {id: val}})
-            console.log(this.$router);
-            console.log(this.editDepartment);
+            // console.log(this.$router);
+            // console.log(this.editDepartment);
         },
 
         // Multi Select
@@ -99,5 +109,7 @@ export default {
 }
 </script>
 <style scoped>
-
+    .table-responsive{
+        display: table !important;
+    }
 </style>

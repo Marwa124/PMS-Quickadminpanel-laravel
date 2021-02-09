@@ -15,12 +15,14 @@ class CreateEvaluationsTable extends Migration
     {
         Schema::create('evaluations', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('department_id')->nullable();
+            // $table->unsignedInteger('department_id')->nullable();
             $table->unsignedInteger('user_id')->nullable();
-            $table->enum('type', ['employee_evaluation', 'manager_evaluation'])->default('employee_evaluation');
+            // $table->enum('type', ['employee_evaluation', 'manager_evaluation'])->default('employee_evaluation');
+            $table->string('type')->nullable();
             $table->string('period')->nullable();
-            $table->string('manager')->nullable();
-            $table->date('date')->nullable();
+            $table->integer('manager_id')->nullable();
+            $table->string('date')->nullable();
+            $table->float('avg_rate')->nullable();
             $table->text('comment')->nullable();
             $table->text('goal')->nullable();
             $table->timestamps();

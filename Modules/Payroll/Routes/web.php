@@ -73,7 +73,7 @@ Route::get('salary-employee-details-pdf/{id}','SalaryPaymentDetailsController@ge
 Route::get('salary-employee-details-print/{id}','SalaryPaymentDetailsController@printDetails')->name('salary-employee-details-print');
 
 Route::delete('salary-payment-details/destroy', 'SalaryPaymentDetailsController@massDestroy')->name('salary-payment-details.massDestroy');
-Route::resource('salary-payment-details', 'SalaryPaymentDetailsController', ['except' => ['edit', 'update', 'show']]);
+Route::resource('salary-payment-details', 'SalaryPaymentDetailsController', ['except' => ['edit', 'update', 'show', 'delete']]);
 
 // Salary Payslips
 Route::delete('salary-payslips/destroy', 'SalaryPayslipController@massDestroy')->name('salary-payslips.massDestroy');
@@ -81,6 +81,6 @@ Route::resource('salary-payslips', 'SalaryPayslipController');
 
 // Hourly Rates
 Route::delete('hourly-rates/destroy', 'HourlyRatesController@massDestroy')->name('hourly-rates.massDestroy');
-Route::resource('hourly-rates', 'HourlyRatesController', ['except' => ['edit', 'update', 'show']]);
+Route::resource('hourly-rates', 'HourlyRatesController', ['except' => ['show']]);
 
 });

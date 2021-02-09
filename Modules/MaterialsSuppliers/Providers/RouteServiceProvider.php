@@ -36,6 +36,8 @@ class RouteServiceProvider extends ServiceProvider
         $this->mapApiRoutes();
 
         $this->mapWebRoutes();
+
+        $this->mapVueRoutes();
     }
 
     /**
@@ -65,5 +67,13 @@ class RouteServiceProvider extends ServiceProvider
             ->middleware('api')
             ->namespace($this->moduleNamespace)
             ->group(module_path('MaterialsSuppliers', '/Routes/api.php'));
+    }
+
+    protected function mapVueRoutes()
+    {
+        Route::prefix('api')
+            ->middleware(['web', 'api'])
+            ->namespace($this->moduleNamespace)
+            ->group(module_path('MaterialsSuppliers', '/Routes/cp_admin_vue.php'));
     }
 }
