@@ -95,6 +95,30 @@ return [
     'action' => 'Action',
     'currency_updated' => 'Currency Updated Successfully',
     'currency_deleted' => 'Currency Deleted Successfully',
+    'default_tax'     => 'Default Tax',
+    'tables_pagination_limit' => 'Pagination Limit',
+    'date_format'  => 'Date Format',
+    'time_format' => 'Time Format',
+    'money_format'  => 'Money Format',
+    'allowed_files' => 'Allowed Files',
+    'separate_using_exte' => 'Separate Using | ',
+    'hours' => 'Hours',
+    'enable_languages' => 'Enable Languages',
+    'allow_sub_tasks' => 'Allow Sub tasks',
+    'only_allowed_ip_can_clock' => 'Only allowed IP Can Clock',
+    'allow_client_registration' => 'Allow Client Registration',
+    'allow_apply_job_from_login' => 'Allow Apply Job From Login',
+    'client_default_menu_permission' => 'Client Default Menu Permission',
+    'auto_close_ticket' => 'Auto Close Ticket',
+    'recaptcha_secret_key' => 'Recaptcha Secret Key',
+    'recaptcha_site_key'   => 'Recaptcha Site Key',
+    'google_api_key' => 'Google Api Key',
+    'max_file_size' => 'Max File Size',
+    'recaptcha_help' => 'Go To <a target="_blank" href="https://www.google.com/recaptcha/admin/create">https://www.google.com/recaptcha/admin/create</a> To Setup Recaptcha ',
+    'timezone_invalid' => 'Timezone Is Invalid',
+
+
+
 
 
 

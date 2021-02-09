@@ -9,7 +9,7 @@ class SalaryTemplatesTableSeeder extends Seeder
     {
         $salaryTemplate = [
             [
-                'id'        => '1',
+                'id'        => '2',
                 'salary_grade' => 'Operations Manager',
                 'basic_salary' => '13200',
                 'designation_id' => '1',
