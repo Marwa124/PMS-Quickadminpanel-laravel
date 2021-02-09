@@ -31,9 +31,12 @@ Route::group(['as' => 'hr.admin.', 'prefix' => 'admin/hr', 'namespace' => 'Admin
     Route::post('account-details/ckmedia', 'AccountDetailsController@storeCKEditorImages')->name('account-details.storeCKEditorImages');
     Route::post('account-details/password', 'AccountDetailsController@passwordReset')->name('account-details.passwordReset');
     Route::post('account-details/force-destroy/{id}', 'AccountDetailsController@forceDelete')->name('account-details.forceDestroy');
-    // Route::get('account-details/filter', 'AccountDetailsController@filterSelect')->name('filter-select'); // For filter soft delete
     Route::post('account-details/advanced-salary/{id}', 'AccountDetailsController@advancedSalary')->name('account-details.advancedSalary'); // For filter soft delete
     Route::put('account-details/single-column-update/{id}', 'AccountDetailsController@singleColumnUpdate'); // For update datatables columns
+    
+    // Pdf Appointment Letter
+    Route::get('account-details/appointment-letter/{id}/{designation}/{salary}','AccountDetailsController@generateAppointmentLetterPDF')->name('appointment-letter-pdf');
+
     Route::resource('account-details', 'AccountDetailsController');
 
     // Accounts
@@ -53,7 +56,7 @@ Route::group(['as' => 'hr.admin.', 'prefix' => 'admin/hr', 'namespace' => 'Admin
 
     // Requests
     Route::delete('requests/destroy', 'RequestsController@massDestroy')->name('requests.massDestroy');
-    Route::resource('requests', 'RequestsController');
+    Route::resource('requests', 'RequestsController', ['except' => ['show']]);
 
     // Employees
     Route::delete('employees/destroy', 'EmployeesController@massDestroy')->name('employees.massDestroy');
@@ -68,7 +71,7 @@ Route::group(['as' => 'hr.admin.', 'prefix' => 'admin/hr', 'namespace' => 'Admin
 
      // Designations
      Route::delete('designations/destroy', 'DesignationsController@massDestroy')->name('designations.massDestroy');
-     Route::resource('designations', 'DesignationsController');
+     Route::resource('designations', 'DesignationsController', ['except' => 'show']);
 
      // Overtimes
      Route::delete('overtimes/destroy', 'OvertimeController@massDestroy')->name('overtimes.massDestroy');
@@ -78,11 +81,11 @@ Route::group(['as' => 'hr.admin.', 'prefix' => 'admin/hr', 'namespace' => 'Admin
 
      // Holidays
      Route::delete('holidays/destroy', 'HolidaysController@massDestroy')->name('holidays.massDestroy');
-     Route::resource('holidays', 'HolidaysController');
+     Route::resource('holidays', 'HolidaysController', ['except' => 'show']);
 
      // Set Time
      Route::delete('set-times/destroy', 'SetTimesController@massDestroy')->name('set-times.massDestroy');
-     Route::resource('set-times', 'SetTimesController');
+     Route::resource('set-times', 'SetTimesController', ['except' => 'show']);
 
      // Trainings
      Route::delete('trainings/destroy', 'TrainingsController@massDestroy')->name('trainings.massDestroy');
@@ -103,6 +106,7 @@ Route::group(['as' => 'hr.admin.', 'prefix' => 'admin/hr', 'namespace' => 'Admin
      Route::get('leave-applications/mark-notification-as-read/{id}', 'LeaveApplicationsController@markNotificationAsRead')->name('leave-applications.markNotificationAsRead');
      Route::get('leave-applications/mark-attendance/{id}', 'LeaveApplicationsController@markAttendance')->name('leave-applications.markAttendance');
      Route::get('leave-applications/approve_reject/{id}/{status}', 'LeaveApplicationsController@approveReject')->name('leave-applications.approveReject');
+     Route::get('leave-applications/leave-report', 'LeaveApplicationsController@leaveReport')->name('leave-applications.leaveReport');
      Route::resource('leave-applications', 'LeaveApplicationsController', ['except' => ['edit']]);
 
      // Meeting Minutes
@@ -113,11 +117,11 @@ Route::group(['as' => 'hr.admin.', 'prefix' => 'admin/hr', 'namespace' => 'Admin
 
      // Employee Awards
      Route::delete('employee-awards/destroy', 'EmployeeAwardsController@massDestroy')->name('employee-awards.massDestroy');
-     Route::resource('employee-awards', 'EmployeeAwardsController');
+     Route::resource('employee-awards', 'EmployeeAwardsController', ['except' => 'show']);
 
      // attendances
      Route::delete('attendances/destroy', 'AttendancesController@massDestroy')->name('attendances.massDestroy');
-     Route::resource('attendances', 'AttendancesController', ['except' => ['show']]);
+     Route::resource('attendances', 'AttendancesController', ['except' => ['show', 'edit']]);
 
      // Employee Banks
      Route::delete('employee-banks/destroy', 'EmployeeBankController@massDestroy')->name('employee-banks.massDestroy');
@@ -127,7 +131,11 @@ Route::group(['as' => 'hr.admin.', 'prefix' => 'admin/hr', 'namespace' => 'Admin
      Route::delete('vacations/destroy', 'VacationsController@massDestroy')->name('vacations.massDestroy');
      Route::post('vacations/media', 'VacationsController@storeMedia')->name('vacations.storeMedia');
      Route::post('vacations/ckmedia', 'VacationsController@storeCKEditorImages')->name('vacations.storeCKEditorImages');
-     Route::resource('vacations', 'VacationsController');
+     Route::resource('vacations', 'VacationsController', ['except' => ['show']]);
+
+     // Penalty Categories
+    Route::delete('penalty-categories/destroy', 'PenaltyCategoriesController@massDestroy')->name('penalty-categories.massDestroy');
+    Route::resource('penalty-categories', 'PenaltyCategoriesController', ['except' => ['show']]);
 
      // Job Circulars
     Route::delete('job-circulars/destroy', 'JobCircularsController@massDestroy')->name('job-circulars.massDestroy');
@@ -140,6 +148,7 @@ Route::group(['as' => 'hr.admin.', 'prefix' => 'admin/hr', 'namespace' => 'Admin
     Route::delete('job-applications/destroy', 'JobApplicationController@massDestroy')->name('job-applications.massDestroy');
     // Route::post('job-applications/media', 'JobApplicationController@storeMedia')->name('job-applications.storeMedia');
     // Route::post('job-applications/ckmedia', 'JobApplicationController@storeCKEditorImages')->name('job-applications.storeCKEditorImages');
+    Route::get('job-applications-pdf/{id}/{local}','JobApplicationController@generatePDF')->name('job-applications-pdf');
     Route::resource('job-applications', 'JobApplicationController', ['except' => ['store', 'create']]);
 
 

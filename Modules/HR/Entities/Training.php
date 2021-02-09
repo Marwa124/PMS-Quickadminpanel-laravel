@@ -108,9 +108,4 @@ class Training extends Model implements HasMedia
     {
         return $this->getMedia('uploaded_file')->last();
     }
-
-    public function permissions()
-    {
-        return $this->belongsToMany(Permission::class);
-    }
 }

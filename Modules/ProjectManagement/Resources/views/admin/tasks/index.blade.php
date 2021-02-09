@@ -25,7 +25,7 @@
                     @if($tasks->count() >0)
                         <div class="progress" style="width: auto">
                             <div class="progress-bar bg-info" role="progressbar"
-                                 style="width: {{$tasks->where('status','Not Started')->count()/$tasks->count()*100}}%; "
+                                 style="width: {{$tasks->where('status','not_started')->count()/$tasks->count()*100}}%; "
                                  aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
 
                             </div>
@@ -42,7 +42,7 @@
                     @if($tasks->count() >0)
                         <div class="progress" style="width: auto">
                             <div class="progress-bar bg-warning" role="progressbar"
-                                 style="width: {{$tasks->where('status','In Progress')->count()/$tasks->count()*100}}%; "
+                                 style="width: {{$tasks->where('status','in_progress')->count()/$tasks->count()*100}}%; "
                                  aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
 
                             </div>
@@ -59,7 +59,7 @@
                     @if($tasks->count() >0)
                         <div class="progress" style="width: auto">
                             <div class="progress-bar bg-success" role="progressbar"
-                                 style="width: {{$tasks->where('status','Completed')->count()/$tasks->count()*100}}%; "
+                                 style="width: {{$tasks->where('status','completed')->count()/$tasks->count()*100}}%; "
                                  aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
 
                             </div>
@@ -76,7 +76,7 @@
                     @if($tasks->count() >0)
                         <div class="progress" style="width: auto">
                             <div class="progress-bar bg-danger" role="progressbar"
-                                 style="width: {{$tasks->where('status','Deffered')->count()/$tasks->count()*100}}%; "
+                                 style="width: {{$tasks->where('status','deffered')->count()/$tasks->count()*100}}%; "
                                  aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
 
                             </div>
@@ -93,7 +93,7 @@
                     @if($tasks->count() >0)
                         <div class="progress" style="width: auto">
                             <div class="progress-bar bg-dark" role="progressbar"
-                                 style="width: {{$tasks->where('status','Waiting For Someone')->count()/$tasks->count()*100}}%; "
+                                 style="width: {{$tasks->where('status','waiting_someone')->count()/$tasks->count()*100}}%; "
                                  aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
 
                             </div>
@@ -217,7 +217,7 @@
                                 <td>
                                     <a href="{{ route('projectmanagement.admin.tasks.show', $task->id) }}">
 
-                                        {{ $task->name_.app()->getLocale() ? $task->name_.app()->getLocale() : '' }}
+                                        {{ $task->{'name_'.app()->getLocale()} ? $task->{'name_'.app()->getLocale()} : '' }}
                                     </a>
                                     <div class="progress">
                                         <div
@@ -264,7 +264,7 @@
                                 </td>
                                 <td>
                                     @forelse($task->tags as $key => $item)
-                                        <span class="badge badge-info">{{ $item->name }}</span>
+                                        <span class="badge badge-info">{{ $item->{'name_'.app()->getLocale()} }}</span>
                                     @empty
                                     @endforelse
                                 </td>
@@ -276,7 +276,7 @@
                                 </td>
 
                                 <td>
-                                    {{ $task->project->name ? $task->project->name_.app()->getLocale(): '' }}
+                                    {{ $task->project && $task->project->{'name_'.app()->getLocale()} ? $task->project->{'name_'.app()->getLocale()}: '' }}
                                 </td>
                                 <td>
                                     @if(!$trashed)
@@ -304,9 +304,9 @@
 
                                         @can('task_assign_to')
 
-                                            <a class="btn btn-xs btn-success {{$task->project->department ? '' : 'disabled'}}"
+                                            <a class="btn btn-xs btn-success {{$task->project && $task->project->department ? '' : 'disabled'}}"
                                                href="{{ route('projectmanagement.admin.tasks.getAssignTo', $task->id) }}"
-                                               title="{{$task->project->department ? '' : trans('cruds.messages.add_department_to_project')}}">
+                                               title="{{$task->project && $task->project->department ? '' : trans('cruds.messages.add_department_to_project')}}">
                                                 {{ trans('global.assign_to') }}
                                             </a>
 

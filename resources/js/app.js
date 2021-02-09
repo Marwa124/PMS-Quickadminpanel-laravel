@@ -10,10 +10,11 @@ import RolesIndex from './components/roles/Index.vue';
 import DepartmentList from './components/departments/Index.vue';
 import i18n from './plugins/i18n' // localization
 import './filter';
-import DepartmentCreate from './components/departments/Create.vue';
 import DepartmentForm from './components/departments/Form.vue';
 
 window.Vue = require('vue');
+
+// window.moment = require('moment');
 
 // import router from './router'
 
@@ -41,6 +42,12 @@ Vue.component('EvaluationForm', EvaluationForm)
 
 
 
+// Payments
+import PurchaseForm from './components/materialSupplier/purchase/Form'
+import SupplierModal from './components/materialSupplier/purchase/SupplierModal'
+Vue.component('PurchaseForm', PurchaseForm)
+Vue.component('SupplierModal', SupplierModal)
+
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('assign-permissions-to-user', require('./components/AssignPermissionsToUser.vue'));
@@ -58,11 +65,10 @@ const app = new Vue({
         AssignPermissionsToUser,
         RolesIndex,
         DepartmentList,
-        DepartmentCreate,
         DepartmentForm,
         DataTables, // Data Tables
-        
-        // Evaluation,
+
+        Evaluation,
     },
     // router,
 });

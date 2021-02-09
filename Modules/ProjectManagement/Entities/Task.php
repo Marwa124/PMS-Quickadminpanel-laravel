@@ -187,10 +187,11 @@ class Task extends Model implements HasMedia
     public function cloneTask($new_milestone=null,$newproject=null)
     {
 
-        $new_task                   = $this->replicate();
-        $new_task->name             = $this->name.'-copy'.substr(time(),-5);
+        $new_task                      = $this->replicate();
+        $new_task->name_en             = $this->name_en.'-copy'.substr(time(),-5);
+        $new_task->name_ar             = $this->name_ar.'-نسخ'.substr(time(),-5);
         if ($newproject){
-            $new_task->project_id       = $newproject->id;
+            $new_task->project_id      = $newproject->id;
         }
         if ($new_milestone) {
             $new_task->milestone_id = $new_milestone->id;
@@ -199,12 +200,14 @@ class Task extends Model implements HasMedia
 
         $new_task = Task::findOrFail($new_task->id);
 
-        setActivity('task',$new_task->id,'Save Task Details',$new_task->name);
+//        setActivity('task',$new_task->id,'Save Task Details',$new_task->name);
+        setActivity('task',$new_task->id,'Save Task Details','حقظ تفاصيل المهمه',$new_task->name_en,$new_task->name_ar);
 
         foreach ($this->subTasks as $subtask)
         {
-            $new_sub_task                   = $subtask->replicate();
-            $new_sub_task->name             = $subtask->name.'-copy'.substr(time(),-5);
+            $new_sub_task                      = $subtask->replicate();
+            $new_sub_task->name_en             = $subtask->name_en.'-copy'.substr(time(),-5);
+            $new_sub_task->name_ar             = $subtask->name_ar.'-نسخ'.substr(time(),-5);
             if ($newproject){
                 $new_sub_task->project_id       = $newproject->id;
             }
@@ -220,7 +223,9 @@ class Task extends Model implements HasMedia
 
             $new_sub_task = Task::findOrFail($new_sub_task->id);
 
-            setActivity('task',$new_sub_task->id,'Save Task Details',$new_sub_task->name);
+//            setActivity('task',$new_sub_task->id,'Save Task Details',$new_sub_task->name);
+            setActivity('task',$new_sub_task->id,'Save Task Details','حقظ تفاصيل المهمه',$new_sub_task->name_en,$new_sub_task->name_ar);
+
         }
 
         return $new_task;

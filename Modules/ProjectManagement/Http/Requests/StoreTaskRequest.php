@@ -21,6 +21,8 @@ class StoreTaskRequest extends FormRequest
             'name_en'               => [
                 'string',
                 'required',
+                //'regex:/^[a-zA-Z ]+$/u',
+                'min:3|max:255',
                 Rule::unique('tasks','name_en')->where(function($query) {
 
                     $query->where('milestone_id', '=', request()->milestone_id);
@@ -30,6 +32,8 @@ class StoreTaskRequest extends FormRequest
             'name_ar'               => [
                 'string',
                 'required',
+                //'regex:/^[ اأإء-ي ]+$/ui',
+                'min:3|max:255',
                 Rule::unique('tasks','name_ar')->where(function($query) {
 
                     $query->where('milestone_id', '=', request()->milestone_id);
@@ -38,10 +42,11 @@ class StoreTaskRequest extends FormRequest
             ],
             'status'          => [
                 'required',
-                //'integer',
+                'in:not_started,in_progress,completed,deffered,waiting_someone',
             ],
             'tags.*'             => [
                 'integer',
+                'exists:task_tags,id'
             ],
             'tags'               => [
                 'array',
@@ -57,9 +62,11 @@ class StoreTaskRequest extends FormRequest
             ],
             'project_id'           => [
                 'required',
+                'exists:projects,id'
             ],
             'milestone_id'           => [
                 'required',
+                'exists:milestones,id'
             ],
 //            'progress'           => [
 //                'required',
@@ -70,21 +77,12 @@ class StoreTaskRequest extends FormRequest
 //            ],
             'calculate_progress' => [
                 'string',
-                'nullable',
+                'required',
+                'between:0,100'
             ],
             'task_hours'         => [
-                'string',
-                'nullable',
-            ],
-            'created_by'         => [
-                'nullable',
-                'integer',
-                'min:-2147483648',
-                'max:2147483647',
-            ],
-
-            'hourly_rate'        => [
                 'numeric',
+                'nullable',
             ],
 
         ];

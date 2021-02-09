@@ -30,15 +30,26 @@
                         <span class="help-block">{{ trans('cruds.milestone.fields.project_helper') }}</span>
                     </div>
                     <div class="form-group">
-                        <label class="required" for="name">{{ trans('cruds.milestone.fields.name') }}</label>
-                        <input class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" type="text"
-                               name="name" id="name" value="{{ old('name', $milestone->name) }}" required>
-                        @if($errors->has('name'))
+                        <label class="required" for="name_en">{{ trans('cruds.milestone.fields.name_en') }}</label>
+                        <input class="form-control {{ $errors->has('name_en') ? 'is-invalid' : '' }}" type="text"
+                               name="name_en" id="name_en" value="{{ old('name_en', $milestone->name_en) }}" required>
+                        @if($errors->has('name_en'))
                             <div class="invalid-feedback">
-                                {{ $errors->first('name') }}
+                                {{ $errors->first('name_en') }}
                             </div>
                         @endif
-                        <span class="help-block">{{ trans('cruds.milestone.fields.name_helper') }}</span>
+                        <span class="help-block">{{ trans('cruds.milestone.fields.name_en_helper') }}</span>
+                    </div>
+                    <div class="form-group">
+                        <label class="required" for="name_ar">{{ trans('cruds.milestone.fields.name_ar') }}</label>
+                        <input class="form-control {{ $errors->has('name_ar') ? 'is-invalid' : '' }}" type="text"
+                               name="name_ar" id="name_ar" value="{{ old('name_ar', $milestone->name_ar) }}" required>
+                        @if($errors->has('name_ar'))
+                            <div class="invalid-feedback">
+                                {{ $errors->first('name_ar') }}
+                            </div>
+                        @endif
+                        <span class="help-block">{{ trans('cruds.milestone.fields.name_ar_helper') }}</span>
                     </div>
                     <div class="form-group">
                         <label class="required"

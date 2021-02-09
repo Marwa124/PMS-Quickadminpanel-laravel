@@ -24,6 +24,7 @@ class SettingController extends Controller
     {
         abort_if(Gate::denies('setting_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
+
         $countries  = Country::all();
         $currencies = Currency::all();
         $languages  = Language::all();
@@ -124,26 +125,103 @@ class SettingController extends Controller
             }
 
 
-            $notification = array(
-                'message' => trans('settings.company_details_updated'),
-                'alert-type' => 'success'
-            );
-
-            return back()->with($notification);
+            return back()->with(flash(trans('settings.company_details_updated'), 'success'));
         } catch (\Exception $e) {
 
-            $notification = array(
-                'message'    =>  ' Something Went Wrong',
-                'alert-type' =>  'danger'
-            );
-
-            return back()->withInput()->with($notification);
+            return back()->withInput()->with(flash(' Something Went Wrong', 'danger'));
         }
     }
 
 
+    public function save_currency(Request $request)
+    {
+
+
+        $validator = Validator::make($request->all(), [
+            'code'                  => 'required|string|unique:code',
+            'name'                  => 'required|string|unique:name',
+            'symbol'                => 'required|string|unique:symbol',
+
+        ], [
+            'code.required'                                => trans('settings.code_required'),
+            'code.string'                                  => trans('settings.code_string'),
+
+            'name.required'                                => trans('settings.name_required'),
+            'name.string'                                  => trans('settings.name_string'),
+
+            'symbol.required'                              => trans('settings.symbol_required'),
+            'symbol.string'                                => trans('settings.symbol_string'),
+        ]);
+
+
+
+        if ($validator->fails()) {
+
+            return back()->withInput()->with(flash($validator->errors()->all()[0], 'danger'));
+        }
+
+
+
+        Currency::create([
+            'code'   => request('code'),
+            'name'   => request('name'),
+            'symbol' => request('symbol'),
+        ]);
+
+        return back()->with(flash(trans('settings.currency_created'), 'success'))->with('pill', 'company-system');
+    }
+
+    public function update_currency(Request $request)
+    {
+
+
+        $currency = Currency::findOrFail($request->id);
+
+        $validator = Validator::make($request->all(), [
+            'code'                  => 'required|string',
+            'name'                  => 'required|string|unique:currencies,name,' . $request->id,
+            'symbol'                => 'required|string',
+
+        ], [
+            'code.required'                                => trans('settings.code_required'),
+            'code.string'                                  => trans('settings.code_string'),
+
+            'name.required'                                => trans('settings.name_required'),
+            'name.string'                                  => trans('settings.name_string'),
+
+            'symbol.required'                              => trans('settings.symbol_required'),
+            'symbol.string'                                => trans('settings.symbol_string'),
+        ]);
+
+
+        if ($validator->fails()) {
+
+            return response()->json(['message' => $validator->errors()->all()[0]], 400);
+        }
+
+
+
+        $currency->update([
+
+            'code' => $request->code,
+            'name' => $request->name,
+            'symbol' => $request->symbol
+        ]);
+
+        return response()->json(['message' => trans('settings.currency_updated')], 200);
+    }
+
+
+    public function remove_currency(Request $request)
+    {
+        Currency::findOrFail($request->id)->delete();
+        return response()->json(['message' => trans('settings.currency_deleted')], 200);
+    }
+
     public function save_system()
     {
+
+
         dd('here');
     }
 }

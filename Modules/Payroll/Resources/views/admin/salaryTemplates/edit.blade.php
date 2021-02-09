@@ -13,15 +13,17 @@
 
 <div class="section mb-5 pb-5">
 
+    <form method="POST" action="{{ route("payroll.admin.salary-templates.update", [$salaryTemplate->id]) }}" enctype="multipart/form-data">
+        @method('PUT')
+        @csrf
+
+
 <div class="card">
     <div class="card-header">
         {{ trans('global.edit') }} {{ trans('cruds.salaryTemplate.title_singular') }}
     </div>
 
     <div class="card-body">
-        <form method="POST" action="{{ route("payroll.admin.salary-templates.update", [$salaryTemplate->id]) }}" enctype="multipart/form-data">
-            @method('PUT')
-            @csrf
 
         <div class="form-group">
             <label class="required" for="salary_grade">Designation Name</label>
@@ -61,7 +63,6 @@
                 @endif
                 <span class="help-block">{{ trans('cruds.salaryTemplate.fields.overtime_salary_helper') }}</span>
             </div>
-        </form>
     </div>
 </div>
 
@@ -138,6 +139,8 @@
         {{ trans('global.save') }}
     </button>
 </div>
+
+</form>
 
 </div>
 @endsection

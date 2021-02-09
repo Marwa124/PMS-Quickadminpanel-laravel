@@ -18,6 +18,7 @@ use Modules\ProjectManagement\Entities\Project;
 use Modules\ProjectManagement\Entities\Task;
 use Spatie\MediaLibrary\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\DB;
 
 class BugsController extends Controller
 {
@@ -58,10 +59,8 @@ class BugsController extends Controller
 
         abort_if(Gate::denies('bug_create'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
-//        $projects = Project::all()->pluck('name', 'id');
-        $projects = auth()->user()->getUserProjectsByUserID(auth()->user()->id)->pluck('name', 'id');
+        $projects = auth()->user()->getUserProjectsByUserID(auth()->user()->id)->pluck('name_'.app()->getLocale(), 'id');
 
-//        $tasks = Task::with('project')->get();
         $tasks = auth()->user()->getUserTasksByUserID(auth()->user()->id,false,true);
 
         $project    = null;
@@ -100,17 +99,31 @@ class BugsController extends Controller
     {
         abort_if(Gate::denies('bug_create'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
-        $request['issue_no'] = 'pms'.substr(time(),-8);           //pms + time function to be sure this num is unique
-        $request['reporter'] = auth()->user()->id;
+        try {
+            // Begin a transaction
+            DB::beginTransaction();
 
-        $bug = Bug::create($request->all());
+            $request['issue_no'] = 'pms'.substr(time(),-8);           //pms + time function to be sure this num is unique
+            $request['reporter'] = auth()->user()->id;
 
-        if ($media = $request->input('ck-media', false)) {
-            Media::whereIn('id', $media)->update(['model_id' => $bug->id]);
+            $bug = Bug::create($request->all());
+
+            if ($media = $request->input('ck-media', false)) {
+                Media::whereIn('id', $media)->update(['model_id' => $bug->id]);
+            }
+
+            setActivity('bug', $bug->id, 'New Bug Added', ' bug جديدة إضافة', $bug->name_en, $bug->name_ar);
+
+            // Commit the transaction
+            DB::commit();
+
+        }catch(\Exception $e){
+            // An error occured; cancel the transaction...
+            DB::rollback();
+
+            // and throw the error again.
+            throw $e;
         }
-
-        setActivity('bug',$bug->id,'New Bug Added',$bug->name);
-
 
         return redirect()->route('projectmanagement.admin.bugs.index');
     }
@@ -125,7 +138,7 @@ class BugsController extends Controller
         if (in_array($bug->id,$bugs->toArray()))
         {
 
-            $projects = auth()->user()->getUserProjectsByUserID(auth()->user()->id)->pluck('name', 'id');
+            $projects = auth()->user()->getUserProjectsByUserID(auth()->user()->id)->pluck('name_'.app()->getLocale(), 'id');
 
             $tasks = Task::with('project')->get();
 
@@ -142,29 +155,44 @@ class BugsController extends Controller
     {
         abort_if(Gate::denies('bug_edit'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
-        $bug->update($request->all());
+        try {
+            // Begin a transaction
+            DB::beginTransaction();
 
-        // Notify User
-        foreach ($bug->accountDetails as $accountUser)
-        {
-            $user = $accountUser->user;
-            $dataMail = [
-                'subjectMail'    => 'Update Bug '.$bug->name,
-                'bodyMail'       => 'Update The Bug '.$bug->name,
-                'action'         => route("projectmanagement.admin.bugs.show", $bug->id)
-            ];
+            $bug->update($request->all());
 
-            $dataNotification = [
-                'message'       => 'Update The Bug : '.$bug->name,
-                'route_path'    => 'admin/projectmanagement/bugs',
-            ];
+            // Notify User
+            foreach ($bug->accountDetails as $accountUser)
+            {
+                $user = $accountUser->user;
+                $dataMail = [
+                    'subjectMail'    => 'Update Bug '.$bug->name,
+                    'bodyMail'       => 'Update The Bug '.$bug->name,
+                    'action'         => route("projectmanagement.admin.bugs.show", $bug->id)
+                ];
 
-            $user->notify(new ProjectManagementNotification($bug,$user,$dataMail,$dataNotification));
-            $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
-            event(new NewNotification($userNotify));
+                $dataNotification = [
+                    'message'       => 'Update The Bug : '.$bug->name,
+                    'route_path'    => 'admin/projectmanagement/bugs',
+                ];
+
+                $user->notify(new ProjectManagementNotification($bug,$user,$dataMail,$dataNotification));
+                $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
+                event(new NewNotification($userNotify));
+            }
+
+            setActivity('bug', $bug->id, 'Update Bug', ' bug تعديل', $bug->status, $bug->status);
+
+            // Commit the transaction
+            DB::commit();
+
+        }catch(\Exception $e){
+            // An error occured; cancel the transaction...
+            DB::rollback();
+
+            // and throw the error again.
+            throw $e;
         }
-
-        setActivity('bug',$bug->id,'Update Bug',$bug->status);
 
         return redirect()->route('projectmanagement.admin.bugs.index');
 
@@ -193,9 +221,25 @@ class BugsController extends Controller
     {
         abort_if(Gate::denies('bug_delete'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
-        $bug->delete();
+        try {
+            // Begin a transaction
+            DB::beginTransaction();
 
-        setActivity('bug',$bug->id,'Delete Bug',$bug->name);
+            $bug->delete();
+
+//            setActivity('bug',$bug->id,'Delete Bug',$bug->name);
+            setActivity('bug', $bug->id, 'Delete Bug', ' bug حذف', $bug->name_en, $bug->name_ar);
+
+            // Commit the transaction
+            DB::commit();
+
+        }catch(\Exception $e){
+            // An error occured; cancel the transaction...
+            DB::rollback();
+
+            // and throw the error again.
+            throw $e;
+        }
 
         return back();
     }
@@ -206,15 +250,30 @@ class BugsController extends Controller
 
         //Bug::whereIn('id', request('ids'))->delete();
 
-        $ids = request('ids');
+        try {
+            // Begin a transaction
+            DB::beginTransaction();
 
-        foreach ($ids as $id){
-            $bug = Bug::where('id',$id)->first();
+            $ids = request('ids');
 
-            $bug->delete();
+            foreach ($ids as $id){
+                $bug = Bug::where('id',$id)->first();
 
-            //$project->accountDetails()->detach();
-            setActivity('bug',$bug->id,'Delete Bug',$bug->name);
+                $bug->delete();
+
+                //$project->accountDetails()->detach();
+                setActivity('bug', $bug->id, 'Delete Bug', ' bug حذف', $bug->name_en, $bug->name_ar);
+            }
+
+            // Commit the transaction
+            DB::commit();
+
+        }catch(\Exception $e){
+            // An error occured; cancel the transaction...
+            DB::rollback();
+
+            // and throw the error again.
+            throw $e;
         }
 
         return response(null, Response::HTTP_NO_CONTENT);
@@ -261,67 +320,83 @@ class BugsController extends Controller
     {
         abort_if(Gate::denies('bug_assign_to'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
-        $bug = Bug::findOrFail($request->bug_id);
-        if ($request->accounts){
+        try {
+            // Begin a transaction
+            DB::beginTransaction();
+
+            $bug = Bug::findOrFail($request->bug_id);
+            if ($request->accounts){
 
 
-            $bug->accountDetails()->sync($request->accounts);
-            // set permission to users
-            $accounts = AccountDetail::whereIn('id',$request->accounts)->with('user.department')->get();
+                $bug->accountDetails()->sync($request->accounts);
+                // set permission to users
+                $accounts = AccountDetail::whereIn('id',$request->accounts)->with('user.department')->get();
 
-            $bug_permissions_head_names = ['project_management_access','bug_access','bug_create', 'bug_show','bug_edit','bug_assign_to'];
-            $bug_permissions_notToMember_names = ['bug_create','bug_assign_to'];
-//            $bug_permissions_head_names = ['project_management_access','bug_access','bug_create', 'bug_show','bug_edit'];
-//            $bug_permissions_notToMember_names = ['bug_create'];
-            $bug_permissions_toMember_names = ['project_management_access','bug_access','bug_show','bug_edit'];
+                $bug_permissions_head_names = ['project_management_access','bug_access','bug_create', 'bug_show','bug_edit','bug_assign_to'];
+                $bug_permissions_notToMember_names = ['bug_create','bug_assign_to'];
+    //            $bug_permissions_head_names = ['project_management_access','bug_access','bug_create', 'bug_show','bug_edit'];
+    //            $bug_permissions_notToMember_names = ['bug_create'];
+                $bug_permissions_toMember_names = ['project_management_access','bug_access','bug_show','bug_edit'];
 
-            $bug_permissions_head = $this->getPermissionID($bug_permissions_head_names);
-            $bug_permissions_notToMember = $this->getPermissionID($bug_permissions_notToMember_names);
-            $bug_permissions_toMember = $this->getPermissionID($bug_permissions_toMember_names);
+                $bug_permissions_head = $this->getPermissionID($bug_permissions_head_names);
+                $bug_permissions_notToMember = $this->getPermissionID($bug_permissions_notToMember_names);
+                $bug_permissions_toMember = $this->getPermissionID($bug_permissions_toMember_names);
 
-            foreach ($accounts as $account){
+                foreach ($accounts as $account){
 
-                foreach ($account->user->permissions as $permission){
+                    foreach ($account->user->permissions as $permission){
 
-                    if (in_array($permission->name,$bug_permissions_notToMember_names)){
-                        $account->user->permissions()->detach($bug_permissions_notToMember);
+                        if (in_array($permission->name,$bug_permissions_notToMember_names)){
+                            $account->user->permissions()->detach($bug_permissions_notToMember);
+                        }
+                    }
+                    $account->user->permissions()->syncWithoutDetaching($bug_permissions_toMember);
+
+                    foreach ($account->user->department as $department){
+                        if ($department->department_name == $bug->project->department->department_name){
+                            $account->user->permissions()->syncWithoutDetaching($bug_permissions_head);
+
+                            break;
+                        }
                     }
                 }
-                $account->user->permissions()->syncWithoutDetaching($bug_permissions_toMember);
-
-                foreach ($account->user->department as $department){
-                    if ($department->department_name == $bug->project->department->department_name){
-                        $account->user->permissions()->syncWithoutDetaching($bug_permissions_head);
-
-                        break;
-                    }
-                }
+            }else{
+                $bug->accountDetails()->detach();
             }
-        }else{
-            $bug->accountDetails()->detach();
+
+            // Notify User
+            foreach ($bug->accountDetails as $accountUser)
+            {
+                $user = $accountUser->user;
+                $dataMail = [
+                    'subjectMail'    => 'New Bug Assign To You',
+                    'bodyMail'       => 'Assign The Bug '.$bug->name.' To '.$user->name,
+                    'action'         => route("projectmanagement.admin.bugs.show", $bug->id)
+                ];
+
+                $dataNotification = [
+                    'message'       => 'Assign The Bug : '.$bug->name.' To '.$user->name,
+                    'route_path'    => 'admin/projectmanagement/bugs',
+                ];
+
+                $user->notify(new ProjectManagementNotification($bug,$user,$dataMail,$dataNotification));
+                $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
+                event(new NewNotification($userNotify));
+            }
+
+//            setActivity('bug',$bug->id,'Update Assign to',$bug->name);
+            setActivity('bug', $bug->id, 'Update Assign to', ' bug تعديل القائمين على', $bug->name_en, $bug->name_ar);
+
+            // Commit the transaction
+            DB::commit();
+
+        }catch(\Exception $e){
+            // An error occured; cancel the transaction...
+            DB::rollback();
+
+            // and throw the error again.
+            throw $e;
         }
-
-        // Notify User
-        foreach ($bug->accountDetails as $accountUser)
-        {
-            $user = $accountUser->user;
-            $dataMail = [
-                'subjectMail'    => 'New Bug Assign To You',
-                'bodyMail'       => 'Assign The Bug '.$bug->name.' To '.$user->name,
-                'action'         => route("projectmanagement.admin.bugs.show", $bug->id)
-            ];
-
-            $dataNotification = [
-                'message'       => 'Assign The Bug : '.$bug->name.' To '.$user->name,
-                'route_path'    => 'admin/projectmanagement/bugs',
-            ];
-
-            $user->notify(new ProjectManagementNotification($bug,$user,$dataMail,$dataNotification));
-            $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
-            event(new NewNotification($userNotify));
-        }
-
-        setActivity('bug',$bug->id,'Update Assign to',$bug->name);
 
         return redirect()->route('projectmanagement.admin.bugs.index');
     }
@@ -330,31 +405,47 @@ class BugsController extends Controller
     {
         abort_if(Gate::denies('bug_edit'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
-        $bug = Bug::findOrFail($request->bug_id);
-        //$project->notes = $request->notes;
-        $bug->update($request->all());
+        try {
+            // Begin a transaction
+            DB::beginTransaction();
 
-        // Notify User
-        foreach ($bug->accountDetails as $accountUser)
-        {
-            $user = $accountUser->user;
-            $dataMail = [
-                'subjectMail'    => 'Update Bug '.$bug->name,
-                'bodyMail'       => 'Update Note Of Bug '.$bug->name,
-                'action'         => route("projectmanagement.admin.bugs.show", $bug->id)
-            ];
+            $bug = Bug::findOrFail($request->bug_id);
+            //$project->notes = $request->notes;
+            $bug->update($request->all());
 
-            $dataNotification = [
-                'message'       => 'Update Note Of Bug : '.$bug->name,
-                'route_path'    => 'admin/projectmanagement/bugs',
-            ];
+            // Notify User
+            foreach ($bug->accountDetails as $accountUser)
+            {
+                $user = $accountUser->user;
+                $dataMail = [
+                    'subjectMail'    => 'Update Bug '.$bug->name,
+                    'bodyMail'       => 'Update Note Of Bug '.$bug->name,
+                    'action'         => route("projectmanagement.admin.bugs.show", $bug->id)
+                ];
 
-            $user->notify(new ProjectManagementNotification($bug,$user,$dataMail,$dataNotification));
-            $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
-            event(new NewNotification($userNotify));
+                $dataNotification = [
+                    'message'       => 'Update Note Of Bug : '.$bug->name,
+                    'route_path'    => 'admin/projectmanagement/bugs',
+                ];
+
+                $user->notify(new ProjectManagementNotification($bug,$user,$dataMail,$dataNotification));
+                $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
+                event(new NewNotification($userNotify));
+            }
+
+//            setActivity('bug',$bug->id,'Update Note ',$bug->name);
+            setActivity('bug', $bug->id, 'Update Note', 'تعديل الملاحظات', $bug->name_en, $bug->name_ar);
+
+            // Commit the transaction
+            DB::commit();
+
+        }catch(\Exception $e){
+            // An error occured; cancel the transaction...
+            DB::rollback();
+
+            // and throw the error again.
+            throw $e;
         }
-
-        setActivity('bug',$bug->id,'Update Note ',$bug->name);
 
         return redirect()->back();
     }
@@ -363,22 +454,37 @@ class BugsController extends Controller
     {
         abort_if(Gate::denies('bug_delete'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
-        //dd($request->all(),$id);
-        $action = $request->action;
+        try {
+            // Begin a transaction
+            DB::beginTransaction();
+            //dd($request->all(),$id);
+            $action = $request->action;
 
-        if ($action == 'force_delete') {
+            if ($action == 'force_delete') {
 
-            $bug = Bug::onlyTrashed()->where('id', $id)->first();
+                $bug = Bug::onlyTrashed()->where('id', $id)->first();
 
-            // force delete bug
-            $bug->forceDelete();
+                // force delete bug
+                $bug->forceDelete();
 
-        } else if ($action == 'restore') {
-            //restore bug
-            Bug::onlyTrashed()->where('id', $id)->restore();
-            $bug = Bug::findOrFail($id);
+            } else if ($action == 'restore') {
+                //restore bug
+                Bug::onlyTrashed()->where('id', $id)->restore();
+                $bug = Bug::findOrFail($id);
 
-            setActivity('bug',$bug->id,'Restore Bug',$bug->name);
+//                setActivity('bug',$bug->id,'Restore Bug',$bug->name);
+                setActivity('bug', $bug->id, 'Restore Bug', 'إسترجاع Bug من الحذف', $bug->name_en, $bug->name_ar);
+            }
+
+            // Commit the transaction
+            DB::commit();
+
+        }catch(\Exception $e){
+            // An error occured; cancel the transaction...
+            DB::rollback();
+
+            // and throw the error again.
+            throw $e;
         }
 
         return back();
@@ -416,8 +522,6 @@ class BugsController extends Controller
         $in_progressArray = implode(',',$in_progressArray);
         $resolvedArray = implode(',',$resolvedArray);
         $verifiedArray = implode(',',$verifiedArray);
-
-//        dd($unconfirmArray,$confirmedArray,$in_progressArray,$resolvedArray,$verifiedArray);
 
         return view('projectmanagement::admin.bugs.bug_report', compact('bugs','unconfirmArray','confirmedArray','in_progressArray','resolvedArray','verifiedArray'));
 

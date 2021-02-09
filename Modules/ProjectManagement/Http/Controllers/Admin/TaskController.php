@@ -14,8 +14,6 @@ use Modules\ProjectManagement\Http\Controllers\Traits\ProjectManagementHelperTra
 use Modules\ProjectManagement\Http\Requests\MassDestroyTaskRequest;
 use Modules\ProjectManagement\Http\Requests\StoreTaskRequest;
 use Modules\ProjectManagement\Http\Requests\UpdateTaskRequest;
-use App\Models\Lead;
-use App\Models\Opportunity;
 use Modules\ProjectManagement\Entities\Project;
 use Modules\ProjectManagement\Entities\Task;
 use Modules\ProjectManagement\Entities\TaskStatus;
@@ -77,18 +75,14 @@ class TaskController extends Controller
 
         $tags = TaskTag::all()->pluck('name_'.app()->getLocale(), 'id');
 
-        //$projects = Project::all()->pluck('name', 'id');
         $projects = auth()->user()->getUserProjectsByUserID(auth()->user()->id)->pluck('name_'.app()->getLocale(), 'id');
 
-//        $milestones = Milestone::with('project')->get();
         $milestones = auth()->user()->getUserMilestonesByUserID(auth()->user()->id);
         foreach ($milestones as $milestone){
 
             $milestone->load('project');
         }
-        //dd($milestones);
 
-//        $tasks = Task::all()->pluck('name', 'id');
         $tasks = auth()->user()->getUserTasksByUserID(auth()->user()->id, false, true)->pluck('name_'.app()->getLocale(), 'id');
 
 
@@ -107,8 +101,7 @@ class TaskController extends Controller
 
                 return abort(Response::HTTP_FORBIDDEN, trans('global.forbidden_page_not_allow_to_you'));
             }
-            //$projects = auth()->user()->getUserProjectsByUserID(auth()->user()->id)->pluck('name', 'id');
-//            return view('projectmanagement::admin.tasks.create', compact('statuses', 'tags', 'projects', 'milestones','task','tasks','milestone'));
+
         }
 
         if (request()->segment(count(request()->segments()) - 1) == 'milestone-task') {
@@ -121,11 +114,6 @@ class TaskController extends Controller
 
                 return abort(Response::HTTP_FORBIDDEN, trans('global.forbidden_page_not_allow_to_you'));
             }
-
-//            $milestones = Milestone::where('project_id',$milestone->project->id)->pluck('name', 'id');
-            //$milestones = auth()->user()->getUserMilestonesByUserID(auth()->user()->id);
-
-            //return view('projectmanagement::admin.tasks.create', compact('statuses', 'tags', 'projects', 'milestones','task','tasks','milestone','project'));
         }
 
         if (request()->segment(count(request()->segments()) - 1) == 'sub-task') {
@@ -139,8 +127,6 @@ class TaskController extends Controller
                 return abort(Response::HTTP_FORBIDDEN, trans('global.forbidden_page_not_allow_to_you'));
             }
 
-//            $tasks = Task::where('milestone_id',$task->milestone->id)->pluck('name', 'id');
-            //$tasks = auth()->user()->getUserTasksByUserID(auth()->user()->id,false,true)->pluck('name', 'id');
         }
 
         return view('projectmanagement::admin.tasks.create', compact('tags', 'projects', 'milestones', 'task', 'tasks', 'milestone', 'project'));
@@ -153,21 +139,22 @@ class TaskController extends Controller
         try {
             // Begin a transaction
             DB::beginTransaction();
-        unset($request['created_by']);
-        $request['created_by'] = auth()->user()->id;
 
-        $task = Task::create($request->all());
-        $task->tags()->sync($request->input('tags', []));
+            unset($request['created_by']);
+            $request['created_by'] = auth()->user()->id;
 
-        if ($request->input('attachment', false)) {
-            $task->addMedia(storage_path('tmp/uploads/' . $request->input('attachment')))->toMediaCollection('attachment');
-        }
+            $task = Task::create($request->all());
+            $task->tags()->sync($request->input('tags', []));
 
-        if ($media = $request->input('ck-media', false)) {
-            Media::whereIn('id', $media)->update(['model_id' => $task->id]);
-        }
+            if ($request->input('attachment', false)) {
+                $task->addMedia(storage_path('tmp/uploads/' . $request->input('attachment')))->toMediaCollection('attachment');
+            }
 
-        setActivity('task', $task->id, 'Save Task Details', 'حقظ تفاصيل المهمه', $task->name_en, $task->name_ar);
+            if ($media = $request->input('ck-media', false)) {
+                Media::whereIn('id', $media)->update(['model_id' => $task->id]);
+            }
+
+            setActivity('task', $task->id, 'Save Task Details', 'حقظ تفاصيل المهمه', $task->name_en, $task->name_ar);
 
             // Commit the transaction
             DB::commit();
@@ -192,9 +179,9 @@ class TaskController extends Controller
 
         if (in_array($task->id, $tasks->toArray())) {
 
-            $tags = TaskTag::all()->pluck('name', 'id');
+            $tags = TaskTag::all()->pluck('name_'.app()->getLocale(), 'id');
 
-            $projects = auth()->user()->getUserProjectsByUserID(auth()->user()->id)->pluck('name', 'id');
+            $projects = auth()->user()->getUserProjectsByUserID(auth()->user()->id)->pluck('name_'.app()->getLocale(), 'id');
 
             $milestones = Milestone::with('project')->get();
 
@@ -213,41 +200,57 @@ class TaskController extends Controller
     {
         abort_if(Gate::denies('task_edit'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
-        $task->update($request->all());
-        $task->tags()->sync($request->input('tags', []));
+        try {
+            // Begin a transaction
+            DB::beginTransaction();
 
-        if ($request->input('attachment', false)) {
-            if (!$task->attachment || $request->input('attachment') !== $task->attachment->file_name) {
-                if ($task->attachment) {
-                    $task->attachment->delete();
+            $task->update($request->all());
+            $task->tags()->sync($request->input('tags', []));
+
+            if ($request->input('attachment', false)) {
+                if (!$task->attachment || $request->input('attachment') !== $task->attachment->file_name) {
+                    if ($task->attachment) {
+                        $task->attachment->delete();
+                    }
+
+                    $task->addMedia(storage_path('tmp/uploads/' . $request->input('attachment')))->toMediaCollection('attachment');
                 }
-
-                $task->addMedia(storage_path('tmp/uploads/' . $request->input('attachment')))->toMediaCollection('attachment');
+            } elseif ($task->attachment) {
+                $task->attachment->delete();
             }
-        } elseif ($task->attachment) {
-            $task->attachment->delete();
+
+            // Notify User
+            foreach ($task->accountDetails as $accountUser) {
+                $user = $accountUser->user;
+                $dataMail = [
+                    'subjectMail' => 'Update Task ' . $task->name,
+                    'bodyMail' => 'Update The Task ' . $task->name,
+                    'action' => route("projectmanagement.admin.tasks.show", $task->id)
+                ];
+
+                $dataNotification = [
+                    'message' => 'Update The Task : ' . $task->name,
+                    'route_path' => 'admin/projectmanagement/tasks',
+                ];
+
+                $user->notify(new ProjectManagementNotification($task, $user, $dataMail, $dataNotification));
+                $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
+                event(new NewNotification($userNotify));
+            }
+
+            setActivity('task', $task->id, 'Update Task Details', 'تعديل تفاصيل المهمه', $task->name_en, $task->name_ar);
+
+
+            // Commit the transaction
+            DB::commit();
+
+        }catch(\Exception $e){
+            // An error occured; cancel the transaction...
+            DB::rollback();
+
+            // and throw the error again.
+            throw $e;
         }
-
-        // Notify User
-        foreach ($task->accountDetails as $accountUser) {
-            $user = $accountUser->user;
-            $dataMail = [
-                'subjectMail' => 'Update Task ' . $task->name,
-                'bodyMail' => 'Update The Task ' . $task->name,
-                'action' => route("projectmanagement.admin.tasks.show", $task->id)
-            ];
-
-            $dataNotification = [
-                'message' => 'Update The Task : ' . $task->name,
-                'route_path' => 'admin/projectmanagement/tasks',
-            ];
-
-            $user->notify(new ProjectManagementNotification($task, $user, $dataMail, $dataNotification));
-            $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
-            event(new NewNotification($userNotify));
-        }
-
-        setActivity('task', $task->id, 'Update Task Details', $task->name);
 
         return redirect()->route('projectmanagement.admin.tasks.index');
     }
@@ -274,9 +277,25 @@ class TaskController extends Controller
     {
         abort_if(Gate::denies('task_delete'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
-        $task->delete();
+        try {
+            // Begin a transaction
+            DB::beginTransaction();
 
-        setActivity('task', $task->id, 'Delete Task', $task->name);
+            $task->delete();
+
+            setActivity('task', $task->id, 'Delete Task', 'حذف المهمه', $task->name_en, $task->name_ar);
+
+
+            // Commit the transaction
+            DB::commit();
+
+        }catch(\Exception $e){
+            // An error occured; cancel the transaction...
+            DB::rollback();
+
+            // and throw the error again.
+            throw $e;
+        }
 
         return back();
     }
@@ -285,19 +304,33 @@ class TaskController extends Controller
     {
         abort_if(Gate::denies('task_delete'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
-        //Task::whereIn('id', request('ids'))->delete();
+        try {
+            // Begin a transaction
+            DB::beginTransaction();
 
-        $ids = request('ids');
+            //Task::whereIn('id', request('ids'))->delete();
 
-        foreach ($ids as $id) {
-            $task = Task::where('id', $id)->first();
+            $ids = request('ids');
 
-            $task->delete();
+            foreach ($ids as $id) {
+                $task = Task::where('id', $id)->first();
 
-            //$project->accountDetails()->detach();
-            setActivity('task', $task->id, 'Delete Task', $task->name);
+                $task->delete();
+
+                //$project->accountDetails()->detach();
+                setActivity('task', $task->id, 'Delete Task', 'حذف المهمه', $task->name_en, $task->name_ar);
+
+            }
+            // Commit the transaction
+            DB::commit();
+
+        }catch(\Exception $e){
+            // An error occured; cancel the transaction...
+            DB::rollback();
+
+            // and throw the error again.
+            throw $e;
         }
-
         return response(null, Response::HTTP_NO_CONTENT);
     }
 
@@ -318,17 +351,19 @@ class TaskController extends Controller
 
         abort_if(Gate::denies('task_assign_to'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
+        $task = Task::findOrFail($id);
+
         // check if user can access this task or not
         $tasks = auth()->user()->getUserTasksByUserID(auth()->user()->id, false, true)->pluck('id');
 
         if (in_array($id, $tasks->toArray())) {
 
-            $task = Task::findOrFail($id);
-            $department = $task->project->department;
 
-            if (!$department) {
+            if ( !$task->project || !$task->project->department ) {
                 abort(404, trans('cruds.messages.project_of_task_not_have_department'));
             }
+            $department = $task->project->department;
+
 
             return view('projectmanagement::admin.tasks.assignto', compact('task', 'department'));
         }
@@ -340,66 +375,82 @@ class TaskController extends Controller
     {
         abort_if(Gate::denies('task_assign_to'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
-        $task = Task::findOrFail($request->task_id);
-        if ($request->accounts) {
+        try {
+            // Begin a transaction
+            DB::beginTransaction();
 
-            $task->accountDetails()->sync($request->accounts);
+            $task = Task::findOrFail($request->task_id);
+            if ($request->accounts) {
 
-            // set permission to users
-            $accounts = AccountDetail::whereIn('id', $request->accounts)->with('user.department')->get();
+                $task->accountDetails()->sync($request->accounts);
 
-            $task_permissions_head_names = ['project_management_access', 'task_access', 'task_create', 'task_show', 'task_edit', 'task_assign_to'];
-            $task_permissions_notToMember_names = ['task_create', 'task_assign_to'];
-//            $task_permissions_head_names = ['project_management_access', 'task_access', 'task_create', 'task_show', 'task_edit'];
-//            $task_permissions_notToMember_names = ['task_create'];
-            $task_permissions_toMember_names = ['project_management_access', 'task_access', 'task_show', 'task_edit'];
+                // set permission to users
+                $accounts = AccountDetail::whereIn('id', $request->accounts)->with('user.department')->get();
 
-            $task_permissions_head = $this->getPermissionID($task_permissions_head_names);
-            $task_permissions_notToMember = $this->getPermissionID($task_permissions_notToMember_names);
-            $task_permissions_toMember = $this->getPermissionID($task_permissions_toMember_names);
+                $task_permissions_head_names = ['project_management_access', 'task_access', 'task_create', 'task_show', 'task_edit', 'task_assign_to'];
+                $task_permissions_notToMember_names = ['task_create', 'task_assign_to'];
+    //            $task_permissions_head_names = ['project_management_access', 'task_access', 'task_create', 'task_show', 'task_edit'];
+    //            $task_permissions_notToMember_names = ['task_create'];
+                $task_permissions_toMember_names = ['project_management_access', 'task_access', 'task_show', 'task_edit'];
 
-            foreach ($accounts as $account) {
+                $task_permissions_head = $this->getPermissionID($task_permissions_head_names);
+                $task_permissions_notToMember = $this->getPermissionID($task_permissions_notToMember_names);
+                $task_permissions_toMember = $this->getPermissionID($task_permissions_toMember_names);
 
-                foreach ($account->user->permissions as $permission) {
+                foreach ($accounts as $account) {
 
-                    if (in_array($permission->name, $task_permissions_notToMember_names)) {
-                        $account->user->permissions()->detach($task_permissions_notToMember);
+                    foreach ($account->user->permissions as $permission) {
+
+                        if (in_array($permission->name, $task_permissions_notToMember_names)) {
+                            $account->user->permissions()->detach($task_permissions_notToMember);
+                        }
+                    }
+                    $account->user->permissions()->syncWithoutDetaching($task_permissions_toMember);
+
+                    foreach ($account->user->department as $department) {
+                        if ($department->department_name == $task->project->department->department_name) {
+                            $account->user->permissions()->syncWithoutDetaching($task_permissions_head);
+
+                            break;
+                        }
                     }
                 }
-                $account->user->permissions()->syncWithoutDetaching($task_permissions_toMember);
-
-                foreach ($account->user->department as $department) {
-                    if ($department->department_name == $task->project->department->department_name) {
-                        $account->user->permissions()->syncWithoutDetaching($task_permissions_head);
-
-                        break;
-                    }
-                }
+            } else {
+                $task->accountDetails()->detach();
             }
-        } else {
-            $task->accountDetails()->detach();
+
+            // Notify User
+            foreach ($task->accountDetails as $accountUser) {
+                $user = $accountUser->user;
+                $dataMail = [
+                    'subjectMail' => 'New Task Assign To You',
+                    'bodyMail' => 'Assign The Task : ' . $task->name . ' To ' . $user->name,
+                    'action' => route("projectmanagement.admin.tasks.show", $task->id)
+                ];
+
+                $dataNotification = [
+                    'message' => 'Assign The Task : ' . $task->name . ' To ' . $user->name,
+                    'route_path' => 'admin/projectmanagement/tasks',
+                ];
+
+                $user->notify(new ProjectManagementNotification($task, $user, $dataMail, $dataNotification));
+                $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
+                event(new NewNotification($userNotify));
+            }
+
+            setActivity('task', $task->id, 'Update Assign to', 'تعديل القائمين على مهمة', $task->name_en, $task->name_ar);
+
+
+            // Commit the transaction
+            DB::commit();
+
+        }catch(\Exception $e){
+            // An error occured; cancel the transaction...
+            DB::rollback();
+
+            // and throw the error again.
+            throw $e;
         }
-
-        // Notify User
-        foreach ($task->accountDetails as $accountUser) {
-            $user = $accountUser->user;
-            $dataMail = [
-                'subjectMail' => 'New Task Assign To You',
-                'bodyMail' => 'Assign The Task : ' . $task->name . ' To ' . $user->name,
-                'action' => route("projectmanagement.admin.tasks.show", $task->id)
-            ];
-
-            $dataNotification = [
-                'message' => 'Assign The Task : ' . $task->name . ' To ' . $user->name,
-                'route_path' => 'admin/projectmanagement/tasks',
-            ];
-
-            $user->notify(new ProjectManagementNotification($task, $user, $dataMail, $dataNotification));
-            $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
-            event(new NewNotification($userNotify));
-        }
-
-        setActivity('task', $task->id, 'Update Assign to', $task->name);
 
         return redirect()->route('projectmanagement.admin.tasks.index');
     }
@@ -408,30 +459,44 @@ class TaskController extends Controller
     {
         abort_if(Gate::denies('task_edit'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
-        $task = Task::findOrFail($request->task_id);
-        //$project->notes = $request->notes;
-        $task->update($request->all());
+        try {
+            // Begin a transaction
+            DB::beginTransaction();
+            $task = Task::findOrFail($request->task_id);
+            //$project->notes = $request->notes;
+            $task->update($request->all());
 
-        // Notify User
-        foreach ($task->accountDetails as $accountUser) {
-            $user = $accountUser->user;
-            $dataMail = [
-                'subjectMail' => 'Update Task ' . $task->name,
-                'bodyMail' => 'Update Note Of Task ' . $task->name,
-                'action' => route("projectmanagement.admin.tasks.show", $task->id)
-            ];
+            // Notify User
+            foreach ($task->accountDetails as $accountUser) {
+                $user = $accountUser->user;
+                $dataMail = [
+                    'subjectMail' => 'Update Task ' . $task->name,
+                    'bodyMail' => 'Update Note Of Task ' . $task->name,
+                    'action' => route("projectmanagement.admin.tasks.show", $task->id)
+                ];
 
-            $dataNotification = [
-                'message' => 'Update Note Of Task : ' . $task->name,
-                'route_path' => 'admin/projectmanagement/tasks',
-            ];
+                $dataNotification = [
+                    'message' => 'Update Note Of Task : ' . $task->name,
+                    'route_path' => 'admin/projectmanagement/tasks',
+                ];
 
-            $user->notify(new ProjectManagementNotification($task, $user, $dataMail, $dataNotification));
-            $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
-            event(new NewNotification($userNotify));
+                $user->notify(new ProjectManagementNotification($task, $user, $dataMail, $dataNotification));
+                $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
+                event(new NewNotification($userNotify));
+            }
+
+            setActivity('task', $task->id, 'Update Note','تعديل الملاحظات', $task->name_en, $task->name_ar);
+
+            // Commit the transaction
+            DB::commit();
+
+        }catch(\Exception $e){
+            // An error occured; cancel the transaction...
+            DB::rollback();
+
+            // and throw the error again.
+            throw $e;
         }
-
-        setActivity('task', $task->id, 'Update Note ', $task->name);
 
         return redirect()->back();
     }
@@ -445,28 +510,47 @@ class TaskController extends Controller
 
         if (in_array($task_id, $tasks->toArray())) {
 
-            $user_id = auth()->user()->id;
-            $taskTimer = TimeSheet::where('module', '=', 'task')->where('module_field_id', $task_id)->where('user_id', $user_id)->where('timer_status', 'on')->first();
+            try {
+                // Begin a transaction
+                DB::beginTransaction();
+                $user_id = auth()->user()->id;
+                $taskTimer = TimeSheet::where('module', '=', 'task')->where('module_field_id', $task_id)->where('user_id', $user_id)->where('timer_status', 'on')->first();
 
-            if (!$taskTimer) {
-                $Timer = [
-                    'user_id' => $user_id,
-                    'module' => 'task',
-                    'module_field_id' => $task_id,
-                    'timer_status' => 'on',
-                    'start_time' => time(),
-                ];
+                if (!$taskTimer) {
+                    $Timer = [
+                        'user_id' => $user_id,
+                        'module' => 'task',
+                        'module_field_id' => $task_id,
+                        'timer_status' => 'on',
+                        'start_time' => time(),
+                    ];
 
-                $taskTimer = TimeSheet::create($Timer);
+                    $taskTimer = TimeSheet::create($Timer);
 
-            } else {
+                } else {
 
-                $taskTimer->update(['timer_status' => 'off', 'end_time' => time()]);
+                    $taskTimer->update(['timer_status' => 'off', 'end_time' => time()]);
+                }
+
+                $timer_status = trans('global.off');
+                if($taskTimer->timer_status == 'on'){
+
+                    $timer_status = trans('global.on');
+                }
+
+                setActivity('task',$task_id,'Timer '.$timer_status,'المؤقت ' .$timer_status,$taskTimer->task->name_en,$taskTimer->task->name_ar);
+
+
+                // Commit the transaction
+                DB::commit();
+
+            }catch(\Exception $e){
+                // An error occured; cancel the transaction...
+                DB::rollback();
+
+                // and throw the error again.
+                throw $e;
             }
-
-            setActivity('task', $task_id, 'Timer ' . ucfirst($taskTimer->timer_status), $taskTimer->task->name);
-
-
             return redirect()->back();
         }
 
@@ -478,22 +562,36 @@ class TaskController extends Controller
     {
         abort_if(Gate::denies('task_delete'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
-        //dd($request->all(),$id);
-        $action = $request->action;
+        try {
+            // Begin a transaction
+            DB::beginTransaction();
 
-        if ($action == 'force_delete') {
+            //dd($request->all(),$id);
+            $action = $request->action;
 
-            $task = Task::onlyTrashed()->where('id', $id)->first();
-            //force Delete Task
-            $this->forceDeleteTask($task);
+            if ($action == 'force_delete') {
 
-        } else if ($action == 'restore') {
-            //restore Task
-            Task::onlyTrashed()->where('id', $id)->restore();
-            $task = Task::findOrFail($id);
+                $task = Task::onlyTrashed()->where('id', $id)->first();
+                //force Delete Task
+                $this->forceDeleteTask($task);
 
-            setActivity('task', $task->id, 'Restore Task', $task->name);
+            } else if ($action == 'restore') {
+                //restore Task
+                Task::onlyTrashed()->where('id', $id)->restore();
+                $task = Task::findOrFail($id);
 
+                setActivity('task',$task->id,'Restore Task Details ','إسترجاع المهمة من الحذف',$task->name_en,$task->name_ar);
+
+            }
+            // Commit the transaction
+            DB::commit();
+
+        }catch(\Exception $e){
+            // An error occured; cancel the transaction...
+            DB::rollback();
+
+            // and throw the error again.
+            throw $e;
         }
 
         return back();

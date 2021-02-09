@@ -47,6 +47,9 @@
                             {{ trans('cruds.clientMeeting.fields.to_time') }}
                         </th>
                         <th>
+                            {{ trans('cruds.clientMeeting.fields.request_type') }}
+                        </th>
+                        <th>
                             {{ trans('cruds.clientMeeting.fields.comments') }}
                         </th>
                         <th>
@@ -58,7 +61,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($clientMeetingModel::all() as $key => $meeting)
+                    @foreach($usersRequests as $key => $meeting)
 
                         <tr data-entry-id="{{ $meeting->id }}">
                             <td>
@@ -66,10 +69,10 @@
                             </td>
                             <td>
                                 @foreach ($meeting->users as $item)
-                                @php
-                                $userName = $accountDetailModel::where('user_id', $item)->pluck('fullname')->first();
-                                @endphp
-                                {{ $userName ?? '' }} <?php echo "</br>"; ?>
+                                    @php
+                                    $userName = $accountDetailModel::where('user_id', $item)->pluck('fullname')->first();
+                                    @endphp
+                                    {{ $userName ?? '' }} <?php echo "</br>"; ?>
                                 @endforeach
                             </td>
                             <td>
@@ -82,17 +85,20 @@
                                 {{ $meeting->to_time ?? '' }}
                             </td>
                             <td>
+                                {{ $clientMeetingModel::REQUEST_TYPE_SELECT[$meeting->request_type] ?? '' }}
+                            </td>
+                            <td>
                                 {{ $meeting->comments ?? '' }}
                             </td>
                             <td style="background-color: {{ $clientMeetingModel::STATUS_COLOR[$meeting->status] ?? 'none' }};">
                                 {{ $clientMeetingModel::STATUS_SELECT[$meeting->status] ?? '' }}
                             </td>
                             <td>
-                                @can('employee_request_show')
+                                {{-- @can('employee_request_show')
                                     <a class="btn btn-xs btn-primary" href="{{ route('hr.admin.requests.show', $meeting->id) }}">
                                         {{ trans('global.view') }}
                                     </a>
-                                @endcan
+                                @endcan --}}
 
                                 @can('employee_request_edit')
                                     <a class="btn btn-xs btn-info" href="{{ route('hr.admin.requests.edit', $meeting->id) }}">
@@ -133,13 +139,14 @@
     url: "{{ route('hr.admin.requests.massDestroy') }}",
     className: 'btn-danger',
     action: function (e, dt, node, config) {
-      var ids = $.map(dt.rows({ selected: true }).data(), function (entry) {
-          return entry.id
+      var ids = $.map(dt.rows({ selected: true }).nodes(), function (entry) {
+          return $(entry).data('entry-id')
       });
+
+      console.log(ids);
 
       if (ids.length === 0) {
         alert('{{ trans('global.datatables.zero_selected') }}')
-
         return
       }
 
@@ -158,32 +165,16 @@
 
   let dtOverrideGlobals = {
     buttons: dtButtons,
-    processing: true,
-    serverSide: true,
+    // processing: true,
+    // serverSide: true,
     retrieve: true,
     aaSorting: [],
-    // ajax: "{{ route('hr.admin.requests.index') }}",
-    // columns: [
-    //     { data: 'placeholder', name: 'placeholder' },
-    //     { data: 'id', name: 'id' },
-    //     { data: 'day', name: 'day' },
-    //     { data: 'status', name: 'status' },
-    //     { data: 'from_time', name: 'from_time' },
-    //     { data: 'to_time', name: 'to_time' },
-    //     // { data: 'user.name', name: 'user.name' },
-    //     { data: 'comments', name: 'comments' },
-    //     { data: 'actions', name: '{{ trans('global.actions') }}' }
-    // ],
-    // createdRow: (row, data, dataIndex, cells) => {
-    //     $(cells[4]).css('background-color', data.status_color)
-    //     // $(row).css('background-color', data.status_color)
-    // }
     orderCellsTop: true,
     order: [[ 1, 'desc' ]],
     pageLength: 25,
   };
-//   let table = $('.datatable-ClientMeeting').DataTable(dtOverrideGlobals);
-  let table = $('.datatable-ClientMeeting:not(.ajaxTable)').DataTable({ buttons: dtButtons });
+  let table = $('.datatable-ClientMeeting:not(.ajaxTable)').DataTable(dtOverrideGlobals);
+//   let table = $('.datatable-ClientMeeting:not(.ajaxTable)').DataTable({ buttons: dtButtons });
   $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e){
       $($.fn.dataTable.tables(true)).DataTable()
           .columns.adjust();

@@ -8,7 +8,9 @@
     }
 </style>
 @endsection
-
+@section('title')
+| {{ __('Monthly Attendance') }} 
+@endsection
 @section('content')
 
 <div class="card">

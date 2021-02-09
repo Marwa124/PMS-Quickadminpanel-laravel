@@ -26,7 +26,7 @@
                 <span class="help-block">{{ trans('cruds.jobCircular.fields.name_helper') }}</span>
             </div>
             <div class="form-group">
-                <label for="designation_id">{{ trans('cruds.jobCircular.fields.designation') }}</label>
+                <label class="required" for="designation_id">{{ trans('cruds.jobCircular.fields.designation') }}</label>
                 <select class="form-control select2 {{ $errors->has('designation') ? 'is-invalid' : '' }}" name="designation_id" id="designation_id">
                     @foreach($designations as $id => $designation)
                         <option value="{{ $id }}" {{ old('designation_id') == $id ? 'selected' : '' }}>{{ $designation }}</option>
@@ -50,8 +50,9 @@
                 <span class="help-block">{{ trans('cruds.jobCircular.fields.vacancy_no_helper') }}</span>
             </div>
             <div class="form-group">
-                <label for="posted_date">{{ trans('cruds.jobCircular.fields.posted_date') }}</label>
-                <input class="form-control date {{ $errors->has('posted_date') ? 'is-invalid' : '' }}" type="text" name="posted_date" id="posted_date" value="{{ old('posted_date') }}">
+                <label class="required" for="posted_date">{{ trans('cruds.jobCircular.fields.posted_date') }}</label>
+                <input class="form-control date {{ $errors->has('posted_date') ? 'is-invalid' : '' }}" type="text" 
+                    name="posted_date" id="posted_date" value="{{ old('posted_date', date('Y-m-d')) }}">
                 @if($errors->has('posted_date'))
                     <div class="invalid-feedback">
                         {{ $errors->first('posted_date') }}

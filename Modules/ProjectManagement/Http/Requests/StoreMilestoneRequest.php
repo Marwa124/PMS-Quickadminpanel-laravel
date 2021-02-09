@@ -25,10 +25,13 @@ class StoreMilestoneRequest extends FormRequest
             'project_id' => [
                 'required',
                 'integer',
+                'exists:projects,id'
             ],
             'name_en'   => [
                 'string',
                 'required',
+                //'regex:/^[a-zA-Z ]+$/u',
+                'min:3|max:255',
                 //'unique:milestones,name,'.request()->project_id.',project_id',
                 Rule::unique('milestones','name_en')->where(function($query) {
 
@@ -41,6 +44,8 @@ class StoreMilestoneRequest extends FormRequest
             'name_ar'       => [
                 'string',
                 'required',
+                //'regex:/^[ اأإء-ي ]+$/ui',
+                'min:3|max:255',
                 //'unique:milestones,name,'.request()->project_id.',project_id',
                 Rule::unique('milestones','name_ar')->where(function($query) {
 

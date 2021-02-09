@@ -10,9 +10,9 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use Gate;
 use Illuminate\Http\Request;
+use Modules\HR\Entities\AccountDetail;
 use Spatie\MediaLibrary\Models\Media;
-use Spatie\Permission\Contracts\Permission;
-use Spatie\Permission\Contracts\Role;
+use Spatie\Permission\Models\Role;
 use Symfony\Component\HttpFoundation\Response;
 
 class UsersController extends Controller
@@ -30,33 +30,38 @@ class UsersController extends Controller
             array_push($roles, $user->getRoleNames()[0] ?? '');
         }
 
-        // $permissions = Permission::all();
-
         return view('admin.users.index', compact('users', 'roles'));
-        // return view('admin.users.index', compact('users', 'roles', 'permissions'));
     }
 
     public function create()
     {
         abort_if(Gate::denies('user_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $roles = Role::all()->pluck('title', 'id');
+        $roles = Role::all()->pluck('name', 'id')->toArray();
 
-        $permissions = Permission::all()->pluck('title', 'id');
-
-        return view('admin.users.create', compact('roles', 'permissions'));
+        return view('admin.users.create', compact('roles'));
     }
 
     public function store(StoreUserRequest $request)
     {
-        $user = User::create($request->all());
-        $user->roles()->sync($request->input('roles', []));
-        $user->permissions()->sync($request->input('permissions', []));
+        \DB::beginTransaction();
+        
+        try {
+            $user = User::create($request->except(['roles']));
+    
+            $user->syncRoles($request->roles);
 
-        if ($media = $request->input('ck-media', false)) {
-            Media::whereIn('id', $media)->update(['model_id' => $user->id]);
+            if ($media = $request->input('ck-media', false)) {
+                Media::whereIn('id', $media)->update(['model_id' => $user->id]);
+            }
+            
+            \DB::commit();
+        } catch (\Exception $e) {
+            \DB::rollBack();
+            
+            return redirect()->route('admin.users.index')->withErrors('Something went wrong');
         }
-
+        
         return redirect()->route('admin.users.index');
     }
 
@@ -64,31 +69,18 @@ class UsersController extends Controller
     {
         abort_if(Gate::denies('user_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $roles = Role::all()->pluck('title', 'id');
+        $roles = Role::all()->pluck('name', 'id')->toArray();
 
-        $permissions = Permission::all()->pluck('title', 'id');
-
-        $user->load('roles', 'permissions');
-
-        return view('admin.users.edit', compact('roles', 'permissions', 'user'));
+        return view('admin.users.edit', compact('roles', 'user'));
     }
 
     public function update(UpdateUserRequest $request, User $user)
     {
-        $user->update($request->all());
-        $user->roles()->sync($request->input('roles', []));
-        $user->permissions()->sync($request->input('permissions', []));
+        $user->update($request->except(['roles']));
+
+        $request->roles ? $user->syncRoles($request->roles) : '';
 
         return redirect()->route('admin.users.index');
-    }
-
-    public function show(User $user)
-    {
-        abort_if(Gate::denies('user_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-        $user->load('roles', 'permissions', 'departmentHeadDepartments', 'userAccountDetails', 'userTrainings', 'userEmployeeAwards', 'userUserAlerts');
-
-        return view('admin.users.show', compact('user'));
     }
 
     public function destroy(User $user)

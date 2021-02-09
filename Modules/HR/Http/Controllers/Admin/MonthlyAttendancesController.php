@@ -17,6 +17,13 @@ class MonthlyAttendancesController extends Controller
     {
         abort_if(Gate::denies('monthly_attendance_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
+        if($request->has('date')) {
+            $request->validate([
+                'date' => 'required|date_format:Y-m',
+                'user_id' => 'required|exists:users,id|integer',
+            ]);
+        }
+
         $date = $request->date;
         if ($request['date'] == '') {
             $date = date('Y-m');

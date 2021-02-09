@@ -23,11 +23,13 @@ class WorkTracking extends Model
 
     protected $fillable = [
         'work_type_id',
-        'subject',
+        'subject_en',
+        'subject_ar',
         'achievement',
         'start_date',
         'end_date',
-        'description',
+        'description_en',
+        'description_ar',
         'notify_work_achive',
         'notify_work_not_achive',
         'email_send',

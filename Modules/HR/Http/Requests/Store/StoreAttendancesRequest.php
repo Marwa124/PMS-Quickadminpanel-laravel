@@ -18,6 +18,7 @@ class StoreAttendancesRequest extends FormRequest
         return [
             'user_id'         => [
                 'required',
+                'exists:users,id',
                 'integer',
             ],
             'date_in'         => [

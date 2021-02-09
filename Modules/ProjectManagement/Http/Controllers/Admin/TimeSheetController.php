@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Modules\ProjectManagement\Entities\TimeSheet;
 use Session;
+use Gate;
+use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\DB;
 
 class TimeSheetController extends Controller
 {
@@ -37,65 +40,92 @@ class TimeSheetController extends Controller
     public function store(Request $request)
     {
 
-        $user_id = auth()->user()->id;
-        $start = strtotime($request->start_date . ' ' . $request->start_time);
-        $end = strtotime($request->end_date . ' ' . $request->end_time);
+        abort_if(Gate::denies('time_sheet_edit') || Gate::denies('time_sheet_create'), Response::HTTP_FORBIDDEN,  trans('global.forbidden_page'));
 
-        if ($start <= $end){
+        try {
+            // Begin a transaction
+            DB::beginTransaction();
 
-            if ($request->timesheet_id)
-            {
 
-                $timeSheet = TimeSheet::findOrFail($request->timesheet_id);
-                $timeSheet->update([
-    //                'module'            => 'project',
-    //                'module_field_id'   => $request->project_id,
-                    'timer_status'      => 'off',
-                    'start_time'        => $start,
-                    'end_time'          => $end,
-                    'reason'            => $request->reason,
-                    'edited_by'         => $user_id,
-                ]);
+            $user_id = auth()->user()->id;
+            $start = strtotime($request->start_date . ' ' . $request->start_time);
+            $end = strtotime($request->end_date . ' ' . $request->end_time);
 
-                if($request->module == 'project'){
+            if ($start <= $end){
 
-                    $module_name =  $timeSheet->project->name ;
+                if ($request->timesheet_id)
+                {
 
-                }elseif($request->module == 'task'){
+                    $timeSheet = TimeSheet::findOrFail($request->timesheet_id);
+                    $timeSheet->update([
+        //                'module'            => 'project',
+        //                'module_field_id'   => $request->project_id,
+                        'timer_status'      => 'off',
+                        'start_time'        => $start,
+                        'end_time'          => $end,
+                        'reason'            => $request->reason,
+                        'edited_by'         => $user_id,
+                    ]);
 
-                    $module_name =  $timeSheet->task->name ;
+                    if($request->module == 'project'){
+
+                        $module_name_en =  $timeSheet->project->name_en ;
+                        $module_name_ar =  $timeSheet->project->name_ar ;
+
+                    }elseif($request->module == 'task'){
+
+                        $module_name_en =  $timeSheet->task->name_en ;
+                        $module_name_ar =  $timeSheet->task->name_ar ;
+                    }
+
+    //                setActivity($request->module,$request->module_field_id,'Update Time Sheet',$module_name);
+                    setActivity($request->module,$request->module_field_id,'Update Time Sheet','تحديث الجدول الزمني',$module_name_en,$module_name_ar);
+                }else{
+
+                    $timer = [
+                        'user_id'           => $user_id,
+                        'module'            => $request->module,
+                        'module_field_id'   => $request->module_field_id,
+                        'timer_status'      => 'off',
+                        'start_time'        => $start,
+                        'end_time'          => $end,
+                        'reason'            => $request->reason,
+                    ];
+
+                    $timeSheet = TimeSheet::create($timer);
+                    //dd( $timeSheet,'dd');
+                    if($request->module == 'project'){
+
+    //                    $module_name =  $timeSheet->project->name ;
+                        $module_name_en =  $timeSheet->project->name_en ;
+                        $module_name_ar =  $timeSheet->project->name_ar ;
+
+                    }elseif($request->module == 'task'){
+
+    //                    $module_name =  $timeSheet->task->name ;
+                        $module_name_en =  $timeSheet->task->name_en ;
+                        $module_name_ar =  $timeSheet->task->name_ar ;
+                    }
+
+    //                setActivity($request->module,$request->module_field_id,'Create Time Sheet',$module_name);
+                    setActivity($request->module,$request->module_field_id,'Update Time Sheet','تحديث الجدول الزمني',$module_name_en,$module_name_ar);
+
                 }
-
-                setActivity($request->module,$request->module_field_id,'Update Time Sheet',$module_name);
             }else{
 
-                $timer = [
-                    'user_id'           => $user_id,
-                    'module'            => $request->module,
-                    'module_field_id'   => $request->module_field_id,
-                    'timer_status'      => 'off',
-                    'start_time'        => $start,
-                    'end_time'          => $end,
-                    'reason'            => $request->reason,
-                ];
-
-                $timeSheet = TimeSheet::create($timer);
-                //dd( $timeSheet,'dd');
-                if($request->module == 'project'){
-
-                    $module_name =  $timeSheet->project->name ;
-
-                }elseif($request->module == 'task'){
-
-                    $module_name =  $timeSheet->task->name ;
-                }
-
-                setActivity($request->module,$request->module_field_id,'Create Time Sheet',$module_name);
+                Session::flash('messages', trans('cruds.messages.time_date_after_or_equal'));
+               // Session::flash('alert-class', 'alert-danger');
             }
-        }else{
 
-            Session::flash('messages', 'The Time Of End Date Must Be After Or Equal ');
-           // Session::flash('alert-class', 'alert-danger');
+            // Commit the transaction
+            DB::commit();
+
+        }catch(\Exception $e){
+            // An error occured; cancel the transaction...
+            DB::rollback();
+
+            // and throw the error again.
+            throw $e;
         }
 
         return redirect()->back();
@@ -139,6 +169,8 @@ class TimeSheetController extends Controller
      */
     public function destroy($id)
     {
+        abort_if(Gate::denies('time_sheet_delete'), Response::HTTP_FORBIDDEN,  trans('global.forbidden_page'));
+
         $timeSheet = TimeSheet::findOrFail($id);
 
         $timeSheet->delete();

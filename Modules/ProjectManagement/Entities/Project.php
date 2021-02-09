@@ -188,13 +188,15 @@ class Project extends Model implements HasMedia
     public function cloneProject()
     {
         // clone project as new project
-        $newproject         = $this->replicate();
-        $newproject->name   = $this->name.'-copy'.substr(time(),-4);
+        $newproject            = $this->replicate();
+        $newproject->name_en   = $this->name_en.'-copy'.substr(time(),-4);
+        $newproject->name_ar   = $this->name_ar.'-نسخ'.substr(time(),-4);
         $newproject->push();
 
         $newproject = Project::findOrFail($newproject->id);
 
-        setActivity('project',$newproject->id,'Save Project Details',$newproject->name);
+        //setActivity('project',$newproject->id,'Save Project Details',$newproject->name);
+        setActivity('project',$newproject->id,'Save Project Details','حفظ تفاصيل المشروع',$newproject->name_en,$newproject->name_ar);
 
         // clone milestones in project to add for new project
         foreach ($this->milestones as $milestone)

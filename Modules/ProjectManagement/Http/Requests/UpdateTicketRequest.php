@@ -17,53 +17,46 @@ class UpdateTicketRequest extends FormRequest
     public function rules()
     {
         return [
-//            'ticket_code'   => [
-//                'string',
-//                'nullable',
-//            ],
-            'subject'       => [
+
+            'subject_en'       => [
                 'required',
                 'string',
-                //'nullable',
-                'unique:tickets,subject,'. request()->route('ticket')->id.',id,project_id,'.request()->project_id,
+                //'regex:/^[a-zA-Z ]+$/u',
+                'min:3|max:255',
+                'unique:tickets,subject_en,'. request()->route('ticket')->id.',id,project_id,'.request()->project_id,
+            ],
+            'subject_ar'       => [
+                'required',
+                'string',
+                //'regex:/^[ اأإء-ي ]+$/ui',
+                'min:3|max:255',
+                'unique:tickets,subject_ar,'. request()->route('ticket')->id.',id,project_id,'.request()->project_id,
             ],
             'status'        => [
                 'required',
                 'string',
-                //'nullable',
+                'in:opened,answered,in_progress,closed',
             ],
             'email'      => [
-                'required',
                 'email',
-                //'nullable',
             ],
-//            'reporter'      => [
-//                'nullable',
-//                'integer',
-//                'min:-2147483648',
-//                'max:2147483647',
-//            ],
             'priority'      => [
                 'required',
                 'string',
-                //'nullable',
+                'in:low,medium,high',
             ],
-            'body'      => [
+            'body_en'      => [
                 'required',
+                //'regex:/^[a-zA-Z ][1-9]*+$/u',
+            ],
+            'body_ar'      => [
+                'required',
+                //'regex:/^[اأإء-ي ]+$/ui',
             ],
             'project_id'      => [
                 'required',
+                'exists:projects,id'
             ],
-//            'last_reply'    => [
-//                'string',
-//                'nullable',
-//            ],
-//            'permissions.*' => [
-//                'integer',
-//            ],
-//            'permissions'   => [
-//                'array',
-//            ],
         ];
     }
 }

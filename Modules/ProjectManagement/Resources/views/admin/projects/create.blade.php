@@ -178,16 +178,16 @@
                     <span class="help-block">{{ trans('cruds.project.fields.end_date_helper') }}</span>
                 </div>
 
-                <div class="form-group">
-                    <label for="alert_overdue">{{ trans('cruds.project.fields.alert_overdue') }}</label>
-                    <input class="form-control {{ $errors->has('alert_overdue') ? 'is-invalid' : '' }}" type="number" name="alert_overdue" id="alert_overdue" value="{{ old('alert_overdue', '0') }}" step="1" required>
-                    @if($errors->has('alert_overdue'))
-                        <div class="invalid-feedback">
-                            {{ $errors->first('alert_overdue') }}
-                        </div>
-                    @endif
-                    <span class="help-block">{{ trans('cruds.project.fields.alert_overdue_helper') }}</span>
-                </div>
+                {{--<div class="form-group">--}}
+                    {{--<label for="alert_overdue">{{ trans('cruds.project.fields.alert_overdue') }}</label>--}}
+                    {{--<input class="form-control {{ $errors->has('alert_overdue') ? 'is-invalid' : '' }}" type="number" name="alert_overdue" id="alert_overdue" value="{{ old('alert_overdue', '0') }}" step="1" required>--}}
+                    {{--@if($errors->has('alert_overdue'))--}}
+                        {{--<div class="invalid-feedback">--}}
+                            {{--{{ $errors->first('alert_overdue') }}--}}
+                        {{--</div>--}}
+                    {{--@endif--}}
+                    {{--<span class="help-block">{{ trans('cruds.project.fields.alert_overdue_helper') }}</span>--}}
+                {{--</div>--}}
                 <div class="form-group">
                     <label class="required" for="project_cost">{{ trans('cruds.project.fields.project_cost') }}</label>
                     <input class="form-control {{ $errors->has('project_cost') ? 'is-invalid' : '' }}" type="number" name="project_cost" id="project_cost" value="{{ old('project_cost', '') }}" step="1.00" placeholder="50">
@@ -240,17 +240,17 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="department">{{ trans('cruds.department.title_singular') }}</label>
-                    <select class="form-control select2 {{ $errors->has('department') ? 'is-invalid' : '' }}" name="department_id" id="department_id">
+                    <label for="department_id">{{ trans('cruds.department.title_singular') }}</label>
+                    <select class="form-control select2 {{ $errors->has('department_id') ? 'is-invalid' : '' }}" name="department_id" id="department_id">
                         <option value="" selected disabled>Please Select {{ trans('cruds.department.title_singular') }}</option>
 
                         @foreach($departments as $department)
                             <option value="{{ $department->id }}" {{ old('department_id') == $department->id ? 'selected' : '' }}>{{ $department->department_name }}</option>
                         @endforeach
                     </select>
-                    @if($errors->has('department'))
+                    @if($errors->has('department_id'))
                         <div class="invalid-feedback">
-                            {{ $errors->first('department') }}
+                            {{ $errors->first('department_id') }}
                         </div>
                     @endif
                 </div>

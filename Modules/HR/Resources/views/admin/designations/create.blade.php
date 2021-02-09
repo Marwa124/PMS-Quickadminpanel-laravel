@@ -24,9 +24,9 @@
                 <span class="help-block">{{ trans('cruds.designation.fields.department_helper') }}</span>
             </div>
             <div class="form-group">
-                <label for="designation_leader_id">Designation</label>
+                <label for="designation_leader_id">{{trans('cruds.designation.fields.designation_leader')}}</label>
                 <select class="form-control select2 {{ $errors->has('leaderId') ? 'is-invalid' : '' }}" name="designation_leader_id" id="designation_leader_id">
-                    @foreach($designations as $id => $leaderId)
+                    @foreach($users as $id => $leaderId)
                         <option value="{{ $id }}" {{ old('designation_leader_id') == $id ? 'selected' : '' }}>{{ $leaderId }}</option>
                     @endforeach
                 </select>
@@ -48,22 +48,13 @@
                 <span class="help-block">{{ trans('cruds.designation.fields.designation_name_helper') }}</span>
             </div>
             <div class="form-group">
-                <label for="permissions">{{ trans('cruds.designation.fields.permissions') }}</label>
-                <div style="padding-bottom: 4px">
-                    <span class="btn btn-info btn-xs select-all" style="border-radius: 0">{{ trans('global.select_all') }}</span>
-                    <span class="btn btn-info btn-xs deselect-all" style="border-radius: 0">{{ trans('global.deselect_all') }}</span>
-                </div>
-                {{-- <select class="form-control select2 {{ $errors->has('permissions') ? 'is-invalid' : '' }}" name="permissions[]" id="permissions" multiple>
-                    @foreach($permissions as $id => $permissions)
-                        <option value="{{ $id }}" {{ in_array($id, old('permissions', [])) ? 'selected' : '' }}>{{ $permissions }}</option>
-                    @endforeach
-                </select>
-                @if($errors->has('permissions'))
+                <label class="required" for="designation_name_ar">{{ trans('cruds.designation.fields.designation_name_ar') }}</label>
+                <input class="form-control {{ $errors->has('designation_name_ar') ? 'is-invalid' : '' }}" type="text" name="designation_name_ar" id="designation_name_ar" value="{{ old('designation_name_ar', '') }}" required>
+                @if($errors->has('designation_name_ar'))
                     <div class="invalid-feedback">
-                        {{ $errors->first('permissions') }}
+                        {{ $errors->first('designation_name_ar') }}
                     </div>
                 @endif
-                <span class="help-block">{{ trans('cruds.designation.fields.permissions_helper') }}</span> --}}
             </div>
             <div class="form-group">
                 <button class="btn btn-danger" type="submit">

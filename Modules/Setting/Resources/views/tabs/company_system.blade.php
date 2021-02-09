@@ -1,4 +1,4 @@
-<div class="tab-pane " id="v-pills-company-system" role="tabpanel"
+<div class="tab-pane company-system" id="v-pills-company-system" role="tabpanel"
 aria-labelledby="v-pills-details-tab">
 
 
@@ -8,8 +8,7 @@ aria-labelledby="v-pills-details-tab">
       
          
                @lang('settings.company_details')
-              
-        
+                    
       
    </h5>
    <div class="card-body">
@@ -24,25 +23,24 @@ aria-labelledby="v-pills-details-tab">
 
                                     
                     <div class="row">
-                        <div class="col-md-3"> 
-                            <label  class="font-bold"> @lang('settings.default_language')</label>
-                        </div>
-                        <div class="col-md-7">
-                            
-                            <select class="form-control select_box select2" style="width:100%" name="default_language">
-    
-                                <option
-                                value="" >
-                                @lang('settings.default_language')
-                             </option>
-                                @forelse ($languages as $language)
-                                <option  {{ old('default_language',settings('default_language')) == $language->name ? ' selected' : ''}} value="{{ $language->name }}"> {{ $language->name }}</option>
-                                @empty
-                                
-                                @endforelse
-                            {{-- </optgroup> --}}
-                        </select>                                
-                    </div>
+                                <div class="col-md-2"> 
+                                    <label  class="font-bold"> @lang('settings.default_language')</label>
+                                </div>
+                                <div class="col-md-5">
+                                    
+                                    <select class="form-control select_box select2" style="width:100%" name="default_language">
+            
+                                         <option
+                                            value="" >
+                                            @lang('settings.default_language')
+                                         </option>
+                                            @forelse ($languages as $language)
+                                            <option  {{ old('default_language',settings('default_language')) == $language->name ? ' selected' : ''}} value="{{ $language->name }}"> {{ $language->name }}</option>
+                                            @empty
+                                            
+                                        @endforelse
+                                    </select>                                
+                                  </div>
                     
                     
                     </div> 
@@ -54,10 +52,10 @@ aria-labelledby="v-pills-details-tab">
                     
                                     
                     <div class="row">
-                        <div class="col-md-3"> 
+                        <div class="col-md-2"> 
                             <label  class="font-bold"> @lang('settings.locale')</label>
                         </div>
-                        <div class="col-md-7">
+                        <div class="col-md-5">
                             
                             <select class="form-control select_box select2" style="width:100%" name="locale">
     
@@ -79,10 +77,10 @@ aria-labelledby="v-pills-details-tab">
 
 
                     <div class="row">
-                        <div class="col-md-3"> 
+                        <div class="col-md-2"> 
                             <label  class="font-bold"> @lang('settings.timezone')</label>
                         </div>
-                        <div class="col-md-7">
+                        <div class="col-md-5">
                             
                             <select class="form-control select_box select2" style="width:100%" name="timezone">
     
@@ -98,6 +96,8 @@ aria-labelledby="v-pills-details-tab">
                             {{-- </optgroup> --}}
                         </select>                                
                     </div>
+
+         
                     
                     
                     </div> 
@@ -106,28 +106,64 @@ aria-labelledby="v-pills-details-tab">
 
 
 
+             
+
+                        @include('setting::partials.currency.add')
+                        @include('setting::partials.currency.table')
+
+                     
+
+          
 
 
                     <div class="row">
-                        <div class="col-md-3"> 
+                        <div class="col-md-2"> 
                             <label  class="font-bold"> @lang('settings.default_currency')</label>
                         </div>
-                        <div class="col-md-7">
+                        <div class="col-md-5">
                             
                             <select class="form-control select_box select2" style="width:100%" name="default_currency">
-    
-                                <option
-                                value="" >
-                                @lang('settings.default_currency')
-                             </option>
-                                @forelse ($currencies as $currency)
-                                <option  {{ old('currency',settings('currency')) == $currency->code  ? ' selected' : ''}} value="{{ $currency->code   }}"> {{ $currency->name  }}</option>
-                                @empty
-                                
-                                @endforelse
-                            {{-- </optgroup> --}}
-                        </select>                                
-                    </div>
+        
+                                    <option
+                                        value="" >
+                                        @lang('settings.default_currency')
+                                    </option>
+                                    @forelse ($currencies as $currency)
+                                    <option  {{ old('currency',settings('currency')) == $currency->code  ? ' selected' : ''}} value="{{ $currency->code   }}"> {{ $currency->name  }}</option>
+                                    @empty
+                                    
+                                    @endforelse
+                         
+                              </select>                                
+                         </div>
+
+                        <div class="col-md-3">
+                            <span 
+                             data-toggle="modal" data-target="#addCurrency"
+                             style="
+                            color: #fff;
+                            background-color: #27c24c;
+                            padding: 6px;
+                            text-align: center;
+                            cursor: pointer;
+                            ">
+                            <i style="margin-top: 13px;" class="fa fa-plus text-white" ></i>
+                        </span > 
+                        <span
+                        data-toggle="modal" data-target="#tableCurrency"
+
+                        style="
+                        color: #fff;
+                        background-color: #6153e2;
+                        padding: 6px;
+                        text-align: center;
+                        cursor: pointer;"
+                        >
+                            <i class="fa fa-list-alt text-white"  ></i>
+                        </span> 
+
+
+                        </div>
                     
                     
                     </div> 
@@ -136,10 +172,10 @@ aria-labelledby="v-pills-details-tab">
 
 
                     <div class="row">
-                        <div class="col-md-3"> 
+                        <div class="col-md-2"> 
                             <label  class="font-bold"> @lang('settings.currency_position')</label>
                         </div>
-                        <div class="col-md-7">
+                        <div class="col-md-5">
                             
                             <select class="form-control select_box" style="width:100%" name="currency_position">
     

@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title')</title>
     <link rel="shortcut icon" href="">
-
-    <style>
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet" />
+    {{-- <style>
         @font-face {
             font-family: 'XBRiyaz', sans-serif;
             }
@@ -82,24 +82,22 @@
             header: page-header;
             footer: page-footer;
         }
-    </style>
-
+    </style> --}}
+ <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
 </head>
 
-<body>
-    <div class="page-break" dir="auto">
+<body dir="{{app()->getLocale() == 'ar' ? 'rtl' : 'ltr'}}">
+    <div class="page-break" dir="{{app()->getLocale() == 'ar' ? 'rtl' : 'ltr'}}">
 
         <table class="table borderless tbl_header">
             <tr>
                 <td width="33.3%" class="text text-center" align="right">
-                    {{--<img src="{{asset('images/image001.png')}}" alt="">--}}
+                    <img src="images/image001.png" alt="">
                     <div>One Tec Group LLC</div>
                     {{--@dd(asset('images/image001.png'),asset('public/images/image001.png'))--}}
                 </td>
-                {{--<td width="33.3%" class="text text-center" align="center">--}}
-                    {{--<img class="logo" src="{{ asset('public/images/image001.png') }}" alt="logo" >--}}
-                {{--</td>--}}
-                {{--<td width="33.3%" align="left"></td>--}}
+              @yield('propsal')
+               
             </tr>
         </table>
 
