@@ -3,15 +3,10 @@
 namespace Modules\Payroll\Http\Controllers\Admin;
 
 use App\Models\User;
-use Carbon\Carbon;
-use Illuminate\Contracts\Support\Renderable;
-use Illuminate\Http\Request;
 use Gate;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Routing\Controller;
 use Modules\HR\Entities\AccountDetail;
-use Modules\HR\Entities\FingerprintAttendance;
-use Modules\HR\Entities\LeaveCategory;
 use Modules\Payroll\Entities\AdvanceSalary;
 use Modules\Payroll\Entities\PayrollSummary;
 use Modules\Payroll\Entities\SalaryDeduction;
@@ -27,6 +22,13 @@ class PayrollSummaryController extends Controller
     public function __invoke()
     {
         abort_if(Gate::denies('payroll_summary'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        if(request()->has('date')) {
+            request()->validate([
+                'date' => 'required|date_format:Y-m',
+            ]);
+        }
+
         $date = request()->date;
         if (request()['date'] == '') {
             $date = date('Y-m');
@@ -42,14 +44,12 @@ class PayrollSummaryController extends Controller
             //     /* !!!: alert *///////////////////////////////////
                 $users = PayrollSummary::where('month', $date)->get();
 
-// dd($users);
             }else{///////////////////// Return Back Again //////////
 
                 /* !!!: alert *///////////////////////////////////////////////////
                 deduction($date);
                 PayrollSummary::where('month', $date)->delete();
                 /* !!!: alert *///////////////////////////////////////////////////
-                // dd();
             $userAccountDetails = AccountDetail::select('user_id', 'designation_id')->orderBy('user_id', 'DESC')->get();
 
             // $carbonDate = dateFormation('2020-09');
@@ -57,7 +57,6 @@ class PayrollSummaryController extends Controller
             $holidays = getHolidaysWithInMonth($date);
             foreach ($userAccountDetails as $key => $value) {
                 // late_leave_deduction(4, '2020-10');
-
 
                 $userVal = [];
                 $userDesignation = $value->designation()->first();
@@ -74,10 +73,7 @@ class PayrollSummaryController extends Controller
                         $userVal['salaryTemplate'] = '';
                         $designation = $userVal['detail']->designation()->first();
                         if ($designation) {
-                            // $salaryTemplate = $userVal['detail']->designation->salaryTemplate()->get();
-                            // $departmentName = $userVal['detail']->designation->department()->select('department_name')->first();
                             $userVal['salaryTemplate'] = SalaryTemplate::where('salary_grade', $designation->designation_name)->first();
-                            // $departmentName = $userVal['detail']->designation->department()->select('department_name')->first();
                         }
 
                         $userVal['netSalary'] = 0;
@@ -89,7 +85,6 @@ class PayrollSummaryController extends Controller
 
                         $dailySalary = $userVal['netSalary']/30;
                         $absent_value = round($userVal['totalAbsentDays'] * $dailySalary);
-                        // deductionDetails($date, $value->user_id, $dailySalary, $absent_value);
                         $deductionDetails = deductionDetails($date, $value->user_id, $dailySalary, $absent_value);
 
                         $userVal['totalDeductions']  = $deductionDetails['totalDeductions'];
@@ -100,9 +95,6 @@ class PayrollSummaryController extends Controller
                         $userVal['leavesDeduction']  = $deductionDetails['leavesDeduction'];
                         $userVal['penalty']          = $deductionDetails['penalty'];
 
-
-                        // dump($deductionDetails['fpDaysDeduction']);
-                        // dump($deductionDetails['minutesDeduction']);
                         // !!!: Check User Advanced Salary (Bonus)
                         $check_user_advanced_salary =  AdvanceSalary::where('month', $date)->where('user_id', $value->user_id)->first();
                         if ($check_user_advanced_salary) {
@@ -111,8 +103,6 @@ class PayrollSummaryController extends Controller
                         }
                         $userVal['bonus'] = deductionDetails($date, $value->user_id, $dailySalary, $absent_value)['extraMinutes'];
 
-
-                        // dump($userVal);
 
                         PayrollSummary::create([
                             'username'      => $userVal['detail']->fullname ?? '',
@@ -135,28 +125,16 @@ class PayrollSummaryController extends Controller
                         ]);
 
 
-                        // dump($userVal['detail']);
                         $users[] = $userVal;
 
                     }
 
-
-
-
-
-
                 }
             }
             } ///////////////////// Return Back Again //////////
-            // dump($users);
-
-            // dd();
 
         }
 
-
-
-        // dd($categoryDetails);
 
         return view('payroll::admin.payrollSummary.index', compact('date', 'users', 'holidays'));
     }

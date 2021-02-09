@@ -40,7 +40,14 @@ $(document).ready(function () {
 
         var allowanceMore = moreAllowances(allowancesLabels);
 
-        return basicSalary + allowanceHouse + allowanceMedical + allowanceMore;
+        var sum = 0;
+        if (window.location.href.indexOf("edit") > -1) {
+            $('.allowanceValue').each(() => {
+                sum += parseInt($('.allowanceValue').val() ?? 0);
+            })
+        }
+
+        return basicSalary + allowanceHouse + allowanceMedical + allowanceMore + sum;
     }
 
     function moreAllowances(moreAllowanceLabels = []) {
@@ -80,9 +87,11 @@ $(document).ready(function () {
         var deductionTax = parseInt($("input[name='deduction[tax_deduction]']").val() ?? 0);
 
         var sum = 0;
-        $('.deductionValue').each(() => {
-            sum += parseInt($('.deductionValue').val() ?? 0);
-        })
+        if (window.location.href.indexOf("edit") > -1) {
+            $('.deductionValue').each(() => {
+                sum += parseInt($('.deductionValue').val() ?? 0);
+            })
+        }
 
         var deductionMore = moreDeductions(deductionsLabels);
 
@@ -136,7 +145,6 @@ $(document).ready(function () {
             }else{
                 var labelValue = $(this).closest('.form-group').find('.allowanceLabel').val();
             }
-            console.log(allowancesLabels);
 
             $(this).attr('name', 'allowance[' + labelValue + ']'); // Change the attribute name of label allowance
             var allowanceMore = moreAllowances(allowancesLabels);
@@ -182,7 +190,6 @@ $(document).ready(function () {
 
                 var deductionLabelName = $(this).val();
                 if (oldDeductionLabelVal) {
-
                     deductionsLabels.shift(oldDeductionLabelVal);
                 }
                 deductionsLabels.push(deductionLabelName);
@@ -203,7 +210,6 @@ $(document).ready(function () {
             }else{
                 var deductionLabelValue = $(this).closest('.form-group').find('.deductionLabel').val();
             }
-            console.log(deductionsLabels);
 
             $(this).attr('name', 'deduction[' + deductionLabelValue + ']'); // Change the attribute name of label deduction
             var deductionMore = moreDeductions(deductionsLabels);
@@ -227,13 +233,11 @@ $(document).ready(function () {
         })
     })
 
-
-
     /* !!!: Total Salary ****************************/
     $('input[name="gross_salary"]').val(totalGross());
-    console.log(totalGross());
-    console.log(totalDeductions());
-    console.log(netSalary());
+    // console.log(totalGross());
+    // console.log(totalDeductions());
+    // console.log(netSalary());
     $('#total_deduction').val(totalDeductions());
     $('#net_salary').val(netSalary());
 });

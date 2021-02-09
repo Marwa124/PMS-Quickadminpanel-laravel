@@ -3,27 +3,28 @@
 namespace Modules\Payroll\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Traits\MediaUploadingTrait;
-use Modules\Payroll\Http\Requests\Destroy\MassDestroySalaryPaymentRequest;
-use Modules\Payroll\Http\Requests\Store\StoreSalaryPaymentRequest;
-use Modules\Payroll\Http\Requests\Update\UpdateSalaryPaymentRequest;
 use Modules\Payroll\Entities\SalaryPayment;
 use App\Models\User;
 use PDF;
 use Gate;
-use Illuminate\Http\Request;
 use Modules\HR\Entities\AccountDetail;
 use Modules\Payroll\Entities\SalaryDeduction;
-use Spatie\MediaLibrary\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
 
 class SalaryPaymentsController extends Controller
 {
-    // use MediaUploadingTrait;
 
     public function index()
     {
         abort_if(Gate::denies('salary_payment_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        if(request()->has('date')) {
+            request()->validate([
+                'date' => 'required|date_format:Y-m',
+                'department_id' => 'required|exists:departments,id|integer',
+            ]);
+        }
+
         $date = request()->date;
         if (request()['date'] == '') {
             $date = date('Y-m');
@@ -60,7 +61,7 @@ class SalaryPaymentsController extends Controller
         $year      = $monthNum[0];
 
         // $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
-        $user = User::find($result[2]);
+        $user = User::findOrFail($result[2]);
 
         /* !!!: Deduction Details */
         $carbonDate = dateFormation($date);
@@ -99,30 +100,9 @@ class SalaryPaymentsController extends Controller
     {
         $salaryPayment = $this->createPayslip();
 
-        // dd($salaryPayment);
         $pdf = PDF::loadView('payroll::admin.salaryPayments.payslip_generate', $salaryPayment);
-        // $pdf = PDF::loadView('payroll::admin.salaryPayments.payslip_generate', [
-        //     $salaryPayment['user'], 
-        //     $salaryPayment['subDeductions'], 
-        //     $salaryPayment['deductionDetails'], 
-        //     $salaryPayment['date'], 
-        //     $salaryPayment['departmentRequest'], 
-        //     $salaryPayment['monthName'], 
-        //     $salaryPayment['year']
-        // ]);
 
         return $pdf->download('Payslip Details '.$salaryPayment['user']->accountDetail->fullname.'.pdf');
-
-        // return view('payroll::admin.salaryPayments.payslip_generate',
-        //     compact($salaryPayment['user'], 
-        //             $salaryPayment['subDeductions'], 
-        //             $salaryPayment['deductionDetails'], 
-        //             $salaryPayment['date'], 
-        //             $salaryPayment['departmentRequest'], 
-        //             $salaryPayment['monthName'], 
-        //             $salaryPayment['year']
-        //         ));
-
     }
 
     public function createPayslip()

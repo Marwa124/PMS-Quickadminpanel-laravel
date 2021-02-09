@@ -2,7 +2,9 @@
 @section('styles')
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/css/datepicker.min.css" rel="stylesheet">
 @endsection
-
+@section('title')
+| {{ trans('cruds.salaryPayment.title_singular') }}
+@endsection
 @section('content')
 @inject('salaryTemplateModel', 'Modules\Payroll\Entities\SalaryTemplate')
 @inject('salaryDeductionModel', 'Modules\Payroll\Entities\SalaryDeduction')

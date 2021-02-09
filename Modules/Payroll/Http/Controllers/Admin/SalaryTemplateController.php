@@ -93,12 +93,15 @@ class SalaryTemplateController extends Controller
         // !!!: Add data to Salary Allowances
         if ($request->allowance) {
             try {
+                SalaryTemplate::findOrFail($id)->salaryAllowances()->delete();
                 foreach ($request->allowance as $key => $value) {
-                    SalaryAllowance::create([
-                        'name' => $key,
-                        'value' => $value,
-                        'salary_template_id' => $id
-                    ]);
+                    if($value > 0) {
+                        SalaryAllowance::create([
+                            'name' => $key,
+                            'value' => $value,
+                            'salary_template_id' => $id
+                        ]);
+                    }
                 }
             } catch (\Exception $e) {
                 return $e->getMessage();
@@ -106,12 +109,15 @@ class SalaryTemplateController extends Controller
         }
         // !!!: Add data to Salary Deductions
         try {
+            SalaryTemplate::findOrFail($id)->salaryDeductions()->delete();
             foreach ($request->deduction as $key => $value) {
-                SalaryDeduction::create([
-                    'name' => $key,
-                    'value' => $value,
-                    'salary_template_id' => $id
-                ]);
+                if($value > 0) {
+                    SalaryDeduction::create([
+                        'name' => $key,
+                        'value' => $value,
+                        'salary_template_id' => $id
+                    ]);
+                }
             }
         } catch (\Exception $e) {
             return $e->getMessage();
