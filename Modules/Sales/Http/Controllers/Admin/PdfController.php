@@ -17,7 +17,6 @@ class PdfController extends Controller
     public function pdf(Request $request)
     {
            $proposal = Proposal::findOrFail($request->id);
-          $image = asset('images/image001.png');
            $loadpdf = MPDF::loadView('sales::admin.proposals.pdf', compact('proposal','image'))
            ->stream('PDF-Report.pdf');
            return $loadpdf;

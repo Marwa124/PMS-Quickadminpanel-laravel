@@ -193,7 +193,7 @@ if (!function_exists('get_taxes')) {
 if (!function_exists('ratingColor')) {
     function ratingColor($rating)  {
         $colors = ['warning','info','danger','success','primary'];
-        return $colors[$rating - 1];
+        return $colors[$rating];
     
     }
 }

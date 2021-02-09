@@ -1314,7 +1314,7 @@ return [
             'convert_helper'          => ' ',
             'convert_module'          => 'Convert Module',
             'convert_module_helper'   => ' ',
-            'Waiting_approval'        => 'Waiting_approval',
+            'Waiting_approval'        => 'Waiting approval',
             'Waiting_approval_helper' => ' ',
             'Rejected'                => 'Rejected',
             'Rejected_helper'         => ' ',
@@ -1332,6 +1332,8 @@ return [
             'declined_helper'         => ' ',
             'accepted'                => 'accepted',
             'accepted_helper'         => ' ',
+            'expired'                => 'expired',
+            'expired_helper'         => ' ',
             'proposal_validity'       => 'Proposal Validity',
             'proposal_validity_helper' => ' ',
             'Sales_Agent'       => 'Sales Agent',
@@ -3652,7 +3654,9 @@ return [
         'project_of_milestone_not_have_department'  => 'The Project Of Milestone don\'t have Department',
         'project_of_task_not_have_department'       => 'The Project Of Task don\'t have Department',
         'time_date_after_or_equal'                  => 'The Time Of End Date Must Be After Or Equal ',
-
+        
+        'sure_clone_proposal'        => 'Are you sure to clone Proposal with items and invoice ?',
+        'proposal_force_delete'                     => 'Proposal Will Force Delete ..!',
     ],
 
 
