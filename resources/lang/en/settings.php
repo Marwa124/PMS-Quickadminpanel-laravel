@@ -70,6 +70,32 @@ return [
     'right'   => 'Right',
     'left' => 'Left',
 
+    'please_enter_currency_code' => 'Please Enter Currency Code',
+    'please_enter_currency_name' => 'Please Enter Currency Name',
+    'please_enter_currency_symbol' => 'Please Enter Currency Symbol',
+    'from_items' => 'From Items',
+    'save' => 'Save',
+    'close' => 'Close',
+
+    'code_required'                  => 'Code  Is Required',
+    'code_string'                    => 'Code  Should Be String',
+
+    'name_required'                  => 'Name  Is Required',
+    'name_string'                    => 'Name  Should Be String',
+
+
+    'symbol_required'                  => 'Symbol  Is Required',
+    'symbol_string'                    => 'Symbol  Should Be String',
+
+    'currency_created' => 'Currency Created Successfully',
+    'code' => 'Code',
+    'name' => 'Name',
+    'symbol' => 'Symbol',
+    'all_currency'          => 'All Currency',
+    'action' => 'Action',
+    'currency_updated' => 'Currency Updated Successfully',
+    'currency_deleted' => 'Currency Deleted Successfully',
+
 
 
 ];

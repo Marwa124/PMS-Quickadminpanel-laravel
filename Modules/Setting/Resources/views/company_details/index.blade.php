@@ -85,9 +85,43 @@ body{
                 @include('setting::tabs.company_system')
 
 
+
             </div>
         </div>
     </div>
+@endsection
+@section('scripts')
+
+<script>
+ 
+ 
+</script>
+
+
+@if(session()->has('pill'))
+<script>
+window.onload = (event) => {
+
+    var pill = '{{ session()->get('pill','company_details') }}'
+
+    //reset all tabs
+    $('.nav-pills .nav-link').attr('aria-selected',false)
+    $('.nav-pills .nav-link').removeClass('active')
+    $('.tab-content .tab-pane').removeClass('active').removeClass('show')
+
+    //open the wanted tab
+    $('.nav-pills .'+pill).attr('aria-selected',true)
+    $('.nav-pills .'+pill).addClass('active')
+    $('.tab-content .'+pill).addClass('active').addClass('show')
+};
+
+
+
+
+   
+</script>
+
+@endif
 @endsection
 
 
