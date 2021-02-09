@@ -8,6 +8,7 @@ use Modules\Payroll\Http\Requests\Store\StoreHourlyRateRequest;
 use Modules\Payroll\Entities\HourlyRate;
 use Gate;
 use Illuminate\Http\Request;
+use Modules\Payroll\Http\Requests\Update\UpdateHourlyRateRequest;
 use Symfony\Component\HttpFoundation\Response;
 
 class HourlyRatesController extends Controller
@@ -32,22 +33,39 @@ class HourlyRatesController extends Controller
     {
         $hourlyRate = HourlyRate::create($request->all());
 
-        return redirect()->route('admin.payroll.hourly-rates.index');
+        return redirect()->route('payroll.admin.hourly-rates.index');
+    }
+
+    public function edit(HourlyRate $hourlyRate)
+    {
+        abort_if(Gate::denies('hourly_rate_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        return view('payroll::admin.hourlyRates.edit', compact('hourlyRate'));
+    }
+
+    public function update(UpdateHourlyRateRequest $request, HourlyRate $hourlyRate)
+    {
+        $hourlyRate->update($request->all());
+
+        return redirect()->route('payroll.admin.hourly-rates.index');
     }
 
     public function destroy(HourlyRate $hourlyRate)
     {
         abort_if(Gate::denies('hourly_rate_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $hourlyRate->delete();
+        $hourlyRate->forceDelete();
 
         return back();
     }
 
     public function massDestroy(MassDestroyHourlyRateRequest $request)
     {
-        HourlyRate::whereIn('id', request('ids'))->delete();
+        HourlyRate::whereIn('id', request('ids'))->forceDelete();
 
-        return response(null, Response::HTTP_NO_CONTENT);
+        return response()->json([
+            'ids'   => request('ids'),
+        ]);
+        // return response(null, Response::HTTP_NO_CONTENT);
     }
 }

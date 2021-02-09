@@ -17,6 +17,9 @@
         "winner": "فائز",
         "setting": "إعداد",
 
+        "error_response": "لا يمكن حذف هذا العنصر",
+        "back"          : "رجوع",
+
         "no_rooms": "لا يوجد غرف",
         "no_travels": "لا يوجد رحلات",
         "no_hotel_features": "لا توجد مميزات للفندق",
@@ -37,7 +40,7 @@
 
         "model_is_deleted": "محذوف",
 
-
+        "new": "New",
         "logout": "تسجيل الخروج",
         "create": "إنشاء",
         "create_again": "إنشاء مرة أخرى",
@@ -263,5 +266,54 @@
         "updated_at": "أخر تعديل",
         "created_at": "تاريخ الإنشاء",
         "actions": "الإجراءات"
+    },
+
+    "suppliers": {
+        "supplier": "Supplier",
+        "fields": {
+            "name": "Name",
+            "mobile": "Mobile",
+            "phone": "Phone",
+            "email": "Email",
+            "address": "Address"
+        }
+    },
+
+    "purchase": {
+        "supplier": "Supplier",
+        "fields": {
+            "ref_no": "Ref No",
+            "purchase_date": "Purchase Date",
+            "due_date": "Due Date",
+            "sales_agent": "Sales Agent",
+            "stock": "Upload Stock",
+            "discount_type": "Discount Type",
+            "notes": "Notes",
+            "quantity_as_qty": "الكمية",
+            "quantity_as_hours": "ساعات",
+            "quantity_as_qty_hours": "كمية/ساعات",
+            "show_qty_as": "اظهارالكمية ك",
+            "before_tax": "Before Tax",
+            "after_tax": "After Tax"
+        }
+    },
+
+    "items": {
+        "fields": {
+            "name": "Item Name",
+            "description": "Description",
+            "price": "Price",
+            "tax_rate": "Tax Rate",
+            "total": "Total",
+            "unit_cost": "Unit Cost"
+        }
+    },
+
+    "sidebar": {
+        "choose_user": "Choose User",
+        "choose_item": "Choose Item",
+        "choose_supplier": "Choose Supplier",
+        "choose_tax_rate": "Choose Tax Rate",
+        "": ""
     }
 }

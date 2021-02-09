@@ -222,7 +222,7 @@
                                 <td>
                                     <a href="{{ route('projectmanagement.admin.projects.show', $project->id) }}"
                                        title=" {{ trans('global.view') }}">
-                                        {{ $project->{'name_'.app()->getLocale()} ? $project->{'name_'.app()->getLocale()} : '' }}<br>
+                                        {{ $project->{'name_'.app()->getLocale()} ?? '' }}<br>
                                     </a>
                                     <div class="progress" style="width: 150px">
                                         <div class="progress-bar {{$project->calculate_progress < 50 ? 'bg-danger':'bg-success'}}"
@@ -234,7 +234,7 @@
                                     </div>
                                 </td>
                                 <td>
-                                    {{ $project->client->name ?? '' }}
+                                    {{ $project->client && $project->client->name ? $project->client->name : '' }}
                                 </td>
                                 <td>
                                     {{ $project->start_date ?? '' }}
@@ -279,7 +279,7 @@
                                     {{ $project->project_status ? trans("cruds.status.".$project->project_status)  : '' }}
                                 </td>
                                 <td>
-                                    {{ $project->department->department_name ?? '' }}
+                                    {{ $project->department && $project->department->department_name ? $project->department->department_name : '' }}
                                 </td>
 
                                 <td>
@@ -594,42 +594,42 @@
             $('#started').on('click', function () {
                 table
                     .columns(9)
-                    .search('started')
+                    .search('{{trans('cruds.status.started')}}')
                     .draw()
             })
 
             $('#in_progress').on('click', function () {
                 table
                     .columns(9)
-                    .search('in progress')
+                    .search('{{trans('cruds.status.in_progress')}}')
                     .draw()
             })
 
             $('#on_hold').on('click', function () {
                 table
                     .columns(9)
-                    .search('on hold')
+                    .search('{{trans('cruds.status.on_hold')}}')
                     .draw()
             })
 
             $('#cancel').on('click', function () {
                 table
                     .columns(9)
-                    .search('cancel')
+                    .search('{{trans('cruds.status.cancel')}}')
                     .draw()
             })
 
             $('#completed').on('click', function () {
                 table
                     .columns(9)
-                    .search('completed')
+                    .search('{{trans('cruds.status.completed')}}')
                     .draw()
             })
 
             $('#overdue').on('click', function () {
                 table
                     .columns(9)
-                    .search('overdue')
+                    .search('{{trans('cruds.status.overdue')}}')
                     .draw()
             })
 
@@ -652,11 +652,33 @@
                         var showLink = '{{route("projectmanagement.admin.tasks.show", ":id") }}';
                         showLink = showLink.replace(':id', value.id);
 
-                        {{--var trans_status = 'cruds.status.'+value.status;--}}
+                        // get trans of status by status of task
+                        var trans_status = '';
+                        switch(value.status){
 
-                        {{--var xzxxcxc = '{{trans("cruds.status.:trans_status") }}';--}}
-                        {{--var status = xzxxcxc.replace(':trans_status', value.status);--}}
-                        {{--console.log(status,trans_status,value.status);--}}
+                            case 'not_started':
+                                trans_status = '{{trans("cruds.status.not_started") }}';
+                                break;
+                            case 'in_progress':
+                                trans_status = '{{trans("cruds.status.in_progress") }}';
+                                break;
+                            case 'completed':
+                                trans_status = '{{trans("cruds.status.completed") }}';
+                                break;
+                            case 'deffered':
+                                trans_status = '{{trans("cruds.status.deffered") }}';
+                                break;
+                            case 'waiting_someone':
+                                trans_status = '{{trans("cruds.status.waiting_someone") }}';
+                                break;
+                            default :
+                                trans_status = value.status;
+                        }
+
+                        {{--var xzxxcxc = '{!! json_encode(trans(":trans_status")) !!}';--}}
+                        {{--var xzxxcxc = '{!!trans(":trans_status") !!}';--}}
+                        {{--var status = xzxxcxc.replace(':trans_status', trans_status);--}}
+                        //console.log(value.status,trans_status);
 
                         var name = value.name_en;
 
@@ -664,7 +686,7 @@
 
                             var name = value.name_ar;
                         }
-                        innerHtmlTasks += "<tr data-entry-id='" + value.id + "'><td>" + value.id + "</td><td><a href='" + showLink + "'>" + name + "</a></td><td>" + value.status + "</td><td><div class='progress'> <div class='progress-bar ' role='progressbar' style='width:" + value.calculate_progress + "%;  aria-valuenow='25' aria-valuemin='0' aria-valuemax='100'>" + value.calculate_progress + "%</div></div></td><td>" + value.due_date + "</td></tr>"
+                        innerHtmlTasks += "<tr data-entry-id='" + value.id + "'><td>" + value.id + "</td><td><a href='" + showLink + "'>" + name + "</a></td><td>" + trans_status + "</td><td><div class='progress'> <div class='progress-bar ' role='progressbar' style='width:" + value.calculate_progress + "%;  aria-valuenow='25' aria-valuemin='0' aria-valuemax='100'>" + value.calculate_progress + "%</div></div></td><td>" + value.due_date + "</td></tr>"
                         // status.forEach(function (stat, key) {
                         //     if (stat.id == value.status_id) {
                         //
@@ -716,7 +738,38 @@
                     tickets.forEach(function (value, key) {
                         var showLink = '{{route("projectmanagement.admin.tickets.show", ":id") }}';
                         showLink = showLink.replace(':id', value.id);
-                        innerHtmlTickets += "<tr data-entry-id='" + value.id + "'><td>" + value.id + "</td><td><a href='" + showLink + "'>" + value.subject + "</a></td><td>" + value.status + "</td></tr>"
+
+                        // get trans of status by status of task
+                        var trans_status = '';
+                        switch(value.status){
+
+                            case 'opened':
+                                trans_status = '{{trans("cruds.status.opened") }}';
+                                break;
+                            case 'answered':
+                                trans_status = '{{trans("cruds.status.answered") }}';
+                                break;
+                            case 'in_progress':
+                                trans_status = '{{trans("cruds.status.in_progress") }}';
+                                break;
+                            case 'closed':
+                                trans_status = '{{trans("cruds.status.closed") }}';
+                                break;
+                            case 'reopen':
+                                trans_status = '{{trans("cruds.status.reopen") }}';
+                                break;
+                            default :
+                                trans_status = value.status;
+                        }
+
+                        var subject = value.subject_en;
+
+                        if(getLocale == 'ar'){
+
+                            var subject = value.subject_ar;
+                        }
+
+                        innerHtmlTickets += "<tr data-entry-id='" + value.id + "'><td>" + value.id + "</td><td><a href='" + showLink + "'>" + subject + "</a></td><td>" + trans_status + "</td></tr>"
                     })
                     document.getElementById('ticketsModelTBody').innerHTML = innerHtmlTickets;
                 }

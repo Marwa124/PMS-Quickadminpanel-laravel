@@ -85,9 +85,8 @@ class LeaveApplication extends Model implements HasMedia
 
     public function registerMediaCollections()
     {
-        $this
-            ->addMediaCollection('attachments')
-            ->acceptsMimeTypes(['image/jpg', 'image/png', 'image/jpeg', 'application/msword']);
+        $this->addMediaCollection('attachments');
+            // ->acceptsMimeTypes(['image/jpg', 'image/png', 'image/jpeg', 'application/msword']);
     }
 
     public function user()
@@ -98,6 +97,11 @@ class LeaveApplication extends Model implements HasMedia
     public function leave_category()
     {
         return $this->belongsTo(LeaveCategory::class, 'leave_category_id');
+    }
+
+    public function leaveCategoryStatus($status)
+    {
+        return $this->leave_category()->where('name', $status);
     }
 
     public function getLeaveStartDateAttribute($value)

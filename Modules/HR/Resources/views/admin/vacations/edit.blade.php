@@ -13,10 +13,14 @@
             <div class="form-group">
               <label class="required" for="user_id">{{ trans('cruds.vacation.fields.user') }}</label>
               <select class="form-control select2 {{ $errors->has('user') ? 'is-invalid' : '' }}" name="user_id" id="user_id" required>
-                  @foreach($users as $id => $user)
-                      <option value="{{ $id }}" {{ (old('user_id') ? old('user_id') : $vacation->user->id ?? '') == $id ? 'selected' : '' }}>{{ $user }}</option>
-                  @endforeach
-              </select>
+                @foreach($users as $key => $label)
+                    @foreach ($label as $key => $item)
+                       @if ($key != 0)
+                        <option value="{{ $key }}" {{ (old('user_id') ? old('user_id') : $vacation->user->id ?? '') == $key ? 'selected' : '' }}>{{ $item }}</option>
+                       @endif
+                    @endforeach
+                @endforeach
+            </select>
               @if($errors->has('user'))
                   <div class="invalid-feedback">
                       {{ $errors->first('user') }}

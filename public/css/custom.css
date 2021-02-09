@@ -144,7 +144,11 @@ table.dataTable thead .sorting_desc {
 }
 
 .c-header {
+<<<<<<< HEAD
     background: #fff !important;
+=======
+    /* background: #ec2121 !important; */
+>>>>>>> cd2d642225166b4f75f3b049598607299dbff723
 }
 .c-header-nav-link {
     /* color: #ffffff !important; */
@@ -218,3 +222,16 @@ html:not([dir="rtl"]) .c-sidebar-nav-icon:first-child {
     color: black !important;
     font-weight: bold !important;
 }
+
+
+/*
+.error_session_response{
+    transition: all 0.4s ease-in-out;
+}
+.slideUp {
+    height: 0;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    color: transparent;
+} */

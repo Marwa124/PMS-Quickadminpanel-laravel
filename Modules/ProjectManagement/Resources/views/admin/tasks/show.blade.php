@@ -248,6 +248,11 @@
 @endsection
 
 @section('content')
+    <div class="flash-message">
+        @if(Session::has('messages'))
+            <p class="alert alert-danger">{{ Session::get('messages') }}</p>
+        @endif
+    </div>
     <div class="row">
         <div class="col-12 pb-1">
             <div class="col-3">
@@ -292,12 +297,12 @@
                                 <div class="col-sm-4 border-right ">
 
                                     <div class="pl-1 ">
-                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.task.fields.name') }} :</p> <span class="col-md-6">{{ $task->name ?? ''  }}</span> </div>
-                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.title') }} {{ trans('cruds.project.fields.name') }}  : </p><span class="col-md-6">{{ $task->project->name ?? '' }}</span> </div>
-                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.milestone.title') }} {{ trans('cruds.milestone.fields.name') }} : </p><span class="col-md-6">{{ $task->milestone->name ?? '' }}</span> </div>
+                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.task.fields.name') }} :</p> <span class="col-md-6">{{ $task->{'name_'.app()->getLocale()} ?? ''  }}</span> </div>
+                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.title') }} {{ trans('cruds.project.fields.name') }}  : </p><span class="col-md-6">{{ $task->project && $task->project->{'name_'.app()->getLocale()} ? $task->project->{'name_'.app()->getLocale()} : '' }}</span> </div>
+                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.milestone.title') }} {{ trans('cruds.milestone.fields.name') }} : </p><span class="col-md-6">{{ $task->milestone && $task->milestone->{'name_'.app()->getLocale()} ? $task->milestone->{'name_'.app()->getLocale()} : '' }}</span> </div>
                                         <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.task.fields.start_date') }} :</p> <span class="col-md-6">{{ $task->start_date ?? '' }}</span> </div>
                                         <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.task.fields.due_date') }} :</p> <span class="col-md-6">{{ $task->due_date ?? '' }}</span> </div>
-                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.task.fields.status') }} : </p><span class="col-md-6">{{ $task->status ?? '' }}</span> </div>
+                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.task.fields.status') }} : </p><span class="col-md-6">{{ $task->status ? trans("cruds.status.".$task->status) : '' }}</span> </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-4 border-right ">
@@ -308,7 +313,7 @@
                                             <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.timer_status') }} :</p> <span class="col-md-6"><a class="btn-sm btn-danger" style="color: #ffffff">{{trans('global.off')}}</a> <a href="{{route('projectmanagement.admin.tasks.update_task_timer',$task->id)}}" class="btn btn-sm btn-success"> {{trans('cruds.project.fields.start_time')}}</a></span> </div>
                                         @endif
                                         <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.task.fields.task_hours') }} :</p> <span class="col-md-6">{{ $task->task_hours ?? ''  }}</span> </div>
-                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.task.fields.created_by') }} :</p> <span class="col-md-6">{{ $task->createBy->name ?? ''  }}</span> </div>
+                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.task.fields.created_by') }} :</p> <span class="col-md-6">{{ $task->createBy && $task->createBy->name ? $task->createBy->name : ''  }}</span> </div>
                                         <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.task.fields.calculate_progress') }} :</p> <span class="col-md-6">{{ $task->calculate_progress ? $task->calculate_progress.'%':'' }}</span> </div>
                                         <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.task.fields.tag') }} :</p>
                                             <span class="col-md-6">
@@ -416,7 +421,7 @@
                                                         <td>
                                                             <a href="{{ route('projectmanagement.admin.tasks.show', $v_task->id) }}">
 
-                                                                {{ $v_task->name ?? '' }}
+                                                                {{ $v_task->{'name_'.app()->getLocale()} ?? '' }}
                                                             </a>
                                                             <div class="progress" >
                                                                 <div class="progress-bar {{$v_task->calculate_progress < 50 ? 'bg-danger':'bg-success'}}" role="progressbar" style="width: {{$v_task->calculate_progress}}%; display: {{$v_task->calculate_progress?:'none'}}" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
@@ -425,7 +430,7 @@
                                                             </div>
                                                         </td>
                                                         <td>
-                                                            {{ ucwords($v_task->status ?? '') }}
+                                                            {{ ucwords($v_task->status ? trans("cruds.status.".$task->status) :'') }}
                                                         </td>
                                                         <td>
                                                             {{ $v_task->start_date ?? '' }}
@@ -435,7 +440,7 @@
                                                         </td>
 
                                                         <td>
-                                                            {{ $v_task->project->name ?? '' }}
+                                                            {{ $v_task->project && $v_task->project->{'name_'.app()->getLocale()} ? $v_task->project->{'name_'.app()->getLocale()} : '' }}
                                                         </td>
 
                                                         @canany(['task_edit' , 'task_assign_to' , 'task_delete'])
@@ -449,7 +454,7 @@
 
                                                                 @can('task_assign_to')
 
-                                                                    <a class="btn btn-xs btn-success {{$v_task->project->department ? '' : 'disabled'}}" href="{{ route('projectmanagement.admin.tasks.getAssignTo', $v_task->id) }}" title="{{$v_task->project->department ? '' : trans('cruds.messages.add_department_to_project')}}"  >
+                                                                    <a class="btn btn-xs btn-success {{$v_task->project && $v_task->project->department ? '' : 'disabled'}}" href="{{ route('projectmanagement.admin.tasks.getAssignTo', $v_task->id) }}" title="{{$v_task->project && $v_task->project->department ? '' : trans('cruds.messages.add_department_to_project')}}"  >
                                                                         {{ trans('global.assign_to') }}
                                                                     </a>
 
@@ -559,16 +564,16 @@
                                                             {{ $bug->task->name ?? '' }}
                                                         </td>
                                                         <td>
-                                                            {{ ucwords($bug->status ?? '')  }}
+                                                            {{ $bug->status ? trans('cruds.status.'.$bug->status) : ''  }}
                                                         </td>
                                                         <td>
-                                                            {{ ucwords($bug->priority ?? '') }}
+                                                            {{ $bug->priority ? trans('cruds.status.'.$bug->priority) : '' }}
                                                         </td>
                                                         <td>
-                                                            {{ ucwords($bug->severity ?? '') }}
+                                                            {{ $bug->severity ? trans('cruds.status.'.$bug->severity) : '' }}
                                                         </td>
                                                         <td>
-                                                            {{ $bug->reporterBy->name ?? '' }}
+                                                            {{ $bug->reporterBy && $bug->reporterBy->name ? $bug->reporterBy->name :'' }}
                                                         </td>
                                                         <td>
                                                             @can('bug_edit')
@@ -578,7 +583,7 @@
                                                             @endcan
                                                             @can('bug_assign_to')
 
-                                                                <a class="btn btn-xs btn-success {{$bug->project->department ? '' : 'disabled'}}" href="{{ route('projectmanagement.admin.bugs.getAssignTo', $bug->id) }}" title="{{$bug->project->department ? '' : 'add department to project'}}" >
+                                                                <a class="btn btn-xs btn-success {{$bug->project && $bug->project->department ? '' : 'disabled'}}" href="{{ route('projectmanagement.admin.bugs.getAssignTo', $bug->id) }}" title="{{$bug->project && $bug->project->department ? '' : 'add department to project'}}" >
                                                                     {{ trans('global.assign_to') }}
                                                                 </a>
 
@@ -596,12 +601,12 @@
                                                     </tr>
                                                 @empty
                                                     <tr>
-                                                        <td colspan="9"> No bug  Found In This Project</td>
+                                                        <td colspan="9"> {{ trans('cruds.messages.no_bugs_found_in_project') }}</td>
                                                     </tr>
                                                 @endforelse
                                             @else
                                                 <tr>
-                                                    <td colspan="9"> No bug  Found In This Project</td>
+                                                    <td colspan="9"> {{ trans('cruds.messages.no_bugs_found_in_project') }}</td>
                                                 </tr>
                                             @endif
                                             </tbody>
@@ -672,7 +677,7 @@
                                                     {{ trans('cruds.project.fields.stop_time') }}
                                                 </th>
                                                 <th>
-                                                    {{ trans('cruds.project.title_singular') }}
+                                                    {{ trans('cruds.task.title_singular') }}
                                                 </th>
                                                 <th>
                                                     {{ trans('cruds.project.fields.time_spend') }}
@@ -711,7 +716,7 @@
                                                         </td>
                                                         <td>
                                                             <a  href="{{ route('projectmanagement.admin.tasks.show', $timer->task->id) }}" title=" {{ trans('global.view') }}">
-                                                                {{ $timer->task->name ?? '' }}
+                                                                {{ $timer->task && $timer->task->{'name_'.app()->getLocale()} ? $timer->task->{'name_'.app()->getLocale()} :'' }}
                                                             </a>
                                                             @if($timer->edited_by)
                                                                 <span class="small" style="color: red"> edited</span>
@@ -859,7 +864,7 @@
                                                     <section>
                                                         <ul>
                                                             <small title="{{$activity->activity_date}}">{{time_ago($activity->activity_date)}}</small>
-                                                            <li><a href="{{route('admin.users.show',$activity->user->id)}}">{{$activity->user->name}}</a> {{$activity->activity}} <strong> {{$activity->value1}} </strong></li>
+                                                            <li><a href="{{route('admin.users.show',$activity->user->id)}}">{{$activity->user && $activity->user->name ? $activity->user->name : ''}}</a> {{$activity->{'activity_'.app()->getLocale()} }} <strong> {{$activity->{'value1_'.app()->getLocale()} }} </strong></li>
                                                         </ul>
                                                     </section>
                                                 </section>
@@ -1081,6 +1086,14 @@
             })
 
         }
+
+        //session flash message timeout after 5 sec
+        $("document").ready(function(){
+            setTimeout(function(){
+                $(".flash-message").remove();
+            }, 5000 ); // 5 secs
+
+        });
     </script>
 
 @endsection

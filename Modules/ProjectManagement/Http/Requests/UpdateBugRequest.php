@@ -21,45 +21,44 @@ class UpdateBugRequest extends FormRequest
 //                'string',
 //                'nullable',
 //            ],
-            'name'           => [
+            'name_en'           => [
                 'string',
                 'required',
-                'unique:bugs,name,'. request()->route('bug')->id.',id,project_id,'.request()->project_id,
+                //'regex:/^[a-zA-Z0-9 ]+$/u',
+                'min:3|max:255',
+                'unique:bugs,name_en,'. request()->route('bug')->id.',id,project_id,'.request()->project_id,
+            ],
+            'name_ar'           => [
+                'string',
+                'required',
+                //'regex:/^[ اأإء-ي ]+$/ui',
+                'min:3|max:255',
+                'unique:bugs,name_ar,'. request()->route('bug')->id.',id,project_id,'.request()->project_id,
+            ],
+            'project_id'         => [
+                'required',
+                'exists:projects,id'
             ],
             'status'         => [
                 'required',
                 'string',
-//                'nullable',
+                'in:unconfirm,confirmed,in_progress,resolved,verified',
             ],
             'priority'       => [
                 'string',
                 'required',
+                'in:low,medium,high',
             ],
             'severity'       => [
                 'required',
                 'string',
-//                'nullable',
+                'in:minor,major,show_stopper,must_fixed',
             ],
             'reproducibility'       => [
                 'string',
+                //'regex:/^([a-zA-Z0-9 ]|[ اأإء-ي ]|[<>])*$/u',
                 'nullable',
             ],
-//            'reporter'       => [
-//                'nullable',
-//                'integer',
-//                'min:-2147483648',
-//                'max:2147483647',
-//            ],
-//            'permissions.*'  => [
-//                'integer',
-//            ],
-//            'permissions'    => [
-//                'array',
-//            ],
-//            'client_visible' => [
-//                'string',
-//                'nullable',
-//            ],
         ];
     }
 }

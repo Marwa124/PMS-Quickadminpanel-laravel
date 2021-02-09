@@ -33,7 +33,10 @@ class TrainingsController extends Controller
     {
         abort_if(Gate::denies('training_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $users = AccountDetail::all()->pluck('fullname', 'user_id')->prepend(trans('global.pleaseSelect'), '');
+        $users = [];
+        foreach (User::where('banned', 0)->get() as $key => $value) {
+            $users[] = $value->accountDetail()->where('employment_id', '!=', null)->pluck('fullname', 'user_id');
+        }
 
         return view('hr::admin.trainings.create', compact('users'));
     }
@@ -41,7 +44,6 @@ class TrainingsController extends Controller
     public function store(StoreTrainingRequest $request)
     {
         $training = Training::create($request->all());
-        // $training->permissions()->sync($request->input('permissions', []));
 
         if ($request->input('uploaded_file', false)) {
             $training->addMedia(storage_path('tmp/uploads/' . $request->input('uploaded_file')))->toMediaCollection('uploaded_file');
@@ -58,9 +60,13 @@ class TrainingsController extends Controller
     {
         abort_if(Gate::denies('training_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        // $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $users = [];
+        foreach (User::where('banned', 0)->get() as $key => $value) {
+            $users[] = $value->accountDetail()->where('employment_id', '!=', null)->pluck('fullname', 'user_id')->prepend(trans('global.pleaseSelect'), '');
+        }
 
-        $training->load('user', 'permissions');
+        $training->load('user');
 
         return view('hr::admin.trainings.edit', compact('users', 'training'));
     }
@@ -68,7 +74,6 @@ class TrainingsController extends Controller
     public function update(UpdateTrainingRequest $request, Training $training)
     {
         $training->update($request->all());
-        $training->permissions()->sync($request->input('permissions', []));
 
         if ($request->input('uploaded_file', false)) {
             if (!$training->uploaded_file || $request->input('uploaded_file') !== $training->uploaded_file->file_name) {
@@ -89,23 +94,23 @@ class TrainingsController extends Controller
     {
         abort_if(Gate::denies('training_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $training->load('user', 'permissions');
+        $training->load('user');
 
-        return view('admin.trainings.show', compact('training'));
+        return view('hr::admin.trainings.show', compact('training'));
     }
 
     public function destroy(Training $training)
     {
         abort_if(Gate::denies('training_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $training->delete();
+        $training->forceDelete();
 
         return back();
     }
 
     public function massDestroy(MassDestroyTrainingRequest $request)
     {
-        Training::whereIn('id', request('ids'))->delete();
+        Training::whereIn('id', request('ids'))->forceDelete();
 
         return response(null, Response::HTTP_NO_CONTENT);
     }

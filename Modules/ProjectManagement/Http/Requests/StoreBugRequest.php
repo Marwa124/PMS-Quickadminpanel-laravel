@@ -17,15 +17,26 @@ class StoreBugRequest extends FormRequest
 
     public function rules()
     {
+
         return [
-//            'issue_no'       => [
-//                'string',
-//                'nullable',
-//            ],
-            'name'           => [
+
+            'name_en'           => [
                 'string',
                 'required',
-                Rule::unique('bugs','name')->where(function($query) {
+                //'regex:/^[a-zA-Z0-9 ]+$/u',
+                'min:3|max:255',
+                Rule::unique('bugs','name_en')->where(function($query) {
+
+                    $query->where('project_id', '=', request()->project_id);
+
+                }),
+            ],
+            'name_ar'           => [
+                'string',
+                'required',
+                //'regex:/^[ اأإء-ي ]+$/ui',
+                'min:3|max:255',
+                Rule::unique('bugs','name_ar')->where(function($query) {
 
                     $query->where('project_id', '=', request()->project_id);
 
@@ -33,41 +44,27 @@ class StoreBugRequest extends FormRequest
             ],
             'project_id'         => [
                 'required',
+                'exists:projects,id'
             ],
             'status'         => [
                 'required',
                 'string',
-                //'nullable',
+                'in:unconfirm,confirmed,in_progress,resolved,verified',
             ],
             'priority'       => [
                 'string',
                 'required',
+                'in:low,medium,high',
             ],
             'severity'       => [
                 'required',
                 'string',
-                //'nullable',
+                'in:minor,major,show_stopper,must_fixed',
             ],
             'reproducibility'       => [
                 'string',
                 'nullable',
             ],
-//            'reporter'       => [
-//                'nullable',
-//                'integer',
-//                'min:-2147483648',
-//                'max:2147483647',
-//            ],
-//            'permissions.*'  => [
-//                'integer',
-//            ],
-//            'permissions'    => [
-//                'array',
-//            ],
-//            'client_visible' => [
-//                'string',
-//                'nullable',
-//            ],
         ];
     }
 }

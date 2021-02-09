@@ -63,7 +63,7 @@ class LeaveCategoriesTableSeeder extends Seeder
                 'annual_monthly' => '0',
             ],
             [
-                'name' => 'Clock in',
+                'name' => 'Clock in late',
                 'leave_quota' => '0',
                 'deducted_amount' => '0.5',
                 'annual_monthly' => '0',

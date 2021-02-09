@@ -70,7 +70,6 @@
                         </td>
                         <td>
                             <select class="search">
-                                <option value>{{ trans('global.all') }}</option>
                                 @foreach($customer_groups as $key => $item)
                                     <option value="{{ $item->type }}">{{ $item->type }}</option>
                                 @endforeach

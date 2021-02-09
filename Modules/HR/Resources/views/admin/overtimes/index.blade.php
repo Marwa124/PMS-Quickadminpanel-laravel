@@ -1,4 +1,7 @@
 @extends('layouts.admin')
+@inject('overtimeModel', 'Modules\HR\Entities\Overtime')
+@inject('accountDetailModel', 'Modules\HR\Entities\AccountDetail')
+
 @section('content')
 @can('overtime_create')
     <div style="margin-bottom: 10px;" class="row">
@@ -52,7 +55,10 @@
                                 {{ $overtime->id ?? '' }}
                             </td>
                             <td>
-                                {{ $overtime->user->name ?? '' }}
+                                @php
+                                    $accountDetails = $accountDetailModel::where('user_id', $overtime->user->id)->select('fullname')->first();
+                                @endphp
+                                {{ $accountDetails->fullname ?? '' }}
                             </td>
                             <td>
                                 {{ $overtime->overtime_date ?? '' }}
@@ -61,7 +67,7 @@
                                 {{ $overtime->overtime_hours ?? '' }}
                             </td>
                             <td>
-                                {{ App\Models\Overtime::STATUS_SELECT[$overtime->status] ?? '' }}
+                                {{ $overtimeModel::STATUS_SELECT[$overtime->status] ?? '' }}
                             </td>
                             <td>
                                 @can('overtime_show')

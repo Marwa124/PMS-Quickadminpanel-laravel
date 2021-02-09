@@ -12,6 +12,7 @@ return [
     'delete'                               => 'Delete',
     'downloadFile'                         => 'Download file',
     'edit'                                 => 'Edit',
+    'edited'                               => 'Edited',
     'clone'                                => 'Clone',
     'emailVerificationSuccess'             => 'User email verified successfully',
     'entries'                              => 'Entries',
@@ -283,7 +284,10 @@ return [
     'Friday'                               => 'Friday',
     'Saturday'                             => 'Saturday',
 
-    ////////
+
+    'success' => 'Success',
+
+
     'assign_to'                            => 'Assign To',
     'forcedelete'                          => 'Force Delete',
     'off'                                  => 'OFF',
@@ -293,7 +297,5 @@ return [
     'hours'                                => 'Hours',
     'minutes'                              => 'Minutes',
     'seconds'                              => 'Seconds',
-    'page_not_exist'                       => 'This Page Not Exist',
-    'forbidden_page'                       => '403 Forbidden',
-    'forbidden_page_not_allow_to_you'      => '403 Forbidden This Page Not Allow To You',
-];
+
+    ];

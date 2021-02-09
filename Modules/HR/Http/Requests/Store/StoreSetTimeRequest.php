@@ -2,10 +2,8 @@
 
 namespace Modules\HR\Http\Requests\Store;
 
-use Modules\HR\Entities\SetTime;
 use Gate;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Response;
 
 class StoreSetTimeRequest extends FormRequest
 {
@@ -23,15 +21,19 @@ class StoreSetTimeRequest extends FormRequest
             ],
             'in_time' => [
                 'required',
+                'date_format:' . config('panel.time_format_hour'),
             ],
             'out_time'   => [
                 'required',
+                'date_format:' . config('panel.time_format_hour'),
             ],
             'allow_clock_in_late' => [
                 'nullable',
+                'date_format:' . config('panel.time_format_hour'),
             ],
             'allow_leave_early'   => [
                 'nullable',
+                'date_format:' . config('panel.time_format_hour'),
             ],
         ];
     }

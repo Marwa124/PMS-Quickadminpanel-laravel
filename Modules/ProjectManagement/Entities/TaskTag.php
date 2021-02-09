@@ -19,7 +19,8 @@ class TaskTag extends Model
     ];
 
     protected $fillable = [
-        'name',
+        'name_en',
+        'name_ar',
         'created_at',
         'updated_at',
         'deleted_at',

@@ -71,12 +71,12 @@
                             </td>
                             <td>
                                 <a href="{{ route('projectmanagement.admin.work-trackings.show', $workTracking->id) }}">
-                                    {{ $workTracking->subject ?? '' }}
+                                    {{ $workTracking->{'subject_'.app()->getLocale()} ?? '' }}
                                 </a>
 
                             </td>
                             <td>
-                                {{ $workTracking->work_type->name ?? '' }}
+                                {{  $workTracking->work_type && $workTracking->work_type->name ?  trans('cruds.timeWorkType.'.$workTracking->work_type->name ) : '' }}
                             </td>
                             <td>
                                 {{ $workTracking->achievement ?? '' }}

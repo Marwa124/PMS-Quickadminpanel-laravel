@@ -97,7 +97,7 @@
                      aria-labelledby="v-pills-details-tab">
 
                     <div class="card">
-                        <h5 class="card-header">{{ $workTracking->subject }}
+                        <h5 class="card-header">{{ $workTracking->{'subject_'.app()->getLocale()} ?? '' }}
                             @can('work_tracking_edit')
                                 <a class="float-right small"
                                    href="{{ route('projectmanagement.admin.work-trackings.edit', $workTracking->id) }}">
@@ -112,11 +112,11 @@
                                     <div class="pl-1 ">
                                         <div class="row">
                                             <p class="font-bold col-md-6">{{ trans('cruds.workTracking.fields.subject') }}
-                                                :</p> <span class="col-md-6">{{ $workTracking->subject ?? '' }}</span>
+                                                :</p> <span class="col-md-6">{{ $workTracking->{'subject_'.app()->getLocale()} ?? '' }}</span>
                                         </div>
                                         <div class="row">
                                             <p class="font-bold col-md-6">{{ trans('cruds.workTracking.fields.work_type') }}
-                                                : </p><span class="col-md-6">{{ $workTracking->work_type ? $workTracking->work_type->name : '' }}</span>
+                                                : </p><span class="col-md-6">{{ $workTracking->work_type && $workTracking->work_type->name ? trans('cruds.timeWorkType.'.$workTracking->work_type->name ) : '' }}</span>
                                         </div>
                                         <div class="row">
                                             <p class="font-bold col-md-6">{{ trans('cruds.workTracking.fields.start_date') }}
@@ -137,7 +137,7 @@
 
                                     <div class="pl-1 ">
                                         <div class="row"><p class="font-bold col-md-6">{{ trans('cruds.workTracking.fields.description') }}
-                                                : </p><span class="col-md-6">{{ $workTracking->description ?? '' }}</span></div>
+                                                : </p><span class="col-md-6">{{ $workTracking->{'description_'.app()->getLocale()} ?? '' }}</span></div>
                                         {{--                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.workTracking.fields.notify_work_achive') }} :</p> <span class="col-md-6">{{ $workTracking->notify_work_achive ? $workTracking->notify_work_achive : 'off' }}</span> </div>--}}
                                         {{--                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.workTracking.fields.notify_work_not_achive') }}  : </p><span class="col-md-6">{{ $workTracking->notify_work_not_achive ? $workTracking->notify_work_not_achive : 'off' }}</span> </div>--}}
                                         {{--                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.workTracking.fields.email_send') }}  : </p><span class="col-md-6">{{ $workTracking->email_send ?? '' }}</span> </div>--}}
@@ -169,7 +169,7 @@
                                         <input type="hidden" id="progress_WorkTracking" value="{{$result['progress_WorkTracking']}}"/>
                                         <div class="chart-wrapper">
                                             <div style="position:relative">
-                                                <canvas id="canvas-3" height="70"></canvas>
+                                                <canvas id="canvas-3" height="150"></canvas>
                                                 <h2 style="display:inline;">{{$result['progress_WorkTracking']}} %</h2>
                                             </div>
                                         </div>
@@ -200,7 +200,7 @@
                                                     <section>
                                                         <ul>
                                                             <small title="{{$activity->activity_date ?? ''}}">{{time_ago($activity->activity_date ?? '')}}</small>
-                                                            <li><a href="{{route('admin.users.show',$activity->user->id)}}">{{$activity->user->name ?? ''}}</a> {{$activity->activity ?? ''}} <strong> {{$activity->value1 ?? ''}} </strong></li>
+                                                            <li><a href="{{route('admin.users.show',$activity->user ? $activity->user->id :'')}}">{{$activity->user && $activity->user->name ? $activity->user->name : ''}}</a> {{$activity->{'activity_'.app()->getLocale()} ?? ''}} <strong> {{$activity->{'value1_'.app()->getLocale()} ?? ''}} </strong></li>
                                                         </ul>
                                                     </section>
                                                 </section>

@@ -22,11 +22,8 @@
                     $boardMembers[] = $value;
                 }
             }
-            // dd();
-            // $boardMembers = $userModel::hasRole('Board Members');
-            // $adminMembers = $userModel::hasRole('Admin');
         ?>
-        <div style="position: absolute">{{$roleMembers->name}}</div>
+        <div style="position: absolute">{{$roleMembers ? $roleMembers->name : ''}}</div>
         <ul>
             @foreach ($boardMembers as $item)
             <?php $accountDetail = $item->accountDetail()->first(); ?>
@@ -42,8 +39,6 @@
     </div>
 </div>
 {{-- Board Members --}}
-
-
 
 
 
@@ -67,8 +62,8 @@
                     <div class="user">
                         <img src="{{ $departmentHead->avatar ? $departmentHead->avatar->getUrl('thumb') : asset('images/default.png') }}"
                             class="img-responsive" />
-                        <div class="name">{{$departmentHead->designation ? $departmentHead->designation->department()->first()->department_name : ''}}</div>
-                        <a class="manager" href="{{route('hr.admin.account-details.show', $departmentHead->user()->select('id')->first()->id)}}">{{$departmentHead->fullname}}</a>
+                        <div class="name">{{$departmentHead->designation ? ($departmentHead->designation->department ? $departmentHead->designation->department()->first()->department_name : '') : ''}}</div>
+                        <a class="manager" href="{{route('hr.admin.account-details.show', $departmentHead->id)}}">{{$departmentHead->fullname}}</a>
                     </div>
                     <ul>
                         <?php

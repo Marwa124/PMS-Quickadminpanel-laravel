@@ -14,6 +14,13 @@ class StoreTaxRateRequest extends FormRequest
         return Gate::allows('tax_rate_create');
     }
 
+    public function attributes() {
+        return [
+            'name' => 'item_name',
+            'description' => 'item_desc',
+        ];
+    }
+
     public function rules()
     {
         return [

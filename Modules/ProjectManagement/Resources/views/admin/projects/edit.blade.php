@@ -181,16 +181,16 @@
                     <span class="help-block">{{ trans('cruds.project.fields.end_date_helper') }}</span>
                 </div>
 
-                <div class="form-group">
-                    <label class="required" for="alert_overdue">{{ trans('cruds.project.fields.alert_overdue') }}</label>
-                    <input class="form-control {{ $errors->has('alert_overdue') ? 'is-invalid' : '' }}" type="number" name="alert_overdue" id="alert_overdue" value="{{ old('alert_overdue', $project->alert_overdue) }}" step="1" required>
-                    @if($errors->has('alert_overdue'))
-                        <div class="invalid-feedback">
-                            {{ $errors->first('alert_overdue') }}
-                        </div>
-                    @endif
-                    <span class="help-block">{{ trans('cruds.project.fields.alert_overdue_helper') }}</span>
-                </div>
+                {{--<div class="form-group">--}}
+                    {{--<label class="required" for="alert_overdue">{{ trans('cruds.project.fields.alert_overdue') }}</label>--}}
+                    {{--<input class="form-control {{ $errors->has('alert_overdue') ? 'is-invalid' : '' }}" type="number" name="alert_overdue" id="alert_overdue" value="{{ old('alert_overdue', $project->alert_overdue) }}" step="1" required>--}}
+                    {{--@if($errors->has('alert_overdue'))--}}
+                        {{--<div class="invalid-feedback">--}}
+                            {{--{{ $errors->first('alert_overdue') }}--}}
+                        {{--</div>--}}
+                    {{--@endif--}}
+                    {{--<span class="help-block">{{ trans('cruds.project.fields.alert_overdue_helper') }}</span>--}}
+                {{--</div>--}}
                 <div class="form-group">
                     <label for="project_cost">{{ trans('cruds.project.fields.project_cost') }}</label>
                     <input class="form-control {{ $errors->has('project_cost') ? 'is-invalid' : '' }}" type="number" name="project_cost" id="project_cost" value="{{ old('project_cost', $project->project_cost) }}" step="1.00" placeholder="50">

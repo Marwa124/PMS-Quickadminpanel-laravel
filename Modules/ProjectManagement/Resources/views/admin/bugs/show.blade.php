@@ -265,7 +265,7 @@
             <div class="tab-content" id="v-pills-tabContent">
                 <div class="tab-pane fade show active" id="v-pills-details" role="tabpanel" aria-labelledby="v-pills-details-tab">
                     <div class="card">
-                        <h5 class="card-header">{{ $bug->name }}
+                        <h5 class="card-header">{{ $bug->{'name_'.app()->getLocale()} ?? '' }}
                             @can('task_edit')
                                 <a class="float-right small" href="{{ route('projectmanagement.admin.bugs.edit', $bug->id) }}">
                                     {{ trans('global.edit') }}  {{ trans('cruds.bug.title_singular') }}
@@ -277,18 +277,18 @@
                                 <div class="col-sm-4 border-right ">
 
                                     <div class="pl-1 ">
-                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.bug.fields.name') }} :</p> <span class="col-md-6">{{ $bug->name ?? '' }}</span> </div>
+                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.bug.fields.name') }} :</p> <span class="col-md-6">{{ $bug->{'name_'.app()->getLocale()} ?? '' }}</span> </div>
                                         <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.bug.fields.issue_no') }} : </p><span class="col-md-6">{{ $bug->issue_no ?? '' }}</span> </div>
-                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.title') }} {{ trans('cruds.project.fields.name') }}  : </p><span class="col-md-6">{{ $bug->project ? $bug->project->name : '' }}</span> </div>
+                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.title') }} {{ trans('cruds.project.fields.name') }}  : </p><span class="col-md-6">{{ $bug->project ? $bug->project->{'name_'.app()->getLocale()} : '' }}</span> </div>
 {{--                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.task.title') }} {{ trans('cruds.task.fields.name') }}  : </p><span class="col-md-6">{{ $bug->task->name }}</span> </div>--}}
-                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.bug.fields.status') }} : </p><span class="col-md-6 "><span class="bg-success p-1">{{ ucwords($bug->status ?? '') }}</span></span> </div>
-                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.bug.fields.priority') }} :</p> <span class="col-md-6 "><span class="bg-info p-1">{{ ucwords($bug->priority?? '') }}</span></span> </div>
-                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.bug.fields.severity') }} :</p> <span class="col-md-6"><span class="bg-danger p-1">{{ ucwords($bug->severity?? '') }}</span></span> </div>
+                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.bug.fields.status') }} : </p><span class="col-md-6 "><span class="bg-success p-1">{{$bug->status ? trans("cruds.status.".$bug->status)  : '' }}</span></span> </div>
+                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.bug.fields.priority') }} :</p> <span class="col-md-6 "><span class="bg-info p-1"> {{ $bug->priority ? trans("cruds.status.".$bug->priority)  : '' }}</span></span> </div>
+                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.bug.fields.severity') }} :</p> <span class="col-md-6"><span class="bg-danger p-1">{{ $bug->severity ? trans("cruds.status.".$bug->severity)  : '' }}</span></span> </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-4 border-right ">
                                     <div class=" pl-1">
-                                        <div class="row"> <p class="font-bold col-md-5">{{ trans('cruds.bug.fields.reporter') }} :</p> <span class="col-md-6">{{ $bug->reporterBy->name }}</span> </div>
+                                        <div class="row"> <p class="font-bold col-md-5">{{ trans('cruds.bug.fields.reporter') }} :</p> <span class="col-md-6">{{ $bug->reporterBy && $bug->reporterBy->name ? $bug->reporterBy->name : '' }}</span> </div>
                                         <div class="row"> <p class="font-bold col-md-5">{{ trans('global.assign_to') }} :</p> <span class="col-md-6">
                                                 @if($bug->accountDetails)
                                                     @forelse($bug->accountDetails as $account)
@@ -358,7 +358,7 @@
                                                     <section>
                                                         <ul>
                                                             <small title="{{$activity->activity_date ?? ''}}">{{time_ago($activity->activity_date) ?? ''}}</small>
-                                                            <li><a href="{{route('admin.users.show',$activity->user->id)}}">{{$activity->user ? $activity->user->name : ''}}</a> {{$activity->activity ?? '' }} <strong> {{$activity->value1 ?? ''}} </strong></li>
+                                                            <li><a href="{{route('admin.users.show',$activity->user && $activity->user->id ? $activity->user->id : '')}}">{{$activity->user && $activity->user->name ? $activity->user->name : ''}}</a> {{$activity->{'activity_'.app()->getLocale()} ?? '' }} <strong> {{$activity->{'value1_'.app()->getLocale()} ?? ''}} </strong></li>
                                                         </ul>
                                                     </section>
                                                 </section>

@@ -11,6 +11,8 @@
             <!-- :dataTable="model.data" -->
         </data-tables>
 
+        <div v-if="errorResponse" class="alert alert-danger error_response" v-text="errorResponse"></div>
+
         <table class="table table-striped table-bordered table-responsive" ref="_vmAction">
             <table-head
                 :query="query"
@@ -21,58 +23,50 @@
             </table-head>
             <tbody>
                 <tr v-for="row in model.data" :key="row.id">
-                    <td>
-                        <input type="checkbox" v-model="departmentRows"
-                        :id="row.id"
-                        :value="row.department_name"
-                        @click="selectedItems(row.id)">
-                    </td>
+                    <!-- {{model.data}} -->
                     <td v-for="(item, index) in row" :key="index">
-                        <span v-if="index != 'department_head_account'">
-                            <span v-if="index == 'department_head_id'">
-                                {{row.department_head_account ? row.department_head_account.fullname : ''}}
-                            </span>
-                            <span v-else-if="index == 'department_designations'">
-                                {{row.department_designations[0] ?
-                                    row.department_designations[0].designation_name : ''}}
-                            </span>
-                            <span v-else>
-                                {{item}}
-                            </span>
-                        </span>
-                        <span v-else>
-                            <div>
-                                <a :href="`${urlDepartments}/${row.id}/edit`" v-text="$t('global.dit')"
-                                    class="btn btn-primary btn-sm"></a>
-                            </div>
-                        </span>
+                        {{item}}
+                    </td>
+                    <td>
+                        <div class="d-flex">
+                            <a v-if="canPrint" :href="urlEvaluation+'/'+row.id" class="btn btn-sm btn-secondary text-white mr-1">
+                                <i class="fas fa-file-pdf"></i>
+                            </a>
+
+                            <button v-if="canDelete" class="btn btn-sm btn-danger text-white delete_model_row" @click="deleteModelRow(row.id)">
+                                <!-- :href="urlEvaluation+'/'+row.id" -->
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
                     </td>
                 </tr>
             </tbody>
-            <pagination
-                :query="query"
-                :model="model"
-                @getAllDepartments="getAllDepartments()"
-            >
-            </pagination>
-        </table> 
+        </table>
+        <pagination
+            :query="query"
+            :model="model"
+            @getAllDepartments="getAllDepartments()"
+        >
+        </pagination>
     </div>
 </template>
 
 
 
 <script>
-import Vue from 'vue';
 import MixinsTable from '../../mixinsTable'
 export default {
     mixins: [MixinsTable],
 
+    props:  ['canPrint', 'canDelete'],
+
     data() {
         return {
-            urlDepartmentsList: '/api/v1/admin/hr/departments/list-vue',
-            urlDepartments: '/admin/hr/departments',
+            urlDepartmentsList: '/api/v1/admin/hr/evaluations/list',
+            urlModelLink: '/api/v1/admin/hr/evaluations',
+            urlEvaluation: '/admin/hr/evaluations',
             dataResult: {},
-            
+
             departmentRows: [],
             excelData: '',
 
@@ -80,24 +74,17 @@ export default {
         }
     },
     methods: {
-        fireEditBtn(val){
-            this.editDepartment = true;
-            this.$router.push({name: 'departments-edit', params: {id: val}})
-            console.log(this.$router);
-            console.log(this.editDepartment);
-        },
-
-        // Multi Select
-        selectedItems(data){
-            console.log(data);
-            console.log(this.departmentRows);
-        },
+        //
     },
     mounted() {
         this.refActions = this.$refs._vmAction;
+
+        document.querySelector('.pdfLinkBtn').style.display = "none";
     },
 }
 </script>
 <style scoped>
-
+    .table-responsive{
+        display: table !important;
+    }
 </style>

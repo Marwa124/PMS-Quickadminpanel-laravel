@@ -1,7 +1,7 @@
 @extends('layouts.pdf_layout')
-@section('title'){{$project->name ?? '' }} @endsection
+@section('title'){{$project->{'name_'.app()->getLocale()} ?? '' }} @endsection
 @section('content')
-    <p >{{ trans('cruds.project.title_singular') }}  {{ trans('cruds.project.fields.name') }} : <span > {{ $project->name ?? ''  }}</span></p>
+    <p >{{ trans('cruds.project.title_singular') }}  {{ trans('cruds.project.fields.name') }} : <span > {{ $project->{'name_'.app()->getLocale()} ?? ''  }}</span></p>
 
     {{--project details--}}
     <table>
@@ -22,7 +22,8 @@
                 <p >{{ trans('cruds.project.fields.end_date') }} : <span >{{ $project->end_date ?? '' }}</span></p>
             </td>
             <td  >
-                <p >Total Expense : <span > {{$total_expense ? $total_expense.' EGP': '' }} </span></p>            </td>
+                <p >{{trans('cruds.project.fields.total_expense')}} : <span > {{$total_expense ? $total_expense.' EGP': '' }} </span></p>
+            </td>
             <td  >
                 <p >{{ trans('cruds.client.fields.address') }} : <span >{{ $project->client->address ?? '' }}</span> </p>
             </td>
@@ -33,7 +34,7 @@
                 <p >{{ trans('cruds.department.title_singular') }} {{ trans('cruds.project.fields.name') }} :  <span>{{ $project->department->department_name ?? '' }} </span></p>
             </td>
             <td  >
-                <p >Billable Expense : <span > {{$billable_expense ? $billable_expense.' EGP': '' }} </span></p>
+                <p >{{trans('cruds.project.fields.billable_expense')}} : <span > {{$billable_expense ? $billable_expense.' EGP': '' }} </span></p>
             </td>
             <td  >
                 <p >{{ trans('cruds.client.fields.city') }} : <span >{{ $project->client->city ?? '' }}</span> </p>
@@ -45,7 +46,7 @@
                 <p >{{ trans('cruds.project.fields.demo_url') }} : <span >{{ $project->demo_url ?? '' }}</span></p>
             </td>
             <td  >
-                <p >Non Billable Expense :  <span > {{$not_billable_expense ? $not_billable_expense.' EGP': '' }} </span></p>
+                <p >{{trans('cruds.project.fields.non_billable_expense')}} :  <span > {{$not_billable_expense ? $not_billable_expense.' EGP': '' }} </span></p>
             </td>
 
             <td  >
@@ -55,10 +56,10 @@
         </tr>
         <tr>
             <td  >
-                <p >{{ trans('cruds.project.fields.project_status') }} : <span >{{ ucwords(str_replace('_',' ',$project->project_status ?? '' )) }}</span></p>
+                <p >{{ trans('cruds.project.fields.project_status') }} : <span >{{ $project->project_status ? trans("cruds.status.".$project->project_status)  : '' }}</span></p>
             </td>
             <td  >
-                <p >Billed Expense :  <span > {{$paid_expense ? $paid_expense.' EGP': '' }} </span> </p>
+                <p >{{trans('cruds.project.fields.billed_expense')}} :  <span > {{$paid_expense ? $paid_expense.' EGP': '' }} </span> </p>
             </td>
             <td  >
                 <p >{{ trans('cruds.client.fields.phone') }} : <span >{{ $project->client->phone ?? '' }}</span> </p>
@@ -71,18 +72,18 @@
 
             </td>
             <td  >
-                <p >Unbilled Expense : <span > {{($billable_expense - $paid_expense) ? ($billable_expense - $paid_expense).' EGP': '' }} </span> </p>
+                <p >{{trans('cruds.project.fields.unbilled_expense')}} : <span > {{($billable_expense - $paid_expense) ? ($billable_expense - $paid_expense).' EGP': '' }} </span> </p>
             </td>
 
         </tr>
         <tr>
             <td >
-                <p >{{ trans('cruds.project.fields.project_cost') }} :  <span>{{ $project->project_cost?? 0 }} EGP</span></p>
+                <p >{{ trans('cruds.project.fields.project_cost') }} :  <span>{{ $project->project_cost ?? 0 }} EGP</span></p>
 
             </td>
 
             <td >
-                <p >Total Bill : <span >  {{$project->project_cost ? $project->project_cost.' EGP': '' }} </span></p>
+                <p >{{trans('cruds.project.fields.total_bill')}} : <span >  {{$project->project_cost ? $project->project_cost.' EGP': '' }} </span></p>
             </td>
 
         </tr>
@@ -215,7 +216,7 @@
                     <tr data-entry-id="{{ $milestone->id }}">
 
                         <td>
-                           {{ $milestone->name ?? '' }}
+                           {{ $milestone->{'name_'.app()->getLocale()} ?? '' }}
                         </td>
                         <td>
                             {{ $milestone->start_date ?? '' }}
@@ -233,14 +234,14 @@
                 @empty
                     <tr>
                         <td colspan="5" >
-                            No Milestone Found In This Project
+                            {{trans('cruds.messages.no_milestones_found_in_project')}}
                         </td>
                     </tr>
                 @endforelse
             @else
                 <tr>
                     <td colspan="5" >
-                        No Milestone Found In This Project
+                        {{trans('cruds.messages.no_milestones_found_in_project')}}
                     </td>
                 </tr>
             @endif
@@ -281,10 +282,10 @@
                 <tr data-entry-id="{{ $task->id }}">
 
                     <td>
-                        {{ $task->name ?? '' }}
+                        {{ $task->{'name_'.app()->getLocale()} ?? '' }}
                     </td>
                     <td>
-                        {{ $task->status->name ?? '' }}
+                        {{ $task->status ? trans('cruds.status.'.$task->status): '' }}
                     </td>
                     <td>
                         {{ $task->start_date ?? '' }}
@@ -316,14 +317,14 @@
             @empty
                 <tr>
                     <td colspan="6" >
-                        No Tasks Found In This Project
+                        {{trans('cruds.messages.no_tasks_found_in_project')}}
                     </td>
                 </tr>
             @endforelse
         @else
             <tr>
                 <td colspan="6" >
-                    No Tasks Found In This Project
+                    {{trans('cruds.messages.no_tasks_found_in_project')}}
                 </td>
             </tr>
         @endif
@@ -366,16 +367,16 @@
                     <tr data-entry-id="{{ $bug->id }}">
 
                         <td>
-                            {{ $bug->name ?? '' }}
+                            {{ $bug->{'name_'.app()->getLocale()} ?? '' }}
                         </td>
                         <td>
-                            {{ $bug->status ?? '' }}
+                            {{ $bug->status ? trans('cruds.status.'.$bug->status) : '' }}
                         </td>
                         <td>
-                            {{ $bug->priority ?? '' }}
+                            {{ $bug->priority ? trans('cruds.status.'.$bug->priority) :  '' }}
                         </td>
                         <td>
-                            {{ $bug->severity ?? '' }}
+                            {{ $bug->severity  ? trans('cruds.status.'.$bug->severity) :  '' }}
                         </td>
                         <td>
                             {{ $bug->reporterBy->name ?? '' }}
@@ -386,12 +387,12 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6"> No bug  Found In This Project</td>
+                        <td colspan="6"> {{trans('cruds.messages.no_bugs_found_in_project')}}</td>
                     </tr>
                 @endforelse
             @else
                 <tr>
-                    <td colspan="6"> No bug  Found In This Project</td>
+                    <td colspan="6"> {{trans('cruds.messages.no_bugs_found_in_project')}}</td>
                 </tr>
             @endif
         </tbody>
@@ -457,12 +458,12 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5"> No Time Sheet Found In This Project</td>
+                        <td colspan="5">{{trans('cruds.messages.no_time_sheet_found_in_project')}}</td>
                     </tr>
                 @endforelse
             @else
                 <tr>
-                    <td colspan="5"> No Time Sheet Found In This Project</td>
+                    <td colspan="5"> {{trans('cruds.messages.no_time_sheet_found_in_project')}}</td>
                 </tr>
             @endif
         </tbody>
@@ -503,14 +504,14 @@
                             {{ $ticket->ticket_code ?? '' }}
                         </td>
                         <td>
-                            {{ $ticket->subject ?? '' }}
+                            {{ $ticket->{'subject_'.app()->getLocale()} ?? '' }}
                         </td>
                         <td>
 
                             {{ $ticket->created_at ?? '' }}
                         </td>
                         <td>
-                            {{ $ticket->status ?? '' }}
+                            {{ $ticket->status ? trans('cruds.status.'.$ticket->status) : '' }}
                         </td>
                         <td>
                             {{ $ticket->reporterBy ? $ticket->reporterBy->name : '' }}
@@ -519,12 +520,12 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5"> No Tickets Found In This Project</td>
+                        <td colspan="5"> {{trans('cruds.messages.no_tickets_found_in_project')}}</td>
                     </tr>
                 @endforelse
             @else
                 <tr>
-                    <td colspan="5"> No Tickets Found In This Project</td>
+                    <td colspan="5"> {{trans('cruds.messages.no_tickets_found_in_project')}}</td>
                 </tr>
             @endif
         </tbody>

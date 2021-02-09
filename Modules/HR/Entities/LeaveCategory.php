@@ -16,19 +16,18 @@ class LeaveCategory extends Model
         'name',
     ];
 
+    const CATEGORY_TYPE = [
+        '1' => 'Annually',
+        '0'  => 'Monthly'
+    ];
+
     protected $dates = [
         'created_at',
         'updated_at',
         'deleted_at',
     ];
 
-    protected $fillable = [
-        'name',
-        'leave_quota',
-        'created_at',
-        'updated_at',
-        'deleted_at',
-    ];
+    protected $guarded = [];
 
     protected function serializeDate(DateTimeInterface $date)
     {
@@ -38,5 +37,10 @@ class LeaveCategory extends Model
     public function leaveCategoryLeaveApplications()
     {
         return $this->hasMany(LeaveApplication::class, 'leave_category_id', 'id');
+    }
+
+    protected function categoryId($name)
+    {
+        return $this->where('name', $name)->select('id')->first()->id;
     }
 }

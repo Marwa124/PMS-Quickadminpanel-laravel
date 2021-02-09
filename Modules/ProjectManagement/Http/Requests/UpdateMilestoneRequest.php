@@ -24,16 +24,21 @@ class UpdateMilestoneRequest extends FormRequest
             'project_id' => [
                 'required',
                 'integer',
+                'exists:projects,id'
             ],
             // milestone name unique for same project only
             'name_en'       => [
                 'string',
                 'required',
+                //'regex:/^[a-zA-Z ]+$/u',
+                'min:3|max:255',
                 'unique:milestones,name_en,'. request()->route('milestone')->id.',id,project_id,'.request()->project_id,
             ],
             'name_ar'       => [
                 'string',
                 'required',
+                //'regex:/^[ اأإء-ي ]+$/ui',
+                'min:3|max:255',
                 'unique:milestones,name_ar,'. request()->route('milestone')->id.',id,project_id,'.request()->project_id,
             ],
             'start_date' => [

@@ -24,18 +24,18 @@ class HolidaysController extends Controller
             $table = Datatables::of($query);
 
             $table->addColumn('placeholder', '&nbsp;');
-            $table->addColumn('actions', '&nbsp;');
+            // $table->addColumn('actions', '&nbsp;');
 
             $table->editColumn('actions', function ($row) {
-                $viewGate      = 'holiday_show';
+                $viewGate      = '';  //holiday_show
                 $editGate      = 'holiday_edit';
                 $deleteGate    = 'holiday_delete';
                 $modalId       = 'hr.';
                 $crudRoutePart = 'holidays';
 
                 return view('partials.datatablesActions', compact(
-                    'viewGate',
-                    'editGate',
+                    'viewGate',                   
+                     'editGate',
                     'deleteGate',
                     'modalId',
                     'crudRoutePart',
@@ -43,17 +43,23 @@ class HolidaysController extends Controller
                 ));
             });
 
-            $table->editColumn('id', function ($row) {
+            $table->addColumn('id', function ($row) {
                 return $row->id ? $row->id : "";
             });
             $table->editColumn('name', function ($row) {
                 return $row->name ? $row->name : "";
             });
-            $table->editColumn('description', function ($row) {
+            $table->addColumn('description', function ($row) {
                 return $row->description ? $row->description : "";
             });
+            $table->addColumn('start_date', function ($row) {
+                return $row->start_date ? $row->start_date : "";
+            });
+            $table->addColumn('end_date', function ($row) {
+                return $row->end_date ? $row->end_date : "";
+            });
 
-            $table->rawColumns(['actions', 'placeholder']);
+            $table->rawColumns(['placeholder', 'actions', 'id']);
 
             return $table->make(true);
         }

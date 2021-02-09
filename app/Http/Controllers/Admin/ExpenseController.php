@@ -16,7 +16,7 @@ class ExpenseController extends Controller
 {
     public function index()
     {
-        abort_if(Gate::denies('expense_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        // abort_if(Gate::denies('expense_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $expenses = Expense::all();
 
@@ -25,7 +25,7 @@ class ExpenseController extends Controller
 
     public function create()
     {
-        abort_if(Gate::denies('expense_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        // abort_if(Gate::denies('expense_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $expense_categories = ExpenseCategory::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 

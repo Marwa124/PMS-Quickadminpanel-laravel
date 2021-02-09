@@ -21,9 +21,9 @@ class StoreSupplierRequest extends FormRequest
                 'string',
                 'required',
             ],
-            'mobile'            => [
-                'string',
-                'nullable',
+            'mobile'          => [
+                'required',
+                'regex:/(^\+(?:[0-9]?){6,14}[0-9]$)|(^01(1|2|0|5)[0-9]{8}$)/'
             ],
             'phone'             => [
                 'string',
@@ -31,14 +31,14 @@ class StoreSupplierRequest extends FormRequest
             ],
             'email'             => [
                 'string',
-                'nullable',
+                'required',
             ],
             'address'           => [
                 'string',
                 'nullable',
             ],
             'customer_group_id' => [
-                'required',
+                'nullable',
                 'integer',
             ],
         ];

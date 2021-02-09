@@ -1,12 +1,15 @@
 @extends('layouts.admin')
 @section('content')
 
-<evaluation-form 
-    :lang-key={{json_encode(app()->getLocale())}} 
-    :user="{{$userAccount}}" 
-    :designation="{{$designation}}" 
-    :department-title="{{$departmentTitle}}" 
+<evaluation-form
+    :lang-key={{json_encode(app()->getLocale())}}
+    :user="{{$userAccount}}"
+    :auth="{{auth()->user()->id}}"
+    :designation="{{$designation}}"
+    :department-title="{{$departmentTitle}}"
     :department-head="{{$departmentHead}}"
+    :manager="{{$manager}}"
+    :evaluation="''"
 >
 </evaluation-form>
 
@@ -15,6 +18,6 @@
 
 @section('scripts')
 <script>
-    
+
 </script>
 @endsection

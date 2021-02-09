@@ -8,7 +8,7 @@ class RatingEvaluation extends Model {
     
     protected $guarded = [];
 
-    public function evaluation()
+    public function evaluations()
     {
         return $this->belongsToMany(Evaluation::class)->withPivot(["rate", "comment"]);
     }

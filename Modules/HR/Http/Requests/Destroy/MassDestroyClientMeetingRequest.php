@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\HR\Http\Request\Destroy;
+namespace Modules\HR\Http\Requests\Destroy;
 
 use Modules\HR\Entities\ClientMeeting;
 use Gate;

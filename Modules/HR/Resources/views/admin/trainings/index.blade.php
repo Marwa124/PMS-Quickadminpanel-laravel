@@ -1,5 +1,7 @@
 @extends('layouts.admin')
 @inject('trainingModel', 'Modules\HR\Entities\Training')
+@inject('accountDetailModel', 'Modules\HR\Entities\AccountDetail')
+
 @section('content')
 @can('training_create')
     <div style="margin-bottom: 10px;" class="row">
@@ -62,7 +64,10 @@
                                 {{ $training->id ?? '' }}
                             </td>
                             <td>
-                                {{ $training->user->name ?? '' }}
+                                @php
+                                    $accountDetails = $accountDetailModel::where('user_id', $training->user->id)->select('fullname')->first();
+                                @endphp
+                                {{ $accountDetails->fullname ?? '' }}
                             </td>
                             <td>
                                 {{ $training->training_name ?? '' }}

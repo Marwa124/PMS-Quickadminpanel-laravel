@@ -21,13 +21,17 @@ class StoreJobCircularRequest extends FormRequest
                 'string',
                 'required',
             ],
+            'designation_id'  => [
+                'required',
+                'exists:designations,id'
+            ],
             'vacancy_no'      => [
                 'string',
                 'nullable',
             ],
             'posted_date'     => [
                 'date_format:' . config('panel.date_format'),
-                'nullable',
+                'required',
             ],
             'employment_type' => [
                 'required',
@@ -46,13 +50,7 @@ class StoreJobCircularRequest extends FormRequest
             ],
             'last_date'       => [
                 'date_format:' . config('panel.date_format'),
-                'nullable',
-            ],
-            'permissions.*'   => [
-                'integer',
-            ],
-            'permissions'     => [
-                'array',
+                'required',
             ],
         ];
     }

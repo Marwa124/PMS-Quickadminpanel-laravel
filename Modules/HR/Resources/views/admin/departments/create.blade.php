@@ -1,8 +1,6 @@
 @extends('layouts.admin')
 @section('content')
 
-{{-- <department-create></department-create> --}}
-
 <department-form :lang-key={{json_encode(app()->getLocale())}}>
 </department-form>
 

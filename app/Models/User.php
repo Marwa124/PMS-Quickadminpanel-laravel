@@ -27,14 +27,10 @@ use \DateTimeInterface;
 use Modules\HR\Entities\Absence;
 use Modules\HR\Entities\AccountDetail;
 use Modules\HR\Entities\Department;
-use Modules\HR\Entities\Designation;
 use Modules\HR\Entities\FingerprintAttendance;
 use Modules\HR\Entities\LeaveApplication;
 use Modules\HR\Entities\SetTime;
-use Modules\HR\Entities\Vacation;
 use Spatie\Permission\Traits\HasRoles;
-use Symfony\Component\HttpFoundation\Response;
-use Gate;
 
 class User extends Authenticatable implements HasMedia
 {
@@ -88,20 +84,10 @@ class User extends Authenticatable implements HasMedia
 
     protected $guarded = [];
 
-    // public function scopeUserRole()
-    // {
-    //     return $this->role()->first()->title;
-    // }
-
     protected function serializeDate(DateTimeInterface $date)
     {
         return $date->format('Y-m-d H:i:s');
     }
-
-    // public function getIsAdminAttribute()
-    // {
-    //     return $this->roles()->where('id', 1)->exists();
-    // }
 
     public function registerMediaConversions(Media $media = null)
     {
@@ -135,15 +121,19 @@ class User extends Authenticatable implements HasMedia
         return $this->hasOne(AccountDetail::class, 'user_id', 'id');
     }
 
+    public static function fetchUnbannedUsers() 
+    {
+        $users = [];
+        foreach (User::where('banned', 0)->get() as $key => $value) {
+            $users[] = $value->accountDetail()->where('employment_id', '!=', null)->pluck('fullname', 'user_id');
+        }
+        return $users;
+    }
+
     public function absences()
     {
         return $this->hasMany(Absence::class, 'user_id', 'id');
     }
-
-    // public function vacations()
-    // {
-    //     return $this->hasMany(Vacation::class, 'user_id', 'id');
-    // }
 
     public function userTrainings()
     {

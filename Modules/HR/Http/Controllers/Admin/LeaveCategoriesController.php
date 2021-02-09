@@ -33,7 +33,7 @@ class LeaveCategoriesController extends Controller
     {
         $leaveCategory = LeaveCategory::create($request->all());
 
-        return redirect()->route('hr::admin.leave-categories.index');
+        return redirect()->route('hr.admin.leave-categories.index');
     }
 
     public function edit(LeaveCategory $leaveCategory)
@@ -47,7 +47,7 @@ class LeaveCategoriesController extends Controller
     {
         $leaveCategory->update($request->all());
 
-        return redirect()->route('hr::admin.leave-categories.index');
+        return redirect()->route('hr.admin.leave-categories.index');
     }
 
     public function show(LeaveCategory $leaveCategory)
@@ -63,14 +63,14 @@ class LeaveCategoriesController extends Controller
     {
         abort_if(Gate::denies('leave_category_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $leaveCategory->delete();
+        $leaveCategory->forceDelete();
 
         return back();
     }
 
     public function massDestroy(MassDestroyLeaveCategoryRequest $request)
     {
-        LeaveCategory::whereIn('id', request('ids'))->delete();
+        LeaveCategory::whereIn('id', request('ids'))->forceDelete();
 
         return response(null, Response::HTTP_NO_CONTENT);
     }

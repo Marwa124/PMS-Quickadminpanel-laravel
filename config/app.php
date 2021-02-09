@@ -182,6 +182,11 @@ return [
         LaravelFCM\FCMServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         App\Providers\ViewServiceProvider::class,
+
+        PDFAnony\TCPDF\AnonyServiceProvider::class,
+        
+        Barryvdh\TranslationManager\ManagerServiceProvider::class,
+
     ],
 
     /*
@@ -233,11 +238,14 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-        'PDF'       => Barryvdh\DomPDF\Facade::class,
+        //'PDF'       => Barryvdh\DomPDF\Facade::class,
         'Share' => Jorenvh\Share\ShareFacade::class,
         'FCM'      => LaravelFCM\Facades\FCM::class,
         'FCMGroup' => LaravelFCM\Facades\FCMGroup::class, // Optional
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+
+        'PDF' =>  PDFAnony\TCPDF\Facades\AnonyPDF::class,
+
         'MPDF' => Meneses\LaravelMpdf\Facades\LaravelMpdf::class
     ],
 
