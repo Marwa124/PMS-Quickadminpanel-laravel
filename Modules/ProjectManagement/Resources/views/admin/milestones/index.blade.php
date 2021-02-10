@@ -3,19 +3,16 @@
 {{--    @php--}}
 {{--        $trashed = request()->segment(count(request()->segments())) == 'trashed'?true :false;--}}
 {{--    @endphp--}}
-    <div class="row">
+    <div style="display:flex; justify-content:space-between; padding: 1rem 0">
         @can('milestone_create')
-            <div style="margin: 10px;" class="row">
-                <div class="col-lg-6">
+                <div>
                     <a class="btn btn-success" href="{{ route('projectmanagement.admin.milestones.create') }}">
                         {{ trans('global.add') }} {{ trans('cruds.milestone.title_singular') }}
                     </a>
                 </div>
-            </div>
         @endcan
         @can('milestone_delete')
-            <div style="margin: 10px;" class="row d-flex ml-auto">
-                <div class="col-md-6">
+                <div>
                     <a class="btn btn-{{$trashed ? 'info' : 'danger'}}"
                        href="{{$trashed ? route('projectmanagement.admin.milestones.index') : route('projectmanagement.admin.milestones.trashed.index')}}">
 
@@ -23,9 +20,30 @@
 
                     </a>
                 </div>
-            </div>
         @endcan
     </div>
+
+    <!-- <div style="display:flex; justify-content:space-between; padding: 1rem 0">
+        @can('project_create')
+            <div class="">
+                <a class="btn btn-success" href="{{ route('projectmanagement.admin.projects.create') }}">
+                    {{ trans('global.add') }} {{ trans('cruds.project.title_singular') }}
+                </a>
+            </div>
+        @endcan
+        @can('project_delete')
+                <div class="">
+                    <a class="btn btn-{{$trashed ? 'info' : 'danger'}}"
+                       href="{{$trashed ? route('projectmanagement.admin.projects.index') : route('projectmanagement.admin.projects.trashed.index')}}">
+
+                        {{ $trashed ? trans('cruds.status.active') : trans('cruds.status.trashed') }} {{ trans('cruds.project.title') }}
+
+                    </a>
+
+                </div>
+        @endcan
+    </div> -->
+    
 <div class="card">
     <div class="card-header">
         {{ trans('cruds.milestone.title_singular') }} {{ trans('global.list') }}
@@ -113,7 +131,8 @@
                                             <form action="{{ route('projectmanagement.admin.milestones.destroy', $milestone->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
                                                 <input type="hidden" name="_method" value="DELETE">
                                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
+                                                <!-- <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}"> -->
+                                                <button title="Delete" class="btn btn-xs btn-danger" type="submit"><span class="fas fa-trash"></span></button>
                                             </form>
                                         @endcan
                                     @else

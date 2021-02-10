@@ -248,3 +248,12 @@ html:not([dir="rtl"]) .c-sidebar-nav-icon:first-child {
     border: 0;
     color: transparent;
 } */
+
+.c-sidebar .c-sidebar-nav-link:hover.c-sidebar-nav-dropdown-toggle::after, 
+.c-sidebar :hover.c-sidebar-nav-dropdown-toggle::after {
+    background-image: url('../images/left-arrow_1_8x8.png');
+}
+
+.c-sidebar .c-sidebar-nav-dropdown-toggle::after{
+    background-image: url('../images/left-arrow_1_8x8.png');
+}
