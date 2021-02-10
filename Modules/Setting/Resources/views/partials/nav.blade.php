@@ -17,5 +17,14 @@
         </a>
 
 
+        
+
+        <a class="nav-link email-settings" id="v-pills-details-tab" data-toggle="pill" href="#v-pills-email-settings"
+            role="tab" aria-controls="v-pills-details"
+            aria-selected="true"><i class="fa fa-fw fa-desktop"></i>@lang('settings.email_settings')  
+        
+        </a>
+
+
     </div>
 </div>

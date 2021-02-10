@@ -426,4 +426,136 @@ class SettingController extends Controller
 
         return back()->with(flash(trans('settings.company_system_updated'), 'success'))->with('pill', 'company-system');
     }
+
+
+
+    public function save_mail_mailgun(Request $request)
+    {
+
+        $validator = Validator::make($request->all(), [
+
+            'mailgun_email' => 'required|email',
+            'mailgun_sender_name' => 'required|string',
+            'mailgun_protocol' => 'required|in:smtp,mailgun',
+
+            'mailgun_host' => 'required|string',
+            'mailgun_user' => 'required|string',
+
+            'mailgun_password' => 'required|string',
+
+            'mailgun_port' => 'required|integer',
+
+            'mailgun_encryption' => 'required|in:tls,ssl',
+
+
+
+        ], [
+
+
+            'mailgun_email.required'         => 'Company email is required',
+            'mailgun_email.email'            => 'Company email Isn\'t Valid',
+
+            'mailgun_sender_name.required'           => 'Sender Name is required',
+            'mailgun_sender_name.string'             => 'Sender Name Should Be String',
+
+            'mailgun_host.required'             => 'Mail Host is required',
+            'mailgun_host.string'                => 'Mail Host Isn\'t Valid',
+
+            'mailgun_password.required'                => 'Mail Password is required',
+            'mailgun_password.string'                  => 'Mail Password Should Be String',
+
+            'mailgun_port.required'                    => 'Mail Port is required',
+            'mailgun_port.string'                      => 'Mail Port Should Be Integer',
+
+            'mailgun_encryption.required'              => 'Mail Encryption is required',
+            'mailgun_encryption.in'                    => 'Mail Encryption is Invalid',
+
+
+
+
+        ]);
+
+
+        if ($validator->fails()) {
+
+            return back()->withInput()->with(flash($validator->errors()->all()[0], 'danger'))->with('pill', 'email-settings');
+        }
+
+        $validated_inputs =  array_diff_key($validator->getData(), array_flip(["_token"]));
+
+        foreach ($validated_inputs as $key => $value) {
+
+            Config::updateorCreate(
+                ['key' => $key],
+                ['value' => is_array($value) ? serialize($value) : $value]
+            );
+        }
+
+        return back()->with(flash(trans('settings.mailgun_updated'), 'success'))->with('pill', 'email-settings');
+    }
+
+
+
+    public function save_mail_smtp(Request $request)
+    {
+
+        $validator = Validator::make($request->all(), [
+
+            'smtp_email' => 'required|email',
+            'smtp_sender_name' => 'required|string',
+            'smtp_protocol' => 'required|in:smtp',
+
+            'smtp_host' => 'required|string',
+            'smtp_user' => 'required|string',
+
+            'smtp_password' => 'required|string',
+
+            'smtp_port' => 'required|integer',
+
+            'smtp_encryption' => 'required|in:tls,ssl',
+
+
+
+        ], [
+            'smtp_email.required'         => 'Company email is required',
+            'smtp_email.email'            => 'Company email Isn\'t Valid',
+
+            'smtp_sender_name.required'           => 'Sender Name is required',
+            'smtp_sender_name.string'             => 'Sender Name Should Be String',
+
+            'smtp_host.required'             => 'Mail Host is required',
+            'smtp_host.string'                => 'Mail Host Isn\'t Valid',
+
+            'smtp_password.required'                => 'Mail Password is required',
+            'smtp_password.string'                  => 'Mail Password Should Be String',
+
+            'smtp_port.required'                    => 'Mail Port is required',
+            'smtp_port.string'                      => 'Mail Port Should Be Integer',
+
+            'smtp_encryption.required'              => 'Mail Encryption is required',
+            'smtp_encryption.in'                    => 'Mail Encryption is Invalid',
+
+
+
+
+        ]);
+
+
+        if ($validator->fails()) {
+
+            return back()->withInput()->with(flash($validator->errors()->all()[0], 'danger'))->with('pill', 'email-settings');
+        }
+
+        $validated_inputs =  array_diff_key($validator->getData(), array_flip(["_token"]));
+
+        foreach ($validated_inputs as $key => $value) {
+
+            Config::updateorCreate(
+                ['key' => $key],
+                ['value' => is_array($value) ? serialize($value) : $value]
+            );
+        }
+
+        return back()->with(flash(trans('settings.mail_updated'), 'success'))->with('pill', 'email-settings');
+    }
 }

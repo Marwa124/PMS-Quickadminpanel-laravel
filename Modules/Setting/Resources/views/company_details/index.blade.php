@@ -83,26 +83,34 @@ body{
 
 
                 @include('setting::tabs.company_system')
+                @include('setting::tabs.email_settings')
 
 
 
             </div>
         </div>
     </div>
-@endsection
-@section('scripts')
 
-<script>
- 
- 
-</script>
+
+@endsection
 
 
 @if(session()->has('pill'))
 <script>
+    console.log('here')
 window.onload = (event) => {
 
-    var pill = '{{ session()->get('pill','company_details') }}'
+   
+  $(window).keydown(function(event){
+    if(event.keyCode == 13) {
+      event.preventDefault();
+      return false;
+    }
+  });
+
+
+
+    var pill = '{{ session()->get('pill','company-details') }}'
 
     //reset all tabs
     $('.nav-pills .nav-link').attr('aria-selected',false)
@@ -117,18 +125,10 @@ window.onload = (event) => {
 
 
 
-$(document).ready(function() {
-  $(window).keydown(function(event){
-    if(event.keyCode == 13) {
-      event.preventDefault();
-      return false;
-    }
-  });
-});
+
    
 </script>
 
-@endif
-@endsection
+@endif 
 
 
