@@ -38,7 +38,6 @@ $(document).ready(function () {
         var allowanceHouse   = parseInt($("input[name='allowance[house_allowance]']").val() ?? 0);
         var allowanceMedical = parseInt($("input[name='allowance[medical_allowance]']").val() ?? 0);
 
-
         var allowanceMore = moreAllowances(allowancesLabels);
 
         var sum = 0;
@@ -50,7 +49,7 @@ $(document).ready(function () {
                 sum += parseInt(elem.value ?? 0);
             })
         }
-        // console.log(basicSalary , allowanceHouse , allowanceMedical , allowanceMore , sum);
+        console.log(basicSalary , allowanceHouse , allowanceMedical , allowanceMore , sum);
         return basicSalary + allowanceHouse + allowanceMedical + allowanceMore + sum;
     }
 
@@ -65,9 +64,11 @@ $(document).ready(function () {
         // var uniqueAllowanceLabels = moreAllowanceLabels.filter(function(item, i, moreAllowanceLabels) {
         //     return i == moreAllowanceLabels.indexOf(item);
         // });
-
+console.log(uniqueAllowanceLabels, moreAllowanceLabels);
         uniqueAllowanceLabels.forEach(element => {
             moreAllowances += parseInt($("input[name='allowance["+element+"]']").val());
+            console.log(moreAllowances, 'moreAllowances');
+
         });
         return moreAllowances;
     }
@@ -82,6 +83,7 @@ $(document).ready(function () {
 
         uniqueDeductionLabels.forEach(element => {
             moreDeductions += parseInt($("input[name='deduction["+element+"]']").val());
+            console.log(parseInt($("input[name='deduction["+element+"]']").val()));
         });
         return moreDeductions;
     }
@@ -104,13 +106,12 @@ $(document).ready(function () {
             })
         }
 
-        // console.log(deductionFund , deductionTax , deductionMore , sum);
+        console.log(deductionFund , deductionTax , deductionMore , sum);
         return deductionFund + deductionTax + deductionMore + sum;
     }
 
     function netSalary()
     {
-        console.log('xxx');
         return totalGross() - totalDeductions();
     }
 
@@ -133,7 +134,7 @@ $(document).ready(function () {
     // $(".deductionValue").focusout(function(e){
     $("body").on('focusout','.deductionValue', function(e){
 
-        if(!$(this).hasClass('moreClickDeduct')) {
+        // if(!$(this).hasClass('moreClickDeduct')) {
             if ($('input[name="deductionLabel[]"]').val()) {
                 var deductionLabelValue = $(this).closest('.form-group').find('input[name="deductionLabel[]"]').val();
             }else{
@@ -145,13 +146,16 @@ $(document).ready(function () {
 
             $('#total_deduction').val(totalDeductions());
             $('#net_salary').val(netSalary());
-        }
+        // }
     })
     // !!!: Totals Section /////////////
 
 
     // !!!: More Allowances Button /////////////////////////////
     $('.moreAllowances').on('click', function(){
+        var prev = '';
+        var current = '';
+
         allowanceId +=1;
         $('.allowancesGroup').append(`
             <div class="form-group" id="allowance${allowanceId}">
@@ -170,9 +174,8 @@ $(document).ready(function () {
                 $("input[name='allowanceValue[]']").attr('disabled', false);
 
                 var labelName = $(this).val();
-                if (oldLabelVal) {
-
-                    allowancesLabels.shift(oldLabelVal);
+                if (prev) {
+                    allowancesLabels.shift(prev);
                 }
                 allowancesLabels.push(labelName);
 
@@ -181,9 +184,23 @@ $(document).ready(function () {
             }
         })
 
-        $(".allowanceLabel").change(function(){
-            oldLabelVal = $(this).val();
-        })
+        ///////////// Fetch Old label Value before change//////////////////
+        $('.allowanceLabel').on('focusin', function(){
+            $(this).data('val', $(this).val());
+        });
+
+        $('.allowanceLabel').on('change', function(){
+            var prev = $(this).data('val');
+            var current = $(this).val();
+            console.log("Prev value " + prev);
+            console.log("New value " + current);
+        });
+        ///////////// Fetch Old label Value before change///////////////////
+
+
+        // $(".allowanceLabel").change(function(){
+        //     oldLabelVal = $(this).val();
+        // })
 
 
         $(".allowanceValue").focusout(function(){
@@ -204,10 +221,13 @@ $(document).ready(function () {
         $('.removeAllowance').on('click', function(){
             $('.removeAllowance').attr('disabled', true);
             var labelName = $(this).closest('.form-group').find('.allowanceLabel').val();
-
-            allowancesLabels.shift(labelName);
+            console.log(labelName, allowancesLabels);
+            allowancesLabels.splice($.inArray(labelName, allowancesLabels),1);
+            // allowancesLabels.shift(labelName);
 
             allowanceMore = moreAllowances(allowancesLabels);
+            // console.log( allowancesLabels);
+            console.log(allowanceMore, allowancesLabels);
             $('input[name="gross_salary"]').val(totalGross());
             $('#net_salary').val(netSalary());
 
@@ -225,7 +245,7 @@ $(document).ready(function () {
                         <input class="form-control w-50 deductionLabel" placeholder="Enter Deduction Name" type="text" name="deductionLabel[]" value="" required>
                         <a href="javascript:void(0)" class="removeDeduction text-danger"><i class="fas fa-remove"></i>Remove</a>
                     </div>
-                    <input class="form-control w-50 deductionValue moreClickDeduct" placeholder="Enter Deduction Value" type="number" min="0" name="deductionValue[]" value="0" required disabled>
+                    <input class="form-control w-50 deductionValue" placeholder="Enter Deduction Value" type="number" min="0" name="deductionValue[]" value="0" required disabled>
                 </div>
             `);
 
