@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\MassDestroyStockRequest;
 use App\Http\Requests\StoreStockRequest;
 use App\Http\Requests\UpdateStockRequest;
+use App\Models\AssignStock;
 use App\Models\Stock;
 use App\Models\StockCategory;
 use App\Models\StockSubCategory;
@@ -30,6 +31,17 @@ class StocksController extends Controller
             ->get();
 
 //        $stocks = StockCategory::all();
+
+        foreach($stocks as $stock){
+            $ids = Stock::where('name',$stock->name)->pluck('id');
+            $assigned_stock =AssignStock::where('sub_category_id',$stock->stock_sub_category_id)->whereIn('stock_id',$ids)->sum('quantity');
+
+            $stock->TotalStock -= $assigned_stock;
+
+        }
+
+
+
 
         $main_stocks_categories = $stocks->groupBy('stock_category_id');
 

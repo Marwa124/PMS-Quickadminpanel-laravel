@@ -123,6 +123,14 @@ Route::group(['as' => 'finance.admin.', 'prefix' => 'admin/finance', 'namespace'
 
 
 
+    ////////////////////////////////////Assign Stock//////////////////////////////////////////////////////////////
+    Route::get('assign_stocks/report','AssignStocksController@report')->name('assign_stocks.report');
+    Route::post('assign_stocks/report/getresult','AssignStocksController@report_result')->name('assign_stocks.getresult');
+    Route::resource('assign_stocks','AssignStocksController');
+    Route::delete('assign_stocks_mass_destroy','AssignStocksController@massDestroy')->name('assign_stocks.massDestroy');
+    Route::post('assign_stocks/get_items','AssignStocksController@get_items');
+    ////////////////////////////////END Assign Stock//////////////////////////////////////////////////////////////
+
 
     ////////////////////////////////END Office Asset//////////////////////////////////////////////////////////////
 

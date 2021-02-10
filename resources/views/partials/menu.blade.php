@@ -280,6 +280,8 @@
                                     </a>
                                 </li>
                                 {{--@endcan--}}
+                                {{--@can('manage_stock')--}}
+
                                 <li class="c-sidebar-nav-dropdown">
                                     <a class="c-sidebar-nav-dropdown-toggle" href="#">
                                         <i class="fa-fw fas fa-globe-africa c-sidebar-nav-icon sub-parent-dropdown">
@@ -297,6 +299,37 @@
                                             </a>
                                         </li>
                                     </ul>
+                                {{--@endcan--}}
+                                {{--@can('assign_stocks')--}}
+
+                                <li class="c-sidebar-nav-dropdown">
+                                    <a class="c-sidebar-nav-dropdown-toggle" href="#">
+                                        <i class="fa-fw fas fa-globe-africa c-sidebar-nav-icon sub-parent-dropdown">
+                                        </i>
+                                        {{ trans('cruds.finance.assign_stocks') }}
+                                    </a>
+                                    <ul class="c-sidebar-nav-dropdown-items">
+                                        <li class="c-sidebar-nav-item">
+                                            <a href="{{ route("finance.admin.assign_stocks.index") }}"
+                                               class="c-sidebar-nav-link {{ request()->is("admin/assign_stocks") || request()->is("admin/finance/*") ? "active" : "" }}">
+                                                <i class="fa-fw fas fa-trademark c-sidebar-nav-icon self-item-link">
+
+                                                </i>
+                                                {{ trans('cruds.finance.assign_stocks') }}
+                                            </a>
+                                        </li>
+                                        <li class="c-sidebar-nav-item">
+                                            <a href="{{ route("finance.admin.assign_stocks.report") }}"
+                                               class="c-sidebar-nav-link {{ request()->is("admin/assign_stocks") || request()->is("admin/finance/*") ? "active" : "" }}">
+                                                <i class="fa-fw fas fa-trademark c-sidebar-nav-icon self-item-link">
+
+                                                </i>
+                                                {{ trans('cruds.finance.assign_stocks_report') }}
+                                            </a>
+                                        </li>
+                                    </ul>
+                                {{--@endcan--}}
+
                             </ul>
                         </li>
 
