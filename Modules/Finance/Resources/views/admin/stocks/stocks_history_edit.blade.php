@@ -7,7 +7,7 @@
         </div>
 
         <div class="card-body">
-            <form method="POST" action="{{ route("finance.admin.stocks.update") }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route("finance.admin.stocks_history.update") }}" enctype="multipart/form-data">
                 <input type="hidden" name="id" value="{{$stock->id}}">
                 @method('PUT')
                 @csrf
@@ -58,7 +58,7 @@
                 <div class="form-group">
                     <label for="total_stock">{{ trans('cruds.stock.fields.total_stock') }}</label>
                     <input class="form-control {{ $errors->has('total_stock') ? 'is-invalid' : '' }}" type="number"
-                           name="total_stock" id="total_stock" value="{{ old('total_stock', $total_stock) }}" disabled>
+                           name="total_stock" id="total_stock" value="{{ old('total_stock', $stock->total_stock) }}">
                     @if($errors->has('total_stock'))
                         <div class="invalid-feedback">
                             {{ $errors->first('total_stock') }}

@@ -16,6 +16,9 @@ return [
         'stock_category'      => 'Stock Category',
         'sub_stock_category'      => 'Sub Stock Category',
         'office_asset' =>'Office Assets',
+        'stocks' =>'Stocks',
+        'manage_stock' =>'Manage Stock',
+        'stock_history' =>'Stock History',
     ],
     'payment_method'                => [
         'title'          => 'Payment Method',
@@ -108,7 +111,7 @@ return [
         ]
     ],
 
-    'stock_category'                => [
+    'stock_category'      => [
         'title'          => 'Stock Category',
         'title_singular' => 'Stock Category',
         'attach' => 'Attachments',

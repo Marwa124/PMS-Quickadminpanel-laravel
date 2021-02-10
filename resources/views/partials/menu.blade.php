@@ -270,16 +270,33 @@
                                     </li>
                                 @endcan
                                 {{--@can('stock_access')--}}
-                                    <li class="c-sidebar-nav-item">
-                                        <a href="{{ route("finance.admin.stocks.index") }}"
-                                           class="c-sidebar-nav-link {{ request()->is("admin/stocks") || request()->is("admin/finance/*") ? "active" : "" }}">
-                                            <i class="fa-fw fas fa-trademark c-sidebar-nav-icon self-item-link">
+                                <li class="c-sidebar-nav-item">
+                                    <a href="{{ route("finance.admin.stocks.index") }}"
+                                       class="c-sidebar-nav-link {{ request()->is("admin/stocks") || request()->is("admin/finance/*") ? "active" : "" }}">
+                                        <i class="fa-fw fas fa-trademark c-sidebar-nav-icon self-item-link">
 
-                                            </i>
-                                            {{ trans('cruds.finance.stocks') }}
-                                        </a>
-                                    </li>
+                                        </i>
+                                        {{ trans('cruds.finance.stocks') }}
+                                    </a>
+                                </li>
                                 {{--@endcan--}}
+                                <li class="c-sidebar-nav-dropdown">
+                                    <a class="c-sidebar-nav-dropdown-toggle" href="#">
+                                        <i class="fa-fw fas fa-globe-africa c-sidebar-nav-icon sub-parent-dropdown">
+                                        </i>
+                                        {{ trans('cruds.finance.manage_stock') }}
+                                    </a>
+                                    <ul class="c-sidebar-nav-dropdown-items">
+                                        <li class="c-sidebar-nav-item">
+                                            <a href="{{ route("finance.admin.stocks.history") }}"
+                                               class="c-sidebar-nav-link {{ request()->is("admin/stock") || request()->is("admin/finance/*") ? "active" : "" }}">
+                                                <i class="fa-fw fas fa-trademark c-sidebar-nav-icon self-item-link">
+
+                                                </i>
+                                                {{ trans('cruds.finance.stock_history') }}
+                                            </a>
+                                        </li>
+                                    </ul>
                             </ul>
                         </li>
 
