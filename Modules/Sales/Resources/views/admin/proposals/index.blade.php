@@ -436,7 +436,7 @@
                             @endcan
                         @else
                             @can('proposal_delete')
-                                <form action="#"
+                                <form action="{{ route('sales.admin.proposals.forceDelete', $proposal->id) }}"
                                       method="POST"
                                       onsubmit="return confirm('{{ trans('global.areYouSure') }}');"
                                       style="display: inline-block;">
@@ -445,7 +445,7 @@
                                     <input type="submit" class="btn btn-xs btn-success"
                                            value="{{ trans('global.restore') }}">
                                 </form>
-                                <form action="#"
+                                <form action="{{ route('sales.admin.proposals.forceDelete', $proposal->id) }}"
                                       method="POST"
                                       onsubmit="return confirm('{{trans('cruds.messages.proposal_force_delete')}} \n{{ trans('global.areYouSure') }}');"
                                       style="display: inline-block;">
