@@ -20,7 +20,6 @@ if (!function_exists('getAbsentUsers')) {
 
         if (!$data_value && $date < date('Y-m-d') && !weekEnds($date) && !getVacations($date, $user_id) && !getHolidays($date)) {
             if (!$userAbsent) {
-                // dd('ppppmmm');
                 $result = new Absence();
                 $result->date = $date;
                 $result->user_id = $user_id;
@@ -174,7 +173,7 @@ if (!function_exists('timezones')) {
 
 
 
-if (!function_exists('set_locale')) {
+if (!function_exists('get_locale')) {
     function get_locale($user = FALSE)
     {
         $locale = null;
