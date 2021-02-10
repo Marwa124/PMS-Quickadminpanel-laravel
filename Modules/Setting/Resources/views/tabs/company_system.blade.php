@@ -15,7 +15,7 @@ aria-labelledby="v-pills-details-tab">
    <div class="card-body">
 
 
-    <form action="{{ route('admin.system.store') }}" method="POST">
+    <form  id="system" action="{{ route('admin.system.store') }}" method="POST">
         @csrf
                    <div class="col-md-12">
 
@@ -36,7 +36,7 @@ aria-labelledby="v-pills-details-tab">
                                             @lang('settings.default_language')
                                          </option>
                                             @forelse ($languages as $language)
-                                            <option  {{ old('default_language',settings('default_language')) == $language->name ? ' selected' : ''}} value="{{ $language->name }}"> {{ $language->name }}</option>
+                                            <option  {{ old('default_language',settings('default_language')) == $language->name ? 'selected' : ''}} value="{{ $language->name }}"> {{ $language->name }}</option>
                                             @empty
                                             
                                         @endforelse
@@ -90,7 +90,7 @@ aria-labelledby="v-pills-details-tab">
                                 @lang('settings.timezone')
                              </option>
                                 @forelse ($timezones as $timezone => $description)
-                                <option  {{ old('timezone',settings('timezone')) == $timezone ? ' selected' : ''}} value="{{ $timezone  }}"> {{ $description }}</option>
+                                <option  {{ old('timezone',settings('timezone')) == $timezone ? 'selected' : ''}} value="{{ $timezone  }}"> {{ $description }}</option>
                                 @empty
                                 
                                 @endforelse
@@ -130,7 +130,7 @@ aria-labelledby="v-pills-details-tab">
                                         @lang('settings.default_currency')
                                     </option>
                                     @forelse ($currencies as $currency)
-                                    <option  {{ old('currency',settings('currency')) == $currency->code  ? ' selected' : ''}} value="{{ $currency->code   }}"> {{ $currency->name  }}</option>
+                                    <option  {{ old('default_currency',settings('default_currency')) == $currency->code  ? ' selected' : ''}} value="{{ $currency->code   }}"> {{ $currency->name  }}</option>
                                     @empty
                                     
                                     @endforelse
@@ -185,8 +185,8 @@ aria-labelledby="v-pills-details-tab">
                                 @lang('settings.currency_position')
                              </option>
                                 
-                                <option  {{ old('currency_position',settings('currency_position')) == 'right'  ? ' selected' : ''}} value="'right"> @lang('settings.right') </option>
-                                <option  {{ old('currency_position',settings('currency_position')) == 'left'  ? ' selected' : ''}} value="'left">  @lang('settings.left')  </option>
+                                <option  {{ old('currency_position',settings('currency_position')) == 'right'  ? ' selected' : ''}} value="right"> @lang('settings.right') </option>
+                                <option  {{ old('currency_position',settings('currency_position')) == 'left'  ? ' selected' : ''}} value="left">  @lang('settings.left')  </option>
                               
                                 
                               
@@ -206,15 +206,18 @@ aria-labelledby="v-pills-details-tab">
                         </div>
                         <div class="col-md-5">
 
-                            <select name="default_tax" class="select2" id="" multiple="multiple">
+                            <select name="default_tax[]" class="select2" id="" multiple="multiple">
  
 
                                 @forelse ($taxes as $tax)
 
-                                <option @if(in_array($tax->id,$default_tax)){{ ' selected ' }}@endif value="{{$tax->id}}" >
-                                {{ $tax->rate_percent}} % {{ $tax->name }}
-                                
-                                </option>                                   
+
+
+                                    <option @if(in_array(  $tax->id,old('default_tax',$default_tax) ) ){{ 'selected ' }}@endif value="{{$tax->id}}" >
+
+                                    {{ $tax->rate_percent}} % {{ $tax->name }}
+                                    
+                                    </option>                                   
                                 @empty
                                     
                                 @endforelse
@@ -256,14 +259,14 @@ aria-labelledby="v-pills-details-tab">
 
                                     <select name="date_format" class="select2">
                                         <option value="" > @lang('settings.date_format') </option>
-                                        <option value="%d-%m-%Y" @if($date_format == "%d-%m-%Y") {{ 'selected'  }} @endif > <?= strftime("%d-%m-%Y", time()) ?></option>
-                                        <option value="%m-%d-%Y" @if($date_format == "%m-%d-%Y") {{ 'selected'  }} @endif > <?= strftime("%m-%d-%Y", time()) ?></option>
-                                        <option value="%Y-%m-%d" @if($date_format == "%Y-%m-%d") {{ 'selected'  }} @endif > <?= strftime("%Y-%m-%d", time()) ?></option>
-                                        <option value="%d-%m-%y" @if($date_format == "%d-%m-%y") {{ 'selected'  }} @endif   ><?= strftime("%d-%m-%y", time()) ?></option>
-                                        <option value="%m-%d-%y" @if($date_format == "%m-%d-%y") {{ 'selected'  }} @endif   ><?= strftime("%m-%d-%y", time()) ?></option>
-                                        <option value="%m.%d.%Y" @if($date_format == "%m.%d.%Y") {{ 'selected'  }} @endif   ><?= strftime("%m.%d.%Y", time()) ?></option>
-                                        <option value="%d.%m.%Y" @if($date_format == "%d.%m.%Y") {{ 'selected'  }} @endif   ><?= strftime("%d.%m.%Y", time()) ?></option>
-                                        <option value="%Y.%m.%d" @if($date_format == "%Y.%m.%d") {{ 'selected'  }} @endif   ><?= strftime("%Y.%m.%d", time()) ?></option>
+                                        <option value="%d-%m-%Y" @if(old('date_format',settings('date_format')) == "%d-%m-%Y") {{ 'selected'  }} @endif > <?= strftime("%d-%m-%Y", time()) ?></option>
+                                        <option value="%m-%d-%Y" @if(old('date_format',settings('date_format')) == "%m-%d-%Y") {{ 'selected'  }} @endif > <?= strftime("%m-%d-%Y", time()) ?></option>
+                                        <option value="%Y-%m-%d" @if(old('date_format',settings('date_format')) == "%Y-%m-%d") {{ 'selected'  }} @endif > <?= strftime("%Y-%m-%d", time()) ?></option>
+                                        <option value="%d-%m-%y" @if(old('date_format',settings('date_format')) == "%d-%m-%y") {{ 'selected'  }} @endif   ><?= strftime("%d-%m-%y", time()) ?></option>
+                                        <option value="%m-%d-%y" @if(old('date_format',settings('date_format')) == "%m-%d-%y") {{ 'selected'  }} @endif   ><?= strftime("%m-%d-%y", time()) ?></option>
+                                        <option value="%m.%d.%Y" @if(old('date_format',settings('date_format')) == "%m.%d.%Y") {{ 'selected'  }} @endif   ><?= strftime("%m.%d.%Y", time()) ?></option>
+                                        <option value="%d.%m.%Y" @if(old('date_format',settings('date_format')) == "%d.%m.%Y") {{ 'selected'  }} @endif   ><?= strftime("%d.%m.%Y", time()) ?></option>
+                                        <option value="%Y.%m.%d" @if(old('date_format',settings('date_format')) == "%Y.%m.%d") {{ 'selected'  }} @endif   ><?= strftime("%Y.%m.%d", time()) ?></option>
                                     </select>
                
                        </div>
@@ -285,9 +288,9 @@ aria-labelledby="v-pills-details-tab">
 
                             <select name="time_format" class="select2" id="">
                                 <option value="">@lang('settings.time_format')</option>
-                                <option value="g:i a">{{ date("g:i a") }}</option>
-                                <option value="g:i A">{{ date("g:i A") }}</option>
-                                <option value="H:i">{{ date("H:i") }}</option>
+                                <option @if(old('time_format',settings('time_format')) == 'g:i a'  ) {{ 'selected' }} @endif  value="g:i a">{{ date("g:i a") }}</option>
+                                <option @if(old('time_format',settings('time_format')) == 'g:i A'  ) {{ 'selected' }} @endif  value="g:i A">{{ date("g:i A") }}</option>
+                                <option @if(old('time_format',settings('time_format')) == 'H:i'  ) {{ 'selected' }} @endif  value="H:i">{{ date("H:i") }}</option>
 
                        
                             </select>
@@ -310,14 +313,14 @@ aria-labelledby="v-pills-details-tab">
 
                             <select name="money_format" class="select2" id="">
                                 <option value="">@lang('settings.money_format')</option>
-                                <option value="1" @if(old('money_format',settings('money_format')) == 1 ) @endif>{{ "1,234." . $decimal }}</option>
-                                <option value="2"  @if(old('money_format',settings('money_format')) == 2 ) @endif>{{"1.234," . $decimal}}</option>
-                                <option value="3"  @if(old('money_format',settings('money_format')) == 3 ) @endif>{{"1234." . $decimal}}</option>
-                                <option value="4"  @if(old('money_format',settings('money_format')) == 4 ) @endif>{{"1234," . $decimal}}</option>
-                                <option value="5"  @if(old('money_format',settings('money_format')) == 5 ) @endif>{{"1'234." . $decimal}}</option>
-                                <option value="6"  @if(old('money_format',settings('money_format')) == 6 ) @endif>{{"1 234." . $decimal}}</option>
-                                <option value="7"  @if(old('money_format',settings('money_format')) == 7 ) @endif>{{"1 234," . $decimal}}</option>
-                                <option value="8"  @if(old('money_format',settings('money_format')) == 8 ) @endif>{{"1 234'" . $decimal}}</option>
+                                <option value="1" @if(old('money_format',settings('money_format')) == 1 )  {{ 'selected' }} @endif>{{ "1,234." . $decimal }}</option>
+                                <option value="2"  @if(old('money_format',settings('money_format')) == 2 )  {{ 'selected' }} @endif>{{"1.234," . $decimal}}</option>
+                                <option value="3"  @if(old('money_format',settings('money_format')) == 3 )  {{ 'selected' }} @endif>{{"1234." . $decimal}}</option>
+                                <option value="4"  @if(old('money_format',settings('money_format')) == 4 )  {{ 'selected' }} @endif>{{"1234," . $decimal}}</option>
+                                <option value="5"  @if(old('money_format',settings('money_format')) == 5 )  {{ 'selected' }} @endif>{{"1'234." . $decimal}}</option>
+                                <option value="6"  @if(old('money_format',settings('money_format')) == 6 )  {{ 'selected' }} @endif>{{"1 234." . $decimal}}</option>
+                                <option value="7"  @if(old('money_format',settings('money_format')) == 7 )  {{ 'selected' }} @endif>{{"1 234," . $decimal}}</option>
+                                <option value="8"  @if(old('money_format',settings('money_format')) == 8 )  {{ 'selected' }} @endif>{{"1 234'" . $decimal}}</option>
 
                        
                             </select>
@@ -329,7 +332,7 @@ aria-labelledby="v-pills-details-tab">
 
                         <div class="col-md-2">
 
-                            <input type="text" class="form-control pt0 pb0" name="decimal_separator" value="{{ old('decimal_separator',$decimal_separator)  }}">
+                            <input type="text" class="form-control pt0 pb0" name="decimal_separator" value="{{ old('decimal_separator',session('decimal_separator',2))  }}">
 
                         </div>
                
@@ -348,7 +351,7 @@ aria-labelledby="v-pills-details-tab">
 
 
 
-                           <input type="text" class="form-control" value="{{ settings('allowed_files') }}" name="allowed_files" placeholder="@lang('settings.separate_using_exte')">
+                           <input type="text" class="form-control" value="{{ old('allowed_files',settings('allowed_files')) }}" name="allowed_files" placeholder="@lang('settings.separate_using_exte')">
 
 
 
@@ -369,7 +372,7 @@ aria-labelledby="v-pills-details-tab">
 
 
 
-                           <input type="text" class="form-control" value="{{ settings('max_file_size') }}" name="max_file_size" placeholder="@lang('settings.separate_using_exte')">
+                           <input type="text" class="form-control" value="{{old('max_file_size', settings('max_file_size')) }}" name="max_file_size" placeholder="@lang('settings.separate_using_exte')">
 
 
 
@@ -483,7 +486,8 @@ aria-labelledby="v-pills-details-tab">
 
 
 
-                           <input type="checkbox" @if( old('enable_languages',settings('enable_languages')) == true )  {{ 'checked' }}  @endif value="true"   name="enable_languages" >
+                           <input type="hidden"  value="off"   name="enable_languages" >
+                           <input type="checkbox" @if( old('enable_languages',settings('enable_languages')) == 'on' )  {{ 'checked' }}  @endif   name="enable_languages" >
 
 
 
@@ -506,7 +510,8 @@ aria-labelledby="v-pills-details-tab">
 
 
 
-                           <input type="checkbox" @if( old('allow_sub_tasks',settings('allow_sub_tasks')) == true )  {{ 'checked' }}   @endif value="true"  name="allow_sub_tasks" >
+                           <input type="hidden"  value="off"   name="allow_sub_tasks" >
+                           <input type="checkbox" @if( old('allow_sub_tasks',settings('allow_sub_tasks')) == 'on' )  {{ 'checked' }}   @endif   name="allow_sub_tasks" >
 
 
 
@@ -527,7 +532,8 @@ aria-labelledby="v-pills-details-tab">
 
 
 
-                           <input type="checkbox" @if( old('only_allowed_ip_can_clock',settings('only_allowed_ip_can_clock')) == true )  {{ 'checked' }}  @endif value="true"   name="only_allowed_ip_can_clock" >
+                           <input type="hidden"  value="off"    name="only_allowed_ip_can_clock" >
+                           <input type="checkbox" @if( old('only_allowed_ip_can_clock',settings('only_allowed_ip_can_clock')) == 'on' )  {{ 'checked' }}  @endif    name="only_allowed_ip_can_clock" >
 
 
 
@@ -548,7 +554,8 @@ aria-labelledby="v-pills-details-tab">
 
 
 
-                           <input type="checkbox" @if( old('allow_client_registration',settings('allow_client_registration')) == true )  {{ 'checked' }}  @endif value="true"  name="allow_client_registration" >
+                           <input type="hidden"  value="off"   name="allow_client_registration" >
+                           <input type="checkbox" @if( old('allow_client_registration',settings('allow_client_registration')) == 'on' )  {{ 'checked' }}  @endif    name="allow_client_registration" >
 
 
 
@@ -568,7 +575,8 @@ aria-labelledby="v-pills-details-tab">
 
 
 
-                           <input type="checkbox" @if( old('allow_apply_job_from_login',settings('allow_apply_job_from_login')) == true )  {{ 'checked' }}  @endif value="true"  name="allow_apply_job_from_login" >
+                           <input type="hidden"  value="off"   name="allow_apply_job_from_login" >
+                           <input type="checkbox" @if( old('allow_apply_job_from_login',settings('allow_apply_job_from_login')) == 'on' )  {{ 'checked' }}  @endif   name="allow_apply_job_from_login" >
 
 
 
@@ -588,7 +596,7 @@ aria-labelledby="v-pills-details-tab">
                         </div>
                         <div class="col-md-7">
                             
-                            <button style="padding: 6px;border-radius: 0px;" type="submit" class="btn btn-sm btn-primary">@lang('settings.save_changes')</button>
+                            <button  formaction="{{ route('admin.system.store') }}" style="padding: 6px;border-radius: 0px;"  class="btn btn-sm btn-primary">@lang('settings.save_changes')</button>
                         </div>
                     </div> 
 
@@ -606,3 +614,6 @@ aria-labelledby="v-pills-details-tab">
     </div>
 </div>
 </div>
+
+
+
