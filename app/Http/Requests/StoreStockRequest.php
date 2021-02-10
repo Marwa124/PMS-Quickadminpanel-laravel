@@ -9,10 +9,10 @@ use Illuminate\Http\Response;
 
 class StoreStockRequest extends FormRequest
 {
-    public function authorize()
-    {
-        return Gate::allows('stock_create');
-    }
+//    public function authorize()
+//    {
+////        return Gate::allows('stock_create');
+//    }
 
     public function rules()
     {
@@ -23,14 +23,17 @@ class StoreStockRequest extends FormRequest
             ],
             'name'                  => [
                 'string',
-                'required',
-                'unique:stocks',
+                'required'
             ],
             'total_stock'           => [
                 'nullable',
                 'integer',
-                'min:-2147483648',
+                'min:0',
                 'max:2147483647',
+            ],
+            'buying_date'           => [
+                'date',
+                'required',
             ],
         ];
     }

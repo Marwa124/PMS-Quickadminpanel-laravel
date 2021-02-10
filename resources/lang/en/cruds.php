@@ -15,6 +15,7 @@ return [
         'invoices'      => 'Invoices',
         'stock_category'      => 'Stock Category',
         'sub_stock_category'      => 'Sub Stock Category',
+        'office_asset' =>'Office Assets',
     ],
     'payment_method'                => [
         'title'          => 'Payment Method',
@@ -2761,6 +2762,8 @@ return [
             'stock_sub_category'        => 'Stock Sub Category',
             'stock_sub_category_helper' => ' ',
             'name'                      => 'Name',
+            'buying_date'               => 'Buying Date',
+            'buying_date_helper'        => ' ',
             'name_helper'               => ' ',
             'total_stock'               => 'Total Stock',
             'total_stock_helper'        => ' ',

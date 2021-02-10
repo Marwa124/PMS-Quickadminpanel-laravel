@@ -105,6 +105,11 @@ Route::group(['as' => 'finance.admin.', 'prefix' => 'admin/finance', 'namespace'
     Route::delete('stock_category_mass_destroy','StockCategoryController@massDestroy')->name('sub_stock_category.massDestroy');
     ////////////////////////////////END STOCK CATEGORY//////////////////////////////////////////////////////////////
 
+    ////////////////////////////////////STOCK LIST//////////////////////////////////////////////////////////////
+    Route::resource('stocks','StocksController');
+    Route::delete('stocks_mass_destroy','StocksController@massDestroy')->name('stocks.massDestroy');
+    ////////////////////////////////END STOCK LIST//////////////////////////////////////////////////////////////
+
 
 
 
