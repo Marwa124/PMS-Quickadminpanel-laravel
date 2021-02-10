@@ -26,15 +26,6 @@
                             {{ trans('cruds.stock.fields.id') }}
                         </th>
                         <th>
-                            {{ trans('cruds.stock.fields.stock_sub_category') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.stock.fields.stock_category') }}
-                        </th>
-                        <th>
-                            {{ trans('cruds.stock.fields.buying_date') }}
-                        </th>
-                        <th>
                             {{ trans('cruds.stock.fields.name') }}
                         </th>
                         <th>
@@ -46,39 +37,31 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($stocks as $key => $stock)
-                        <tr data-entry-id="{{ $stock->id }}">
+                    @foreach($stocks as $stock)
+                    @php $stock = $stock->all(); @endphp
+                        <tr data-entry-id="{{ $stock['id'] }}">
                             <td>
 
                             </td>
                             <td>
-                                {{ $stock->id ?? '' }}
+                                {{ $stock['id'] ?? '' }}
                             </td>
                             <td>
-                                {{ $stock->stock_sub_category->name ?? '' }}
+                                {{ $stock['name'] ?? '' }}
                             </td>
                             <td>
-                                {{ $stock->stock_category->name ?? '' }}
-                            </td>
-                            <td>
-                                {{ $stock->buying_date ?? '' }}
-                            </td>
-                            <td>
-                                {{ $stock->name ?? '' }}
-                            </td>
-                            <td>
-                                {{ $stock->total_stock ?? '' }}
+                                {{ $stock['total_stock'] ?? '' }}
                             </td>
                             <td>
 
                                 {{--@can('stock_edit')--}}
-                                <a class="btn btn-xs btn-info" href="{{ route('finance.admin.stocks.edit', $stock->id) }}">
+                                <a class="btn btn-xs btn-info" href="{{ route('finance.admin.stocks.edit', $stock['id']) }}">
                                     {{ trans('global.edit') }}
                                 </a>
                                 {{--@endcan--}}
 
                                 {{--@can('stock_delete')--}}
-                                <form action="{{ route('finance.admin.stocks.destroy', $stock->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                <form action="{{ route('finance.admin.stocks.destroy', $stock['id']) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
                                     <input type="hidden" name="_method" value="DELETE">
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                     <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">

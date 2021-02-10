@@ -21,21 +21,24 @@ class StocksController extends Controller
 
 //        abort_if(Gate::denies('stock_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $quant = null;
 
-        $stocks = Stock::all()->groupBy('name');
-//
-//        dd($stocks);
-//        foreach($stocks as $key => $stock){
-//            dd($stock->sum('total_stock'),$key,$stock);
-//
-//
-//
-//
-//
-//        }
-//
-//        dd($quant);
+        $all_stocks = Stock::all()->groupBy(['name','stock_sub_category_id']);
+
+        foreach($all_stocks as $key => $stock){
+
+            $stocks[] = collect([
+                'id'    => $stock->first()->id,
+                'total_stock' => $stock->sum('total_stock'),
+                'name' => $key,
+                'sub_category' => $stock->first()->stock_sub_category->name,
+                'category' => $stock->first()->stock_category->name,
+            ]);
+
+
+
+        }
+
+
 
         return view('finance::admin.stocks.index', compact('stocks'));
     }
