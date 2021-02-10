@@ -20,6 +20,8 @@ class Stock extends Model
 
     protected $fillable = [
         'stock_sub_category_id',
+        'stock_category_id',
+        'buying_date',
         'name',
         'total_stock',
         'created_at',
@@ -35,5 +37,9 @@ class Stock extends Model
     public function stock_sub_category()
     {
         return $this->belongsTo(StockSubCategory::class, 'stock_sub_category_id');
+    }
+    public function stock_category()
+    {
+        return $this->belongsTo(StockCategory::class, 'stock_category_id');
     }
 }

@@ -133,17 +133,16 @@
 {{--        @endif--}}
     </div>
 
-    <div style="margin-bottom: 10px;" class="row">
+    <div style="display:flex; justify-content:space-between; padding: 1rem 0">
         @can('task_create')
-            <div class="col-lg-6">
+            <div class="">
                 <a class="btn btn-success" href="{{ route('projectmanagement.admin.tasks.create') }}">
                     {{ trans('global.add') }} {{ trans('cruds.task.title_singular') }}
                 </a>
             </div>
         @endcan
         @can('task_delete')
-            <div style="margin: 10px;" class="row d-flex ml-auto">
-                <div class="col-lg-6 ">
+                <div class="">
                     <a class="btn btn-{{$trashed ? 'info' : 'danger'}}"
                        href="{{$trashed ? route('projectmanagement.admin.tasks.index') : route('projectmanagement.admin.tasks.trashed.index')}}">
 
@@ -152,7 +151,6 @@
                     </a>
 
                 </div>
-            </div>
         @endcan
     </div>
     <div class="card">
@@ -219,15 +217,7 @@
 
                                         {{ $task->{'name_'.app()->getLocale()} ? $task->{'name_'.app()->getLocale()} : '' }}
                                     </a>
-                                    <div class="progress">
-                                        <div
-                                            class="progress-bar {{$task->calculate_progress < 50 ? 'bg-danger':'bg-success'}}"
-                                            role="progressbar"
-                                            style="width: {{$task->calculate_progress}}%; display: {{$task->calculate_progress?:'none'}}"
-                                            aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-                                            {{$task->calculate_progress}}%
-                                        </div>
-                                    </div>
+                                    
                                 </td>
 {{--                                <td>--}}
 {{--                                    <a href="{{ route('projectmanagement.admin.tasks.show', $task->id) }}">--}}
@@ -260,7 +250,20 @@
 {{--                                    </div>--}}
 {{--                                </td>--}}
                                 <td>
-                                    {{ $task->status ? trans('cruds.status.'.$task->status): '' }}
+                                    <div class="text-center">
+                                        <small class="{{$task->calculate_progress < 50 ? 'bg-danger':'bg-success'}}" style="display:block; border-radius:15px; padding:3px 12px; color:#fff; margin-bottom:1rem">
+                                            {{ $task->status ? trans('cruds.status.'.$task->status): '' }}
+                                        </small>
+                                    </div>
+                                    <div class="progress mt-2">
+                                        <div
+                                            class="progress-bar {{$task->calculate_progress < 50 ? 'bg-danger':'bg-success'}}"
+                                            role="progressbar"
+                                            style="width: {{$task->calculate_progress}}%; display: {{$task->calculate_progress?:'none'}}"
+                                            aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                                            {{$task->calculate_progress}}%
+                                        </div>
+                                    </div>
                                 </td>
                                 <td>
                                     @forelse($task->tags as $key => $item)
@@ -302,15 +305,7 @@
                                             </a>
                                         @endcan
 
-                                        @can('task_assign_to')
-
-                                            <a class="btn btn-xs btn-success {{$task->project && $task->project->department ? '' : 'disabled'}}"
-                                               href="{{ route('projectmanagement.admin.tasks.getAssignTo', $task->id) }}"
-                                               title="{{$task->project && $task->project->department ? '' : trans('cruds.messages.add_department_to_project')}}">
-                                                {{ trans('global.assign_to') }}
-                                            </a>
-
-                                        @endcan
+                                        
 
                                         @can('task_delete')
                                             <form
@@ -320,10 +315,22 @@
                                                 style="display: inline-block;">
                                                 <input type="hidden" name="_method" value="DELETE">
                                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                <input type="submit" class="btn btn-xs btn-danger"
-                                                       value="{{ trans('global.delete') }}">
+                                                <!-- <input type="submit" class="btn btn-xs btn-danger"
+                                                       value="{{ trans('global.delete') }}"> -->
+                                                       <button title="Delete" class="btn btn-xs btn-danger" type="submit"><span class="fas fa-trash"></span></button>
                                             </form>
                                         @endcan
+
+                                        @can('task_assign_to')
+
+                                            <a class="btn btn-xs btn-success {{$task->project && $task->project->department ? '' : 'disabled'}}"
+                                               href="{{ route('projectmanagement.admin.tasks.getAssignTo', $task->id) }}"
+                                               title="{{$task->project && $task->project->department ? '' : trans('cruds.messages.add_department_to_project')}}">
+                                                {{ trans('global.assign_to') }}
+                                            </a>
+
+                                        @endcan
+                                        
                                     @else
                                         @can('task_delete')
                                             <form

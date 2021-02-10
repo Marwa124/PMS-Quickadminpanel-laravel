@@ -2,11 +2,13 @@
 
 use Carbon\Carbon;
 use App\Models\Config;
+use App\Models\Locale;
 use Carbon\CarbonPeriod;
 use Modules\HR\Entities\Absence;
 use Modules\HR\Entities\Holiday;
 use Modules\HR\Entities\Vacation;
 use Modules\HR\Entities\WorkingDay;
+use Modules\HR\Entities\AccountDetail;
 use Modules\HR\Entities\LeaveApplication;
 use Modules\HR\Entities\FingerprintAttendance;
 
@@ -167,5 +169,137 @@ if (!function_exists('timezones')) {
         }
 
         return $timezoneList;
+    }
+}
+
+
+
+if (!function_exists('set_locale')) {
+    function get_locale($user = FALSE)
+    {
+        $locale = null;
+        if (!$user) {
+            $locale_config = Config::where('key', 'locale')->first();
+
+
+            if ($locale_config) {
+
+                $locale = Locale::where('locale', $locale_config->value)->first()->code;
+            } else {
+                $locale = env('APP_LOCALE');
+            }
+        } else {
+
+            $locale_user = AccountDetail::where('user_id', $user)->first();
+
+            $loc = null;
+            if (empty($locale_user->locale)) {
+
+                $loc = 'en_US';
+            } else {
+                $loc = $locale_user->locale;
+            }
+
+
+            $locale_for_code = Locale::where('locale', $loc)->first();
+
+            if ($locale_for_code) {
+
+                $locale = $locale_for_code->code;
+            } else {
+                $locale = env('APP_LOCALE');
+            }
+        }
+
+        return $locale;
+    }
+}
+
+
+
+
+
+
+if (!function_exists('display_money')) {
+
+
+
+
+    function display_money($value, $currency = false, $decimal = null, $position = null)
+    {
+
+        $decimal = $decimal ? $decimal : settings('decimal_separator');
+
+        switch (6) {
+            case 1:
+                $value = number_format($value, $decimal, '.', ',');
+                break;
+            case 2:
+                $value = number_format($value, $decimal, ',', '.');
+                break;
+            case 3:
+                $value = number_format($value, $decimal, '.', '');
+                break;
+            case 4:
+                $value = number_format($value, $decimal, ',', '');
+                break;
+            case 5:
+                $value = number_format($value, $decimal, ".", "'");
+                break;
+            case 6:
+                $value = number_format($value, $decimal, ".", " ");
+                break;
+            case 7:
+                $value = number_format($value, $decimal, ",", " ");
+                break;
+            case 8:
+                $value = number_format($value, $decimal, "'", " ");
+                break;
+            default:
+                $value = number_format($value, $decimal, '.', ',');
+                break;
+        }
+
+        $position =  $position ? $position : settings('currency_position');
+        switch ($position) {
+            case 'left':
+                $return = $currency . ' ' . $value;
+                break;
+            case 'right':
+                $return = $value . ' ' . $currency;
+                break;
+            case false:
+                $return = $value;
+                break;
+            default:
+                $return = $currency . ' ' . $value;
+                break;
+        }
+
+        return $return;
+    }
+}
+
+
+
+
+if (!function_exists('display_time')) {
+    function display_time($time, $format = null)
+    {
+        $format = $format ? $format : settings('time_format');
+
+        return date($format, $time);
+    }
+}
+
+
+
+if (!function_exists('display_date')) {
+
+    function display_date($date, $format = null)
+    {
+        $format = $format ? $format : settings('date_format');
+
+        return date($format, $date);
     }
 }

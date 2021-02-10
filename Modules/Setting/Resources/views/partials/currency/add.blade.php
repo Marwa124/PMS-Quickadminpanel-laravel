@@ -17,23 +17,23 @@
 
 
            <div class="modal-body ">
-            <form role="form" id="from_items" action="{{ route('admin.currency.store') }}" method="post" class=" form-groups-bordered">
+            <form onsubmit="return event.keyCode == 13 ? alert('enter') : true;" role="form" id="from_items_curreny" action="{{ route('admin.currency.store') }}" method="post" class=" form-groups-bordered">
                 <div class="row">
                     <label class="col-lg-3 control-label">Code</label>
                     <div class="col-lg-7">
-                        <input type="text" class="form-control" placeholder="@lang('settings.please_enter_currency_code')" name="code">
+                        <input  type="text" class="form-control" placeholder="@lang('settings.please_enter_currency_code')" name="code">
                     </div>
                 </div>
                 <div class="row">
                     <label class="col-lg-3 control-label">Name </label>
                     <div class="col-lg-7">
-                        <input type="text" class="form-control" placeholder="@lang('settings.please_enter_currency_name')" name="name">
+                        <input  type="text" class="form-control" placeholder="@lang('settings.please_enter_currency_name')" name="name">
                     </div>
                 </div>
                 <div class="row">
                     <label class="col-lg-3 control-label">Symbol </label>
                     <div class="col-lg-7">
-                        <input type="text" class="form-control" placeholder="@lang('settings.please_enter_currency_symbol')" name="symbol">
+                        <input  type="text" class="form-control" placeholder="@lang('settings.please_enter_currency_symbol')" name="symbol">
                     </div>
                 </div>
                 <div class="row">

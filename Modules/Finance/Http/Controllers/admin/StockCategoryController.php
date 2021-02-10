@@ -107,6 +107,7 @@ class StockCategoryController extends Controller
     {
         abort_if(Gate::denies('stock_category_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         StockCategory::findOrFail($id)->delete();
+        StockSubCategory::where('stock_category_id',$id)->delete();
 
         return back();
     }
@@ -125,6 +126,8 @@ class StockCategoryController extends Controller
     public function massDestroy()
     {
         StockSubCategory::whereIn('id', request('ids'))->delete();
+        StockSubCategory::whereIn('stock_category_id',request('ids'))->delete();
+
 
         return response(null, Response::HTTP_NO_CONTENT);
     }
