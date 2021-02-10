@@ -159,6 +159,9 @@
                 'stock_category_delete', // done
                 'stock_category_edit', // done
                 'stock_category_create', // done
+                'stock_create', // done
+                'stock_edit', // done
+                'stock_delete', // done
             ],
 
             'penalty_category' => [
