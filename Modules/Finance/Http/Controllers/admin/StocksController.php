@@ -24,17 +24,18 @@ class StocksController extends Controller
         $quant = null;
 
         $stocks = Stock::all()->groupBy('name');
-
-        foreach($stocks as $key => $stock){
-            dd($stock->sum('total_stock'),$key,$stock);
-
-
-
-
-
-        }
-
-        dd($quant);
+//
+//        dd($stocks);
+//        foreach($stocks as $key => $stock){
+//            dd($stock->sum('total_stock'),$key,$stock);
+//
+//
+//
+//
+//
+//        }
+//
+//        dd($quant);
 
         return view('finance::admin.stocks.index', compact('stocks'));
     }
