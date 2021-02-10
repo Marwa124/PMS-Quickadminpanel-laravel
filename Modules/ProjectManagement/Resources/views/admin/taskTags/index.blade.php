@@ -9,17 +9,12 @@
             </div>
         @endcan
         @can('task_tag_delete')
-            <div style="margin: 10px;" class="row d-flex ml-auto">
-                <div class="col-lg-6 ">
+                <div class="col-lg-6" style="display:flex; justify-content:flex-end">
                     <a class="btn btn-{{$trashed ? 'info' : 'danger'}}"
                        href="{{$trashed ? route('projectmanagement.admin.task-tags.index') : route('projectmanagement.admin.task-tags.trashed.index')}}">
-
                         {{ $trashed ? trans('cruds.status.active') : trans('cruds.status.trashed') }} {{ trans('cruds.taskTag.title') }}
-
                     </a>
-
                 </div>
-            </div>
         @endcan
     </div>
     <div class="card">
@@ -33,7 +28,6 @@
                     <thead>
                     <tr>
                         <th width="10">
-
                         </th>
                         <th>
                             {{ trans('cruds.taskTag.fields.id') }}
@@ -53,7 +47,6 @@
                     @foreach($taskTags as $key => $taskTag)
                         <tr data-entry-id="{{ $taskTag->id }}">
                             <td>
-
                             </td>
                             <td>
                                 {{ $taskTag->id ?? '' }}
