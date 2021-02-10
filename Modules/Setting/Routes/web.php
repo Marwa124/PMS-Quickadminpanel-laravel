@@ -11,6 +11,9 @@
 |
 */
 
+use App\Mail\TestMail;
+use App\Mail\MailgunMail;
+use Illuminate\Support\Facades\Mail;
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
 
@@ -24,4 +27,32 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
     Route::post('save_currency', 'SettingController@save_currency')->name('admin.currency.store');
     Route::post('update_currency', 'SettingController@update_currency')->name('admin.currency.update');
     Route::post('remove_currency', 'SettingController@remove_currency')->name('admin.currency.remove');
+
+
+    Route::post('save_mail_smtp', 'SettingController@save_mail_smtp')->name('admin.mail_smtp.store');
+
+    Route::post('save_mail_mailgun', 'SettingController@save_mail_mailgun')->name('admin.mail_mailgun.store');
+
+    Route::get('testmail', function () {
+
+        try {
+            Mail::mailer(settings('smtp_protocol'))->to('shadyosamafawzy@gmail.com')->send(new TestMail());
+            dd('sent');
+        } catch (\Exception $e) {
+
+            dd($e->getMessage() . ' Something went wrong');
+        }
+    });
+
+
+    // Route::get('testmailgun', function () {
+
+    //     try {
+    //         Mail::mailer(settings('mailgun_protocol'))->to('shadyosamafawzy@gmail.com')->send(new MailgunMail());
+    //         dd('sent');
+    //     } catch (\Exception $e) {
+
+    //         dd($e->getMessage() . ' Something went wrong');
+    //     }
+    // });
 });
