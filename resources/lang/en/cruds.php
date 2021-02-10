@@ -3627,7 +3627,7 @@ return [
         'project_of_task_not_have_department'       => 'The Project Of Task don\'t have Department',
         'time_date_after_or_equal'                  => 'The Time Of End Date Must Be After Or Equal ',
         
-        'sure_clone_proposal'        => 'Are you sure to clone Proposal with items and invoice ?',
+        'sure_clone_proposal'        => 'Are you sure to clone Proposal with items ?',
         'proposal_force_delete'                     => 'Proposal Will Force Delete ..!',
     ],
 

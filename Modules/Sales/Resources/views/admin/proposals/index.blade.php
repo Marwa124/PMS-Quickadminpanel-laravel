@@ -411,19 +411,15 @@
                                 </a>
                             @endcan
                             @can('proposal_create')
-                            {{-- <form action="{{ route('sales.admin.proposals.cloneproposal', $proposal->id) }}"
+                            <form action="{{ route('sales.admin.proposals.cloneproposal', $proposal->id) }}"
                                 method="POST"
                                 onsubmit="return confirm('{{ trans('cruds.messages.sure_clone_proposal') }}');"
                                 style="display: inline-block;">
-                                <input type="submit" class="btn btn-xs btn-gray"
-                                value="{{ trans('global.clone') }}">
-                               </form>       --}}
-                                <a class="btn btn-xs btn-secondary"
-                                   href="{{ route('sales.admin.proposals.cloneproposal', $proposal->id) }}"
-                                   onclick="return confirm('{{ trans('cruds.messages.sure_clone_proposal') }}');"
-                                   title="{{ trans('global.clone') }}">
-                                    <span class="fa fa-copy"></span>
-                                </a>
+                                @csrf
+                                <button type="submit" class="btn btn-xs btn-secondary"
+                                title="{{ trans('global.clone') }}"> <span class="fa fa-copy"></span> </button>
+                               </form>      
+                              
                             @endcan
 
                         

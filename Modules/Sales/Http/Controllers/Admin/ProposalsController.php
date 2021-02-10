@@ -592,7 +592,10 @@ class ProposalsController extends Controller
         if(!empty($request->status)){
             if($request->status == 'all'){
                 $proposalsfilter;
-            }else{
+            }elseif($request->status == 'expired'){
+                $proposalsfilter->where('expire_date','<',date('Y-m-d'));
+            }
+            else{
                 $proposalsfilter->where('status',$request->status);
             }
         }
