@@ -1,4 +1,4 @@
-<div class="tab-pane fade show active" id="v-pills-company-details" role="tabpanel"
+<div class="tab-pane fade show active company-details" id="v-pills-company-details" role="tabpanel"
 aria-labelledby="v-pills-details-tab">
 <div class="card  card-custom">
    <h5 class="card-header " style="text-align: left">  
@@ -180,5 +180,6 @@ aria-labelledby="v-pills-details-tab">
                 </form>
       
     </div>
+</div>
 </div>
 

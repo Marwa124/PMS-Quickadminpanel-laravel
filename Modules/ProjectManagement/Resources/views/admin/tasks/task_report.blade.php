@@ -18,11 +18,11 @@
                                 {{--</a>--}}
                             {{--</div>--}}
                             {{--@dd($projects)--}}
-                            <input type="hidden" id="not_started_count"     value="{{$tasks->where('status','Not Started')->count()}}"/>
-                            <input type="hidden" id="in_progress_count"     value="{{$tasks->where('status','In Progress')->count()}}"/>
-                            <input type="hidden" id="completed_count"       value="{{$tasks->where('status','Completed')->count()}}"/>
-                            <input type="hidden" id="deffered_count"        value="{{$tasks->where('status','Deffered')->count()}}"/>
-                            <input type="hidden" id="waiting_someone_count" value="{{$tasks->where('status','Waiting For Someone')->count()}}"/>
+                            <input type="hidden" id="not_started_count"     value="{{$tasks->where('status','not_started')->count()}}"/>
+                            <input type="hidden" id="in_progress_count"     value="{{$tasks->where('status','in_progress')->count()}}"/>
+                            <input type="hidden" id="completed_count"       value="{{$tasks->where('status','completed')->count()}}"/>
+                            <input type="hidden" id="deffered_count"        value="{{$tasks->where('status','deffered')->count()}}"/>
+                            <input type="hidden" id="waiting_someone_count" value="{{$tasks->where('status','waiting_someone')->count()}}"/>
                         </div>
                         <div class="card-body">
                             <div class="chart-wrapper">

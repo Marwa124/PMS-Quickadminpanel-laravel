@@ -1,160 +1,170 @@
 @extends('layouts.pdf_layout')
-@section('title'){{$project->name ?? '' }} @endsection
+@section('title'){{$proposal->reference_no ?? '' }} @endsection
+@section('propsal')
+<td width="50%" class="pull-right" align="left">
+    <div class="row mb-4">
+        <div class="col-sm-4">
+            <h6 class="mb-3"></h6>
+
+        </div>
+        <div class="col-sm-4"></div>
+        <div class="col-sm-4">
+            <h3 > Reference No:</h3>
+            <div><strong>#{{$proposal->reference_no ?? '' }}</strong></div>
+            <div>{{ trans('cruds.proposal.fields.subject') }} : {{ $proposal->subject }}</div>
+            <div>{{ trans('cruds.proposal.fields.proposal_date') }} : {{ $proposal->proposal_date }}</div>
+            <div>{{ trans('cruds.proposal.fields.expire_date') }} : {{ $proposal->expire_date }}</div>
+            <div>{{ trans('cruds.proposal.fields.Sales_Agent') }}: {{ $proposal->user && $proposal->user->accountDetail ? $proposal->user->accountDetail->fullname :'' }}</div>
+            <div>
+                {{ trans('cruds.proposal.fields.status') }}: <span class="btn btn-sm btn-primary">  {{ $proposal->status }} </span>
+            </div>
+        </div>
+    </div>
+</td>
+@endsection
 @section('content')
     <div class="card">
-        <div class="card-header">  Show Proposals <strong># PRO-2021-01-26-00031</strong></div>
         <div class="card-body">
+
             <div class="row mb-4">
                 <div class="col-sm-4">
-                    <h6 class="mb-3"></h6>
-                    <div><img src="{{asset('images/image001.png')}}" alt=""></div>
-                </div>
-                <div class="col-sm-4"></div>
-                <div class="col-sm-4">
-                    <h6 class="mb-3"> Reference No:</h6>
-                    <div><strong>#PRO-2021-01-26-00031</strong></div>
-                    <div>Proposal Date : 2021-01-15</div>
-                    <div>Expire Date : 2021-01-21</div>
-                    <div>Sales Agent: CFO </div>
                     <div>
-                        Status: Waiting_approval
+                        <strong> {{ trans('cruds.proposal.fields.OTG_INFO') }}</strong>
                     </div>
+                    <div>{{ trans('cruds.proposal.fields.companyname') }} : One Tec Group LLC</div>
+                    <div>{{ trans('cruds.proposal.fields.companyaddress') }} : 8th Sector – Building 10 – Block 11 – Nasr
+                        City - Cairo, Egypt</div>
+                    <div>{{ trans('cruds.proposal.fields.companyphone') }}: +201555836995 </div>
                 </div>
-            </div>
-            <hr>
-            <div class="row mb-4">
+                <!--/.col-->
+    
+    
                 <div class="col-sm-4">
-                    <div><strong> OTG INFO</strong></div>
-                    <div>Company Name : One Tec Group LLC</div>
-                    <div>Company Address : 8th Sector – Building 10 – Block 11 – Nasr City - Cairo, Egypt</div>
-                    <div>Company Phone: +201555836995 </div>
                 </div>
-                <div class="col-sm-4"></div>
                 <div class="col-sm-4">
-                    <div><strong>Opportunity_INFO</strong></div>
-                    <div>Company Name :weeww</div>
-                    <div>Company Address : </div>
-                    <div>Company Phone: </div>
+    
+                    @if($proposal->module =='client')
+                    <div>
+                        <strong>{{ trans('cruds.proposal.fields.Customer_INFO') }}</strong>
+                    </div>
+                    <div>{{ trans('cruds.proposal.fields.companyname') }}
+                        :{{ $proposal->getclient && $proposal->getclient->name ? $proposal->getclient->name : '' }}</div>
+                    <div>{{ trans('cruds.proposal.fields.companyemail') }}:
+                        {{ $proposal->getclient && $proposal->getclient->email ? $proposal->getclient->email : '' }} </div>
+                    <div>{{ trans('cruds.proposal.fields.companyaddress') }}
+                        :{{ $proposal->getclient && $proposal->getclient->address ? $proposal->getclient->address : '' }}
+                    </div>
+                    <div>{{ trans('cruds.proposal.fields.companyphone') }}:
+                        {{ $proposal->getclient && $proposal->getclient->phone ? $proposal->getclient->phone : '' }} </div>
+                    @endif
+                    @if($proposal->module =='opportunities')
+                    <div>
+                        <strong>{{ trans('cruds.proposal.fields.Opportunity_INFO') }}</strong>
+                    </div>
+    
+                    <div>{{ trans('cruds.proposal.fields.companyname') }}
+                        :{{ $proposal->getopportunity && $proposal->getopportunity->name ? $proposal->getopportunity->name : '' }}
+                    </div>
+                    <div>{{ trans('cruds.proposal.fields.companyaddress') }} :
+                        {{ $proposal->getopportunity && $proposal->getopportunity->address ? $proposal->getopportunity->address : '' }}
+                    </div>
+                    <div>{{ trans('cruds.proposal.fields.companyphone') }}:
+                        {{ $proposal->getopportunity && $proposal->getopportunity->phone ? $proposal->getopportunity->phone : '' }}
+                    </div>
+    
+                    @endif
                 </div>
             </div>
             <div class="table-responsive-sm">
-                <table class="table table-striped">
+                <table class="table ">
                     <thead>
                         <tr>
                             <th class="center">#</th>
                             <th>Item</th>
                             <th>Description</th>
                             <th class="center">Quantity</th>
-                            <th class="right">Unit Cost</th>
                             <th class="right">Selling Price</th>
                             <th class="right">Total</th>
                         </tr>
                     </thead>
                     <tbody>
+                      
+                        @if($proposal->items->isEmpty() != true)
+                        @foreach($proposal->items as $item)
+    
                         <tr>
-                            <td class="center">1</td>
-                            <td class="left">Design</td>
-                            <td class="left">ss</td>
-                            <td class="center">1</td>
-                            <td class="right">2000</td>
-                            <td class="right">2200.00</td>
-                            <td class="right">2200</td>
+                            <td class="center">{{ $loop->iteration }}</td>
+                            <td class="left">{{ $item->pivot->item_name }}</td>
+                            <td class="left">{{ $item->pivot->item_desc }}</td>
+                            <td class="center">{{ $item->pivot->quantity }}</td>
+                            <td class="right">{{ $item->pivot->selling_price  }}</td>
+                            <td class="right">{{ $item->pivot->selling_price * $item->pivot->quantity}}</td>
+                      
                         </tr>
-                        <tr>
-                            <td class="center">2</td>
-                            <td class="left">Design</td>
-                            <td class="left">ss</td>
-                            <td class="center">1</td>
-                            <td class="right">2000</td>
-                            <td class="right">2200.00</td>
-                            <td class="right">2200</td>
-                        </tr>
-                        <tr>
-                            <td class="center">3</td>
-                            <td class="left">pmroject</td>
-                            <td class="left"></td>
-                            <td class="center">1</td>
-                            <td class="right">1003</td>
-                            <td class="right">2006.00</td>
-                            <td class="right">2006</td>
-                        </tr>
-                        <tr>
-                            <td class="center">4</td>
-                            <td class="left">pmroject</td>
-                            <td class="left"></td>
-                            <td class="center">1</td>
-                            <td class="right">1003</td>
-                            <td class="right">2006.00</td>
-                            <td class="right">2006</td>
-                        </tr>
+                        @endforeach
+                        @endif
                     </tbody>
                 </table>
             </div>
+            <hr>
             <div class="row">
                 <div class="col-lg-4 col-sm-5"></div>
                 <div class="col-lg-4 col-sm-5 ml-auto">
                     <table class="table table-clear">
                         <tbody>
                             <tr>
-                                <td class="left"><strong>Subtotal</strong></td>
-                                <td class="right">8412.00</td>
+                                <td class="left">
+                                    <strong>Subtotal</strong>
+                                </td>
+                                <td class="right">{{ $proposal->getSubtotal($proposal) }}</td>
                             </tr>
                             <tr>
-                                <td class="left"><strong>Discount (0%)</strong></td>
-                                <td class="right">0.00 </td>
+                                <td class="left">
+                                    <strong>Subtotal After Discount</strong>
+                                </td>
+                                <td class="right">{{ $proposal->after_discount }}</td>
                             </tr>
                             <tr>
-                                <td class="left"><strong>Egyptian Tax Rate (14%)</strong></td>
-                                <td class="right">420.42</td>
+                                <td class="left">
+                                    <strong>Discount ({{ $proposal->discount_percent }}%)</strong>
+                                </td>
+                                <td class="right">{{ $proposal->discount_total }} </td>
                             </tr>
+                           
+                            @foreach($proposal->gettaxesarray($proposal) as $key=> $taxold)
                             <tr>
-                                <td class="left"><strong>services (12%)</strong></td>
-                                <td class="right">360.36</td>
+    
+                                <td class="left">
+                                    <strong>{{get_taxes($key)->name }} ({{ get_taxes($key)->rate_percent }}%)</strong>
+                                </td>
+                                <td class="right">{{ array_sum($taxold) }}</td>
                             </tr>
+                            @endforeach
+    
                             <tr>
-                                <td class="left"><strong>Total</strong></td>
-                                <td class="right"><strong>8952.78</strong></td>
+                                <td class="left">
+                                    <strong>Adjustment</strong>
+                                </td>
+                                <td class="right">{{ $proposal->adjustment }}</td>
+                            </tr>
+                            
+                            <tr>
+                                <td class="left">
+                                    <strong>Total</strong>
+                                </td>
+                                <td class="right">
+                                    <strong>{{ $proposal->total_tax + $proposal->after_discount }}</strong>
+                                </td>
                             </tr>
                         </tbody>
-                    </table> <a href="#" class="btn btn-success"><i class="fa fa-usd"></i> Proceed to Payment</a>
+                    </table>
+                   
                 </div>
             </div>
         </div>
     </div>
 
-    <style type="text/css">
-        .panel {
-            margin-bottom: 21px;
-            background-color: #ffffff;
-            border: 1px solid transparent;
-            -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
-            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
-        }
-
-        .panel-custom .panel-heading {
-            border-bottom: 2px solid #2b957a;
-        }
-
-        .panel .panel-heading {
-            border-bottom: 0;
-            font-size: 14px;
-        }
-
-        .panel-heading {
-            padding: 10px 15px;
-            border-bottom: 1px solid transparent;
-            border-top-right-radius: 3px;
-            border-top-left-radius: 3px;
-        }
-
-        .panel-title {
-            margin-top: 0;
-            margin-bottom: 0;
-            font-size: 16px;
-        }
-
-    </style>
-
+   
 
     <!-- footer hereeeeeeeeeeeeeeeeeee -->
 
@@ -184,20 +194,20 @@
 
                     <tr>
                         <td>1. Proposal Validity: </td>
-                        <td>{{ $proposals_info->proposal_validity }}</td>
+                        <td>{{ $proposal->proposal_validity }}</td>
                     </tr>
                     <tr>
                         <td> 2. Materials supply/delivery: </td>
-                        <td> {{ $proposals_info->materials_supply_delivery }}</td>
+                        <td> {{ $proposal->materials_supply_delivery }}</td>
                     </tr>
                     <tr>
                         <td> 3. Warranty: </td>
-                        <td> {{ $proposals_info->warranty }}</td>
+                        <td> {{ $proposal->warranty }}</td>
                     </tr>
 
                     <tr>
                         <td> 4. Prices:</td>
-                        <td>{{$proposals_info->prices}}</td>
+                        <td>{{$proposal->prices}}</td>
                     </tr>
 
                     <tr>
@@ -205,14 +215,14 @@
                         <td></td>
                     </tr>
                     <tr>
-                        <td colspan="2" style="padding: 0px 0px 0px 20px;"> {{  nl2br($proposals_info->payment_terms) }}
+                        <td colspan="2" style="padding: 0px 0px 0px 20px;"> {!!  $proposal->payment_terms !!}
 
                         </td>
                     </tr>
 
                     <tr>
                         <td>6. Maintenance & Service Contract:</td>
-                        <td> {{$proposals_info->maintenance_service_contract}}</td>
+                        <td> {{$proposal->maintenance_service_contract}}</td>
                     </tr>
 
 

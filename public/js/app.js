@@ -3334,14 +3334,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-multiselect */ "./node_modules/vue-multiselect/dist/vue-multiselect.min.js");
 /* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue_multiselect__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var vue2_editor__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue2-editor */ "./node_modules/vue2-editor/dist/vue2-editor.esm.js");
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-
-function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
-
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
@@ -3682,6 +3674,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       spinnerAction: false,
       spinnerLoad: false,
       selectedItem: '',
+      totalTaxAdded: 0,
       form: new vform__WEBPACK_IMPORTED_MODULE_0__["Form"]({
         reference_no: '',
         supplier_id: '',
@@ -3710,6 +3703,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         adjustment: '',
         taxRate_total: {},
         total: '',
+        totalTaxForm: 0,
         removedTax: '',
         AddedTax: ''
       })
@@ -3852,12 +3846,14 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       this.taxRates.map(function (rate) {
         taxName[rate.name] = 0;
       });
+      this.totalTaxAdded = 0;
       this.form.items.forEach(function (element) {
         var indexRow = element.rowIndex;
 
         if (indexRow) {
           _this6.form.items[indexRow].taxes.map(function (tax) {
             var count = 0;
+            var x = 0;
 
             if (tax.name || removedItem) {
               while (count == 0) {
@@ -3875,7 +3871,10 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
                   for (var key in taxName) {
                     if (key == tax.name) {
                       taxName[tax.name] += _this6.form.items[indexRow].total * (tax.rate_percent / 100);
-                      _this6.form.taxRate_total[tax.name].value = parseFloat(taxName[tax.name].toFixed(2));
+                      _this6.form.taxRate_total[tax.name].value = parseFloat(taxName[tax.name].toFixed(2)); // this.totalTaxAdded += this.form.taxRate_total[tax.name].value;
+
+                      x += _this6.form.taxRate_total[tax.name].value;
+                      console.log(x, 'x');
                     }
                   }
                 }
@@ -3883,18 +3882,21 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
                 count++;
               }
             }
+
+            _this6.totalTaxAdded = x;
           });
         }
-      }); //////////////// Total Tax /////////////////////////
 
-      for (var _i = 0, _Object$entries = Object.entries(this.form.taxRate_total); _i < _Object$entries.length; _i++) {
-        var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
-            x = _Object$entries$_i[0],
-            y = _Object$entries$_i[1];
-
-        if (y.value != 0) this.form.total = this.form.sub_total + y.value - this.form.discount_total + this.form.adjustment;else if (y.value == 0) this.form.total = this.form.sub_total - this.form.discount_total + this.form.adjustment;
-      } //////////////// Total Tax /////////////////////////
-
+        console.log('this.totalTaxAdded', _this6.totalTaxAdded);
+      });
+      this.form.totalTaxForm = this.totalTaxAdded;
+      console.log(this.totalTaxAdded, 'TotalTaxForm', this.form.totalTaxForm);
+      this.form.total = this.form.sub_total + this.totalTaxAdded - this.form.discount_total + this.form.adjustment; //////////////// Total Tax /////////////////////////
+      // for(let [x, y] of Object.entries(this.form.taxRate_total)) {
+      //     if(y.value != 0)  this.form.total = this.form.sub_total + y.value - this.form.discount_total + this.form.adjustment
+      //     else if(y.value == 0) this.form.total = this.form.sub_total - this.form.discount_total + this.form.adjustment
+      // }
+      //////////////// Total Tax /////////////////////////
     }
   },
   watch: {
@@ -3917,7 +3919,9 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           }, {});
           form.sub_total = result;
           form.discount_total = -parseFloat((form.discount_percent * subTotal * (1 / 100)).toFixed(2));
-          this.calculateTotalTaxes(); // //////////////// Total Tax /////////////////////////
+          this.calculateTotalTaxes();
+          form.total = form.sub_total + form.totalTaxForm - form.discount_total + form.adjustment;
+          console.log(form.sub_total, form.totalTaxForm, form.discount_total, form.adjustment); // //////////////// Total Tax /////////////////////////
           //     for(let [x, y] of Object.entries(form.taxRate_total)) {
           //         if(y.value != 0)  form.total = form.sub_total + y.value - form.discount_total + form.adjustment
           //         else if(y.value == 0) form.total = form.sub_total - form.discount_total + form.adjustment

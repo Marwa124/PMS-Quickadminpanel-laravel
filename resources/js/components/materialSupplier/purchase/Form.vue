@@ -322,6 +322,7 @@
                 spinnerAction: false,
                 spinnerLoad: false,
                 selectedItem: '',
+                totalTaxAdded: 0,
 
                 form: new Form({
                     reference_no:        '',
@@ -353,6 +354,8 @@
                     adjustment: '',
                     taxRate_total: {},
                     total: '',
+
+                    totalTaxForm: 0,
 
                     removedTax: '',
                     AddedTax: ''
@@ -485,12 +488,14 @@
                     taxName[rate.name] = 0
                 });
 
+                this.totalTaxAdded = 0
                 this.form.items.forEach(element => {
                     var indexRow = element.rowIndex;
-
+                    
                     if(indexRow) {
                         this.form.items[indexRow].taxes.map(tax => {
                             let count = 0
+                            let x = 0;
 
                             if(tax.name || removedItem) {
                                 while (count == 0) {
@@ -509,23 +514,31 @@
                                             if (key == tax.name) {
                                                 taxName[tax.name] += this.form.items[indexRow].total * (tax.rate_percent / 100)
                                                 this.form.taxRate_total[tax.name].value = parseFloat((taxName[tax.name]).toFixed(2))
+
+                                                // this.totalTaxAdded += this.form.taxRate_total[tax.name].value;
+                                                x += this.form.taxRate_total[tax.name].value;
+
+                                                console.log(x, 'x');
                                             }
                                         }
                                     }
                                     count ++
                                 }
                             }
+                    this.totalTaxAdded = x
                         });
 
                     }
+                    console.log('this.totalTaxAdded',this.totalTaxAdded);
                 });
-
-
+                this.form.totalTaxForm = this.totalTaxAdded;
+                console.log(this.totalTaxAdded, 'TotalTaxForm', this.form.totalTaxForm);
+                this.form.total = this.form.sub_total + this.totalTaxAdded - this.form.discount_total + this.form.adjustment
                  //////////////// Total Tax /////////////////////////
-                    for(let [x, y] of Object.entries(this.form.taxRate_total)) {
-                        if(y.value != 0)  this.form.total = this.form.sub_total + y.value - this.form.discount_total + this.form.adjustment
-                        else if(y.value == 0) this.form.total = this.form.sub_total - this.form.discount_total + this.form.adjustment
-                    }
+                    // for(let [x, y] of Object.entries(this.form.taxRate_total)) {
+                    //     if(y.value != 0)  this.form.total = this.form.sub_total + y.value - this.form.discount_total + this.form.adjustment
+                    //     else if(y.value == 0) this.form.total = this.form.sub_total - this.form.discount_total + this.form.adjustment
+                    // }
                 //////////////// Total Tax /////////////////////////
 
 
@@ -556,6 +569,9 @@
 
                         this.calculateTotalTaxes()
 
+
+form.total = form.sub_total + form.totalTaxForm - form.discount_total + form.adjustment
+console.log(form.sub_total , form.totalTaxForm , form.discount_total , form.adjustment);
                     // //////////////// Total Tax /////////////////////////
                     //     for(let [x, y] of Object.entries(form.taxRate_total)) {
                     //         if(y.value != 0)  form.total = form.sub_total + y.value - form.discount_total + form.adjustment

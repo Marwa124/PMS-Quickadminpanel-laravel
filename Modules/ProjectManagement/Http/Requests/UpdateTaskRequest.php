@@ -20,19 +20,24 @@ class UpdateTaskRequest extends FormRequest
             'name_en'               => [
                 'string',
                 'required',
-                'unique:tasks,name,'. request()->route('task')->id.',id,milestone_id,'.request()->milestone_id,
+                //'regex:/^[a-zA-Z ]+$/u',
+                'min:3|max:255',
+                'unique:tasks,name_en,'. request()->route('task')->id.',id,milestone_id,'.request()->milestone_id,
             ],
             'name_ar'               => [
                 'string',
                 'required',
-                'unique:tasks,name,'. request()->route('task')->id.',id,milestone_id,'.request()->milestone_id,
+                //'regex:/^[ اأإء-ي ]+$/ui',
+                'min:3|max:255',
+                'unique:tasks,name_ar,'. request()->route('task')->id.',id,milestone_id,'.request()->milestone_id,
             ],
             'status'          => [
                 'required',
-                //'integer',
+                'in:not_started,in_progress,completed,deffered,waiting_someone',
             ],
             'tags.*'             => [
                 'integer',
+                'exists:task_tags,id'
             ],
             'tags'               => [
                 'array',
@@ -46,6 +51,14 @@ class UpdateTaskRequest extends FormRequest
                 'date_format:' . config('panel.date_format'),
                 'after_or_equal:start_date',
             ],
+            'project_id'           => [
+                'required',
+                'exists:projects,id'
+            ],
+            'milestone_id'           => [
+                'required',
+                'exists:milestones,id'
+            ],
 //            'progress'           => [
 //                'required',
 //                'nullable',
@@ -55,10 +68,11 @@ class UpdateTaskRequest extends FormRequest
 //            ],
             'calculate_progress' => [
                 'string',
-                'nullable',
+                'required',
+                'between:0,100'
             ],
             'task_hours'         => [
-                'string',
+                'numeric',
                 'nullable',
             ],
         ];

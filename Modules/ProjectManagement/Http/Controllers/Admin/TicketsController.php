@@ -29,10 +29,6 @@ class TicketsController extends Controller
     {
         abort_if(Gate::denies('ticket_access'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
-        //$projects = Project::get();
-
-        //$departments = Department::get();
-
         if (request()->segment(count(request()->segments())) == 'trashed'){
 
             abort_if(Gate::denies('ticket_delete'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
@@ -47,8 +43,6 @@ class TicketsController extends Controller
         $trashed = false;
         $tickets = auth()->user()->getUserTicketsByUserID(auth()->user()->id,$trashed);
 
-        //$tickets = Ticket::all();
-
         return view('projectmanagement::admin.tickets.index', compact('tickets','trashed'));
     }
 
@@ -58,7 +52,7 @@ class TicketsController extends Controller
 
         abort_if(Gate::denies('ticket_create'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
-        $projects = auth()->user()->getUserProjectsByUserID(auth()->user()->id)->pluck('name', 'id');
+        $projects = auth()->user()->getUserProjectsByUserID(auth()->user()->id)->pluck('name_'.app()->getLocale(), 'id');
         $project = null;
 
         if (request()->segment(count(request()->segments())-1) == 'project-ticket')
@@ -85,7 +79,6 @@ class TicketsController extends Controller
         $request['ticket_code'] = 'tick'.substr(time(),-7);           //pms + time function to be sure this num is unique
 
         $ticket = Ticket::create($request->all());
-        //$ticket->permissions()->sync($request->input('permissions', []));
 
         if ($request->input('file', false)) {
             $ticket->addMedia(storage_path('tmp/uploads/' . $request->input('file')))->toMediaCollection('file');
@@ -106,7 +99,7 @@ class TicketsController extends Controller
         if (in_array($ticket->id,$tickets->toArray()))
         {
 
-            $projects = auth()->user()->getUserProjectsByUserID(auth()->user()->id)->pluck('name', 'id');
+            $projects = auth()->user()->getUserProjectsByUserID(auth()->user()->id)->pluck('name_'.app()->getLocale(), 'id');
 
 
             $ticket->load('project', 'department');
@@ -398,9 +391,6 @@ class TicketsController extends Controller
     {
         abort_if(Gate::denies('ticket_report_access'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
-//        $user = User::findOrFail(auth()->user()->id);
-//        if ($user->hasrole(['Admin','Super Admin']))
-//        {
         $tickets = Ticket::all();
 
         $yearly_report = $this->get_project_report_by_month(true);
@@ -429,8 +419,5 @@ class TicketsController extends Controller
 
         return view('projectmanagement::admin.tickets.ticket_report', compact('tickets','openedArray','answeredArray','in_progressArray','closedArray','reopenArray'));
 
-//        }
-//
-//        return abort(Response::HTTP_FORBIDDEN, trans('global.forbidden_page_not_allow_to_you'));
     }
 }

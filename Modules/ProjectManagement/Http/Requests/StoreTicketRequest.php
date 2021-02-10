@@ -18,15 +18,24 @@ class StoreTicketRequest extends FormRequest
     public function rules()
     {
         return [
-//            'ticket_code'   => [
-//                'string',
-//                'nullable',
-//            ],
-            'subject'       => [
+
+            'subject_en'       => [
                 'required',
                 'string',
-//                'nullable',
-                Rule::unique('tickets','subject')->where(function($query) {
+                //'regex:/^[a-zA-Z ]+$/u',
+                'min:3|max:255',
+                Rule::unique('tickets','subject_en')->where(function($query) {
+
+                    $query->where('project_id', '=', request()->project_id);
+
+                }),
+            ],
+            'subject_ar'       => [
+                'required',
+                'string',
+                //'regex:/^[ اأإء-ي ]+$/ui',
+                'min:3|max:255',
+                Rule::unique('tickets','subject_ar')->where(function($query) {
 
                     $query->where('project_id', '=', request()->project_id);
 
@@ -35,39 +44,30 @@ class StoreTicketRequest extends FormRequest
             'status'        => [
                 'required',
                 'string',
-//                'nullable',
+                'in:opened,answered,in_progress,closed',
             ],
-//            'reporter'      => [
-//                'nullable',
-//                'integer',
-//                'min:-2147483648',
-//                'max:2147483647',
-//            ],
             'priority'      => [
                 'required',
                 'string',
-//                'nullable',
+                'in:low,medium,high',
             ],
             'email'      => [
                 'email',
                 'nullable',
             ],
-            'body'      => [
+            'body_en'      => [
                 'required',
+                //'regex:/^[a-zA-Z ][1-9]*+$/u',
+            ],
+            'body_ar'      => [
+                'required',
+                //'regex:/^[اأإء-ي ]+$/ui',
             ],
             'project_id'      => [
                 'required',
+                'exists:projects,id'
             ],
-//            'last_reply'    => [
-//                'string',
-//                'nullable',
-//            ],
-//            'permissions.*' => [
-//                'integer',
-//            ],
-//            'permissions'   => [
-//                'array',
-//            ],
+
         ];
     }
 }

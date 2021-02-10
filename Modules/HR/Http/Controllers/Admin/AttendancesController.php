@@ -52,6 +52,7 @@ class AttendancesController extends Controller
             }
             DB::commit();
             $message = array(
+                // 'message'   => trans('cruds.training.title'),
                 'message'    =>  ' Created Successfully',
                 'alert-type' =>  'success'
             );

@@ -71,6 +71,10 @@ table.dataTable thead .sorting_desc {
     cursor: pointer;
 }
 
+html:not([dir=rtl]) .c-sidebar-nav-dropdown-items .c-sidebar-nav-dropdown-toggle .c-sidebar-nav-icon, html:not([dir=rtl]) .c-sidebar-nav-dropdown-items .c-sidebar-nav-link .c-sidebar-nav-icon {
+    margin-left: -40px;
+}
+
 .btn-default {
     color: #23282c;
     background-color: #f0f3f5;
@@ -132,7 +136,7 @@ table.dataTable thead .sorting_desc {
 }
 
 .sub-dropdown {
-    margin-left: -22px !important;
+    /* margin-left: -22px !important; */
 }
 
 .self-item-link {
@@ -144,33 +148,75 @@ table.dataTable thead .sorting_desc {
 }
 
 .c-header {
+<<<<<<< HEAD
+    background: #fff !important;
+=======
     /* background: #ec2121 !important; */
+>>>>>>> cd2d642225166b4f75f3b049598607299dbff723
 }
 .c-header-nav-link {
-    color: #ffffff !important;
+    /* color: #ffffff !important; */
 }
 
 #sidebar {
-    background-color: #3a3f51 !important;
+    background-color: #efefef;
 }
 
+/* Search */
+.sidebar-search{
+    background: #EBEBEB;
+}
+
+.sidebar-search__input {
+    background: none;
+    border: none;
+}
+.sidebar-search__input:focus {
+    color: #768192;
+    border: none;
+    background: none;
+    outline: 0;
+    box-shadow: none;
+}
+
+.input-group-text {
+    border: none;
+    background: none;
+}
+
+.c-sidebar .c-sidebar-brand,
+.c-sidebar .c-sidebar-header {
+    background-color: #efefef;
+}
+
+.c-sidebar-nav {
+    padding-right: 0.5rem;
+}
+
+.c-sidebar .c-sidebar-nav-dropdown-toggle,
+.c-sidebar .c-sidebar-nav-link {
+    color: #23282c !important;
+}
+
+html:not([dir="rtl"]) .c-sidebar-nav-icon:first-child {
+    color: #707070;
+}
 .c-sidebar .c-active.c-sidebar-nav-dropdown-toggle,
 .c-sidebar .c-sidebar-nav-link.c-active {
-    color: #f05050 !important;
-    background-color: unset !important;
-    background: unset !important;
+    color: #fff !important;
+    background: #8a0000;
 }
 .c-sidebar .c-sidebar-nav-dropdown-toggle:hover,
 .c-sidebar .c-sidebar-nav-link:hover {
-    color: #f05050 !important;
-    background: unset !important;
+    color: #fff !important;
+    background: #8a0000;
 }
 
 .select2-container .select2-selection--single {
-    height: 44px !important;
+    height: 35px !important;
 }
 .select2-container--default .select2-selection--single {
-    border-radius: 0px !important;
+    /* border-radius: 0px !important; */
 }
 
 .toastjs-container {
@@ -181,6 +227,14 @@ table.dataTable thead .sorting_desc {
     color: black !important;
     font-weight: bold !important;
 }
+
+/* Action Buttons */
+
+.border-50 {
+    border-radius: 50%;
+}
+
+
 
 
 /*

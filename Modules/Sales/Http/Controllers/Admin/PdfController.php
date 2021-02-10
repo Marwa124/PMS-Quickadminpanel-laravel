@@ -16,12 +16,9 @@ class PdfController extends Controller
      */
     public function pdf(Request $request)
     {
-           $proposals_info = Proposal::findOrFail($request->id);
-          
-           $loadpdf = MPDF::loadView('sales::admin.proposals.pdf', compact('proposals_info'))
-           ->stream('PDF-Report.pdf');;
-        //    $loadpdf = PDF::loadView('sales::admin.proposals.pdf', compact('proposal'))->stream('proposals.pdf');
-        //    $pdf=$loadpdf::loadView('sales::admin.proposals.pdf', compact('proposal'));
+           $proposal = Proposal::findOrFail($request->id);
+           $loadpdf = MPDF::loadView('sales::admin.proposals.pdf', compact('proposal','image'))
+           ->stream('PDF-Report.pdf');
            return $loadpdf;
     }
 

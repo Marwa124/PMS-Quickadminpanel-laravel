@@ -11,14 +11,24 @@
             @csrf
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label for="subject">{{ trans('cruds.ticket.fields.subject') }}</label>
-                    <input class="form-control {{ $errors->has('subject') ? 'is-invalid' : '' }}" type="text" name="subject" id="subject" value="{{ old('subject', '') }}">
-                    @if($errors->has('subject'))
+                    <label for="subject_en">{{ trans('cruds.ticket.fields.subject_en') }}</label>
+                    <input class="form-control {{ $errors->has('subject_en') ? 'is-invalid' : '' }}" type="text" name="subject_en" id="subject_en" value="{{ old('subject_en', '') }}">
+                    @if($errors->has('subject_en'))
                         <div class="invalid-feedback">
-                            {{ $errors->first('subject') }}
+                            {{ $errors->first('subject_en') }}
                         </div>
                     @endif
-                    <span class="help-block">{{ trans('cruds.ticket.fields.subject_helper') }}</span>
+                    <span class="help-block">{{ trans('cruds.ticket.fields.subject_en_helper') }}</span>
+                </div>
+                <div class="form-group">
+                    <label for="subject_ar">{{ trans('cruds.ticket.fields.subject_ar') }}</label>
+                    <input class="form-control {{ $errors->has('subject_ar') ? 'is-invalid' : '' }}" type="text" name="subject_ar" id="subject_ar" value="{{ old('subject_ar', '') }}">
+                    @if($errors->has('subject_ar'))
+                        <div class="invalid-feedback">
+                            {{ $errors->first('subject_ar') }}
+                        </div>
+                    @endif
+                    <span class="help-block">{{ trans('cruds.ticket.fields.subject_ar_helper') }}</span>
                 </div>
 
 
@@ -57,7 +67,7 @@
                     <label for="status">{{ trans('cruds.ticket.fields.status') }}</label>
                     <select class="form-control select2 {{ $errors->has('status') ? 'is-invalid' : '' }}" name="status" id="status">
                         <option value="" selected disabled>{{trans('global.pleaseSelect')}}</option>
-                        <option value="opened"      {{ old('status') == 'opened'        ? 'selected' : '' }}>{{trans('cruds.status.open')}}</option>
+                        <option value="opened"      {{ old('status') == 'opened'        ? 'selected' : '' }}>{{trans('cruds.status.opened')}}</option>
                         <option value="answered"    {{ old('status') == 'answered'      ? 'selected' : '' }}>{{trans('cruds.status.answered')}}</option>
                         <option value="in_progress" {{ old('status') == 'in_progress'   ? 'selected' : '' }}>{{trans('cruds.status.in_progress')}}</option>
                         <option value="closed"      {{ old('status') == 'closed'        ? 'selected' : '' }}>{{trans('cruds.status.close')}}</option>
@@ -97,14 +107,24 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="body">{{ trans('cruds.ticket.fields.body') }}</label>
-                <textarea class="form-control ckeditor {{ $errors->has('body') ? 'is-invalid' : '' }}" name="body" id="body">{!! old('body') !!}</textarea>
-                @if($errors->has('body'))
+                <label for="body_en">{{ trans('cruds.ticket.fields.body_en') }}</label>
+                <textarea class="form-control ckeditor {{ $errors->has('body_en') ? 'is-invalid' : '' }}" name="body_en" id="body_en">{!! old('body_en') !!}</textarea>
+                @if($errors->has('body_en'))
                     <div class="invalid-feedback">
-                        {{ $errors->first('body') }}
+                        {{ $errors->first('body_en') }}
                     </div>
                 @endif
-                <span class="help-block">{{ trans('cruds.ticket.fields.body_helper') }}</span>
+                <span class="help-block">{{ trans('cruds.ticket.fields.body_en_helper') }}</span>
+            </div>
+            <div class="form-group">
+                <label for="body_ar">{{ trans('cruds.ticket.fields.body_ar') }}</label>
+                <textarea class="form-control ckeditor {{ $errors->has('body_ar') ? 'is-invalid' : '' }}" name="body_ar" id="body_ar">{!! old('body_ar') !!}</textarea>
+                @if($errors->has('body_ar'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('body_ar') }}
+                    </div>
+                @endif
+                <span class="help-block">{{ trans('cruds.ticket.fields.body_ar_helper') }}</span>
             </div>
             <div class="form-group float-right">
                 <button class="btn btn-danger" type="submit">

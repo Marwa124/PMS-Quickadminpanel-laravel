@@ -47,6 +47,10 @@ body{
 
     }
 
+    .select2-container--default .select2-selection--single{
+        height: 34px !important;
+    }
+
 </style>
 
 
@@ -77,78 +81,54 @@ body{
 
                 @include('setting::tabs.company_details')
 
-        
+
+                @include('setting::tabs.company_system')
 
 
-                <div class="tab-pane fade" id="v-pills-tasks" role="tabpanel" aria-labelledby="v-pills-tasks-tab">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="nav flex-row nav-pills" id="v-pills-tab" role="tablist"
-                                 aria-orientation="horizontal">
-                                <a class="nav-link active" id="v-pills-task-tab" data-toggle="pill" href="#v-pills-task"
-                                   role="tab" aria-controls="v-sub_pills-task"
-                                   aria-selected="true"> </a>
-                          
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade show active" id="v-pills-task" role="tabpanel"
-                         aria-labelledby="v-pills-task-tab">
-                        <div class="card">
-                            <div>
-                                <div class="card-header">
 
-                                    <div class="table-responsive">
-                                        <table
-                                            class=" table table-bordered table-striped table-hover datatable datatable-Task">
-                                            <thead>
-                                            <tr>
-
-                                                <th>
-                                                      
-                                                </th>
-                                                <th>
-                                                      
-                                                </th>
-                                                <th>
-                                                      
-                                                </th>
-                                                <th>
-                                                      
-                                                </th>
-                                                <th>
-                                                      
-                                                </th>
-                                                <th>
-                                                      
-                                                </th>
-                                                <th>
-
-                                                </th>
-                                            </tr>
-
-                                            </thead>
-                                            <tbody>
-                                     
-                                                <tr>
-                                                    <td colspan="7">
-                                                    </td>
-                                                </tr>
-                                     
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="tab-pane fade" id="v-pills-comments" role="tabpanel" aria-labelledby="v-pills-comments-tab">
-                    ...
-                </div>
             </div>
         </div>
     </div>
+@endsection
+@section('scripts')
+
+<script>
+ 
+ 
+</script>
+
+
+@if(session()->has('pill'))
+<script>
+window.onload = (event) => {
+
+    var pill = '{{ session()->get('pill','company_details') }}'
+
+    //reset all tabs
+    $('.nav-pills .nav-link').attr('aria-selected',false)
+    $('.nav-pills .nav-link').removeClass('active')
+    $('.tab-content .tab-pane').removeClass('active').removeClass('show')
+
+    //open the wanted tab
+    $('.nav-pills .'+pill).attr('aria-selected',true)
+    $('.nav-pills .'+pill).addClass('active')
+    $('.tab-content .'+pill).addClass('active').addClass('show')
+};
+
+
+
+$(document).ready(function() {
+  $(window).keydown(function(event){
+    if(event.keyCode == 13) {
+      event.preventDefault();
+      return false;
+    }
+  });
+});
+   
+</script>
+
+@endif
 @endsection
 
 

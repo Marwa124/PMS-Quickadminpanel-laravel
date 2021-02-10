@@ -10,7 +10,6 @@ use Modules\ProjectManagement\Http\Requests\MassDestroyMilestoneRequest;
 use Modules\ProjectManagement\Http\Requests\StoreMilestoneRequest;
 use Modules\ProjectManagement\Http\Requests\UpdateMilestoneRequest;
 use Modules\ProjectManagement\Entities\Milestone;
-use App\Models\User;
 use Gate;
 use Illuminate\Http\Request;
 use Modules\ProjectManagement\Entities\Project;

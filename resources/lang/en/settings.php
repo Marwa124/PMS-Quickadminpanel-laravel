@@ -59,6 +59,114 @@ return [
     'company_vat_required'                   => 'Vat Is Required',
     'company_vat_integer'                    => 'Vat Should Be Integer',
 
-    'company_details_updated'                  => 'Compay Details Updated successfully'
+    'company_details_updated'                  => 'Compay Details Updated successfully',
+
+
+    'default_language'                       => 'Default Language',
+    'locale' => 'Locale',
+    'timezone' => 'Timezone',
+    'default_currency' => 'Default Currency',
+    'currency_position' => 'Currency Position',
+    'right'   => 'Right',
+    'left' => 'Left',
+
+    'please_enter_currency_code' => 'Please Enter Currency Code',
+    'please_enter_currency_name' => 'Please Enter Currency Name',
+    'please_enter_currency_symbol' => 'Please Enter Currency Symbol',
+    'from_items' => 'From Items',
+    'save' => 'Save',
+    'close' => 'Close',
+
+    'code_required'                  => 'Code  Is Required',
+    'code_string'                    => 'Code  Should Be String',
+
+    'name_required'                  => 'Name  Is Required',
+    'name_string'                    => 'Name  Should Be String',
+
+
+    'symbol_required'                  => 'Symbol  Is Required',
+    'symbol_string'                    => 'Symbol  Should Be String',
+
+    'currency_created' => 'Currency Created Successfully',
+    'code' => 'Code',
+    'name' => 'Name',
+    'symbol' => 'Symbol',
+    'all_currency'          => 'All Currency',
+    'action' => 'Action',
+    'currency_updated' => 'Currency Updated Successfully',
+    'currency_deleted' => 'Currency Deleted Successfully',
+    'default_tax'     => 'Default Tax',
+    'tables_pagination_limit' => 'Pagination Limit',
+    'date_format'  => 'Date Format',
+    'time_format' => 'Time Format',
+    'money_format'  => 'Money Format',
+    'allowed_files' => 'Allowed Files',
+    'separate_using_exte' => 'Separate Using | ',
+    'hours' => 'Hours',
+    'enable_languages' => 'Enable Languages',
+    'allow_sub_tasks' => 'Allow Sub tasks',
+    'only_allowed_ip_can_clock' => 'Only allowed IP Can Clock',
+    'allow_client_registration' => 'Allow Client Registration',
+    'allow_apply_job_from_login' => 'Allow Apply Job From Login',
+    'client_default_menu_permission' => 'Client Default Menu Permission',
+    'auto_close_ticket' => 'Auto Close Ticket',
+    'recaptcha_secret_key' => 'Recaptcha Secret Key',
+    'recaptcha_site_key'   => 'Recaptcha Site Key',
+    'google_api_key' => 'Google Api Key',
+    'max_file_size' => 'Max File Size',
+    'recaptcha_help' => 'Go To <a target="_blank" href="https://www.google.com/recaptcha/admin/create">https://www.google.com/recaptcha/admin/create</a> To Setup Recaptcha ',
+    'timezone_invalid' => 'Timezone Is Invalid',
+    'dateformat_invalid' => 'Date Format is Invalid',
+    'timeformat_invalid' => 'Time Format is Invalid',
+
+
+
+    'default_language_required' => 'Default Language Is Required',
+    'default_language_string' => 'Default Language Should be String',
+    'locale_required' => 'Locale  Is Required',
+    'locale_string' => 'Locale Should Be String',
+    'timezone_required' => 'TimeZone Is Required',
+    'timezone_string' => 'TimeZone Should Be String',
+
+
+    'default_currency_required' => 'Default Currency Is Required',
+    'currency_position_string' =>  'Default Currency Should Be String',
+
+    'default_tax_integer' => 'Default Tax Should be Integer',
+
+    'tables_pagination_limit_integer' => 'Pagination Should Be Integer',
+    'date_format_string' => 'Date Format Should Be String',
+    'time_format_string' => 'Date Format Should Be String',
+
+    'money_format_integer' => 'Money Format Should Be Integer',
+    'money_format_min' => 'Money Format Min Is 1',
+    'money_format_max' => 'Money Format Max Is 8',
+
+    'decimal_separator_integer' => 'Decimal Separator Should Be Integer',
+
+    'allowed_files_string' => 'Allowed Files Should Be String',
+
+    'max_file_size_integer' => 'Max File Size Should Be Integer',
+
+    'google_api_key_string' => 'Google API Key Should Be String',
+    'recaptcha_site_key_string' => 'Recaptcha Site Key Should Be String',
+
+
+    'recaptcha_secret_key_string' => 'Reccaptcha Secret Key Should Be String',
+
+    'auto_close_ticket_integer' => 'Auto Close Ticket Should Be Integer',
+    'enable_languages_string' => 'Enable Languages Should Be String',
+    'allow_sub_tasks_string' => 'Allow Sub Tasks Should Be String',
+
+    'only_allowed_ip_can_clock_string' => 'Only Allowed IP Can Clock Should Be String',
+    'allow_client_registration_string' => 'Allow Client Registration Should Be String',
+    'allow_apply_job_from_login_string' => 'Allow Apply Job From Login Should Be String',
+
+    'company_system_updated'    => 'Company System Updated',
+
+
+
+
+
 
 ];

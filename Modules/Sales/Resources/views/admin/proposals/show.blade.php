@@ -7,28 +7,40 @@
     @if($proposal->status == 'accepted' || $proposal->status == 'Approved')
 
     <!-- Secondary, outline button -->
-    <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#primaryModal">Clone</button>
+    <button type="button" class="btn  btn-xs btn-secondary" data-toggle="modal" data-target="#primaryModal">Clone</button>
 
     <!-- Indicates a successful or positive action -->
-    <button type="button" class="btn btn-warning">Reminder </button>
+    <button type="button" class="btn  btn-xs btn-warning">Reminder </button>
 
     <!-- Indicates caution should be taken with this action -->
     <!-- /btn-group -->
-    <div class="btn-group">
-        <button type="button" class="btn btn-success  dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-            aria-expanded="false">Convert To
-        </button>
-        <div class="dropdown-menu" x-placement="bottom-start"
-            style="position: absolute; transform: translate3d(0px, 34px, 0px); top: 0px; left: 0px; will-change: transform;">
-            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#invoiceModal">Invoice</a>
-            <!-- <a class="dropdown-item" href="#" data-toggle="modal" data-target="#primaryModal">Estimate</a> -->
-
-        </div>
-    </div>
+        @if ($proposal->convert != 'Yes')
+            
+            <div class="btn-group">
+                <button type="button" class="btn  btn-xs btn-success  dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="false">Convert To
+                </button>
+                <div class="dropdown-menu" x-placement="bottom-start"
+                    style="position: absolute; transform: translate3d(0px, 34px, 0px); top: 0px; left: 0px; will-change: transform;">
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#invoiceModal">Invoice</a>
+                    <!-- <a class="dropdown-item" href="#" data-toggle="modal" data-target="#primaryModal">Estimate</a> -->
+        
+                </div>
+            </div>  
+                
+        @else
+        {{-- check if invoice or estmatied  --}}
+        @if ($proposal->convert_module == 'invoice')
+        <a class="btn btn-purple btn-xs" href="{{ route('finance.admin.invoices.show', $proposal->getinvioce->id) }}"><i  class="fa fa-hand-o-right"></i> {{  $proposal->getinvioce && $proposal->getinvioce->reference_no ? $proposal->getinvioce->reference_no : ''  }}</a>
+        @endif
+      
+        @endif
+    
+   
     <!-- /btn-group -->
     <!-- /btn-group -->
     <div class="btn-group">
-        <button type="button" class="btn btn-danger  dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+        <button type="button" class="btn  btn-xs btn-danger  dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
             aria-expanded="false">More Actions
         </button>
         <div class="dropdown-menu" x-placement="bottom-start"
@@ -83,8 +95,7 @@
             data-original-title="Send Email">
             <i class="fa fa-envelope"></i>
         </a>
-        <a onclick="javascript:window.print();" href="#" data-toggle="tooltip" data-placement="top" title=""
-            data-original-title="Print" class=" btn btn-xs btn-danger pull-right" aria-describedby="tooltip1049">
+        <a onclick="javascript:window.print();" href="#" >
             <i class="fa fa-print"></i>
         </a>
 
@@ -139,14 +150,13 @@
                 <div>
                     <strong>#{{ $proposal->reference_no }}</strong>
                 </div>
+                <div>{{ trans('cruds.proposal.fields.subject') }} : {{ $proposal->subject }}</div>
                 <div>{{ trans('cruds.proposal.fields.proposal_date') }} : {{ $proposal->proposal_date }}</div>
                 <div>{{ trans('cruds.proposal.fields.expire_date') }} : {{ $proposal->expire_date }}</div>
-                <div>{{ trans('cruds.proposal.fields.Sales_Agent') }}:
-                    {{ $proposal->user && $proposal->user->accountDetail ? $proposal->user->accountDetail->fullname :'' }}
+                <div>{{ trans('cruds.proposal.fields.Sales_Agent') }}: {{ $proposal->user && $proposal->user->accountDetail ? $proposal->user->accountDetail->fullname :'' }}
                 </div>
                 <div>
-                    {{ trans('cruds.proposal.fields.status') }}: <span class="btn btn-sm btn-primary">
-                        {{ $proposal->status }} </span>
+                    {{ trans('cruds.proposal.fields.status') }}: <span class="btn btn-sm btn-primary">  {{ $proposal->status }} </span>
                 </div>
             </div>
             <!--/.col-->
@@ -426,7 +436,7 @@
     <!-- /.modal-dialog -->
     <!-- ****************************************************/invoice_modal****************************************************** -->
     @section('scripts')
-    <script src="{{ asset('js/invoices.js') }}"></script>
+    <script src="{{ asset('js/proposals.js') }}"></script>
     <script>
         $('#recu_div').hide();
         $('#projects_div').hide();

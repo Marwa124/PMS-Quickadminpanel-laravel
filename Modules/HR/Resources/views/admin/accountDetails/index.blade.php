@@ -370,7 +370,7 @@
 <script>
 
 $(function () {
-    $('.restoreDelete').css('display', 'none');
+$('.restoreDelete').css('display', 'none');
 
 let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
 

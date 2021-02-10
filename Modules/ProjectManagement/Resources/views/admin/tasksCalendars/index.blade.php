@@ -30,7 +30,7 @@
                         @foreach($events as $event)
                             @if($event->due_date && $event->start_date)
                                 {
-                                    title : '{{ $event->name }}',
+                                    title : '{{ $event->{'name_'.app()->getLocale()} }}',
                                     start : '{{ \Carbon\Carbon::createFromFormat(config('panel.date_format'),$event->start_date)->format('Y-m-d') }}',
                                     end   : '{{ \Carbon\Carbon::createFromFormat(config('panel.date_format'),$event->due_date)->format('Y-m-d') }}',
                                     url   : '{{ route('projectmanagement.admin.tasks.show',$event->id) }}'
