@@ -40,7 +40,7 @@
 {{--                            <input type="hidden" name="tasks" id="tasks" value="{{$tasks}}"/>--}}
                             <select class="form-control select2 {{ $errors->has('task') ? 'is-invalid' : '' }}" name="task_id" id="task_id">
                                     @foreach($tasks as $key => $v_task)
-                                        <option value="{{ $v_task->id }}" {{ old('task_id') == $v_task->id ? 'selected' : $task->id == $v_task->id ? 'selected' :'disabled' }}  >{{ $task->name }}</option>
+                                        <option value="{{ $v_task->id }}" {{ old('task_id') == $v_task->id ? 'selected' : ($task->id == $v_task->id ? 'selected' :'disabled') }}  >{{ $task->name }}</option>
                                     @endforeach
                             </select>
                             @if($errors->has('task'))
@@ -59,7 +59,7 @@
                                 <option value="" selected disabled>{{trans('global.pleaseSelect')}}</option>
                                 @foreach($projects as $id => $v_project)
                                     @if($project)
-                                        <option value="{{ $id }}" {{ old('project_id') == $id ? 'selected' : $project->id == $id ? 'selected' : '' }}>{{ $v_project }}</option>
+                                        <option value="{{ $id }}" {{ old('project_id') == $id ? 'selected' : ($project->id == $id ? 'selected' : '' )}}>{{ $v_project }}</option>
                                     @else
                                         <option value="{{ $id }}" {{ old('project_id') == $id ? 'selected' : '' }}>{{ $v_project }}</option>
                                     @endif

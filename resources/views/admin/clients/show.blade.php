@@ -247,7 +247,8 @@
     </ul>
     <div class="tab-content">
         <div class="tab-pane" role="tabpanel" id="client_projects">
-            @includeIf('admin.clients.relationships.clientProjects', ['projects' => $client->clientProjects])
+            {{-- @includeIf('admin.clients.
+            .clientProjects', ['projects' => $client->clientProjects]) --}}
         </div>
     </div>
 </div>

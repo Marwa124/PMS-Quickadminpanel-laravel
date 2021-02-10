@@ -365,7 +365,7 @@ class ProjectsController extends Controller
             // Notify User
             foreach ($project->accountDetails as $accountUser)
             {
-    //            dd($project->accountDetails());
+            //            dd($project->accountDetails());
                 $user = $accountUser->user;
                 //dd($user);
                 $dataMail = [

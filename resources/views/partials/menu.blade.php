@@ -1075,7 +1075,7 @@
                 {{-- @endcan --}}
                 {{-- @can('opportunity_access') --}}
                 <li class="c-sidebar-nav-item">
-                    <a href="{{ route("admin.opportunities.index") }}"
+                    <a href="{{ route("sales.admin.opportunities.index") }}"
                        class="c-sidebar-nav-link {{ request()->is("admin/opportunities") || request()->is("admin/opportunities/*") ? "active" : "" }}">
                         <i class="fa-fw fas fa-filter c-sidebar-nav-icon">
 
