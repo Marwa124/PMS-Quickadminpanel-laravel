@@ -1,9 +1,9 @@
 @extends('layouts.admin')
 @section('content')
 
-<div style="margin-bottom: 10px;" class="row">
+<div style="display:flex; justify-content:space-between; padding: 1rem 0">
     @can('work_tracking_create')
-        <div class="col-lg-6">
+        <div>
             <a class="btn btn-success" href="{{ route('projectmanagement.admin.work-trackings.create') }}">
                 {{ trans('global.add') }} {{ trans('cruds.workTracking.title_singular') }}
             </a>
@@ -11,19 +11,18 @@
     @endcan
 
     @can('work_tracking_delete')
-        <div style="margin: 10px;" class="row d-flex ml-auto">
-            <div class="col-lg-6 ">
+        <div class="">
                 <a class="btn btn-{{$trashed ? 'info' : 'danger'}}"
                    href="{{$trashed ? route('projectmanagement.admin.work-trackings.index') : route('projectmanagement.admin.work-trackings.trashed.index')}}">
 
                     {{ $trashed ? trans('cruds.status.active') : trans('cruds.status.trashed') }} {{ trans('cruds.workTracking.title') }}
 
                 </a>
-
-            </div>
         </div>
     @endcan
 </div>
+
+
 <div class="card">
     <div class="card-header">
         {{ trans('cruds.workTracking.title_singular') }} {{ trans('global.list') }}
@@ -100,7 +99,13 @@
                                             <span class="fa fa-pencil-square-o"></span>
                                         </a>
                                     @endcan
-
+                                    @can('work_tracking_delete')
+                                        <form action="{{ route('projectmanagement.admin.work-trackings.destroy', $workTracking->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                            <button title="Delete" class="btn btn-xs btn-danger" type="submit"><span class="fas fa-trash"></span></button>
+                                        </form>
+                                    @endcan
                                     @can('work_tracking_assign_to')
 
                                         <a class="btn btn-xs btn-success" href="{{ route('projectmanagement.admin.work-trackings.getAssignTo', $workTracking->id) }}" >
@@ -109,13 +114,7 @@
 
                                     @endcan
 
-                                    @can('work_tracking_delete')
-                                        <form action="{{ route('projectmanagement.admin.work-trackings.destroy', $workTracking->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
-                                            <input type="hidden" name="_method" value="DELETE">
-                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                            <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
-                                        </form>
-                                    @endcan
+                                   
                                 @else
                                     @can('work_tracking_delete')
                                         <form action="{{ route('projectmanagement.admin.work-trackings.forceDestroy', $workTracking->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">

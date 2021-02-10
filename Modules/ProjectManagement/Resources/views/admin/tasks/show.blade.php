@@ -266,7 +266,7 @@
             </div>
 
         </div>
-        <div class="col-3">
+        <div class="col-md-3">
             <div class="card">
 
                 <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
@@ -280,14 +280,14 @@
                 </div>
             </div>
         </div>
-        <div class="col-9">
+        <div class="col-md-9">
 
             <div class="tab-content" id="v-pills-tabContent">
-                <div class="tab-pane fade show active" id="v-pills-details" role="tabpanel" aria-labelledby="v-pills-details-tab">
+                <div class="tab-pane fade show active" id="v-pills-details" role="tabpanel" aria-labelledby="v-pills-details-tab" style="padding:0">
                     <div class="card">
                         <h5 class="card-header">{{ $task->name }}
                             @can('task_edit')
-                                <a class="float-right small" href="{{ route('projectmanagement.admin.tasks.edit', $task->id) }}">
+                                <a class="float-right bg-success px-3 py-2 small" style="border-radius:8px" href="{{ route('projectmanagement.admin.tasks.edit', $task->id) }}">
                                     {{ trans('global.edit') }}  {{ trans('cruds.task.title_singular') }}
                                 </a>
                             @endcan
@@ -305,10 +305,10 @@
                                         <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.task.fields.status') }} : </p><span class="col-md-6">{{ $task->status ? trans("cruds.status.".$task->status) : '' }}</span> </div>
                                     </div>
                                 </div>
-                                <div class="col-sm-4 border-right ">
+                                <div class="col-sm-5 border-right ">
                                     <div class=" pl-1">
                                         @if($task->TimeSheetOn->first())
-                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.timer_status') }} :</p> <span class="col-md-6"><a class="btn-sm {{$task->TimeSheetOn->first()->timer_status == 'on' ? 'btn-success' : 'btn-danger'}}" style="color: #ffffff">{{trans('global.on')}}</a> <a href="{{route('projectmanagement.admin.tasks.update_task_timer',$task->id)}}" class="btn btn-sm {{$task->TimeSheetOn->first()->timer_status == 'on' ? 'btn-danger' : 'btn-success'}}">{{$task->TimeSheetOn->first()->timer_status == 'on' ? trans('cruds.project.fields.stop_time') : trans('cruds.project.fields.start_time')}}</a></span> </div>
+                                            <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.timer_status') }} :</p> <span class="col-md-6"><a class="btn-sm {{$task->TimeSheetOn->first()->timer_status == 'on' ? 'btn-success' : 'btn-danger'}}" style="color: #ffffff">{{trans('global.on')}}</a> <a href="{{route('projectmanagement.admin.tasks.update_task_timer',$task->id)}}" class="btn btn-sm {{$task->TimeSheetOn->first()->timer_status == 'on' ? 'btn-danger' : 'btn-success'}}">{{$task->TimeSheetOn->first()->timer_status == 'on' ? trans('cruds.project.fields.stop_time') : trans('cruds.project.fields.start_time')}}</a></span> </div>
                                         @else
                                             <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.fields.timer_status') }} :</p> <span class="col-md-6"><a class="btn-sm btn-danger" style="color: #ffffff">{{trans('global.off')}}</a> <a href="{{route('projectmanagement.admin.tasks.update_task_timer',$task->id)}}" class="btn btn-sm btn-success"> {{trans('cruds.project.fields.start_time')}}</a></span> </div>
                                         @endif
@@ -329,7 +329,7 @@
 
                                     </div>
                                 </div>
-                                <div class="col-sm-4  ">
+                                <div class="col-sm-3  ">
                                     <div class=" pl-1">
                                         <div class="row"> <p class="font-bold col-md-5">{{ trans('cruds.task.fields.attachment') }} :</p>
                                             <span class="col-md-7">
@@ -464,7 +464,7 @@
                                                                     <form action="{{ route('projectmanagement.admin.tasks.destroy', $v_task->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
                                                                         <input type="hidden" name="_method" value="DELETE">
                                                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                                        <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
+                                                                        <button title="Delete" class="btn btn-xs btn-danger" type="submit"><span class="fas fa-trash"></span></button>
                                                                     </form>
                                                                 @endcan
 
@@ -592,7 +592,7 @@
                                                                 <form action="{{ route('projectmanagement.admin.bugs.destroy', $bug->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
                                                                     <input type="hidden" name="_method" value="DELETE">
                                                                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                                    <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
+                                                                    <button title="Delete" class="btn btn-xs btn-danger" type="submit"><span class="fas fa-trash"></span></button>
                                                                 </form>
                                                             @endcan
 
@@ -709,10 +709,10 @@
 
                                                         </td>
                                                         <td>
-                                                            <span class="btn-success btn-sm">{{ $timer->start_time ? date("F j, Y, g:i a",$timer->start_time): '' }}</span>
+                                                            <span class="btn-sm">{{ $timer->start_time ? date("F j, Y, g:i a",$timer->start_time): '' }}</span>
                                                         </td>
                                                         <td>
-                                                            <span class="btn-danger btn-sm">{{ $timer->end_time ? date("F j, Y, g:i a",$timer->end_time): '' }}</span>
+                                                            <span class="btn-sm">{{ $timer->end_time ? date("F j, Y, g:i a",$timer->end_time): '' }}</span>
                                                         </td>
                                                         <td>
                                                             <a  href="{{ route('projectmanagement.admin.tasks.show', $timer->task->id) }}" title=" {{ trans('global.view') }}">
@@ -739,7 +739,7 @@
                                                                     <form action="{{route('projectmanagement.admin.time-sheets.destroy',$timer->id)}}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
                                                                         <input type="hidden" name="_method" value="DELETE">
                                                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                                        <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
+                                                                        <button title="Delete" class="btn btn-xs btn-danger" type="submit"><span class="fas fa-trash"></span></button>
                                                                     </form>
                                                                 @endcan
 
