@@ -9,10 +9,10 @@ use Illuminate\Http\Response;
 
 class UpdateStockRequest extends FormRequest
 {
-    public function authorize()
-    {
-        return Gate::allows('stock_edit');
-    }
+//    public function authorize()
+//    {
+////        return Gate::allows('stock_edit');
+//    }
 
     public function rules()
     {
@@ -20,17 +20,22 @@ class UpdateStockRequest extends FormRequest
             'stock_sub_category_id' => [
                 'required',
                 'integer',
+                'exists:stock_sub_categories,id',
             ],
             'name'                  => [
                 'string',
                 'required',
-                'unique:stocks,name,' . request()->route('stock')->id,
+
             ],
             'total_stock'           => [
                 'nullable',
                 'integer',
-                'min:-2147483648',
+                'min:0',
                 'max:2147483647',
+            ],
+            'buying_date'           => [
+                'required',
+                'date',
             ],
         ];
     }

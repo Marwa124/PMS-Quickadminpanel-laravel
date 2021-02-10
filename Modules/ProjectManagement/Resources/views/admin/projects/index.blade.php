@@ -128,17 +128,16 @@
 
     </div>
 
-    <div style="margin-bottom: 10px;" class="row">
+    <div style="display:flex; justify-content:space-between; padding: 1rem 0">
         @can('project_create')
-            <div class="col-lg-6">
+            <div class="">
                 <a class="btn btn-success" href="{{ route('projectmanagement.admin.projects.create') }}">
                     {{ trans('global.add') }} {{ trans('cruds.project.title_singular') }}
                 </a>
             </div>
         @endcan
         @can('project_delete')
-            <div style="margin: 10px;" class="row d-flex ml-auto">
-                <div class="col-lg-6 ">
+                <div class="">
                     <a class="btn btn-{{$trashed ? 'info' : 'danger'}}"
                        href="{{$trashed ? route('projectmanagement.admin.projects.index') : route('projectmanagement.admin.projects.trashed.index')}}">
 
@@ -147,9 +146,9 @@
                     </a>
 
                 </div>
-            </div>
         @endcan
     </div>
+    
     {{-- <div class="row">
        <div class="col-lg-3">
            <select data-column="0" class="form-control filter-select" name="" id="">
@@ -224,14 +223,7 @@
                                        title=" {{ trans('global.view') }}">
                                         {{ $project->{'name_'.app()->getLocale()} ?? '' }}<br>
                                     </a>
-                                    <div class="progress" style="width: 150px">
-                                        <div class="progress-bar {{$project->calculate_progress < 50 ? 'bg-danger':'bg-success'}}"
-                                             role="progressbar"
-                                             style="width: {{$project->calculate_progress}}%; display: {{$project->calculate_progress?:'none'}}"
-                                             aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-                                            {{$project->calculate_progress}}%
-                                        </div>
-                                    </div>
+                                   
                                 </td>
                                 <td>
                                     {{ $project->client && $project->client->name ? $project->client->name : '' }}
@@ -276,7 +268,19 @@
 
                                 <td>
 {{--                                    {{ $project->project_status ? ucwords(str_replace('_',' ',$project->project_status)) : '' }}--}}
-                                    {{ $project->project_status ? trans("cruds.status.".$project->project_status)  : '' }}
+                                    <div class="text-center">
+                                    <small class="{{$project->calculate_progress < 50 ? 'bg-danger':'bg-success'}}" style="display:block; border-radius:15px; padding:3px 12px; color:#fff; margin-bottom:1rem">
+                                        {{ $project->project_status ? trans("cruds.status.".$project->project_status)  : '' }}
+                                    </small>
+                                    </div>
+                                    <div class="progress" style="width: 150px">
+                                        <div class="progress-bar {{$project->calculate_progress < 50 ? 'bg-danger':'bg-success'}}"
+                                             role="progressbar"
+                                             style="width: {{$project->calculate_progress}}%; display: {{$project->calculate_progress?:'none'}}"
+                                             aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                                            {{$project->calculate_progress}}%
+                                        </div>
+                                    </div>
                                 </td>
                                 <td>
                                     {{ $project->department && $project->department->department_name ? $project->department->department_name : '' }}
@@ -307,15 +311,7 @@
                                             </a>
                                         @endcan
 
-                                        @can('project_assign_to')
-
-                                            <a class="btn btn-xs btn-success {{$project->department ? '' : 'disabled'}}"
-                                               href="{{ route('projectmanagement.admin.projects.getAssignTo', $project->id) }}"
-                                               title="{{$project->department ? '' : trans('cruds.messages.add_department_to_project')}}">
-                                                {{ trans('global.assign_to') }}
-                                            </a>
-
-                                        @endcan
+                                       
 
                                         @can('project_delete')
                                             <form action="{{ route('projectmanagement.admin.projects.destroy', $project->id) }}"
@@ -324,9 +320,17 @@
                                                   style="display: inline-block;">
                                                 <input type="hidden" name="_method" value="DELETE">
                                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                <input type="submit" class="btn btn-xs btn-danger"
-                                                       value="{{ trans('global.delete') }}">
+                                                <button title="Delete" class="btn btn-xs btn-danger" type="submit"><span class="fas fa-trash"></span></button>
                                             </form>
+                                        @endcan
+                                        @can('project_assign_to')
+
+                                        <a class="btn btn-xs btn-success {{$project->department ? '' : 'disabled'}}"
+                                        href="{{ route('projectmanagement.admin.projects.getAssignTo', $project->id) }}"
+                                        title="{{$project->department ? '' : trans('cruds.messages.add_department_to_project')}}">
+                                            {{ trans('global.assign_to') }}
+                                        </a>
+
                                         @endcan
                                     @else
                                         @can('project_delete')

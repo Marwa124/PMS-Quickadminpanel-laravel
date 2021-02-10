@@ -20,6 +20,7 @@ class StoreStockRequest extends FormRequest
             'stock_sub_category_id' => [
                 'required',
                 'integer',
+                'exists:stock_sub_categories,id',
             ],
             'name'                  => [
                 'string',
