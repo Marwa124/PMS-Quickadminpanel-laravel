@@ -44,6 +44,7 @@ class SalaryTemplate extends Model
     public function salaryDeductions()
     {
         return $this->hasMany(SalaryDeduction::class, 'salary_template_id');
+        // return $this->hasMany(SalaryDeduction::class, 'salary_template_id')->orderBy('id','desc');
     }
 
     public function designation()

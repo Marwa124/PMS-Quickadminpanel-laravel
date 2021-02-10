@@ -7,7 +7,6 @@ use Modules\Payroll\Http\Requests\Destroy\MassDestroyHourlyRateRequest;
 use Modules\Payroll\Http\Requests\Store\StoreHourlyRateRequest;
 use Modules\Payroll\Entities\HourlyRate;
 use Gate;
-use Illuminate\Http\Request;
 use Modules\Payroll\Http\Requests\Update\UpdateHourlyRateRequest;
 use Symfony\Component\HttpFoundation\Response;
 

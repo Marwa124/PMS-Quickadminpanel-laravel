@@ -15,6 +15,7 @@ use Modules\HR\Entities\Designation;
 use PDFAnony\TCPDF\Facades\AnonyPDF;
 use Symfony\Component\HttpFoundation\Response;
 // use PDF;
+use MPDF;
 
 class JobApplicationController extends Controller
 {
@@ -42,27 +43,32 @@ class JobApplicationController extends Controller
         // abort_if(Gate::denies('generate_hr_letter'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $detail['details'] = JobApplication::find($application_id);
-        if ($local == 'ar') {
-            $html = view('hr::admin.jobApplications.pdf_ar', $detail)->render(); // file render
-        }else {
-            $html = view('hr::admin.jobApplications.pdf_ar', $detail)->render(); // file render
-            // $html = view('hr::admin.jobApplications.pdf_en', $detail)->render(); // file render
-        }
+        // if ($local == 'ar') {
+        //     $html = view('hr::admin.jobApplications.pdf_ar', $detail)->render(); // file render
+        // }else {
+        //     $html = view('hr::admin.jobApplications.pdf_ar', $detail)->render(); // file render
+        //     // $html = view('hr::admin.jobApplications.pdf_en', $detail)->render(); // file render
+        // }
 
-        $pdfarr = [
-            'title'=>'HR Letter',
-            'data'=>$html,
-            'header'=>['show'=>false], 
-            'footer'=>['show'=>false], 
-            'font'=>'aealarabiya', //  dejavusans, aefurat ,aealarabiya ,times
-            'font-size'=>12,
-            'text'=>'',
-            'rtl'=>($local == 'ar') ? true : false ,
-            'filename'=>'HR Letter_'.rand(1, 999).'.pdf',
-            'display'=>'download', // stream , download , print
-        ];
+    //     $pdfarr = [
+    //         'title'=>'HR Letter',
+    //         'data'=>$html,
+    //         'header'=>['show'=>false], 
+    //         'footer'=>['show'=>false], 
+    //         'font'=>'aealarabiya', //  dejavusans, aefurat ,aealarabiya ,times
+    //         'font-size'=>12,
+    //         'text'=>'',
+    //         'rtl'=>($local == 'ar') ? true : false ,
+    //         'filename'=>'HR Letter_'.rand(1, 999).'.pdf',
+    //         'display'=>'download', // stream , download , print
+    //     ];
 
-       AnonyPDF::HTML($pdfarr);
+    //    AnonyPDF::HTML($pdfarr);
+                
+            $loadpdf = MPDF::loadView('hr::admin.jobApplications.pdf_ar', $detail)
+                ->stream('PDF-Report.pdf');;
+
+            return $loadpdf;
     }
 
     // Update Application Status
@@ -108,31 +114,8 @@ class JobApplicationController extends Controller
             'application_color' => $application_color,
             'application_text'  => $application_text,
         ]);
-        // $jobApplication->update($request->all());
-
-        // if ($request->input('resume', false)) {
-        //     if (!$jobApplication->resume || $request->input('resume') !== $jobApplication->resume->file_name) {
-        //         if ($jobApplication->resume) {
-        //             $jobApplication->resume->delete();
-        //         }
-
-        //         $jobApplication->addMedia(storage_path('tmp/uploads/' . $request->input('resume')))->toMediaCollection('resume');
-        //     }
-        // } elseif ($jobApplication->resume) {
-        //     $jobApplication->resume->delete();
-        // }
-
-        // return redirect()->route('hr.admin.job-applications.index');
+       
     }
-
-    // public function show(JobApplication $jobApplication)
-    // {
-    //     abort_if(Gate::denies('job_application_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-    //     $jobApplication->load('job_circular');
-
-    //     return view('hr::admin.jobApplications.show', compact('jobApplication'));
-    // }
 
     public function destroy(JobApplication $jobApplication)
     {
@@ -150,15 +133,4 @@ class JobApplicationController extends Controller
         return response(null, Response::HTTP_NO_CONTENT);
     }
 
-    // public function storeCKEditorImages(Request $request)
-    // {
-    //     abort_if(Gate::denies('job_application_create') && Gate::denies('job_application_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
-    //     $model         = new JobApplication();
-    //     $model->id     = $request->input('crud_id', 0);
-    //     $model->exists = true;
-    //     $media         = $model->addMediaFromRequest('upload')->toMediaCollection('ck-media');
-
-    //     return response()->json(['id' => $media->id, 'url' => $media->getUrl()], Response::HTTP_CREATED);
-    // }
 }

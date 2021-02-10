@@ -3885,7 +3885,16 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
             }
           });
         }
-      });
+      }); //////////////// Total Tax /////////////////////////
+
+      for (var _i = 0, _Object$entries = Object.entries(this.form.taxRate_total); _i < _Object$entries.length; _i++) {
+        var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
+            x = _Object$entries$_i[0],
+            y = _Object$entries$_i[1];
+
+        if (y.value != 0) this.form.total = this.form.sub_total + y.value - this.form.discount_total + this.form.adjustment;else if (y.value == 0) this.form.total = this.form.sub_total - this.form.discount_total + this.form.adjustment;
+      } //////////////// Total Tax /////////////////////////
+
     }
   },
   watch: {
@@ -3908,16 +3917,12 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           }, {});
           form.sub_total = result;
           form.discount_total = -parseFloat((form.discount_percent * subTotal * (1 / 100)).toFixed(2));
-          this.calculateTotalTaxes(); //////////////// Total Tax /////////////////////////
-
-          for (var _i = 0, _Object$entries = Object.entries(form.taxRate_total); _i < _Object$entries.length; _i++) {
-            var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
-                x = _Object$entries$_i[0],
-                y = _Object$entries$_i[1];
-
-            if (y.value != 0) form.total = form.sub_total + y.value - form.discount_total + form.adjustment;else if (y.value == 0) form.total = form.sub_total - form.discount_total + form.adjustment;
-          } //////////////// Total Tax /////////////////////////
-
+          this.calculateTotalTaxes(); // //////////////// Total Tax /////////////////////////
+          //     for(let [x, y] of Object.entries(form.taxRate_total)) {
+          //         if(y.value != 0)  form.total = form.sub_total + y.value - form.discount_total + form.adjustment
+          //         else if(y.value == 0) form.total = form.sub_total - form.discount_total + form.adjustment
+          //     }
+          // //////////////// Total Tax /////////////////////////
         }
       },
       deep: true

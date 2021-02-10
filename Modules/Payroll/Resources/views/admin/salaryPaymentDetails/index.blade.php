@@ -1,18 +1,10 @@
 @extends('layouts.admin')
+@section('title')
+| {{ trans('cruds.salaryPaymentDetail.title_singular') }}
+@endsection
 @section('content')
 @inject('salaryTemplateModel', 'Modules\Payroll\Entities\SalaryTemplate')
-{{-- @can('salary_payment_detail_create')
-    <div style="margin-bottom: 10px;" class="row">
-        <div class="col-lg-12">
-            <a class="btn btn-success" href="{{ route('payroll.admin.salary-payment-details.create') }}">
-                {{ trans('global.add') }} {{ trans('cruds.salaryPaymentDetail.title_singular') }}
-            </a>
-        </div>
-    </div>
-@endcan --}}
-@php
-    // dd($salaryTemplate->where('salary_grade', 'Telemarketing')->first());
-@endphp
+
 <div class="card">
     <div class="card-header">
         {{ trans('cruds.salaryPaymentDetail.title_singular') }} {{ trans('global.list') }}
@@ -157,17 +149,7 @@
                                             </div>
                                         </div>
 
-
-
-
                                     @endcan
-                                    {{-- @can('salary_payment_detail_delete')
-                                        <form action="{{ route('payroll.admin.salary-payment-details.destroy', $detail->user_id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
-                                            <input type="hidden" name="_method" value="DELETE">
-                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                            <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
-                                        </form>
-                                    @endcan --}}
                                 </td>
 
                             </tr>
@@ -189,36 +171,6 @@
 <script>
     $(function () {
   let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-// @can('salary_payment_detail_delete')
-//   let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
-//   let deleteButton = {
-//     text: deleteButtonTrans,
-//     url: "{{ route('payroll.admin.salary-payment-details.massDestroy') }}",
-//     className: 'btn-danger',
-//     action: function (e, dt, node, config) {
-//       var ids = $.map(dt.rows({ selected: true }).nodes(), function (entry) {
-//           return $(entry).data('entry-id')
-//       });
-
-//       if (ids.length === 0) {
-//         alert('{{ trans('global.datatables.zero_selected') }}')
-
-//         return
-//       }
-
-//       if (confirm('{{ trans('global.areYouSure') }}')) {
-//         $.ajax({
-//           headers: {'x-csrf-token': _token},
-//           method: 'POST',
-//           url: config.url,
-//           data: { ids: ids, _method: 'DELETE' }})
-//           .done(function () { location.reload() })
-//       }
-//     }
-//   }
-//   dtButtons.push(deleteButton)
-// @endcan
-
   $.extend(true, $.fn.dataTable.defaults, {
     orderCellsTop: true,
     order: [[ 1, 'desc' ]],
