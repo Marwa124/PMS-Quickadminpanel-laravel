@@ -105,6 +105,22 @@ Route::group(['as' => 'finance.admin.', 'prefix' => 'admin/finance', 'namespace'
     Route::delete('stock_category_mass_destroy','StockCategoryController@massDestroy')->name('sub_stock_category.massDestroy');
     ////////////////////////////////END STOCK CATEGORY//////////////////////////////////////////////////////////////
 
+    ////////////////////////////////////STOCK LIST//////////////////////////////////////////////////////////////
+    Route::get('stocks','StocksController@index')->name('stocks.index');
+    Route::get('stocks/create','StocksController@create')->name('stocks.create');
+    Route::post('stocks/store','StocksController@store')->name('stocks.store');
+    Route::get('stocks/edit/{name}/{sub_stock_category}','StocksController@edit')->name('stocks.edit');
+    Route::put('stocks/update','StocksController@update')->name('stocks.update');
+    Route::delete('stocks/destory/{name}/{sub_stock_category}','StocksController@destroy')->name('stocks.destroy');
+
+    Route::get('stocks/history','StocksController@history')->name('stocks.history');
+    Route::post('stocks/getresult/search','StocksController@history_search_result')->name('stocks.getresult');
+    Route::get('stocks_history/edit/{id}','StocksController@stocks_history_edit')->name('stocks_history.edit');
+    Route::put('stocks_history/update','StocksController@stocks_history_update')->name('stocks_history.update');
+    Route::delete('stocks_history/destroy/{id}','StocksController@stocks_history_destroy')->name('stocks_history.destroy');
+
+    ////////////////////////////////END STOCK LIST//////////////////////////////////////////////////////////////
+
 
 
 

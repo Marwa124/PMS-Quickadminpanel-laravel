@@ -19,14 +19,14 @@ class CloneProposalRequest extends FormRequest
            'id' => 'exists:proposals,id',
             'module'         => [
                 'string',
-                'required',
+                'sometimes',
             ],
             'module_id'         => [
                 'integer',
-                'required',
+                'sometimes',
             ],
             'proposal_date'  => [
-                'required',
+                'sometimes',
                 'date_format:' . config('panel.date_format'),
             ],
             'expire_date'    => [

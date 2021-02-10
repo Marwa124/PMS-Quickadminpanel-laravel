@@ -10,7 +10,7 @@ class CreateStocksTable extends Migration
     {
         Schema::create('stocks', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->unique();
+            $table->string('name')->nullable();
             $table->integer('total_stock')->nullable();
             $table->timestamps();
             $table->softDeletes();

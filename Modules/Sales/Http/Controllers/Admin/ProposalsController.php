@@ -24,6 +24,7 @@ use Spatie\Permission\Models\Permission;
 use Modules\Sales\Entities\Proposal;
 use Modules\MaterialsSuppliers\Entities\TaxRate;
 use Gate;
+use DataTables;
 use Illuminate\Http\Request;
 use Spatie\MediaLibrary\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,15 +34,44 @@ class ProposalsController extends Controller
 {
     use MediaUploadingTrait;
 
-    public function index()
+    public function index(Request $request)
     {
+        
         abort_if(Gate::denies('proposal_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
+        $draft=Proposal::where('status','draft')->sum(\DB::raw('total_tax+after_discount'));
+
+        $sent=Proposal::where('status','sent')->sum(\DB::raw('total_tax+after_discount'));
+
+        $declined=Proposal::where('status','declined')->sum(\DB::raw('total_tax+after_discount'));
+
+        $accepted=Proposal::where('status','accepted')->sum(\DB::raw('total_tax+after_discount'));
+
+        $Waiting_approval=Proposal::where('status','Waiting_approval')->sum(\DB::raw('total_tax+after_discount'));
+
+        $expired=Proposal::where('expire_date','<',date('Y-m-d'))->sum(\DB::raw('total_tax+after_discount'));
+
         $proposals = Proposal::all();
-
-        // $permissions = Permission::get();
-
-        return view('sales::admin.proposals.index', compact('proposals'));
+        // list propsales year
+        $prosalyears=Proposal::pluck('proposal_date')->map(function ($model) { return date('Y', strtotime($model)); })->toArray();
+        $years=array_unique($prosalyears);
+        if($request->ajex){
+            $proposals = Proposal::select('proposals.*');
+            if(!empty($request->get('Yearfilter'))){
+                $proposals->whereYear('proposal_date',$request->get('Yearfilter'));
+            }
+            if(!empty($request->get('statusfilter'))){
+                if($request->get('statusfilter') == 'all'){
+                    $proposals;
+                }else{
+                    $proposals->where('status',$request->get('statusfilter'));
+                }
+            }
+            return DataTables::of($proposals)
+            ->addIndexColumn()
+            ->make(true);
+        }
+       return view('sales::admin.proposals.index', compact('proposals','draft','sent','declined','accepted','expired','Waiting_approval','years'));
     }
 
     public function create()
@@ -351,14 +381,21 @@ class ProposalsController extends Controller
             //load relation of proposals
             $proposal->load('items','itemtaxs');
             //fill data with i need
-            $newproposal = $proposal->replicate()->fill([
-                'reference_no'=> generate_proposal_number(),
-                'module'=>$request->module,
-                'module_id'=>$request->module_id,
-                'expire_date'=>$request->expire_date,
-                'proposal_date'=>$request->proposal_date,
-                ]);
-                $newproposal->push();
+                if($request->module && $request->module_id && $request->expire_date && $request->proposal_date){
+
+                    $newproposal = $proposal->replicate()->fill([
+                    'reference_no'=> generate_proposal_number(),
+                    'module'=>$request->module,
+                    'module_id'=>$request->module_id,
+                    'expire_date'=>$request->expire_date,
+                    'proposal_date'=>$request->proposal_date,
+                    ]);
+                }else{
+                    $newproposal = $proposal->replicate()->fill([
+                        'reference_no'=> generate_proposal_number()
+                        ]);
+                }
+                    $newproposal->push();
                 
                 // load relation in new proposal 
                 foreach($proposal->getRelations() as $relation => $items){
@@ -517,5 +554,69 @@ class ProposalsController extends Controller
             return redirect()->back();
         }
 
+    }
+
+
+    /**********filter function **********/ 
+    public function filter(Request $request){
+       
+        abort_if(Gate::denies('proposal_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        if($request->delete == "trashed"){
+            $proposalsfilter = Proposal::onlyTrashed();
+  
+            $prosalyears=$proposalsfilter->pluck('proposal_date')->map(function ($model) { return date('Y', strtotime($model)); })->toArray();
+            $years=array_unique($prosalyears);
+            if(!empty($request->year)){
+                $proposalsfilter->whereYear('proposal_date',$request->year);
+            }
+            if(!empty($request->proposal_date)){
+                $proposalsfilter->whereDate('proposal_date',$request->proposal_date);
+            }
+            if(!empty($request->status)){
+                if($request->status == 'all'){
+                    $proposalsfilter;
+                }else{
+                    $proposalsfilter->where('status',$request->status);
+                }
+            }
+        }else{
+        $proposalsfilter = Proposal::with('items');
+        $prosalyears=$proposalsfilter->pluck('proposal_date')->map(function ($model) { return date('Y', strtotime($model)); })->toArray();
+        $years=array_unique($prosalyears);
+        if(!empty($request->year)){
+            $proposalsfilter->whereYear('proposal_date',$request->year);
+        }
+        if(!empty($request->proposal_date)){
+            $proposalsfilter->whereDate('proposal_date',$request->proposal_date);
+        }
+        if(!empty($request->status)){
+            if($request->status == 'all'){
+                $proposalsfilter;
+            }else{
+                $proposalsfilter->where('status',$request->status);
+            }
+        }
+        }
+        
+        $proposals=$proposalsfilter->get();
+        $draft=$proposalsfilter->where('status','draft')->sum(\DB::raw('total_tax+after_discount'));
+
+        $sent=$proposalsfilter->where('status','sent')->sum(\DB::raw('total_tax+after_discount'));
+
+        $declined=$proposalsfilter->where('status','declined')->sum(\DB::raw('total_tax+after_discount'));
+
+        $accepted=$proposalsfilter->where('status','accepted')->sum(\DB::raw('total_tax+after_discount'));
+
+        $Waiting_approval=$proposalsfilter->where('status','Waiting_approval')->sum(\DB::raw('total_tax+after_discount'));
+
+        $expired=$proposalsfilter->where('expire_date','<',date('Y-m-d'))->sum(\DB::raw('total_tax+after_discount'));
+
+        // list propsales year
+        $year= $request->year;
+        $proposal_date= $request->proposal_date;
+        $status= $request->status;
+        $delete= $request->delete;
+       
+       return view('sales::admin.proposals.index', compact('proposals','draft','sent','declined','accepted','expired','Waiting_approval','years','year','proposal_date','status','delete'));
     }
 }
