@@ -84,6 +84,7 @@ body{
 
                 @include('setting::tabs.company_system')
                 @include('setting::tabs.email_settings')
+                @include('setting::tabs.sms_settings')
 
 
 
@@ -130,5 +131,21 @@ window.onload = (event) => {
 </script>
 
 @endif 
+
+
+
+<script>
+
+    function slideToggle(id){
+     
+    if(document.getElementById( id).style.display == '' ){
+        document.getElementById( id).style.display ='none';
+    } else {
+        document.getElementById( id).style.display ='';
+    
+    }
+    
+    }
+    </script>
 
 

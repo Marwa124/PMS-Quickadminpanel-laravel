@@ -14,7 +14,6 @@
 use App\Mail\TestMail;
 use App\Mail\MailgunMail;
 use Illuminate\Support\Facades\Mail;
-use App\Notifications\PlivoNotification;
 use App\Notifications\TwilioNotification;
 use Plivo\RestClient;
 
@@ -36,29 +35,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
 
     Route::post('save_mail_mailgun', 'SettingController@save_mail_mailgun')->name('admin.mail_mailgun.store');
     Route::post('send_test_mail', 'SettingController@send_test_mail')->name('admin.test_mail');
+    Route::post('save_sms', 'SettingController@save_sms')->name('admin.save_sms');
 
-    Route::get('testmail', function () {
-
-        try {
-            Mail::mailer(settings('smtp_protocol'))->to('shadyosamafawzy@gmail.com')->send(new TestMail());
-            dd('sent');
-        } catch (\Exception $e) {
-
-            dd($e->getMessage() . ' Something went wrong');
-        }
-    });
-
-
-    Route::get('testmailgun', function () {
-
-        try {
-            Mail::mailer(settings('mailgun_protocol'))->to('shadyosamafawzy@gmail.com')->send(new MailgunMail());
-            dd('sent');
-        } catch (\Exception $e) {
-
-            dd($e->getMessage() . ' Something went wrong');
-        }
-    });
 
 
     Route::get('testMsg', function () {
