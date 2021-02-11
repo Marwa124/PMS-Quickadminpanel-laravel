@@ -85,11 +85,11 @@
                                     aria-orientation="horizontal">
                                     <a class="nav-link active" id="v-pills-task-tab" data-toggle="pill" href="#v-pills-task"
                                         role="tab" aria-controls="v-pills-task"
-                                        aria-selected="true">{{ trans('cruds.task.title') }}</a>
+                                        aria-selected="true">{{ trans('cruds.calls.title_singular') }}</a>
                                     @can('task_create')
-                                    <a class="nav-link" id="v-pills-new_task-tab" href="#" role="tab"
-                                        aria-controls="v-pills-new_task" aria-selected="false">New
-                                        {{ trans('cruds.task.title_singular') }}</a>
+                                    <a class="nav-link" id="v-pills-new_task-tab" href="#v-pills-create" role="tab" 
+                                        aria-controls="v-pills-new_task" aria-selected="false">{{ trans('global.create') }}
+                                        {{ trans('cruds.calls.title_singular') }}</a>
                                     @endcan
                                 </div>
                             </div>
@@ -97,7 +97,155 @@
                         <div class="tab-pane fade show active" id="v-pills-task" role="tabpanel"
                             aria-labelledby="v-pills-task-tab">
                             <div class="card">
-
+                                <div class="table-responsive"  >
+                                    <table class=" table table-bordered table-striped table-hover datatable datatable-Task " >
+                                        <thead>
+                                            <tr>
+                                                <th >
+                        
+                                                </th>
+                                                
+                                                <th>
+                                                    {{ trans('cruds.calls.fields.data_contact') }}
+                                                </th>
+                                                <th>
+                                                    {{ trans('cruds.calls.fields.lead_qualification') }}
+                                                </th>
+                                            
+                                                <th>
+                                                    {{ trans('cruds.calls.fields.Contact_With') }}
+                                                </th>
+                                                <th>
+                                                    {{ trans('cruds.calls.fields.firstorsecond') }}
+                                                </th>
+                                                <th>
+                                                    &nbsp;
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody >
+                                        @if($opportunity->calls)
+                                            @forelse($opportunity->calls as $key => $call)
+                                                <tr data-entry-id="{{ $call->id }}">
+                                                    <td>{{ $loop->iteration }}</td>
+                                                    <td>{{ $call->date }}</td>
+                                                    <td>{{ $call->qualification }}</td>
+                                                    <td>{{isset($call->client)? $call->client->name :''}}</td>
+                                                    <td>{{ $call->call }}</td>
+                                                 
+                                                </tr>
+                                            @empty
+                                                <tr>
+                                                    <td colspan="9" >
+                                                        <center> {{trans('cruds.messages.no_Calls_found_in_Opportunity')}} </center>
+                                                    </td>
+                                                </tr>
+                                            @endforelse
+                                        @else
+                                            <tr>
+                                                <td colspan="9" >
+                                                    {{trans('cruds.messages.no_Calls_found_in_Opportunity')}}
+                                                </td>
+                                            </tr>
+                                        @endif
+                                        </tbody>
+                                    </table>
+                                </div> 
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="#v-pills-create" role="tabpanel"
+                            aria-labelledby="#v-pills-create-tab">
+                            <div class="card">
+                                <div class="table-responsive"  >
+                                    <form  action="{{route('sales.admin.calls.store')}}" method="post">
+                                        @csrf
+                                        <div class="container">
+                            
+                                            <input type="hidden" name="call">
+                            
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <div class="form-group mr-5">
+                                                        <label for="exampleFormControlInput1">Call By</label>
+                                                        <input type="text" name="call_by" class="form-control" id="exampleFormControlInput1" placeholder="Call By">
+                                                    </div>
+                            
+                                                    <div class="form-group mr-5">
+                                                        <label for="exampleFormControlInput1">Note</label>
+                                                        <textarea class="form-control" name="note" id="exampleFormControlInput1" placeholder="Note"></textarea>
+                                                    </div>
+                            
+                                                    <div class="form-group mr-5">
+                                                        <label for="exampleFormControlSelect1">Result</label>
+                                                        <select class="form-control" id="exampleFormControlSelect1" name="result_id">
+                                                            @if(!empty($results))
+                                                                @foreach($results as $result)
+                                                                    <option value="{{$result->id}}">{{$result->name}}</option>
+                                                                @endforeach
+                                                            @endif
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group mr-5">
+                                                        <label for="exampleFormControlSelect1">Lead</label>
+                                                        <select class="form-control" id="exampleFormControlSelect1" name="lead_id">
+                            
+                                                            @if(!empty($leads))
+                                                                @foreach($leads as $lead)
+                                                                    <option value="{{$lead->id}}" {{isset($_GET['id']) && $_GET['id'] == $lead->id ? 'selected' : ''}}>{{$lead->client_name}}</option>
+                                                                @endforeach
+                                                            @endif
+                                                        </select>
+                                                    </div>
+                            
+                            
+                            
+                            
+                                                    <div class="form-group mr-5" style="padding-top: 30px">
+                                                        <button type="submit" class="btn btn-info"><i></i>Save Changes</button>
+                                                    </div>
+                                                </div>
+                            
+                                                <div class="col-6">
+                            
+                            
+                            
+                                                    <div class="form-group mr-5">
+                                                        <label for="exampleFormControlInput1"> Date</label>
+                                                        <input type="date" class="form-control" name="date" id="exampleFormControlInput1" placeholder="select date">
+                                                    </div>
+                            
+                            
+                                                    <div class="form-group mr-5">
+                                                        <label for="exampleFormControlInput1">Next Action</label>
+                                                        <textarea class="form-control" name="next_action" id="exampleFormControlInput1" placeholder="Next Action"></textarea>
+                                                    </div>
+                            
+                            
+                                                    <div class="form-group mr-5">
+                                                        <label for="exampleFormControlInput1">Next Action Date</label>
+                                                        <input type="date" class="form-control" name="next_action_date" id="exampleFormControlInput1" placeholder="select date">
+                                                    </div>
+                            
+                                                    <div class="form-group mr-5">
+                                                        <label for="exampleFormControlSelect1">Qualification</label>
+                                                        <select class="form-control" id="exampleFormControlSelect1" name="qualification">
+                                                            <option value="Qualified-Meeting">Qualified-Meeting</option>
+                                                            <option value="Qualified-Follow Up">Qualified-Follow Up</option>
+                                                            <option value="Proposal Sent">Proposal Sent</option>
+                                                            <option value="Qualified-Survey">Qualified-Survey</option>
+                                                            <option value="Qualified-Postponed">Qualified-Postponed</option>
+                                                            <option value="Un-Qualified">Un-Qualified</option>
+                                                            <option value="other">other</option>
+                                                        </select>
+                                                    </div>
+                            
+                            
+                            
+                            
+                                                </div>
+                            
+                                    </form>
+                                </div> 
                             </div>
                         </div>
                     </div>

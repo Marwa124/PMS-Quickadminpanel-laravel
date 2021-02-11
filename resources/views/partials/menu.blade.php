@@ -166,12 +166,8 @@
                     @endcan
                     @can('payment_method')
                         <li class="c-sidebar-nav-item">
-<<<<<<< HEAD
-                            <a href="{{ route("finance.admin.payment_method.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/payment_method") || request()->is("admin/payment_method/*") ? "active" : "" }}">
-=======
                             <a href="{{ route("finance.admin.payment_method.index") }}"
                                class="c-sidebar-nav-link {{ request()->is("admin/payment_method") || request()->is("admin/finance/*") ? "active" : "" }}">
->>>>>>> 7a90b2464e18310c4995146b00788ae7170a74cb
                                 <i class="fa-fw fas fa-credit-card c-sidebar-nav-icon self-item-link">
 
                                 </i>

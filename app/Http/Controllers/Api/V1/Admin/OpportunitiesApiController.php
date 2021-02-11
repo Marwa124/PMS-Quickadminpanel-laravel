@@ -7,7 +7,7 @@ use App\Http\Controllers\Traits\MediaUploadingTrait;
 use App\Http\Requests\StoreOpportunityRequest;
 use App\Http\Requests\UpdateOpportunityRequest;
 use App\Http\Resources\Admin\OpportunityResource;
-use App\Models\Opportunity;
+use Modules\Sales\Entities\Opportunity;
 use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;

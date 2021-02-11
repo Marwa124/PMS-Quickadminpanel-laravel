@@ -7,7 +7,7 @@ use App\Models\Client;
 use App\Models\Invoice;
 use App\Models\InvoiceItemTax;
 use App\Models\ItemInvoiceRelations;
-use App\Models\Opportunity;
+use Modules\Sales\Entities\Opportunity;
 use App\Models\User;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;

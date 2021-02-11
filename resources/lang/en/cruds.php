@@ -1672,6 +1672,21 @@ return [
             'updated_at_helper'       => ' ',
             'deleted_at'              => 'Deleted at',
             'deleted_at_helper'       => ' ',
+
+            'call_status_assgin'              => 'CALL STATUS',
+            'call_status_assgin_helper'       => ' ',
+            'data_contact'              => 'Date Contacted',
+            'data_contact_helper'       => ' ',
+            'lead_qualification'              => 'Opportunity QUALIFICATIONS',
+            'lead_qualification_helper'       => ' ',
+            'call_breif'              => 'CALL BREIF ',
+            'call_breif_helper'       => ' ',
+            'nextaction'              => 'Next Action',
+            'nextaction_helper'       => ' ',
+            'Contact_With'              => 'Contact With',
+            'Contact_With_helper'       => ' ',
+            'firstorsecond'              => 'First OR Second',
+            'firstorsecond_helper'       => ' ',
         ],
     ],
     'client'                 => [
@@ -3694,8 +3709,11 @@ return [
         'project_of_task_not_have_department'       => 'The Project Of Task don\'t have Department',
         'time_date_after_or_equal'                  => 'The Time Of End Date Must Be After Or Equal ',
         'payment_amounts_more_invoice_amount'       => 'The Payment Amounts More Than Due Invoice Amount  ',
+
+        // sales massages
         'sure_clone_proposal'                       => 'Are you sure to clone Proposal with items ?',
         'proposal_force_delete'                     => 'Proposal Will Force Delete ..!',
+        'no_Calls_found_in_Opportunity'                     => 'No Calls Found In Opportunity !',
     ],
 
 
