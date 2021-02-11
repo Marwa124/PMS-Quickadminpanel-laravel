@@ -18,6 +18,10 @@ class Call extends Model
     {
         return $this->belongsTo(Lead::class,'lead_id','id');
     }
+    public function opportunities()
+    {
+        return $this->belongsTo(Opportunity::class,'opportunities_id','id');
+    }
 
    
 }

@@ -11,20 +11,6 @@
             @method('PUT')
             @csrf
             <div class="form-group">
-                <label for="lead_id">{{ trans('cruds.opportunity.fields.lead') }}</label>
-                <select class="form-control select2 {{ $errors->has('lead') ? 'is-invalid' : '' }}" name="lead_id" id="lead_id">
-                    @foreach($leads as $id => $lead)
-                        <option value="{{ $id }}" {{ (old('lead_id') ? old('lead_id') : $opportunity->lead->id ?? '') == $id ? 'selected' : '' }}>{{ $lead }}</option>
-                    @endforeach
-                </select>
-                @if($errors->has('lead'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('lead') }}
-                    </div>
-                @endif
-                <span class="help-block">{{ trans('cruds.opportunity.fields.lead_helper') }}</span>
-            </div>
-            <div class="form-group">
                 <label for="name">{{ trans('cruds.opportunity.fields.name') }}</label>
                 <input class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" type="text" name="name" id="name" value="{{ old('name', $opportunity->name) }}">
                 @if($errors->has('name'))
@@ -35,18 +21,16 @@
                 <span class="help-block">{{ trans('cruds.opportunity.fields.name_helper') }}</span>
             </div>
             <div class="form-group">
-                <label for="probability">{{ trans('cruds.opportunity.fields.probability') }}</label>
-                <input class="form-control {{ $errors->has('probability') ? 'is-invalid' : '' }}" type="text" name="probability" id="probability" value="{{ old('probability', $opportunity->probability) }}">
-                @if($errors->has('probability'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('probability') }}
-                    </div>
-                @endif
-                <span class="help-block">{{ trans('cruds.opportunity.fields.probability_helper') }}</span>
-            </div>
-            <div class="form-group">
                 <label for="stages">{{ trans('cruds.opportunity.fields.stages') }}</label>
-                <input class="form-control {{ $errors->has('stages') ? 'is-invalid' : '' }}" type="text" name="stages" id="stages" value="{{ old('stages', $opportunity->stages) }}">
+                <select name="stages" id="stages" class="form-control select_box stages select2 {{ $errors->has('stages') ? 'is-invalid' : '' }}" style="width: 100%;" >
+                    <option value="none">Select Stage</option>
+                     <option value="C"      {{ $opportunity->stages == 'C' ? 'selected' : '' }}>Qualification (C)</option>
+                      <option value="B"     {{ $opportunity->stages == 'B' ? 'selected' : '' }}>Needanalysis (B)</option>
+                      <option value="B+"    {{ $opportunity->stages == 'B+' ? 'selected' : '' }}>Proposal (B+)</option>
+                      <option value="A"     {{ $opportunity->stages == 'A' ? 'selected' : '' }}>Negotation (A)</option>
+                      <option value="Won"   {{ $opportunity->stages == 'Won' ? 'selected' : '' }}>Close Won</option>
+                      <option value="Close" {{ $opportunity->stages == 'Close' ? 'selected' : '' }}>Close Lost</option>
+                  </select>
                 @if($errors->has('stages'))
                     <div class="invalid-feedback">
                         {{ $errors->first('stages') }}
@@ -54,6 +38,18 @@
                 @endif
                 <span class="help-block">{{ trans('cruds.opportunity.fields.stages_helper') }}</span>
             </div>
+
+            <div class="form-group">
+                <label for="probability">{{ trans('cruds.opportunity.fields.probability') }}</label>
+                <input class="form-control {{ $errors->has('probability') ? 'is-invalid' : '' }}" type="number" name="probability" id="probability" value="{{ old('probability', $opportunity->probability) }}" min="0">
+                @if($errors->has('probability'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('probability') }}
+                    </div>
+                @endif
+                <span class="help-block">{{ trans('cruds.opportunity.fields.probability_helper') }}</span>
+            </div>
+           
             <div class="form-group">
                 <label for="closed_date">{{ trans('cruds.opportunity.fields.closed_date') }}</label>
                 <input class="form-control date {{ $errors->has('closed_date') ? 'is-invalid' : '' }}" type="text" name="closed_date" id="closed_date" value="{{ old('closed_date', $opportunity->closed_date) }}">
@@ -95,8 +91,18 @@
                 <span class="help-block">{{ trans('cruds.opportunity.fields.next_action_helper') }}</span>
             </div>
             <div class="form-group">
+                <label for="nextactiondate">{{ trans('cruds.opportunity.fields.nextactiondate') }}</label>
+                <input class="form-control date {{ $errors->has('nextactiondate') ? 'is-invalid' : '' }}" type="text" name="nextactiondate" id="nextactiondate" value="{{ old('nextactiondate', $opportunity->nextactiondate) }}">
+                @if($errors->has('nextactiondate'))
+                    <div class="invalid-feedback">
+                        {{ $errors->first('nextactiondate') }}
+                    </div>
+                @endif
+                <span class="help-block">{{ trans('cruds.opportunity.fields.nextactiondate_helper') }}</span>
+            </div>
+            <div class="form-group">
                 <label for="notes">{{ trans('cruds.opportunity.fields.notes') }}</label>
-                <textarea class="form-control ckeditor {{ $errors->has('notes') ? 'is-invalid' : '' }}" name="notes" id="notes">{!! old('notes', $opportunity->notes) !!}</textarea>
+                <textarea class="form-control ckeditor {{ $errors->has('notes') ? 'is-invalid' : '' }}" name="notes" id="notes">{!! old('notes',$opportunity->notes) !!}</textarea>
                 @if($errors->has('notes'))
                     <div class="invalid-feedback">
                         {{ $errors->first('notes') }}
@@ -104,16 +110,19 @@
                 @endif
                 <span class="help-block">{{ trans('cruds.opportunity.fields.notes_helper') }}</span>
             </div>
-            <div class="form-group">
+            {{-- <div class="form-group">
                 <label for="permissions">{{ trans('cruds.opportunity.fields.permissions') }}</label>
                 <div style="padding-bottom: 4px">
                     <span class="btn btn-info btn-xs select-all" style="border-radius: 0">{{ trans('global.select_all') }}</span>
                     <span class="btn btn-info btn-xs deselect-all" style="border-radius: 0">{{ trans('global.deselect_all') }}</span>
                 </div>
+                
                 <select class="form-control select2 {{ $errors->has('permissions') ? 'is-invalid' : '' }}" name="permissions[]" id="permissions" multiple>
-                    @foreach($permissions as $id => $permissions)
-                        <option value="{{ $id }}" {{ (in_array($id, old('permissions', [])) || $opportunity->permissions->contains($id)) ? 'selected' : '' }}>{{ $permissions }}</option>
+                    @if($permissions->permissions->isEmpty() != true)
+                    @foreach($permissions->permissions as  $permission)
+                        <option value="{{  $permission->id }}" {{ in_array( $permission->id, old('permissions', [])) ? 'selected' : '' }}>{{  str_replace('_',' ',$permission->name) }}</option>
                     @endforeach
+                    @endif
                 </select>
                 @if($errors->has('permissions'))
                     <div class="invalid-feedback">
@@ -121,12 +130,13 @@
                     </div>
                 @endif
                 <span class="help-block">{{ trans('cruds.opportunity.fields.permissions_helper') }}</span>
-            </div>
+            </div> --}}
             <div class="form-group">
                 <button class="btn btn-danger" type="submit">
                     {{ trans('global.save') }}
                 </button>
             </div>
+          
         </form>
     </div>
 </div>
