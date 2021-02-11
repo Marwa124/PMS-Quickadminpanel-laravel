@@ -157,6 +157,8 @@ return [
             'stock_sub_category_helper'  => ' ',
             'user_id_helper'  => ' ',
             'quantity'  => 'Quantity',
+            'index'  => 'Index',
+            'assign_stock_list_for'  => 'Assign Stock List For',
 
         ]
     ],

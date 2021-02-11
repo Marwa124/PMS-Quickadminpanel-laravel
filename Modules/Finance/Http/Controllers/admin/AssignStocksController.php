@@ -12,6 +12,7 @@ use Gate;
 use App\Models\AssignStock;
 use Modules\HR\Entities\Designation;
 use Symfony\Component\HttpFoundation\Response;
+use PDF;
 
 class AssignStocksController extends Controller
 {
@@ -122,9 +123,36 @@ class AssignStocksController extends Controller
             'id'  =>'required|integer|exists:users,id'
         ]);
         $assigned_stocks = AssignStock::where('user_id',$request->id)->get();
+        $id =$request->id;
 
-        $loadview = view('finance::admin.assign_stocks.ajaxload_report_data', compact('assigned_stocks'))->render();
+        $loadview = view('finance::admin.assign_stocks.ajaxload_report_data', compact('assigned_stocks','id'))->render();
         return response()->json($loadview, Response::HTTP_CREATED);
+
+    }
+
+
+    public function pdf($id)
+    {
+
+//        abort_if(Gate::denies('assign_stocks'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
+
+
+
+            $user = User::findOrFail($id);
+            $assigned_stocks = AssignStock::where('user_id',$id)->get();
+
+
+            $title = $user->accountDetail->fullname . '-project.pdf';
+            $compact = [
+                'user'   => $user,
+                'assigned_stocks' => $assigned_stocks
+            ];
+
+            $view = 'finance::admin.assign_stocks.pdf';
+            download_pdf($view,$compact,$title);
+
+
+        return abort(Response::HTTP_FORBIDDEN, trans('global.forbidden_page_not_allow_to_you'));
 
     }
 }

@@ -45,14 +45,14 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
     });
 
 
-    // Route::get('testmailgun', function () {
+     Route::get('testmailgun', function () {
 
-    //     try {
-    //         Mail::mailer(settings('mailgun_protocol'))->to('shadyosamafawzy@gmail.com')->send(new MailgunMail());
-    //         dd('sent');
-    //     } catch (\Exception $e) {
+         try {
+             Mail::mailer(settings('mailgun_protocol'))->to('shadyosamafawzy@gmail.com')->send(new MailgunMail());
+             dd('sent');
+         } catch (\Exception $e) {
 
-    //         dd($e->getMessage() . ' Something went wrong');
-    //     }
-    // });
+             dd($e->getMessage() . ' Something went wrong');
+         }
+     });
 });

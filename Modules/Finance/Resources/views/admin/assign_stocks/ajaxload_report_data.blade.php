@@ -4,7 +4,10 @@
 
     <div class="row">
         <h3 id="user_name"></h3>
+        <a class="btn btn-danger mr-3" href="{{route('finance.admin.assign_stocks.pdf',$id)}}" title="pdf">
+            <i class="fa fa-file-pdf  " aria-hidden="true" ></i>
 
+        </a>
     </div>
 <hr>
     <table class=" table table-bordered table-striped table-hover ajaxTable ">

@@ -8,7 +8,7 @@
 
         <div class="card-body">
 
-            <form method="POST" action="{{ route("finance.admin.assign_stocks.getresult") }}">
+            <form method="POST" action="#">
                 @csrf
                 <div class="form-group">
                     <label class="required"
@@ -33,12 +33,6 @@
                     <span class="help-block">{{ trans('cruds.assign_stocks.fields.user_id_helper') }}</span>
                 </div>
 
-
-                <div class="form-group">
-                    <button class="btn btn-danger" type="submit">
-                        {{ trans('global.go') }}
-                    </button>
-                </div>
             </form>
 
 
