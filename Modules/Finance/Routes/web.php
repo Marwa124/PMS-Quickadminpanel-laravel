@@ -119,6 +119,11 @@ Route::group(['as' => 'finance.admin.', 'prefix' => 'admin/finance', 'namespace'
     Route::put('stocks_history/update','StocksController@stocks_history_update')->name('stocks_history.update');
     Route::delete('stocks_history/destroy/{id}','StocksController@stocks_history_destroy')->name('stocks_history.destroy');
 
+    Route::get('stocks/report','StocksController@report')->name('stocks.report');
+    Route::post('stocks/report/getresult','StocksController@report_result')->name('stocks.getresult');
+    Route::post('stocks/report/get_items','StocksController@get_items')->name('stocks.get_items');
+    Route::get('stocks/report/pdf/{id}','StocksController@pdf')->name('stocks.pdf');
+    Route::get('stocks/report/pdf/{start}/{end}','StocksController@pdf_period')->name('stocks.pdf_period');
     ////////////////////////////////END STOCK LIST//////////////////////////////////////////////////////////////
 
 

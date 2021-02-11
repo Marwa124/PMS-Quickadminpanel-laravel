@@ -14,7 +14,7 @@
             </td>
             <td  >
                 <b>{{ trans('cruds.project.fields.client') }} Info</b>
-                <p >{{ trans('cruds.project.fields.client') }} : <span >{{ $project->client->name ?? '' }}</span> </p>
+                <p >{{ trans('cruds.project.fields.client') }} : <span >{{ $project->client && $project->client->name ?? '' }}</span> </p>
             </td>
         </tr>
         <tr>

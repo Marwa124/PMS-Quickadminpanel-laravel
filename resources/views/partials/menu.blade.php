@@ -329,6 +329,15 @@
                                         </li>
                                     </ul>
                                 {{--@endcan--}}
+                                    <li class="c-sidebar-nav-item">
+                                        <a href="{{ route("finance.admin.stocks.report") }}"
+                                           class="c-sidebar-nav-link {{ request()->is("admin/stocks") || request()->is("admin/finance/*") ? "active" : "" }}">
+                                            <i class="fa-fw fas fa-trademark c-sidebar-nav-icon self-item-link">
+
+                                            </i>
+                                            {{ trans('cruds.finance.stocks_report') }}
+                                        </a>
+                                    </li>
 
                             </ul>
                         </li>

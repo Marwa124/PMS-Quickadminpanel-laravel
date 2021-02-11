@@ -47,5 +47,10 @@ class AssignStock extends Model
     {
         return $this->belongsTo(StockSubCategory::class, 'sub_category_id');
     }
+    public function stock_ids()
+    {
+        $ids = Stock::where('name',$this->stock->name)->where('stock_sub_category_id',$this->sub_category->id)->pluck('id');
+        return $ids;
+    }
 
 }
