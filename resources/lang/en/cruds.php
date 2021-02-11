@@ -3,16 +3,17 @@
 return [
 
     'finance'                => [
-        'title'          => 'Finance',
-        'title_singular' => 'Finance',
-        'balance_sheet' => 'Balance Sheet',
-        'payment_method' => 'Payment Methods',
-        'transfers'      => 'Transfers',
-        'expenses_category'      => 'Expense Category',
-        'deposits_category'      => 'Deposit Category',
-        'expenses'      => 'Expenses',
-        'deposits'      => 'Deposits',
-        'invoices'      => 'Invoices',
+        'title'             => 'Finance',
+        'title_singular'    => 'Finance',
+        'balance_sheet'     => 'Balance Sheet',
+        'payment_method'    => 'Payment Methods',
+        'payment_received'  => 'Payment Received',
+        'transfers'         => 'Transfers',
+        'expenses_category' => 'Expense Category',
+        'deposits_category' => 'Deposit Category',
+        'expenses'          => 'Expenses',
+        'deposits'          => 'Deposits',
+        'invoices'          => 'Invoices',
         'stock_category'      => 'Stock Category',
         'sub_stock_category'      => 'Sub Stock Category',
         'office_asset' =>'Office Assets',
@@ -783,8 +784,6 @@ return [
             'employment_id_helper'         => ' ',
             'department'                => 'department',
             'department_helper'         => ' ',
-            'designation'                => 'designation',
-            'designation_helper'         => ' ',
             'salary'                => 'salary',
             'salary_helper'         => ' ',
             'company'                => 'Company',
@@ -1215,7 +1214,6 @@ return [
             'all_job_applications'   => 'Job Applications',
             'designation'            => 'Designation',
             'designation_helper'     => ' ',
-            'vacancy_no'             => 'Vacancy No',
             'vacancy_no_helper'      => ' ',
             'posted_date'            => 'Posted Date',
             'posted_date_helper'     => ' ',
@@ -2260,6 +2258,8 @@ return [
             'declined_helper'         => ' ',
             'accepted'                => 'Accepted',
             'accepted_helper'         => ' ',
+            'cancelled'               => 'Cancelled',
+            'cancelled_helper'        => ' ',
             'invoice_validity'       => 'Invoice Validity',
             'invoice_validity_helper' => ' ',
             'Sales_Agent'       => 'Sales Agent',
@@ -2323,6 +2323,7 @@ return [
             'discounts_helper'       => ' ',
             'due_date_helper'       => ' ',
             'companyemail'       => 'Company Name',
+            'paid_amount'       => 'Paid Amount',
 
         ],
     ],
@@ -3692,17 +3693,17 @@ return [
         'project_of_milestone_not_have_department'  => 'The Project Of Milestone don\'t have Department',
         'project_of_task_not_have_department'       => 'The Project Of Task don\'t have Department',
         'time_date_after_or_equal'                  => 'The Time Of End Date Must Be After Or Equal ',
-        
-        'sure_clone_proposal'        => 'Are you sure to clone Proposal with items ?',
+        'payment_amounts_more_invoice_amount'       => 'The Payment Amounts More Than Due Invoice Amount  ',
+        'sure_clone_proposal'                       => 'Are you sure to clone Proposal with items ?',
         'proposal_force_delete'                     => 'Proposal Will Force Delete ..!',
     ],
 
 
 
     'form' => [
-        'dismatch_password' => 'Password dose not match',
+        'dismatch_password'     => 'Password dose not match',
         'old_password_required' => 'Old Password Required',
         'new_password_required' => 'New password required',
-        'new_password_confirm' => 'New password Confirmation required',
+        'new_password_confirm'  => 'New password Confirmation required',
     ],
 ];

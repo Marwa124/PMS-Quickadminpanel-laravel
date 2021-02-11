@@ -10,6 +10,9 @@ use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
 use \DateTimeInterface;
+use  Modules\ProjectManagement\Entities\Activity;
+use Illuminate\Support\Facades\DB;
+
 
 class Invoice extends Model implements HasMedia
 {
@@ -176,7 +179,8 @@ class Invoice extends Model implements HasMedia
 //        $tax = $this->get_invoice_tax_amount($invoice_id);
 
         $amount = DB::table('payments')
-            ->where('invoices_id', $invoice_id)
+            ->where('invoice_id', $invoice_id)
+            ->where('deleted_at','=',null)
             ->sum('amount');
 
 //        if (!empty($amount)) {
@@ -256,5 +260,10 @@ class Invoice extends Model implements HasMedia
 
         return  $turned_into_keys;
 
+    }
+
+    public function activities()
+    {
+        return $this->hasMany(Activity::class,'module_field_id')->where('module','=','invoice')->orderBy('id','desc');
     }
 }

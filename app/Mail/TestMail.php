@@ -16,9 +16,13 @@ class TestMail extends Mailable
      *
      * @return void
      */
-    public function __construct()
+
+    protected $email;
+    protected $name;
+    public function __construct($email, $name)
     {
-        //
+        $this->email = $email;
+        $this->name = $name;
     }
 
     /**
@@ -28,7 +32,7 @@ class TestMail extends Mailable
      */
     public function build()
     {
-        return $this->html('hell testing SmTp credentials')->from(settings('smtp_email'));
+        return $this->from($this->email, $this->name)->html('This a Test Mail');
         // return $this->view('view.name');
     }
 }

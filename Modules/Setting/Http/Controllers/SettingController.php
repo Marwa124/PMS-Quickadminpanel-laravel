@@ -3,6 +3,7 @@
 namespace Modules\Setting\Http\Controllers;
 
 use Gate;
+use App\Mail\TestMail;
 use App\Models\Config;
 use App\Models\Locale;
 use App\Models\Country;
@@ -10,6 +11,7 @@ use App\Models\Currency;
 use App\Models\Language;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Contracts\Support\Renderable;
 use Symfony\Component\HttpFoundation\Response;
@@ -557,5 +559,42 @@ class SettingController extends Controller
         }
 
         return back()->with(flash(trans('settings.mail_updated'), 'success'))->with('pill', 'email-settings');
+    }
+
+
+
+
+
+
+
+
+
+
+    function send_test_mail(Request $request)
+    {
+
+
+        $validator = Validator::make($request->all(), [
+            'mailer' => 'required|in:mailgun,smtp',
+            'test_email' => 'required|string|email'
+
+        ]);
+
+
+
+        if ($validator->fails()) {
+
+            return back()->withInput()->with(flash($validator->errors()->all()[0], 'danger'))->with('pill', 'email-settings');
+        }
+
+        try {
+            $sender =  request('mailer') == 'smtp' ? settings('smtp_sender_name') : settings('mailgun_sender_name');
+            $email_from =  request('mailer') == 'smtp' ? settings('smtp_email') : settings('mailgun_email');
+            Mail::mailer($request->mailer)->to(request('test_email'))->send(new TestMail($email_from, $sender));
+            return back()->with(flash(trans('settings.mail_sent'), 'success'))->with('pill', 'email-settings');
+        } catch (\Exception $e) {
+
+            return back()->with(flash(trans('settings.mail_configurations_not_set'), 'danger'))->with('pill', 'email-settings');
+        }
     }
 }

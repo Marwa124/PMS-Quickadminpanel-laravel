@@ -17,7 +17,6 @@ class AccountsController extends Controller
     public function index()
     {
         abort_if(Gate::denies('account_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
         $accounts = Account::all();
 
 //        $permissions = Permission::get();

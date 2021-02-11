@@ -2,6 +2,7 @@
 
 return [
     'status' => [
+        'sent'              => '<span class="btn btn-xs btn-success">Sent</span>',
         'cancelled'         => '<span class="btn btn-xs btn-danger">Cancelled</span>',
         'unpaid'            => '<span class="btn btn-xs btn-danger">Unpaid</span>',
         'paid'              => '<span class="btn btn-xs btn-success">Paid</span>',

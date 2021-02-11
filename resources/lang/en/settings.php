@@ -200,6 +200,9 @@ return [
     'smtp_mail_port' => 'Smtp Mail Port',
     'mail_encryption' => 'Mail Encryption',
     'mail_updated' => 'Mail Settings Updated',
+    'send_test_mail' => 'Send Test Mail',
+    'mail_configurations_not_set' => 'Mail Configuration Are Not Set Correctly',
+    'mail_sent' => 'Mail Sent Successfully',
 
 
 

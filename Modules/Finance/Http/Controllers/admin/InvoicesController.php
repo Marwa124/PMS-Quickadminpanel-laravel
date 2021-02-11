@@ -21,10 +21,12 @@ use Modules\ProjectManagement\Entities\Project;
 use Modules\Sales\Entities\ProposalsItem;
 use Spatie\MediaLibrary\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
+use Modules\ProjectManagement\Http\Controllers\Traits\ProjectManagementHelperTrait;
+
 
 class InvoicesController extends Controller
 {
-    use MediaUploadingTrait;
+    use MediaUploadingTrait,ProjectManagementHelperTrait;
 
     public function index()
     {
@@ -127,6 +129,8 @@ class InvoicesController extends Controller
             if ($media = $request->input('ck-media', false)) {
                 Media::whereIn('id', $media)->update(['model_id' => $invoice->id]);
             }
+
+            setActivity('invoice',$invoice->id,'Create Invoice #','تم اضافة فاتوره #',$invoice->reference_no,$invoice->reference_no);
 
             DB::commit();
             return redirect()->route('finance.admin.invoices.index');
@@ -237,6 +241,8 @@ class InvoicesController extends Controller
                 Media::whereIn('id', $media)->update(['model_id' => $invoice->id]);
             }
 
+            setActivity('invoice',$invoice->id,'update Invoice #','تم تعديل فاتوره #',$invoice->reference_no,$invoice->reference_no);
+
             DB::commit();
             return redirect()->route('finance.admin.invoices.index');
 
@@ -263,12 +269,16 @@ class InvoicesController extends Controller
 
         $invoice->delete();
 
+        setActivity('invoice',$invoice->id,'delete Invoice #','تم حذف فاتوره #',$invoice->reference_no,$invoice->reference_no);
+
         return back();
     }
 
     public function massDestroy(Request $request)
     {
         Invoice::whereIn('id', request('ids'))->delete();
+
+//        setActivity('invoice',$invoice->id,'delete Invoice #','تم حذف فاتوره #',$invoice->reference_no,$invoice->reference_no);
 
         return response(null, Response::HTTP_NO_CONTENT);
     }
@@ -340,6 +350,8 @@ class InvoicesController extends Controller
            'status'     =>    'approved'
         ]);
 
+        setActivity('invoice',$invoice->id,'Change Status Invoice #','تم تعديل حالة فاتوره #',$invoice->reference_no,$invoice->reference_no);
+
         return redirect()->route('finance.admin.invoices.show',$id);
 
     }
@@ -354,10 +366,53 @@ class InvoicesController extends Controller
            'status'     =>    'rejected'
         ]);
 
+        setActivity('invoice',$invoice->id,'Change Status Invoice #','تم تعديل حالة فاتوره #',$invoice->reference_no,$invoice->reference_no);
+
         return redirect()->route('finance.admin.invoices.show',$id);
 
     }
 
+    /**
+     *change status of Invoice ajax
+     * **/
+    public function changestatus(Request $request){
+
+        $invoice = Invoice::findOrFail($request->id);
+        if(!empty($invoice)){
+            $invoice->update([
+                'status' => $request->status,
+            ]);
+        }
+
+        setActivity('invoice',$invoice->id,'Change Status Invoice #','تم تعديل حالة فاتوره #',$invoice->reference_no,$invoice->reference_no);
+
+        return response()->json(Response::HTTP_CREATED);
+    }
+
+    /**
+     *history of Invoice
+     * **/
+    public function history_invoice(Invoice $invoice)
+    {
+
+        return view('finance::admin.invoices.history', compact('invoice'));
+    }
+
+//    public function invoice_pdf(Invoice $invoice)
+//    {
+//        $title = $invoice->reference_no . '-invoice.pdf';
+//        $compact = [
+//            'project'   => $project,
+//            'total_expense' => $total_expense,
+//            'billable_expense'  => $billable_expense,
+//            'not_billable_expense'  => $not_billable_expense,
+//            'paid_expense'  => $paid_expense
+//        ];
+//
+//        $view = 'projectmanagement::admin.projects.project_pdf';
+//        $this->download_pdf($view,$compact,$title);
+//        //$this->stream_pdf($view,$compact,$title);
+//    }
 
 
 

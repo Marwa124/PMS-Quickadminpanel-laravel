@@ -40,6 +40,10 @@ class AppServiceProvider extends ServiceProvider
 
 
 
+            // config(['services.mailgun.domain' => 'https://api.mailgun.net/v3/sandboxe31bb8c7d4b44782a216a3ee62328fc9.mailgun.org']);
+            // config(['services.mailgun.secret' => '39b0cfa01c5e1dbeb25d8e3f460a57b0-4de08e90-e2edd9a8']);
+
+
 
 
 

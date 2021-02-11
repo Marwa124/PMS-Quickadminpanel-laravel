@@ -28,7 +28,7 @@ class MailgunMail extends Mailable
      */
     public function build()
     {
-        return $this->html('hell mailgun shhoooooooooo credentials test')->from(settings('mailgun_email'));
+        return $this->html('hell mailgun shhoooooooooo credentials test');
         // return $this->view('view.name');
     }
 }

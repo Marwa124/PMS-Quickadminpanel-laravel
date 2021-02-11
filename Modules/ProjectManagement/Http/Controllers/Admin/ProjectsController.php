@@ -617,53 +617,6 @@ class ProjectsController extends Controller
 
     }
 
-//    public function project_pdf($project_id)
-//    {
-//
-//        abort_if(Gate::denies('project_show'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
-//
-//        // check if user can access this project or not
-//        $projects = auth()->user()->getUserProjectsByUserID(auth()->user()->id)->pluck('id');
-//
-//        if (in_array($project_id,$projects->toArray())){
-//
-//                $project = Project::findOrFail($project_id);
-//
-//
-//            $project->load('client','department','TimeSheetOn','TimeSheet');
-//
-//            $total_expense = $project->transactions->where('type' , 'Expense')->sum('amount');
-//            $billable_expense = $project->transactions->where(array('type' => 'Expense', 'billable' => 'Yes'))->sum('amount');
-//            $not_billable_expense = $project->transactions->where(array('type' => 'Expense', 'billable' => 'No'))->sum('amount');
-//
-//            $all_expense_info =  $project->transactions->where('type', 'Expense');
-//
-//            $paid_expense = 0;
-//            foreach ($all_expense_info as $v_expenses){
-//                if ($v_expenses->invoices_id != 0) {
-//                    $paid_expense += Invoice::get_invoice_paid_amount($v_expenses->invoices_id);
-//                }
-//            }
-//
-//
-//           //return view('projectmanagement::admin.projects.project_pdf',compact('project','total_expense','billable_expense','not_billable_expense','paid_expense'));
-//
-//            //view()->share('project',$project);
-//
-//            $pdf = PDF::loadView('projectmanagement::admin.projects.project_pdf',compact('project','total_expense','billable_expense','not_billable_expense','paid_expense'));
-//    //        $pdf = PDF::loadView('projectmanagement::admin.projects.project_pdf',[
-//    //            'project' => $project
-//    //        ]);
-//            //$pdf->SetDirectionality('rtl');
-//
-//            return $pdf->download('project.pdf');
-//        }
-//
-//        return abort(Response::HTTP_FORBIDDEN, trans('global.forbidden_page_not_allow_to_you'));
-//
-//
-//    }
-
     public function project_report()
     {
         abort_if(Gate::denies('project_report_access'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));

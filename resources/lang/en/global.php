@@ -298,5 +298,6 @@ return [
     'hours'                                => 'Hours',
     'minutes'                              => 'Minutes',
     'seconds'                              => 'Seconds',
+    'info'                                 => 'Info',
 
     ];
