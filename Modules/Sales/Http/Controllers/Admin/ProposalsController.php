@@ -17,7 +17,7 @@ use App\Models\Invoice;
 use App\Models\InvoiceItemTax;
 use App\Models\ItemInvoiceRelations;
 use Modules\Finance\Http\Requests\Store\StoreInvoiceRequest;
-use App\Models\Opportunity;
+use Modules\Sales\Entities\Opportunity;
 use App\Models\Client;
 use App\Models\User;
 use Spatie\Permission\Models\Permission;
