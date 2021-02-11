@@ -49,8 +49,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
     Route::get('testmailgun', function () {
 
         try {
-            // Mail::mailer(settings('mailgun_protocol'))->to('mohamedhamed0119@gmail.com')->send(new MailgunMail());
-            Mail::mailer('postmark')->to('hamed@onetecgroup.com')->send(new MailgunMail());
+            Mail::mailer(settings('mailgun_protocol'))->to('shadyosamafawzy@gmail.com')->send(new MailgunMail());
             dd('sent');
         } catch (\Exception $e) {
 
