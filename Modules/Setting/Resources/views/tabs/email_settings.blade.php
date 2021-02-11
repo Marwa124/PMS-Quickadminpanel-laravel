@@ -304,6 +304,38 @@ aria-labelledby="v-pills-details-tab">
       
     </div>
 </div>
+
+
+
+
+
+
+<div class="card card-custom">
+    <header class="card-heading "></header>
+    <div class="card-body">
+        <form method="post" action="{{ route('admin.test_mail') }}" class="form-horizontal">
+            @csrf
+            <div class="form-group">
+                <label class="col-lg-3 control-label"></label>
+                <div class="col-lg-6">
+                    <input type="email" required="" class="form-control" value="" name="test_email">
+                </div>
+                <div class="col-lg-3">
+                    <label for="smtp">@lang('settings.smtp')</label>
+                    <input type="radio" name="mailer" value="smtp" id="smtp">
+                    <label for="mailgun">@lang('settings.mailgun')</label>
+                    <input type="radio" name="mailer" value="mailgun" id="mailgun">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label"></label>
+                <div class="col-lg-6">
+                    <button type="submit" class="btn btn-sm btn-primary">@lang('settings.send_test_mail')</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 </div>
 
 @section('scripts')

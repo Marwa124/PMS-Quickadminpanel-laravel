@@ -52,6 +52,14 @@ return [
             'username' => env('MAIL_USERNAME'),
             'password' => env('MAIL_PASSWORD'),
         ],
+        'postmark' => [
+            'transport' => 'smtp',
+            'host' => env('MAIL_HOST', 'smtp.postmarkapp.com'),
+            'port' => env('MAIL_PORT', 587),
+            'encryption' => env('MAIL_ENCRYPTION', 'tls'),
+            'username' => env('MAIL_USERNAME', '7903b6aa-86f2-4741-ae36-ad78569bb012'),
+            'password' => env('MAIL_PASSWORD', '7903b6aa-86f2-4741-ae36-ad78569bb012'),
+        ],
 
         'ses' => [
             'transport' => 'ses',
@@ -84,8 +92,8 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
-        'name' => env('MAIL_FROM_NAME', 'Example'),
+        'address' => env('MAIL_FROM_ADDRESS', 'hamed@onetecgroup.com'),
+        'name' => env('MAIL_FROM_NAME', 'mohamed ibrahim hamed'),
     ],
 
     /*
