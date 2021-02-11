@@ -3,16 +3,17 @@
 return [
 
     'finance'                => [
-        'title'          => 'Finance',
-        'title_singular' => 'Finance',
-        'balance_sheet' => 'Balance Sheet',
-        'payment_method' => 'Payment Methods',
-        'transfers'      => 'Transfers',
-        'expenses_category'      => 'Expense Category',
-        'deposits_category'      => 'Deposit Category',
-        'expenses'      => 'Expenses',
-        'deposits'      => 'Deposits',
-        'invoices'      => 'Invoices',
+        'title'             => 'Finance',
+        'title_singular'    => 'Finance',
+        'balance_sheet'     => 'Balance Sheet',
+        'payment_method'    => 'Payment Methods',
+        'payment_received'  => 'Payment Received',
+        'transfers'         => 'Transfers',
+        'expenses_category' => 'Expense Category',
+        'deposits_category' => 'Deposit Category',
+        'expenses'          => 'Expenses',
+        'deposits'          => 'Deposits',
+        'invoices'          => 'Invoices',
     ],
     'payment_method'                => [
         'title'          => 'Payment Method',
@@ -2194,6 +2195,8 @@ return [
             'declined_helper'         => ' ',
             'accepted'                => 'Accepted',
             'accepted_helper'         => ' ',
+            'cancelled'               => 'Cancelled',
+            'cancelled_helper'        => ' ',
             'invoice_validity'       => 'Invoice Validity',
             'invoice_validity_helper' => ' ',
             'Sales_Agent'       => 'Sales Agent',
@@ -2257,6 +2260,7 @@ return [
             'discounts_helper'       => ' ',
             'due_date_helper'       => ' ',
             'companyemail'       => 'Company Name',
+            'paid_amount'       => 'Paid Amount',
 
         ],
     ],
@@ -3624,6 +3628,7 @@ return [
         'project_of_milestone_not_have_department'  => 'The Project Of Milestone don\'t have Department',
         'project_of_task_not_have_department'       => 'The Project Of Task don\'t have Department',
         'time_date_after_or_equal'                  => 'The Time Of End Date Must Be After Or Equal ',
+        'payment_amounts_more_invoice_amount'      => 'The Payment Amounts More Than Due Invoice Amount  ',
 
     ],
 

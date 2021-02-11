@@ -146,11 +146,21 @@
                     @endcan
                     @can('payment_method')
                         <li class="c-sidebar-nav-item">
-                            <a href="{{ route("finance.admin.payment_method.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/payment_method") || request()->is("admin/finance/*") ? "active" : "" }}">
+                            <a href="{{ route("finance.admin.payment_method.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/payment_method") || request()->is("admin/payment_method/*") ? "active" : "" }}">
                                 <i class="fa-fw fas fa-credit-card c-sidebar-nav-icon self-item-link">
 
                                 </i>
                                 {{ trans('cruds.finance.payment_method') }}
+                            </a>
+                        </li>
+                    @endcan
+                    @can('payment_method')
+                        <li class="c-sidebar-nav-item">
+                            <a href="{{ route("finance.admin.payment_received.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/payment_received") || request()->is("admin/payment_received/*") ? "active" : "" }}">
+                                <i class="fa-fw fas fa-credit-card c-sidebar-nav-icon self-item-link">
+
+                                </i>
+                                {{ trans('cruds.finance.payment_received') }}
                             </a>
                         </li>
                     @endcan
@@ -1240,6 +1250,7 @@
                         {{ trans('cruds.local.title') }}
                     </a>
                 </li>
+
                 @endcan
             </li>
 
