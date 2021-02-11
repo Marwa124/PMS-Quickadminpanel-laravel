@@ -2,7 +2,7 @@
 
 namespace Modules\ProjectManagement\Entities;
 
-use App\Models\Opportunity;
+use Modules\Sales\Entities\Opportunity;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;

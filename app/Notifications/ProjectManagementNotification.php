@@ -14,35 +14,36 @@ use Modules\HR\Entities\AccountDetail;
 
 class ProjectManagementNotification extends Notification
 {
-//     use Queueable, Serialization;
+     use Queueable, Serialization;
 
-//     public $module;
-//     public $user;
+     public $module;
+     public $user;
 //     public $dataMail;
-//     public $dataNotification;
-//     /**
-//      * Create a new notification instance.
-//      *
-//      * @return void
-//      */
+     public $dataNotification;
+     /**
+      * Create a new notification instance.
+      *
+      * @return void
+      */
 //     public function __construct($module,$user,$dataMail,$dataNotification)
-//     {
-//         $this->module          = $module;
-//         $this->user             = $user;
+     public function __construct($module,$user,$dataNotification)
+     {
+         $this->module          = $module;
+         $this->user             = $user;
 //         $this->dataMail         = $dataMail;
-//         $this->dataNotification = $dataNotification;
-//     }
+         $this->dataNotification = $dataNotification;
+     }
 
-//     /**
-//      * Get the notification's delivery channels.
-//      *
-//      * @param  mixed  $notifiable
-//      * @return array
-//      */
-//     public function via($notifiable)
-//     {
-//         return ['mail', 'database'];
-//     }
+     /**
+      * Get the notification's delivery channels.
+      *
+      * @param  mixed  $notifiable
+      * @return array
+      */
+     public function via($notifiable)
+     {
+         return [ 'database'];
+     }
 
     /**
      * Get the mail representation of the notification.
@@ -69,28 +70,28 @@ class ProjectManagementNotification extends Notification
 //        return $sendMail;
 //    }
 
-//     /**
-//      * Get the array representation of the notification.
-//      *
-//      * @param  mixed  $notifiable
-//      * @return array
-//      */
-//     public function toArray($notifiable)
-//     {
-//         if(User::find(auth()->user()->id)->accountDetail()->first())
-//         {
-//             $userName = AccountDetail::where('user_id', auth()->user()->id)->first()->fullname;
-//         }else{
-//             $userName = User::find(auth()->user()->id)->name;
-//         }
+     /**
+      * Get the array representation of the notification.
+      *
+      * @param  mixed  $notifiable
+      * @return array
+      */
+     public function toArray($notifiable)
+     {
+         if(User::find(auth()->user()->id)->accountDetail()->first())
+         {
+             $userName = AccountDetail::where('user_id', auth()->user()->id)->first()->fullname;
+         }else{
+             $userName = User::find(auth()->user()->id)->name;
+         }
 
-//         return [
-//             'title'      => $userName ?? '',
-//             'leave_id'   => $this->module->id,
-// //            'route_path' => 'admin/projectmanagement/projects',
-// //            'leave_name' => 'Assign The Project '.$this->project->name.' To '.$this->user->name,
-//             'route_path' => $this->dataNotification['route_path'],
-//             'leave_name' => $this->dataNotification['message'],
-//         ];
-//     }
+         return [
+             'title'      => $userName ?? '',
+             'leave_id'   => $this->module->id,
+ //            'route_path' => 'admin/projectmanagement/projects',
+ //            'leave_name' => 'Assign The Project '.$this->project->name.' To '.$this->user->name,
+             'route_path' => $this->dataNotification['route_path'],
+             'leave_name' => $this->dataNotification['message'],
+         ];
+     }
 }

@@ -5,7 +5,7 @@
     <div class="card-header">
         {{ trans('global.edit') }} {{ trans('cruds.proposal.title_singular') }}
     </div>
-    @if($proposal->activities()->count() > 0)
+    @if($proposal->activities && $proposal->activities()->count() > 0)
         <div class="card-body">
             @if($proposal->activities()->count() > 0)
             @forelse($proposal->activities as $activity)
@@ -17,12 +17,12 @@
            
             <div class="callout callout-{{ ratingColor(($loop->iteration % 5)) }}  m-0 py-3">
               <div class=" float-right">
-               
-                    <h4>{{$activity->user->name ?? ''}}</h4>
+
+                  <h4>{{$activity->user && $activity->user->name ? $activity->user->name : ''}}</h4>
                 
               </div>
               <div> {{$activity->activity_en ?? ''}}
-                <strong> {{$activity->value1 ?? ''}} </strong>
+                <strong> {{$activity->value1_en ?? ''}} </strong>
               </div>
               <small class="text-muted mr-3"><i class="icon-calendar"></i>&nbsp;{{$activity->activity_date ?? ''}}</small>
               <small class="text-muted"><i class="icon-location-pin"></i>&nbsp; {{time_ago($activity->activity_date ?? '')}} </small>

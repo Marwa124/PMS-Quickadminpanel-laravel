@@ -97,7 +97,7 @@
                         <select class="form-control  {{ $errors->has('client_id') ? 'is-invalid' : '' }}"
                                 name="client_id"
                                 id="client_id" onchange="get_projects()" required>
-                            <option value="" selected="">{{trans('global.pleaseSelect')}}</option>
+                            <option value="" selected disabled>{{trans('global.pleaseSelect')}}</option>
                             @foreach($clients as $client)
                                 <option value="{{$client->id}}">{{$client->name}}</option>
                             @endforeach

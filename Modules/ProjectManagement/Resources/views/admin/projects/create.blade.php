@@ -242,7 +242,7 @@
                 <div class="form-group">
                     <label for="department_id">{{ trans('cruds.department.title_singular') }}</label>
                     <select class="form-control select2 {{ $errors->has('department_id') ? 'is-invalid' : '' }}" name="department_id" id="department_id">
-                        <option value="" selected disabled>Please Select {{ trans('cruds.department.title_singular') }}</option>
+                        <option value="" selected disabled>{{trans('global.pleaseSelect')}} {{ trans('cruds.department.title_singular') }}</option>
 
                         @foreach($departments as $department)
                             <option value="{{ $department->id }}" {{ old('department_id') == $department->id ? 'selected' : '' }}>{{ $department->department_name }}</option>

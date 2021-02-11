@@ -10,7 +10,7 @@
       <button type="button" class="btn btn-secondary">Clone</button>
 
       <!-- Indicates a successful or positive action -->
-      <button type="button" class="btn btn-warning">Reminder </button>
+      <a href="{{route('finance.admin.invoices.reminder_invoice',$invoice->id)}}" class="btn btn-warning">{{trans('global.reminder')}} </a>
 
 
       <div class="btn-group">
@@ -18,15 +18,26 @@
         </button>
         <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 34px, 0px); top: 0px; left: 0px; will-change: transform;">
 
-          <a  class="dropdown-item" href="#">{{trans('cruds.invoice.fields.Waiting_approval')}}</a>
-          <a  class="dropdown-item" href="#">{{trans('cruds.invoice.fields.Rejected')}}</a>
-          <a  class="dropdown-item" href="#">{{trans('cruds.invoice.fields.Approved')}}</a>
-          <a  class="dropdown-item" href="#">{{trans('cruds.invoice.fields.draft')}}</a>
-          <a  class="dropdown-item" href="#">{{trans('cruds.invoice.fields.sent')}}</a>
-          <a  class="dropdown-item" href="#">{{trans('cruds.invoice.fields.open')}}</a>
-          <a  class="dropdown-item" href="#">{{trans('cruds.invoice.fields.revised')}}</a>
-          <a  class="dropdown-item" href="#">{{trans('cruds.invoice.fields.declined')}}</a>
-          <a  class="dropdown-item" href="#">{{trans('cruds.invoice.fields.accepted')}}</a>
+            <a class="dropdown-item changestatus" data-status="sent"
+               title="Mark as {{trans('cruds.invoice.fields.sent')}}">{{ trans('cruds.proposal.fields.Mark_As') }}
+                {{trans('cruds.invoice.fields.sent')}}</a>
+
+            <a class="dropdown-item changestatus" data-status="cancelled"
+               title="Mark as {{trans('cruds.invoice.fields.cancelled')}}">{{ trans('cruds.proposal.fields.Mark_As') }}
+                {{trans('cruds.invoice.fields.cancelled')}}</a>
+
+          <a  class="dropdown-item" href="{{ route('finance.admin.invoices.history_invoice', $invoice->id) }}">{{ trans('cruds.invoice.title_singular') }} {{ trans('cruds.proposal.fields.History') }}</a>
+          <a  class="dropdown-item" href="{{ route('finance.admin.invoices.edit', $invoice->id) }}">{{ trans('cruds.invoice.title_singular') }} {{ trans('global.edit') }}</a>
+
+          {{--<a  class="dropdown-item" href="#">{{trans('cruds.invoice.fields.Waiting_approval')}}</a>--}}
+          {{--<a  class="dropdown-item" href="#">{{trans('cruds.invoice.fields.Rejected')}}</a>--}}
+          {{--<a  class="dropdown-item" href="#">{{trans('cruds.invoice.fields.Approved')}}</a>--}}
+          {{--<a  class="dropdown-item" href="#">{{trans('cruds.invoice.fields.draft')}}</a>--}}
+          {{--<a  class="dropdown-item" href="#">{{trans('cruds.invoice.fields.sent')}}</a>--}}
+          {{--<a  class="dropdown-item" href="#">{{trans('cruds.invoice.fields.open')}}</a>--}}
+          {{--<a  class="dropdown-item" href="#">{{trans('cruds.invoice.fields.revised')}}</a>--}}
+          {{--<a  class="dropdown-item" href="#">{{trans('cruds.invoice.fields.declined')}}</a>--}}
+          {{--<a  class="dropdown-item" href="#">{{trans('cruds.invoice.fields.accepted')}}</a>--}}
 
         </div>
       </div>
