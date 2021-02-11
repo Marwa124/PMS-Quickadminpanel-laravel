@@ -1118,16 +1118,16 @@
                 </li>
                 {{-- @endcan --}}
                 {{-- @can('opportunity_access') --}}
-                {{--<li class="c-sidebar-nav-item">--}}
-                    {{--<a href="{{ route("sales.admin.opportunities.index") }}"--}}
-                       {{--class="c-sidebar-nav-link {{ request()->is("admin/opportunities") || request()->is("admin/opportunities/*") ? "active" : "" }}">--}}
-                        {{--<i class="fa-fw fas fa-filter c-sidebar-nav-icon">--}}
+                <li class="c-sidebar-nav-item">
+                    <a href="{{ route('sales.admin.opportunities.index') }}"
+                       class="c-sidebar-nav-link {{ request()->is('admin/opportunities') || request()->is('admin/opportunities/*') ? 'active' : '' }}">
+                        <i class="fa-fw fas fa-filter c-sidebar-nav-icon">
 
-                        {{--</i>--}}
-                        {{--{{ trans('cruds.opportunity.title') }}--}}
-                    {{--</a>--}}
-                {{--</li>--}}
-                {{--  @endcan --}}
+                        </i>
+                        {{ trans('cruds.opportunity.title') }}
+                    </a>
+                </li>
+                  {{--@endcan --}}
                 {{--  @can('client_access') --}}
                 <li class="c-sidebar-nav-item">
                     <a href="{{ route("admin.clients.index") }}"
