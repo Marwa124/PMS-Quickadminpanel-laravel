@@ -5,6 +5,7 @@ namespace Modules\ProjectManagement\Http\Controllers\Admin;
 use App\Events\NewNotification;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\MediaUploadingTrait;
+use App\Mail\ProjectManagementMail;
 use App\Models\Invoice;
 use App\Notifications\ProjectManagementNotification;
 use Illuminate\Support\Facades\DB;
@@ -23,6 +24,7 @@ use Illuminate\Http\Request;
 use Spatie\MediaLibrary\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
 use PDF;
+use Illuminate\Support\Facades\Mail;
 use Modules\ProjectManagement\Entities\Milestone;
 use Modules\ProjectManagement\Entities\Task;
 
@@ -146,20 +148,29 @@ class ProjectsController extends Controller
             {
                 $user = $accountUser->user;
                 //dd($user);
-                $dataMail = [
-                    'subjectMail'    => 'Update Project '.$project->{'name_'.app()->getLocale()},
-                    'bodyMail'       => 'Update The Project '.$project->{'name_'.app()->getLocale()},
-                    'action'         => route("projectmanagement.admin.projects.show", $project->id)
-                ];
+//                $dataMail = [
+//                    'subjectMail'    => 'Update Project '.$project->{'name_'.app()->getLocale()},
+//                    'bodyMail'       => 'Update The Project '.$project->{'name_'.app()->getLocale()},
+//                    'action'         => route("projectmanagement.admin.projects.show", $project->id)
+//                ];
 
                 $dataNotification = [
                     'message'       => 'Update The Project : '.$project->{'name_'.app()->getLocale()},
                     'route_path'    => 'admin/projectmanagement/projects',
                 ];
 
-                $user->notify(new ProjectManagementNotification($project,$user,$dataMail,$dataNotification));
+//                $user->notify(new ProjectManagementNotification($project,$user,$dataMail,$dataNotification));
+
+                //send notification
+                $user->notify(new ProjectManagementNotification($project,$user,$dataNotification));
                 $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
                 event(new NewNotification($userNotify));
+
+                // send mail
+                $sender =  settings('smtp_sender_name');
+                $email_from =  settings('smtp_email') ;
+                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender));
+
             }
 
             setActivity('project',$project->id,'Update Project Details','تعديل تفاصيل المشروع',$project->name_en,$project->name_ar);
@@ -167,15 +178,18 @@ class ProjectsController extends Controller
             // Commit the transaction
             DB::commit();
 
+            return redirect()->route('projectmanagement.admin.projects.index')->with(flash(trans('cruds.messages.update_success'), 'success'));
+
+
         }catch(\Exception $e){
             // An error occured; cancel the transaction...
             DB::rollback();
 
+            return redirect()->back()->with(flash(trans('cruds.messages.update_failed'), 'danger'))->withInput();
             // and throw the error again.
             throw $e;
         }
 
-        return redirect()->route('projectmanagement.admin.projects.index');
     }
 
     public function show(Project $project)
@@ -365,23 +379,30 @@ class ProjectsController extends Controller
             // Notify User
             foreach ($project->accountDetails as $accountUser)
             {
-            //            dd($project->accountDetails());
                 $user = $accountUser->user;
-                //dd($user);
-                $dataMail = [
-                        'subjectMail'    => 'New Project Assign To You',
-                        'bodyMail'       => 'Assign The Project '.$project->name.' To '.$user->name,
-                        'action'         => route("projectmanagement.admin.projects.show", $project->id)
-                ];
-
+//                $dataMail = [
+//                        'subjectMail'    => 'New Project Assign To You',
+//                        'bodyMail'       => 'Assign The Project '.$project->name.' To '.$user->name,
+//                        'action'         => route("projectmanagement.admin.projects.show", $project->id)
+//                ];
+//
                 $dataNotification = [
                         'message'       => 'Assign The Project : '.$project->name.' To '.$user->name,
                         'route_path'    => 'admin/projectmanagement/projects',
                 ];
+//
+//                $user->notify(new ProjectManagementNotification($project,$user,$dataMail,$dataNotification));
 
-                $user->notify(new ProjectManagementNotification($project,$user,$dataMail,$dataNotification));
+                //send notification
+                $user->notify(new ProjectManagementNotification($project,$user,$dataNotification));
                 $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
                 event(new NewNotification($userNotify));
+
+                // send mail
+                $sender =  settings('smtp_sender_name');
+                $email_from =  settings('smtp_email') ;
+                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender));
+
             }
 
             setActivity('project',$project->id,'Update Assign to ','تعديل القائمين على مشروع ',$project->name_en,$project->name_ar);
@@ -390,15 +411,17 @@ class ProjectsController extends Controller
             // Commit the transaction
             DB::commit();
 
+            return redirect()->route('projectmanagement.admin.projects.index')->with(flash(trans('cruds.messages.assignto_success'), 'success'));
+
         }catch(\Exception $e){
             // An error occured; cancel the transaction...
             DB::rollback();
 
+            return back()->with(flash(trans('cruds.messages.assignto_failed'), 'danger'))->withInput();
             // and throw the error again.
             throw $e;
         }
 
-        return redirect()->route('projectmanagement.admin.projects.index');
     }
 
     public function update_note(Request $request)
@@ -418,20 +441,29 @@ class ProjectsController extends Controller
             {
                 $user = $accountUser->user;
                 //dd($user);
-                $dataMail = [
-                    'subjectMail'    => 'Update Project '.$project->name,
-                    'bodyMail'       => 'Update Note Of Project '.$project->name,
-                    'action'         => route("projectmanagement.admin.projects.show", $project->id)
-                ];
+//                $dataMail = [
+//                    'subjectMail'    => 'Update Project '.$project->name,
+//                    'bodyMail'       => 'Update Note Of Project '.$project->name,
+//                    'action'         => route("projectmanagement.admin.projects.show", $project->id)
+//                ];
 
                 $dataNotification = [
                     'message'       => 'Update Note Of Project : '.$project->name,
                     'route_path'    => 'admin/projectmanagement/projects',
                 ];
 
-                $user->notify(new ProjectManagementNotification($project,$user,$dataMail,$dataNotification));
+//                $user->notify(new ProjectManagementNotification($project,$user,$dataMail,$dataNotification));
+
+                //send notification
+                $user->notify(new ProjectManagementNotification($project,$user,$dataNotification));
                 $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
                 event(new NewNotification($userNotify));
+
+                // send mail
+                $sender =  settings('smtp_sender_name');
+                $email_from =  settings('smtp_email') ;
+                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender));
+
             }
 
             setActivity('project',$project->id,'Update Note','تعديل الملاحظات',$project->name_en,$project->name_ar);
@@ -439,15 +471,18 @@ class ProjectsController extends Controller
             // Commit the transaction
             DB::commit();
 
+            return back()->with(flash(trans('cruds.messages.update_note_success'), 'success'));
+
         }catch(\Exception $e){
             // An error occured; cancel the transaction...
             DB::rollback();
 
+            return back()->with(flash(trans('cruds.messages.update_note_failed'), 'danger'))->withInput();
             // and throw the error again.
             throw $e;
         }
 
-        return redirect()->back();
+//        return redirect()->back();
     }
 
     public function update_project_timer($project_id)

@@ -20,6 +20,8 @@ use Modules\ProjectManagement\Entities\Project;
 use Spatie\MediaLibrary\Models\Media;
 use Spatie\Permission\Models\Permission;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ProjectManagementMail;
 
 class TicketsController extends Controller
 {
@@ -115,42 +117,66 @@ class TicketsController extends Controller
     {
         abort_if(Gate::denies('ticket_edit'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
-        $ticket->update($request->all());
-        //$ticket->permissions()->sync($request->input('permissions', []));
+        try {
+            // Begin a transaction
+            DB::beginTransaction();
+            $ticket->update($request->all());
+            //$ticket->permissions()->sync($request->input('permissions', []));
 
-        if ($request->input('file', false)) {
-            if (!$ticket->file || $request->input('file') !== $ticket->file->file_name) {
-                if ($ticket->file) {
-                    $ticket->file->delete();
+            if ($request->input('file', false)) {
+                if (!$ticket->file || $request->input('file') !== $ticket->file->file_name) {
+                    if ($ticket->file) {
+                        $ticket->file->delete();
+                    }
+
+                    $ticket->addMedia(storage_path('tmp/uploads/' . $request->input('file')))->toMediaCollection('file');
                 }
-
-                $ticket->addMedia(storage_path('tmp/uploads/' . $request->input('file')))->toMediaCollection('file');
+            } elseif ($ticket->file) {
+                $ticket->file->delete();
             }
-        } elseif ($ticket->file) {
-            $ticket->file->delete();
+
+            // Notify User
+            foreach ($ticket->accountDetails as $accountUser)
+            {
+                $user = $accountUser->user;
+    //            $dataMail = [
+    //                'subjectMail'    => 'Update Ticket : '.$ticket->ticket_code,
+    //                'bodyMail'       => 'Update The Ticket : '.$ticket->ticket_code,
+    //                'action'         => route("projectmanagement.admin.tickets.show", $ticket->id)
+    //            ];
+
+                $dataNotification = [
+                    'message'       => 'Update The Ticket : '.$ticket->ticket_code,
+                    'route_path'    => 'admin/projectmanagement/tickets',
+                ];
+
+    //            $user->notify(new ProjectManagementNotification($ticket,$user,$dataMail,$dataNotification));
+
+                //send notification
+                $user->notify(new ProjectManagementNotification($ticket,$user,$dataNotification));
+                $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
+                event(new NewNotification($userNotify));
+
+                // send mail
+                $sender =  settings('smtp_sender_name');
+                $email_from =  settings('smtp_email') ;
+                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender));
+            }
+
+            DB::commit();
+
+            return redirect()->route('projectmanagement.admin.tickets.index')->with(flash(trans('cruds.messages.update_success'), 'success'));
+
+
+        }catch(\Exception $e){
+            // An error occured; cancel the transaction...
+            DB::rollback();
+
+            return redirect()->back()->with(flash(trans('cruds.messages.update_failed'), 'danger'))->withInput();
+            // and throw the error again.
+            throw $e;
         }
-
-        // Notify User
-        foreach ($ticket->accountDetails as $accountUser)
-        {
-            $user = $accountUser->user;
-            $dataMail = [
-                'subjectMail'    => 'Update Ticket : '.$ticket->ticket_code,
-                'bodyMail'       => 'Update The Ticket : '.$ticket->ticket_code,
-                'action'         => route("projectmanagement.admin.tickets.show", $ticket->id)
-            ];
-
-            $dataNotification = [
-                'message'       => 'Update The Ticket : '.$ticket->ticket_code,
-                'route_path'    => 'admin/projectmanagement/tickets',
-            ];
-
-            $user->notify(new ProjectManagementNotification($ticket,$user,$dataMail,$dataNotification));
-            $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
-            event(new NewNotification($userNotify));
-        }
-
-        return redirect()->route('projectmanagement.admin.tickets.index');
+//        return redirect()->route('projectmanagement.admin.tickets.index');
     }
 
     public function show(Ticket $ticket)
@@ -226,67 +252,91 @@ class TicketsController extends Controller
     {
         abort_if(Gate::denies('ticket_assign_to'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
-        $ticket = Ticket::findOrFail($request->ticket_id);
-        if ($request->accounts){
+        try {
+            // Begin a transaction
+            DB::beginTransaction();
+            $ticket = Ticket::findOrFail($request->ticket_id);
+            if ($request->accounts){
 
 
-            $ticket->accountDetails()->sync($request->accounts);
-            // set permission to users
-            $accounts = AccountDetail::whereIn('id',$request->accounts)->with('user.department')->get();
+                $ticket->accountDetails()->sync($request->accounts);
+                // set permission to users
+                $accounts = AccountDetail::whereIn('id',$request->accounts)->with('user.department')->get();
 
-            $ticket_permissions_head_names = ['project_management_access','ticket_access','ticket_create', 'ticket_show','ticket_edit','ticket_assign_to'];
-            $ticket_permissions_notToMember_names = ['ticket_create','ticket_assign_to'];
-//            $ticket_permissions_head_names = ['project_management_access','ticket_access','ticket_create', 'ticket_show','ticket_edit'];
-//            $ticket_permissions_notToMember_names = ['ticket_create'];
-            $ticket_permissions_toMember_names = ['project_management_access','ticket_access','ticket_show','ticket_edit'];
+                $ticket_permissions_head_names = ['project_management_access','ticket_access','ticket_create', 'ticket_show','ticket_edit','ticket_assign_to'];
+                $ticket_permissions_notToMember_names = ['ticket_create','ticket_assign_to'];
+    //            $ticket_permissions_head_names = ['project_management_access','ticket_access','ticket_create', 'ticket_show','ticket_edit'];
+    //            $ticket_permissions_notToMember_names = ['ticket_create'];
+                $ticket_permissions_toMember_names = ['project_management_access','ticket_access','ticket_show','ticket_edit'];
 
-            $ticket_permissions_head = $this->getPermissionID($ticket_permissions_head_names);
-            $ticket_permissions_notToMember = $this->getPermissionID($ticket_permissions_notToMember_names);
-            $ticket_permissions_toMember = $this->getPermissionID($ticket_permissions_toMember_names);
+                $ticket_permissions_head = $this->getPermissionID($ticket_permissions_head_names);
+                $ticket_permissions_notToMember = $this->getPermissionID($ticket_permissions_notToMember_names);
+                $ticket_permissions_toMember = $this->getPermissionID($ticket_permissions_toMember_names);
 
-            foreach ($accounts as $account){
+                foreach ($accounts as $account){
 
-                foreach ($account->user->permissions as $permission){
+                    foreach ($account->user->permissions as $permission){
 
-                    if (in_array($permission->name,$ticket_permissions_notToMember_names)){
-                        $account->user->permissions()->detach($ticket_permissions_notToMember);
+                        if (in_array($permission->name,$ticket_permissions_notToMember_names)){
+                            $account->user->permissions()->detach($ticket_permissions_notToMember);
+                        }
+                    }
+                    $account->user->permissions()->syncWithoutDetaching($ticket_permissions_toMember);
+
+                    foreach ($account->user->department as $department){
+                        if ($department->department_name == $ticket->project->department->department_name){
+                            $account->user->permissions()->syncWithoutDetaching($ticket_permissions_head);
+
+                            break;
+                        }
                     }
                 }
-                $account->user->permissions()->syncWithoutDetaching($ticket_permissions_toMember);
-
-                foreach ($account->user->department as $department){
-                    if ($department->department_name == $ticket->project->department->department_name){
-                        $account->user->permissions()->syncWithoutDetaching($ticket_permissions_head);
-
-                        break;
-                    }
-                }
+            }else{
+                $ticket->accountDetails()->detach();
             }
-        }else{
-            $ticket->accountDetails()->detach();
+
+            // Notify User
+            foreach ($ticket->accountDetails as $accountUser)
+            {
+                $user = $accountUser->user;
+//                $dataMail = [
+//                    'subjectMail'    => 'New Ticket Assign To You',
+//                    'bodyMail'       => 'Assign The Ticket : '.$ticket->ticket_code.' To '.$user->name,
+//                    'action'         => route("projectmanagement.admin.tickets.show", $ticket->id)
+//                ];
+
+                $dataNotification = [
+                    'message'       => 'Assign The Ticket : '.$ticket->ticket_code.' To '.$user->name,
+                    'route_path'    => 'admin/projectmanagement/tickets',
+                ];
+
+//                $user->notify(new ProjectManagementNotification($ticket,$user,$dataMail,$dataNotification));
+
+                //send notification
+                $user->notify(new ProjectManagementNotification($ticket,$user,$dataNotification));
+                $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
+                event(new NewNotification($userNotify));
+
+                // send mail
+                $sender =  settings('smtp_sender_name');
+                $email_from =  settings('smtp_email') ;
+                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender));
+            }
+            // Commit the transaction
+            DB::commit();
+
+            return redirect()->route('projectmanagement.admin.tickets.index')->with(flash(trans('cruds.messages.assignto_success'), 'success'));
+
+        }catch(\Exception $e){
+            // An error occured; cancel the transaction...
+            DB::rollback();
+
+            return back()->with(flash(trans('cruds.messages.assignto_failed'), 'danger'))->withInput();
+            // and throw the error again.
+            throw $e;
         }
 
-        // Notify User
-        foreach ($ticket->accountDetails as $accountUser)
-        {
-            $user = $accountUser->user;
-            $dataMail = [
-                'subjectMail'    => 'New Ticket Assign To You',
-                'bodyMail'       => 'Assign The Ticket : '.$ticket->ticket_code.' To '.$user->name,
-                'action'         => route("projectmanagement.admin.tickets.show", $ticket->id)
-            ];
-
-            $dataNotification = [
-                'message'       => 'Assign The Ticket : '.$ticket->ticket_code.' To '.$user->name,
-                'route_path'    => 'admin/projectmanagement/tickets',
-            ];
-
-            $user->notify(new ProjectManagementNotification($ticket,$user,$dataMail,$dataNotification));
-            $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
-            event(new NewNotification($userNotify));
-        }
-
-        return redirect()->route('projectmanagement.admin.tickets.index');
+//        return redirect()->route('projectmanagement.admin.tickets.index');
     }
 
     public function replay(Request $request)
@@ -337,31 +387,57 @@ class TicketsController extends Controller
 
         //dd($request->all());
 
-        $ticket = Ticket::findOrFaiL($request->ticket_id);
+        try {
+            // Begin a transaction
+            DB::beginTransaction();
 
-        $ticket->update($request->all());
+            $ticket = Ticket::findOrFaiL($request->ticket_id);
 
-        // Notify User
-        foreach ($ticket->accountDetails as $accountUser)
-        {
-            $user = $accountUser->user;
-            $dataMail = [
-                'subjectMail'    => 'Update Ticket : '.$ticket->ticket_code ,
-                'bodyMail'       => 'Update The Ticket : '.$ticket->ticket_code .' status to '.$ticket->status,
-                'action'         => route("projectmanagement.admin.tickets.show", $ticket->id)
-            ];
+            $ticket->update($request->all());
 
-            $dataNotification = [
-                'message'       => 'Update Ticket : '.$ticket->ticket_code .' status to '.$ticket->status,
-                'route_path'    => 'admin/projectmanagement/tickets',
-            ];
+            // Notify User
+            foreach ($ticket->accountDetails as $accountUser)
+            {
+                $user = $accountUser->user;
+//                $dataMail = [
+//                    'subjectMail'    => 'Update Ticket : '.$ticket->ticket_code ,
+//                    'bodyMail'       => 'Update The Ticket : '.$ticket->ticket_code .' status to '.$ticket->status,
+//                    'action'         => route("projectmanagement.admin.tickets.show", $ticket->id)
+//                ];
 
-            $user->notify(new ProjectManagementNotification($ticket,$user,$dataMail,$dataNotification));
-            $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
-            event(new NewNotification($userNotify));
+                $dataNotification = [
+                    'message'       => 'Update Ticket : '.$ticket->ticket_code .' status to '.$ticket->status,
+                    'route_path'    => 'admin/projectmanagement/tickets',
+                ];
+
+//                $user->notify(new ProjectManagementNotification($ticket,$user,$dataMail,$dataNotification));
+
+                //send notification
+                $user->notify(new ProjectManagementNotification($ticket,$user,$dataNotification));
+                $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
+                event(new NewNotification($userNotify));
+
+                // send mail
+                $sender =  settings('smtp_sender_name');
+                $email_from =  settings('smtp_email') ;
+                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender));
+            }
+
+            // Commit the transaction
+            DB::commit();
+
+            return back()->with(flash(trans('cruds.messages.update_note_success'), 'success'));
+
+        }catch(\Exception $e){
+            // An error occured; cancel the transaction...
+            DB::rollback();
+
+            return back()->with(flash(trans('cruds.messages.update_note_failed'), 'danger'))->withInput();
+            // and throw the error again.
+            throw $e;
         }
 
-        return redirect()->back();
+//        return redirect()->back();
 
     }
 

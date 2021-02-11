@@ -2,13 +2,16 @@
 
 namespace Modules\Finance\Http\Controllers\admin;
 
+use App\Events\NewNotification;
 use App\Http\Controllers\Traits\MediaUploadingTrait;
+use App\Mail\FinanceMail;
 use App\Models\Client;
 use App\Models\Invoice;
 use App\Models\InvoiceItemTax;
 use App\Models\ItemInvoiceRelations;
 use App\Models\Opportunity;
 use App\Models\User;
+use App\Notifications\FinanceNotification;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -22,6 +25,8 @@ use Modules\Sales\Entities\ProposalsItem;
 use Spatie\MediaLibrary\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
 use Modules\ProjectManagement\Http\Controllers\Traits\ProjectManagementHelperTrait;
+use Illuminate\Support\Facades\Mail;
+
 
 
 class InvoicesController extends Controller
@@ -398,21 +403,55 @@ class InvoicesController extends Controller
         return view('finance::admin.invoices.history', compact('invoice'));
     }
 
-//    public function invoice_pdf(Invoice $invoice)
-//    {
-//        $title = $invoice->reference_no . '-invoice.pdf';
-//        $compact = [
-//            'project'   => $project,
-//            'total_expense' => $total_expense,
-//            'billable_expense'  => $billable_expense,
-//            'not_billable_expense'  => $not_billable_expense,
-//            'paid_expense'  => $paid_expense
-//        ];
-//
-//        $view = 'projectmanagement::admin.projects.project_pdf';
-//        $this->download_pdf($view,$compact,$title);
-//        //$this->stream_pdf($view,$compact,$title);
-//    }
+    public function reminder_invoice($id)
+    {
+        try {
+
+            // Begin a transaction
+            DB::beginTransaction();
+            $invoice = Invoice::findOrFail($id);
+
+            // Notify User
+
+            $user = $invoice->client;
+            //dd($user);
+//            $dataMail = [
+//                'subjectMail'    => trans('global.reminder') .' '. $invoice->reference_no,
+//                'bodyMail'       => trans('global.reminder') .' '. $invoice->reference_no . ' ' . trans('cruds.invoice.fields.due_date'),
+//                'action'         => route("finance.admin.invoices.show", $invoice->id)
+//            ];
+
+            $dataNotification = [
+                'message'       => trans('global.reminder') .' '. $invoice->reference_no . ' ' . trans('cruds.invoice.fields.due_date'),
+                'route_path'    => 'admin/finance/invoices',
+            ];
+
+//            $user->notify(new FinanceNotification($invoice,$user,$dataMail,$dataNotification));
+            $user->notify(new FinanceNotification($invoice,$user,$dataNotification));
+            $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
+            event(new NewNotification($userNotify));
+
+            // send mail
+            $sender =  settings('smtp_sender_name');
+            $email_from =  settings('smtp_email') ;
+            Mail::mailer('smtp')->to($user->email)->send(new FinanceMail($email_from, $sender));
+
+            $flashMsg = flash(trans('cruds.messages.payment_amounts_more_invoice_amount'), 'sucess');
+
+            // Commit the transaction
+            DB::commit();
+
+        }catch(\Exception $e){
+            // An error occured; cancel the transaction...
+            DB::rollback();
+            $flashMsg = flash(trans('cruds.messages.payment_amounts_more_invoice_amount'), 'danger');
+
+            // and throw the error again.
+            throw $e;
+        }
+        return redirect()->back()->with($flashMsg);
+
+    }
 
 
 

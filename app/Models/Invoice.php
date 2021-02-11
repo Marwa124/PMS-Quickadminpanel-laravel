@@ -12,11 +12,12 @@ use Spatie\MediaLibrary\Models\Media;
 use \DateTimeInterface;
 use  Modules\ProjectManagement\Entities\Activity;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Notifications\Notifiable;
 
 
 class Invoice extends Model implements HasMedia
 {
-    use SoftDeletes, HasMediaTrait;
+    use SoftDeletes, HasMediaTrait, Notifiable;
 
     public $table = 'invoices';
 

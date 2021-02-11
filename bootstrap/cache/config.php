@@ -542,7 +542,7 @@
     'debug' => true,
     'url' => 'http://127.0.0.1:8000/',
     'asset_url' => NULL,
-    'timezone' => NULL,
+    'timezone' => 'Pacific/Midway',
     'locale' => 'en',
     'fallback_locale' => 'en',
     'faker_locale' => 'en_US',
@@ -801,7 +801,7 @@
       array (
         'driver' => 'sqlite',
         'url' => NULL,
-        'database' => 'pms_with_permissions',
+        'database' => 'pms_laravel',
         'prefix' => '',
         'foreign_key_constraints' => true,
       ),
@@ -811,7 +811,7 @@
         'url' => NULL,
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'pms_with_permissions',
+        'database' => 'pms_laravel',
         'username' => 'root',
         'password' => '',
         'unix_socket' => '',
@@ -831,7 +831,7 @@
         'url' => NULL,
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'pms_with_permissions',
+        'database' => 'pms_laravel',
         'username' => 'root',
         'password' => '',
         'charset' => 'utf8',
@@ -846,7 +846,7 @@
         'url' => NULL,
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'pms_with_permissions',
+        'database' => 'pms_laravel',
         'username' => 'root',
         'password' => '',
         'charset' => 'utf8',
@@ -1182,20 +1182,20 @@
       'smtp' => 
       array (
         'transport' => 'smtp',
-        'host' => 'smtp.mailgun.org',
-        'port' => 587,
-        'encryption' => 'tls',
-        'username' => NULL,
-        'password' => NULL,
+        'host' => 'mail.onetecgroup.com',
+        'port' => '465',
+        'encryption' => 'ssl',
+        'username' => 'admin@onetecgroup.com',
+        'password' => 'm7mdsdfcz',
       ),
       'mailgun' => 
       array (
         'transport' => 'smtp',
         'host' => 'smtp.mailgun.org',
-        'port' => 587,
+        'port' => '587',
         'encryption' => 'tls',
-        'username' => NULL,
-        'password' => NULL,
+        'username' => 'postmaster@sandboxe31bb8c7d4b44782a216a3ee62328fc9.mailgun.org',
+        'password' => '31d7a041ba3baf4f4fb9b51eacd23fac-4de08e90-2044ce92',
       ),
       'postmark' => 
       array (
@@ -1228,7 +1228,7 @@
     'from' => 
     array (
       'address' => 'info@onetecgroup.com',
-      'name' => NULL,
+      'name' => 'mohamed',
     ),
     'markdown' => 
     array (
