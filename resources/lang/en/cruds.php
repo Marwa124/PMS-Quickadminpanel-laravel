@@ -19,6 +19,9 @@ return [
         'stocks' =>'Stocks',
         'manage_stock' =>'Manage Stock',
         'stock_history' =>'Stock History',
+        'assign_stocks' =>'Assign Stocks',
+        'assign_stocks_report' =>'Assign Stocks Report',
+
     ],
     'payment_method'                => [
         'title'          => 'Payment Method',
@@ -134,6 +137,29 @@ return [
             'select_paid'  => 'Select Paid',
             'entry_date'  => 'Entry Date',
             'balance'  => 'Balance',
+        ]
+    ],
+
+
+    'assign_stocks'      => [
+        'title'          => 'Assign Stocks',
+        'title_singular' => 'Assign Stocks',
+        'attach' => 'Attachments',
+        'fields' => [
+            'item_name'  => 'Item Name',
+            'stock_category'        => 'Stock Category',
+            'assign_quantity'  => 'Assign Quantity',
+            'assign_date'  => 'Assign Date',
+            'choose_item'  => 'Choose Item',
+            'choose_user'  => 'Choose User',
+            'stock_sub_category'  => 'Stock Category',
+            'assigned_user'  => 'Assigned User',
+            'stock_sub_category_helper'  => ' ',
+            'user_id_helper'  => ' ',
+            'quantity'  => 'Quantity',
+            'index'  => 'Index',
+            'assign_stock_list_for'  => 'Assign Stock List For',
+
         ]
     ],
 
@@ -1620,11 +1646,11 @@ return [
             'lead_helper'             => ' ',
             'name'                    => 'Name',
             'name_helper'             => ' ',
-            'probability'             => 'Probability',
+            'probability'             => 'Probability Of Winning %',
             'probability_helper'      => ' ',
             'stages'                  => 'Stages',
             'stages_helper'           => ' ',
-            'closed_date'             => 'Closed Date',
+            'closed_date'             => 'Forecast Close Date',
             'closed_date_helper'      => ' ',
             'expected_revenue'        => 'Expected Revenue',
             'expected_revenue_helper' => ' ',
@@ -1632,6 +1658,8 @@ return [
             'new_link_helper'         => ' ',
             'next_action'             => 'Next Action',
             'next_action_helper'      => ' ',
+            'nextactiondate'              => 'NEXT ACTION DATE',
+            'nextactiondate_helper'       => ' ',
             'notes'                   => 'Notes',
             'notes_helper'            => ' ',
             'permissions'             => 'Permissions',
@@ -3661,7 +3689,7 @@ return [
         'project_of_task_not_have_department'       => 'The Project Of Task don\'t have Department',
         'time_date_after_or_equal'                  => 'The Time Of End Date Must Be After Or Equal ',
         
-        'sure_clone_proposal'        => 'Are you sure to clone Proposal with items and invoice ?',
+        'sure_clone_proposal'        => 'Are you sure to clone Proposal with items ?',
         'proposal_force_delete'                     => 'Proposal Will Force Delete ..!',
     ],
 

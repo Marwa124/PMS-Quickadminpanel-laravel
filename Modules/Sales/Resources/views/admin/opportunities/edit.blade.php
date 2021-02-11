@@ -3,17 +3,18 @@
 
 <div class="card">
     <div class="card-header">
-        {{ trans('global.create') }} {{ trans('cruds.opportunity.title_singular') }}
+        {{ trans('global.edit') }} {{ trans('cruds.opportunity.title_singular') }}
     </div>
 
     <div class="card-body">
-        <form method="POST" action="{{ route("admin.opportunities.store") }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ route("sales.admin.opportunities.update", [$opportunity->id]) }}" enctype="multipart/form-data">
+            @method('PUT')
             @csrf
             <div class="form-group">
                 <label for="lead_id">{{ trans('cruds.opportunity.fields.lead') }}</label>
                 <select class="form-control select2 {{ $errors->has('lead') ? 'is-invalid' : '' }}" name="lead_id" id="lead_id">
                     @foreach($leads as $id => $lead)
-                        <option value="{{ $id }}" {{ old('lead_id') == $id ? 'selected' : '' }}>{{ $lead }}</option>
+                        <option value="{{ $id }}" {{ (old('lead_id') ? old('lead_id') : $opportunity->lead->id ?? '') == $id ? 'selected' : '' }}>{{ $lead }}</option>
                     @endforeach
                 </select>
                 @if($errors->has('lead'))
@@ -25,7 +26,7 @@
             </div>
             <div class="form-group">
                 <label for="name">{{ trans('cruds.opportunity.fields.name') }}</label>
-                <input class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" type="text" name="name" id="name" value="{{ old('name', '') }}">
+                <input class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" type="text" name="name" id="name" value="{{ old('name', $opportunity->name) }}">
                 @if($errors->has('name'))
                     <div class="invalid-feedback">
                         {{ $errors->first('name') }}
@@ -35,7 +36,7 @@
             </div>
             <div class="form-group">
                 <label for="probability">{{ trans('cruds.opportunity.fields.probability') }}</label>
-                <input class="form-control {{ $errors->has('probability') ? 'is-invalid' : '' }}" type="text" name="probability" id="probability" value="{{ old('probability', '') }}">
+                <input class="form-control {{ $errors->has('probability') ? 'is-invalid' : '' }}" type="text" name="probability" id="probability" value="{{ old('probability', $opportunity->probability) }}">
                 @if($errors->has('probability'))
                     <div class="invalid-feedback">
                         {{ $errors->first('probability') }}
@@ -45,7 +46,7 @@
             </div>
             <div class="form-group">
                 <label for="stages">{{ trans('cruds.opportunity.fields.stages') }}</label>
-                <input class="form-control {{ $errors->has('stages') ? 'is-invalid' : '' }}" type="text" name="stages" id="stages" value="{{ old('stages', '') }}">
+                <input class="form-control {{ $errors->has('stages') ? 'is-invalid' : '' }}" type="text" name="stages" id="stages" value="{{ old('stages', $opportunity->stages) }}">
                 @if($errors->has('stages'))
                     <div class="invalid-feedback">
                         {{ $errors->first('stages') }}
@@ -55,7 +56,7 @@
             </div>
             <div class="form-group">
                 <label for="closed_date">{{ trans('cruds.opportunity.fields.closed_date') }}</label>
-                <input class="form-control date {{ $errors->has('closed_date') ? 'is-invalid' : '' }}" type="text" name="closed_date" id="closed_date" value="{{ old('closed_date') }}">
+                <input class="form-control date {{ $errors->has('closed_date') ? 'is-invalid' : '' }}" type="text" name="closed_date" id="closed_date" value="{{ old('closed_date', $opportunity->closed_date) }}">
                 @if($errors->has('closed_date'))
                     <div class="invalid-feedback">
                         {{ $errors->first('closed_date') }}
@@ -65,7 +66,7 @@
             </div>
             <div class="form-group">
                 <label for="expected_revenue">{{ trans('cruds.opportunity.fields.expected_revenue') }}</label>
-                <input class="form-control {{ $errors->has('expected_revenue') ? 'is-invalid' : '' }}" type="number" name="expected_revenue" id="expected_revenue" value="{{ old('expected_revenue', '') }}" step="0.01">
+                <input class="form-control {{ $errors->has('expected_revenue') ? 'is-invalid' : '' }}" type="number" name="expected_revenue" id="expected_revenue" value="{{ old('expected_revenue', $opportunity->expected_revenue) }}" step="0.01">
                 @if($errors->has('expected_revenue'))
                     <div class="invalid-feedback">
                         {{ $errors->first('expected_revenue') }}
@@ -75,7 +76,7 @@
             </div>
             <div class="form-group">
                 <label for="new_link">{{ trans('cruds.opportunity.fields.new_link') }}</label>
-                <input class="form-control {{ $errors->has('new_link') ? 'is-invalid' : '' }}" type="text" name="new_link" id="new_link" value="{{ old('new_link', '') }}">
+                <input class="form-control {{ $errors->has('new_link') ? 'is-invalid' : '' }}" type="text" name="new_link" id="new_link" value="{{ old('new_link', $opportunity->new_link) }}">
                 @if($errors->has('new_link'))
                     <div class="invalid-feedback">
                         {{ $errors->first('new_link') }}
@@ -85,7 +86,7 @@
             </div>
             <div class="form-group">
                 <label for="next_action">{{ trans('cruds.opportunity.fields.next_action') }}</label>
-                <input class="form-control {{ $errors->has('next_action') ? 'is-invalid' : '' }}" type="text" name="next_action" id="next_action" value="{{ old('next_action', '') }}">
+                <input class="form-control {{ $errors->has('next_action') ? 'is-invalid' : '' }}" type="text" name="next_action" id="next_action" value="{{ old('next_action', $opportunity->next_action) }}">
                 @if($errors->has('next_action'))
                     <div class="invalid-feedback">
                         {{ $errors->first('next_action') }}
@@ -95,7 +96,7 @@
             </div>
             <div class="form-group">
                 <label for="notes">{{ trans('cruds.opportunity.fields.notes') }}</label>
-                <textarea class="form-control ckeditor {{ $errors->has('notes') ? 'is-invalid' : '' }}" name="notes" id="notes">{!! old('notes') !!}</textarea>
+                <textarea class="form-control ckeditor {{ $errors->has('notes') ? 'is-invalid' : '' }}" name="notes" id="notes">{!! old('notes', $opportunity->notes) !!}</textarea>
                 @if($errors->has('notes'))
                     <div class="invalid-feedback">
                         {{ $errors->first('notes') }}
@@ -111,7 +112,7 @@
                 </div>
                 <select class="form-control select2 {{ $errors->has('permissions') ? 'is-invalid' : '' }}" name="permissions[]" id="permissions" multiple>
                     @foreach($permissions as $id => $permissions)
-                        <option value="{{ $id }}" {{ in_array($id, old('permissions', [])) ? 'selected' : '' }}>{{ $permissions }}</option>
+                        <option value="{{ $id }}" {{ (in_array($id, old('permissions', [])) || $opportunity->permissions->contains($id)) ? 'selected' : '' }}>{{ $permissions }}</option>
                     @endforeach
                 </select>
                 @if($errors->has('permissions'))

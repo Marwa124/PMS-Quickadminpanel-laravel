@@ -30,7 +30,9 @@
                         <div class="collapse" id="collapseExample_{{$cat->id}}">
                             <div class="card card-body">
                                 @foreach($main_stocks_category->unique('stock_sub_category_id') as $sub_stock)
-                                    @php $sub_cat = App\Models\StockSubCategory::findorfail($sub_stock->stock_sub_category_id); @endphp
+                                    @php
+                                        $sub_cat = App\Models\StockSubCategory::findorfail($sub_stock->stock_sub_category_id);
+                                    @endphp
                                     <span>{{$sub_cat->name}}</span>
 
                                     @php $stocks = $main_stocks_category->where('stock_sub_category_id',$sub_cat->id); @endphp
@@ -59,6 +61,7 @@
                                             </thead>
                                             <tbody>
                                             @foreach($stocks as $stock)
+
                                                 <tr data-entry-id="{{ $stock->name }}">
                                                     <td>
 
@@ -70,7 +73,7 @@
                                                         {{ $stock->name ?? '' }}
                                                     </td>
                                                     <td>
-                                                        {{ $stock->TotalStock ?? '' }}
+                                                        {{ $stock->TotalStock  ?? '' }}
                                                     </td>
                                                     <td>
 
@@ -82,11 +85,14 @@
                                                         {{--@endcan--}}
 
                                                         {{--@can('stock_delete')--}}
-                                                        <form action="{{ route('finance.admin.stocks.destroy', [$stock->name,$stock->stock_sub_category_id]) }}"
-                                                              method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');"
-                                                              style="display: inline-block;">
+                                                        <form
+                                                            action="{{ route('finance.admin.stocks.destroy', [$stock->name,$stock->stock_sub_category_id]) }}"
+                                                            method="POST"
+                                                            onsubmit="return confirm('{{ trans('global.areYouSure') }}');"
+                                                            style="display: inline-block;">
                                                             <input type="hidden" name="_method" value="DELETE">
-                                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                            <input type="hidden" name="_token"
+                                                                   value="{{ csrf_token() }}">
                                                             <input type="submit" class="btn btn-xs btn-danger"
                                                                    value="{{ trans('global.delete') }}">
                                                         </form>
@@ -121,35 +127,35 @@
     <script>
         // $(function () {
         //     let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
-            {{--@can('stock_delete')--}}
-            {{--let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'--}}
-            {{--let deleteButton = {--}}
-            {{--text: deleteButtonTrans,--}}
-            {{--url: "{{ route('finance.admin.stocks.massDestroy') }}",--}}
-            {{--className: 'btn-danger',--}}
-            {{--action: function (e, dt, node, config) {--}}
-            {{--var ids = $.map(dt.rows({ selected: true }).nodes(), function (entry) {--}}
-            {{--return $(entry).data('entry-id')--}}
-            {{--});--}}
+        {{--@can('stock_delete')--}}
+        {{--let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'--}}
+        {{--let deleteButton = {--}}
+        {{--text: deleteButtonTrans,--}}
+        {{--url: "{{ route('finance.admin.stocks.massDestroy') }}",--}}
+        {{--className: 'btn-danger',--}}
+        {{--action: function (e, dt, node, config) {--}}
+        {{--var ids = $.map(dt.rows({ selected: true }).nodes(), function (entry) {--}}
+        {{--return $(entry).data('entry-id')--}}
+        {{--});--}}
 
-            {{--if (ids.length === 0) {--}}
-            {{--alert('{{ trans('global.datatables.zero_selected') }}')--}}
+        {{--if (ids.length === 0) {--}}
+        {{--alert('{{ trans('global.datatables.zero_selected') }}')--}}
 
-            {{--return--}}
-            {{--}--}}
+        {{--return--}}
+        {{--}--}}
 
-            {{--if (confirm('{{ trans('global.areYouSure') }}')) {--}}
-            {{--$.ajax({--}}
-            {{--headers: {'x-csrf-token': _token},--}}
-            {{--method: 'POST',--}}
-            {{--url: config.url,--}}
-            {{--data: { ids: ids, _method: 'DELETE' }})--}}
-            {{--.done(function () { location.reload() })--}}
-            {{--}--}}
-            {{--}--}}
-            {{--}--}}
-            {{--dtButtons.push(deleteButton)--}}
-            {{--@endcan--}}
+        {{--if (confirm('{{ trans('global.areYouSure') }}')) {--}}
+        {{--$.ajax({--}}
+        {{--headers: {'x-csrf-token': _token},--}}
+        {{--method: 'POST',--}}
+        {{--url: config.url,--}}
+        {{--data: { ids: ids, _method: 'DELETE' }})--}}
+        {{--.done(function () { location.reload() })--}}
+        {{--}--}}
+        {{--}--}}
+        {{--}--}}
+        {{--dtButtons.push(deleteButton)--}}
+        {{--@endcan--}}
 
         //     $.extend(true, $.fn.dataTable.defaults, {
         //         orderCellsTop: true,

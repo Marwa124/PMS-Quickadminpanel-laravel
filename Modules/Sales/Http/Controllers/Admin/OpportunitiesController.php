@@ -1,20 +1,21 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace Modules\Sales\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\MediaUploadingTrait;
-use App\Http\Requests\MassDestroyOpportunityRequest;
-use App\Http\Requests\StoreOpportunityRequest;
-use App\Http\Requests\UpdateOpportunityRequest;
-use App\Models\Lead;
-use App\Models\Opportunity;
-use App\Models\Permission;
+use Modules\Sales\Http\Requests\Destroy\MassDestroyOpportunityRequest;
+use Modules\Sales\Http\Requests\Store\StoreOpportunityRequest;
+use Modules\Sales\Http\Requests\Update\UpdateOpportunityRequest;
+use Modules\Sales\Entities\Lead;
+use Modules\Sales\Entities\Opportunity;
+use Spatie\Permission\Models\Permission;
+use App\Models\PermissionGroup;
 use Gate;
 use Illuminate\Http\Request;
 use Spatie\MediaLibrary\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
-
+use DB;
 class OpportunitiesController extends Controller
 {
     use MediaUploadingTrait;
@@ -26,10 +27,8 @@ class OpportunitiesController extends Controller
         $opportunities = Opportunity::all();
 
         $leads = Lead::get();
-
-        $permissions = Permission::get();
-
-        return view('admin.opportunities.index', compact('opportunities', 'leads', 'permissions'));
+        
+        return view('sales::admin.opportunities.index', compact('opportunities', 'leads', 'permissions'));
     }
 
     public function create()
@@ -37,14 +36,15 @@ class OpportunitiesController extends Controller
         abort_if(Gate::denies('opportunity_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $leads = Lead::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+ 
+        $permissions =PermissionGroup::with('permissions')->where('name','opportunity')->first();
 
-        $permissions = Permission::all()->pluck('title', 'id');
-
-        return view('admin.opportunities.create', compact('leads', 'permissions'));
+        return view('sales::admin.opportunities.create', compact('leads', 'permissions'));
     }
 
     public function store(StoreOpportunityRequest $request)
     {
+       
         $opportunity = Opportunity::create($request->all());
         $opportunity->permissions()->sync($request->input('permissions', []));
 
@@ -52,7 +52,7 @@ class OpportunitiesController extends Controller
             Media::whereIn('id', $media)->update(['model_id' => $opportunity->id]);
         }
 
-        return redirect()->route('admin.opportunities.index');
+        return redirect()->route('sales.admin.opportunities.index');
     }
 
     public function edit(Opportunity $opportunity)
@@ -65,7 +65,7 @@ class OpportunitiesController extends Controller
 
         $opportunity->load('lead', 'permissions');
 
-        return view('admin.opportunities.edit', compact('leads', 'permissions', 'opportunity'));
+        return view('sales::admin.opportunities.edit', compact('leads', 'permissions', 'opportunity'));
     }
 
     public function update(UpdateOpportunityRequest $request, Opportunity $opportunity)
@@ -73,7 +73,7 @@ class OpportunitiesController extends Controller
         $opportunity->update($request->all());
         $opportunity->permissions()->sync($request->input('permissions', []));
 
-        return redirect()->route('admin.opportunities.index');
+        return redirect()->route('sales.admin.opportunities.index');
     }
 
     public function show(Opportunity $opportunity)
@@ -82,7 +82,7 @@ class OpportunitiesController extends Controller
 
         $opportunity->load('lead', 'permissions');
 
-        return view('admin.opportunities.show', compact('opportunity'));
+        return view('sales::admin.opportunities.show', compact('opportunity'));
     }
 
     public function destroy(Opportunity $opportunity)

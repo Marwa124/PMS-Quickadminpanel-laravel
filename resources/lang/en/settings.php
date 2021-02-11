@@ -163,6 +163,51 @@ return [
     'allow_apply_job_from_login_string' => 'Allow Apply Job From Login Should Be String',
 
     'company_system_updated'    => 'Company System Updated',
+    'use_postmark'              => 'Use Postmark',
+    'postmark_api_key'          => 'Postmark API Key',
+    'postmark_from_address'    => 'Postmark From Address',
+
+
+
+
+    'email_protocol'           => 'Email Protocol',
+    'php_mail'                  =>     'PHP Mail',
+    'smtp' => 'Smtp',
+    'sendmail' => 'Sendmail',
+    'tls'      => 'TLS',
+    'ssl'          => 'SSL',
+    'mailgun_encryption' => 'Mail Encryption',
+    'mailgun_password' => 'Mail Password',
+    'mailgun_user' => 'Mail User',
+    'mailgun_host' => 'Mail Host',
+    'mailgun_port' => 'Mail Port',
+    'sender_name' => 'Sender Name',
+    'mailgun_updated' => 'Mail Settings Updated',
+    'mailgun' => 'MailGun',
+    'mailgun_sender_name' => 'Mailgun Sender Name',
+    'mailgun_email' => 'Mailgun Email',
+
+
+    'smtp_mail_encryption' => 'Mail Encryption',
+    'smtp_mail_password' => 'Smtp Mail Password',
+    'sender_name' => 'Sender Name',
+    'smtp_updated' => 'Mail Settings Updated',
+    'smtp' => 'Smtp',
+    'smtp_sender_name' => 'Smtp Sender Name',
+    'smtp_mail_user' => 'Smtp Mail User',
+    'smtp_mail_host' => 'Smtp Mail Host',
+    'smtp_email' => 'Smtp Email',
+    'smtp_mail_port' => 'Smtp Mail Port',
+    'mail_encryption' => 'Mail Encryption',
+    'mail_updated' => 'Mail Settings Updated',
+    'send_test_mail' => 'Send Test Mail',
+    'mail_configurations_not_set' => 'Mail Configuration Are Not Set Correctly',
+    'mail_sent' => 'Mail Sent Successfully',
+
+
+
+
+
 
 
 

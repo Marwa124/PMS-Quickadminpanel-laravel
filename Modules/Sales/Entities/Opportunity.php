@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace Modules\Sales\Entities;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -10,6 +10,7 @@ use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
 use \DateTimeInterface;
 use  Modules\Sales\Entities\Proposal;
+use Spatie\Permission\Models\Permission;
 class Opportunity extends Model implements HasMedia
 {
     use SoftDeletes, HasMediaTrait;

@@ -55,22 +55,6 @@ class ProposalsController extends Controller
         // list propsales year
         $prosalyears=Proposal::pluck('proposal_date')->map(function ($model) { return date('Y', strtotime($model)); })->toArray();
         $years=array_unique($prosalyears);
-        if($request->ajex){
-            $proposals = Proposal::select('proposals.*');
-            if(!empty($request->get('Yearfilter'))){
-                $proposals->whereYear('proposal_date',$request->get('Yearfilter'));
-            }
-            if(!empty($request->get('statusfilter'))){
-                if($request->get('statusfilter') == 'all'){
-                    $proposals;
-                }else{
-                    $proposals->where('status',$request->get('statusfilter'));
-                }
-            }
-            return DataTables::of($proposals)
-            ->addIndexColumn()
-            ->make(true);
-        }
        return view('sales::admin.proposals.index', compact('proposals','draft','sent','declined','accepted','expired','Waiting_approval','years'));
     }
 
@@ -158,12 +142,12 @@ class ProposalsController extends Controller
         }
         setActivity('proposal',$proposal->id,'Create proposal #','تم انشاء عرض الاقتراح#',$proposal->reference_no,$proposal->reference_no);
         DB::commit();
-        return redirect()->route('sales.admin.proposals.index');
+        return redirect()->route('sales.admin.proposals.index')->with(flash(trans('settings.company_details_updated'), 'success'));
 
         } catch (\Exception $e) {
             DB::rollback();
              dd($e);
-            return redirect()->back();
+            return redirect()->back()->with(flash(' Something Went Wrong', 'danger'));
         }
 
     }
@@ -300,6 +284,40 @@ class ProposalsController extends Controller
         return response(null, Response::HTTP_NO_CONTENT);
     }
 
+    public function forceDelete(Request $request,$id)
+    {
+        abort_if(Gate::denies('proposal_delete'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
+
+        try {
+
+            DB::beginTransaction();
+
+            $action = $request->action;
+
+            if ($action == 'force_delete') {
+
+                $Proposal = Proposal::onlyTrashed()->find($id)->forceDelete();
+
+            } else if ($action == 'restore') {
+                Proposal::onlyTrashed()->where('id', $id)->restore();
+                $Proposal = Proposal::findOrFail($id);
+
+                setActivity('Proposal',$Proposal->id,'Restore Proposal Details ','إسترجاع العرض من الحذف',$Proposal->reference_no,$Proposal->reference_no);
+            }
+
+            // Commit the transaction
+            DB::commit();
+
+        }catch(\Exception $e){
+            // An error occured; cancel the transaction...
+            DB::rollback();
+            // and throw the error again.
+            throw $e;
+        }
+
+        return redirect()->route('sales.admin.proposals.index');
+
+    }
     public function storeCKEditorImages(Request $request)
     {
         abort_if(Gate::denies('proposal_create') && Gate::denies('proposal_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
@@ -431,7 +449,7 @@ class ProposalsController extends Controller
                    
                 }
                 setActivity('proposal',$proposal->id,'Change Status proposal #','تم تغير حالة العرض #',$proposal->reference_no,$proposal->reference_no);       
-        // setActivity('proposal',$newproposal->id,'Change Status proposal #',$newproposal->reference_no);  
+
         DB::commit();
         return redirect()->route('sales.admin.proposals.index');
 
@@ -592,7 +610,10 @@ class ProposalsController extends Controller
         if(!empty($request->status)){
             if($request->status == 'all'){
                 $proposalsfilter;
-            }else{
+            }elseif($request->status == 'expired'){
+                $proposalsfilter->where('expire_date','<',date('Y-m-d'));
+            }
+            else{
                 $proposalsfilter->where('status',$request->status);
             }
         }
