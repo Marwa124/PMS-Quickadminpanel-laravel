@@ -10,10 +10,11 @@ use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
 use \DateTimeInterface;
 use Modules\HR\Entities\AccountDetail;
+use Illuminate\Notifications\Notifiable;
 
 class Client extends Model implements HasMedia
 {
-    use SoftDeletes, HasMediaTrait;
+    use SoftDeletes, Notifiable, HasMediaTrait;
 
     public $table = 'clients';
 

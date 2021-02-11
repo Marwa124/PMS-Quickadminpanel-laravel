@@ -9,7 +9,7 @@ use Modules\ProjectManagement\Http\Requests\StoreTaskAttachmentRequest;
 use Modules\ProjectManagement\Http\Requests\UpdateTaskAttachmentRequest;
 use App\Models\Bug;
 use App\Models\Lead;
-use App\Models\Opportunity;
+use Modules\Sales\Entities\Opportunity;
 use Modules\ProjectManagement\Entities\Project;
 use Modules\ProjectManagement\Entities\Task;
 use Modules\ProjectManagement\Entities\TaskAttachment;

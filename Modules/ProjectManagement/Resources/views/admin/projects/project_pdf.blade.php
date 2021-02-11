@@ -13,8 +13,8 @@
                 <p>{{ trans('cruds.project.fields.estimate_hours') }} : <span>{{ $project->estimate_hours ? $project->estimate_hours.' Hour' : '' }} </span></p>
             </td>
             <td  >
-                <b>{{ trans('cruds.project.fields.client') }} Info</b>
-                <p >{{ trans('cruds.project.fields.client') }} : <span >{{ $project->client && $project->client->name ?? '' }}</span> </p>
+                <b>{{ trans('cruds.project.fields.client') }} {{trans('global.info')}}</b>
+                <p >{{ trans('cruds.project.fields.client') }} : <span >{{ $project->client && $project->client->name ? $project->client->name : '' }}</span> </p>
             </td>
         </tr>
         <tr>
@@ -25,19 +25,19 @@
                 <p >{{trans('cruds.project.fields.total_expense')}} : <span > {{$total_expense ? $total_expense.' EGP': '' }} </span></p>
             </td>
             <td  >
-                <p >{{ trans('cruds.client.fields.address') }} : <span >{{ $project->client->address ?? '' }}</span> </p>
+                <p >{{ trans('cruds.client.fields.address') }} : <span >{{ $project->client && $project->client->address ? $project->client->address : '' }}</span> </p>
             </td>
 
         </tr>
         <tr>
             <td  >
-                <p >{{ trans('cruds.department.title_singular') }} {{ trans('cruds.project.fields.name') }} :  <span>{{ $project->department->department_name ?? '' }} </span></p>
+                <p >{{ trans('cruds.department.title_singular') }} {{ trans('cruds.project.fields.name') }} :  <span>{{ $project->department && $project->department->department_name ? $project->department->department_name : '' }} </span></p>
             </td>
             <td  >
                 <p >{{trans('cruds.project.fields.billable_expense')}} : <span > {{$billable_expense ? $billable_expense.' EGP': '' }} </span></p>
             </td>
             <td  >
-                <p >{{ trans('cruds.client.fields.city') }} : <span >{{ $project->client->city ?? '' }}</span> </p>
+                <p >{{ trans('cruds.client.fields.city') }} : <span >{{ $project->client && $project->client->city ? $project->client->city : '' }}</span> </p>
             </td>
 
         </tr>
@@ -50,7 +50,7 @@
             </td>
 
             <td  >
-                <p >{{ trans('cruds.client.fields.country') }} : <span >{{ $project->client->country ?? '' }}</span> </p>
+                <p >{{ trans('cruds.client.fields.country') }} : <span >{{ $project->client && $project->client->country ? $project->client->country : '' }}</span> </p>
             </td>
 
         </tr>
@@ -62,7 +62,7 @@
                 <p >{{trans('cruds.project.fields.billed_expense')}} :  <span > {{$paid_expense ? $paid_expense.' EGP': '' }} </span> </p>
             </td>
             <td  >
-                <p >{{ trans('cruds.client.fields.phone') }} : <span >{{ $project->client->phone ?? '' }}</span> </p>
+                <p >{{ trans('cruds.client.fields.phone') }} : <span >{{ $project->client && $project->client->phone ? $project->client->phone : '' }}</span> </p>
             </td>
 
         </tr>

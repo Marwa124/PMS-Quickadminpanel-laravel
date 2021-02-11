@@ -259,7 +259,7 @@
                     <a class="nav-link" id="v-pills-time_sheets-tab"    data-toggle="pill" href="#v-pills-time_sheets" role="tab" aria-controls="v-pills-time_sheets" aria-selected="false">{{ trans('cruds.project.fields.time_sheet') }}<span class="float-right">   {{$project->TimeSheet && $project->TimeSheet()->count() > 0 ? $project->TimeSheet()->count() : ''}}</span></a>
                     <a class="nav-link" id="v-pills-calendar-tab"       data-toggle="pill" href="#v-pills-calendar" role="tab" aria-controls="v-pills-calendar" aria-selected="false" onclick="generateCalendar()">{{ trans('cruds.tasksCalendar.title') }}</a>
                     <a class="nav-link" id="v-pills-activities-tab"     data-toggle="pill" href="#v-pills-activities" role="tab" aria-controls="v-pills-activities" aria-selected="false">{{ trans('cruds.activities.title') }}<span class="float-right">              {{$project->activities && $project->activities()->count() > 0 ? $project->activities()->count() : ''}}</span></a>
-{{--                    <a class="nav-link" id="v-pills-comments-tab" data-toggle="pill" href="#v-pills-comments" role="tab" aria-controls="v-pills-comments" aria-selected="false">Comments</a>--}}
+            {{--   <a class="nav-link" id="v-pills-comments-tab" data-toggle="pill" href="#v-pills-comments" role="tab" aria-controls="v-pills-comments" aria-selected="false">Comments</a>--}}
                 </div>
             </div>
         </div>
@@ -1002,7 +1002,7 @@
                                                                 {{ $timer->id ?? '' }}
                                                             </td>
                                                             <td>
-{{--                                                                {{ $timer->user->accountDetail->fullname ?? '' }}--}}
+                                                                {{--  {{ $timer->user->accountDetail->fullname ?? '' }}--}}
                                                                 @if( $timer->user->accountDetail)
 
                                                                     <img class="img-thumbnail rounded-circle" title="{{ $timer->user->accountDetail->fullname ?? $timer->user->name}}" width="50%" src="{{ $timer->user->accountDetail->avatar ? str_replace('storage', 'storage', $timer->user->accountDetail->avatar->getUrl()) : asset('images/default.png') }}" alt="{{ $timer->user->accountDetail->fullname ?? $timer->user->name }}">
@@ -1177,7 +1177,7 @@
                                         <div>
                                             @forelse($project->activities as $activity)
                                             <section class="year">
-    {{--                                                   time_ago in file global_helper --}}
+                                                 {{--time_ago in file global_helper --}}
                                                 <section>
                                                     <ul>
                                                         <small title="{{$activity->activity_date ?? ''}}">{{time_ago($activity->activity_date ?? '')}}</small>

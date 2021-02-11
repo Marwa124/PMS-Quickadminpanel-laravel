@@ -118,11 +118,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     // Route::post('leads/ckmedia', 'LeadsController@storeCKEditorImages')->name('leads.storeCKEditorImages');
     // Route::resource('leads', 'LeadsController');
 
-    // // Opportunities
-    // Route::delete('opportunities/destroy', 'OpportunitiesController@massDestroy')->name('opportunities.massDestroy');
-    // Route::post('opportunities/media', 'OpportunitiesController@storeMedia')->name('opportunities.storeMedia');
-    // Route::post('opportunities/ckmedia', 'OpportunitiesController@storeCKEditorImages')->name('opportunities.storeCKEditorImages');
-    // Route::resource('opportunities', 'OpportunitiesController');
 
     // Clients
     Route::delete('clients/destroy', 'ClientsController@massDestroy')->name('clients.massDestroy');

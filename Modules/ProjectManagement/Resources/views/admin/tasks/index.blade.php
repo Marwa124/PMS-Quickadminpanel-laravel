@@ -410,7 +410,7 @@
             dtButtons.push(deleteButton)
             @endcan
             @endif
-
+            console.log(dtButtons);
             $.extend(true, $.fn.dataTable.defaults, {
                 orderCellsTop: true,
                 order: [[1, 'desc']],

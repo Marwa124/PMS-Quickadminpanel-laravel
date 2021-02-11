@@ -11,12 +11,13 @@ use Spatie\MediaLibrary\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Modules\ProjectManagement\Http\Controllers\Traits\ProjectManagementHelperTrait;
 use DataTables;
 
 
 class TransfersController extends Controller
 {
-    use MediaUploadingTrait;
+    use MediaUploadingTrait,ProjectManagementHelperTrait;
 
     public function index()
     {
@@ -246,6 +247,26 @@ class TransfersController extends Controller
     }
 
 
+    public function transfer_pdf()
+    {
+        //abort_if(Gate::denies('transfer_pdf'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        $title = trans('cruds.transfers.transfers_report') . '.pdf';
+
+        $transfers = Transfer::all();
+        $total_balance = Transfer::sum('amount');
+
+        $compact = [
+            'transfers'     => $transfers,
+            'total_balance' => $total_balance,
+
+        ];
+
+        $view = 'finance::admin.transfers.transfer_pdf';
+
+        $this->stream_pdf($view,$compact,$title);
+        //$this->download_pdf($view,$compact,$title);
+    }
 
 
 }

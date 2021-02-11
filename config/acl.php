@@ -159,6 +159,8 @@
                 'stock_category_delete', // done
                 'stock_category_edit', // done
                 'stock_category_create', // done
+                'transfer_pdf',
+                'balance_sheet_pdf',
                 'stock_create', // done
                 'stock_edit', // done
                 'stock_delete', // done
@@ -615,12 +617,12 @@
                 'purchase_payment_delete',
             ],
 
-            'purchase' => [
-                'purchase_access',
-                'purchase_create',
-                'purchase_edit',
-                'purchase_show',
-                'purchase_delete'
+            'payment_received' => [
+                'payment_received_access',
+                'payment_received_create',
+                'payment_received_edit',
+                'payment_received_show',
+                'payment_received_delete'
             ],
 
             // 'expenses' => [

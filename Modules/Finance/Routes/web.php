@@ -20,12 +20,23 @@ Route::group(['as' => 'finance.admin.', 'prefix' => 'admin/finance', 'namespace'
 
     ////////////////////////////////////BALANCE SHEET//////////////////////////////////////////////////////////////////
     Route::get('balance_sheet','FinanceController@balance_sheet')->name('balance_sheet');
+    Route::get('balance_sheet/balance_sheet_pdf','FinanceController@balance_sheet_pdf')->name('balance_sheet.balance_sheet_pdf');
     ////////////////////////////////END BALANCE SHEET//////////////////////////////////////////////////////////////////
 
     ////////////////////////////////////PAYMENT METHOD/////////////////////////////////////////////////////////////////
     Route::resource('payment_method','PaymentmethodController');
     Route::delete('payment_method_mass_destroy','PaymentmethodController@massDestroy')->name('payment_method.massDestroy');
     ////////////////////////////////END PAYMENT METHOD/////////////////////////////////////////////////////////////////
+    ///
+    ////////////////////////////////////PAYMENT Received/////////////////////////////////////////////////////////////////
+    ///
+    Route::get('payment_received/create/{id}','PaymentReceivedController@create')->name('payment_received.create');
+    Route::post('payment_received/create_by_invoice','PaymentReceivedController@create_by_invoice')->name('payment_received.create_by_invoice');
+    Route::delete('payment_received/mass_destroy','PaymentReceivedController@massDestroy')->name('payment_received.massDestroy');
+    Route::get('payment_received/payment_received_pdf/{id}','PaymentReceivedController@payment_received_pdf')->name('payment_received.payment_received_pdf');
+    Route::resource('payment_received','PaymentReceivedController')->except(['create']);
+
+    ////////////////////////////////END PAYMENT Received/////////////////////////////////////////////////////////////////
 
     ////////////////////////////////////TRANSFERS//////////////////////////////////////////////////////////////////////
     Route::post('transfers/media', 'TransfersController@storeMediaWithSameName')->name('transfers.storeMedia');
@@ -36,6 +47,7 @@ Route::group(['as' => 'finance.admin.', 'prefix' => 'admin/finance', 'namespace'
     Route::delete('transfers_mass_destroy','TransfersController@massDestroy')->name('transfers.massDestroy');
     Route::get('transfers_get_data','TransfersController@get_data')->name('transfers.get_data');
     Route::get('transfers_report','TransfersController@report')->name('transfers_report');
+    Route::get('transfers/transfers_report/transfer_pdf','TransfersController@transfer_pdf')->name('transfers.transfer_pdf');
     ////////////////////////////////END TRANSFERS//////////////////////////////////////////////////////////////////////
 
 
@@ -83,9 +95,15 @@ Route::group(['as' => 'finance.admin.', 'prefix' => 'admin/finance', 'namespace'
     Route::post('invoices/ckmedia', 'InvoicesController@storeCKEditorImages')->name('invoices.storeCKEditorImages');
     Route::resource('invoices', 'InvoicesController');
     Route::get('invoices/getpdf/{id}', 'PdfController@pdf')->name('invoices.pdf');
+    Route::get('invoices/reminder/{id}', 'InvoicesController@reminder_invoice')->name('invoices.reminder_invoice');
+//    Route::get('invoices/invoice_pdf/{id}', 'PdfController@pdf')->name('invoices.invoice_pdf');
     Route::post('invoices/get_projects', 'InvoicesController@get_projects');
     Route::get('invoices/change_status_approved/{id}', 'InvoicesController@change_status_approved')->name('invoices.change_status_approved');
     Route::get('invoices/change_status_reject/{id}', 'InvoicesController@change_status_reject')->name('invoices.change_status_reject');
+    Route::get('invoices/change_status_reject/{id}', 'InvoicesController@change_status_reject')->name('invoices.change_status_reject');
+    Route::post('invoices/changestatus', 'InvoicesController@changestatus')->name('invoices.changestatus');
+    Route::get('invoices/history_invoice/{invoice}', 'InvoicesController@history_invoice')->name('invoices.history_invoice');
+
     ////////////////////////////////END INVOICES///////////////////////////////////////////////////////////////////////
 
 

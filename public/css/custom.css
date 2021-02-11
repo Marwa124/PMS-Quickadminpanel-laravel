@@ -71,7 +71,8 @@ table.dataTable thead .sorting_desc {
     cursor: pointer;
 }
 
-html:not([dir=rtl]) .c-sidebar-nav-dropdown-items .c-sidebar-nav-dropdown-toggle .c-sidebar-nav-icon, html:not([dir=rtl]) .c-sidebar-nav-dropdown-items .c-sidebar-nav-link .c-sidebar-nav-icon {
+html:not([dir="rtl"]) .c-sidebar-nav-dropdown-items .c-sidebar-nav-dropdown-toggle .c-sidebar-nav-icon,
+html:not([dir="rtl"]) .c-sidebar-nav-dropdown-items .c-sidebar-nav-link .c-sidebar-nav-icon {
     margin-left: -40px;
 }
 
@@ -148,11 +149,7 @@ html:not([dir=rtl]) .c-sidebar-nav-dropdown-items .c-sidebar-nav-dropdown-toggle
 }
 
 .c-header {
-<<<<<<< HEAD
     background: #fff !important;
-=======
-    /* background: #ec2121 !important; */
->>>>>>> cd2d642225166b4f75f3b049598607299dbff723
 }
 .c-header-nav-link {
     /* color: #ffffff !important; */
@@ -163,8 +160,8 @@ html:not([dir=rtl]) .c-sidebar-nav-dropdown-items .c-sidebar-nav-dropdown-toggle
 }
 
 /* Search */
-.sidebar-search{
-    background: #EBEBEB;
+.sidebar-search {
+    background: #ebebeb;
 }
 
 .sidebar-search__input {
@@ -234,9 +231,6 @@ html:not([dir="rtl"]) .c-sidebar-nav-icon:first-child {
     border-radius: 50%;
 }
 
-
-
-
 /*
 .error_session_response{
     transition: all 0.4s ease-in-out;
@@ -249,11 +243,52 @@ html:not([dir="rtl"]) .c-sidebar-nav-icon:first-child {
     color: transparent;
 } */
 
-.c-sidebar .c-sidebar-nav-link:hover.c-sidebar-nav-dropdown-toggle::after, 
+.c-sidebar .c-sidebar-nav-link:hover.c-sidebar-nav-dropdown-toggle::after,
 .c-sidebar :hover.c-sidebar-nav-dropdown-toggle::after {
-    background-image: url('../images/left-arrow_1_8x8.png');
+    background-image: url("../images/left-arrow_1_8x8.png");
 }
 
-.c-sidebar .c-sidebar-nav-dropdown-toggle::after{
-    background-image: url('../images/left-arrow_1_8x8.png');
+.c-sidebar .c-sidebar-nav-dropdown-toggle::after {
+    background-image: url("../images/left-arrow_1_8x8.png");
+}
+
+/**************************************** Dashboard ****************************************/
+
+.report__section {
+    display: flex;
+}
+
+.report-card {
+    background-color: #ffffff;
+    border-radius: 10px;
+    grid-template-columns: 1fr 1fr;
+    display: grid;
+    -webkit-box-shadow: 0px 0px 18px -9px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 0px 18px -9px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 18px -9px rgba(0,0,0,0.75);
+
+}
+
+.report-card__section {
+    padding: 1rem;
+    display: flex;
+    text-align: center;
+
+}
+
+.report-card__section__img {
+    width: 30px;
+    display: flex;
+    align-items: center;
+}
+
+.report-card__section__img img {
+    width: 100%;
+}
+
+.report-card__section__info {
+    flex: 1;
+}
+.report-card__section__info h5 {
+    font-weight: bold;
 }
