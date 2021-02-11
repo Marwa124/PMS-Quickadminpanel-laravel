@@ -161,6 +161,14 @@
                 'stock_category_create', // done
                 'transfer_pdf',
                 'balance_sheet_pdf',
+                'stock_create', // done
+                'stock_edit', // done
+                'stock_delete', // done
+                'manage_stock', // done
+                'assign_stocks', // done
+                'assign_stocks_create', // done
+                'assign_stocks_edit', // done
+                'assign_stocks_delete', // done
             ],
 
             'penalty_category' => [

@@ -436,7 +436,7 @@
     <!-- /.modal-dialog -->
     <!-- ****************************************************/invoice_modal****************************************************** -->
     @section('scripts')
-    <script src="{{ asset('js/invoices.js') }}"></script>
+    <script src="{{ asset('js/proposals.js') }}"></script>
     <script>
         $('#recu_div').hide();
         $('#projects_div').hide();

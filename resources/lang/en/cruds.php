@@ -3,6 +3,7 @@
 return [
 
     'finance'                => [
+<<<<<<< HEAD
         'title'             => 'Finance',
         'title_singular'    => 'Finance',
         'balance_sheet'     => 'Balance Sheet',
@@ -14,6 +15,27 @@ return [
         'expenses'          => 'Expenses',
         'deposits'          => 'Deposits',
         'invoices'          => 'Invoices',
+=======
+        'title'          => 'Finance',
+        'title_singular' => 'Finance',
+        'balance_sheet' => 'Balance Sheet',
+        'payment_method' => 'Payment Methods',
+        'transfers'      => 'Transfers',
+        'expenses_category'      => 'Expense Category',
+        'deposits_category'      => 'Deposit Category',
+        'expenses'      => 'Expenses',
+        'deposits'      => 'Deposits',
+        'invoices'      => 'Invoices',
+        'stock_category'      => 'Stock Category',
+        'sub_stock_category'      => 'Sub Stock Category',
+        'office_asset' =>'Office Assets',
+        'stocks' =>'Stocks',
+        'manage_stock' =>'Manage Stock',
+        'stock_history' =>'Stock History',
+        'assign_stocks' =>'Assign Stocks',
+        'assign_stocks_report' =>'Assign Stocks Report',
+
+>>>>>>> 7a90b2464e18310c4995146b00788ae7170a74cb
     ],
     'payment_method'                => [
         'title'          => 'Payment Method',
@@ -103,6 +125,55 @@ return [
             'select_paid'  => 'Select Paid',
             'entry_date'  => 'Entry Date',
             'balance'  => 'Balance',
+        ]
+    ],
+
+    'stock_category'      => [
+        'title'          => 'Stock Category',
+        'title_singular' => 'Stock Category',
+        'attach' => 'Attachments',
+        'fields' => [
+            'sub_category'  => 'Sub Category',
+            'name'  => 'Name',
+            'name_sub_category'  => 'Name Sub Category',
+            'new_sub_category'  => 'New Category',
+            'amount'  => 'Amount',
+            'paid_by'  => 'Paid By',
+            'status'  => 'Status',
+            'attachment'  => 'Attachment',
+            'notes'  => 'Notes',
+            'reference'  => 'Reference',
+            'attachments'  => 'Attachments',
+            'payment_method'  => 'Payment Method',
+            'select_payment_method'  => 'Select Payment Method',
+            'deposits_category'  => 'Deposits Category',
+            'select_deposit_category'  => 'Select Deposit Category',
+            'select_paid'  => 'Select Paid',
+            'entry_date'  => 'Entry Date',
+            'balance'  => 'Balance',
+        ]
+    ],
+
+
+    'assign_stocks'      => [
+        'title'          => 'Assign Stocks',
+        'title_singular' => 'Assign Stocks',
+        'attach' => 'Attachments',
+        'fields' => [
+            'item_name'  => 'Item Name',
+            'stock_category'        => 'Stock Category',
+            'assign_quantity'  => 'Assign Quantity',
+            'assign_date'  => 'Assign Date',
+            'choose_item'  => 'Choose Item',
+            'choose_user'  => 'Choose User',
+            'stock_sub_category'  => 'Stock Category',
+            'assigned_user'  => 'Assigned User',
+            'stock_sub_category_helper'  => ' ',
+            'user_id_helper'  => ' ',
+            'quantity'  => 'Quantity',
+            'index'  => 'Index',
+            'assign_stock_list_for'  => 'Assign Stock List For',
+
         ]
     ],
 
@@ -1287,7 +1358,7 @@ return [
             'convert_helper'          => ' ',
             'convert_module'          => 'Convert Module',
             'convert_module_helper'   => ' ',
-            'Waiting_approval'        => 'Waiting_approval',
+            'Waiting_approval'        => 'Waiting approval',
             'Waiting_approval_helper' => ' ',
             'Rejected'                => 'Rejected',
             'Rejected_helper'         => ' ',
@@ -1305,6 +1376,8 @@ return [
             'declined_helper'         => ' ',
             'accepted'                => 'accepted',
             'accepted_helper'         => ' ',
+            'expired'                => 'expired',
+            'expired_helper'         => ' ',
             'proposal_validity'       => 'Proposal Validity',
             'proposal_validity_helper' => ' ',
             'Sales_Agent'       => 'Sales Agent',
@@ -1587,11 +1660,11 @@ return [
             'lead_helper'             => ' ',
             'name'                    => 'Name',
             'name_helper'             => ' ',
-            'probability'             => 'Probability',
+            'probability'             => 'Probability Of Winning %',
             'probability_helper'      => ' ',
             'stages'                  => 'Stages',
             'stages_helper'           => ' ',
-            'closed_date'             => 'Closed Date',
+            'closed_date'             => 'Forecast Close Date',
             'closed_date_helper'      => ' ',
             'expected_revenue'        => 'Expected Revenue',
             'expected_revenue_helper' => ' ',
@@ -1599,6 +1672,8 @@ return [
             'new_link_helper'         => ' ',
             'next_action'             => 'Next Action',
             'next_action_helper'      => ' ',
+            'nextactiondate'              => 'NEXT ACTION DATE',
+            'nextactiondate_helper'       => ' ',
             'notes'                   => 'Notes',
             'notes_helper'            => ' ',
             'permissions'             => 'Permissions',
@@ -2735,6 +2810,8 @@ return [
             'stock_sub_category'        => 'Stock Sub Category',
             'stock_sub_category_helper' => ' ',
             'name'                      => 'Name',
+            'buying_date'               => 'Buying Date',
+            'buying_date_helper'        => ' ',
             'name_helper'               => ' ',
             'total_stock'               => 'Total Stock',
             'total_stock_helper'        => ' ',
@@ -3628,8 +3705,14 @@ return [
         'project_of_milestone_not_have_department'  => 'The Project Of Milestone don\'t have Department',
         'project_of_task_not_have_department'       => 'The Project Of Task don\'t have Department',
         'time_date_after_or_equal'                  => 'The Time Of End Date Must Be After Or Equal ',
+<<<<<<< HEAD
         'payment_amounts_more_invoice_amount'      => 'The Payment Amounts More Than Due Invoice Amount  ',
 
+=======
+        
+        'sure_clone_proposal'        => 'Are you sure to clone Proposal with items ?',
+        'proposal_force_delete'                     => 'Proposal Will Force Delete ..!',
+>>>>>>> 7a90b2464e18310c4995146b00788ae7170a74cb
     ],
 
 

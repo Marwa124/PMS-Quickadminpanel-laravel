@@ -100,7 +100,7 @@ body {
   line-height: 1.5;
   color: #151b1e;
   text-align: left;
-  background-color: #e4e5e6; }
+  background-color: #F8F8F8 !important; }
 
 [tabindex="-1"]:focus {
   outline: 0 !important; }
@@ -2011,7 +2011,7 @@ select.form-control-lg:not([size]):not([multiple]), .input-group-lg > select.for
   padding: 0.375rem 0.75rem;
   font-size: 0.875rem;
   line-height: 1.5;
-  border-radius: 0;
+  border-radius: 6px;
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out; }
   .btn:focus, .btn:hover {
     text-decoration: none; }
@@ -2075,8 +2075,8 @@ fieldset[disabled] a.btn {
 
 .btn-success {
   color: #fff;
-  background-color: #4dbd74;
-  border-color: #4dbd74; }
+  background-color: #03A30E;
+  border-color: #03A30E; }
   .btn-success:hover {
     color: #fff;
     background-color: #3ea662;
@@ -2141,8 +2141,8 @@ fieldset[disabled] a.btn {
 
 .btn-danger {
   color: #fff;
-  background-color: #f86c6b;
-  border-color: #f86c6b; }
+  background-color: #C50000;
+  border-color: #C50000; }
   .btn-danger:hover {
     color: #fff;
     background-color: #f64846;
@@ -2150,8 +2150,8 @@ fieldset[disabled] a.btn {
   .btn-danger:focus, .btn-danger.focus {
     box-shadow: 0 0 0 0.2rem rgba(248, 108, 107, 0.5); }
   .btn-danger.disabled, .btn-danger:disabled {
-    background-color: #f86c6b;
-    border-color: #f86c6b; }
+    background-color: #C50000;
+    border-color: #C50000; }
   .btn-danger:not([disabled]):not(.disabled):active, .btn-danger:not([disabled]):not(.disabled).active,
   .show > .btn-danger.dropdown-toggle {
     color: #fff;
@@ -3766,12 +3766,20 @@ tbody.collapse.show {
   .nav-tabs .dropdown-menu {
     margin-top: -1px; }
 
+    .nav-pills .nav-link, .nav-pills .navbar .dropdown-toggle, .navbar .nav-pills .dropdown-toggle,
+.nav-pills .show > .nav-link,
+.nav-pills .navbar .show > .dropdown-toggle, .navbar
+.nav-pills .show > .dropdown-toggle {
+  color: #000;
+  border-radius: 0;
+ }
+    
 .nav-pills .nav-link.active, .nav-pills .navbar .active.dropdown-toggle, .navbar .nav-pills .active.dropdown-toggle,
 .nav-pills .show > .nav-link,
 .nav-pills .navbar .show > .dropdown-toggle, .navbar
 .nav-pills .show > .dropdown-toggle {
   color: #fff;
-  background-color: #20a8d8; }
+  background-color: #8A0000; }
 
 .nav-fill .nav-item {
   -ms-flex: 1 1 auto;
@@ -4869,10 +4877,10 @@ tbody.collapse.show {
 .progress {
   display: -ms-flexbox;
   display: flex;
-  height: 1rem;
+  height: 0.7rem;
   overflow: hidden;
   font-size: 0.65625rem;
-  background-color: #f0f3f5; }
+  background-color: #858585; }
 
 .progress-bar {
   display: -ms-flexbox;
@@ -5984,7 +5992,7 @@ button.bg-secondary:hover {
   background-color: #869fac !important; }
 
 .bg-success {
-  background-color: #4dbd74 !important; }
+  background-color: #03A30E !important; }
 
 a.bg-success:focus, a.bg-success:hover,
 button.bg-success:focus,
@@ -6008,7 +6016,8 @@ button.bg-warning:hover {
   background-color: #d39e00 !important; }
 
 .bg-danger {
-  background-color: #f86c6b !important; }
+  /* background-color: #f86c6b !important; */
+}
 
 a.bg-danger:focus, a.bg-danger:hover,
 button.bg-danger:focus,

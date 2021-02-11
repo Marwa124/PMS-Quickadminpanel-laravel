@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'total'                              => 'Total',
+    'total'                                => 'Total',
     'actions'                              => 'Actions',
     'add'                                  => 'Add',
     'allRightsReserved'                    => 'All rights reserved.',
@@ -34,6 +34,7 @@ return [
     'reset_password'                       => 'Reset Password',
     'send_password'                        => 'Send Password Reset Link',
     'save'                                 => 'Save',
+    'go'                                   => 'Go',
     'search'                               => 'Search',
     'searching'                            => 'Searching',
     'no_results'                           => 'No results',

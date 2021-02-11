@@ -117,12 +117,37 @@ Route::group(['as' => 'finance.admin.', 'prefix' => 'admin/finance', 'namespace'
 
     ////////////////////////////////////STOCK CATEGORY//////////////////////////////////////////////////////////////
     Route::resource('stock_category','StockCategoryController');
-    Route::post('stock_category/update/data','StockCategoryController@update')->name('stock_category.update.form');
+    Route::post('stock_category/update/data','StockCategoryController@update_main_category')->name('stock_category.update.form');
     Route::delete('stock_category_destroy','StockCategoryController@subCategoryDestroy')->name('sub_stock_category.destroy');
     Route::delete('stock_category_mass_destroy','StockCategoryController@massDestroy')->name('sub_stock_category.massDestroy');
     ////////////////////////////////END STOCK CATEGORY//////////////////////////////////////////////////////////////
 
+    ////////////////////////////////////STOCK LIST//////////////////////////////////////////////////////////////
+    Route::get('stocks','StocksController@index')->name('stocks.index');
+    Route::get('stocks/create','StocksController@create')->name('stocks.create');
+    Route::post('stocks/store','StocksController@store')->name('stocks.store');
+    Route::get('stocks/edit/{name}/{sub_stock_category}','StocksController@edit')->name('stocks.edit');
+    Route::put('stocks/update','StocksController@update')->name('stocks.update');
+    Route::delete('stocks/destory/{name}/{sub_stock_category}','StocksController@destroy')->name('stocks.destroy');
 
+    Route::get('stocks/history','StocksController@history')->name('stocks.history');
+    Route::post('stocks/getresult/search','StocksController@history_search_result')->name('stocks.getresult');
+    Route::get('stocks_history/edit/{id}','StocksController@stocks_history_edit')->name('stocks_history.edit');
+    Route::put('stocks_history/update','StocksController@stocks_history_update')->name('stocks_history.update');
+    Route::delete('stocks_history/destroy/{id}','StocksController@stocks_history_destroy')->name('stocks_history.destroy');
+
+    ////////////////////////////////END STOCK LIST//////////////////////////////////////////////////////////////
+
+
+
+    ////////////////////////////////////Assign Stock//////////////////////////////////////////////////////////////
+    Route::get('assign_stocks/report','AssignStocksController@report')->name('assign_stocks.report');
+    Route::post('assign_stocks/report/getresult','AssignStocksController@report_result')->name('assign_stocks.getresult');
+    Route::get('assign_stocks/report/pdf/{id}','AssignStocksController@pdf')->name('assign_stocks.pdf');
+    Route::resource('assign_stocks','AssignStocksController');
+    Route::delete('assign_stocks_mass_destroy','AssignStocksController@massDestroy')->name('assign_stocks.massDestroy');
+    Route::post('assign_stocks/get_items','AssignStocksController@get_items');
+    ////////////////////////////////END Assign Stock//////////////////////////////////////////////////////////////
 
 
     ////////////////////////////////END Office Asset//////////////////////////////////////////////////////////////

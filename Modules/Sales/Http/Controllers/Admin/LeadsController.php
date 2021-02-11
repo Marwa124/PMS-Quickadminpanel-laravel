@@ -201,15 +201,10 @@ class LeadsController extends Controller
                             $data =$request->secondassign && $request->secondassign->leaduser ? $request->secondassign->leaduser->fullname : '';
                              return $data;
                          })
-                        // ->editColumn('firstCall_result', function ($request) {
-                        //     $data = $request->firstCallResult && $request->firstCallResult->name ? $request->firstCallResult->name : '';
-                        //     return $data;
-                        // })
-                        
                         ->rawColumns(['created_at','type','Client_Name','firstCall','secondassign','secondCall','addby','2st_assgin','actions'])
                         ->escapeColumns([])
                         ->make(true);
-                        // dd($xyz);
+
         }
     }
     /**
@@ -259,11 +254,10 @@ class LeadsController extends Controller
             Lead::create($data);
 
             DB::commit();
-            return redirect()->route('sales.admin.leads.index');
+            return redirect()->route('sales.admin.leads.index')->with(flash('lead create successfully', 'success'));
 
         } catch (\Exception $e) {
-            // dd($e);
-            echo 'Process Failed';
+            return back()->withInput()->with(flash(' Something Went Wrong', 'danger'));
         }
     }
 
@@ -292,7 +286,8 @@ class LeadsController extends Controller
 
         return view('sales::admin.leads.show',compact('lead','firstCall','secondCall','finalresult','type'));
       } catch (\Exception $e) {
-          echo 'Not found';
+
+        return back()->withInput()->with(flash(' Something Went Wrong', 'danger'));
       }
     }
 
@@ -324,9 +319,6 @@ class LeadsController extends Controller
         try {
             $lead = Lead::findOrFail($id);
 
-            // $id = DB::connection('mysql2')->table('tbl_leads')->where('leads_id', \DB::raw("(select max(`leads_id`) from tbl_leads)"))->first();
-            //
-            // $id = $id->leads_id+1;
             $data = [
                 'client_id_on_pms' => $id,
                 'type_id' => $request->type_id,
@@ -351,12 +343,12 @@ class LeadsController extends Controller
 
 
             DB::commit();
-            return redirect()->route('sales.admin.leads.index');
+            return redirect()->route('sales.admin.leads.index')->with(flash('lead update successfully', 'success'));
 
 
 
         } catch (\Exception $e) {
-            echo 'Process Failed';
+            return back()->withInput()->with(flash(' Something Went Wrong', 'danger'));
         }
     }
 
@@ -376,10 +368,10 @@ class LeadsController extends Controller
             $lead = Lead::where('id', $id)->delete();
 
             DB::commit();
-            return redirect()->route('sales.admin.leads.index');
+            return redirect()->route('sales.admin.leads.index')->with(flash('lead Delete successfully', 'success'));
 
         } catch (\Exception $e) {
-            echo 'Process Failed';
+          return back()->withInput()->with(flash(' Something Went Wrong', 'danger'));
         }
     }
 
@@ -403,22 +395,21 @@ class LeadsController extends Controller
                           ]);
                       }
                   }
-                  return response(null, Response::HTTP_NO_CONTENT);
-                  return redirect(route('sales.admin.leads.index'));
+                //   return response(null, Response::HTTP_NO_CONTENT);
+                  return redirect(route('sales.admin.leads.index'))->with(flash('Users Assign successfully', 'success'));
               }
               catch (\Exception $e){
-                  return back();
+                  return back()->withInput()->with(flash(' Something Went Wrong', 'danger'));
               }
           }
 
 
           public function convert_opportunity($id){
             try{
-              $lead = DB::connection('mysql2')->table('tbl_leads')->where('leads_id', $id)->first();
-              if($lead == null){
+
                 $lead = Lead::findOrFail($id);
 
-                DB::connection('mysql2')->table('tbl_leads')->insert([
+                DB::table('tbl_leads')->insert([
                   'leads_id' => $lead->client_id_on_pms ?? null,
                   'type_id' => $lead->type_id ?? null,
                   'product' => $lead->product ?? null,
@@ -434,8 +425,8 @@ class LeadsController extends Controller
                   'contracted' => $lead->contracted ?? null,
                   'next_action_date' => $lead->next_action_date ?? null,
               ]);
-              }
-              header('Location:http://pms.onetecgroup.com/admin/leads/leads_details/'.$id );
+
+           
 
             } catch (\Exception $e) {
                 echo 'Not found';

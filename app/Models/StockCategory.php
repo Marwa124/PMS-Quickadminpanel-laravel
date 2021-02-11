@@ -34,4 +34,8 @@ class StockCategory extends Model
     {
         return $this->hasMany(StockSubCategory::class ,'stock_category_id');
     }
+    protected function stock()
+    {
+        return $this->hasMany(Stock::class ,'stock_category_id');
+    }
 }

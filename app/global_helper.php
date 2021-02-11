@@ -193,9 +193,24 @@ if (!function_exists('get_taxes')) {
 if (!function_exists('ratingColor')) {
     function ratingColor($rating)  {
         $colors = ['warning','info','danger','success','primary'];
-        return $colors[$rating - 1];
+        return $colors[$rating];
     
     }
 }
 
+if (!function_exists('download_pdf')) {
 
+ function download_pdf($view,$compact,$title=null)
+{
+    extract($compact);
+
+    $pdf = MPDF::loadView( $view,compact(array_keys($compact)), [],
+        //to convert pdf page to page landscape
+        [
+            'title' => 'Certificate',
+            'format' => 'A4-L',
+            'orientation' => 'L'
+        ]);
+    return $pdf->download($title);
+}
+}
