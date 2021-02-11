@@ -212,19 +212,23 @@ class AccountDetailsController extends Controller
 
     public function show(AccountDetail $accountDetail)
     {
-        abort_if(Gate::denies('account_detail_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        if ((auth()->user()->id == $accountDetail->user_id) || !Gate::denies('account_detail_show')) {
+            $accountDetail->load('user', 'designation', 'setTime');
+    
+            $categoryDetails = [];
+            foreach(LeaveCategory::all() as $category)
+            {
+                $cat['name'] = $category->name;
+                $cat['check_available'] = checkAvailableLeaves($accountDetail->user_id, date('Y-m'), $category->id);
+                $categoryDetails[] = $cat;
+            }
+    
+            return view('hr::admin.accountDetails.show', compact('accountDetail', 'categoryDetails'));
 
-        $accountDetail->load('user', 'designation', 'setTime');
-
-        $categoryDetails = [];
-        foreach(LeaveCategory::all() as $category)
-        {
-            $cat['name'] = $category->name;
-            $cat['check_available'] = checkAvailableLeaves($accountDetail->user_id, date('Y-m'), $category->id);
-            $categoryDetails[] = $cat;
+        }else{
+            abort_if(Gate::denies('account_detail_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         }
 
-        return view('hr::admin.accountDetails.show', compact('accountDetail', 'categoryDetails'));
     }
 
     public function destroy(AccountDetail $accountDetail)

@@ -176,7 +176,17 @@
 
         </div>
         <div class="tab-pane fade" id="v-pills-timecard" role="tabpanel" aria-labelledby="v-pills-timecard-tab">...</div>
-        <div class="tab-pane fade" id="v-pills-tasks" role="tabpanel" aria-labelledby="v-pills-tasks-tab">...</div>
+        <div class="tab-pane fade" id="v-pills-tasks" role="tabpanel" aria-labelledby="v-pills-tasks-tab">
+
+            <?php 
+                $user = App\Models\User::findOrFail(auth()->user()->id);
+                // dd($user->accountDetail);
+                if ($user->accountDetail) {
+                    // dd($user->accountDetail->tasks);    
+                }
+            ?>
+
+        </div>
         <div class="tab-pane fade" id="v-pills-projects" role="tabpanel" aria-labelledby="v-pills-projects-tab">...</div>
       </div>
     </div>
