@@ -28,6 +28,11 @@ return [
         'key' => env('AWS_ACCESS_KEY_ID'),
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
+    ], 'plivo' => [
+        'auth_id' => env('PLIVO_AUTH_ID'),
+        'auth_token' => env('PLIVO_AUTH_TOKEN'),
+        // Country code, area code and number without symbols or spaces
+        'from_number' => env('PLIVO_FROM_NUMBER'),
     ],
 
 ];

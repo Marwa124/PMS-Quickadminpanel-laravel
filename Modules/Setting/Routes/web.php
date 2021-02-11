@@ -14,6 +14,9 @@
 use App\Mail\TestMail;
 use App\Mail\MailgunMail;
 use Illuminate\Support\Facades\Mail;
+use App\Notifications\PlivoNotification;
+use App\Notifications\TwilioNotification;
+use Plivo\RestClient;
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
 
@@ -55,5 +58,25 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
 
             dd($e->getMessage() . ' Something went wrong');
         }
+    });
+
+
+    Route::get('testMsg', function () {
+
+        auth()->user()->notify(new TwilioNotification());
+    });
+
+    Route::get('testplivo', function () {
+
+
+
+        $client = new RestClient("MAMWFMNJAWNMI1N2UWNM", "NGI2Mzc4MDhmOTA3ZGQ2OGYyZmMyYjdjYzU0YjFh");
+        $message_created = $client->messages->create(
+            '+13043559141',
+            ['+2001006143107'],
+            'Hello, world!'
+        );
+
+        // auth()->user()->notify(new PlivoNotification());
     });
 });

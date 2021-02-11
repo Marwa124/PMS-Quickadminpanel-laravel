@@ -184,7 +184,7 @@ return [
         App\Providers\ViewServiceProvider::class,
 
         PDFAnony\TCPDF\AnonyServiceProvider::class,
-        
+
         Barryvdh\TranslationManager\ManagerServiceProvider::class,
 
     ],
