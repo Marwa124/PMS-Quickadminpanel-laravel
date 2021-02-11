@@ -28,7 +28,7 @@ class OpportunitiesController extends Controller
 
         $leads = Lead::get();
         
-        return view('sales::admin.opportunities.index', compact('opportunities', 'leads', 'permissions'));
+        return view('sales::admin.opportunities.index', compact('opportunities', 'leads'));
     }
 
     public function create()
@@ -46,7 +46,7 @@ class OpportunitiesController extends Controller
     {
        
         $opportunity = Opportunity::create($request->all());
-        $opportunity->permissions()->sync($request->input('permissions', []));
+        // $opportunity->permissions()->sync($request->input('permissions', []));
 
         if ($media = $request->input('ck-media', false)) {
             Media::whereIn('id', $media)->update(['model_id' => $opportunity->id]);
@@ -59,19 +59,17 @@ class OpportunitiesController extends Controller
     {
         abort_if(Gate::denies('opportunity_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $leads = Lead::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        // $leads = Lead::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $permissions = Permission::all()->pluck('title', 'id');
+        $permissions =PermissionGroup::with('permissions')->where('name','opportunity')->first();
 
-        $opportunity->load('lead', 'permissions');
-
-        return view('sales::admin.opportunities.edit', compact('leads', 'permissions', 'opportunity'));
+        return view('sales::admin.opportunities.edit', compact('permissions', 'opportunity'));
     }
 
     public function update(UpdateOpportunityRequest $request, Opportunity $opportunity)
     {
         $opportunity->update($request->all());
-        $opportunity->permissions()->sync($request->input('permissions', []));
+        // $opportunity->permissions()->sync($request->input('permissions', []));
 
         return redirect()->route('sales.admin.opportunities.index');
     }
@@ -80,7 +78,6 @@ class OpportunitiesController extends Controller
     {
         abort_if(Gate::denies('opportunity_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $opportunity->load('lead', 'permissions');
 
         return view('sales::admin.opportunities.show', compact('opportunity'));
     }
