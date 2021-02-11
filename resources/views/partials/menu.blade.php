@@ -166,12 +166,9 @@
                     @endcan
                     @can('payment_method')
                         <li class="c-sidebar-nav-item">
-<<<<<<< HEAD
-                            <a href="{{ route("finance.admin.payment_method.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/payment_method") || request()->is("admin/payment_method/*") ? "active" : "" }}">
-=======
                             <a href="{{ route("finance.admin.payment_method.index") }}"
-                               class="c-sidebar-nav-link {{ request()->is("admin/payment_method") || request()->is("admin/finance/*") ? "active" : "" }}">
->>>>>>> 7a90b2464e18310c4995146b00788ae7170a74cb
+                               class="c-sidebar-nav-link {{ request()->is("admin/payment_method") || request()->is("admin/payment_method/*") ? "active" : "" }}">
+
                                 <i class="fa-fw fas fa-credit-card c-sidebar-nav-icon self-item-link">
 
                                 </i>
@@ -1121,15 +1118,15 @@
                 </li>
                 {{-- @endcan --}}
                 {{-- @can('opportunity_access') --}}
-                <li class="c-sidebar-nav-item">
-                    <a href="{{ route("sales.admin.opportunities.index") }}"
-                       class="c-sidebar-nav-link {{ request()->is("admin/opportunities") || request()->is("admin/opportunities/*") ? "active" : "" }}">
-                        <i class="fa-fw fas fa-filter c-sidebar-nav-icon">
+                {{--<li class="c-sidebar-nav-item">--}}
+                    {{--<a href="{{ route("sales.admin.opportunities.index") }}"--}}
+                       {{--class="c-sidebar-nav-link {{ request()->is("admin/opportunities") || request()->is("admin/opportunities/*") ? "active" : "" }}">--}}
+                        {{--<i class="fa-fw fas fa-filter c-sidebar-nav-icon">--}}
 
-                        </i>
-                        {{ trans('cruds.opportunity.title') }}
-                    </a>
-                </li>
+                        {{--</i>--}}
+                        {{--{{ trans('cruds.opportunity.title') }}--}}
+                    {{--</a>--}}
+                {{--</li>--}}
                 {{--  @endcan --}}
                 {{--  @can('client_access') --}}
                 <li class="c-sidebar-nav-item">
