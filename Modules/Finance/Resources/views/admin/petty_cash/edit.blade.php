@@ -3,64 +3,62 @@
 
     <div class="card">
         <div class="card-header">
-            {{ trans('global.edit') }} {{ trans('cruds.transfers.title_singular') }}
+            {{ trans('global.edit') }} {{ trans('cruds.expenses.title_singular') }}
         </div>
 
         <div class="card-body">
-            <form method="POST" action="{{ route("finance.admin.transfers.update",$transfer->id) }}"
+            <form method="POST" action="{{ route("finance.admin.expenses.update",$expense->id) }}"
                   enctype="multipart/form-data">
                 @method("PUT")
+                <input type="hidden" name="status" id="status" value="{{$expense->status}}">
+                <input type="hidden" name="created_by" id="created_by" value="{{auth()->user()->id}}">
+
                 @csrf
+
+
+                <div class="form-group">
+                    <label class="required"  for="title">{{ trans('cruds.expenses.fields.title') }}</label>
+                    <input class="form-control {{ $errors->has('title') ? 'is-invalid' : '' }}" type="text"
+                           name="title" id="title" value="{{ old('title',$expense->title) }}"  required>
+                    @if($errors->has('title'))
+                        <div class="invalid-feedback">
+                            {{ $errors->first('title') }}
+                        </div>
+                    @endif
+                </div>
 
                 <div class="form-group">
                     <label class="required"
-                           for="from_account_id">{{ trans('cruds.transfers.fields.from_account') }}</label>
-                    <select class="form-control select2 {{ $errors->has('from_account') ? 'is-invalid' : '' }}"
-                            name="from_account" id="from_account_id" required disabled>
+                           for="account_id">{{ trans('cruds.expenses.fields.account_name') }}</label>
+                    <select class="form-control select2 {{ $errors->has('account_id') ? 'is-invalid' : '' }}"
+                            name="account_id" id="account_id" required disabled>
                         @foreach($accounts as $id => $account)
                             <option
-                                value="{{ $account->id }}" {{  $transfer->from_account == $account->id  ? 'selected' : ''  }}>{{ $account->name }}</option>
+                                    value="{{ $account->id }}"  {{  $expense->account_id == $account->id  ? 'selected' : ''  }}>{{ $account->name }}</option>
                         @endforeach
                     </select>
-                    @if($errors->has('from_account'))
+                    @if($errors->has('account_id'))
                         <div class="invalid-feedback">
-                            {{ $errors->first('from_account') }}
-                        </div>
-                    @endif
-                </div>
-
-
-                <div class="form-group">
-                    <label class="required" for="to_account_id">{{ trans('cruds.transfers.fields.to_account') }}</label>
-                    <select class="form-control select2 {{ $errors->has('to_account') ? 'is-invalid' : '' }}"
-                            name="to_account" id="to_account_id" required disabled>
-                        @foreach($accounts as $id => $account)
-                            <option
-                                value="{{ $account->id }}" {{$transfer->to_account == $account->id  ? 'selected' : ''   }}>{{ $account->name }}</option>
-                        @endforeach
-                    </select>
-                    @if($errors->has('to_account'))
-                        <div class="invalid-feedback">
-                            {{ $errors->first('to_account') }}
+                            {{ $errors->first('account_id') }}
                         </div>
                     @endif
                 </div>
 
                 <div class="form-group">
-                    <label class="required" for="date">{{ trans('cruds.transfers.fields.date') }}</label>
-                    <input class="form-control date {{ $errors->has('date') ? 'is-invalid' : '' }}" type="text"
-                           name="date" id="date" value="{{ old('date',$transfer->date) }}" required>
-                    @if($errors->has('date'))
+                    <label class="required" for="entry_date">{{ trans('cruds.expenses.fields.entry_date') }}</label>
+                    <input class="form-control date {{ $errors->has('entry_date') ? 'is-invalid' : '' }}" type="date"
+                           name="entry_date" id="entry_date" value="{{ old('entry_date',$expense->entry_date) }}" required>
+                    @if($errors->has('entry_date'))
                         <div class="invalid-feedback">
-                            {{ $errors->first('date') }}
+                            {{ $errors->first('entry_date') }}
                         </div>
                     @endif
                 </div>
 
                 <div class="form-group">
-                    <label for="notes">{{ trans('cruds.transfers.fields.notes') }}</label>
+                    <label for="notes">{{ trans('cruds.expenses.fields.notes') }}</label>
                     <textarea class="form-control ckeditor {{ $errors->has('notes') ? 'is-invalid' : '' }}" name="notes"
-                              id="notes">{!! old('notes',$transfer->notes) !!}</textarea>
+                              id="notes">{!! old('notes',$expense->notes) !!}</textarea>
                     @if($errors->has('notes'))
                         <div class="invalid-feedback">
                             {{ $errors->first('notes') }}
@@ -69,9 +67,9 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="required" for="amount">{{ trans('cruds.transfers.fields.amount') }}</label>
+                    <label class="required" for="amount">{{ trans('cruds.expenses.fields.amount') }}</label>
                     <input class="form-control {{ $errors->has('amount') ? 'is-invalid' : '' }}" type="number"
-                            id="amount" name="amount" value="{{ old('amount',$transfer->amount) }}"  readonly="true">
+                           name="amount" id="amount" value="{{ old('amount', $expense->amount) }}" required disabled>
                     @if($errors->has('amount'))
                         <div class="invalid-feedback">
                             {{ $errors->first('amount') }}
@@ -80,17 +78,53 @@
                 </div>
 
                 <div class="form-group">
+                    <label  for="expenses_category">{{ trans('cruds.expenses.fields.expenses_category') }}</label>
+                    <select class="form-control select2 {{ $errors->has('expense_category_id ') ? 'is-invalid' : '' }}"
+                            name="expense_category_id" id="expenses_category" >
+
+                        <option
+                                value="" selected>{{ trans('cruds.expenses.fields.select_expense_category') }}</option>
+                        @foreach($expenses_category as $id => $category)
+                            <option
+                                    value="{{ $category->id }}"  {{  $expense->expense_category_id == $category->id  ? 'selected' : ''  }}>{{ $category->name }}</option>
+                        @endforeach
+                    </select>
+                    @if($errors->has('expense_category_id '))
+                        <div class="invalid-feedback">
+                            {{ $errors->first('expense_category_id ') }}
+                        </div>
+                    @endif
+                </div>
+
+                <div class="form-group">
+                    <label  for="paid_by">{{ trans('cruds.expenses.fields.paid_by') }}</label>
+                    <select class="form-control select2 {{ $errors->has('expense_category_id ') ? 'is-invalid' : '' }}"
+                            name="paid_by_id" id="paid_by" >
+                        <option
+                                value="" selected>{{ trans('cruds.expenses.fields.select_paid') }}</option>
+                        @foreach($clients as $id => $client)
+                            <option
+                                    value="{{ $client->id }}"  {{  $expense->paid_by_id == $client->id  ? 'selected' : ''  }}>{{ $client->name }}</option>
+                        @endforeach
+                    </select>
+                    @if($errors->has('paid_by_id'))
+                        <div class="invalid-feedback">
+                            {{ $errors->first('paid_by_id') }}
+                        </div>
+                    @endif
+                </div>
+
+                <div class="form-group">
                     <label
-                        class="required"
-                        for="payment_method_id">{{ trans('cruds.transfers.fields.payment_method') }}</label>
+                            for="payment_method_id">{{ trans('cruds.expenses.fields.payment_method') }}</label>
                     <select class="form-control select2 {{ $errors->has('payment_method_id') ? 'is-invalid' : '' }}"
-                            name="payment_method_id" id="payment_method_id" required>
-                        <option disabled
-                                value="">@lang('cruds.transfers.fields.select_payment_method')</option>
+                            name="payment_method_id" id="payment_method_id" >
+                        <option selected disabled
+                                value="" selected>@lang('cruds.expenses.fields.select_payment_method')</option>
 
                         @foreach($payment_methods as $id => $payment_method)
                             <option
-                                value="{{ $payment_method->id }}" {{  old('payment_method_id') ? old('payment_method_id') : ($transfer->payment_method_id == $payment_method->id  ? 'selected' : '' ) }}>{{ $payment_method->name }}</option>
+                                    value="{{ $payment_method->id }}" {{ $expense->paid_by_id == $payment_method->id ? 'selected' : '' }}>{{ $payment_method->name }}</option>
                         @endforeach
                     </select>
                     @if($errors->has('payment_method_id'))
@@ -100,11 +134,10 @@
                     @endif
                 </div>
 
-
                 <div class="form-group">
-                    <label for="reference">{{ trans('cruds.transfers.fields.reference') }}</label>
+                    <label for="reference">{{ trans('cruds.expenses.fields.reference') }}</label>
                     <input class="form-control {{ $errors->has('reference') ? 'is-invalid' : '' }}" type="text"
-                           name="reference" id="reference" value="{{ old('reference',$transfer->reference) }}">
+                           name="reference" id="reference" value="{{ old('reference',$expense->reference) }}">
                     @if($errors->has('reference'))
                         <div class="invalid-feedback">
                             {{ $errors->first('reference') }}
@@ -113,7 +146,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="attachments">{{ trans('cruds.transfers.fields.attachments') }}</label>
+                    <label for="attachments">{{ trans('cruds.expenses.fields.attachments') }}</label>
                     <div class="needsclick dropzone {{ $errors->has('attachments') ? 'is-invalid' : '' }}"
                          id="attachments-dropzone">
                     </div>
@@ -123,6 +156,21 @@
                         </div>
                     @endif
                 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
                 <div class="form-group">
@@ -160,7 +208,7 @@
 
         function delete_media(id){
 
-            var url = "{{route('finance.admin.transfers.delete.attach',['dummyid',$transfer->id])}}";
+            var url = "{{route('finance.admin.expenses.delete.attach',['dummyid',$expense->id])}}";
             url = url.replace('dummyid', id);
             $.ajax({
                 url: url,
@@ -174,7 +222,7 @@
 
     <script>
         Dropzone.options.attachmentsDropzone = {
-            url: '{{ route('finance.admin.transfers.storeMedia') }}',
+            url: '{{ route('finance.admin.expenses.storeMedia') }}',
             maxFilesize: 2, // MB
             maxFiles: 2,
             addRemoveLinks: true,
@@ -196,8 +244,8 @@
                 }
             },
             init: function () {
-                    @if(isset($transfer) && $transfer->attachments)
-                var file = {!! json_encode($transfer->attachments) !!}
+                    @if(isset($expense) && $expense->attachments)
+                var file = {!! json_encode($expense->attachments) !!}
                         this.options.addedfile.call(this, file);
                 file.previewElement.classList.add('dz-complete');
                 $('form').append('<input type="hidden" name="attachments[]" value="' + file.file_name + '">');

@@ -267,4 +267,10 @@ class Invoice extends Model implements HasMedia
     {
         return $this->hasMany(Activity::class,'module_field_id')->where('module','=','invoice')->orderBy('id','desc');
     }
+
+
+    public function transaction()
+    {
+        return $this->hasOne(Transaction::class, 'invoice_id');
+    }
 }

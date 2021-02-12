@@ -4,6 +4,7 @@ namespace Modules\Finance\Http\Controllers\admin;
 
 use App\Http\Controllers\Traits\MediaUploadingTrait;
 use App\Models\Client;
+use App\Models\Transaction;
 use Gate;
 use App\Models\Expense;
 use App\Models\ExpenseCategory;
@@ -100,7 +101,6 @@ class ExpensesController extends Controller
         }
     }
 
-
     public function create()
     {
         abort_if(Gate::denies('expenses_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
@@ -117,7 +117,7 @@ class ExpensesController extends Controller
         $account = Account::findOrFail($request->account_id);
 
         $request->validate([
-            'account_id' => 'numeric|required',
+            'account_id' => 'numeric|required|exists:accounts,id',
             'amount' => 'numeric|required|max:'.$account->balance
         ]);
 
@@ -131,6 +131,18 @@ class ExpensesController extends Controller
 
         $expenses->update([
            'bank_balance'   =>  $account->balance
+        ]);
+
+        Transaction::create([
+           'date'           => $request->entry_date,
+            'account_id'    => $request->account_id,
+            'type'          => 'expense',
+            'name'          => $request->title,
+            'amount'        => $request->amount,
+            'debit'         => $request->amount,
+            'total_balance' => $account->balance,
+            'added_by'      => auth()->user()->id,
+            'expense_id'    => $expenses->id
         ]);
 
 
@@ -183,6 +195,10 @@ class ExpensesController extends Controller
 
         $expenses->update($data);
 
+        Transaction::where('expense_id',$id)->first()->update([
+            'date'          => $request->entry_date,
+            'name'          => $request->title,
+        ]);
 
         if ($request->input('attachments', false)) {
             foreach ($request->attachments as $attachment) {
@@ -192,7 +208,6 @@ class ExpensesController extends Controller
 
         return redirect()->route('finance.admin.expenses.index');
     }
-
 
     public function destroy($id)
     {
@@ -209,9 +224,11 @@ class ExpensesController extends Controller
 
         $expenses->clearMediaCollection('attachments');
         $expenses->delete();
+
+        Transaction::where('expense_id',$id)->delete();
+
         return back();
     }
-
 
     public function massDestroy()
     {
@@ -228,14 +245,17 @@ class ExpensesController extends Controller
 
 
 
+
             $expenses->clearMediaCollection('attachments');
             $expenses->delete();
+
+            Transaction::where('expense_id',$id)->delete();
+
 
         }
 
         return response(null, Response::HTTP_NO_CONTENT);
     }
-
 
     public function downloadMedia($id)
     {
@@ -264,6 +284,7 @@ class ExpensesController extends Controller
         return redirect()->route('finance.admin.expenses.index');
 
     }
+
     public function getpaid($id)
     {
         $expense = Expense::findOrFail($id);

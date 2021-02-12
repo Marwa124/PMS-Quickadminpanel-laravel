@@ -152,6 +152,20 @@ class PaymentReceivedController extends Controller
                 'balance' => $balance
             ]);
 
+
+            Transaction::create([
+                'date'          => $request->payment_date,
+                'account_id'    => $request->account_id,
+                'type'          => 'deposit',
+                'name'          => $request->transaction_id,
+                'amount'        => $request->amount,
+                'credit'        => $request->amount,
+                'total_balance' => $account->balance,
+                'added_by'      => auth()->user()->id,
+                'payment_id'    => $payment->id,
+                'invoice_id'    => $request->invoice_id
+            ]);
+
             // Commit the transaction
             DB::commit();
 
@@ -281,6 +295,14 @@ class PaymentReceivedController extends Controller
 
 
 
+            Transaction::where('payment_id',$id)->first()->update([
+                'date'          => $request->payment_date,
+                'amount'        => $request->amount,
+                'credit'        => $request->amount,
+                'total_balance' => $account->balance,
+                'name'          => $request->title,
+            ]);
+
             // Commit the transaction
             DB::commit();
 
@@ -322,6 +344,7 @@ class PaymentReceivedController extends Controller
 
             $payment->delete();
 
+            Transaction::where('payment_id',$id)->delete();
             // Commit the transaction
             DB::commit();
 
@@ -366,7 +389,7 @@ class PaymentReceivedController extends Controller
             $account->update([
                 'balance' => $balance
             ]);
-
+            Transaction::where('payment_id',$id)->delete();
             $payment->delete();
         }
 

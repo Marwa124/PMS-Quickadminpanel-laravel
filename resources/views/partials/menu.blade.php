@@ -349,6 +349,7 @@
                                         </a>
                                     </li>
 
+
                             </ul>
                         </li>
 
@@ -364,6 +365,46 @@
 
                     @endcan
 
+                    {{--@can('petty_cash')--}}
+                    <li class="c-sidebar-nav-dropdown">
+                        <a class="c-sidebar-nav-dropdown-toggle" href="#">
+                            <i class="fa-fw fas fa-globe-africa c-sidebar-nav-icon sub-parent-dropdown">
+                            </i>
+                            {{ trans('cruds.finance.petty_cash') }}
+                        </a>
+                        <ul class="c-sidebar-nav-dropdown-items">
+                            <li class="c-sidebar-nav-item">
+                                <a href="{{ route("finance.admin.petty_cash.index") }}"
+                                   class="c-sidebar-nav-link {{ request()->is("admin/petty_cash") || request()->is("admin/finance/*") ? "active" : "" }}">
+                                    <i class="fa-fw fas fa-trademark c-sidebar-nav-icon self-item-link">
+
+                                    </i>
+                                    {{ trans('cruds.finance.petty_cash') }}
+                                </a>
+                            </li>
+                            <li class="c-sidebar-nav-item">
+                                <a href="{{ route("finance.admin.settlement.index") }}"
+                                   class="c-sidebar-nav-link {{ request()->is("admin/settlement") || request()->is("admin/finance/*") ? "active" : "" }}">
+                                    <i class="fa-fw fas fa-trademark c-sidebar-nav-icon self-item-link">
+
+                                    </i>
+                                    {{ trans('cruds.finance.settlement') }}
+                                </a>
+                            </li>
+                        </ul>
+                    {{--@endcan--}}
+
+                        {{--@can('transaction_access')--}}
+                        <li class="c-sidebar-nav-item">
+                            <a href="{{ route("finance.admin.transactions.index") }}"
+                               class="c-sidebar-nav-link {{ request()->is("admin/transactions") || request()->is("admin/finance/*") ? "active" : "" }}">
+                                <i class="fa-fw fas fa-trademark c-sidebar-nav-icon self-item-link">
+
+                                </i>
+                                {{ trans('cruds.finance.transactions') }}
+                            </a>
+                        </li>
+                        {{--@endcan--}}
 
                 </ul>
             </li>

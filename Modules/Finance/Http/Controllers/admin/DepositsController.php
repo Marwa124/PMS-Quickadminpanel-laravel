@@ -4,6 +4,7 @@ namespace Modules\Finance\Http\Controllers\admin;
 
 use App\Http\Controllers\Traits\MediaUploadingTrait;
 use App\Models\Client;
+use App\Models\Transaction;
 use Gate;
 use App\Models\Deposit;
 use App\Models\DepositCategory;
@@ -98,7 +99,7 @@ class DepositsController extends Controller
         $account = Account::findOrFail($request->account_id);
 
         $request->validate([
-            'account_id' => 'numeric|required',
+            'account_id' => 'numeric|required:exists:accounts,id',
             'amount' => 'numeric|required|max:'.$account->balance
         ]);
 
@@ -114,7 +115,17 @@ class DepositsController extends Controller
            'bank_balance'   =>  $account->balance
         ]);
 
-
+        Transaction::create([
+            'date'          => $request->entry_date,
+            'account_id'    => $request->account_id,
+            'type'          => 'deposit',
+            'name'          => $request->title,
+            'amount'        => $request->amount,
+            'credit'        => $request->amount,
+            'total_balance' => $account->balance,
+            'added_by'      => auth()->user()->id,
+            'deposit_id'    => $deposits->id
+        ]);
 
         if ($request->input('attachments', false)) {
             foreach ($request->attachments as $attachment) {
@@ -171,6 +182,11 @@ class DepositsController extends Controller
             }
         }
 
+        Transaction::where('deposit_id',$id)->first()->update([
+            'date'          => $request->entry_date,
+            'name'          => $request->title,
+        ]);
+
         return redirect()->route('finance.admin.deposits.index');
     }
 
@@ -190,6 +206,9 @@ class DepositsController extends Controller
 
         $deposits->clearMediaCollection('attachments');
         $deposits->delete();
+
+        Transaction::where('deposit_id',$id)->delete();
+
         return back();
     }
 
@@ -211,6 +230,8 @@ class DepositsController extends Controller
 
             $deposits->clearMediaCollection('attachments');
             $deposits->delete();
+
+            Transaction::where('deposit_id',$id)->delete();
 
         }
 

@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\HR\Entities\Account;
+use Modules\Payroll\Entities\Payment;
 use Modules\ProjectManagement\Entities\Project;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
@@ -58,7 +59,7 @@ class Transaction extends Model implements HasMedia
         'invoice_id',
         'name',
         'type',
-        'payment_method_id',
+        'payment_id',
         'amount',
         'paid_by',
         'reference',
@@ -77,7 +78,9 @@ class Transaction extends Model implements HasMedia
         'deposit',
         'deposit_2',
         'under_55',
-        'expense_category_id',
+        'expense_id',
+        'deposit_id',
+        'transfer_id',
         'created_at',
         'updated_at',
         'deleted_at',
@@ -109,9 +112,9 @@ class Transaction extends Model implements HasMedia
         return $this->belongsTo(Invoice::class, 'invoice_id');
     }
 
-    public function payment_method()
+    public function payment()
     {
-        return $this->belongsTo(PaymentMethod::class, 'payment_method_id');
+        return $this->belongsTo(Payment::class, 'payment_id');
     }
 
     public function getDateAttribute($value)
@@ -134,8 +137,18 @@ class Transaction extends Model implements HasMedia
         return $this->getMedia('attachment')->last();
     }
 
-    public function expense_category()
+    public function expense()
     {
-        return $this->belongsTo(ExpenseCategory::class, 'expense_category_id');
+        return $this->belongsTo(Expense::class, 'expense_id');
+    }
+
+    public function deposit()
+    {
+        return $this->belongsTo(Deposit::class, 'deposit_id');
+    }
+
+    public function transfer()
+    {
+        return $this->belongsTo(Transfer::class, 'transfer_id');
     }
 }

@@ -9,6 +9,7 @@ use App\Models\Client;
 use App\Models\Invoice;
 use App\Models\InvoiceItemTax;
 use App\Models\ItemInvoiceRelations;
+use App\Models\Transaction;
 use Modules\Sales\Entities\Opportunity;
 use App\Models\User;
 use App\Notifications\FinanceNotification;
@@ -136,6 +137,9 @@ class InvoicesController extends Controller
             }
 
             setActivity('invoice',$invoice->id,'Create Invoice #','تم اضافة فاتوره #',$invoice->reference_no,$invoice->reference_no);
+
+
+
 
             DB::commit();
             return redirect()->route('finance.admin.invoices.index');
