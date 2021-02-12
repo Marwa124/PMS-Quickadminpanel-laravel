@@ -24,6 +24,8 @@ use Gate;
 use Illuminate\Http\Request;
 use Spatie\MediaLibrary\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ProjectManagementMail;
 
 class TaskController extends Controller
 {
@@ -233,9 +235,17 @@ class TaskController extends Controller
                     'route_path' => 'admin/projectmanagement/tasks',
                 ];
 
+//                $user->notify(new ProjectManagementNotification($task, $user, $dataMail, $dataNotification));
+
+                //send notification
                 $user->notify(new ProjectManagementNotification($task, $user, $dataMail, $dataNotification));
                 $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
                 event(new NewNotification($userNotify));
+
+                // send mail
+                $sender =  settings('smtp_sender_name');
+                $email_from =  settings('smtp_email') ;
+                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender));
             }
 
             setActivity('task', $task->id, 'Update Task Details', 'تعديل تفاصيل المهمه', $task->name_en, $task->name_ar);
@@ -244,15 +254,19 @@ class TaskController extends Controller
             // Commit the transaction
             DB::commit();
 
+            return redirect()->route('projectmanagement.admin.tasks.index')->with(flash(trans('cruds.messages.update_success'), 'success'));
+
         }catch(\Exception $e){
             // An error occured; cancel the transaction...
             DB::rollback();
+
+            return redirect()->back()->with(flash(trans('cruds.messages.update_failed'), 'danger'))->withInput();
 
             // and throw the error again.
             throw $e;
         }
 
-        return redirect()->route('projectmanagement.admin.tasks.index');
+//        return redirect()->route('projectmanagement.admin.tasks.index');
     }
 
     public function show(Task $task)
@@ -422,20 +436,28 @@ class TaskController extends Controller
             // Notify User
             foreach ($task->accountDetails as $accountUser) {
                 $user = $accountUser->user;
-                $dataMail = [
-                    'subjectMail' => 'New Task Assign To You',
-                    'bodyMail' => 'Assign The Task : ' . $task->name . ' To ' . $user->name,
-                    'action' => route("projectmanagement.admin.tasks.show", $task->id)
-                ];
+//                $dataMail = [
+//                    'subjectMail' => 'New Task Assign To You',
+//                    'bodyMail' => 'Assign The Task : ' . $task->name . ' To ' . $user->name,
+//                    'action' => route("projectmanagement.admin.tasks.show", $task->id)
+//                ];
 
                 $dataNotification = [
                     'message' => 'Assign The Task : ' . $task->name . ' To ' . $user->name,
                     'route_path' => 'admin/projectmanagement/tasks',
                 ];
 
-                $user->notify(new ProjectManagementNotification($task, $user, $dataMail, $dataNotification));
+//                $user->notify(new ProjectManagementNotification($task, $user, $dataMail, $dataNotification));
+
+                //send notification
+                $user->notify(new ProjectManagementNotification($task, $user, $dataNotification));
                 $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
                 event(new NewNotification($userNotify));
+
+                // send mail
+                $sender =  settings('smtp_sender_name');
+                $email_from =  settings('smtp_email') ;
+                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender));
             }
 
             setActivity('task', $task->id, 'Update Assign to', 'تعديل القائمين على مهمة', $task->name_en, $task->name_ar);
@@ -469,20 +491,28 @@ class TaskController extends Controller
             // Notify User
             foreach ($task->accountDetails as $accountUser) {
                 $user = $accountUser->user;
-                $dataMail = [
-                    'subjectMail' => 'Update Task ' . $task->name,
-                    'bodyMail' => 'Update Note Of Task ' . $task->name,
-                    'action' => route("projectmanagement.admin.tasks.show", $task->id)
-                ];
+//                $dataMail = [
+//                    'subjectMail' => 'Update Task ' . $task->name,
+//                    'bodyMail' => 'Update Note Of Task ' . $task->name,
+//                    'action' => route("projectmanagement.admin.tasks.show", $task->id)
+//                ];
 
                 $dataNotification = [
                     'message' => 'Update Note Of Task : ' . $task->name,
                     'route_path' => 'admin/projectmanagement/tasks',
                 ];
 
-                $user->notify(new ProjectManagementNotification($task, $user, $dataMail, $dataNotification));
+//                $user->notify(new ProjectManagementNotification($task, $user, $dataMail, $dataNotification));
+
+                //send notification
+                $user->notify(new ProjectManagementNotification($task, $user, $dataNotification));
                 $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
                 event(new NewNotification($userNotify));
+
+                // send mail
+                $sender =  settings('smtp_sender_name');
+                $email_from =  settings('smtp_email') ;
+                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender));
             }
 
             setActivity('task', $task->id, 'Update Note','تعديل الملاحظات', $task->name_en, $task->name_ar);
@@ -490,15 +520,20 @@ class TaskController extends Controller
             // Commit the transaction
             DB::commit();
 
+            return back()->with(flash(trans('cruds.messages.update_note_success'), 'success'));
+
+
         }catch(\Exception $e){
             // An error occured; cancel the transaction...
             DB::rollback();
+
+            return back()->with(flash(trans('cruds.messages.update_note_failed'), 'danger'))->withInput();
 
             // and throw the error again.
             throw $e;
         }
 
-        return redirect()->back();
+//        return redirect()->back();
     }
 
     public function update_task_timer($task_id)

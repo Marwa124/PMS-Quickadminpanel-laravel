@@ -1,6 +1,10 @@
 @extends('layouts.admin')
 @section('content')
 
+    <a class="btn btn-danger m-3" href="{{route('finance.admin.balance_sheet.balance_sheet_pdf')}}" title=" {{ trans('cruds.finance.balance_sheet') }} pdf">
+        <i class="fa fa-file-pdf  " aria-hidden="true" ></i>
+    </a>
+
     <div class="card">
         <div class="card-header">
             {{ trans('cruds.finance.balance_sheet') }} {{ trans('global.list') }}

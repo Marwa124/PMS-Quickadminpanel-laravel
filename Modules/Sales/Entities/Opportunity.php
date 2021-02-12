@@ -77,4 +77,10 @@ class Opportunity extends Model implements HasMedia
     {
         return $this->belongsToMany(Permission::class);
     }
+
+    public function calls()
+    {
+        return $this->hasMany(Call::class,'opportunities_id','id')->where('opportunities_id','!=','null');
+    }
+
 }

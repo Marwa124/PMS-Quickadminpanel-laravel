@@ -167,11 +167,21 @@
                     @can('payment_method')
                         <li class="c-sidebar-nav-item">
                             <a href="{{ route("finance.admin.payment_method.index") }}"
-                               class="c-sidebar-nav-link {{ request()->is("admin/payment_method") || request()->is("admin/finance/*") ? "active" : "" }}">
+                               class="c-sidebar-nav-link {{ request()->is("admin/payment_method") || request()->is("admin/payment_method/*") ? "active" : "" }}">
                                 <i class="fa-fw fas fa-credit-card c-sidebar-nav-icon self-item-link">
 
                                 </i>
                                 {{ trans('cruds.finance.payment_method') }}
+                            </a>
+                        </li>
+                    @endcan
+                    @can('payment_method')
+                        <li class="c-sidebar-nav-item">
+                            <a href="{{ route("finance.admin.payment_received.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/payment_received") || request()->is("admin/payment_received/*") ? "active" : "" }}">
+                                <i class="fa-fw fas fa-credit-card c-sidebar-nav-icon self-item-link">
+
+                                </i>
+                                {{ trans('cruds.finance.payment_received') }}
                             </a>
                         </li>
                     @endcan
@@ -1117,15 +1127,15 @@
                 {{-- @endcan --}}
                 {{-- @can('opportunity_access') --}}
                 <li class="c-sidebar-nav-item">
-                    <a href="{{ route("sales.admin.opportunities.index") }}"
-                       class="c-sidebar-nav-link {{ request()->is("admin/opportunities") || request()->is("admin/opportunities/*") ? "active" : "" }}">
+                    <a href="{{ route('sales.admin.opportunities.index') }}"
+                       class="c-sidebar-nav-link {{ request()->is('admin/opportunities') || request()->is('admin/opportunities/*') ? 'active' : '' }}">
                         <i class="fa-fw fas fa-filter c-sidebar-nav-icon">
 
                         </i>
                         {{ trans('cruds.opportunity.title') }}
                     </a>
                 </li>
-                {{--  @endcan --}}
+                  {{--@endcan --}}
                 {{--  @can('client_access') --}}
                 <li class="c-sidebar-nav-item">
                     <a href="{{ route("admin.clients.index") }}"
@@ -1431,6 +1441,7 @@
                         {{ trans('cruds.local.title') }}
                     </a>
                 </li>
+
                 @endcan
                 </li>
 

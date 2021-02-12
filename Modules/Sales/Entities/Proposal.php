@@ -10,7 +10,7 @@ use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
 use App\Models\User;
-use App\Models\Opportunity;
+use Modules\Sales\Entities\Opportunity;
 use App\Models\Client;
 use App\Models\Invoice;
 use  Modules\Sales\Entities\ProposalItemTax;

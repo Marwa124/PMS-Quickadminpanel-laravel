@@ -17,6 +17,8 @@ use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\DB;
+use App\Mail\ProjectManagementMail;
+use Illuminate\Support\Facades\Mail;
 
 class WorkTrackingController extends Controller
 {
@@ -102,14 +104,47 @@ class WorkTrackingController extends Controller
 
             $workTracking->update($request->all());
 
+            // Notify User
+            foreach ($workTracking->accountDetails as $accountUser)
+            {
+                $user = $accountUser->user;
+                //dd($user);
+//                $dataMail = [
+//                    'subjectMail'    => 'Update Project '.$project->{'name_'.app()->getLocale()},
+//                    'bodyMail'       => 'Update The Project '.$project->{'name_'.app()->getLocale()},
+//                    'action'         => route("projectmanagement.admin.projects.show", $project->id)
+//                ];
+
+                $dataNotification = [
+                    'message'       => 'Update The Work Tracking : '.$workTracking->{'subject_'.app()->getLocale()},
+                    'route_path'    => 'admin/projectmanagement/work-trackings',
+                ];
+
+//                $user->notify(new ProjectManagementNotification($project,$user,$dataMail,$dataNotification));
+
+                //send notification
+                $user->notify(new ProjectManagementNotification($workTracking,$user,$dataNotification));
+                $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
+                event(new NewNotification($userNotify));
+
+                // send mail
+                $sender =  settings('smtp_sender_name');
+                $email_from =  settings('smtp_email') ;
+                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender));
+
+            }
+
             setActivity('workTracking',$workTracking->id,'Update Work Tracking Details','تعديل تفاصيل تتبع العمل ',$workTracking->subject_en,$workTracking->subject_ar);
 
             // Commit the transaction
             DB::commit();
+            return redirect()->route('projectmanagement.admin.work-trackings.index')->with(flash(trans('cruds.messages.update_success'), 'success'));
 
         }catch(\Exception $e){
             // An error occured; cancel the transaction...
             DB::rollback();
+
+            return redirect()->back()->with(flash(trans('cruds.messages.update_success'), 'danger'))->withInput();
 
             // and throw the error again.
             throw $e;
@@ -317,39 +352,50 @@ class WorkTrackingController extends Controller
             }
 
             // Notify User
-    //        foreach ($workTracking->accountDetails as $accountUser)
-    //        {
-    //            $user = $accountUser->user;
-    //
-    //            $dataMail = [
-    //                'subjectMail'    => 'New Work Tracking Assign To You',
-    //                'bodyMail'       => 'Assign The Work Tracking '.$workTracking->subject.' To '.$user->name,
-    //                'action'         => route("projectmanagement.admin.work-trackings.show", $workTracking->id)
-    //            ];
-    //
-    //            $dataNotification = [
-    //                'message'       => 'Assign The Work Tracking : '.$workTracking->subject.' To '.$user->name,
-    //                'route_path'    => 'admin/projectmanagement/work-trackings',
-    //            ];
-    //
-    //            $user->notify(new ProjectManagementNotification($workTracking,$user,$dataMail,$dataNotification));
-    //            $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
-    //            event(new NewNotification($userNotify));
-    //        }
+            foreach ($workTracking->accountDetails as $accountUser)
+            {
+                $user = $accountUser->user;
+
+//                $dataMail = [
+//                    'subjectMail'    => 'New Work Tracking Assign To You',
+//                    'bodyMail'       => 'Assign The Work Tracking '.$workTracking->subject.' To '.$user->name,
+//                    'action'         => route("projectmanagement.admin.work-trackings.show", $workTracking->id)
+//                ];
+
+                $dataNotification = [
+                    'message'       => 'Assign The Work Tracking : '.$workTracking->subject.' To '.$user->name,
+                    'route_path'    => 'admin/projectmanagement/work-trackings',
+                ];
+
+//                $user->notify(new ProjectManagementNotification($workTracking,$user,$dataMail,$dataNotification));
+
+                //send notification
+                $user->notify(new ProjectManagementNotification($workTracking,$user,$dataNotification));
+                $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
+                event(new NewNotification($userNotify));
+
+                // send mail
+                $sender =  settings('smtp_sender_name');
+                $email_from =  settings('smtp_email') ;
+                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender));
+            }
 
             setActivity('workTracking',$workTracking->id,'Update Assign to ','تعديل القائمين على مشروع',$workTracking->subject_en,$workTracking->subject_ar);
 
             // Commit the transaction
             DB::commit();
 
+            return redirect()->route('projectmanagement.admin.work-trackings.index')->with(flash(trans('cruds.messages.assignto_success'), 'success'));
+
         }catch(\Exception $e){
             // An error occured; cancel the transaction...
             DB::rollback();
 
+            return back()->with(flash(trans('cruds.messages.assignto_failed'), 'danger'))->withInput();
             // and throw the error again.
             throw $e;
         }
 
-        return redirect()->route('projectmanagement.admin.work-trackings.index');
+//        return redirect()->route('projectmanagement.admin.work-trackings.index');
     }
 }
