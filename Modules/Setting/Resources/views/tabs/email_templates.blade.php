@@ -1,4 +1,4 @@
-
+{{-- $email['user'] = array("activate_account", "change_email", "forgot_password", "registration", "reset_password", 'wellcome_email'); --}}
 
 <div class="tab-pane   email-templates" id="v-pills-email-templates" role="tabpanel"
     aria-labelledby="v-pills-details-tab">
@@ -39,6 +39,12 @@
 
             @include('setting::partials.email_tabs.task_email')
             @include('setting::partials.email_tabs.invoicing_emails')
+            @include('setting::partials.email_tabs.bugs_email')
+            @include('setting::partials.email_tabs.project_emails')
+            @include('setting::partials.email_tabs.ticketing_emails')
+            @include('setting::partials.email_tabs.hrm_emails')
+            @include('setting::partials.email_tabs.extra_emails')
+            @include('setting::partials.email_tabs.waiting_approval_proposal')
 
                  
      
@@ -82,6 +88,9 @@ $(document).ready(function(){
 
     $('.section_tab').addClass('d-none')
     $('.'+tab+'_tabs').removeClass('d-none')
+
+
+
     $('.section_tab .first_link').addClass('active')
     $('.section_tab .first_link').addClass('show')
     $('.section_tab .first_div').addClass('active')
@@ -102,8 +111,15 @@ $(document).ready(function(){
         document.getElementById(template).style.opacity =1;
 
         $('.section_tab .nav-link').removeClass('active')
+        $('.section_tab .tab-pane').removeClass('active')
 
         $('#'+template+'-tab').addClass('active');
+
+// console.log('#'+template+'-tab')
+        // $('.section_tab .first_link').addClass('active')
+        // $('.section_tab .first_link').addClass('show')
+        // $('.section_tab .first_div').addClass('active')
+        // $('.section_tab .first_div').addClass('show')
 
         })
 
@@ -118,10 +134,8 @@ $(document).ready(function(){
                 document.getElementById(template).classList.remove('d-none');
             
         });
-        $('.section_tab .first_link').addClass('active')
-        $('.section_tab .first_link').addClass('show')
-        $('.section_tab .first_div').addClass('active')
-        $('.section_tab .first_div').addClass('show')
+
+    
                 
 </script>
 

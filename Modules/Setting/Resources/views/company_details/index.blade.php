@@ -127,15 +127,15 @@ window.onload = (event) => {
         $('.nav-pills .'+pill).addClass('active')
         $('.tab-content .'+pill).addClass('active').addClass('show')
 
-        $('.section_tab .first_link').addClass('active')
-        $('.section_tab .first_link').addClass('show')
-        $('.section_tab .first_div').addClass('active')
-        $('.section_tab .first_div').addClass('show')
+        // $('.section_tab .first_link').addClass('active')
+        // $('.section_tab .first_link').addClass('show')
+        // $('.section_tab .first_div').addClass('active')
+        // $('.section_tab .first_div').addClass('show')
 
-        $('.section_tab .first_link').removeClass('d-none')
-        $('.section_tab .first_link').removeClass('d-none')
+        // $('.section_tab .first_link').removeClass('d-none')
+        // $('.section_tab .first_link').removeClass('d-none')
 
-         $('.section_tab #activate_account').removeClass('d-none')
+        //  $('.section_tab #activate_account').removeClass('d-none')
 
            
 

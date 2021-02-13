@@ -292,7 +292,70 @@ return [
     'invoice_reminder' => 'Invoice Reminder',
     'payment_email' => 'Payment Email',
     'invoice_overdue_email' => 'Invoice Overdue Email',
-    'refund_confirmation' => 'Invoice Refund Confirmation'
+    'refund_confirmation' => 'Invoice Refund Confirmation',
+    'task_assigned' => 'Task Assigned',
+    'tasks_comments' => 'Tasks Comments',
+    'tasks_attachment' => 'Tasks Attachment',
+    'tasks_updated' => 'Tasks Updated',
+    'bug_assigned' => 'Bug Assigned',
+    'bug_comments' => 'Bug Comments',
+    'bug_attachment' => 'Bug Attachment',
+    'bug_updated' => 'Bug Updated',
+    'bug_reported' => 'Bug Reported',
+
+    'client_notification'   => 'Client Notification',
+    'assigned_project'      => 'Assigned Project',
+    'complete_projects'     => 'Complete Project',
+    'project_comments'      => 'Project Comments',
+    'project_attachment'    => 'Project Attachment',
+    'responsible_milestone' => 'Project Milestone',
+    'project_overdue_email' => 'Project Overdue',
+
+
+    'ticket_client_email'   => 'Client Email',
+    'ticket_closed_email'   => 'Closed Email',
+    'ticket_reply_email'    => 'Reply Email',
+    'ticket_staff_email'    => 'Staff Email',
+    'auto_close_ticket'     => 'Auto Close Ticket',
+    'ticket_reopened_email' => 'Ticket Reopened',
+    'leave_request_email'   => 'Leave Request',
+    'leave_approve_email'   => 'Leave Approve',
+
+    'leave_reject_email'      => 'Leave Reject',
+    'overtime_request_email'  => 'Overtime Request',
+    'overtime_approved_email' => 'Overtime Approved',
+    'overtime_reject_email'   => 'Overtime Reject',
+    'payslip_generated_email' => 'Payslip Generated',
+    'advance_salary_email'    => 'Advance Salary Request',
+    'advance_salary_approve_email' => 'Advance salary Approve',
+    'advance_salary_reject_email'  => 'Advance salary Reject',
+    'award_email' => 'Award',
+    'new_job_application_email' => 'New Job Application',
+    'call_for_interview' => 'Call For Interview',
+    'interview_feedback_accept' => 'Interview Feedback Accept',
+    'interview_feedback_reject' => 'Interview Feedback Reject',
+    'new_notice_published'  => 'New Notice Published',
+    'new_training_email'    => 'New Training',
+
+    'deposit_email' => 'Deposit Email',
+    'expense_request_email' => 'Expense Request',
+    'expense_approved_email' => 'Expense Approved',
+    'expense_paid_email'     => 'Expense paid',
+    'trying_clock_email' => 'Trying Clock',
+    'clock_in_email' => 'Clock In',
+    'clock_out_email' => 'Clock Out',
+
+    'estimate_email' => 'Estimate Email',
+
+    'estimate_overdue_email' => 'Estimate Overdue',
+    'proposal_email' => 'Proposal Email',
+    'proposal_overdue_email' => 'Proposal Overdue',
+    'message_received' => 'Message Received',
+    'quotations_form' => 'Quotations Form',
+    'goal_achieve' => 'Goal achieved',
+    'goal_not_achieve' => 'Goal not achieved',
+
+
 
 
 
