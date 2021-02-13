@@ -282,7 +282,7 @@
     "purchase": {
         "supplier": "Supplier",
         "fields": {
-            "ref_no": "Ref No",
+            "reference_no": "Reference No",
             "purchase_date": "Purchase Date",
             "due_date": "Due Date",
             "sales_agent": "Sales Agent",

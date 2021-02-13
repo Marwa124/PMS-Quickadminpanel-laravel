@@ -169,7 +169,7 @@
                 </div>
 
                 <?php
-                $userAllowances = $salaryTemplate->salaryAllowances()->get();
+                $userAllowances = $salaryTemplate ? $salaryTemplate->salaryAllowances()->get() : [];
                 ?>
                 <div class="row">
                     <div class="col-md-6">
@@ -190,7 +190,7 @@
                         </div>
                     </div>
                     <?php
-                    $userDeducctions = $salaryTemplate->salaryDeductions()->get();
+                    $userDeducctions = $salaryTemplate ? $salaryTemplate->salaryDeductions()->get() : [];
                     ?>
                     <div class="col-md-6">
                         <div class="card">
@@ -262,6 +262,7 @@
             <div class="card">
                 <h5 class="card-header">Leave Details Of {{$accountDetail->fullname}}</h5>
                 <div class="card-body">
+
                     @foreach ($categoryDetails as $item)
                     {{-- {{dd($item['check_available']['token_leaves'])}}
                     {{dd($item['check_available']['category_leave_quota'])}} --}}

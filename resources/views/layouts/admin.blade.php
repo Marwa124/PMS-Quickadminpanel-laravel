@@ -122,8 +122,13 @@ a<!DOCTYPE html>
                     <img class="img-thumbnail rounded-circle" width="10%" src="{{ $accountUser->avatar ? str_replace('storage', 'storage', $accountUser->avatar->getUrl()) : asset('images/default.png') }}" alt="">
                     <a class="d-flex align-self-center ml-2" href="{{route('hr.admin.account-details.show', $accountUser->id)}}">{{$accountUser->fullname}}</a>
                 </div>
-
+            @else
+                <div class="user d-flex">
+                    <img class="img-thumbnail rounded-circle" width="10%" src="{{ asset('images/default.png') }}" alt="">
+                    <a href="javascript:void(0)" class="d-flex align-self-center ml-2">{{auth()->user()->name}}</a>
+                </div>
             @endif
+
 
 
 
@@ -568,8 +573,8 @@ a<!DOCTYPE html>
                         });
 
 
-            
-            
+
+
             </script>
     @endif
 </body>

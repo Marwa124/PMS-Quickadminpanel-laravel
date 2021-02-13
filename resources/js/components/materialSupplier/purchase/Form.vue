@@ -270,7 +270,7 @@
                     </td>
                 </tr>
 
-                
+
                 <tr>
                     <td class="d-flex float-right align-items-center">
                         <div>Adjustment</div>
@@ -288,7 +288,7 @@
                             type="number" disabled v-model="form.total" step="0.01"></div>
                     </td>
                 </tr>
-                
+
             </tbody>
         </table> <!-- Total -->
           <button :disabled="form.busy" type="submit" class="btn btn-primary float-right mr-2 mb-2">
@@ -491,7 +491,7 @@
                 this.totalTaxAdded = 0
                 this.form.items.forEach(element => {
                     var indexRow = element.rowIndex;
-                    
+
                     if(indexRow) {
                         this.form.items[indexRow].taxes.map(tax => {
                             let count = 0
