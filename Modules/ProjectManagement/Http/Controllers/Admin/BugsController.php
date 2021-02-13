@@ -5,6 +5,7 @@ namespace Modules\ProjectManagement\Http\Controllers\Admin;
 use App\Events\NewNotification;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\MediaUploadingTrait;
+use App\Models\User;
 use App\Notifications\ProjectManagementNotification;
 use Modules\HR\Entities\AccountDetail;
 use Modules\ProjectManagement\Entities\Bug;
@@ -119,16 +120,18 @@ class BugsController extends Controller
 
             // Commit the transaction
             DB::commit();
+            return redirect()->route('projectmanagement.admin.bugs.index')->with(flash(trans('cruds.messages.create_success'), 'success'));
+
 
         }catch(\Exception $e){
             // An error occured; cancel the transaction...
             DB::rollback();
-
+            return redirect()->back()->with(flash(trans('cruds.messages.create_failed'), 'danger'))->withInput();
             // and throw the error again.
             throw $e;
         }
 
-        return redirect()->route('projectmanagement.admin.bugs.index');
+//        return redirect()->route('projectmanagement.admin.bugs.index');
     }
 
     public function edit(Bug $bug)
@@ -175,7 +178,7 @@ class BugsController extends Controller
 //                ];
 
                 $dataNotification = [
-                    'message'       => 'Update The Bug : '.$bug->name,
+                    'message'       => 'Update The Bug : '.$bug->{'name_'.app()->getLocale()},
                     'route_path'    => 'admin/projectmanagement/bugs',
                 ];
 
@@ -189,7 +192,16 @@ class BugsController extends Controller
                 // send mail
                 $sender =  settings('smtp_sender_name');
                 $email_from =  settings('smtp_email') ;
-                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender));
+
+                if(User::find(auth()->user()->id)->accountDetail && User::find(auth()->user()->id)->accountDetail()->first())
+                {
+                    $userName = AccountDetail::where('user_id', auth()->user()->id)->first()->fullname;
+                }else {
+                    $userName = User::find(auth()->user()->id)->name;
+                }
+
+                $message = $userName.' '.'Update The Bug '.$bug->{'name_'.app()->getLocale()};
+                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
             }
 
             setActivity('bug', $bug->id, 'Update Bug', ' bug تعديل', $bug->status, $bug->status);
@@ -387,7 +399,7 @@ class BugsController extends Controller
 //                ];
 
                 $dataNotification = [
-                    'message'       => 'Assign The Bug : '.$bug->name.' To '.$user->name,
+                    'message'       => 'Assign The Bug : '.$bug->{'name_'.app()->getLocale()}.' To '.$user->name,
                     'route_path'    => 'admin/projectmanagement/bugs',
                 ];
 
@@ -401,7 +413,16 @@ class BugsController extends Controller
                 // send mail
                 $sender =  settings('smtp_sender_name');
                 $email_from =  settings('smtp_email') ;
-                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender));
+
+                if(User::find(auth()->user()->id)->accountDetail && User::find(auth()->user()->id)->accountDetail()->first())
+                {
+                    $userName = AccountDetail::where('user_id', auth()->user()->id)->first()->fullname;
+                }else {
+                    $userName = User::find(auth()->user()->id)->name;
+                }
+
+                $message = $userName.' '.'Assign The Bug '.$bug->{'name_'.app()->getLocale()}.' To '.$user->name;
+                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
             }
 
 //            setActivity('bug',$bug->id,'Update Assign to',$bug->name);
@@ -449,7 +470,7 @@ class BugsController extends Controller
 //                ];
 
                 $dataNotification = [
-                    'message'       => 'Update Note Of Bug : '.$bug->name,
+                    'message'       => 'Update Note Of Bug : '.$bug->{'name_'.app()->getLocale()},
                     'route_path'    => 'admin/projectmanagement/bugs',
                 ];
 
@@ -463,7 +484,16 @@ class BugsController extends Controller
                 // send mail
                 $sender =  settings('smtp_sender_name');
                 $email_from =  settings('smtp_email') ;
-                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender));
+
+                if(User::find(auth()->user()->id)->accountDetail && User::find(auth()->user()->id)->accountDetail()->first())
+                {
+                    $userName = AccountDetail::where('user_id', auth()->user()->id)->first()->fullname;
+                }else {
+                    $userName = User::find(auth()->user()->id)->name;
+                }
+
+                $message = $userName.' '.'Update Note Of Bug '.$bug->{'name_'.app()->getLocale()};
+                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
             }
 
 //            setActivity('bug',$bug->id,'Update Note ',$bug->name);
@@ -504,28 +534,30 @@ class BugsController extends Controller
 
                 // force delete bug
                 $bug->forceDelete();
+                $message = 'force_delete_success';
+
 
             } else if ($action == 'restore') {
                 //restore bug
                 Bug::onlyTrashed()->where('id', $id)->restore();
                 $bug = Bug::findOrFail($id);
+                $message = 'restore_success';
 
-//                setActivity('bug',$bug->id,'Restore Bug',$bug->name);
                 setActivity('bug', $bug->id, 'Restore Bug', 'إسترجاع Bug من الحذف', $bug->name_en, $bug->name_ar);
             }
 
             // Commit the transaction
             DB::commit();
+            return back()->with(flash(trans('cruds.messages.'.$message), 'success'));
 
         }catch(\Exception $e){
             // An error occured; cancel the transaction...
             DB::rollback();
+            return back()->with(flash(trans('cruds.messages.action_failed'), 'danger'));
 
             // and throw the error again.
             throw $e;
         }
-
-        return back();
 
     }
 

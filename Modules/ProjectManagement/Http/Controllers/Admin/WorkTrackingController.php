@@ -4,6 +4,7 @@ namespace Modules\ProjectManagement\Http\Controllers\Admin;
 
 use App\Events\NewNotification;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Notifications\ProjectManagementNotification;
 use Modules\HR\Entities\Designation;
 use Modules\ProjectManagement\Http\Controllers\Traits\ProjectManagementHelperTrait;
@@ -71,16 +72,17 @@ class WorkTrackingController extends Controller
 
             // Commit the transaction
             DB::commit();
+            return redirect()->route('projectmanagement.admin.work-trackings.index')->with(flash(trans('cruds.messages.create_success'), 'success'));
 
         }catch(\Exception $e){
             // An error occured; cancel the transaction...
             DB::rollback();
-
+            return redirect()->back()->with(flash(trans('cruds.messages.create_failed'), 'danger'))->withInput();
             // and throw the error again.
             throw $e;
         }
 
-        return redirect()->route('projectmanagement.admin.work-trackings.index');
+//        return redirect()->route('projectmanagement.admin.work-trackings.index');
     }
 
     public function edit(WorkTracking $workTracking)
@@ -110,9 +112,9 @@ class WorkTrackingController extends Controller
                 $user = $accountUser->user;
                 //dd($user);
 //                $dataMail = [
-//                    'subjectMail'    => 'Update Project '.$project->{'name_'.app()->getLocale()},
-//                    'bodyMail'       => 'Update The Project '.$project->{'name_'.app()->getLocale()},
-//                    'action'         => route("projectmanagement.admin.projects.show", $project->id)
+//                    'subjectMail'    => 'Update Work Tracking '.$workTracking->{'subject_'.app()->getLocale()},
+//                    'bodyMail'       => 'Update The Work Tracking '.$workTracking->{'subject_'.app()->getLocale()},
+//                    'action'         => route("projectmanagement.admin.work-trackings.show", $workTracking->id)
 //                ];
 
                 $dataNotification = [
@@ -130,7 +132,16 @@ class WorkTrackingController extends Controller
                 // send mail
                 $sender =  settings('smtp_sender_name');
                 $email_from =  settings('smtp_email') ;
-                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender));
+
+                if(User::find(auth()->user()->id)->accountDetail && User::find(auth()->user()->id)->accountDetail()->first())
+                {
+                    $userName = AccountDetail::where('user_id', auth()->user()->id)->first()->fullname;
+                }else {
+                    $userName = User::find(auth()->user()->id)->name;
+                }
+
+                $message = $userName.' '.'Update Work Tracking '.$workTracking->{'subject_'.app()->getLocale()};
+                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
 
             }
 
@@ -144,13 +155,13 @@ class WorkTrackingController extends Controller
             // An error occured; cancel the transaction...
             DB::rollback();
 
-            return redirect()->back()->with(flash(trans('cruds.messages.update_success'), 'danger'))->withInput();
+            return redirect()->back()->with(flash(trans('cruds.messages.update_failed'), 'danger'))->withInput();
 
             // and throw the error again.
             throw $e;
         }
 
-        return redirect()->route('projectmanagement.admin.work-trackings.index');
+//        return redirect()->route('projectmanagement.admin.work-trackings.index');
     }
 
     public function show(WorkTracking $workTracking)
@@ -195,10 +206,12 @@ class WorkTrackingController extends Controller
 
             // Commit the transaction
             DB::commit();
+            return redirect()->route('projectmanagement.admin.work-trackings.index')->with(flash(trans('cruds.messages.delete_success'), 'success'));
 
         }catch(\Exception $e){
             // An error occured; cancel the transaction...
             DB::rollback();
+            return redirect()->back()->with(flash(trans('cruds.messages.delete_failed'), 'danger'));
 
             // and throw the error again.
             throw $e;
@@ -262,11 +275,13 @@ class WorkTrackingController extends Controller
 
                 // force delete bug
                 $workTracking->forceDelete();
+                $message = 'force_delete_success';
 
             } else if ($action == 'restore') {
                 //restore WorkTracking
                 WorkTracking::onlyTrashed()->where('id', $id)->restore();
                 $workTracking = WorkTracking::findOrFail($id);
+                $message = 'restore_success';
 
                 setActivity('workTracking',$workTracking->id,'Restore Work Tracking Details','إسترجاع تفاصيل تتبع العمل ',$workTracking->subject_en,$workTracking->subject_ar);
 
@@ -274,16 +289,16 @@ class WorkTrackingController extends Controller
 
             // Commit the transaction
             DB::commit();
-
+            return back()->with(flash(trans('cruds.messages.'.$message), 'success'));
         }catch(\Exception $e){
             // An error occured; cancel the transaction...
             DB::rollback();
-
+            return back()->with(flash(trans('cruds.messages.action_failed'), 'danger'));
             // and throw the error again.
             throw $e;
         }
 
-        return back();
+//        return back();
 
     }
 
@@ -358,12 +373,12 @@ class WorkTrackingController extends Controller
 
 //                $dataMail = [
 //                    'subjectMail'    => 'New Work Tracking Assign To You',
-//                    'bodyMail'       => 'Assign The Work Tracking '.$workTracking->subject.' To '.$user->name,
+//                    'bodyMail'       => 'Assign The Work Tracking '.$workTracking->{'subject_'.app()->getLocale()}.' To '.$user->name,
 //                    'action'         => route("projectmanagement.admin.work-trackings.show", $workTracking->id)
 //                ];
 
                 $dataNotification = [
-                    'message'       => 'Assign The Work Tracking : '.$workTracking->subject.' To '.$user->name,
+                    'message'       => 'Assign The Work Tracking : '.$workTracking->{'subject_'.app()->getLocale()}.' To '.$user->name,
                     'route_path'    => 'admin/projectmanagement/work-trackings',
                 ];
 
@@ -377,7 +392,16 @@ class WorkTrackingController extends Controller
                 // send mail
                 $sender =  settings('smtp_sender_name');
                 $email_from =  settings('smtp_email') ;
-                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender));
+
+                if(User::find(auth()->user()->id)->accountDetail && User::find(auth()->user()->id)->accountDetail()->first())
+                {
+                    $userName = AccountDetail::where('user_id', auth()->user()->id)->first()->fullname;
+                }else {
+                    $userName = User::find(auth()->user()->id)->name;
+                }
+
+                $message = $userName.' '.'Assign The Work Tracking  '.$workTracking->{'subject_'.app()->getLocale()}.' To '.$user->name;
+                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
             }
 
             setActivity('workTracking',$workTracking->id,'Update Assign to ','تعديل القائمين على مشروع',$workTracking->subject_en,$workTracking->subject_ar);
