@@ -1,11 +1,11 @@
        <!-- Section: Live preview -->
-       <section class="section_tab animate d-none invoicing_emails_tabs">
+       <section class="section_tab d-none invoicing_emails_tabs">
       
         <ul class="nav nav-tabs" id="myTab" role="tablist">
 
              
           <li class="nav-item waves-effect waves-light">
-            <a class="nav-link active" id="invoice_message-tab" data-toggle="tab" href="#invoice_message" role="tab" aria-controls="invoice_message"
+            <a class="first_link nav-link active" id="invoice_message-tab" data-toggle="tab" href="#invoice_message" role="tab" aria-controls="invoice_message"
              aria-selected="false">@lang('settings.invoice_message')</a>
           </li>
 
@@ -44,7 +44,7 @@
 
 
 
-          <div class="tab-pane fade active show" id="invoice_message" role="tabpanel" aria-labelledby="activate-tab">
+          <div class="first_div tab-pane fade active show" id="invoice_message" role="tabpanel" aria-labelledby="activate-tab">
 
             <form action="{{ route('admin.update.templates') }}" method="post">
                 @csrf

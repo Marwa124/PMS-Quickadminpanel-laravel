@@ -5,7 +5,7 @@
 
 
           <li class="nav-item waves-effect waves-light">
-            <a class="nav-link active" id="activate_account-tab" data-toggle="tab" href="#activate_account" role="tab" aria-controls="activate_account"
+            <a class="nav-link first_link active" id="activate_account-tab" data-toggle="tab" href="#activate_account" role="tab" aria-controls="activate_account"
              aria-selected="false">@lang('settings.activate_account')</a>
           </li>
 
@@ -50,7 +50,7 @@
 
 
 
-          <div class="tab-pane fade active show" id="activate_account" role="tabpanel" aria-labelledby="activate-tab">
+          <div class="tab-pane first_div fade active show" id="activate_account" role="tabpanel" aria-labelledby="activate-tab">
 
             <form action="{{ route('admin.update.templates') }}" method="post">
                 @csrf

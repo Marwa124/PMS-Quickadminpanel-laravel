@@ -61,6 +61,17 @@
 function show_tabs(tab){
 $('.section_tab').addClass('d-none')
 $('.'+tab+'_tabs').removeClass('d-none')
+
+    $('.section_tab .nav-link').removeClass('active')
+
+    $('.section_tab .first_link').addClass('active')
+    $('.section_tab .first_link').addClass('show')
+    $('.section_tab .first_div').addClass('active')
+    $('.section_tab .first_div').addClass('show')
+    $('.section_tab .first_div').removeClass('d-none')
+
+
+
 }
 
 </script>
@@ -71,21 +82,16 @@ $(document).ready(function(){
 
     $('.section_tab').addClass('d-none')
     $('.'+tab+'_tabs').removeClass('d-none')
+    $('.section_tab .first_link').addClass('active')
+    $('.section_tab .first_link').addClass('show')
+    $('.section_tab .first_div').addClass('active')
+    $('.section_tab .first_div').addClass('show')
 
 })
 
 </script>
 @endif
-@if(session()->has('tab'))
-<script>
-$(document).ready(function(){
 
-
-})
-
-</script>
-@endif
-@if(session()->has('template'))
 <script>
 
     var template = '{{ session()->get('template','activate_account') }}'
@@ -95,13 +101,13 @@ $(document).ready(function(){
         document.getElementById(template).style.display ='inline-block';
         document.getElementById(template).style.opacity =1;
 
-        $('.nav-link').removeClass('active')
+        $('.section_tab .nav-link').removeClass('active')
 
         $('#'+template+'-tab').addClass('active');
 
         })
 
-        $('.nav-link').click(function(){
+        $('.section_tab .nav-link').click(function(){
 
             document.getElementById(template).classList.add('d-none');
 
@@ -112,10 +118,14 @@ $(document).ready(function(){
                 document.getElementById(template).classList.remove('d-none');
             
         });
-        
+        $('.section_tab .first_link').addClass('active')
+        $('.section_tab .first_link').addClass('show')
+        $('.section_tab .first_div').addClass('active')
+        $('.section_tab .first_div').addClass('show')
+                
 </script>
 
 
 
-@endif
+
 @endpush
