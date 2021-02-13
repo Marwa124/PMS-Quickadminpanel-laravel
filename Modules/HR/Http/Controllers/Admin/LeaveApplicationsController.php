@@ -274,10 +274,14 @@ class LeaveApplicationsController extends Controller
         $department_head_employee = User::find($leaveApplication->user_id)->accountDetail->designation->department->department_head()->first();
         $board_members = Department::where('department_name', 'Board Members')->orWhere('department_name', 'CEO')->select('email')->get();
 
+
+        setActivity('leaveApplication',$leaveApplication->id,'New Leave Application Saved','حفط طلب مغادرة جديد',$leave_category,'');
+
+
          $user = User::find(23);
-         $user->notify(new LeaveApplicationNotification($leaveApplication, $leave_category));
-         $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
-         event(new NewNotification($userNotify));
+        //  $user->notify(new LeaveApplicationNotification($leaveApplication, $leave_category));
+        //  $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
+        //  event(new NewNotification($userNotify));
 
         // if($department_head_employee){
         //     $department_head_employee->notify(new LeaveApplicationNotification($leaveApplication, $leave_category));

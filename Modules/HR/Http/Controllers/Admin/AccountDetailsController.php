@@ -43,7 +43,6 @@ class AccountDetailsController extends Controller
 
     public function advancedSalary(StoreAdvanceSalaryRequest $request)
     {
-        // dd($request->all());
         // !!!: Check if User has a salary for this month to just update
         $check_user_advanced_salary =  AdvanceSalary::where('month', $request['month'])->where('user_id', $request['user_id'])->first();
         if ($check_user_advanced_salary) {
@@ -59,7 +58,6 @@ class AccountDetailsController extends Controller
     {
         abort_if(Gate::denies('account_detail_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        // dd($request->all());
         $id = $request->id;
         $action = $request->action;
 
@@ -214,7 +212,7 @@ class AccountDetailsController extends Controller
     {
         if ((auth()->user()->id == $accountDetail->user_id) || !Gate::denies('account_detail_show')) {
             $accountDetail->load('user', 'designation', 'setTime');
-    
+
             $categoryDetails = [];
             foreach(LeaveCategory::all() as $category)
             {
@@ -222,7 +220,7 @@ class AccountDetailsController extends Controller
                 $cat['check_available'] = checkAvailableLeaves($accountDetail->user_id, date('Y-m'), $category->id);
                 $categoryDetails[] = $cat;
             }
-    
+
             return view('hr::admin.accountDetails.show', compact('accountDetail', 'categoryDetails'));
 
         }else{

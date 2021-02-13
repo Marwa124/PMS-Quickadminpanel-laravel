@@ -796,7 +796,7 @@ return array (
   ),
   'leaveApplication' =>
   array (
-    'title' => 'Leave Applications',
+    'title' => 'طلبات المغادرة',
     'title_singular' => 'Leave Application',
     'fields' =>
     array (

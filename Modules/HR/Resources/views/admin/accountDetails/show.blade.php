@@ -1,4 +1,8 @@
 @extends('layouts.admin')
+@inject('salaryDeductionModel', 'Modules\Payroll\Entities\SalaryDeduction')
+@section('title')
+| User Details
+@endsection
 @section('styles')
     <link href="{{ asset('css/profile.css') }}" rel="stylesheet" />
 @endsection
@@ -30,12 +34,14 @@
     <div class="col-3">
       <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
         <a class="nav-link active" id="v-pills-details-tab" data-toggle="pill" href="#v-pills-details" role="tab" aria-controls="v-pills-details" aria-selected="true">Basic Details</a>
-        <a class="nav-link" id="v-pills-bank-tab" data-toggle="pill" href="#v-pills-bank" role="tab" aria-controls="v-pills-bank" aria-selected="false">Bank Details</a>
+        {{-- <a class="nav-link" id="v-pills-bank-tab" data-toggle="pill" href="#v-pills-bank" role="tab" aria-controls="v-pills-bank" aria-selected="false">Bank Details</a> --}}
         <a class="nav-link" id="v-pills-salary-tab" data-toggle="pill" href="#v-pills-salary" role="tab" aria-controls="v-pills-salary" aria-selected="false">Salary Details</a>
         <a class="nav-link" id="v-pills-leaves-tab" data-toggle="pill" href="#v-pills-leaves" role="tab" aria-controls="v-pills-leaves" aria-selected="false">Leave Details</a>
-        <a class="nav-link" id="v-pills-timecard-tab" data-toggle="pill" href="#v-pills-timecard" role="tab" aria-controls="v-pills-timecard" aria-selected="false">Timecard Details</a>
+        {{-- <a class="nav-link" id="v-pills-timecard-tab" data-toggle="pill" href="#v-pills-timecard" role="tab" aria-controls="v-pills-timecard" aria-selected="false">Timecard Details</a> --}}
         <a class="nav-link" id="v-pills-tasks-tab" data-toggle="pill" href="#v-pills-tasks" role="tab" aria-controls="v-pills-tasks" aria-selected="false">Tasks</a>
         <a class="nav-link" id="v-pills-projects-tab" data-toggle="pill" href="#v-pills-projects" role="tab" aria-controls="v-pills-projects" aria-selected="false">Projects</a>
+        <a class="nav-link" id="v-pills-pills-tab" data-toggle="pill" href="#v-pills-activity" role="tab" aria-controls="v-pills-activity" aria-selected="false">Activities</a>
+
       </div>
     </div>
     <div class="col-9">
@@ -133,7 +139,122 @@
             </div>
         </div>
         <div class="tab-pane fade" id="v-pills-bank" role="tabpanel" aria-labelledby="v-pills-bank-tab">...</div>
-        <div class="tab-pane fade" id="v-pills-salary" role="tabpanel" aria-labelledby="v-pills-salary-tab">...</div>
+        <div class="tab-pane fade" id="v-pills-salary" role="tabpanel" aria-labelledby="v-pills-salary-tab">
+
+
+            <?php
+                $salaryTemplate = '';
+                $designation = $accountDetail->designation()->first();
+                if ($designation) {
+                    $salaryTemplate = $accountDetail->designation->salaryTemplate()->first();
+                    $departmentName = $accountDetail->designation->department()->select('department_name')->first();
+                }
+                // dd($salaryTemplate->salaryAllowances()->get());
+                // dd($salaryTemplate->salaryDeductions()->get());
+            ?>
+
+            <div class="card">
+                <div class="card-header">
+                    Salary Details
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-5">Designation: </div>
+                        <div class="col-md-7">{{ $salaryTemplate ? $salaryTemplate->salary_grade : '' }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-5">Basic Salary : </div>
+                        <div class="col-md-7">{{ $salaryTemplate ? $salaryTemplate->basic_salary : '' }}</div>
+                    </div>
+                </div>
+
+                <?php
+                $userAllowances = $salaryTemplate->salaryAllowances()->get();
+                ?>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                Allowances
+                            </div>
+                            <div class="card-body">
+                                @forelse ($userAllowances as $userAllowance)
+                                    <div class="row">
+                                        <div class="col-md-5">{{$userAllowance->name}} </div>
+                                        <div class="col-md-7">{{ $userAllowance->value }}</div>
+                                    </div>
+                                @empty
+                                <h5>Nothing to display here!</h5>
+                                @endforelse
+                            </div>
+                        </div>
+                    </div>
+                    <?php
+                    $userDeducctions = $salaryTemplate->salaryDeductions()->get();
+                    ?>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                Deductions
+                            </div>
+                            <div class="card-body">
+                                @forelse ($userDeducctions as $userDeduction)
+                                    <div class="row">
+                                        <div class="col-md-5">{{$userDeduction->name}} </div>
+                                        <div class="col-md-7">{{ $userDeduction->value }}</div>
+                                    </div>
+                                @empty
+                                <h5>Nothing to display here!</h5>
+                                @endforelse
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <?php
+                    $netSalary = 0;
+                    if ($salaryTemplate) {
+                        $salaryDeduction = $salaryDeductionModel->where('salary_template_id', $salaryTemplate->id)->sum('value');
+                        $netSalary = (int) ($salaryTemplate->basic_salary) - (int) $salaryDeduction;
+                    }
+                ?>
+                <div class="card">
+                    <div class="card-header bg-secondary">
+                        Total Salary Details
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex">
+                            <div class="font-weight-bold m-auto">Gross Salary: </div>
+                            <span class="m-auto">{{'EGP '.number_format($salaryTemplate ? $salaryTemplate->basic_salary : 0, 2)}}</span>
+                        </div>
+                        <div class="d-flex">
+                            <div class="font-weight-bold m-auto">Total Deduction :                            </div>
+                            <span class="m-auto">{{'EGP '.number_format($salaryDeduction ?? 0, 2)}}</span>
+                        </div>
+                        <div class="d-flex">
+                            <div class="font-weight-bold m-auto">Net Salary :                            </div>
+                            <span class="m-auto">{{'EGP '.number_format($netSalary ?? 0, 2)}}</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
         <div class="tab-pane fade" id="v-pills-leaves" role="tabpanel" aria-labelledby="v-pills-leaves-tab">
 
             {{-- Leave Details --}}
@@ -178,16 +299,188 @@
         <div class="tab-pane fade" id="v-pills-timecard" role="tabpanel" aria-labelledby="v-pills-timecard-tab">...</div>
         <div class="tab-pane fade" id="v-pills-tasks" role="tabpanel" aria-labelledby="v-pills-tasks-tab">
 
-            <?php 
-                $user = App\Models\User::findOrFail(auth()->user()->id);
-                // dd($user->accountDetail);
-                if ($user->accountDetail) {
-                    // dd($user->accountDetail->tasks);    
-                }
+            <?php
+                $tasks = [];
+                $tasks = $accountDetail->tasks;
             ?>
+{{-- User Tasks Sheet --}}
+<div class="card">
+    <div class="card-header">
+        {{trans('cruds.task.fields.total_projects_time_spent')}}
+    </div>
+    <div class="card-body text-center">
+        <div class="chart-wrapper">
+            @php
+                $total_spend = 0;
+            @endphp
+            @forelse($tasks as $task)
+                @php
+                    $timeTask = $task->TimeSheet;
+                @endphp
+                {{--get user time spend in project--}}
+                @forelse($timeTask as $timer)
+                    @if($timer->end_time && $timer->start_time)
+                        @php
+                            $total_spend += ($timer->end_time - $timer->start_time);
+                        @endphp
+                    @endif
+                @empty
+                @endforelse
+                {{--get user time spend in tasks of project --}}
+            @empty
+            @endforelse
+            <div  class="align-content-center p-4">
+                <h1>{{ get_time_spent_result($total_spend)  }}</h1>
+                <h6 class="align-content-center">{{trans('global.hours')}} : {{trans('global.minutes')}} : {{trans('global.seconds')}}</h6>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        {{trans('cruds.task.title')}} {{trans('global.reports')}}
+        <input type="hidden" id="not_started_count"     value="{{$tasks ? $tasks->where('status','not_started')->count() : ''}}"/>
+        <input type="hidden" id="in_progress_count"     value="{{$tasks ? $tasks->where('status','in_progress')->count() : ''}}"/>
+        <input type="hidden" id="completed_count"       value="{{$tasks ? $tasks->where('status','completed')->count() : ''}}"/>
+        <input type="hidden" id="deffered_count"        value="{{$tasks ? $tasks->where('status','deffered')->count() : ''}}"/>
+        <input type="hidden" id="waiting_someone_count" value="{{$tasks ? $tasks->where('status','waiting_someone')->count() : ''}}"/>
+    </div>
+    <div class="card-body">
+        <div class="chart-wrapper">
+            <canvas id="canvas-5"></canvas>
+        </div>
+    </div>
+</div>
+{{-- User Tasks Sheet --}}
+        </div>
+
+        <div class="tab-pane fade" id="v-pills-projects" role="tabpanel" aria-labelledby="v-pills-projects-tab">
+
+
+
+
+
+            <?php
+                // $projects = [];
+                $projects = $accountDetail->projects;
+            ?>
+{{-- User Projects Sheet --}}
+<div class="card">
+    <div class="card-header">
+        {{trans('cruds.project.fields.total_projects_time_spent')}}
+
+    </div>
+    <div class="card-body text-center">
+        <div class="chart-wrapper">
+            @php
+                $total_spend_project = 0;
+            @endphp
+            @forelse($projects as $project)
+                @php
+                    $tasks = $project->tasks;
+                    $timeProject = $project->TimeSheet;
+                @endphp
+
+                {{--get user time spend in project--}}
+                @forelse($timeProject as $timer)
+
+                    @if($timer->end_time && $timer->start_time)
+                        @php
+                            $total_spend_project += ($timer->end_time - $timer->start_time);
+                        @endphp
+                    @endif
+                @empty
+                @endforelse
+                {{--get user time spend in project--}}
+            @empty
+            @endforelse
+            <div  class="align-content-center p-4">
+
+                <h1>{{ get_time_spent_result($total_spend_project)  }}</h1>
+                <h6 class="align-content-center">{{trans('global.hours')}} : {{trans('global.minutes')}} : {{trans('global.seconds')}}</h6>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        {{trans('cruds.project.title')}} {{trans('global.reports')}}
+        <input type="hidden" id="started_count" value="{{$projects ? $projects->where('project_status','started')->count() : ''}}"/>
+        <input type="hidden" id="in_progress_count_project" value="{{$projects ? $projects->where('project_status','in_progress')->count() : ''}}"/>
+        <input type="hidden" id="on_hold_count" value="{{$projects ? $projects->where('project_status','on_hold')->count() : ''}}"/>
+        <input type="hidden" id="cancel_count" value="{{$projects ? $projects->where('project_status','cancel')->count() : ''}}"/>
+        <input type="hidden" id="completed_count_project" value="{{$projects ? $projects->where('project_status','completed')->count() : ''}}"/>
+        <input type="hidden" id="overdue_count" value="{{$projects ? $projects->where('project_status','overdue')->count() : ''}}"/>
+    </div>
+    <div class="card-body">
+        <div class="chart-wrapper">
+            <canvas id="canvas-5-project"></canvas>
+        </div>
+    </div>
+</div>
+{{-- User Projects Sheet --}}
+
+
+
+
 
         </div>
-        <div class="tab-pane fade" id="v-pills-projects" role="tabpanel" aria-labelledby="v-pills-projects-tab">...</div>
+
+        <div class="tab-pane fade" id="v-pills-activity" role="tabpanel" aria-labelledby="v-pills-activity-tab">
+
+            <div class="card">
+                <div class="card-header">
+                    All Activities
+                </div>
+                <div class="card-body">
+                    <table class="table table-striped">
+                        <thead>
+                          <tr>
+                            <th scope="col">Date</th>
+                            <th scope="col">Module</th>
+                            <th scope="col">Activity</th>
+                            <th scope="col"></th>
+                            <th scope="col"></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                                $userActivities = Modules\ProjectManagement\Entities\Activity::where('user_id', $accountDetail->user_id)->get();
+                                ?>
+                            @forelse ($userActivities as $item)
+
+                            <tr>
+                                <th scope="row">{{ date("Y-m-d g:i a", strtotime($item->activity_date)) }}</th>
+                                <td>{{$accountDetail->fullname}}</td>
+                                <td class="text-capitalize">
+                                    {{trans('cruds.'.$item->module.'.title')}}
+                                </td>
+                                <td colspan="2">{{$item['activity_'.app()->getLocale()]}}
+                                    @if ($item->module == 'leaveApplication')
+                                    <?php
+                                        $userLeave = Modules\HR\Entities\LeaveApplication::findOrfail($item->module_field_id);
+                                    ?>
+                                        <span class="font-weight-bold"> {{$accountDetail->fullname}} -> {{$item->value1_en}} <span>
+                                        {{$userLeave->leave_start_date}} {{($userLeave->leave_end_date != $userLeave->leave_start_date) ? ' To '. $userLeave->leave_end_date : ''}}
+                                    @endif
+                                    @if ($item->module == 'project')
+                                        <?php
+                                            $userProject = Modules\ProjectManagement\Entities\Project::findOrFail($item->module_field_id);
+                                        ?>
+                                        <span class="font-weight-bold"> {{$userProject['name_'.app()->getLocale()]}} <span>
+                                    @endif
+                                </td>
+                            </tr>
+                            @empty
+
+                            @endforelse
+                        </tbody>
+                      </table>
+                </div>
+              </div>
+
+        </div>
       </div>
     </div>
   </div>
@@ -196,6 +489,8 @@
 @endsection
 
 @section('scripts')
+<script src="{{asset('js/Chart.min.js')}}"></script>
+
 <script>
     $('.error-msg .alert-danger').css('display', 'none');
 
@@ -236,7 +531,6 @@
                 }else {
                         $('.error-msg .alert-danger').css('display', 'block');
                         $('.error-msg .alert-danger').html(``);
-                        // console.log(data);
                         if (typeof data == 'object') {
                             $.each( data, function( index, value ){
                                 value.forEach(err => {
@@ -251,4 +545,99 @@
         })
     })
 </script>
+{{-- tasks Report --}}
+<script>
+    var not_started_count       = document.getElementById("not_started_count").value;
+    var in_progress_count   = document.getElementById("in_progress_count").value;
+    var completed_count       = document.getElementById("completed_count").value;
+    var deffered_count        = document.getElementById("deffered_count").value;
+    var waiting_someone_count   = document.getElementById("waiting_someone_count").value;
+    var pieData = {
+        labels: [
+            '{{trans('cruds.status.not_started')}}',
+            '{{trans('cruds.status.in_progress')}}',
+            '{{trans('cruds.status.completed')}}',
+            '{{trans('cruds.status.deffered')}}',
+            '{{trans('cruds.status.waiting_someone')}}',
+        ],
+        datasets: [{
+            data: [not_started_count,in_progress_count,completed_count,deffered_count,waiting_someone_count],
+            backgroundColor: [
+                '#0d86ff',
+                '#FFCE56',
+                '#1c7430',
+                '#94171c',
+                '#000000',
+            ],
+            hoverBackgroundColor: [
+                '#0d86ff',
+                '#FFCE56',
+                '#1c7430',
+                '#94171c',
+                '#000000',
+            ]
+        }]
+    };
+    var ctx = document.getElementById('canvas-5');
+    var chart = new Chart(ctx, {
+        type: 'pie',
+        data: pieData,
+        options: {
+            responsive: true
+        }
+    });
+</script>
+{{-- tasks Report --}}
+
+
+
+{{-- Projects Report --}}
+    <script>
+        var started_count_project       = document.getElementById("started_count").value;
+        var in_progress_count_project   = document.getElementById("in_progress_count_project").value;
+        var on_hold_count_project       = document.getElementById("on_hold_count").value;
+        var cancel_count_project        = document.getElementById("cancel_count").value;
+        var completed_count_project     = document.getElementById("completed_count_project").value;
+        var overdue_count_project       = document.getElementById("overdue_count").value;
+
+        var pieData_project = {
+            labels: [
+                '{{trans('cruds.status.started')}}',
+                '{{trans('cruds.status.in_progress')}}',
+                '{{trans('cruds.status.on_hold')}}',
+                '{{trans('cruds.status.cancel')}}',
+                '{{trans('cruds.status.completed')}}',
+                '{{trans('cruds.status.overdue')}}',
+            ],
+            datasets: [{
+                data: [started_count_project,in_progress_count_project,on_hold_count_project,cancel_count_project,completed_count_project,overdue_count_project],
+                backgroundColor: [
+                    '#0d86ff',
+                    '#FFCE56',
+                    '#000000',
+                    '#94171c',
+                    '#1c7430',
+                    '#4c110f',
+                ],
+                hoverBackgroundColor: [
+                    '#0d86ff',
+                    '#FFCE56',
+                    '#000000',
+                    '#94171c',
+                    '#1c7430',
+                    '#4c110f',
+                ]
+            }]
+        };
+        var ctx_project = document.getElementById('canvas-5-project');
+        var chart_project = new Chart(ctx_project, {
+            type: 'pie',
+            data: pieData_project,
+            options: {
+                responsive: true
+            }
+        });
+    </script>
+{{-- Projects Report --}}
+
 @endsection
