@@ -3,6 +3,7 @@
 namespace Modules\Finance\Http\Controllers\admin;
 
 use App\Http\Controllers\Traits\MediaUploadingTrait;
+use App\Models\Transaction;
 use Gate;
 use App\Models\Transfer;
 use Modules\HR\Entities\Account;
@@ -110,11 +111,37 @@ class TransfersController extends Controller
             ]);
 
 
-        if ($request->input('attachments', false)) {
+            if ($request->input('attachments', false)) {
                 foreach ($request->attachments as $attachment) {
                     $transfer->addMedia(storage_path('tmp/uploads/' . $attachment))->toMediaCollection('attachments');
                 }
             }
+
+
+            Transaction::create([
+                'date'          => $request->date,
+                'account_id'    => $request->from_account,
+                'type'          => 'expense',
+                'name'          => 'transfer',
+                'amount'        => $request->amount,
+                'debit'         => $request->amount,
+                'total_balance' => $from_account->balance,
+                'added_by'      => auth()->user()->id,
+                'transfer_id'   => $transfer->id
+            ]);
+
+
+            Transaction::create([
+                'date'          => $request->date,
+                'account_id'    => $request->to_account,
+                'type'          => 'deposit',
+                'name'          => 'transfer',
+                'amount'        => $request->amount,
+                'credit'        => $request->amount,
+                'total_balance' => $to_account->balance,
+                'added_by'      => auth()->user()->id,
+                'transfer_id'   => $transfer->id
+            ]);
 
             return redirect()->route('finance.admin.transfers.index');
 
@@ -124,6 +151,7 @@ class TransfersController extends Controller
     public function edit($id)
     {
         abort_if(Gate::denies('transfer_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $transfer = Transfer::findOrFail($id);
         $accounts = Account::all();
         $payment_methods = PaymentMethod::all();
@@ -169,6 +197,11 @@ class TransfersController extends Controller
             }
         }
 
+        Transaction::where('transfer_id',$id)->update([
+            'date'          => $request->date,
+        ]);
+
+
         return redirect()->route('finance.admin.transfers.index');
     }
 
@@ -192,6 +225,8 @@ class TransfersController extends Controller
 
         $transfer->clearMediaCollection('attachments');
         $transfer->delete();
+
+        Transaction::where('transfer_id',$id)->delete();
         return back();
     }
 
@@ -216,6 +251,7 @@ class TransfersController extends Controller
 
             $transfer->clearMediaCollection('attachments');
             $transfer->delete();
+            Transaction::where('transfer_id',$id)->delete();
 
         }
 

@@ -82,4 +82,9 @@ class Payment extends Model implements HasMedia
     {
         return $this->belongsTo(PaymentMethod::class, 'payment_method');
     }
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> c23dbcdab10da059d2eb3147cf9d18573d39b789
 }

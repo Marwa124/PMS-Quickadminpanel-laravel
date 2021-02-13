@@ -87,6 +87,7 @@
       'Share' => 'Jorenvh\\Share\\ShareFacade',
     ),
   ),
+<<<<<<< HEAD
   'laravel-notification-channels/twilio' => 
   array (
     'providers' => 
@@ -94,6 +95,8 @@
       0 => 'NotificationChannels\\Twilio\\TwilioProvider',
     ),
   ),
+=======
+>>>>>>> c23dbcdab10da059d2eb3147cf9d18573d39b789
   'laravel/dusk' => 
   array (
     'providers' => 

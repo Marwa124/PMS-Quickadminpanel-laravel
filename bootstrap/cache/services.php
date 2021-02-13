@@ -32,6 +32,7 @@
     28 => 'Fruitcake\\Cors\\CorsServiceProvider',
     29 => 'Intervention\\Image\\ImageServiceProvider',
     30 => 'Jorenvh\\Share\\Providers\\ShareServiceProvider',
+<<<<<<< HEAD
     31 => 'NotificationChannels\\Twilio\\TwilioProvider',
     32 => 'Laravel\\Dusk\\DuskServiceProvider',
     33 => 'Laravel\\Passport\\PassportServiceProvider',
@@ -60,6 +61,35 @@
     56 => 'App\\Providers\\ViewServiceProvider',
     57 => 'PDFAnony\\TCPDF\\AnonyServiceProvider',
     58 => 'Barryvdh\\TranslationManager\\ManagerServiceProvider',
+=======
+    31 => 'Laravel\\Dusk\\DuskServiceProvider',
+    32 => 'Laravel\\Passport\\PassportServiceProvider',
+    33 => 'Laravel\\Tinker\\TinkerServiceProvider',
+    34 => 'Laravel\\Ui\\UiServiceProvider',
+    35 => 'LaravelDaily\\LaravelCharts\\LaravelChartsServiceProvider',
+    36 => 'Livewire\\LivewireServiceProvider',
+    37 => 'Maatwebsite\\Excel\\ExcelServiceProvider',
+    38 => 'Carbon\\Laravel\\ServiceProvider',
+    39 => 'NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider',
+    40 => 'Nwidart\\Modules\\LaravelModulesServiceProvider',
+    41 => 'Spatie\\MediaLibrary\\MediaLibraryServiceProvider',
+    42 => 'Spatie\\Permission\\PermissionServiceProvider',
+    43 => 'Tanmuhittin\\LaravelGoogleTranslate\\LaravelGoogleTranslateServiceProvider',
+    44 => 'Yajra\\DataTables\\DataTablesServiceProvider',
+    45 => 'Meneses\\LaravelMpdf\\LaravelMpdfServiceProvider',
+    46 => 'App\\Providers\\AppServiceProvider',
+    47 => 'App\\Providers\\AuthServiceProvider',
+    48 => 'App\\Providers\\EventServiceProvider',
+    49 => 'App\\Providers\\RouteServiceProvider',
+    50 => 'Jorenvh\\Share\\Providers\\ShareServiceProvider',
+    51 => 'Barryvdh\\DomPDF\\ServiceProvider',
+    52 => 'Spatie\\Permission\\PermissionServiceProvider',
+    53 => 'LaravelFCM\\FCMServiceProvider',
+    54 => 'Maatwebsite\\Excel\\ExcelServiceProvider',
+    55 => 'App\\Providers\\ViewServiceProvider',
+    56 => 'PDFAnony\\TCPDF\\AnonyServiceProvider',
+    57 => 'Barryvdh\\TranslationManager\\ManagerServiceProvider',
+>>>>>>> c23dbcdab10da059d2eb3147cf9d18573d39b789
   ),
   'eager' => 
   array (
@@ -216,9 +246,12 @@
     'translation.loader' => 'Illuminate\\Translation\\TranslationServiceProvider',
     'validator' => 'Illuminate\\Validation\\ValidationServiceProvider',
     'validation.presence' => 'Illuminate\\Validation\\ValidationServiceProvider',
+<<<<<<< HEAD
     'NotificationChannels\\Twilio\\TwilioConfig' => 'NotificationChannels\\Twilio\\TwilioProvider',
     'Twilio\\Rest\\Client' => 'NotificationChannels\\Twilio\\TwilioProvider',
     'NotificationChannels\\Twilio\\TwilioChannel' => 'NotificationChannels\\Twilio\\TwilioProvider',
+=======
+>>>>>>> c23dbcdab10da059d2eb3147cf9d18573d39b789
     'command.tinker' => 'Laravel\\Tinker\\TinkerServiceProvider',
   ),
   'when' => 
@@ -259,9 +292,12 @@
     'Illuminate\\Validation\\ValidationServiceProvider' => 
     array (
     ),
+<<<<<<< HEAD
     'NotificationChannels\\Twilio\\TwilioProvider' => 
     array (
     ),
+=======
+>>>>>>> c23dbcdab10da059d2eb3147cf9d18573d39b789
     'Laravel\\Tinker\\TinkerServiceProvider' => 
     array (
     ),
