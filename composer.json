@@ -28,6 +28,7 @@
         "laraveldaily/laravel-charts": "^0.1.14",
         "livewire/livewire": "^2.3",
         "maatwebsite/excel": "^3.1",
+        "nexmo/client": "^2.4",
         "nwidart/laravel-modules": "^7.2",
         "pdfanonymous/phpanonymous": "dev-master",
         "plivo/plivo-php": "^4.17",

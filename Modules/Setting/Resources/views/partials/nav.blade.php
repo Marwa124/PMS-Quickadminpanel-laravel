@@ -32,6 +32,11 @@
             aria-selected="true"><i class="fa fa-fw fa-envelope"></i>@lang('settings.sms_settings')  
         
         </a>
+        <a class="nav-link email-templates" id="v-pills-details-tab" data-toggle="pill" href="#v-pills-email-templates"
+            role="tab" aria-controls="v-pills-details"
+            aria-selected="true"><i class="fa fa-fw fa-envelope"></i>@lang('settings.email_templates')  
+        
+        </a>
 
 
     </div>

@@ -10,6 +10,7 @@ use App\Models\Country;
 use App\Models\Currency;
 use App\Models\Language;
 use Illuminate\Http\Request;
+use App\Models\EmailTemplate;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
@@ -42,13 +43,7 @@ class SettingController extends Controller
             $default_tax = !is_numeric(settings('default_tax')) ? unserialize(settings('default_tax')) : settings('default_tax');
         }
 
-        $gateways = get_gateways();
         $triggers = get_available_triggers();
-        $total_gateways = count($gateways);
-
-        // dd($gateways, $triggers, $total_gateways);
-
-
 
 
         return view(
@@ -62,9 +57,7 @@ class SettingController extends Controller
                 'taxes',
                 'default_tax',
                 'decimal',
-                'gateways',
                 'triggers',
-                'total_gateways'
 
             )
         );
@@ -604,6 +597,251 @@ class SettingController extends Controller
     public function save_sms(Request $request)
     {
 
-        dd(request()->all());
+        try {
+
+            if ($request->has('sms_status')) {
+
+                if ($request->sms_status == 'twilio') {
+                    $validator = Validator::make($request->all(), [
+
+                        'twilio_account_sid'  => 'required|string',
+                        'twilio_token_auth'   => 'required|string',
+                        'twilio_phone_number' => 'required|string|regex:/^([0-9\s\-\+\(\)]*)$/|min:5|max:20',
+
+                    ], [
+
+                        'twilio_account_sid.required'  => trans('settings.twilio_account_sid_required'),
+                        'twilio_account_sid.string'    => trans('settings.twilio_account_sid_string'),
+
+                        'twilio_token_auth.required'  => trans('settings.twilio_token_auth_required'),
+                        'twilio_token_auth.string'    => trans('settings.twilio_token_auth_string'),
+
+                        'twilio_phone_number.required'  => trans('settings.twilio_phone_number_required'),
+                        'twilio_phone_number.string'    => trans('settings.twilio_phone_number_string'),
+
+                        'twilio_phone_number.regex'     => trans('settings.twilio_phone_number_regex'),
+
+
+                    ]);
+
+                    if ($validator->fails()) {
+
+                        return back()->withInput()->with(flash($validator->errors()->all()[0], 'danger'))->with('pill', 'sms-settings');
+                    }
+
+                    Config::updateorCreate(
+                        ['key' => 'twilio_account_sid'],
+                        ['value' => request('twilio_account_sid')]
+                    );
+
+                    Config::updateorCreate(
+                        ['key' => 'twilio_phone_number'],
+                        ['value' => request('twilio_phone_number')]
+                    );
+                    Config::updateorCreate(
+                        ['key' => 'twilio_token_auth'],
+                        ['value' => request('twilio_token_auth')]
+                    );
+                }
+
+                if ($request->sms_status == 'nexmo') {
+
+                    $validator = Validator::make($request->all(), [
+
+                        'nexmo_account_sid'  => 'required|string',
+                        'nexmo_token_auth'   => 'required|string',
+                        'nexmo_phone_number' => 'required|string|regex:/^([0-9\s\-\+\(\)]*)$/|min:5|max:20',
+
+                    ], [
+
+                        'nexmo_account_sid.required'  => trans('settings.nexmo_account_sid_required'),
+                        'nexmo_account_sid.string'    => trans('settings.nexmo_account_sid_string'),
+
+                        'nexmo_token_auth.required'  => trans('settings.nexmo_token_auth_required'),
+                        'nexmo_token_auth.string'    => trans('settings.nexmo_token_auth_string'),
+
+                        'nexmo_phone_number.required'  => trans('settings.nexmo_phone_number_required'),
+                        'nexmo_phone_number.string'    => trans('settings.nexmo_phone_number_string'),
+
+
+
+                    ]);
+
+                    if ($validator->fails()) {
+
+                        return back()->withInput()->with(flash($validator->errors()->all()[0], 'danger'))->with('pill', 'sms-settings');
+                    }
+
+                    Config::updateorCreate(
+                        ['key' => 'nexmo_account_sid'],
+                        ['value' => request('nexmo_account_sid')]
+                    );
+
+                    Config::updateorCreate(
+                        ['key' => 'nexmo_phone_number'],
+                        ['value' => request('nexmo_phone_number')]
+                    );
+                    Config::updateorCreate(
+                        ['key' => 'nexmo_token_auth'],
+                        ['value' => request('nexmo_token_auth')]
+                    );
+                }
+            }
+
+
+            $validator = Validator::make($request->all(), [
+
+                'sms_invoice_reminder'              => 'sometimes|nullable|string',
+                'sms_invoice_overdue'               => 'sometimes|nullable|string',
+                'sms_payment_recorded'              => 'sometimes|nullable|string',
+                'sms_estimate_exp_reminder'         => 'sometimes|nullable|string',
+                'sms_proposal_exp_reminder'         => 'sometimes|nullable|string',
+                'sms_purchase_confirmation'         => 'sometimes|nullable|string',
+                'sms_purchase_payment_confirmation' => 'sometimes|nullable|string',
+                'sms_return_stock'                  => 'sometimes|nullable|string',
+                'sms_transaction_record'            => 'sometimes|nullable|string',
+                'sms_staff_reminder'                => 'sometimes|nullable|string',
+            ], [
+                'sms_invoice_reminder.string'              => trans('settings.sms_invoice_reminder_string'),
+                'sms_invoice_overdue.string'               => trans('settings.sms_invoice_overdue_string'),
+                'sms_payment_recorded.string'              => trans('settings.sms_payment_recorded_string'),
+                'sms_estimate_exp_reminder.string'         => trans('settings.sms_estimate_exp_reminder_string'),
+                'sms_proposal_exp_reminder.string'         => trans('settings.sms_proposal_exp_reminder_string'),
+                'sms_purchase_confirmation.string'         => trans('settings.sms_purchase_confirmation_string'),
+                'sms_purchase_payment_confirmation.string' => trans('settings.sms_purchase_payment_confirmation_string'),
+                'sms_return_stock.string'                  => trans('settings.sms_return_stock_string'),
+                'sms_transaction_record.string'            => trans('settings.sms_transaction_record_string'),
+                'sms_staff_reminder.string'                => trans('settings.sms_staff_reminder_string'),
+            ]);
+
+            if ($validator->fails()) {
+
+                return back()->withInput()->with(flash($validator->errors()->all()[0], 'danger'))->with('pill', 'sms-settings');
+            }
+
+
+            Config::updateorCreate(
+                ['key' => 'sms_invoice_reminder'],
+                ['value' => request('sms_invoice_reminder')]
+            );
+
+            Config::updateorCreate(
+                ['key' => 'sms_invoice_overdue'],
+                ['value' => request('sms_invoice_overdue')]
+            );
+            Config::updateorCreate(
+                ['key' => 'sms_payment_recorded'],
+                ['value' => request('sms_payment_recorded')]
+            );
+
+            Config::updateorCreate(
+                ['key' => 'sms_estimate_exp_reminder'],
+                ['value' => request('sms_estimate_exp_reminder')]
+            );
+
+            Config::updateorCreate(
+                ['key' => 'sms_proposal_exp_reminder'],
+                ['value' => request('sms_proposal_exp_reminder')]
+            );
+
+
+            Config::updateorCreate(
+                ['key' => 'sms_purchase_confirmation'],
+                ['value' => request('sms_purchase_confirmation')]
+            );
+            Config::updateorCreate(
+                ['key' => 'sms_purchase_payment_confirmation'],
+                ['value' => request('sms_purchase_payment_confirmation')]
+            );
+
+            Config::updateorCreate(
+                ['key' => 'sms_return_stock'],
+                ['value' => request('sms_return_stock')]
+            );
+
+            Config::updateorCreate(
+                ['key' => 'sms_transaction_record'],
+                ['value' => request('sms_transaction_record')]
+            );
+            Config::updateorCreate(
+                ['key' => 'sms_staff_reminder'],
+                ['value' => request('sms_staff_reminder')]
+            );
+            Config::updateorCreate(
+                ['key' => 'sms_status'],
+                ['value' => request('sms_status')]
+            );
+
+            return back()->with(flash(trans('settings.sms_updated'), 'success'))->with('pill', 'sms-settings');
+        } catch (\Exception $e) {
+            dd($e->getMessage());
+        }
+    }
+
+
+    public function test_sms(Request $request)
+    {
+
+        $validator = Validator::make($request->all(), [
+
+            'msg'                   => 'required|string',
+            'type'                  => 'required|string|in:twilio,nexmo',
+            'phone'                 => 'required|string|regex:/^([0-9\s\-\+\(\)]*)$/',
+
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->errors()->all()[0]], 400);
+        }
+
+        try {
+            if (request('type') == 'twilio') {
+                // '+2001123408535'
+                sendMsgByTwilio(request('msg'), request('phone'));
+            } else if (request('type') == 'nexmo') {
+
+                sendMsgByNexmo(request('msg'), request('phone'));
+            }
+
+            return response()->json(['message' => trans('settings.message_sent')], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' =>  $e->getMessage() . 'Something went Wrong'], 400);
+        }
+    }
+
+
+    function update_templates(Request $request)
+    {
+
+
+        try {
+
+
+            $validator = Validator::make($request->all(), [
+                'email_group'     => 'required|string|exists:email_templates,email_group',
+                'subject'  => 'required|string',
+                'email_template'     => 'required|string'
+            ]);
+
+
+            if ($validator->fails()) {
+                return back()->with(flash($validator->errors()->all()[0], 'danger'))->with('pill', 'email-templates');
+            }
+
+            $template = EmailTemplate::where('email_group', $request->email_group)->first();
+            if (!$template) {
+
+                abort(404);
+            }
+
+
+
+            $template->update(['subject' => $request->subject, 'template_body' => $request->email_template]);
+
+
+            return back()->with(flash(trans('settings.template_updated'), 'success'))->with('pill', 'email-templates')->with('template', request('email_group'))->with('tab', request('tab'));
+        } catch (\Exception $e) {
+            return back()->with(flash('Something went Wrong', 'danger'))->with('pill', 'email-templates');
+        }
     }
 }

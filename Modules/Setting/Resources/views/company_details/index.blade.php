@@ -1,4 +1,6 @@
 @extends('layouts.admin')
+
+
 <style>
 
 
@@ -57,6 +59,7 @@ body{
 @section('styles')
 <script src="{{ asset('js/toast.min.js') }}"></script>
 <link rel="stylesheet" type="text/css" href="{{ asset('css/toast.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('css/animated.min.css') }}">
 @endsection
 @section('content')
     <div class="row">
@@ -85,6 +88,7 @@ body{
                 @include('setting::tabs.company_system')
                 @include('setting::tabs.email_settings')
                 @include('setting::tabs.sms_settings')
+                @include('setting::tabs.email_templates')
 
 
 
@@ -98,7 +102,7 @@ body{
 
 @if(session()->has('pill'))
 <script>
-    console.log('here')
+    
 window.onload = (event) => {
 
    
@@ -122,6 +126,9 @@ window.onload = (event) => {
     $('.nav-pills .'+pill).attr('aria-selected',true)
     $('.nav-pills .'+pill).addClass('active')
     $('.tab-content .'+pill).addClass('active').addClass('show')
+
+     
+
 };
 
 
@@ -134,18 +141,56 @@ window.onload = (event) => {
 
 
 
-<script>
 
-    function slideToggle(id){
-     
-    if(document.getElementById( id).style.display == '' ){
-        document.getElementById( id).style.display ='none';
+
+<script >
+
+
+function send_test_sms(type) {
+    $.ajax({
+        url: '{{ route("admin.sms.test") }}',
+        type: "POST",
+        data: {
+            _token: "{{ csrf_token() }}",
+            type: type,
+            phone: document.querySelector("." + type + "-test-phone").value,
+            msg: document.querySelector("." + type + "-test-message").value,
+        },
+        success: function (data) {
+            $("#sms_test_response").text(data.message);
+        },
+        error: function (data) {
+            $("#sms_test_response").text(data.responseJSON.message);
+        },
+    });
+}
+
+function check_single(name, uncheck) {
+    if (document.querySelector("." + name).checked == true) {
+        document.querySelector("." + name).checked = true;
+        document.querySelector("." + uncheck).checked = false;
+    }
+
+    if (document.querySelector("." + name).checked == false) {
+        document.querySelector("." + name).checked = false;
+        document.querySelector("." + uncheck).checked = false;
+    }
+}
+
+function slideToggle(id) {
+    if (document.getElementById(id).style.display == "") {
+        document.getElementById(id).style.display = "none";
     } else {
-        document.getElementById( id).style.display ='';
-    
+        document.getElementById(id).style.display = "";
     }
-    
-    }
-    </script>
+}
+
+</script>
+
+
+
+{{-- @section('scripts') --}}
+
+
 
 

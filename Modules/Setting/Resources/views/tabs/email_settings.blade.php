@@ -339,17 +339,7 @@ aria-labelledby="v-pills-details-tab">
 </div>
 
 @section('scripts')
-{{-- <script>
 
- function show_postmark(){
-    if(document.querySelector('#post_mark:checked') !== null){
-        document.querySelector('#postmark_config').style.display =''
-
-    }else{
-        document.querySelector('#postmark_config').style.display ='none'
-    }
- }
-</script> --}}
 
 <script>
       $('.mailgunclick').click(function(){

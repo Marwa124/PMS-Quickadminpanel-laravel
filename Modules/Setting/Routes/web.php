@@ -36,27 +36,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
     Route::post('save_mail_mailgun', 'SettingController@save_mail_mailgun')->name('admin.mail_mailgun.store');
     Route::post('send_test_mail', 'SettingController@send_test_mail')->name('admin.test_mail');
     Route::post('save_sms', 'SettingController@save_sms')->name('admin.save_sms');
-
-
-
-    Route::get('testMsg', function () {
-
-        auth()->user()->notify(new TwilioNotification());
-    });
-
-    Route::get('testplivo', function () {
-
-
-
-        $client = new RestClient("MAMWFMNJAWNMI1N2UWNM", "NGI2Mzc4MDhmOTA3ZGQ2OGYyZmMyYjdjYzU0YjFh");
-
-
-        $message_created = $client->messages->create(
-            '+13043559141',
-            ['+2001006143107'],
-            'Hello, world!'
-        );
-
-        // auth()->user()->notify(new PlivoNotification());
-    });
+    Route::post('test-sms', 'SettingController@test_sms')->name('admin.sms.test');
+    Route::post('update_templates', 'SettingController@update_templates')->name('admin.update.templates');
 });

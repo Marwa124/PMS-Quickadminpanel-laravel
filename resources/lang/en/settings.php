@@ -76,7 +76,8 @@ return [
     'from_items' => 'From Items',
     'save' => 'Save',
     'close' => 'Close',
-
+    'nexmo_token_auth' => 'Nexmo Token Auth',
+    'nexmo_from_name' => 'From Name',
     'code_required'                  => 'Code  Is Required',
     'code_string'                    => 'Code  Should Be String',
 
@@ -205,14 +206,94 @@ return [
     'mail_sent' => 'Mail Sent Successfully',
 
     'sms_settings' => 'Sms Settings',
-    'account_sid' => 'Account SID',
-    'account_token' => 'Account Token',
-    'twilio_number' => 'Twilio Number',
+    'twilio_account_sid' => 'Twilio Account SID',
+    'twilio_account_token' => 'Twilio Account Token',
+    'twilio_phone_number' =>  'Twilio Number',
+
+    'nexmo_account_sid'     =>  'nexmo Account SID',
+    'nexmo_account_token'   =>  'nexmo Account Token',
+    'nexmo_phone_number'    =>  'nexmo Number',
+
+
     'active' => 'Active',
     'twilio' => 'Twilio',
-    'plivo' => 'Plivo',
+    'nexmo' => 'Nexmo',
     'only_one_active_sms_gateway' => 'Only One Active SMS Gateway Should Active ',
     'available_merge_fields' => 'Available Merge Fields',
+
+
+    'twilio_account_sid_required'   => 'Twilio Account SID is required',
+    'twilio_account_sid_string'     => 'Twilio Account SID Should Be required',
+
+    'twilio_token_auth_required'    => 'Twilio Token is required',
+    'twilio_token_auth_string'      => 'Twilio Token Should Be required',
+
+    'twilio_phone_number_required'  => 'Twilio Number is required',
+    'twilio_phone_number_string'    => 'Twilio Number Should Be String',
+
+    'twilio_phone_number_regex'     => 'Twilio Number Isn\'t Valid',
+
+
+    'nexmo_account_sid_required'  => 'nexmo Account SID is required',
+    'nexmo_account_sid_string'    => 'nexmo Account SID Should Be required',
+
+    'nexmo_token_auth_required'  => 'nexmo Token is required',
+    'nexmo_token_auth_string'    => 'nexmo Token Should Be required',
+
+    'nexmo_phone_number_required'  => 'nexmo Number is required',
+    'nexmo_phone_number_string'    => 'nexmo Number Should Be String',
+
+    'nexmo_phone_number_regex'     => 'nexmo Number Isn\'t Valid',
+
+
+    'sms_invoice_reminder_string'              => 'SMS Invoice Reminder Should Be String',
+    'sms_invoice_overdue_string'               => 'SMS Invoice Overdue Should Be String',
+    'sms_payment_recorded_string'              => 'SMS Payment Recorded Should Be String',
+    'sms_estimate_exp_reminder_string'         => 'SMS Estimate Exp Reminder Should Be String',
+    'sms_proposal_exp_reminder_string'         => 'SMS Proposal Exp Reminder Should Be String',
+    'sms_purchase_confirmation_string'         => 'SMS Purchase Confirmation Should Be String',
+    'sms_purchase_payment_confirmation_string' => 'SMS Purchase Payment Confirmation Should Be String',
+    'sms_return_stock_string'                  => 'SMS Return Stock Should Be String',
+    'sms_transaction_record_string'            => 'SMS Transaction Record Should Be String',
+    'sms_staff_reminder_string'                => 'SMS Staff Reminder Should Be String',
+
+    'sms_updated' => 'SMS Settings Updated',
+    'test_sms_config' => 'Test SMS Settings',
+    'test_message' => 'Test Message',
+    'send_test_sms' => 'Send Test SMS',
+    'phone' => 'Phone',
+    'email_templates'                 => 'Email Templates',
+    'account_emails' => 'Account Email',
+    'invoicing_emails' => 'Invoicing Emails',
+    'tasks_email' => 'Tasks Email',
+    'bugs_email' => 'bugs Email',
+    'project_emails' => 'Project Emails',
+    'ticketing_emails' => 'Ticketing Emails',
+    'hrm_emails' => 'Hrm Emails',
+    'extra_emails' => 'Extra Emails',
+    'waiting_approval_proposal' => 'Waiting approval Proposal',
+    'choose_template' => 'Choose Template',
+
+    'message_sent' => 'Message Sent Successfully',
+
+    'change_email' =>  'Change Email',
+    'forgot_password' =>  'Forgot Password',
+    'register_email' => 'Register Email',
+    'reset_password' =>  'Reset Password',
+    'welcome_mail' =>  'Welcome Mail',
+    'activate_account' => 'Activate Account',
+    'message' => 'Message',
+    'subject' => 'Subject',
+    'notfound' => 'Not Found',
+    'template_updated' => 'Template Updated',
+
+    'invoice_message' => 'Invoice Message',
+
+    'invoice_reminder' => 'Invoice Reminder',
+    'payment_email' => 'Payment Email',
+    'invoice_overdue_email' => 'Invoice Overdue Email',
+    'refund_confirmation' => 'Invoice Refund Confirmation'
+
 
 
 
