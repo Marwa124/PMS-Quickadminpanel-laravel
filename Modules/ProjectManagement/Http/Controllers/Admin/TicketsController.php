@@ -413,7 +413,7 @@ class TicketsController extends Controller
                 $validator = Validator::make($request->all(),[
                     'ticket_id'         => 'exists:tickets,id',
                     'replay_body'       => 'required',
-                    'replier_id'        => 'exists:users,id',
+//                    'replier_id'        => 'exists:users,id',
                     'ticket_replay_id'  => 'exists:ticket_replays,id',
                 ]);
                 if($validator->fails()) {

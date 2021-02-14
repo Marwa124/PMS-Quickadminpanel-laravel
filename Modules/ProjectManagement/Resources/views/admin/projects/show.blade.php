@@ -250,12 +250,12 @@
 
                 <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                     <a class="nav-link active" id="v-pills-details-tab" data-toggle="pill" href="#v-pills-details" role="tab" aria-controls="v-pills-details" aria-selected="true">{{trans('cruds.project.title_singular')}} {{trans('global.details')}}</a>
+                    <a class="nav-link" id="v-pills-comments-tab"       data-toggle="pill" href="#v-pills-comments" role="tab" aria-controls="v-pills-comments" aria-selected="false">{{ trans('cruds.comment.title') }}<span class="float-right">                     {{$project->comments_with_replies && $project->comments_with_replies()->count() > 0 ? $project->comments_with_replies()->count() : ''}}</span></a>
                     <a class="nav-link" id="v-pills-milestones-tab"     data-toggle="pill" href="#v-pills-milestones" role="tab" aria-controls="v-pills-milestones" aria-selected="false">{{ trans('cruds.milestone.title') }} <span class="float-right">              {{$project->milestones && $project->milestones()->count() > 0 ? $project->milestones()->count() : ''}}</span></a>
                     <a class="nav-link" id="v-pills-tasks-tab"          data-toggle="pill" href="#v-pills-tasks" role="tab" aria-controls="v-pills-tasks" aria-selected="false">{{ trans('cruds.task.title') }}<span class="float-right">                              {{$project->tasks && $project->tasks()->count() > 0 ? $project->tasks()->count() : ''}}</span></a>
                     <a class="nav-link" id="v-pills-bugs-tab"           data-toggle="pill" href="#v-pills-bugs" role="tab" aria-controls="v-pills-bugs" aria-selected="false">{{ trans('cruds.bug.title') }}<span class="float-right">                                 {{$project->bugs && $project->bugs()->count() > 0 ? $project->bugs()->count() : ''}}</span></a>
                     <a class="nav-link" id="v-pills-notes-tab"          data-toggle="pill" href="#v-pills-notes" role="tab" aria-controls="v-pills-notes" aria-selected="false">{{ trans('cruds.project.fields.notes') }}</a>
                     <a class="nav-link" id="v-pills-tickets-tab"        data-toggle="pill" href="#v-pills-tickets" role="tab" aria-controls="v-pills-tickets" aria-selected="false">{{ trans('cruds.ticket.title') }}<span class="float-right">                        {{$project->tickets && $project->tickets()->count() > 0 ? $project->tickets()->count() : ''}}</span></a>
-                    <a class="nav-link" id="v-pills-comments-tab" data-toggle="pill" href="#v-pills-comments" role="tab" aria-controls="v-pills-comments" aria-selected="false">{{ trans('cruds.comment.title') }}<span class="float-right">                           {{$project->comments && $project->comments()->count() > 0 ? $project->comments()->count() : ''}}</span></a>
                     <a class="nav-link" id="v-pills-invoices-tab"       data-toggle="pill" href="#v-pills-invoices" role="tab" aria-controls="v-pills-invoices" aria-selected="false">{{ trans('cruds.invoice.title') }}<span class="float-right">                     {{$project->invoices && $project->invoices()->count() > 0 ? $project->invoices()->count() : ''}}</span></a>
                     <a class="nav-link" id="v-pills-time_sheets-tab"    data-toggle="pill" href="#v-pills-time_sheets" role="tab" aria-controls="v-pills-time_sheets" aria-selected="false">{{ trans('cruds.project.fields.time_sheet') }}<span class="float-right">   {{$project->TimeSheet && $project->TimeSheet()->count() > 0 ? $project->TimeSheet()->count() : ''}}</span></a>
                     <a class="nav-link" id="v-pills-calendar-tab"       data-toggle="pill" href="#v-pills-calendar" role="tab" aria-controls="v-pills-calendar" aria-selected="false" onclick="generateCalendar()">{{ trans('cruds.tasksCalendar.title') }}</a>
@@ -1209,7 +1209,7 @@
 
                                 <div class="col-lg-12 col-md-12" style="padding-bottom: 20px;">
 
-                                    <label class="form-group " for="comment">{{ trans('cruds.ticket.fields.replay') }}</label>
+                                    <label class="form-group " for="comment">{{ trans('cruds.comment.title_singular') }}</label>
                                     <textarea class="form-control ckeditor {{ $errors->has('comment') ? 'is-invalid' : '' }}" name="comment" id="comment">{!! old('comment')!!}</textarea>
 
                                 </div>
@@ -1221,116 +1221,116 @@
                                 </div>
                             </form>
                             <hr class="col-md-11 ml-3">
-                            {{--@foreach($project->comments as $comment)--}}
-                                {{--<div class="col-md-12 ml-1" style="margin-bottom: 40px;">--}}
-                                    {{--<div class="col-md-12">--}}
-                                        {{--<img  class="img-thumbnail rounded-circle" title="{{ $replay->user->name }}" width="5%" src="{{ $replay->user->accountDetail ? str_replace('storage', 'storage', $replay->user->accountDetail->avatar->getUrl()) : asset('images/default.png') }}" alt="{{ $replay->user->accountDetail->fullname ?? '' }}">--}}
+                            @foreach($project->comments as $comment)
+                                <div class="col-md-12 ml-1" style="margin-bottom: 40px;">
+                                    <div class="col-md-12">
+                                        <img  class="img-thumbnail rounded-circle" title="{{ $comment->user && $comment->user->name ? $comment->user->name : '' }}" width="5%" src="{{ $comment->user && $comment->user->accountDetail ? str_replace('storage', 'storage', $comment->user && $comment->user->accountDetail ? $comment->user->accountDetail->avatar->getUrl() : '') : asset('images/default.png') }}" alt="{{ $comment->user && $comment->user->accountDetail && $comment->user->accountDetail->fullname ? $comment->user->accountDetail->fullname : '' }}">
 
-                                        {{--{{$replay->user->name}}--}}
+                                        {{$comment->user && $comment->user->name ? $comment->user->name  : ''}}
 
-                                        {{--<strong> {!! $replay->body !!}</strong>--}}
-                                        {{--<a id="add-replay" onclick="addReplay('{{$replay->id}}','{{$ticket->status}}')" type="button" class="mb-5" >--}}
-                                            {{--<i class="fa fa-reply"></i>--}}
-                                            {{--{{ trans('cruds.ticket.fields.replay') }}--}}
-                                        {{--</a>--}}
-                                    {{--</div>--}}
+                                        <strong> {!! $comment->comment !!}</strong>
+                                        <a id="add-replay" onclick="addReplay('{{$comment->id}}')" type="button" class="mb-5" >
+                                            <i class="fa fa-reply"></i>
+                                            {{ trans('cruds.ticket.fields.replay') }}
+                                        </a>
+                                    </div>
 
-                                    {{--                            replies of replay--}}
-                                    {{--@if(isset($replay->replay))--}}
+{{--                                                                replies of replay--}}
+                                    @if(isset($comment->replay))
 
-                                        {{--@foreach($replay->replay as $replay_of_replay)--}}
-                                            {{--<div class="col-md-10 ml-5">--}}
-                                                {{--<img  class="img-thumbnail rounded-circle" title="{{ $replay_of_replay->user->name }}" width="5%" src="{{ $replay_of_replay->user->accountDetail ? str_replace('storage', 'storage', $replay_of_replay->user->accountDetail->avatar->getUrl()) : asset('images/default.png') }}" alt="{{ $replay_of_replay->user->accountDetail->fullname ?? '' }}">--}}
+                                        @foreach($comment->replay as $comment_of_replay)
+                                            <div class="col-md-10 ml-5">
+                                                <img  class="img-thumbnail rounded-circle" title="{{ $comment->user && $comment->user->name ? $comment->user->name : '' }}" width="5%" src="{{ $comment->user && $comment->user->accountDetail ? str_replace('storage', 'storage', $comment->user && $comment->user->accountDetail ? $comment->user->accountDetail->avatar->getUrl() : '') : asset('images/default.png') }}" alt="{{ $comment->user && $comment->user->accountDetail && $comment->user->accountDetail->fullname ? $comment->user->accountDetail->fullname : '' }}">
 
-                                                {{--{{$replay_of_replay->user->name}}--}}
+                                                {{$comment_of_replay->user && $comment_of_replay->user->name ? $comment_of_replay->user->name : ''}}
 
-                                                {{--<strong> {!! $replay_of_replay->body !!}</strong>--}}
-                                            {{--</div>--}}
-                                            {{--<hr class="col-md-10">--}}
-                                        {{--@endforeach--}}
-                                    {{--@endif--}}
-
-
-                                    {{--<div class="replay" id="replay_{{$replay->id}}" style="display:{{$errors->has('replay_body') ? 'block': 'none'}}" >--}}
-
-                                        {{--<form action="{{ route('projectmanagement.admin.tickets.replay') }}" method="post" enctype="multipart/form-data">--}}
-                                            {{--@csrf--}}
-                                            {{--<input type="hidden" name="ticket_id" value="{{ $ticket->id }}">--}}
-                                            {{--<input type="hidden" name="ticket_replay_id" value="{{ $replay->id }}">--}}
-
-                                            {{--<div class="col-lg-12 col-md-12" style="padding-bottom: 20px;">--}}
-
-                                                {{--<label class="form-group " for="replay_body">{{ trans('cruds.ticket.fields.replay') }}</label>--}}
-                                                {{--<textarea class="form-control ckeditor {{ $errors->has('replay_body') ? 'is-invalid' : '' }}"  name="replay_body" id="replay_body">{!! old('replay_body')!!}</textarea>--}}
-
-                                            {{--</div>--}}
-
-                                            {{--<div class="col-12 pb-5">--}}
-                                                {{--<button type="submit" id="replaySubmitBtn" class="btn btn-primary float-right" >{{ trans('global.save') }}</button>--}}
-                                            {{--</div>--}}
-                                        {{--</form>--}}
-                                    {{--</div>--}}
+                                                <strong> {!! $comment_of_replay->comment !!}</strong>
+                                            </div>
+                                            <hr class="col-md-10">
+                                        @endforeach
+                                    @endif
 
 
-                                    {{--<hr class="col-md-11">--}}
+                                    <div class="replay" id="replay_{{$comment->id}}" style="display:{{$errors->has('replay_comment') ? 'block': 'none'}}" >
+
+                                        <form action="{{ route('projectmanagement.admin.projects.add_comment') }}" method="post" enctype="multipart/form-data">
+                                            @csrf
+                                            <input type="hidden" name="project_id" value="{{ $project->id }}">
+                                            <input type="hidden" name="comment_replay_id" value="{{ $comment->id }}">
+
+                                            <div class="col-lg-12 col-md-12" style="padding-bottom: 20px;">
+
+                                                <label class="form-group " for="replay_comment">{{ trans('cruds.ticket.fields.replay') }}</label>
+                                                <textarea class="form-control ckeditor {{ $errors->has('replay_comment') ? 'is-invalid' : '' }}"  name="replay_comment" id="replay_comment">{!! old('replay_comment')!!}</textarea>
+
+                                            </div>
+
+                                            <div class="col-12 pb-5">
+                                                <button type="submit" id="replaySubmitBtn" class="btn btn-primary float-right" >{{ trans('global.save') }}</button>
+                                            </div>
+                                        </form>
+                                    </div>
 
 
-
-                                {{--</div>--}}
-
-
-                                {{--                        @if(json_decode($replay->attachments))--}}
-                                {{--                            <div class="col-md-4 mb-2 ml-2">--}}
-                                {{--                                <button  type="button" data-toggle="modal" data-target="#replay_{{ $replay->id }}" class="btn btn-secondary" style="border-radius: 0;" >--}}
-                                {{--                                    @lang('locale.view_attachments')--}}
-                                {{--                                </button>--}}
-                                {{--                            </div>--}}
-                                {{--                        @endif--}}
+                                    <hr class="col-md-11">
 
 
 
+                                </div>
 
 
-                                {{--<div class="modal-info mr-1 mb-1 d-inline-block">--}}
-                                    {{--<div class="modal fade text-left" id="replay_attach_{{ $replay->id }}" tabindex="-1" role="dialog"--}}
-                                         {{--aria-labelledby="myModalLabel130" aria-hidden="true">--}}
-                                        {{--<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">--}}
-                                            {{--<div class="modal-content" style="height:500px;width:700px;">--}}
-                                                {{--<button type="button" class="close" data-dismiss="modal" aria-label="Close">--}}
-                                                    {{--<span aria-hidden="true">&times;</span>--}}
-                                                {{--</button>--}}
-                                                {{--<div class="modal-body">--}}
-                                                    {{--<div class="row">--}}
-                                                        {{--                                                @forelse(json_decode($replay->attachments) as $attach)--}}
+{{--                                                        @if(json_decode($comment->attachments))--}}
+{{--                                                            <div class="col-md-4 mb-2 ml-2">--}}
+{{--                                                                <button  type="button" data-toggle="modal" data-target="#replay_{{ $comment->id }}" class="btn btn-secondary" style="border-radius: 0;" >--}}
+{{--                                                                    @lang('locale.view_attachments')--}}
+{{--                                                                </button>--}}
+{{--                                                            </div>--}}
+{{--                                                        @endif--}}
 
 
-                                                        {{--                                                    <div class="col-md-4">--}}
-                                                        {{--                                                        <a  target="_blank" href="{{ asset('uploads/tickets/'.$attach) }}">--}}
-
-                                                        {{--                                                            @if(strpos($attach,'.pdf') !== false)--}}
-                                                        {{--                                                                <img style="width:150px;height:180px;" src="{{ asset('pdf.png') }}" alt="">--}}
-                                                        {{--                                                            @elseif(strpos($attach,'.xlsx') !== false || strpos($attach,'.xls') !== false || strpos($attach,'.csv') !== false || strpos($attach,'.txt') !== false)--}}
-                                                        {{--                                                                <img style="width:150px;height:180px;" src="{{ asset('excel.png') }}" alt="">--}}
-
-                                                        {{--                                                            @else--}}
-                                                        {{--                                                                <img style="width:150px;height:200px;" src="{{ asset('uploads/tickets/'.$attach) }}" alt="">--}}
-                                                        {{--                                                            @endif--}}
-                                                        {{--                                                        </a>--}}
-
-                                                        {{--                                                    </div>--}}
-                                                        {{--                                                @empty--}}
-                                                        {{--                                                    No Attachments found--}}
-                                                        {{--                                                @endforelse--}}
-                                                    {{--</div>--}}
-                                                {{--</div>--}}
-
-                                            {{--</div>--}}
-                                        {{--</div>--}}
-                                    {{--</div>--}}
-                                {{--</div>--}}
 
 
-                            {{--@endforeach--}}
+
+                                <div class="modal-info mr-1 mb-1 d-inline-block">
+                                    <div class="modal fade text-left" id="replay_attach_{{ $comment->id }}" tabindex="-1" role="dialog"
+                                         aria-labelledby="myModalLabel130" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+                                            <div class="modal-content" style="height:500px;width:700px;">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                <div class="modal-body">
+                                                    <div class="row">
+{{--                                                                                                        @forelse(json_decode($comment->attachments) as $attach)--}}
+
+
+{{--                                                                                                            <div class="col-md-4">--}}
+{{--                                                                                                                <a  target="_blank" href="{{ asset('uploads/projects/'.$attach) }}">--}}
+
+{{--                                                                                                                    @if(strpos($attach,'.pdf') !== false)--}}
+{{--                                                                                                                        <img style="width:150px;height:180px;" src="{{ asset('pdf.png') }}" alt="">--}}
+{{--                                                                                                                    @elseif(strpos($attach,'.xlsx') !== false || strpos($attach,'.xls') !== false || strpos($attach,'.csv') !== false || strpos($attach,'.txt') !== false)--}}
+{{--                                                                                                                        <img style="width:150px;height:180px;" src="{{ asset('excel.png') }}" alt="">--}}
+
+{{--                                                                                                                    @else--}}
+{{--                                                                                                                        <img style="width:150px;height:200px;" src="{{ asset('uploads/projects/'.$attach) }}" alt="">--}}
+{{--                                                                                                                    @endif--}}
+{{--                                                                                                                </a>--}}
+
+{{--                                                                                                            </div>--}}
+{{--                                                                                                        @empty--}}
+{{--                                                                                                            No Attachments found--}}
+{{--                                                                                                        @endforelse--}}
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            @endforeach
                         </div>
                     </div>
 
@@ -1661,19 +1661,18 @@
         })
 
         var i = 0;
-        function addReplay(replay_id,status) {
-            if(status != 'closed'){
+        function addReplay(replay_id) {
 
-                if (i % 2 == 0){
+            if (i % 2 == 0){
 
-                    document.getElementById("replay_"+replay_id).style.display = 'block';
-                    i++;
-                }else {
+                document.getElementById("replay_"+replay_id).style.display = 'block';
+                i++;
+            }else {
 
-                    document.getElementById("replay_"+replay_id).style.display = 'none';
-                    i++;
-                }
+                document.getElementById("replay_"+replay_id).style.display = 'none';
+                i++;
             }
+
         }
 
     </script>

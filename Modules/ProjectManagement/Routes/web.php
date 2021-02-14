@@ -46,6 +46,7 @@ Route::group(['prefix' => 'admin/projectmanagement', 'as' => 'projectmanagement.
     Route::get('tasks/{id}/clone','TaskController@task_clone')->name('tasks.clone');
     Route::post('tasks/{id}/force-destroy', 'TaskController@forceDelete')->name('tasks.forceDestroy');
     Route::get('tasks/reports/task_report', 'TaskController@task_report')->name('tasks.task_report');
+    Route::post('tasks/add_comment','TaskController@add_comment')->name('tasks.add_comment');
 
 
 
@@ -93,6 +94,7 @@ Route::group(['prefix' => 'admin/projectmanagement', 'as' => 'projectmanagement.
     Route::get('bugs/index/trashed','BugsController@index')->name('bugs.trashed.index');
     Route::post('bugs/{id}/force-destroy', 'BugsController@forceDelete')->name('bugs.forceDestroy');
     Route::get('bugs/reports/bug_report', 'BugsController@bug_report')->name('bugs.bug_report');
+    Route::post('bugs/add_comment','BugsController@add_comment')->name('bugs.add_comment');
 
     // Tickets
     Route::delete('tickets/destroy', 'TicketsController@massDestroy')->name('tickets.massDestroy');
@@ -134,6 +136,8 @@ Route::group(['prefix' => 'admin/projectmanagement', 'as' => 'projectmanagement.
     Route::get('work-trackings/{id}/assign_to','WorkTrackingController@getAssignTo')->name('work-trackings.getAssignTo');
     Route::post('work-trackings/assign_to','WorkTrackingController@storeAssignTo')->name('work-trackings.storeAssignTo');
     Route::post('work-trackings/{id}/force-destroy', 'WorkTrackingController@forceDelete')->name('work-trackings.forceDestroy');
+    Route::post('work-trackings/add_comment','WorkTrackingController@add_comment')->name('work-trackings.add_comment');
+
 
     // Time Work Types
 //    Route::delete('time-work-types/destroy', 'TimeWorkTypeController@massDestroy')->name('time-work-types.massDestroy');

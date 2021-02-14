@@ -184,6 +184,16 @@ class Task extends Model implements HasMedia
         return $this->hasMany(Activity::class,'module_field_id')->where('module','=','task')->orderBy('id','desc');
     }
 
+    public function comments()
+    {
+        return $this->hasMany(Comment::class,'module_field_id')->where('module','=','task')->where('comment_replay_id','=',null)->orderBy('id','desc');
+    }
+
+    public function comments_with_replies()
+    {
+        return $this->hasMany(Comment::class,'module_field_id')->where('module','=','task')->orderBy('id','desc');
+    }
+
     public function cloneTask($new_milestone=null,$newproject=null)
     {
 

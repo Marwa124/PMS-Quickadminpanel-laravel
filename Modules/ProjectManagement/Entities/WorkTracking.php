@@ -81,4 +81,14 @@ class WorkTracking extends Model
             'work_tracking_account_details_pivot','work_tracking_id','account_details_id');
 
     }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class,'module_field_id')->where('module','=','workTracking')->where('comment_replay_id','=',null)->orderBy('id','desc');
+    }
+
+    public function comments_with_replies()
+    {
+        return $this->hasMany(Comment::class,'module_field_id')->where('module','=','workTracking')->orderBy('id','desc');
+    }
 }

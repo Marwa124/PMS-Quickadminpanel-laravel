@@ -8,6 +8,7 @@ use App\Http\Controllers\Traits\MediaUploadingTrait;
 use App\Notifications\ProjectManagementNotification;
 use Illuminate\Support\Facades\DB;
 use Modules\HR\Entities\AccountDetail;
+use Modules\ProjectManagement\Entities\Comment;
 use Modules\ProjectManagement\Entities\Milestone;
 use Modules\ProjectManagement\Entities\TimeSheet;
 use Modules\ProjectManagement\Http\Controllers\Traits\ProjectManagementHelperTrait;
@@ -26,6 +27,7 @@ use Spatie\MediaLibrary\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ProjectManagementMail;
+use Validator;
 
 class TaskController extends Controller
 {
@@ -750,6 +752,63 @@ class TaskController extends Controller
 //        }
 //
 //        return abort(Response::HTTP_FORBIDDEN, trans('global.forbidden_page_not_allow_to_you'));
+    }
+
+    public function add_comment(Request $request)
+    {
+
+        try {
+            // Begin a transaction
+            DB::beginTransaction();
+
+            if ($request->comment_replay_id){
+
+                $validator = Validator::make($request->all(),[
+                    'task_id'           => 'exists:tasks,id',
+                    'replay_comment'    => 'required',
+                    'comment_replay_id' => 'exists:comments,id',
+                ]);
+                if($validator->fails()) {
+                    return redirect()->back()->with(flash(trans('cruds.messages.add_replay_failed'), 'danger'))->withErrors($validator)->withInput();
+                }
+                $comment = Comment::create([
+                    'module_field_id'       => $request->task_id,
+                    'comment'               => $request->replay_comment,
+                    'module'                => 'task',
+                    'user_id'               => auth()->user()->id,
+                    'comment_replay_id'     => $request->comment_replay_id,
+                ]);
+            }else{
+
+                $validator = Validator::make( $request->all(),[
+                    'task_id'           => 'exists:tasks,id',
+                    'comment'           => 'required',
+                ]);
+
+                if($validator->fails()) {
+                    return redirect()->back()->with(flash(trans('cruds.messages.add_replay_failed'), 'danger'))->withErrors($validator)->withInput();
+                }
+
+                $replay = Comment::create([
+                    'module_field_id'       => $request->task_id,
+                    'comment'               => $request->comment,
+                    'module'                => 'task',
+                    'user_id'               => auth()->user()->id,
+                ]);
+            }
+            // Commit the transaction
+            DB::commit();
+            return back()->with(flash(trans('cruds.messages.add_replay_success'), 'success'));
+
+        }catch(\Exception $e){
+            // An error occured; cancel the transaction...
+            DB::rollback();
+            return back()->with(flash(trans('cruds.messages.add_replay_failed'), 'danger'))->withInput();
+
+            // and throw the error again.
+            throw $e;
+        }
+//        return redirect()->back();
     }
 
 

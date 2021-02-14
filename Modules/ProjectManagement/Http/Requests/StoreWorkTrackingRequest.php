@@ -21,7 +21,7 @@ class StoreWorkTrackingRequest extends FormRequest
             'work_type_id'           => [
                 'required',
                 'integer',
-                'exists:work_trackings,id'
+                'exists:time_work_types,id'
             ],
             'subject_en'           => [
                 'required',

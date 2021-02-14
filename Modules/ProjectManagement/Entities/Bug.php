@@ -91,4 +91,14 @@ class Bug extends Model implements HasMedia
     {
         return $this->hasMany(Activity::class,'module_field_id')->where('module','=','bug')->orderBy('id','desc');
     }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class,'module_field_id')->where('module','=','bug')->where('comment_replay_id','=',null)->orderBy('id','desc');
+    }
+
+    public function comments_with_replies()
+    {
+        return $this->hasMany(Comment::class,'module_field_id')->where('module','=','bug')->orderBy('id','desc');
+    }
 }
