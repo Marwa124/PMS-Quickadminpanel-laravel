@@ -525,8 +525,10 @@ return [
 
 
 
-    'purchase_updated'                       => 'Proposal Updated Successfully',
+    'purchase_updated'                       => 'Purchase Updated Successfully',
     'purchase_notes_string'                  => 'Purchase Notes Should Be String',
+
+    'tickets_settings'    => 'Tickets & Leads Settings',
 
 
 

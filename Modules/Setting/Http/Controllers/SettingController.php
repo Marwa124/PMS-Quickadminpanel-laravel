@@ -6,12 +6,16 @@ use Gate;
 use App\Mail\TestMail;
 use App\Models\Config;
 use App\Models\Locale;
+use App\Models\Statue;
 use App\Models\Country;
 use App\Models\Currency;
 use App\Models\Language;
+use App\Models\Priority;
 use Illuminate\Http\Request;
 use App\Models\EmailTemplate;
+use Modules\Sales\Entities\Type;
 use Illuminate\Routing\Controller;
+use Modules\HR\Entities\Department;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Contracts\Support\Renderable;
@@ -1354,10 +1358,6 @@ class SettingController extends Controller
                 ['value' => request('return_stock_start_no')]
             );
 
-
-
-
-
             Config::updateorCreate(
                 ['key' => 'purchase_notes'],
                 ['value' => request('purchase_notes')]
@@ -1366,7 +1366,26 @@ class SettingController extends Controller
             return back()->with(flash(trans('settings.purchase_updated'), 'success'));
         } catch (\Exception $e) {
 
-            return back()->with(flash('something went wrong', 'danger'));
+            return back()->withInput()->with(flash('something went wrong', 'danger'));
         }
+    }
+
+
+
+
+
+
+
+
+
+
+    public function show_tickets()
+    {
+        $departments         = Department::all();
+        $status              = Statue::all();
+        $priorities          = Priority::all();
+        // $types               = Type::all();
+
+        return view('setting::settings.tickets', compact('departments', 'status', 'priorities'));
     }
 }

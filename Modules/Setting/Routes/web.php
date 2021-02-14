@@ -31,6 +31,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
 
     Route::get('settings/proposal', 'SettingController@show_proposal')->name('admin.settings.proposal.index');
     Route::get('settings/purchase', 'SettingController@show_purchase')->name('admin.settings.purchase.index');
+    Route::get('settings/tickets', 'SettingController@show_tickets')->name('admin.settings.tickets.index');
 
 
     Route::post('save_details', 'SettingController@save_details')->name('admin.details.store');
@@ -56,4 +57,5 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
 
     Route::post('update_proposal_settings', 'SettingController@update_proposal')->name('admin.proposal.settings.store');
     Route::post('update_purchase_settings', 'SettingController@update_purchase')->name('admin.purchase.settings.store');
+    Route::post('update_tickets_settings', 'SettingController@update_tickets')->name('admin.tickets.settings.store');
 });

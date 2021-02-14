@@ -68,6 +68,13 @@
         </a>
 
 
+        <a href="{{ route('admin.settings.tickets.index') }}"
+        class="nav-link {{ request()->is('admin/settings/tickets') ? 'active' : ''}}"        
+        aria-selected="true"><i class="fa fa-fw fa-leaf"></i>@lang('settings.tickets_settings')   
+    
+     </a>
+
+
 
 
 
