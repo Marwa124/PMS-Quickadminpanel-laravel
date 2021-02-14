@@ -19,7 +19,7 @@ class CreatePurchasesTable extends Migration
             $table->integer('created_by')->nullable();
             $table->date('purchase_date')->nullable();
             $table->date('due_date')->nullable();
-            $table->string('discount_type')->nullable();
+            $table->string('discount_type')->nullable()->default('before_tax');
             $table->float('discount_percent', 15, 2)->nullable();
             $table->float('adjustment', 15, 2)->nullable();
             $table->float('discount_total', 15, 2)->nullable();

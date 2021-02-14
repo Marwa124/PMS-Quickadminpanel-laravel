@@ -3675,6 +3675,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       spinnerLoad: false,
       selectedItem: '',
       totalTaxAdded: 0,
+      total: 0,
       form: new vform__WEBPACK_IMPORTED_MODULE_0__["Form"]({
         reference_no: '',
         supplier_id: '',
@@ -3697,13 +3698,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
           activeRowAddition: 'bg-secondary',
           taxes: []
         }],
-        sub_total: '',
-        discount_total: '',
-        discount_percent: '',
-        adjustment: '',
+        sub_total: 0,
+        discount_total: 0,
+        discount_percent: 0,
+        adjustment: 0,
         taxRate_total: {},
-        total: '',
-        totalTaxForm: 0,
+        total: 0,
+        // totalTaxForm: 0,
         removedTax: '',
         AddedTax: ''
       })
@@ -3714,6 +3715,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       var _this = this;
 
       this.spinnerLoad = true;
+      this.form.total = this.total;
+      console.log(this.form.total);
       this.form.post(this.urlPurchase).then(function (_ref) {
         var data = _ref.data;
         _this.spinnerLoad = false;
@@ -3724,14 +3727,20 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       var _this2 = this;
 
       axios.get(this.urlGetAccountDetails).then(function (response) {
-        var data = response.data.data;
-        var result = data.map(function (user) {
-          return {
-            user_id: user.id,
-            fullname: user.fullname
-          };
+        var data = response.data.data; // Fetch Unbanned Users
+
+        var result = [];
+        data.forEach(function (element) {
+          for (var _i = 0, _Object$entries = Object.entries(element); _i < _Object$entries.length; _i++) {
+            var x = _Object$entries[_i];
+            var item = {
+              user_id: x[0],
+              fullname: x[1]
+            };
+            result.push(item);
+          }
         });
-        _this2.users = result;
+        _this2.users = [].concat(result); // Fetch Unbanned Users
       });
     },
     getItems: function getItems() {
@@ -3852,51 +3861,39 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
         if (indexRow) {
           _this6.form.items[indexRow].taxes.map(function (tax) {
-            var count = 0;
-            var x = 0;
-
             if (tax.name || removedItem) {
-              while (count == 0) {
-                if (removedItem[0]) {
-                  if (typeof removedItem[0] == 'string' && _typeof(_this6.form.taxRate_total[removedItem[0]]) == 'object') {
-                    _this6.form.taxRate_total[removedItem[0]].value = 0;
-                    _this6.form.removedTax = '';
-                  } else {
-                    removedItem.forEach(function (element) {
-                      _this6.form.taxRate_total[element[0]].value = 0;
-                      _this6.form.removedTax = '';
-                    });
-                  }
+              if (removedItem[0]) {
+                if (typeof removedItem[0] == 'string' && _typeof(_this6.form.taxRate_total[removedItem[0]]) == 'object') {
+                  _this6.form.taxRate_total[removedItem[0]].value = 0;
+                  _this6.form.removedTax = '';
                 } else {
-                  for (var key in taxName) {
-                    if (key == tax.name) {
-                      taxName[tax.name] += _this6.form.items[indexRow].total * (tax.rate_percent / 100);
-                      _this6.form.taxRate_total[tax.name].value = parseFloat(taxName[tax.name].toFixed(2)); // this.totalTaxAdded += this.form.taxRate_total[tax.name].value;
-
-                      x += _this6.form.taxRate_total[tax.name].value;
-                      console.log(x, 'x');
-                    }
+                  removedItem.forEach(function (element) {
+                    _this6.form.taxRate_total[element[0]].value = 0;
+                    _this6.form.removedTax = '';
+                  });
+                }
+              } else {
+                for (var key in taxName) {
+                  if (key == tax.name) {
+                    taxName[tax.name] += _this6.form.items[indexRow].total * (tax.rate_percent / 100);
+                    _this6.form.taxRate_total[tax.name].value = parseFloat(taxName[tax.name].toFixed(2));
                   }
                 }
-
-                count++;
               }
             }
-
-            _this6.totalTaxAdded = x;
           });
         }
+      }); //////////////// Total Tax /////////////////////////
 
-        console.log('this.totalTaxAdded', _this6.totalTaxAdded);
+      var self = this;
+      this.totalTaxAdded = 0;
+      var total = Object.values(this.form.taxRate_total).map(function (t, v) {
+        self.totalTaxAdded += t.value;
       });
-      this.form.totalTaxForm = this.totalTaxAdded;
-      console.log(this.totalTaxAdded, 'TotalTaxForm', this.form.totalTaxForm);
-      this.form.total = this.form.sub_total + this.totalTaxAdded - this.form.discount_total + this.form.adjustment; //////////////// Total Tax /////////////////////////
-      // for(let [x, y] of Object.entries(this.form.taxRate_total)) {
-      //     if(y.value != 0)  this.form.total = this.form.sub_total + y.value - this.form.discount_total + this.form.adjustment
-      //     else if(y.value == 0) this.form.total = this.form.sub_total - this.form.discount_total + this.form.adjustment
-      // }
-      //////////////// Total Tax /////////////////////////
+      var numberFormat = parseFloat(this.form.adjustment);
+      console.log(_typeof(numberFormat)); //    this.total = parseFloat(this.form.sub_total + this.totalTaxAdded - this.form.discount_total) 
+
+      this.total = parseFloat((this.form.sub_total + this.totalTaxAdded + numberFormat + this.form.discount_total).toFixed(2)); //////////////// Total Tax /////////////////////////
     }
   },
   watch: {
@@ -3917,20 +3914,25 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
             return subTotal;
           }, {});
-          form.sub_total = result;
-          form.discount_total = -parseFloat((form.discount_percent * subTotal * (1 / 100)).toFixed(2));
-          this.calculateTotalTaxes();
-          form.total = form.sub_total + form.totalTaxForm - form.discount_total + form.adjustment;
-          console.log(form.sub_total, form.totalTaxForm, form.discount_total, form.adjustment); // //////////////// Total Tax /////////////////////////
-          //     for(let [x, y] of Object.entries(form.taxRate_total)) {
-          //         if(y.value != 0)  form.total = form.sub_total + y.value - form.discount_total + form.adjustment
-          //         else if(y.value == 0) form.total = form.sub_total - form.discount_total + form.adjustment
-          //     }
-          // //////////////// Total Tax /////////////////////////
+          form.sub_total = result; // form.discount_total = -parseFloat((form.discount_percent * subTotal * (1/100)).toFixed(2))
+
+          if (form.discount_type == "after_tax") {
+            form.discount_total = -parseFloat((form.discount_percent * (subTotal + this.total) * (1 / 100)).toFixed(2));
+          } else {
+            form.discount_total = -parseFloat((form.discount_percent * subTotal * (1 / 100)).toFixed(2));
+          }
+
+          this.calculateTotalTaxes(); //             console.log(this.totalTaxAdded, this.total);
+          // this.total = form.sub_total + parseFloat(this.totalTaxAdded) + parseFloat(form.adjustment) - form.discount_total
+          // form.total = form.sub_total + form.totalTaxForm - form.discount_total + form.adjustment
+          // console.log(form.sub_total , form.totalTaxForm , form.discount_total , form.adjustment);
         }
       },
       deep: true
-    }
+    } // total: function(val) {
+    //     console.log(val);
+    // },
+
   },
   mounted: function mounted() {
     _plugins_i18n__WEBPACK_IMPORTED_MODULE_1__["default"].locale = this.langKey;
@@ -72332,22 +72334,28 @@ var render = function() {
                 })
               ]),
               _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "col" },
-                [
-                  _c("vue-editor", {
-                    model: {
+              _c("div", { staticClass: "col" }, [
+                _c("textarea", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
                       value: _vm.form.notes,
-                      callback: function($$v) {
-                        _vm.$set(_vm.form, "notes", $$v)
-                      },
                       expression: "form.notes"
                     }
-                  })
-                ],
-                1
-              )
+                  ],
+                  staticClass: "form-control",
+                  domProps: { value: _vm.form.notes },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.form, "notes", $event.target.value)
+                    }
+                  }
+                })
+              ])
             ])
           ])
         ]),
@@ -72791,7 +72799,7 @@ var render = function() {
                           }
                         ],
                         staticClass: "form-control ml-2",
-                        attrs: { type: "number", step: "0.01", min: "0.01" },
+                        attrs: { type: "number", step: "0.01", min: "0" },
                         domProps: { value: _vm.form.discount_percent },
                         on: {
                           input: function($event) {
@@ -72990,19 +72998,19 @@ var render = function() {
                         {
                           name: "model",
                           rawName: "v-model",
-                          value: _vm.form.total,
-                          expression: "form.total"
+                          value: _vm.total,
+                          expression: "total"
                         }
                       ],
                       staticClass: "form-control input-transparent text-right",
                       attrs: { type: "number", disabled: "", step: "0.01" },
-                      domProps: { value: _vm.form.total },
+                      domProps: { value: _vm.total },
                       on: {
                         input: function($event) {
                           if ($event.target.composing) {
                             return
                           }
-                          _vm.$set(_vm.form, "total", $event.target.value)
+                          _vm.total = $event.target.value
                         }
                       }
                     })
@@ -88550,8 +88558,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_i18n__WEBPACK_IMPORTED_MODULE
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! F:\laragon\www\01-Test-Permission-PMS\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! F:\laragon\www\01-Test-Permission-PMS\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\laragon\www\01-Test-Permission-PMS\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\laragon\www\01-Test-Permission-PMS\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

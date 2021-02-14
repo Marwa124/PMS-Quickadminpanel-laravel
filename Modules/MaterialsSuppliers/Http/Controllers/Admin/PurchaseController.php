@@ -46,12 +46,7 @@ class PurchaseController extends Controller
 
     public function store(StorePurchaseRequest $request, PurchaseRepository $purchase)
     {
-        // dd($purchase->createPurchase($request));
         $purchase->createPurchase($request);
-
-        // if ($media = $request->input('ck-media', false)) {
-        //     Media::whereIn('id', $media)->update(['model_id' => $purchase->id]);
-        // }
 
         return response()->json(Response::HTTP_CREATED);
     }

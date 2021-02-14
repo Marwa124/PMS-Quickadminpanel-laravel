@@ -87,7 +87,7 @@ class ProposalsItem extends Model implements HasMedia
     }
 
     public function purchaseTaxes() {
-        return $this->belongsToMany(TaxRate::class, 'tax_id');
+        return $this->belongsToMany(TaxRate::class, 'tax_id')->withPivot('purchase_id');
     }
 
 }

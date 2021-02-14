@@ -125,8 +125,8 @@
                         <label class="col-form-label" v-text="$t('purchase.fields.notes')"></label>
                     </div>
                     <div class="col">
-                        <vue-editor v-model="form.notes"></vue-editor>
-                        <!-- <textarea v-model="form.notes" class="form-control"></textarea> -->
+                        <!-- <vue-editor v-model="form.notes"></vue-editor> -->
+                        <textarea v-model="form.notes" class="form-control"></textarea>
                     </div>
                 </div>
 
@@ -252,7 +252,7 @@
                 <tr>
                     <td class="d-flex float-right align-items-center">
                         <div>Discount (%)</div>
-                        <div><input type="number" class="form-control ml-2" v-model="form.discount_percent" step="0.01" min="0.01"></div>
+                        <div><input type="number" class="form-control ml-2" v-model="form.discount_percent" step="0.01" min="0"></div>
                     </td>
                     <td>
                         <div><input class="form-control input-transparent text-right"
@@ -285,7 +285,7 @@
                     <td>Total: </td>
                     <td>
                         <div><input class="form-control input-transparent text-right"
-                            type="number" disabled v-model="form.total" step="0.01"></div>
+                            type="number" disabled v-model="total" step="0.01"></div>
                     </td>
                 </tr>
 
@@ -324,6 +324,9 @@
                 selectedItem: '',
                 totalTaxAdded: 0,
 
+                    total: 0,
+
+
                 form: new Form({
                     reference_no:        '',
                     supplier_id:      '',
@@ -348,14 +351,14 @@
                             taxes : []
                         },
                     ],
-                    sub_total: '',
-                    discount_total: '',
-                    discount_percent: '',
-                    adjustment: '',
+                    sub_total: 0,
+                    discount_total: 0,
+                    discount_percent: 0,
+                    adjustment: 0,
                     taxRate_total: {},
-                    total: '',
+                    total: 0,
 
-                    totalTaxForm: 0,
+                    // totalTaxForm: 0,
 
                     removedTax: '',
                     AddedTax: ''
@@ -365,6 +368,8 @@
         methods: {
             purposalSubmit() {
                 this.spinnerLoad = true;
+                this.form.total = this.total
+                console.log(this.form.total);
 
                 this.form.post(this.urlPurchase)
                   .then(({data}) => {
@@ -375,13 +380,16 @@
             getAccountDetails() {
                 axios.get(this.urlGetAccountDetails).then(response => {
                     const data = response.data.data
-                    var result = data.map(user => {
-                        return {
-                            user_id: user.id,
-                            fullname: user.fullname
+                    // Fetch Unbanned Users
+                    var result = [];
+                    data.forEach(element => {
+                        for(let x of Object.entries(element)) {
+                            var item = {user_id: x[0], fullname: x[1]}
+                            result.push(item);
                         }
-                    })
-                    this.users = result
+                    });
+                    this.users = [...result]
+                    // Fetch Unbanned Users
                 });
             },
             getItems() {
@@ -494,53 +502,47 @@
 
                     if(indexRow) {
                         this.form.items[indexRow].taxes.map(tax => {
-                            let count = 0
-                            let x = 0;
 
                             if(tax.name || removedItem) {
-                                while (count == 0) {
-                                    if (removedItem[0]) {
-                                        if (typeof removedItem[0] == 'string' && (typeof this.form.taxRate_total[removedItem[0]] == 'object')) {
-                                            this.form.taxRate_total[removedItem[0]].value = 0;
-                                            this.form.removedTax = '';
-                                        }else {
-                                            removedItem.forEach(element => {
-                                                this.form.taxRate_total[element[0]].value = 0;
-                                                this.form.removedTax = '';
-                                            });
-                                        }
+                                if (removedItem[0]) {
+                                    if (typeof removedItem[0] == 'string' && (typeof this.form.taxRate_total[removedItem[0]] == 'object')) {
+                                        this.form.taxRate_total[removedItem[0]].value = 0;
+                                        this.form.removedTax = '';
                                     }else {
-                                        for (var key in taxName) {
-                                            if (key == tax.name) {
-                                                taxName[tax.name] += this.form.items[indexRow].total * (tax.rate_percent / 100)
-                                                this.form.taxRate_total[tax.name].value = parseFloat((taxName[tax.name]).toFixed(2))
+                                        removedItem.forEach(element => {
+                                            this.form.taxRate_total[element[0]].value = 0;
+                                            this.form.removedTax = '';
+                                        });
+                                    }
+                                }else {
+                                    for (var key in taxName) {
+                                        if (key == tax.name) {
+                                            taxName[tax.name] += this.form.items[indexRow].total * (tax.rate_percent / 100)
+                                            this.form.taxRate_total[tax.name].value = parseFloat((taxName[tax.name]).toFixed(2))
 
-                                                // this.totalTaxAdded += this.form.taxRate_total[tax.name].value;
-                                                x += this.form.taxRate_total[tax.name].value;
-
-                                                console.log(x, 'x');
-                                            }
                                         }
                                     }
-                                    count ++
                                 }
                             }
-                    this.totalTaxAdded = x
                         });
-
                     }
-                    console.log('this.totalTaxAdded',this.totalTaxAdded);
                 });
-                this.form.totalTaxForm = this.totalTaxAdded;
-                console.log(this.totalTaxAdded, 'TotalTaxForm', this.form.totalTaxForm);
-                this.form.total = this.form.sub_total + this.totalTaxAdded - this.form.discount_total + this.form.adjustment
-                 //////////////// Total Tax /////////////////////////
-                    // for(let [x, y] of Object.entries(this.form.taxRate_total)) {
-                    //     if(y.value != 0)  this.form.total = this.form.sub_total + y.value - this.form.discount_total + this.form.adjustment
-                    //     else if(y.value == 0) this.form.total = this.form.sub_total - this.form.discount_total + this.form.adjustment
-                    // }
                 //////////////// Total Tax /////////////////////////
+                var self = this;
+                this.totalTaxAdded = 0
+                    var total = Object.values(this.form.taxRate_total)
+                        .map(function(t, v) {
+                            self.totalTaxAdded += t.value
+                        }
+                    )
 
+                
+            let numberFormat = parseFloat(this.form.adjustment);
+            console.log(typeof numberFormat);
+            //    this.total = parseFloat(this.form.sub_total + this.totalTaxAdded - this.form.discount_total) 
+               this.total = parseFloat((this.form.sub_total + this.totalTaxAdded + numberFormat + this.form.discount_total).toFixed(2))
+
+                //////////////// Total Tax /////////////////////////
 
             },
         },
@@ -565,23 +567,29 @@
                         }, {});
                         form.sub_total = result
 
-                        form.discount_total = -parseFloat((form.discount_percent * subTotal * (1/100)).toFixed(2))
 
+                        // form.discount_total = -parseFloat((form.discount_percent * subTotal * (1/100)).toFixed(2))
+
+                if (form.discount_type == "after_tax") {
+                    form.discount_total = -parseFloat((form.discount_percent * (subTotal + this.total) * (1/100)).toFixed(2))
+                }else {
+                    form.discount_total = -parseFloat((form.discount_percent * subTotal * (1/100)).toFixed(2))
+                }
                         this.calculateTotalTaxes()
 
+    //             console.log(this.totalTaxAdded, this.total);
 
-form.total = form.sub_total + form.totalTaxForm - form.discount_total + form.adjustment
-console.log(form.sub_total , form.totalTaxForm , form.discount_total , form.adjustment);
-                    // //////////////// Total Tax /////////////////////////
-                    //     for(let [x, y] of Object.entries(form.taxRate_total)) {
-                    //         if(y.value != 0)  form.total = form.sub_total + y.value - form.discount_total + form.adjustment
-                    //         else if(y.value == 0) form.total = form.sub_total - form.discount_total + form.adjustment
-                    //     }
-                    // //////////////// Total Tax /////////////////////////
+    // this.total = form.sub_total + parseFloat(this.totalTaxAdded) + parseFloat(form.adjustment) - form.discount_total
+
+// form.total = form.sub_total + form.totalTaxForm - form.discount_total + form.adjustment
+// console.log(form.sub_total , form.totalTaxForm , form.discount_total , form.adjustment);
                     }
                 },
                 deep: true
-            }
+            },
+            // total: function(val) {
+            //     console.log(val);
+            // },
         },
         mounted() {
             i18n.locale = this.langKey;

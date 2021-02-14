@@ -21,8 +21,48 @@ class StorePurchaseRequest extends FormRequest
                 'string',
                 'required',
             ],
+            'supplier_id'      => [
+                'required',
+                'array'
+            ],
+            'supplier_id.id'      => [
+                'exists:suppliers,id'
+            ],
+            'user_id'      => [
+                'required',
+                'array'
+            ],
+            'user_id.id'      => [
+                'exists:users,id'
+            ],
             'total'            => [
                 'numeric',
+            ],
+            'purchase_date'    => [
+                'date_format:' . config('panel.date_format'),
+                'required',
+            ],
+            'due_date'         => [
+                'date_format:' . config('panel.date_format'),
+                'required',
+            ],
+            'discount_percent' => [
+                'numeric',
+            ],
+            'discount_total'   => [
+                'numeric',
+            ],
+            'adjustment'       => [
+                'numeric',
+            ],
+
+
+
+
+            
+            'total_tax'        => [
+                'string',
+                'nullable',
             ],
             'status'           => [
                 'string',
@@ -32,31 +72,11 @@ class StorePurchaseRequest extends FormRequest
                 'date_format:' . config('panel.date_format'),
                 'nullable',
             ],
-            'purchase_date'    => [
-                'date_format:' . config('panel.date_format'),
-                'nullable',
-            ],
-            'due_date'         => [
-                'date_format:' . config('panel.date_format'),
-                'nullable',
-            ],
-            'discount_percent' => [
-                'numeric',
-            ],
-            'adjustment'       => [
-                'numeric',
-            ],
-            'discount_total'   => [
-                'numeric',
-            ],
             'show_quantity_as' => [
                 'string',
                 'nullable',
             ],
-            'total_tax'        => [
-                'string',
-                'nullable',
-            ],
+           
             'tax'              => [
                 'numeric',
             ],
