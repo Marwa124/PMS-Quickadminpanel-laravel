@@ -177,6 +177,9 @@
       <path value="$PROJECT_DIR$/vendor/laravel-notification-channels/twilio" />
       <path value="$PROJECT_DIR$/vendor/twilio/sdk" />
       <path value="$PROJECT_DIR$/vendor/plivo/plivo-php" />
+      <path value="$PROJECT_DIR$/vendor/vonage/nexmo-bridge" />
+      <path value="$PROJECT_DIR$/vendor/nexmo/client" />
+      <path value="$PROJECT_DIR$/vendor/nexmo/client-core" />
     </include_path>
   </component>
   <component name="PhpUnit">

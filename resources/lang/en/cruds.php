@@ -1776,16 +1776,40 @@ return [
             'call_status_assgin_helper'       => ' ',
             'data_contact'              => 'Date Contacted',
             'data_contact_helper'       => ' ',
-            'lead_qualification'              => 'Opportunity QUALIFICATIONS',
-            'lead_qualification_helper'       => ' ',
+            'opportunity_qualification'              => 'Opportunity QUALIFICATIONS',
+            'opportunity_qualification_helper'       => ' ',
             'call_breif'              => 'CALL BREIF ',
             'call_breif_helper'       => ' ',
+            'call_by'              => 'CALL By ',
+            'call_by_helper'       => ' ',
             'nextaction'              => 'Next Action',
             'nextaction_helper'       => ' ',
             'Contact_With'              => 'Contact With',
             'Contact_With_helper'       => ' ',
             'firstorsecond'              => 'First OR Second',
             'firstorsecond_helper'       => ' ',
+
+            // meeting
+
+            // meeting
+            'user'               => 'User',
+            'user_helper'        => ' ',
+            'client'               => 'Client',
+            'client_helper'        => ' ',
+            'name'               => 'Name',
+            'name_helper'        => ' ',
+            'responsible'        => 'responsible',
+            'responsible_helper' => ' ',
+            'start_date'          => 'Start Date',
+            'start_date_helper'   => ' ',
+            'end_date'            => 'End Date',
+            'end_date_helper'     => ' ',
+            'attendees'          => 'Attendees',
+            'attendees_helper'   => ' ',
+            'location'           => 'Location',
+            'location_helper'    => ' ',
+            'description'        => 'Description',
+            'description_helper' => ' ',
         ],
     ],
     'client'                 => [
@@ -3747,6 +3771,11 @@ return [
         ]
     ],
 
+    'comment'  => [
+            'title'             => 'Comments',
+            'title_singular'    => 'Comment',
+    ],
+
     'status' => [
         'unconfirm'              => 'Unconfirm',
         'confirmed'              => 'Confirmed',
@@ -3830,6 +3859,7 @@ return [
         'sure_clone_proposal'                       => 'Are you sure to clone Proposal with items ?',
         'proposal_force_delete'                     => 'Proposal Will Force Delete ..!',
         'no_Calls_found_in_Opportunity'                     => 'No Calls Found In Opportunity !',
+        'no_Meetings_found_in_Opportunity'                     => 'No Meetings Found In Opportunity !',
     ],
 
 

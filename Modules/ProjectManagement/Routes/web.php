@@ -66,6 +66,8 @@ Route::group(['prefix' => 'admin/projectmanagement', 'as' => 'projectmanagement.
     Route::get('projects/index/trashed','ProjectsController@index')->name('projects.trashed.index');
     Route::post('projects/{id}/force-destroy', 'ProjectsController@forceDelete')->name('projects.forceDestroy');
     Route::get('projects/reports/project_report', 'ProjectsController@project_report')->name('projects.project_report');
+    Route::post('projects/add_comment','ProjectsController@add_comment')->name('projects.add_comment');
+
 
 
     // Milestones

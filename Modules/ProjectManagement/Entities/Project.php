@@ -187,6 +187,11 @@ class Project extends Model implements HasMedia
         return $this->hasMany(Activity::class,'module_field_id')->where('module','=','project')->orderBy('id','desc');
     }
 
+    public function comments()
+    {
+        return $this->hasMany(Comment::class,'module_field_id')->where('module','=','project')->orderBy('id','desc');
+    }
+
     public function cloneProject()
     {
         // clone project as new project

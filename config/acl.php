@@ -510,6 +510,15 @@
                 // 'restore-meetings', // done
                 // 'force-delete-meetings', // done
             ],
+            'meetingsopportunty' => [
+                'meeting_create', // done
+                'meeting_edit', // done
+                'meeting_show', // done
+                'meeting_delete', // done
+                'meeting_access', // done
+                'restore-meetings', // done
+                'force-delete-meetings', // done
+            ],
 
             // 'services' => [
             //     'index-services', // done
@@ -659,6 +668,14 @@
                 'task_report_access',
                 'bug_report_access',
                 'ticket_report_access',
+            ],
+            'attachments' => [
+                'task_attachment_access',
+                'task_attachment_index',
+                'task_attachment_create',
+                'task_attachment_edit',
+                'task_attachment_delete',
+               
             ],
         ]
 

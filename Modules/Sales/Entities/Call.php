@@ -20,7 +20,7 @@ class Call extends Model
     }
     public function client()
     {
-        return $this->belongsTo(client::class,'client_id','id')->where('client_id','!=',NUll);
+        return $this->belongsTo(client::class,'client_id');
     }
     public function opportunities()
     {

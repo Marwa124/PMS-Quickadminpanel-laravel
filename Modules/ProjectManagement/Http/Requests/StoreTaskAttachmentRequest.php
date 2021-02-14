@@ -11,7 +11,8 @@ class StoreTaskAttachmentRequest extends FormRequest
 {
     public function authorize()
     {
-        return Gate::allows('task_attachment_create');
+        // return Gate::allows('task_attachment_create');
+        return true;
     }
 
     public function rules()
