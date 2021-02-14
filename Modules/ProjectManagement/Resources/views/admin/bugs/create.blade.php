@@ -173,16 +173,16 @@
                 </div>
             </div>
             <div class="clearfix"></div>
-            <div class="form-group">
-                <label for="notes">{{ trans('cruds.bug.fields.notes') }}</label>
-                <textarea class="form-control ckeditor {{ $errors->has('notes') ? 'is-invalid' : '' }}" name="notes" id="notes">{!! old('notes') !!}</textarea>
-                @if($errors->has('notes'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('notes') }}
-                    </div>
-                @endif
-                <span class="help-block">{{ trans('cruds.bug.fields.notes_helper') }}</span>
-            </div>
+{{--            <div class="form-group">--}}
+{{--                <label for="notes">{{ trans('cruds.bug.fields.notes') }}</label>--}}
+{{--                <textarea class="form-control ckeditor {{ $errors->has('notes') ? 'is-invalid' : '' }}" name="notes" id="notes">{!! old('notes') !!}</textarea>--}}
+{{--                @if($errors->has('notes'))--}}
+{{--                    <div class="invalid-feedback">--}}
+{{--                        {{ $errors->first('notes') }}--}}
+{{--                    </div>--}}
+{{--                @endif--}}
+{{--                <span class="help-block">{{ trans('cruds.bug.fields.notes_helper') }}</span>--}}
+{{--            </div>--}}
             <div class="form-group float-right">
                 <button class="btn btn-danger" type="submit">
                     {{ trans('global.save') }}

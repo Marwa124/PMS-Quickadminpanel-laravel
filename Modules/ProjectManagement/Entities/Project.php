@@ -189,6 +189,11 @@ class Project extends Model implements HasMedia
 
     public function comments()
     {
+        return $this->hasMany(Comment::class,'module_field_id')->where('module','=','project')->where('comment_replay_id','=',null)->orderBy('id','desc');
+    }
+
+    public function comments_with_replies()
+    {
         return $this->hasMany(Comment::class,'module_field_id')->where('module','=','project')->orderBy('id','desc');
     }
 

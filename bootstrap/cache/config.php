@@ -451,6 +451,16 @@
         3 => 'meeting_minute_delete',
         4 => 'meeting_minute_access',
       ),
+      'meetingsopportunty' => 
+      array (
+        0 => 'meeting_create',
+        1 => 'meeting_edit',
+        2 => 'meeting_show',
+        3 => 'meeting_delete',
+        4 => 'meeting_access',
+        5 => 'restore-meetings',
+        6 => 'force-delete-meetings',
+      ),
       'projects' => 
       array (
         0 => 'project_management_access',
@@ -534,6 +544,14 @@
         2 => 'bug_report_access',
         3 => 'ticket_report_access',
       ),
+      'attachments' => 
+      array (
+        0 => 'task_attachment_access',
+        1 => 'task_attachment_index',
+        2 => 'task_attachment_create',
+        3 => 'task_attachment_edit',
+        4 => 'task_attachment_delete',
+      ),
     ),
   ),
   'app' => 
@@ -541,9 +559,9 @@
     'name' => 'Laravel',
     'env' => 'local',
     'debug' => true,
-    'url' => 'http://127.0.0.1:8000/',
+    'url' => 'http://pms.test',
     'asset_url' => NULL,
-    'timezone' => 'Africa/Cairo',
+    'timezone' => 'Pacific/Midway',
     'locale' => 'en',
     'fallback_locale' => 'en',
     'faker_locale' => 'en_US',
@@ -725,7 +743,7 @@
       'file' => 
       array (
         'driver' => 'file',
-        'path' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\storage\\framework/cache/data',
+        'path' => 'E:\\laravel_projects\\PMS Laravel\\PMS-Quickadminpanel-laravel\\storage\\framework/cache/data',
       ),
       'memcached' => 
       array (
@@ -888,10 +906,10 @@
     'orientation' => 'portrait',
     'defines' => 
     array (
-      'font_dir' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\storage\\fonts/',
-      'font_cache' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\storage\\fonts/',
-      'temp_dir' => 'C:\\Users\\DEV-Back\\AppData\\Local\\Temp',
-      'chroot' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel',
+      'font_dir' => 'E:\\laravel_projects\\PMS Laravel\\PMS-Quickadminpanel-laravel\\storage\\fonts/',
+      'font_cache' => 'E:\\laravel_projects\\PMS Laravel\\PMS-Quickadminpanel-laravel\\storage\\fonts/',
+      'temp_dir' => 'C:\\Users\\mo\\AppData\\Local\\Temp',
+      'chroot' => 'E:\\laravel_projects\\PMS Laravel\\PMS-Quickadminpanel-laravel',
       'enable_font_subsetting' => false,
       'pdf_backend' => 'CPDF',
       'default_media_type' => 'screen',
@@ -942,13 +960,13 @@
       'local' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\storage\\app',
+        'root' => 'E:\\laravel_projects\\PMS Laravel\\PMS-Quickadminpanel-laravel\\storage\\app',
       ),
       'public' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\storage\\app/public',
-        'url' => 'http://127.0.0.1:8000//storage',
+        'root' => 'E:\\laravel_projects\\PMS Laravel\\PMS-Quickadminpanel-laravel\\storage\\app/public',
+        'url' => 'http://pms.test/storage',
         'visibility' => 'public',
       ),
       's3' => 
@@ -963,7 +981,7 @@
     ),
     'links' => 
     array (
-      'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\public\\storage' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\storage\\app/public',
+      'E:\\laravel_projects\\PMS Laravel\\PMS-Quickadminpanel-laravel\\public\\storage' => 'E:\\laravel_projects\\PMS Laravel\\PMS-Quickadminpanel-laravel\\storage\\app/public',
     ),
   ),
   'hashing' => 
@@ -986,24 +1004,24 @@
     array (
       'path' => 
       array (
-        'migration' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\database/migrations/',
-        'model' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\app\\Models/',
-        'datatables' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\app\\DataTables/',
-        'repository' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\app\\Repositories/',
-        'routes' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\routes/web.php',
-        'lang' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\resources/lang/en/lang.php',
-        'api_routes' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\routes/api.php',
-        'request' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\app\\Http/Requests/',
-        'api_request' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\app\\Http/Requests/API/',
-        'controller' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\app\\Http/Controllers/',
-        'api_controller' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\app\\Http/Controllers/API/',
-        'test_trait' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\tests/traits/',
-        'repository_test' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\tests/',
-        'api_test' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\tests/',
-        'views' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\resources/views/',
-        'schema_files' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\resources/model_schemas/',
-        'templates_dir' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\resources/infyom/infyom-generator-templates/',
-        'modelJs' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\resources/assets/js/models/',
+        'migration' => 'E:\\laravel_projects\\PMS Laravel\\PMS-Quickadminpanel-laravel\\database/migrations/',
+        'model' => 'E:\\laravel_projects\\PMS Laravel\\PMS-Quickadminpanel-laravel\\app\\Models/',
+        'datatables' => 'E:\\laravel_projects\\PMS Laravel\\PMS-Quickadminpanel-laravel\\app\\DataTables/',
+        'repository' => 'E:\\laravel_projects\\PMS Laravel\\PMS-Quickadminpanel-laravel\\app\\Repositories/',
+        'routes' => 'E:\\laravel_projects\\PMS Laravel\\PMS-Quickadminpanel-laravel\\routes/web.php',
+        'lang' => 'E:\\laravel_projects\\PMS Laravel\\PMS-Quickadminpanel-laravel\\resources/lang/en/lang.php',
+        'api_routes' => 'E:\\laravel_projects\\PMS Laravel\\PMS-Quickadminpanel-laravel\\routes/api.php',
+        'request' => 'E:\\laravel_projects\\PMS Laravel\\PMS-Quickadminpanel-laravel\\app\\Http/Requests/',
+        'api_request' => 'E:\\laravel_projects\\PMS Laravel\\PMS-Quickadminpanel-laravel\\app\\Http/Requests/API/',
+        'controller' => 'E:\\laravel_projects\\PMS Laravel\\PMS-Quickadminpanel-laravel\\app\\Http/Controllers/',
+        'api_controller' => 'E:\\laravel_projects\\PMS Laravel\\PMS-Quickadminpanel-laravel\\app\\Http/Controllers/API/',
+        'test_trait' => 'E:\\laravel_projects\\PMS Laravel\\PMS-Quickadminpanel-laravel\\tests/traits/',
+        'repository_test' => 'E:\\laravel_projects\\PMS Laravel\\PMS-Quickadminpanel-laravel\\tests/',
+        'api_test' => 'E:\\laravel_projects\\PMS Laravel\\PMS-Quickadminpanel-laravel\\tests/',
+        'views' => 'E:\\laravel_projects\\PMS Laravel\\PMS-Quickadminpanel-laravel\\resources/views/',
+        'schema_files' => 'E:\\laravel_projects\\PMS Laravel\\PMS-Quickadminpanel-laravel\\resources/model_schemas/',
+        'templates_dir' => 'E:\\laravel_projects\\PMS Laravel\\PMS-Quickadminpanel-laravel\\resources/infyom/infyom-generator-templates/',
+        'modelJs' => 'E:\\laravel_projects\\PMS Laravel\\PMS-Quickadminpanel-laravel\\resources/assets/js/models/',
       ),
       'namespace' => 
       array (
@@ -1115,13 +1133,13 @@
       'single' => 
       array (
         'driver' => 'single',
-        'path' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\storage\\logs/laravel.log',
+        'path' => 'E:\\laravel_projects\\PMS Laravel\\PMS-Quickadminpanel-laravel\\storage\\logs/laravel.log',
         'level' => 'debug',
       ),
       'daily' => 
       array (
         'driver' => 'daily',
-        'path' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\storage\\logs/laravel.log',
+        'path' => 'E:\\laravel_projects\\PMS Laravel\\PMS-Quickadminpanel-laravel\\storage\\logs/laravel.log',
         'level' => 'debug',
         'days' => 14,
       ),
@@ -1171,7 +1189,7 @@
       ),
       'emergency' => 
       array (
-        'path' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\storage\\logs/laravel.log',
+        'path' => 'E:\\laravel_projects\\PMS Laravel\\PMS-Quickadminpanel-laravel\\storage\\logs/laravel.log',
       ),
     ),
   ),
@@ -1183,7 +1201,6 @@
       'smtp' => 
       array (
         'transport' => 'smtp',
-
         'host' => 'mail.onetecgroup.com',
         'port' => '465',
         'encryption' => 'ssl',
@@ -1193,7 +1210,6 @@
       'mailgun' => 
       array (
         'transport' => 'smtp',
-
         'host' => 'smtp.mailgun.org',
         'port' => '587',
         'encryption' => 'tls',
@@ -1230,7 +1246,6 @@
     ),
     'from' => 
     array (
-
       'address' => 'info@onetecgroup.com',
       'name' => 'mohamed',
     ),
@@ -1239,7 +1254,7 @@
       'theme' => 'default',
       'paths' => 
       array (
-        0 => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\resources\\views/vendor/mail',
+        0 => 'E:\\laravel_projects\\PMS Laravel\\PMS-Quickadminpanel-laravel\\resources\\views/vendor/mail',
       ),
     ),
   ),
@@ -1320,7 +1335,7 @@
     'stubs' => 
     array (
       'enabled' => false,
-      'path' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel/vendor/nwidart/laravel-modules/src/Commands/stubs',
+      'path' => 'E:\\laravel_projects\\PMS Laravel\\PMS-Quickadminpanel-laravel/vendor/nwidart/laravel-modules/src/Commands/stubs',
       'files' => 
       array (
         'routes/web' => 'Routes/web.php',
@@ -1384,9 +1399,9 @@
     ),
     'paths' => 
     array (
-      'modules' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\Modules',
-      'assets' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\public\\modules',
-      'migration' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\database/migrations',
+      'modules' => 'E:\\laravel_projects\\PMS Laravel\\PMS-Quickadminpanel-laravel\\Modules',
+      'assets' => 'E:\\laravel_projects\\PMS Laravel\\PMS-Quickadminpanel-laravel\\public\\modules',
+      'migration' => 'E:\\laravel_projects\\PMS Laravel\\PMS-Quickadminpanel-laravel\\database/migrations',
       'generator' => 
       array (
         'config' => 
@@ -1521,7 +1536,7 @@
       'enabled' => false,
       'paths' => 
       array (
-        0 => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\vendor/*/*',
+        0 => 'E:\\laravel_projects\\PMS Laravel\\PMS-Quickadminpanel-laravel\\vendor/*/*',
       ),
     ),
     'composer' => 
@@ -1549,7 +1564,7 @@
       'file' => 
       array (
         'class' => 'Nwidart\\Modules\\Activators\\FileActivator',
-        'statuses-file' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\modules_statuses.json',
+        'statuses-file' => 'E:\\laravel_projects\\PMS Laravel\\PMS-Quickadminpanel-laravel\\modules_statuses.json',
         'cache-key' => 'activator.installed',
         'cache-lifetime' => 604800,
       ),
@@ -1595,7 +1610,7 @@
     array (
     ),
     'auto_language_detection' => false,
-    'temp_dir' => 'C:\\Users\\DEV-Back\\AppData\\Local\\Temp',
+    'temp_dir' => 'C:\\Users\\mo\\AppData\\Local\\Temp',
     'pdfa' => false,
     'pdfaauto' => false,
   ),
@@ -1756,9 +1771,9 @@
     ),
     'generator' => 
     array (
-      'basePath' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\app',
+      'basePath' => 'E:\\laravel_projects\\PMS Laravel\\PMS-Quickadminpanel-laravel\\app',
       'rootNamespace' => 'App\\',
-      'stubsOverridePath' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\app',
+      'stubsOverridePath' => 'E:\\laravel_projects\\PMS Laravel\\PMS-Quickadminpanel-laravel\\app',
       'paths' => 
       array (
         'models' => 'Entities',
@@ -1798,7 +1813,7 @@
     'lifetime' => '120',
     'expire_on_close' => false,
     'encrypt' => false,
-    'files' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\storage\\framework/sessions',
+    'files' => 'E:\\laravel_projects\\PMS Laravel\\PMS-Quickadminpanel-laravel\\storage\\framework/sessions',
     'connection' => NULL,
     'table' => 'sessions',
     'store' => NULL,
@@ -2041,9 +2056,9 @@
   array (
     'paths' => 
     array (
-      0 => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\resources\\views',
+      0 => 'E:\\laravel_projects\\PMS Laravel\\PMS-Quickadminpanel-laravel\\resources\\views',
     ),
-    'compiled' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\storage\\framework\\views',
+    'compiled' => 'E:\\laravel_projects\\PMS Laravel\\PMS-Quickadminpanel-laravel\\storage\\framework\\views',
   ),
   'flare' => 
   array (
@@ -2102,7 +2117,7 @@
   'livewire' => 
   array (
     'class_namespace' => 'App\\Http\\Livewire',
-    'view_path' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\resources\\views/livewire',
+    'view_path' => 'E:\\laravel_projects\\PMS Laravel\\PMS-Quickadminpanel-laravel\\resources\\views/livewire',
     'layout' => 'layouts.app',
     'asset_url' => NULL,
     'middleware_group' => 'web',
@@ -2235,7 +2250,7 @@
     ),
     'temporary_files' => 
     array (
-      'local_path' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\storage\\framework/laravel-excel',
+      'local_path' => 'E:\\laravel_projects\\PMS Laravel\\PMS-Quickadminpanel-laravel\\storage\\framework/laravel-excel',
       'remote_disk' => NULL,
       'remote_prefix' => NULL,
       'force_resync_remote' => NULL,
@@ -2316,13 +2331,13 @@
   array (
     'name' => 'ProjectManagement',
   ),
-  'setting' => 
-  array (
-    'name' => 'Setting',
-  ),
   'sales' => 
   array (
     'name' => 'Sales',
+  ),
+  'setting' => 
+  array (
+    'name' => 'Setting',
   ),
   'twilio-notification-channel' => 
   array (

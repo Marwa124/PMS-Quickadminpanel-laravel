@@ -254,9 +254,9 @@
 
                 <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                     <a class="nav-link active" id="v-pills-details-tab" data-toggle="pill" href="#v-pills-details" role="tab" aria-controls="v-pills-details" aria-selected="true">{{ trans('cruds.bug.title') }} {{trans('global.details')}}</a>
+                    <a class="nav-link" id="v-pills-comments-tab"       data-toggle="pill" href="#v-pills-comments" role="tab" aria-controls="v-pills-comments" aria-selected="false">{{ trans('cruds.comment.title') }}<span class="float-right">   {{$bug->comments_with_replies && $bug->comments_with_replies()->count() > 0 ? $bug->comments_with_replies()->count() : ''}}</span></a>
                     <a class="nav-link" id="v-pills-notes-tab" data-toggle="pill" href="#v-pills-notes" role="tab" aria-controls="v-pills-notes" aria-selected="false">{{ trans('cruds.bug.fields.notes') }}</a>
                     <a class="nav-link" id="v-pills-activities-tab" data-toggle="pill" href="#v-pills-activities" role="tab" aria-controls="v-pills-activities" aria-selected="false">{{ trans('cruds.activities.title') }}<span class="float-right">{{$bug->activities()->count() > 0 ? $bug->activities()->count() : ''}}</span></a>
-                    {{--                    <a class="nav-link" id="v-pills-comments-tab" data-toggle="pill" href="#v-pills-comments" role="tab" aria-controls="v-pills-comments" aria-selected="false">Comments</a>--}}
                 </div>
             </div>
         </div>
@@ -374,7 +374,144 @@
                     </div>
                     </div>
                 </div>
-                <div class="tab-pane fade" id="v-pills-comments" role="tabpanel" aria-labelledby="v-pills-comments-tab">...</div>
+                <div class="tab-pane fade" id="v-pills-comments" role="tabpanel" aria-labelledby="v-pills-comments-tab">
+                    <div class="card"  >
+                        <h5 class="card-header">{{ trans('cruds.comment.title') }} </h5>
+                        <div class="card-body">
+
+
+                            <form action="{{ route('projectmanagement.admin.bugs.add_comment') }}" method="post" class="" enctype="multipart/form-data">
+                                @csrf
+                                <input type="hidden" name="bug_id" value="{{ $bug->id }}">
+
+                                <div class="col-lg-12 col-md-12" style="padding-bottom: 20px;">
+
+                                    <label class="form-group " for="comment">{{ trans('cruds.comment.title_singular') }}</label>
+                                    <textarea class="form-control ckeditor {{ $errors->has('comment') ? 'is-invalid' : '' }}" name="comment" id="comment">{!! old('comment')!!}</textarea>
+
+                                </div>
+
+
+
+                                <div class="col-12 ">
+                                    <button type="submit" class="btn btn-primary float-right" >{{ trans('global.save') }}</button>
+                                </div>
+                            </form>
+                            <hr class="col-md-11 ml-3">
+                            @foreach($bug->comments as $comment)
+                                <div class="col-md-12 ml-1" style="margin-bottom: 40px;">
+                                    <div class="col-md-12">
+                                        <img  class="img-thumbnail rounded-circle" title="{{ $comment->user && $comment->user->name ? $comment->user->name : '' }}" width="5%" src="{{ $comment->user && $comment->user->accountDetail ? str_replace('storage', 'storage', $comment->user && $comment->user->accountDetail ? $comment->user->accountDetail->avatar->getUrl() : '') : asset('images/default.png') }}" alt="{{ $comment->user && $comment->user->accountDetail && $comment->user->accountDetail->fullname ? $comment->user->accountDetail->fullname : '' }}">
+
+                                        {{$comment->user && $comment->user->name ? $comment->user->name  : ''}}
+
+                                        <strong> {!! $comment->comment !!}</strong>
+                                        <a id="add-replay" onclick="addReplay('{{$comment->id}}')" type="button" class="mb-5" >
+                                            <i class="fa fa-reply"></i>
+                                            {{ trans('cruds.ticket.fields.replay') }}
+                                        </a>
+                                    </div>
+
+                                    {{--                                                                replies of replay--}}
+                                    @if(isset($comment->replay))
+
+                                        @foreach($comment->replay as $comment_of_replay)
+                                            <div class="col-md-10 ml-5">
+                                                <img  class="img-thumbnail rounded-circle" title="{{ $comment->user && $comment->user->name ? $comment->user->name : '' }}" width="5%" src="{{ $comment->user && $comment->user->accountDetail ? str_replace('storage', 'storage', $comment->user && $comment->user->accountDetail ? $comment->user->accountDetail->avatar->getUrl() : '') : asset('images/default.png') }}" alt="{{ $comment->user && $comment->user->accountDetail && $comment->user->accountDetail->fullname ? $comment->user->accountDetail->fullname : '' }}">
+
+                                                {{$comment_of_replay->user && $comment_of_replay->user->name ? $comment_of_replay->user->name : ''}}
+
+                                                <strong> {!! $comment_of_replay->comment !!}</strong>
+                                            </div>
+                                            <hr class="col-md-10">
+                                        @endforeach
+                                    @endif
+
+
+                                    <div class="replay" id="replay_{{$comment->id}}" style="display:{{$errors->has('replay_comment') ? 'block': 'none'}}" >
+
+                                        <form action="{{ route('projectmanagement.admin.bugs.add_comment') }}" method="post" enctype="multipart/form-data">
+                                            @csrf
+                                            <input type="hidden" name="bug_id" value="{{ $bug->id }}">
+                                            <input type="hidden" name="comment_replay_id" value="{{ $comment->id }}">
+
+                                            <div class="col-lg-12 col-md-12" style="padding-bottom: 20px;">
+
+                                                <label class="form-group " for="replay_comment">{{ trans('cruds.ticket.fields.replay') }}</label>
+                                                <textarea class="form-control ckeditor {{ $errors->has('replay_comment') ? 'is-invalid' : '' }}"  name="replay_comment" id="replay_comment">{!! old('replay_comment')!!}</textarea>
+
+                                            </div>
+
+                                            <div class="col-12 pb-5">
+                                                <button type="submit" id="replaySubmitBtn" class="btn btn-primary float-right" >{{ trans('global.save') }}</button>
+                                            </div>
+                                        </form>
+                                    </div>
+
+
+                                    <hr class="col-md-11">
+
+
+
+                                </div>
+
+
+                                {{--                                                        @if(json_decode($comment->attachments))--}}
+                                {{--                                                            <div class="col-md-4 mb-2 ml-2">--}}
+                                {{--                                                                <button  type="button" data-toggle="modal" data-target="#replay_{{ $comment->id }}" class="btn btn-secondary" style="border-radius: 0;" >--}}
+                                {{--                                                                    @lang('locale.view_attachments')--}}
+                                {{--                                                                </button>--}}
+                                {{--                                                            </div>--}}
+                                {{--                                                        @endif--}}
+
+
+
+
+
+                                <div class="modal-info mr-1 mb-1 d-inline-block">
+                                    <div class="modal fade text-left" id="replay_attach_{{ $comment->id }}" tabindex="-1" role="dialog"
+                                         aria-labelledby="myModalLabel130" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+                                            <div class="modal-content" style="height:500px;width:700px;">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        {{--                                                                                                        @forelse(json_decode($comment->attachments) as $attach)--}}
+
+
+                                                        {{--                                                                                                            <div class="col-md-4">--}}
+                                                        {{--                                                                                                                <a  target="_blank" href="{{ asset('uploads/projects/'.$attach) }}">--}}
+
+                                                        {{--                                                                                                                    @if(strpos($attach,'.pdf') !== false)--}}
+                                                        {{--                                                                                                                        <img style="width:150px;height:180px;" src="{{ asset('pdf.png') }}" alt="">--}}
+                                                        {{--                                                                                                                    @elseif(strpos($attach,'.xlsx') !== false || strpos($attach,'.xls') !== false || strpos($attach,'.csv') !== false || strpos($attach,'.txt') !== false)--}}
+                                                        {{--                                                                                                                        <img style="width:150px;height:180px;" src="{{ asset('excel.png') }}" alt="">--}}
+
+                                                        {{--                                                                                                                    @else--}}
+                                                        {{--                                                                                                                        <img style="width:150px;height:200px;" src="{{ asset('uploads/projects/'.$attach) }}" alt="">--}}
+                                                        {{--                                                                                                                    @endif--}}
+                                                        {{--                                                                                                                </a>--}}
+
+                                                        {{--                                                                                                            </div>--}}
+                                                        {{--                                                                                                        @empty--}}
+                                                        {{--                                                                                                            No Attachments found--}}
+                                                        {{--                                                                                                        @endforelse--}}
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            @endforeach
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </div>
     </div>
@@ -448,6 +585,55 @@
             }
         });
 
+        // comment and replay on comment
+
+        var count = 0;
+        function replayForm() {
+            if (count % 2 == 0){
+
+
+                // document.getElementById("replay").classList.add('visible');
+                // document.getElementById("replay").classList.remove('invisible');
+                document.getElementById("replay_ticket").style.display = 'block';
+
+                count++;
+            }else {
+                // document.getElementById("replay").classList.add('invisible');
+                //
+                // document.getElementById("replay").classList.remove('visible');
+                document.getElementById("replay_ticket").style.display = 'none';
+                count++;
+            }
+
+        }
+
+        // CKEDITOR.replace('body');
+
+        $('.replay_submit').click(function(){
+
+            $('.replay_ticket').removeClass('hidden');
+        })
+
+        $('.replay_submit').dblclick(function(){
+
+            $('.replay_ticket').addClass('hidden');
+            $('.replay_submit').removeClass('disabled');
+        })
+
+        var i = 0;
+        function addReplay(replay_id) {
+
+            if (i % 2 == 0){
+
+                document.getElementById("replay_"+replay_id).style.display = 'block';
+                i++;
+            }else {
+
+                document.getElementById("replay_"+replay_id).style.display = 'none';
+                i++;
+            }
+
+        }
 
 
     </script>
