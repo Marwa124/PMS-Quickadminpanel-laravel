@@ -30,7 +30,10 @@
             <alert-errors :form="form" message="There were some problems with your input."></alert-errors>
         </div>
 
-    <form @submit.prevent="purposalSubmit" @keydown="form.onKeydown($event)">
+    <!-- <form @submit.prevent="purposalSubmit" @keydown="form.onKeydown($event)"> -->
+    <form @submit.prevent="purchaseId ? purposalUpdate()
+        : purposalSubmit()" @keydown="form.onKeydown($event)">
+
         <div class="my-3 d-flex justify-content-around">
             <div class="col-md-6">
 
@@ -44,7 +47,8 @@
                     </div>
                 </div>
 
-                <supplier-modal :form="form">
+                <supplier-modal :form="form" :purchaseId="purchaseId"
+                    :supplierPurchase="supplierPurchase">
                 </supplier-modal>
 
                 <div class="d-flex justify-content-between align-items-center form-group">
@@ -201,11 +205,11 @@
                     </td>
                     <td>
                         <!-- focusout -->
-                        <input class="form-control" type="number" v-model="item.quantity" @keypress="newItemAdded(item, index)" min="1">
+                        <input class="form-control" type="number" v-model="item.quantity" @keypress="newItemAdded(item, index)" step="0.1" min="1">
                         <input class="form-control input-transparent" :placeholder="$t('items.fields.unit_cost')" type="text" v-model="item.unit_cost">
                     </td>
                     <td>
-                        <input class="form-control" type="number" v-model="item.total_cost_price" @keypress="newItemAdded(item, index)" min="1">
+                        <input class="form-control" type="number" v-model="item.total_cost_price" @keypress="newItemAdded(item, index)" step="0.1" min="1">
                     </td>
                     <td>
                         <multiselect
@@ -284,8 +288,10 @@
                 <tr>
                     <td>Total: </td>
                     <td>
-                        <div><input class="form-control input-transparent text-right"
+                        <div v-if="!purchaseId"><input class="form-control input-transparent text-right"
                             type="number" disabled v-model="total" step="0.01"></div>
+                        <div v-else><input class="form-control input-transparent text-right"
+                            type="number" disabled v-model="form.total" step="0.01"></div>
                     </td>
                 </tr>
 
@@ -308,13 +314,14 @@
 
     export default {
         components: {HasError, AlertErrors, AlertSuccess, Multiselect, VueEditor},
-        props: ['langKey', 'departmentId'],
+        props: ['langKey', 'purchaseId', 'purchase', 'supplierPurchase', 'userPurchase', 'itemPurchase', 'itemTaxPurchase'],
         data() {
             return {
                 urlGetAccountDetails: '/api/v1/admin/hr/account-details',
                 urlGetItems:          '/api/v1/admin/materialssuppliers/items',
                 urlGetTaxRates:       '/api/v1/admin/materialssuppliers/tax-rates',
                 urlPurchase:          '/admin/materialssuppliers/purchases',
+                urlGetPurchaseId:        '/admin/materialssuppliers/purchases/'+this.purchaseId,
 
                 users: [],
                 items: [],
@@ -367,13 +374,22 @@
             purposalSubmit() {
                 this.spinnerLoad = true;
                 this.form.total = this.total
-                console.log(this.form.total);
 
                 this.form.post(this.urlPurchase)
-                  .then(({data}) => {
+                    .then(({data}) => {
                         this.spinnerLoad = false;
                         if(data == 201) window.location.href = this.urlPurchase
                     })
+            },
+            purposalUpdate() {
+                this.spinnerLoad = true;
+                this.form.total = this.total
+                console.log(this.form.total);
+
+                this.form.put(this.urlGetPurchaseId).then(({data}) => {
+                    this.spinnerLoad = false;
+                    if(data == 201) window.location.href = this.urlPurchase
+                })
             },
             getAccountDetails() {
                 axios.get(this.urlGetAccountDetails).then(response => {
@@ -488,7 +504,6 @@
                 }
             },
             calculateTotalTaxes(removedItem = []) {
-
                 var taxName = new Array()
                 this.taxRates.map(rate => {
                     taxName[rate.name] = 0
@@ -534,7 +549,6 @@
                         }
                     )
 
-                
                 let numberFormat = parseFloat(this.form.adjustment);
                 this.total = parseFloat((this.form.sub_total + this.totalTaxAdded + numberFormat + this.form.discount_total).toFixed(2))
                 //////////////// Total Tax /////////////////////////
@@ -580,6 +594,23 @@
         },
         mounted() {
             i18n.locale = this.langKey;
+            if (this.purchaseId) {
+                var formSupplier = this.form.supplier_id;
+                this.form.fill(this.purchase)
+                this.form.user_id     = {'user_id': this.userPurchase.user_id, 'fullname': this.userPurchase.fullname}
+                this.form.supplier_id = formSupplier;
+                this.form.items       = this.itemPurchase;
+                // this.form.itemTaxPurchase = this.itemTaxPurchase;
+                // for(this.itemTaxPurchase )
+    // this.itemTaxPurchase.forEach(element => {
+    //     if (element[0] == ) {
+
+    //     }
+    //     console.log(element);
+    // });
+                console.log(this.itemPurchase);
+                this.addItemToModel('', '');
+            }
             this.getAccountDetails();
             this.getItems();
             this.getTaxRates();

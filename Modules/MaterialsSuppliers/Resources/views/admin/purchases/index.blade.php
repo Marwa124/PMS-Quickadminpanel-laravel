@@ -23,9 +23,6 @@
 
                         </th>
                         <th>
-                            {{ trans('cruds.purchase.fields.id') }}
-                        </th>
-                        <th>
                             {{ trans('cruds.purchase.fields.supplier') }}
                         </th>
                         <th>
@@ -50,9 +47,6 @@
                         <tr data-entry-id="{{ $purchase->id }}">
                             <td>
 
-                            </td>
-                            <td>
-                                {{ $purchase->id ?? '' }}
                             </td>
                             <td>
                                 {{ $purchase->supplier->name ?? '' }}

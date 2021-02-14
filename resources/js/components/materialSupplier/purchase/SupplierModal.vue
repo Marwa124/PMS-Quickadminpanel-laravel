@@ -108,7 +108,7 @@ import Multiselect from 'vue-multiselect'
 
 export default {
     components: {HasError, AlertErrors, AlertSuccess, Multiselect},
-    props: ['form'],
+    props: ['form', 'supplierPurchase', 'purchaseId'],
     data() {
         return {
             urlGetSuppliers:   '/api/v1/admin/materialssuppliers/suppliers',
@@ -187,6 +187,9 @@ export default {
     },
     mounted() {
         this.getSuppliers();
+        if (this.purchaseId) {
+            this.form.supplier_id = {'id': this.supplierPurchase.id, 'name': this.supplierPurchase.name}
+        }
     },
 }
 </script>
