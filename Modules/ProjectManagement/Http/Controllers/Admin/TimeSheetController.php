@@ -113,17 +113,17 @@ class TimeSheetController extends Controller
                 }
             }else{
 
-                Session::flash('messages', trans('cruds.messages.time_date_after_or_equal'));
+                return back()->with(flash(trans('cruds.messages.time_date_after_or_equal'), 'danger'));
                // Session::flash('alert-class', 'alert-danger');
             }
 
             // Commit the transaction
             DB::commit();
-
+            return back()->with(flash(trans('cruds.messages.create_success'), 'success'));
         }catch(\Exception $e){
             // An error occured; cancel the transaction...
             DB::rollback();
-
+            return back()->with(flash(trans('cruds.messages.create_failed'), 'danger'));
             // and throw the error again.
             throw $e;
         }
@@ -170,11 +170,24 @@ class TimeSheetController extends Controller
     public function destroy($id)
     {
         abort_if(Gate::denies('time_sheet_delete'), Response::HTTP_FORBIDDEN,  trans('global.forbidden_page'));
+        try {
+            // Begin a transaction
+            DB::beginTransaction();
 
-        $timeSheet = TimeSheet::findOrFail($id);
+            $timeSheet = TimeSheet::findOrFail($id);
 
-        $timeSheet->delete();
+            $timeSheet->delete();
 
-        return redirect()->back();
+            // Commit the transaction
+            DB::commit();
+            return back()->with(flash(trans('cruds.messages.delete_success'), 'success'));
+        }catch(\Exception $e){
+            // An error occured; cancel the transaction...
+            DB::rollback();
+            return back()->with(flash(trans('cruds.messages.delete_failed'), 'danger'));
+            // and throw the error again.
+            throw $e;
+        }
+//        return redirect()->back();
     }
 }

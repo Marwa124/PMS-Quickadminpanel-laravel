@@ -160,16 +160,18 @@ class TaskController extends Controller
 
             // Commit the transaction
             DB::commit();
+            return redirect()->route('projectmanagement.admin.tasks.index')->with(flash(trans('cruds.messages.create_success'), 'success'));
 
         }catch(\Exception $e){
             // An error occured; cancel the transaction...
             DB::rollback();
+            return redirect()->back()->with(flash(trans('cruds.messages.create_failed'), 'danger'))->withInput();
 
             // and throw the error again.
             throw $e;
         }
 
-        return redirect()->route('projectmanagement.admin.tasks.index');
+//        return redirect()->route('projectmanagement.admin.tasks.index');
     }
 
     public function edit(Task $task)
@@ -224,28 +226,38 @@ class TaskController extends Controller
             // Notify User
             foreach ($task->accountDetails as $accountUser) {
                 $user = $accountUser->user;
-                $dataMail = [
-                    'subjectMail' => 'Update Task ' . $task->name,
-                    'bodyMail' => 'Update The Task ' . $task->name,
-                    'action' => route("projectmanagement.admin.tasks.show", $task->id)
-                ];
+//                $dataMail = [
+//                    'subjectMail' => 'Update Task ' . $task->name,
+//                    'bodyMail' => 'Update The Task ' . $task->name,
+//                    'action' => route("projectmanagement.admin.tasks.show", $task->id)
+//                ];
 
                 $dataNotification = [
-                    'message' => 'Update The Task : ' . $task->name,
+                    'message' => 'Update The Task : ' . $task->{'name_'.app()->getLocale()},
                     'route_path' => 'admin/projectmanagement/tasks',
                 ];
 
 //                $user->notify(new ProjectManagementNotification($task, $user, $dataMail, $dataNotification));
 
                 //send notification
-                $user->notify(new ProjectManagementNotification($task, $user, $dataMail, $dataNotification));
+//                $user->notify(new ProjectManagementNotification($task, $user, $dataMail, $dataNotification));
+                $user->notify(new ProjectManagementNotification($task, $user, $dataNotification));
                 $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
                 event(new NewNotification($userNotify));
 
                 // send mail
                 $sender =  settings('smtp_sender_name');
                 $email_from =  settings('smtp_email') ;
-                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender));
+
+                if(User::find(auth()->user()->id)->accountDetail && User::find(auth()->user()->id)->accountDetail()->first())
+                {
+                    $userName = AccountDetail::where('user_id', auth()->user()->id)->first()->fullname;
+                }else {
+                    $userName = User::find(auth()->user()->id)->name;
+                }
+
+                $message = $userName.' '.'Update The Task '.$task->{'name_'.app()->getLocale()};
+                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
             }
 
             setActivity('task', $task->id, 'Update Task Details', 'تعديل تفاصيل المهمه', $task->name_en, $task->name_ar);
@@ -443,7 +455,7 @@ class TaskController extends Controller
 //                ];
 
                 $dataNotification = [
-                    'message' => 'Assign The Task : ' . $task->name . ' To ' . $user->name,
+                    'message' => 'Assign The Task : ' . $task->{'name_'.app()->getLocale()} . ' To ' . $user->name,
                     'route_path' => 'admin/projectmanagement/tasks',
                 ];
 
@@ -457,7 +469,16 @@ class TaskController extends Controller
                 // send mail
                 $sender =  settings('smtp_sender_name');
                 $email_from =  settings('smtp_email') ;
-                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender));
+
+                if(User::find(auth()->user()->id)->accountDetail && User::find(auth()->user()->id)->accountDetail()->first())
+                {
+                    $userName = AccountDetail::where('user_id', auth()->user()->id)->first()->fullname;
+                }else {
+                    $userName = User::find(auth()->user()->id)->name;
+                }
+
+                $message = $userName.' '.'Assign The Task : '.$task->{'name_'.app()->getLocale()}. ' To ' . $user->name;
+                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
             }
 
             setActivity('task', $task->id, 'Update Assign to', 'تعديل القائمين على مهمة', $task->name_en, $task->name_ar);
@@ -498,7 +519,7 @@ class TaskController extends Controller
 //                ];
 
                 $dataNotification = [
-                    'message' => 'Update Note Of Task : ' . $task->name,
+                    'message' => 'Update Note Of Task : ' . $task->{'name_'.app()->getLocale()},
                     'route_path' => 'admin/projectmanagement/tasks',
                 ];
 
@@ -512,7 +533,16 @@ class TaskController extends Controller
                 // send mail
                 $sender =  settings('smtp_sender_name');
                 $email_from =  settings('smtp_email') ;
-                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender));
+
+                if(User::find(auth()->user()->id)->accountDetail && User::find(auth()->user()->id)->accountDetail()->first())
+                {
+                    $userName = AccountDetail::where('user_id', auth()->user()->id)->first()->fullname;
+                }else {
+                    $userName = User::find(auth()->user()->id)->name;
+                }
+
+                $message = $userName.' '.'Update Note Of Task '.$task->{'name_'.app()->getLocale()};
+                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
             }
 
             setActivity('task', $task->id, 'Update Note','تعديل الملاحظات', $task->name_en, $task->name_ar);
@@ -609,27 +639,29 @@ class TaskController extends Controller
                 $task = Task::onlyTrashed()->where('id', $id)->first();
                 //force Delete Task
                 $this->forceDeleteTask($task);
+                $message = 'force_delete_success';
 
             } else if ($action == 'restore') {
                 //restore Task
                 Task::onlyTrashed()->where('id', $id)->restore();
                 $task = Task::findOrFail($id);
+                $message = 'restore_success';
 
                 setActivity('task',$task->id,'Restore Task Details ','إسترجاع المهمة من الحذف',$task->name_en,$task->name_ar);
 
             }
             // Commit the transaction
             DB::commit();
+            return back()->with(flash(trans('cruds.messages.'.$message), 'success'));
 
         }catch(\Exception $e){
             // An error occured; cancel the transaction...
             DB::rollback();
+            return back()->with(flash(trans('cruds.messages.action_failed'), 'danger'));
 
             // and throw the error again.
             throw $e;
         }
-
-        return back();
 
     }
 
@@ -637,22 +669,37 @@ class TaskController extends Controller
     {
         abort_if(Gate::denies('task_create'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
-        // check if user can access this task or not
-        $tasks = auth()->user()->getUserTasksByUserID(auth()->user()->id, false, true)->pluck('id');
-
-        if (in_array($task_id, $tasks->toArray())) {
+        try{
+            // Begin a transaction
+            DB::beginTransaction();
 
             // get Task by id
             $task = Task::findOrFail($task_id);
+
+            // check if user can access this task or not
+            $tasks = auth()->user()->getUserTasksByUserID(auth()->user()->id, false, true)->pluck('id');
+
+            if (!in_array($task_id, $tasks->toArray())) {
+
+                return abort(Response::HTTP_FORBIDDEN, trans('global.forbidden_page_not_allow_to_you'));
+            }
 
             // clone Task as new Task
 
             $newtask = $task->cloneTask();
 
-            return redirect()->route('projectmanagement.admin.tasks.show', $newtask->id);
-        }
+            // Commit the transaction
+            DB::commit();
 
-        return abort(Response::HTTP_FORBIDDEN, trans('global.forbidden_page_not_allow_to_you'));
+            return redirect()->route('projectmanagement.admin.tasks.show',$newtask->id)->with(flash(trans('cruds.messages.clone_success'), 'success'));
+
+        }catch (\Exception $e) {
+            // An error occured; cancel the transaction...
+            DB::rollback();
+            return back()->with(flash(trans('cruds.messages.clone_failed'), 'danger'));
+            // and throw the error again.
+            throw $e;
+        }
     }
 
     public function task_report()

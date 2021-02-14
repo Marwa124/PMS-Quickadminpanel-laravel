@@ -2,10 +2,15 @@
 
 namespace Modules\Finance\Http\Controllers\admin;
 
+use App\Events\NewNotification;
+use App\Mail\FinanceMail;
 use App\Models\Invoice;
+use App\Models\User;
+use App\Notifications\FinanceNotification;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Gate;
+use Illuminate\Support\Facades\Mail;
 use Modules\HR\Entities\Account;
 use App\Models\Transaction;
 use Modules\Payroll\Entities\Payment;
@@ -118,7 +123,6 @@ class PaymentReceivedController extends Controller
             ]);
 
             if($validator->fails()) {
-//                dd('hh');
                 return redirect()->back()->withErrors($validator)->withInput();
             }
 
@@ -153,31 +157,88 @@ class PaymentReceivedController extends Controller
             ]);
 
 
-            Transaction::create([
-                'date'          => $request->payment_date,
-                'account_id'    => $request->account_id,
-                'type'          => 'deposit',
-                'name'          => $request->transaction_id,
-                'amount'        => $request->amount,
-                'credit'        => $request->amount,
-                'total_balance' => $account->balance,
-                'added_by'      => auth()->user()->id,
-                'payment_id'    => $payment->id,
-                'invoice_id'    => $request->invoice_id
-            ]);
+//            Transaction::create([
+//                'date'          => $request->payment_date,
+//                'account_id'    => $request->account_id,
+//                'type'          => 'deposit',
+//                'name'          => $request->transaction_id,
+//                'amount'        => $request->amount,
+//                'credit'        => $request->amount,
+//                'total_balance' => $account->balance,
+//                'added_by'      => auth()->user()->id,
+//                'payment_id'    => $payment->id,
+//                'invoice_id'    => $request->invoice_id
+//            ]);
+
+            // Notify User
+
+            $user = $invoice->client;
+            //dd($user);
+//            $dataMail = [
+//                'subjectMail'    => trans('cruds.finance.payment_received') .' '. $invoice->reference_no,
+//                'bodyMail'       => trans('global.reminder') .' '. $invoice->reference_no . ' ' . trans('cruds.invoice.fields.due_date'),
+//                'action'         => route("finance.admin.invoices.show", $invoice->id)
+//            ];
+
+            $dataNotification = [
+                'message'       => trans('global.reminder') .' '. $invoice->reference_no . ' ' . trans('cruds.invoice.fields.due_date'),
+                'route_path'    => 'admin/finance/invoices',
+            ];
+
+//            $user->notify(new FinanceNotification($invoice,$user,$dataMail,$dataNotification));
+            $user->notify(new FinanceNotification($invoice,$user,$dataNotification));
+            $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
+            event(new NewNotification($userNotify));
+
+            if (!$user->email){
+                $flashMsg = flash(trans('cruds.messages.client_not_have_email'), 'danger');
+                return redirect()->back()->with($flashMsg);
+            }
+            // send mail
+            $sender =  settings('smtp_sender_name');
+            $email_from =  settings('smtp_email') ;
+//            $message ='Payment Received of Invoice <a href="'.route("finance.admin.payment_received.show", $payment->id).'">'.$payment->transaction_id.'</a> : '.$payment->amount;
+            $message = trans('cruds.finance.payment_received').
+                trans('cruds.invoice.title_singular').' <a href="'.route("finance.admin.payment_received.show", $payment->id).'">'.
+                $invoice->reference_no.'</a> : '.$payment->amount .' , '.trans('cruds.payment.fields.transaction').' : '.
+                $payment->transaction_id;
+
+            //send mail to client
+            Mail::mailer('smtp')->to($user->email)->send(new FinanceMail($email_from, $sender,$message));
+
+
+            //send mail to CEO of company
+
+            if(User::find(auth()->user()->id)->accountDetail()->first())
+            {
+                $userName = AccountDetail::where('user_id', auth()->user()->id)->first()->fullname;
+            }else{
+                $userName = User::find(auth()->user()->id)->name;
+            }
+
+            $message = $userName.' '.trans('global.edit').' '.trans('cruds.account.title_singular').' '.
+                $account->name. ' '.trans('cruds.account.fields.balance').' : '.$account->balance ;
+
+            Mail::mailer('smtp')->to('mabrouk@onetecgroup.com')->send(new FinanceMail($email_from, $sender,$message));
+            //send mail to CEO of company
+//            Mail::mailer('smtp')->to('CEO')->send(new FinanceMail($email_from, $sender,$message));
+
+            $flashMsg = flash(trans('cruds.messages.create_success'), 'success');
 
             // Commit the transaction
             DB::commit();
+            return redirect()->route("finance.admin.payment_received.index")->with($flashMsg);
 
         }catch(\Exception $e){
             // An error occured; cancel the transaction...
             DB::rollback();
-
+            $flashMsg = flash(trans('cruds.messages.create_failed'), 'danger');
+            return redirect()->back()->with($flashMsg)->withInput();
             // and throw the error again.
             throw $e;
         }
 
-        return redirect()->route('finance.admin.payment_received.index');
+//        return redirect()->route('finance.admin.payment_received.index');
 
     }
 
@@ -295,26 +356,70 @@ class PaymentReceivedController extends Controller
 
 
 
-            Transaction::where('payment_id',$id)->first()->update([
-                'date'          => $request->payment_date,
-                'amount'        => $request->amount,
-                'credit'        => $request->amount,
-                'total_balance' => $account->balance,
-                'name'          => $request->title,
-            ]);
+//            Transaction::where('payment_id',$id)->first()->update([
+//                'date'          => $request->payment_date,
+//                'amount'        => $request->amount,
+//                'credit'        => $request->amount,
+//                'total_balance' => $account->balance,
+//                'name'          => $request->title,
+//            ]);
+
+            // Notify User
+
+            $user = $invoice->client;
+            //dd($user);
+//            $dataMail = [
+//                'subjectMail'    => trans('cruds.finance.payment_received') .' '. $invoice->reference_no,
+//                'bodyMail'       => trans('global.reminder') .' '. $invoice->reference_no . ' ' . trans('cruds.invoice.fields.due_date'),
+//                'action'         => route("finance.admin.invoices.show", $invoice->id)
+//            ];
+
+            $dataNotification = [
+                'message'       => trans('global.reminder') .' '. $invoice->reference_no . ' ' . trans('cruds.invoice.fields.due_date'),
+                'route_path'    => 'admin/finance/invoices',
+            ];
+
+//            $user->notify(new FinanceNotification($invoice,$user,$dataMail,$dataNotification));
+            $user->notify(new FinanceNotification($invoice,$user,$dataNotification));
+            $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
+            event(new NewNotification($userNotify));
+
+            if (!$user->email){
+                $flashMsg = flash(trans('cruds.messages.client_not_have_email'), 'danger');
+                return redirect()->back()->with($flashMsg);
+            }
+
+            // send mail
+            $sender =  settings('smtp_sender_name');
+            $email_from =  settings('smtp_email') ;
+//            $message ='Payment Received of Invoice <a href="'.route("finance.admin.payment_received.show", $payment->id).'">'.$payment->transaction_id.'</a> : '.$payment->amount;
+            $message = trans('global.edit').' '.trans('cruds.finance.payment_received').' '.
+                trans('cruds.invoice.title_singular').' <a href="'.route("finance.admin.payment_received.show", $payment->id).'">'.
+                $invoice->reference_no.'</a> : '.$payment->amount .' , '.trans('cruds.payment.fields.transaction').' : '.
+                $payment->transaction_id;
+
+            //send mail to client
+            Mail::mailer('smtp')->to($user->email)->send(new FinanceMail($email_from, $sender,$message));
+            //send mail to CEO of company
+//            Mail::mailer('smtp')->to('CEO')->send(new FinanceMail($email_from, $sender,$message));
+
+            $flashMsg = flash(trans('cruds.messages.update_success'), 'success');
 
             // Commit the transaction
             DB::commit();
+            return redirect()->route('finance.admin.payment_received.index')->with($flashMsg);
 
         }catch(\Exception $e){
             // An error occured; cancel the transaction...
             DB::rollback();
 
+            $flashMsg = flash(trans('cruds.messages.update_failed'), 'danger');
+            return redirect()->back()->with($flashMsg);
             // and throw the error again.
             throw $e;
         }
 
-        return redirect()->route('finance.admin.payment_received.index');
+//        return redirect()->route('finance.admin.payment_received.index');
     }
 
     /**
@@ -345,18 +450,68 @@ class PaymentReceivedController extends Controller
             $payment->delete();
 
             Transaction::where('payment_id',$id)->delete();
+
+            // Notify User
+            if (!$payment->invoice || !$payment->invoice->client){
+                $flashMsg = flash(trans('cruds.messages.no_invoice_client'), 'danger');
+
+                return redirect()->back()->with($flashMsg);
+            }
+            $invoice = $payment->invoice;
+            $user = $invoice->client;
+            //dd($user);
+//            $dataMail = [
+//                'subjectMail'    => trans('cruds.finance.payment_received') .' '. $invoice->reference_no,
+//                'bodyMail'       => trans('global.reminder') .' '. $invoice->reference_no . ' ' . trans('cruds.invoice.fields.due_date'),
+//                'action'         => route("finance.admin.invoices.show", $invoice->id)
+//            ];
+
+            $dataNotification = [
+                'message'       => trans('global.reminder') .' '. $invoice->reference_no . ' ' . trans('cruds.invoice.fields.due_date'),
+                'route_path'    => 'admin/finance/invoices',
+            ];
+
+//            $user->notify(new FinanceNotification($invoice,$user,$dataMail,$dataNotification));
+            $user->notify(new FinanceNotification($invoice,$user,$dataNotification));
+            $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
+            event(new NewNotification($userNotify));
+
+            if (!$user->email){
+                $flashMsg = flash(trans('cruds.messages.client_not_have_email'), 'danger');
+                return redirect()->back()->with($flashMsg);
+            }
+            // send mail
+            $sender =  settings('smtp_sender_name');
+            $email_from =  settings('smtp_email') ;
+
+//            $message ='Payment Received of Invoice <a href="'.route("finance.admin.payment_received.show", $payment->id).'">'.$payment->transaction_id.'</a> : '.$payment->amount;
+            $message = trans('global.delete').' '.trans('cruds.finance.payment_received').' '.
+                trans('cruds.invoice.title_singular').' : '.$payment->amount .' , '.trans('cruds.payment.fields.transaction').' : '.
+                $payment->transaction_id;
+
+            //send mail to client
+            Mail::mailer('smtp')->to($user->email)->send(new FinanceMail($email_from, $sender,$message));
+            //send mail to CEO of company
+//            Mail::mailer('smtp')->to('CEO')->send(new FinanceMail($email_from, $sender,$message));
+
+            $flashMsg = flash(trans('cruds.messages.delete_success'), 'success');
+
             // Commit the transaction
             DB::commit();
+            return redirect()->route('finance.admin.payment_received.index')->with($flashMsg);
 
         }catch(\Exception $e){
             // An error occured; cancel the transaction...
             DB::rollback();
+            $flashMsg = flash(trans('cruds.messages.delete_failed'), 'danger');
+
+            return redirect()->back()->with($flashMsg);
 
             // and throw the error again.
             throw $e;
         }
 
-        return back();
+//        return back();
     }
 
     public function massDestroy(Request $request)
@@ -379,18 +534,81 @@ class PaymentReceivedController extends Controller
 
         foreach ($ids as $id)
         {
-            $payment = Payment::where('id',$id)->first();
+            try {
+                // Begin a transaction
+                DB::beginTransaction();
 
-            // update bank account balance
-            $account = Account::findOrFail($payment->account_id);
-            $balance = $account->balance - $payment->amount;
-            //$balance +=  $request->amount;
+                $payment = Payment::where('id',$id)->first();
 
-            $account->update([
-                'balance' => $balance
-            ]);
-            Transaction::where('payment_id',$id)->delete();
-            $payment->delete();
+                // update bank account balance
+                $account = Account::findOrFail($payment->account_id);
+                $balance = $account->balance - $payment->amount;
+                //$balance +=  $request->amount;
+
+                $account->update([
+                    'balance' => $balance
+                ]);
+                Transaction::where('payment_id',$id)->delete();
+                $payment->delete();
+
+                // Notify User
+                if (!$payment->invoice || !$payment->invoice->client){
+                    $flashMsg = flash(trans('cruds.messages.no_invoice_client'), 'danger');
+
+                    return redirect()->back()->with($flashMsg);
+                }
+                $invoice = $payment->invoice;
+                $user = $invoice->client;
+                //dd($user);
+    //            $dataMail = [
+    //                'subjectMail'    => trans('cruds.finance.payment_received') .' '. $invoice->reference_no,
+    //                'bodyMail'       => trans('global.reminder') .' '. $invoice->reference_no . ' ' . trans('cruds.invoice.fields.due_date'),
+    //                'action'         => route("finance.admin.invoices.show", $invoice->id)
+    //            ];
+
+                $dataNotification = [
+                    'message'       => trans('global.reminder') .' '. $invoice->reference_no . ' ' . trans('cruds.invoice.fields.due_date'),
+                    'route_path'    => 'admin/finance/invoices',
+                ];
+
+    //            $user->notify(new FinanceNotification($invoice,$user,$dataMail,$dataNotification));
+                $user->notify(new FinanceNotification($invoice,$user,$dataNotification));
+                $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
+                event(new NewNotification($userNotify));
+
+                if (!$user->email){
+                    $flashMsg = flash(trans('cruds.messages.client_not_have_email'), 'danger');
+                    return redirect()->back()->with($flashMsg);
+                }
+                // send mail
+                $sender =  settings('smtp_sender_name');
+                $email_from =  settings('smtp_email') ;
+
+    //            $message ='Payment Received of Invoice <a href="'.route("finance.admin.payment_received.show", $payment->id).'">'.$payment->transaction_id.'</a> : '.$payment->amount;
+                $message = trans('global.delete').' '.trans('cruds.finance.payment_received').' '.
+                    trans('cruds.invoice.title_singular').' : '.$payment->amount .' , '.trans('cruds.payment.fields.transaction').' : '.
+                    $payment->transaction_id;
+
+                //send mail to client
+                Mail::mailer('smtp')->to($user->email)->send(new FinanceMail($email_from, $sender,$message));
+                //send mail to CEO of company
+    //            Mail::mailer('smtp')->to('CEO')->send(new FinanceMail($email_from, $sender,$message));
+
+                $flashMsg = flash(trans('cruds.messages.delete_success'), 'success');
+                // Commit the transaction
+                DB::commit();
+
+//                return redirect()->route('finance.admin.payment_received.index')->with($flashMsg);
+
+
+            }catch(\Exception $e){
+                // An error occured; cancel the transaction...
+                DB::rollback();
+
+//                return redirect()->back()->with(flash(trans('cruds.messages.delete_failed'), 'danger'))->withInput();
+                // and throw the error again.
+                throw $e;
+            }
         }
 
 //        Payment::whereIn('id', request('ids'))->delete();
