@@ -138,12 +138,6 @@ class InvoicesController extends Controller
 
             setActivity('invoice',$invoice->id,'Create Invoice #','تم اضافة فاتوره #',$invoice->reference_no,$invoice->reference_no);
 
-<<<<<<< HEAD
-=======
-
-
-
->>>>>>> c23dbcdab10da059d2eb3147cf9d18573d39b789
             DB::commit();
             return redirect()->route('finance.admin.invoices.index');
 
@@ -421,36 +415,30 @@ class InvoicesController extends Controller
             // Notify User
 
             $user = $invoice->client;
-            //dd($user);
-//            $dataMail = [
-//                'subjectMail'    => trans('global.reminder') .' '. $invoice->reference_no,
-//                'bodyMail'       => trans('global.reminder') .' '. $invoice->reference_no . ' ' . trans('cruds.invoice.fields.due_date'),
-//                'action'         => route("finance.admin.invoices.show", $invoice->id)
-//            ];
 
-            $dataNotification = [
-                'message'       => trans('global.reminder') .' '. $invoice->reference_no . ' ' . trans('cruds.invoice.fields.due_date'),
-                'route_path'    => 'admin/finance/invoices',
-            ];
-
-//            $user->notify(new FinanceNotification($invoice,$user,$dataMail,$dataNotification));
-            $user->notify(new FinanceNotification($invoice,$user,$dataNotification));
-            $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
-            event(new NewNotification($userNotify));
-
-            if (!$user->email){
+            if (!$user || !$user->email){
                 $flashMsg = flash(trans('cruds.messages.client_not_have_email'), 'danger');
                 return redirect()->back()->with($flashMsg);
             }
+
             // send mail
             $sender =  settings('smtp_sender_name');
             $email_from =  settings('smtp_email') ;
-//            $message = 'Reminder The Date of Invoice <a href="'.route("finance.admin.invoices.show", $invoice->id).'">'.$invoice->reference_no.'</a> : '.$invoice->due_date;
-            $message = trans('global.reminder').trans('cruds.invoice.fields.due_date').trans('cruds.invoice.title_singular').' <a href="'.route("finance.admin.invoices.show", $invoice->id).'">'.$invoice->reference_no.'</a> : '.$invoice->due_date;
 
-            Mail::mailer('smtp')->to($user->email)->send(new FinanceMail($email_from, $sender,$message));
+            $template = templates('invoice_reminder');
+            $message = str_replace("{CLIENT}",$user->name,$template->template_body);
+            $message = str_replace("{CURRENCY}",settings('default_currency'),$message);
+            $message = str_replace("{AMOUNT}",$invoice->total_amount,$message);
+            $message = str_replace("{INVOICE_LINK}",route("finance.admin.invoices.show", $invoice->id),$message);
+            $message = str_replace("{SITE_NAME}",settings('company_name'),$message);
 
-            $flashMsg = flash(trans('cruds.messages.send_reminder_success'), 'sucess');
+//            Mail::mailer('smtp')->to($user->email)->send(new FinanceMail($email_from, $sender,$message));
+            Mail::mailer('smtp')->to('mabrouk@onetecgroup.com')
+//                ->cc(['mabrouk@onetecgroup.com','sara@onetecgroup.com'])
+//                ->bcc('marwa@onetecgroup.com')
+                ->send(new FinanceMail($email_from, $sender,$message));
+
+            $flashMsg = flash(trans('cruds.messages.send_reminder_success'), 'success');
 
             // Commit the transaction
             DB::commit();
@@ -459,8 +447,10 @@ class InvoicesController extends Controller
         }catch(\Exception $e){
             // An error occured; cancel the transaction...
             DB::rollback();
+
             $flashMsg = flash(trans('cruds.messages.send_reminder_failed'), 'danger');
             return redirect()->back()->with($flashMsg);
+
             // and throw the error again.
             throw $e;
         }
@@ -468,6 +458,62 @@ class InvoicesController extends Controller
 
     }
 
+    public function email_invoice($id)
+    {
+
+        try {
+
+            // Begin a transaction
+            DB::beginTransaction();
+
+            $invoice = Invoice::findOrFail($id);
+
+            // Notify User
+
+            $user = $invoice->client;
+
+            if (!$user || !$user->email){
+                $flashMsg = flash(trans('cruds.messages.client_not_have_email'), 'danger');
+                return redirect()->back()->with($flashMsg);
+            }
+
+            // send mail
+            $sender =  settings('smtp_sender_name');
+            $email_from =  settings('smtp_email') ;
+
+            $template = templates('invoice_message');
+            $message = str_replace("{REF}",$invoice->reference_no,$template->template_body);
+            $message = str_replace("{CLIENT}",$user->name,$message);
+            $message = str_replace("{CURRENCY}",settings('default_currency'),$message);
+            $message = str_replace("{AMOUNT}",$invoice->total_amount,$message);
+            $message = str_replace("{INVOICE_LINK}",route("finance.admin.invoices.show", $invoice->id),$message);
+            $message = str_replace("{SITE_NAME}",settings('company_name'),$message);
+
+//            Mail::mailer('smtp')->to($user->email)->send(new FinanceMail($email_from, $sender,$message));
+            Mail::mailer('smtp')->to('mabrouk@onetecgroup.com')
+//                ->cc(['mabrouk@onetecgroup.com','sara@onetecgroup.com'])
+//                ->bcc('marwa@onetecgroup.com')
+                ->send(new FinanceMail($email_from, $sender,$message));
+
+            $flashMsg = flash(trans('cruds.messages.send_email_success'), 'success');
+
+            // Commit the transaction
+            DB::commit();
+            return redirect()->back()->with($flashMsg);
+
+        }catch(\Exception $e){
+            // An error occured; cancel the transaction...
+            DB::rollback();
+
+            $flashMsg = flash(trans('cruds.messages.send_email_failed'), 'danger');
+            return redirect()->back()->with($flashMsg);
+
+            // and throw the error again.
+            throw $e;
+        }
+//        return redirect()->back()->with($flashMsg);
+
+    }
 
 
 }

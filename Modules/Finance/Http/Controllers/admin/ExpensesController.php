@@ -133,17 +133,17 @@ class ExpensesController extends Controller
            'bank_balance'   =>  $account->balance
         ]);
 
-        Transaction::create([
-           'date'           => $request->entry_date,
-            'account_id'    => $request->account_id,
-            'type'          => 'expense',
-            'name'          => $request->title,
-            'amount'        => $request->amount,
-            'debit'         => $request->amount,
-            'total_balance' => $account->balance,
-            'added_by'      => auth()->user()->id,
-            'expense_id'    => $expenses->id
-        ]);
+//        Transaction::create([
+//           'date'           => $request->entry_date,
+//            'account_id'    => $request->account_id,
+//            'type'          => 'expense',
+//            'name'          => $request->title,
+//            'amount'        => $request->amount,
+//            'debit'         => $request->amount,
+//            'total_balance' => $account->balance,
+//            'added_by'      => auth()->user()->id,
+//            'expense_id'    => $expenses->id
+//        ]);
 
 
 

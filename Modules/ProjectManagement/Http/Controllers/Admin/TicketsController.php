@@ -24,6 +24,7 @@ use Spatie\Permission\Models\Permission;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ProjectManagementMail;
+use Validator;
 
 class TicketsController extends Controller
 {
@@ -174,18 +175,18 @@ class TicketsController extends Controller
                 event(new NewNotification($userNotify));
 
                 // send mail
-                $sender =  settings('smtp_sender_name');
-                $email_from =  settings('smtp_email') ;
-
-                if(User::find(auth()->user()->id)->accountDetail && User::find(auth()->user()->id)->accountDetail()->first())
-                {
-                    $userName = AccountDetail::where('user_id', auth()->user()->id)->first()->fullname;
-                }else {
-                    $userName = User::find(auth()->user()->id)->name;
-                }
-
-                $message = $userName.' '.'Update The Ticket : '.$ticket->ticket_code;
-                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
+//                $sender =  settings('smtp_sender_name');
+//                $email_from =  settings('smtp_email') ;
+//
+//                if(User::find(auth()->user()->id)->accountDetail && User::find(auth()->user()->id)->accountDetail()->first())
+//                {
+//                    $userName = AccountDetail::where('user_id', auth()->user()->id)->first()->fullname;
+//                }else {
+//                    $userName = User::find(auth()->user()->id)->name;
+//                }
+//
+//                $message = $userName.' '.'Update The Ticket : '.$ticket->ticket_code;
+//                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
             }
 
             DB::commit();
@@ -370,18 +371,18 @@ class TicketsController extends Controller
                 event(new NewNotification($userNotify));
 
                 // send mail
-                $sender =  settings('smtp_sender_name');
-                $email_from =  settings('smtp_email') ;
-
-                if(User::find(auth()->user()->id)->accountDetail && User::find(auth()->user()->id)->accountDetail()->first())
-                {
-                    $userName = AccountDetail::where('user_id', auth()->user()->id)->first()->fullname;
-                }else {
-                    $userName = User::find(auth()->user()->id)->name;
-                }
-
-                $message = $userName.' '.'Assign The Ticket : '.$ticket->ticket_code.' To '.$user->name;
-                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
+//                $sender =  settings('smtp_sender_name');
+//                $email_from =  settings('smtp_email') ;
+//
+//                if(User::find(auth()->user()->id)->accountDetail && User::find(auth()->user()->id)->accountDetail()->first())
+//                {
+//                    $userName = AccountDetail::where('user_id', auth()->user()->id)->first()->fullname;
+//                }else {
+//                    $userName = User::find(auth()->user()->id)->name;
+//                }
+//
+//                $message = $userName.' '.'Assign The Ticket : '.$ticket->ticket_code.' To '.$user->name;
+//                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
             }
             // Commit the transaction
             DB::commit();
@@ -409,7 +410,7 @@ class TicketsController extends Controller
 
             if ($request->ticket_replay_id){
 
-                $validator = $request->validate([
+                $validator = Validator::make($request->all(),[
                     'ticket_id'         => 'exists:tickets,id',
                     'replay_body'       => 'required',
                     'replier_id'        => 'exists:users,id',
@@ -427,7 +428,7 @@ class TicketsController extends Controller
                 ]);
             }else{
 
-                $validator = $request->validate([
+                $validator = Validator::make( $request->all(),[
                     'ticket_id'     => 'exists:tickets,id',
                     'body'          => 'required',
                     'replier_id'    => 'exists:users,id',
@@ -476,11 +477,6 @@ class TicketsController extends Controller
             foreach ($ticket->accountDetails as $accountUser)
             {
                 $user = $accountUser->user;
-//                $dataMail = [
-//                    'subjectMail'    => 'Update Ticket : '.$ticket->ticket_code ,
-//                    'bodyMail'       => 'Update The Ticket : '.$ticket->ticket_code .' status to '.$ticket->status,
-//                    'action'         => route("projectmanagement.admin.tickets.show", $ticket->id)
-//                ];
 
                 $dataNotification = [
                     'message'       => 'Update Ticket : '.$ticket->ticket_code .' status to '.$ticket->status,
@@ -495,18 +491,19 @@ class TicketsController extends Controller
                 event(new NewNotification($userNotify));
 
                 // send mail
-                $sender =  settings('smtp_sender_name');
-                $email_from =  settings('smtp_email') ;
-
-                if(User::find(auth()->user()->id)->accountDetail && User::find(auth()->user()->id)->accountDetail()->first())
-                {
-                    $userName = AccountDetail::where('user_id', auth()->user()->id)->first()->fullname;
-                }else {
-                    $userName = User::find(auth()->user()->id)->name;
-                }
-
-                $message = $userName.' '.'Update The Ticket : '.$ticket->ticket_code.' status to '.$ticket->status;
-                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
+//                $sender =  settings('smtp_sender_name');
+//                $email_from =  settings('smtp_email') ;
+//
+//                if(User::find(auth()->user()->id)->accountDetail && User::find(auth()->user()->id)->accountDetail()->first())
+//                {
+//                    $userName = AccountDetail::where('user_id', auth()->user()->id)->first()->fullname;
+//                }else {
+//                    $userName = User::find(auth()->user()->id)->name;
+//                }
+//
+//
+//                $message = $userName.' '.'Update The Ticket : '.$ticket->ticket_code.' status to '.$ticket->status;
+//                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
             }
 
             // Commit the transaction

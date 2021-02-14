@@ -171,18 +171,11 @@ class BugsController extends Controller
             foreach ($bug->accountDetails as $accountUser)
             {
                 $user = $accountUser->user;
-//                $dataMail = [
-//                    'subjectMail'    => 'Update Bug '.$bug->name,
-//                    'bodyMail'       => 'Update The Bug '.$bug->name,
-//                    'action'         => route("projectmanagement.admin.bugs.show", $bug->id)
-//                ];
 
                 $dataNotification = [
                     'message'       => 'Update The Bug : '.$bug->{'name_'.app()->getLocale()},
                     'route_path'    => 'admin/projectmanagement/bugs',
                 ];
-
-//                $user->notify(new ProjectManagementNotification($bug,$user,$dataMail,$dataNotification));
 
                 //send notification
                 $user->notify(new ProjectManagementNotification($bug,$user,$dataNotification));
@@ -200,8 +193,22 @@ class BugsController extends Controller
                     $userName = User::find(auth()->user()->id)->name;
                 }
 
-                $message = $userName.' '.'Update The Bug '.$bug->{'name_'.app()->getLocale()};
-                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
+//                $message = $userName.' '.'Update The Bug '.$bug->{'name_'.app()->getLocale()};
+//                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
+
+                //send mail to user
+                $template = templates('bug_updated');
+                $message = str_replace("{ASSIGNED_BY}",$userName,$template->template_body);
+                $message = str_replace("{BUG_TITLE}",$bug->name_en,$message);
+                $message = str_replace("{STATUS}",$bug->status,$message);
+                $message = str_replace("{MARKED_BY}",$bug->reporterBy && $bug->reporterBy->name ? $bug->reporterBy->name : '',$message);
+                $message = str_replace("{BUG_URL}",route("projectmanagement.admin.bugs.show", $bug->id),$message);
+                $message = str_replace("{SITE_NAME}",settings('company_name'),$message);
+
+                Mail::mailer('smtp')->to($user->email)
+                    ->cc(['mabrouk@onetecgroup.com','sara@onetecgroup.com'])
+                    ->bcc('marwa@onetecgroup.com')
+                    ->send(new ProjectManagementMail($email_from, $sender,$message,$template->subject));
             }
 
             setActivity('bug', $bug->id, 'Update Bug', ' bug تعديل', $bug->status, $bug->status);
@@ -392,18 +399,11 @@ class BugsController extends Controller
             foreach ($bug->accountDetails as $accountUser)
             {
                 $user = $accountUser->user;
-//                $dataMail = [
-//                    'subjectMail'    => 'New Bug Assign To You',
-//                    'bodyMail'       => 'Assign The Bug '.$bug->name.' To '.$user->name,
-//                    'action'         => route("projectmanagement.admin.bugs.show", $bug->id)
-//                ];
 
                 $dataNotification = [
                     'message'       => 'Assign The Bug : '.$bug->{'name_'.app()->getLocale()}.' To '.$user->name,
                     'route_path'    => 'admin/projectmanagement/bugs',
                 ];
-
-//                $user->notify(new ProjectManagementNotification($bug,$user,$dataMail,$dataNotification));
 
                 //send notification
                 $user->notify(new ProjectManagementNotification($bug,$user,$dataNotification));
@@ -421,11 +421,22 @@ class BugsController extends Controller
                     $userName = User::find(auth()->user()->id)->name;
                 }
 
-                $message = $userName.' '.'Assign The Bug '.$bug->{'name_'.app()->getLocale()}.' To '.$user->name;
-                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
+//                $message = $userName.' '.'Assign The Bug '.$bug->{'name_'.app()->getLocale()}.' To '.$user->name;
+//                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
+
+                //send mail to user
+                $template = templates('bug_assigned');
+                $message = str_replace("{ASSIGNED_BY}",$userName,$template->template_body);
+                $message = str_replace("{BUG_TITLE}",$bug->name_en,$message);
+                $message = str_replace("{BUG_URL}",route("projectmanagement.admin.bugs.show", $bug->id),$message);
+                $message = str_replace("{SITE_NAME}",settings('company_name'),$message);
+
+                Mail::mailer('smtp')->to($user->email)
+                    ->cc(['mabrouk@onetecgroup.com','sara@onetecgroup.com'])
+                    ->bcc('marwa@onetecgroup.com')
+                    ->send(new ProjectManagementMail($email_from, $sender,$message,$template->subject));
             }
 
-//            setActivity('bug',$bug->id,'Update Assign to',$bug->name);
             setActivity('bug', $bug->id, 'Update Assign to', ' bug تعديل القائمين على', $bug->name_en, $bug->name_ar);
 
             // Commit the transaction
@@ -463,37 +474,31 @@ class BugsController extends Controller
             foreach ($bug->accountDetails as $accountUser)
             {
                 $user = $accountUser->user;
-//                $dataMail = [
-//                    'subjectMail'    => 'Update Bug '.$bug->name,
-//                    'bodyMail'       => 'Update Note Of Bug '.$bug->name,
-//                    'action'         => route("projectmanagement.admin.bugs.show", $bug->id)
-//                ];
 
                 $dataNotification = [
                     'message'       => 'Update Note Of Bug : '.$bug->{'name_'.app()->getLocale()},
                     'route_path'    => 'admin/projectmanagement/bugs',
                 ];
 
-//                $user->notify(new ProjectManagementNotification($bug,$user,$dataMail,$dataNotification));
-
                 //send notification
                 $user->notify(new ProjectManagementNotification($bug,$user,$dataNotification));
                 $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
                 event(new NewNotification($userNotify));
 
-                // send mail
-                $sender =  settings('smtp_sender_name');
-                $email_from =  settings('smtp_email') ;
+//                // send mail
+//                $sender =  settings('smtp_sender_name');
+//                $email_from =  settings('smtp_email') ;
+//
+//                if(User::find(auth()->user()->id)->accountDetail && User::find(auth()->user()->id)->accountDetail()->first())
+//                {
+//                    $userName = AccountDetail::where('user_id', auth()->user()->id)->first()->fullname;
+//                }else {
+//                    $userName = User::find(auth()->user()->id)->name;
+//                }
 
-                if(User::find(auth()->user()->id)->accountDetail && User::find(auth()->user()->id)->accountDetail()->first())
-                {
-                    $userName = AccountDetail::where('user_id', auth()->user()->id)->first()->fullname;
-                }else {
-                    $userName = User::find(auth()->user()->id)->name;
-                }
+//                $message = $userName.' '.'Update Note Of Bug '.$bug->{'name_'.app()->getLocale()};
+//                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
 
-                $message = $userName.' '.'Update Note Of Bug '.$bug->{'name_'.app()->getLocale()};
-                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
             }
 
 //            setActivity('bug',$bug->id,'Update Note ',$bug->name);

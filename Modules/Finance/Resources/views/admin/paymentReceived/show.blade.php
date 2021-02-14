@@ -20,7 +20,7 @@
                 {{--</div>--}}
                 <div class="p-3">
                     <a class="btn btn-info" href="{{ route('finance.admin.payment_received.edit',$payment->id) }}">
-                        {{ trans('global.edit') }} {{ trans('cruds.invoice.title_singular') }}
+                        {{ trans('global.edit') }} {{ trans('cruds.payment.title_singular') }}
                     </a>
                     <a class="btn btn-success" href="{{ route('finance.admin.payment_received.payment_received_pdf',$payment->id) }}" title="pdf">
                         <i class="fa fa-file-pdf  " aria-hidden="true" ></i>

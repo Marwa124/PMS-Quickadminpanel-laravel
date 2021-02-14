@@ -114,6 +114,7 @@ Route::group(['as' => 'finance.admin.', 'prefix' => 'admin/finance', 'namespace'
     Route::get('invoices/change_status_reject/{id}', 'InvoicesController@change_status_reject')->name('invoices.change_status_reject');
     Route::post('invoices/changestatus', 'InvoicesController@changestatus')->name('invoices.changestatus');
     Route::get('invoices/history_invoice/{invoice}', 'InvoicesController@history_invoice')->name('invoices.history_invoice');
+    Route::get('invoices/email_invoice/{id}', 'InvoicesController@email_invoice')->name('invoices.email_invoice');
 
     ////////////////////////////////END INVOICES///////////////////////////////////////////////////////////////////////
 

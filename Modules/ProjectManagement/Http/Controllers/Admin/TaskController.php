@@ -226,21 +226,14 @@ class TaskController extends Controller
             // Notify User
             foreach ($task->accountDetails as $accountUser) {
                 $user = $accountUser->user;
-//                $dataMail = [
-//                    'subjectMail' => 'Update Task ' . $task->name,
-//                    'bodyMail' => 'Update The Task ' . $task->name,
-//                    'action' => route("projectmanagement.admin.tasks.show", $task->id)
-//                ];
 
                 $dataNotification = [
                     'message' => 'Update The Task : ' . $task->{'name_'.app()->getLocale()},
                     'route_path' => 'admin/projectmanagement/tasks',
                 ];
 
-//                $user->notify(new ProjectManagementNotification($task, $user, $dataMail, $dataNotification));
 
                 //send notification
-//                $user->notify(new ProjectManagementNotification($task, $user, $dataMail, $dataNotification));
                 $user->notify(new ProjectManagementNotification($task, $user, $dataNotification));
                 $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
                 event(new NewNotification($userNotify));
@@ -256,8 +249,32 @@ class TaskController extends Controller
                     $userName = User::find(auth()->user()->id)->name;
                 }
 
-                $message = $userName.' '.'Update The Task '.$task->{'name_'.app()->getLocale()};
-                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
+                // send mail
+                $sender =  settings('smtp_sender_name');
+                $email_from =  settings('smtp_email') ;
+
+                if(User::find(auth()->user()->id)->accountDetail && User::find(auth()->user()->id)->accountDetail()->first())
+                {
+                    $userName = AccountDetail::where('user_id', auth()->user()->id)->first()->fullname;
+                }else {
+                    $userName = User::find(auth()->user()->id)->name;
+                }
+
+                //send mail to user
+                $template = templates('tasks_updated');
+                $message = str_replace("{ASSIGNED_BY}",$userName,$template->template_body);
+                $message = str_replace("{TASK_NAME}",$task->name_en,$message);
+                $message = str_replace("{TASK_URL}",route("projectmanagement.admin.tasks.show", $task->id),$message);
+                $message = str_replace("{SITE_NAME}",settings('company_name'),$message);
+
+                Mail::mailer('smtp')->to($user->email)
+                    ->cc(['mabrouk@onetecgroup.com','sara@onetecgroup.com'])
+                    ->bcc('marwa@onetecgroup.com')
+                    ->send(new ProjectManagementMail($email_from, $sender,$message,$template->subject));
+
+//                $message = $userName.' '.'Update The Task '.$task->{'name_'.app()->getLocale()};
+//                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
+
             }
 
             setActivity('task', $task->id, 'Update Task Details', 'تعديل تفاصيل المهمه', $task->name_en, $task->name_ar);
@@ -477,8 +494,21 @@ class TaskController extends Controller
                     $userName = User::find(auth()->user()->id)->name;
                 }
 
-                $message = $userName.' '.'Assign The Task : '.$task->{'name_'.app()->getLocale()}. ' To ' . $user->name;
-                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
+                //send mail to user
+                $template = templates('task_assigned');
+                $message = str_replace("{ASSIGNED_BY}",$userName,$template->template_body);
+                $message = str_replace("{TASK_NAME}",$task->name_en,$message);
+                $message = str_replace("{TASK_URL}",route("projectmanagement.admin.tasks.show", $task->id),$message);
+                $message = str_replace("{SITE_NAME}",settings('company_name'),$message);
+
+                Mail::mailer('smtp')->to($user->email)
+                    ->cc(['mabrouk@onetecgroup.com','sara@onetecgroup.com'])
+                    ->bcc('marwa@onetecgroup.com')
+                    ->send(new ProjectManagementMail($email_from, $sender,$message,$template->subject));
+
+//                $message = $userName.' '.'Assign The Task : '.$task->{'name_'.app()->getLocale()}. ' To ' . $user->name;
+//                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
+
             }
 
             setActivity('task', $task->id, 'Update Assign to', 'تعديل القائمين على مهمة', $task->name_en, $task->name_ar);
@@ -512,18 +542,12 @@ class TaskController extends Controller
             // Notify User
             foreach ($task->accountDetails as $accountUser) {
                 $user = $accountUser->user;
-//                $dataMail = [
-//                    'subjectMail' => 'Update Task ' . $task->name,
-//                    'bodyMail' => 'Update Note Of Task ' . $task->name,
-//                    'action' => route("projectmanagement.admin.tasks.show", $task->id)
-//                ];
 
                 $dataNotification = [
                     'message' => 'Update Note Of Task : ' . $task->{'name_'.app()->getLocale()},
                     'route_path' => 'admin/projectmanagement/tasks',
                 ];
 
-//                $user->notify(new ProjectManagementNotification($task, $user, $dataMail, $dataNotification));
 
                 //send notification
                 $user->notify(new ProjectManagementNotification($task, $user, $dataNotification));
@@ -541,8 +565,19 @@ class TaskController extends Controller
                     $userName = User::find(auth()->user()->id)->name;
                 }
 
-                $message = $userName.' '.'Update Note Of Task '.$task->{'name_'.app()->getLocale()};
-                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
+                //send mail to user
+                $template = templates('tasks_updated');
+                $message = str_replace("{ASSIGNED_BY}",$userName,$template->template_body);
+                $message = str_replace("{TASK_NAME}",$task->name_en,$message);
+                $message = str_replace("{TASK_URL}",route("projectmanagement.admin.tasks.show", $task->id),$message);
+                $message = str_replace("{SITE_NAME}",settings('company_name'),$message);
+
+                Mail::mailer('smtp')->to($user->email)
+                    ->cc(['mabrouk@onetecgroup.com','sara@onetecgroup.com'])
+                    ->bcc('marwa@onetecgroup.com')
+                    ->send(new ProjectManagementMail($email_from, $sender,$message,$template->subject));
+//                $message = $userName.' '.'Update Note Of Task '.$task->{'name_'.app()->getLocale()};
+//                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
             }
 
             setActivity('task', $task->id, 'Update Note','تعديل الملاحظات', $task->name_en, $task->name_ar);

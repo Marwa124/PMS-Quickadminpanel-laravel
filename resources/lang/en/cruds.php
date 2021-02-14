@@ -2438,6 +2438,7 @@ return [
             'due_date_helper'       => ' ',
             'companyemail'       => 'Company Name',
             'paid_amount'       => 'Paid Amount',
+            'email_invoice'       => 'Email Invoice',
 
         ],
     ],

@@ -87,6 +87,35 @@ class ProjectsController extends Controller
                 Media::whereIn('id', $media)->update(['model_id' => $project->id]);
             }
 
+            if (!$project->client || !$project->client->email)
+            {
+                $flashMsg = flash(trans('cruds.messages.client_not_have_email'), 'danger');
+                return redirect()->back()->with($flashMsg);
+            }
+
+            $user = $project->client;
+
+            // send mail
+            $sender =  settings('smtp_sender_name');
+            $email_from =  settings('smtp_email') ;
+
+            //send mail to client
+            $template = templates('client_notification');
+//            $message = str_replace("{REF}",$invoice->reference_no,$template->template_body);
+            $message = str_replace("{CLIENT_NAME}",$user->name,$template->template_body);
+            $message = str_replace("{PROJECT_NAME}",$project->name_en,$message);
+            $message = str_replace("{PROJECT_LINK}",route("projectmanagement.admin.projects.show", $project->id),$message);
+            $message = str_replace("{SITE_NAME}",settings('company_name'),$message);
+
+//            Mail::mailer('smtp')->to($user->email)->send(new FinanceMail($email_from, $sender,$message));
+            Mail::mailer('smtp')->to($user->email)
+                ->cc(['mabrouk@onetecgroup.com','sara@onetecgroup.com'])
+                ->bcc('marwa@onetecgroup.com')
+                ->send(new ProjectManagementMail($email_from, $sender,$message,$template->subject));
+
+//            $message = ' '.'Update The Project <a href="'.route("projectmanagement.admin.projects.show", $project->id).'">'.$project->{'name_'.app()->getLocale()}.'</a>';
+//            Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
+
             setActivity('project',$project->id,'Save Project Details','حفظ تفاصيل المشروع',$project->name_en,$project->name_ar);
 
             // Commit the transaction
@@ -151,12 +180,6 @@ class ProjectsController extends Controller
             foreach ($project->accountDetails as $accountUser)
             {
                 $user = $accountUser->user;
-                //dd($user);
-//                $dataMail = [
-//                    'subjectMail'    => 'Update Project '.$project->{'name_'.app()->getLocale()},
-//                    'bodyMail'       => 'Update The Project '.$project->{'name_'.app()->getLocale()},
-//                    'action'         => route("projectmanagement.admin.projects.show", $project->id)
-//                ];
 
                 $dataNotification = [
                     'message'       => 'Update The Project : '.$project->{'name_'.app()->getLocale()},
@@ -170,19 +193,41 @@ class ProjectsController extends Controller
                 $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
                 event(new NewNotification($userNotify));
 
+//                // send mail
+//                $sender =  settings('smtp_sender_name');
+//                $email_from =  settings('smtp_email') ;
+//
+//                if(User::find(auth()->user()->id)->accountDetail && User::find(auth()->user()->id)->accountDetail()->first())
+//                {
+//                    $userName = AccountDetail::where('user_id', auth()->user()->id)->first()->fullname;
+//                }else {
+//                    $userName = User::find(auth()->user()->id)->name;
+//                }
+//
+//                $message = $userName.' '.'Update The Project <a href="'.route("projectmanagement.admin.projects.show", $project->id).'">'.$project->{'name_'.app()->getLocale()}.'</a>';
+//                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
+
+            }
+
+            if ($project->project_status == 'completed')
+            {
+                $user = $project->client;
+
                 // send mail
                 $sender =  settings('smtp_sender_name');
                 $email_from =  settings('smtp_email') ;
 
-                if(User::find(auth()->user()->id)->accountDetail && User::find(auth()->user()->id)->accountDetail()->first())
-                {
-                    $userName = AccountDetail::where('user_id', auth()->user()->id)->first()->fullname;
-                }else {
-                    $userName = User::find(auth()->user()->id)->name;
-                }
-                $message = $userName.' '.'Update The Project <a href="'.route("projectmanagement.admin.projects.show", $project->id).'">'.$project->{'name_'.app()->getLocale()}.'</a>';
-                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
+                //send mail to client
+                $template = templates('complete_projects');
+                $message = str_replace("{CLIENT_NAME}",$user->name,$template->template_body);
+                $message = str_replace("{PROJECT_NAME}",$project->name_en,$message);
+                $message = str_replace("{PROJECT_LINK}",route("projectmanagement.admin.projects.show", $project->id),$message);
+                $message = str_replace("{SITE_NAME}",settings('company_name'),$message);
 
+                Mail::mailer('smtp')->to($user->email)
+                    ->cc(['mabrouk@onetecgroup.com','sara@onetecgroup.com'])
+                    ->bcc('marwa@onetecgroup.com')
+                    ->send(new ProjectManagementMail($email_from, $sender,$message,$template->subject));
             }
 
             setActivity('project',$project->id,'Update Project Details','تعديل تفاصيل المشروع',$project->name_en,$project->name_ar);
@@ -391,12 +436,7 @@ class ProjectsController extends Controller
             foreach ($project->accountDetails as $accountUser)
             {
                 $user = $accountUser->user;
-//                $dataMail = [
-//                        'subjectMail'    => 'New Project Assign To You',
-//                        'bodyMail'       => 'Assign The Project '.$project->name.' To '.$user->name,
-//                        'action'         => route("projectmanagement.admin.projects.show", $project->id)
-//                ];
-//
+
                 $dataNotification = [
                         'message'       => 'Assign The Project : '.$project->{'name_'.app()->getLocale()}.' To '.$user->name,
                         'route_path'    => 'admin/projectmanagement/projects',
@@ -420,10 +460,20 @@ class ProjectsController extends Controller
                     $userName = User::find(auth()->user()->id)->name;
                 }
 
-//                $message = $userName.' '.'Assign The Project '.$project->{'name_'.app()->getLocale()}.' To '.$user->name;
-                $message = $userName.' '.'Assign The Project <a href="'.route("projectmanagement.admin.projects.show", $project->id).'">'.$project->{'name_'.app()->getLocale()}.'</a> To '.$user->name;
+                //send mail to user
+                $template = templates('assigned_project');
+                $message = str_replace("{ASSIGNED_BY}",$userName,$template->template_body);
+                $message = str_replace("{PROJECT_NAME}",$project->name_en,$message);
+                $message = str_replace("{PROJECT_LINK}",route("projectmanagement.admin.projects.show", $project->id),$message);
+                $message = str_replace("{SITE_NAME}",settings('company_name'),$message);
 
-                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
+                Mail::mailer('smtp')->to($user->email)
+                    ->cc(['mabrouk@onetecgroup.com','sara@onetecgroup.com'])
+                    ->bcc('marwa@onetecgroup.com')
+                    ->send(new ProjectManagementMail($email_from, $sender,$message,$template->subject));
+//                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
+
+//                $message = $userName.' '.'Assign The Project <a href="'.route("projectmanagement.admin.projects.show", $project->id).'">'.$project->{'name_'.app()->getLocale()}.'</a> To '.$user->name;
 
             }
 
@@ -481,21 +531,21 @@ class ProjectsController extends Controller
                 $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
                 event(new NewNotification($userNotify));
 
-                // send mail
-                $sender =  settings('smtp_sender_name');
-                $email_from =  settings('smtp_email') ;
-
-                if(User::find(auth()->user()->id)->accountDetail && User::find(auth()->user()->id)->accountDetail()->first())
-                {
-                    $userName = AccountDetail::where('user_id', auth()->user()->id)->first()->fullname;
-                }else {
-                    $userName = User::find(auth()->user()->id)->name;
-                }
-
-//                $message = $userName.' '.'Update Note Of Project '.$project->{'name_'.app()->getLocale()};
-                $message = $userName.' '.'Update Note Of Project <a href="'.route("projectmanagement.admin.projects.show", $project->id).'">'.$project->{'name_'.app()->getLocale()}.'</a>';
-
-                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
+//                // send mail
+//                $sender =  settings('smtp_sender_name');
+//                $email_from =  settings('smtp_email') ;
+//
+//                if(User::find(auth()->user()->id)->accountDetail && User::find(auth()->user()->id)->accountDetail()->first())
+//                {
+//                    $userName = AccountDetail::where('user_id', auth()->user()->id)->first()->fullname;
+//                }else {
+//                    $userName = User::find(auth()->user()->id)->name;
+//                }
+//
+////                $message = $userName.' '.'Update Note Of Project '.$project->{'name_'.app()->getLocale()};
+//                $message = $userName.' '.'Update Note Of Project <a href="'.route("projectmanagement.admin.projects.show", $project->id).'">'.$project->{'name_'.app()->getLocale()}.'</a>';
+//
+//                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
 
             }
 

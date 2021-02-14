@@ -15,6 +15,11 @@ use Gate;
 use Illuminate\Http\Request;
 use Modules\ProjectManagement\Entities\Project;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Mail;
+use App\Notifications\ProjectManagementNotification;
+use App\Models\User;
+use App\Mail\ProjectManagementMail;
+use App\Events\NewNotification;
 
 class MilestonesController extends Controller
 {
@@ -289,6 +294,53 @@ class MilestonesController extends Controller
                 $milestone->accountDetails()->detach();
             }
 
+            // Notify User
+            foreach ($milestone->accountDetails as $accountUser)
+            {
+                $user = $accountUser->user;
+
+                $dataNotification = [
+                    'message'       => 'Assign The Project : '.$milestone->{'name_'.app()->getLocale()}.' To '.$user->name,
+                    'route_path'    => 'admin/projectmanagement/milestones',
+                ];
+//
+//                $user->notify(new ProjectManagementNotification($project,$user,$dataMail,$dataNotification));
+
+                //send notification
+                $user->notify(new ProjectManagementNotification($milestone,$user,$dataNotification));
+                $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
+                event(new NewNotification($userNotify));
+
+                // send mail
+                $sender =  settings('smtp_sender_name');
+                $email_from =  settings('smtp_email') ;
+
+                if(User::find(auth()->user()->id)->accountDetail && User::find(auth()->user()->id)->accountDetail()->first())
+                {
+                    $userName = AccountDetail::where('user_id', auth()->user()->id)->first()->fullname;
+                }else {
+                    $userName = User::find(auth()->user()->id)->name;
+                }
+
+                //send mail to user
+                $template = templates('responsible_milestone');
+                $message = str_replace("{ASSIGNED_BY}",$userName,$template->template_body);
+                $message = str_replace("{PROJECT_NAME}",$milestone->project->name_en,$message);
+                $message = str_replace("{MILESTONE_NAME}",$milestone->name_en,$message);
+                $message = str_replace("{PROJECT_LINK}",route("projectmanagement.admin.milestones.show", $milestone->id),$message);
+                $message = str_replace("{SITE_NAME}",settings('company_name'),$message);
+
+                Mail::mailer('smtp')->to($user->email)
+                    ->cc(['mabrouk@onetecgroup.com','sara@onetecgroup.com'])
+                    ->bcc('marwa@onetecgroup.com')
+                    ->send(new ProjectManagementMail($email_from, $sender,$message,$template->subject));
+//                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
+
+//                $message = $userName.' '.'Assign The Project <a href="'.route("projectmanagement.admin.projects.show", $project->id).'">'.$project->{'name_'.app()->getLocale()}.'</a> To '.$user->name;
+//                dd('kk');
+
+            }
+//            dd('ll');
             // Commit the transaction
             DB::commit();
 
