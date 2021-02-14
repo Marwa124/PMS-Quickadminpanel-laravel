@@ -3,40 +3,56 @@
     <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
 
 
-        <a class="nav-link active company_details" id="v-pills-details-tab" data-toggle="pill" href="#v-pills-company-details"
-           role="tab" aria-controls="v-pills-details"
+        <a class="nav-link {{ request()->is('admin/settings/details') ? 'active' : ''}} "  
+          href="{{ route('admin.settings.details.index') }}"
+          
            aria-selected="true"><i class="fa fa-fw fa-info-circle"></i>@lang('settings.company_details') 
         
         </a>
 
+        
+        <a class="nav-link {{ request()->is('admin/settings/system') ? 'active' : ''}}  "  
+            href="{{ route('admin.settings.system.index') }}"
+            
+             aria-selected="true"><i class="fa fa-fw fa-info-circle"></i>@lang('settings.system_settings') 
+          
+          </a>
 
-        <a class="nav-link company-system" id="v-pills-details-tab" data-toggle="pill" href="#v-pills-company-system"
-         role="tab" aria-controls="v-pills-details"
-         aria-selected="true"><i class="fa fa-fw fa-desktop"></i>@lang('settings.system_settings')  
+  
+          <a class="nav-link {{ request()->is('admin/settings/email') ? 'active' : ''}}  "  
+            href="{{ route('admin.settings.email.index') }}"
+            
+             aria-selected="true"><i class="fa fa-fw fa-info-circle"></i>@lang('settings.email_settings')
+          
+          </a>
+
+          <a class="nav-link {{ request()->is('admin/settings/sms') ? 'active' : ''}}  "  
+            href="{{ route('admin.settings.sms.index') }}"
+            
+             aria-selected="true"><i class="fa fa-fw fa-info-circle"></i>@lang('settings.sms_settings') 
+          
+          </a>
+
+   
       
-        </a>
-
-
-        
-
-        <a class="nav-link email-settings" id="v-pills-details-tab" data-toggle="pill" href="#v-pills-email-settings"
-            role="tab" aria-controls="v-pills-details"
-            aria-selected="true"><i class="fa fa-fw fa-envelope"></i>@lang('settings.email_settings')  
-        
-        </a>
-
-
-        
-        <a class="nav-link sms-settings" id="v-pills-details-tab" data-toggle="pill" href="#v-pills-sms-settings"
-            role="tab" aria-controls="v-pills-details"
-            aria-selected="true"><i class="fa fa-fw fa-envelope"></i>@lang('settings.sms_settings')  
-        
-        </a>
-        <a class="nav-link email-templates" id="v-pills-details-tab" data-toggle="pill" href="#v-pills-email-templates"
-            role="tab" aria-controls="v-pills-details"
+        <a href="{{ url('admin/settings/templates?tm=account_emails') }}"
+         class="nav-link  {{ request()->is('admin/settings/templates') ? 'active' : ''}}"
+         
             aria-selected="true"><i class="fa fa-fw fa-envelope"></i>@lang('settings.email_templates')  
         
         </a>
+
+            
+        <a href="{{ route('admin.settings.invoice.index') }}"
+         class="nav-link  {{ request()->is('admin/settings/invoice') ? 'active' : ''}}"
+         
+            aria-selected="true"><i class="fa fa-fw fa-envelope"></i>@lang('settings.invoice_settings')   
+        
+        </a>
+
+
+
+
 
 
     </div>

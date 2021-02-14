@@ -1463,8 +1463,8 @@
         @endcan
         @can('setting_access')
             <li class="c-sidebar-nav-item">
-                <a href="{{ route("admin.settings.index") }}"
-                   class="c-sidebar-nav-link {{ request()->is("admin/settings") || request()->is("admin/settings/*") ? "active" : "" }}">
+                <a href="{{ route("admin.settings.templates.index") }}"
+                   class="c-sidebar-nav-link {{ request()->is("admin/settings/details") || request()->is("admin/settings/*") ? "active" : "" }}">
                     <i class="fa-fw fas fa-users-cog c-sidebar-nav-icon">
 
                     </i>

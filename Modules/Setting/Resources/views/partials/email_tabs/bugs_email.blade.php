@@ -1,7 +1,7 @@
        <!-- Section: Live preview -->
 
 
-       <section class="section_tab animate d-none bugs_email_tabs">
+       <section class="section_tab animate  bugs_email_tabs">
 
            <ul class="nav nav-tabs" id="myTab" role="tablist">
 
@@ -70,7 +70,7 @@
                        <div class="form-group">
                            <label class="col-lg-12">@lang('settings.message')</label>
                            <div class="col-lg-12">
-                               <textarea id="" class="form-control editor text_bug_assigned" style="height: 600px;"
+                               <textarea  class="form-control editor text_bug_assigned" style="height: 600px;"
                                    name="email_template">{{ templates('bug_assigned') ? templates('bug_assigned')->template_body : '' }}
                                </textarea>
 
@@ -108,7 +108,7 @@
                        <div class="form-group">
                            <label class="col-lg-12">@lang('settings.message')</label>
                            <div class="col-lg-12">
-                               <textarea id="" class="form-control editor" style="height: 600px;" name="email_template">{{ templates('bug_comments') ? templates('bug_comments')->template_body : '' }}
+                               <textarea  class="form-control editor" style="height: 600px;" name="email_template">{{ templates('bug_comments') ? templates('bug_comments')->template_body : '' }}
                                </textarea>
 
                            </div>
@@ -146,7 +146,7 @@
                        <div class="form-group">
                            <label class="col-lg-12">@lang('settings.message')</label>
                            <div class="col-lg-12">
-                               <textarea id="" class="form-control editor" style="height: 600px;" name="email_template">{{ templates('bug_attachment') ? templates('bug_attachment')->template_body : '' }}
+                               <textarea  class="form-control editor" style="height: 600px;" name="email_template">{{ templates('bug_attachment') ? templates('bug_attachment')->template_body : '' }}
                                </textarea>
 
                            </div>
@@ -185,7 +185,7 @@
                        <div class="form-group">
                            <label class="col-lg-12">@lang('settings.message')</label>
                            <div class="col-lg-12">
-                               <textarea id="" class="form-control editor" style="height: 600px;" name="email_template">{{ templates('bug_updated') ? templates('bug_updated')->template_body : '' }}
+                               <textarea  class="form-control editor" style="height: 600px;" name="email_template">{{ templates('bug_updated') ? templates('bug_updated')->template_body : '' }}
                                </textarea>
 
                            </div>
@@ -220,7 +220,7 @@
                        <div class="form-group">
                            <label class="col-lg-12">@lang('settings.message')</label>
                            <div class="col-lg-12">
-                               <textarea id="" class="form-control editor" style="height: 600px;" name="email_template">{{ templates('bug_reported') ? templates('bug_reported')->template_body : '' }}
+                               <textarea  class="form-control editor" style="height: 600px;" name="email_template">{{ templates('bug_reported') ? templates('bug_reported')->template_body : '' }}
                                </textarea>
 
                            </div>

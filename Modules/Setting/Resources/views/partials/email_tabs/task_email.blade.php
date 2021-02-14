@@ -1,6 +1,6 @@
        <!-- Section: Live preview -->
 
-       <section class="section_tab animate d-none task_email_tabs">
+       <section class="section_tab animate task_email_tabs">
       
         <ul class="nav nav-tabs" id="myTab" role="tablist">
 
@@ -59,7 +59,7 @@
                 <div class="form-group">
                     <label class="col-lg-12">@lang('settings.message')</label>
                     <div class="col-lg-12">
-                <textarea id="" class="form-control editor text_task_assigned"  style="height: 600px;" name="email_template">{{ templates('task_assigned') ? templates('task_assigned')->template_body : '' }}
+                <textarea  class="form-control editor text_task_assigned"  style="height: 600px;" name="email_template">{{ templates('task_assigned') ? templates('task_assigned')->template_body : '' }}
                 </textarea>
 
                     </div>
@@ -94,7 +94,7 @@
                         <div class="form-group">
                             <label class="col-lg-12">@lang('settings.message')</label>
                             <div class="col-lg-12">
-                        <textarea id="" class="form-control editor"  style="height: 600px;" name="email_template">{{ templates('tasks_comments') ? templates('tasks_comments')->template_body : '' }}
+                        <textarea  class="form-control editor"  style="height: 600px;" name="email_template">{{ templates('tasks_comments') ? templates('tasks_comments')->template_body : '' }}
                         </textarea>
 
                             </div>
@@ -130,7 +130,7 @@
                         <div class="form-group">
                             <label class="col-lg-12">@lang('settings.message')</label>
                             <div class="col-lg-12">
-                        <textarea id="" class="form-control editor"  style="height: 600px;" name="email_template">{{ templates('tasks_attachment') ? templates('tasks_attachment')->template_body : '' }}
+                        <textarea  class="form-control editor"  style="height: 600px;" name="email_template">{{ templates('tasks_attachment') ? templates('tasks_attachment')->template_body : '' }}
                         </textarea>
 
                             </div>
@@ -167,7 +167,7 @@
                         <div class="form-group">
                             <label class="col-lg-12">@lang('settings.message')</label>
                             <div class="col-lg-12">
-                        <textarea id="" class="form-control editor"  style="height: 600px;" name="email_template">{{ templates('tasks_updated') ? templates('tasks_updated')->template_body : '' }}
+                        <textarea  class="form-control editor"  style="height: 600px;" name="email_template">{{ templates('tasks_updated') ? templates('tasks_updated')->template_body : '' }}
                         </textarea>
 
                             </div>

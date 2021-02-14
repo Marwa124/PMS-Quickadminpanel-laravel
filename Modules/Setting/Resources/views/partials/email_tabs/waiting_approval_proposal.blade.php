@@ -1,7 +1,7 @@
        <!-- Section: Live preview -->
 
 
-       <section class="section_tab animate d-none waiting_approval_proposal_tabs">
+       <section class="section_tab animate  waiting_approval_proposal_tabs">
 
            <ul class="nav nav-tabs" id="myTab" role="tablist">
 
@@ -48,7 +48,7 @@
                        <div class="form-group">
                            <label class="col-lg-12">@lang('settings.message')</label>
                            <div class="col-lg-12">
-                               <textarea id="" class="form-control editor text_waiting_approval_proposal" style="height: 600px;"
+                               <textarea  class="form-control editor text_waiting_approval_proposal" style="height: 600px;"
                                    name="email_template">{{ templates('waiting_approval_proposal') ? templates('waiting_approval_proposal')->template_body : '' }}
                                </textarea>
 

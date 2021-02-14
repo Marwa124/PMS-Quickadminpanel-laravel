@@ -1,4 +1,4 @@
-<div class="tab-pane  email-settings" id="v-pills-email-settings" role="tabpanel"
+<div class="tab-pane active show  email-settings" id="v-pills-email-settings" role="tabpanel"
 aria-labelledby="v-pills-details-tab">
 <div class="card  card-custom">
    <h5 class="card-header " style="text-align: left">  

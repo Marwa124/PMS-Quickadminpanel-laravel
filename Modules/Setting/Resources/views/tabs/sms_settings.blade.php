@@ -1,5 +1,5 @@
 
-<div class="tab-pane sms-settings" id="v-pills-sms-settings" role="tabcard"
+<div class="tab-pane active show sms-settings" id="v-pills-sms-settings" role="tabcard"
 aria-labelledby="v-pills-details-tab">
 
     <div class="alert alert-info alert-dismissible">
@@ -46,7 +46,7 @@ aria-labelledby="v-pills-details-tab">
                           <label for="">@lang('settings.twilio_account_sid')</label>
                       </div>
                       <div class="col-md-9">
-                          <input type="text"  class="form-control" name="twilio_account_sid" id="" value="{{ old('twilio_account_sid',settings('twilio_account_sid')) }}">
+                          <input type="text"  class="form-control" name="twilio_account_sid"  value="{{ old('twilio_account_sid',settings('twilio_account_sid')) }}">
                       </div>
                   </div>
 
@@ -57,7 +57,7 @@ aria-labelledby="v-pills-details-tab">
                         <label for="">@lang('settings.twilio_token_auth')</label>
                     </div>
                     <div class="col-md-9">
-                        <input type="text"  class="form-control" name="twilio_token_auth" id="" value="{{ old('twilio_token_auth',settings('twilio_token_auth')) }}">
+                        <input type="text"  class="form-control" name="twilio_token_auth"  value="{{ old('twilio_token_auth',settings('twilio_token_auth')) }}">
                     </div>
                 </div>
 
@@ -67,7 +67,7 @@ aria-labelledby="v-pills-details-tab">
                         <label for="">@lang('settings.twilio_phone_number')</label>
                     </div>
                     <div class="col-md-9">
-                        <input type="text"  class="form-control" name="twilio_phone_number" id="" value="{{ old('twilio_phone_number',settings('twilio_phone_number')) }}">
+                        <input type="text"  class="form-control" name="twilio_phone_number"  value="{{ old('twilio_phone_number',settings('twilio_phone_number')) }}">
                     </div>
                 </div>
 
@@ -81,8 +81,8 @@ aria-labelledby="v-pills-details-tab">
                           <label for="">@lang('settings.active')</label>
                       </div>
                       <div class="col-md-9">
-                          <input type="hidden" name="sms_status" id="" value="off" >
-                          <input onchange="check_single('twilio_checkbox','nexmo_checkbox')" class="twilio_checkbox" type="checkbox" name="sms_status" id="" value="twilio" @if(old('sms_status',settings('sms_status')) == 'twilio' ) {{ 'checked' }} @endif>
+                          <input type="hidden" name="sms_status"  value="off" >
+                          <input onchange="check_single('twilio_checkbox','nexmo_checkbox')" class="twilio_checkbox" type="checkbox" name="sms_status"  value="twilio" @if(old('sms_status',settings('sms_status')) == 'twilio' ) {{ 'checked' }} @endif>
                       </div>
                   </div>
            
@@ -145,7 +145,7 @@ aria-labelledby="v-pills-details-tab">
                           <label for="">@lang('settings.nexmo_account_sid')</label>
                       </div>
                       <div class="col-md-9">
-                          <input type="text"  class="form-control" name="nexmo_account_sid" id="" value="{{ old('nexmo_account_sid',settings('nexmo_account_sid')) }}">
+                          <input type="text"  class="form-control" name="nexmo_account_sid"  value="{{ old('nexmo_account_sid',settings('nexmo_account_sid')) }}">
                       </div>
                   </div>
 
@@ -156,7 +156,7 @@ aria-labelledby="v-pills-details-tab">
                         <label for="">@lang('settings.nexmo_token_auth')</label>
                     </div>
                     <div class="col-md-9">
-                        <input type="text"  class="form-control" name="nexmo_token_auth" id="" value="{{ old('nexmo_token_auth',settings('nexmo_token_auth')) }}">
+                        <input type="text"  class="form-control" name="nexmo_token_auth"  value="{{ old('nexmo_token_auth',settings('nexmo_token_auth')) }}">
                     </div>
                 </div>
 
@@ -166,7 +166,7 @@ aria-labelledby="v-pills-details-tab">
                         <label for="">@lang('settings.nexmo_phone_number')</label>
                     </div>
                     <div class="col-md-9">
-                        <input type="text"  class="form-control" name="nexmo_phone_number" id="" value="{{ old('nexmo_phone_number',settings('nexmo_phone_number')) }}">
+                        <input type="text"  class="form-control" name="nexmo_phone_number"  value="{{ old('nexmo_phone_number',settings('nexmo_phone_number')) }}">
                     </div>
                 </div>
 
@@ -180,7 +180,7 @@ aria-labelledby="v-pills-details-tab">
                           <label for="">@lang('settings.active')</label>
                       </div>
                       <div class="col-md-9">
-                          <input onchange="check_single('nexmo_checkbox','twilio_checkbox')" class="nexmo_checkbox" type="checkbox" name="sms_status" id="" value="nexmo" @if(old('sms_status',settings('sms_status')) == 'nexmo' ) {{ 'checked' }} @endif>
+                          <input onchange="check_single('nexmo_checkbox','twilio_checkbox')" class="nexmo_checkbox" type="checkbox" name="sms_status"  value="nexmo" @if(old('sms_status',settings('sms_status')) == 'nexmo' ) {{ 'checked' }} @endif>
                       </div>
                   </div>
            
@@ -242,7 +242,7 @@ aria-labelledby="v-pills-details-tab">
                           <label for="">@lang('settings.plivo_account_sid')</label>
                       </div>
                       <div class="col-md-9">
-                          <input type="text"  class="form-control" name="plivo_account_sid" id="" value="{{ old('plivo_account_sid',settings('plivo_account_sid')) }}">
+                          <input type="text"  class="form-control" name="plivo_account_sid"  value="{{ old('plivo_account_sid',settings('plivo_account_sid')) }}">
                       </div>
                   </div>
 
@@ -253,7 +253,7 @@ aria-labelledby="v-pills-details-tab">
                         <label for="">@lang('settings.plivo_token_auth')</label>
                     </div>
                     <div class="col-md-9">
-                        <input type="text"  class="form-control" name="plivo_token_auth" id="" value="{{ old('plivo_token_auth',settings('plivo_token_auth')) }}">
+                        <input type="text"  class="form-control" name="plivo_token_auth"  value="{{ old('plivo_token_auth',settings('plivo_token_auth')) }}">
                     </div>
                 </div>
 
@@ -263,7 +263,7 @@ aria-labelledby="v-pills-details-tab">
                         <label for="">@lang('settings.plivo_phone_number')</label>
                     </div>
                     <div class="col-md-9">
-                        <input type="text"  class="form-control" name="plivo_phone_number" id="" value="{{ old('plivo_phone_number',settings('plivo_phone_number')) }}">
+                        <input type="text"  class="form-control" name="plivo_phone_number"  value="{{ old('plivo_phone_number',settings('plivo_phone_number')) }}">
                     </div>
                 </div>
 
@@ -277,7 +277,7 @@ aria-labelledby="v-pills-details-tab">
                           <label for="">@lang('settings.active')</label>
                       </div>
                       <div class="col-md-9">
-                          <input onchange="check_single('plivo_checkbox','twilio_checkbox')" class="plivo_checkbox" type="checkbox" name="sms_status" id="" value="plivo" @if(old('sms_status',settings('sms_status')) == 'plivo' ) {{ 'checked' }} @endif>
+                          <input onchange="check_single('plivo_checkbox','twilio_checkbox')" class="plivo_checkbox" type="checkbox" name="sms_status"  value="plivo" @if(old('sms_status',settings('sms_status')) == 'plivo' ) {{ 'checked' }} @endif>
                       </div>
                   </div>
            

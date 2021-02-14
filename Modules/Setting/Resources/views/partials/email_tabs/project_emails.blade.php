@@ -1,6 +1,6 @@
        <!-- Section: Live preview -->
 
-       <section class="section_tab animate d-none project_emails_tabs">
+       <section class="section_tab animate project_emails_tabs">
 
            <ul class="nav nav-tabs" id="myTab" role="tablist">
 
@@ -79,7 +79,7 @@
                        <div class="form-group">
                            <label class="col-lg-12">@lang('settings.message')</label>
                            <div class="col-lg-12">
-                               <textarea id="" class="form-control editor text_client_notification" style="height: 600px;"
+                               <textarea  class="form-control editor text_client_notification" style="height: 600px;"
                                    name="email_template">{{ templates('client_notification') ? templates('client_notification')->template_body : '' }}
                                </textarea>
 
@@ -117,7 +117,7 @@
                        <div class="form-group">
                            <label class="col-lg-12">@lang('settings.message')</label>
                            <div class="col-lg-12">
-                               <textarea id="" class="form-control editor" style="height: 600px;" name="email_template">{{ templates('assigned_project') ? templates('assigned_project')->template_body : '' }}
+                               <textarea  class="form-control editor" style="height: 600px;" name="email_template">{{ templates('assigned_project') ? templates('assigned_project')->template_body : '' }}
                                </textarea>
 
                            </div>
@@ -155,7 +155,7 @@
                        <div class="form-group">
                            <label class="col-lg-12">@lang('settings.message')</label>
                            <div class="col-lg-12">
-                               <textarea id="" class="form-control editor" style="height: 600px;" name="email_template">{{ templates('complete_projects') ? templates('complete_projects')->template_body : '' }}
+                               <textarea  class="form-control editor" style="height: 600px;" name="email_template">{{ templates('complete_projects') ? templates('complete_projects')->template_body : '' }}
                                </textarea>
 
                            </div>
@@ -194,7 +194,7 @@
                        <div class="form-group">
                            <label class="col-lg-12">@lang('settings.message')</label>
                            <div class="col-lg-12">
-                               <textarea id="" class="form-control editor" style="height: 600px;" name="email_template">{{ templates('project_comments') ? templates('project_comments')->template_body : '' }}
+                               <textarea  class="form-control editor" style="height: 600px;" name="email_template">{{ templates('project_comments') ? templates('project_comments')->template_body : '' }}
                                </textarea>
 
                            </div>
@@ -229,7 +229,7 @@
                        <div class="form-group">
                            <label class="col-lg-12">@lang('settings.message')</label>
                            <div class="col-lg-12">
-                               <textarea id="" class="form-control editor" style="height: 600px;" name="email_template">{{ templates('project_attachment') ? templates('project_attachment')->template_body : '' }}
+                               <textarea  class="form-control editor" style="height: 600px;" name="email_template">{{ templates('project_attachment') ? templates('project_attachment')->template_body : '' }}
                                </textarea>
 
                            </div>
@@ -262,7 +262,7 @@
                        <div class="form-group">
                            <label class="col-lg-12">@lang('settings.message')</label>
                            <div class="col-lg-12">
-                               <textarea id="" class="form-control editor" style="height: 600px;" name="email_template">{{ templates('responsible_milestone') ? templates('responsible_milestone')->template_body : '' }}
+                               <textarea  class="form-control editor" style="height: 600px;" name="email_template">{{ templates('responsible_milestone') ? templates('responsible_milestone')->template_body : '' }}
                                </textarea>
 
                            </div>
@@ -295,7 +295,7 @@
                        <div class="form-group">
                            <label class="col-lg-12">@lang('settings.message')</label>
                            <div class="col-lg-12">
-                               <textarea id="" class="form-control editor" style="height: 600px;" name="email_template">{{ templates('project_overdue_email') ? templates('project_overdue_email')->template_body : '' }}
+                               <textarea  class="form-control editor" style="height: 600px;" name="email_template">{{ templates('project_overdue_email') ? templates('project_overdue_email')->template_body : '' }}
                                </textarea>
 
                            </div>

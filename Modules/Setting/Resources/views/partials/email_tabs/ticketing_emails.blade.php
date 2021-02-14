@@ -1,6 +1,6 @@
        <!-- Section: Live preview -->
 
-       <section class="section_tab animate d-none ticketing_emails_tabs">
+       <section class="section_tab animate  ticketing_emails_tabs">
 
            <ul class="nav nav-tabs" id="myTab" role="tablist">
 
@@ -79,7 +79,7 @@
                        <div class="form-group">
                            <label class="col-lg-12">@lang('settings.message')</label>
                            <div class="col-lg-12">
-                               <textarea id="" class="form-control editor text_ticket_client_email" style="height: 600px;"
+                               <textarea  class="form-control editor text_ticket_client_email" style="height: 600px;"
                                    name="email_template">{{ templates('ticket_client_email') ? templates('ticket_client_email')->template_body : '' }}
                                </textarea>
 
@@ -117,7 +117,7 @@
                        <div class="form-group">
                            <label class="col-lg-12">@lang('settings.message')</label>
                            <div class="col-lg-12">
-                               <textarea id="" class="form-control editor" style="height: 600px;" name="email_template">{{ templates('ticket_closed_email') ? templates('ticket_closed_email')->template_body : '' }}
+                               <textarea  class="form-control editor" style="height: 600px;" name="email_template">{{ templates('ticket_closed_email') ? templates('ticket_closed_email')->template_body : '' }}
                                </textarea>
 
                            </div>
@@ -155,7 +155,7 @@
                        <div class="form-group">
                            <label class="col-lg-12">@lang('settings.message')</label>
                            <div class="col-lg-12">
-                               <textarea id="" class="form-control editor" style="height: 600px;" name="email_template">{{ templates('ticket_reply_email') ? templates('ticket_reply_email')->template_body : '' }}
+                               <textarea  class="form-control editor" style="height: 600px;" name="email_template">{{ templates('ticket_reply_email') ? templates('ticket_reply_email')->template_body : '' }}
                                </textarea>
 
                            </div>
@@ -194,7 +194,7 @@
                        <div class="form-group">
                            <label class="col-lg-12">@lang('settings.message')</label>
                            <div class="col-lg-12">
-                               <textarea id="" class="form-control editor" style="height: 600px;" name="email_template">{{ templates('ticket_staff_email') ? templates('ticket_staff_email')->template_body : '' }}
+                               <textarea  class="form-control editor" style="height: 600px;" name="email_template">{{ templates('ticket_staff_email') ? templates('ticket_staff_email')->template_body : '' }}
                                </textarea>
 
                            </div>
@@ -229,7 +229,7 @@
                        <div class="form-group">
                            <label class="col-lg-12">@lang('settings.message')</label>
                            <div class="col-lg-12">
-                               <textarea id="" class="form-control editor" style="height: 600px;" name="email_template">{{ templates('auto_close_ticket') ? templates('auto_close_ticket')->template_body : '' }}
+                               <textarea  class="form-control editor" style="height: 600px;" name="email_template">{{ templates('auto_close_ticket') ? templates('auto_close_ticket')->template_body : '' }}
                                </textarea>
 
                            </div>
@@ -262,7 +262,7 @@
                        <div class="form-group">
                            <label class="col-lg-12">@lang('settings.message')</label>
                            <div class="col-lg-12">
-                               <textarea id="" class="form-control editor" style="height: 600px;" name="email_template">{{ templates('ticket_reopened_email') ? templates('ticket_reopened_email')->template_body : '' }}
+                               <textarea  class="form-control editor" style="height: 600px;" name="email_template">{{ templates('ticket_reopened_email') ? templates('ticket_reopened_email')->template_body : '' }}
                                </textarea>
 
                            </div>

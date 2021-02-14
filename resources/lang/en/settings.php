@@ -354,6 +354,67 @@ return [
     'quotations_form' => 'Quotations Form',
     'goal_achieve' => 'Goal achieved',
     'goal_not_achieve' => 'Goal not achieved',
+    'invoice_settings' => 'Invoice Settings',
+    'invoice_settings' => 'Invoice Settings',
+    'invoice_prefix' => 'Invoice Prefix',
+    'invoices_due_after' => 'Invoices due after',
+    'days'  => 'Days',
+    'invoice_start_no'  => 'Invoice Start No',
+    'invoice'  => 'Invoice',
+    'number_format'  => 'Number Format',
+    'invoice_prefix' => 'Invoice Prefix',
+    'qty_calculation_from_items'  => 'Qty calculation from items',
+    'amount_to_words'  => 'Amount to words',
+    'output_total_amount'  => 'Output Total Amount',
+    'in'  => 'In',
+    'payments'  => 'Payments',
+    'estimate'  => 'Estimate',
+    'proposal'  => 'Proposal',
+    'and'  => 'And',
+    'purchase'  => 'Purchase',
+    'amount_to_words_lowercase'  => 'Amount to words lowercase',
+    'allow_customer_edit_amount'  => 'Allow customer edit amount',
+    'allow_customer_edit_amount_help'  => 'Allow customer edit amount help',
+    'increment_invoice_number' => 'Increment invoice number',
+    'show_item_tax'  => 'Show item tax',
+    'invoice_view'  => 'Invoice View',
+    'select_view'   => 'Select Invoice',
+    'tax_invoice'   => 'Tax Invoice',
+    'standard'      => 'Standard',
+
+    'send_email_when_recur'  => 'Send Email When Recur',
+    'invoice_logo'   => 'Invoice Logo',
+    'choose_file'    => 'Choose File',
+    'change'         => 'Change',
+    'remove'         => 'Remove',
+    'default_terms'  => 'Default Terms',
+    'invoice_footer' => 'Invoice Footer',
+
+
+    'invoice_prefix_required'         => 'Invoice Perfix Is Required',
+    'invoice_prefix_string'           => 'Invoice Perfix Should Be String',
+
+    'invoices_due_after_required'     => 'Invoice Due After Is Required',
+    'invoices_due_after_integer'      => 'Invoice Due After Should Be Number',
+
+    'invoice_start_no_required'       => 'Invoice Start Is Required',
+    'invoice_start_no_integer'        => 'Invoice Start Should Be Number',
+
+    'invoice_number_format_string'    => 'Invoice Format Should Be String',
+    'qty_calculation_from_items_in'   => 'Quantity Caluculation for Item Isn\'t Valid',
+    'amount_to_words_in'              => 'Amount of Words Isn\'t Valid',
+    'allow_customer_edit_amount_in'   => 'Allow Customer to Edit Isn\'t Valid',
+    'increment_invoice_number_in'     => 'Increment Invoice Number Isn\'t Valid',
+
+    'show_item_tax_in'                => 'Show Item Tax Isn\'t Valid',
+    'send_email_when_recur_in'        => 'Show Email Isn\'t Valid',
+    'invoice_logo_mimes'              => 'INvoice Logo  Isn\'t Valid',
+
+    'default_terms_string'            => 'Default Terms Should Be String',
+    'invoice_footer_string'           => 'Invoice Footer Should Be String',
+
+    'invoice_updated' => 'Invoice Updated Successfully',
+
 
 
 

@@ -3,7 +3,7 @@
        {{-- $email['extra'] = array("","", "", "", "", "", "", ""); --}}
 
 
-       <section class="section_tab animate d-none extra_emails_tabs">
+       <section class="section_tab animate  extra_emails_tabs">
 
            <ul class="nav nav-tabs" id="myTab" role="tablist">
 
@@ -97,7 +97,7 @@
                        <div class="form-group">
                            <label class="col-lg-12">@lang('settings.message')</label>
                            <div class="col-lg-12">
-                               <textarea id="" class="form-control editor text_estimate_email" style="height: 600px;"
+                               <textarea  class="form-control editor text_estimate_email" style="height: 600px;"
                                    name="email_template">{{ templates('estimate_email') ? templates('estimate_email')->template_body : '' }}
                                </textarea>
 
@@ -135,7 +135,7 @@
                        <div class="form-group">
                            <label class="col-lg-12">@lang('settings.message')</label>
                            <div class="col-lg-12">
-                               <textarea id="" class="form-control editor" style="height: 600px;" name="email_template">{{ templates('estimate_overdue_email') ? templates('estimate_overdue_email')->template_body : '' }}
+                               <textarea  class="form-control editor" style="height: 600px;" name="email_template">{{ templates('estimate_overdue_email') ? templates('estimate_overdue_email')->template_body : '' }}
                                </textarea>
 
                            </div>
@@ -173,7 +173,7 @@
                        <div class="form-group">
                            <label class="col-lg-12">@lang('settings.message')</label>
                            <div class="col-lg-12">
-                               <textarea id="" class="form-control editor" style="height: 600px;" name="email_template">{{ templates('proposal_email') ? templates('proposal_email')->template_body : '' }}
+                               <textarea  class="form-control editor" style="height: 600px;" name="email_template">{{ templates('proposal_email') ? templates('proposal_email')->template_body : '' }}
                                </textarea>
 
                            </div>
@@ -212,7 +212,7 @@
                        <div class="form-group">
                            <label class="col-lg-12">@lang('settings.message')</label>
                            <div class="col-lg-12">
-                               <textarea id="" class="form-control editor" style="height: 600px;" name="email_template">{{ templates('proposal_overdue_email') ? templates('proposal_overdue_email')->template_body : '' }}
+                               <textarea  class="form-control editor" style="height: 600px;" name="email_template">{{ templates('proposal_overdue_email') ? templates('proposal_overdue_email')->template_body : '' }}
                                </textarea>
 
                            </div>
@@ -249,7 +249,7 @@
                        <div class="form-group">
                            <label class="col-lg-12">@lang('settings.message')</label>
                            <div class="col-lg-12">
-                               <textarea id="" class="form-control editor" style="height: 600px;" name="email_template">{{ templates('message_received') ? templates('message_received')->template_body : '' }}
+                               <textarea  class="form-control editor" style="height: 600px;" name="email_template">{{ templates('message_received') ? templates('message_received')->template_body : '' }}
                                </textarea>
 
                            </div>
@@ -285,7 +285,7 @@
                        <div class="form-group">
                            <label class="col-lg-12">@lang('settings.message')</label>
                            <div class="col-lg-12">
-                               <textarea id="" class="form-control editor" style="height: 600px;" name="email_template">{{ templates('quotations_form') ? templates('quotations_form')->template_body : '' }}
+                               <textarea  class="form-control editor" style="height: 600px;" name="email_template">{{ templates('quotations_form') ? templates('quotations_form')->template_body : '' }}
                                </textarea>
 
                            </div>
@@ -320,7 +320,7 @@
                        <div class="form-group">
                            <label class="col-lg-12">@lang('settings.message')</label>
                            <div class="col-lg-12">
-                               <textarea id="" class="form-control editor" style="height: 600px;" name="email_template">{{ templates('goal_achieve') ? templates('goal_achieve')->template_body : '' }}
+                               <textarea  class="form-control editor" style="height: 600px;" name="email_template">{{ templates('goal_achieve') ? templates('goal_achieve')->template_body : '' }}
                                </textarea>
 
                            </div>
@@ -356,7 +356,7 @@
                        <div class="form-group">
                            <label class="col-lg-12">@lang('settings.message')</label>
                            <div class="col-lg-12">
-                               <textarea id="" class="form-control editor" style="height: 600px;" name="email_template">{{ templates('goal_not_achieve') ? templates('goal_not_achieve')->template_body : '' }}
+                               <textarea  class="form-control editor" style="height: 600px;" name="email_template">{{ templates('goal_not_achieve') ? templates('goal_not_achieve')->template_body : '' }}
                                </textarea>
 
                            </div>

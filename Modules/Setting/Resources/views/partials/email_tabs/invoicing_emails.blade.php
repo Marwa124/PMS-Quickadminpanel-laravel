@@ -1,5 +1,5 @@
        <!-- Section: Live preview -->
-       <section class="section_tab d-none invoicing_emails_tabs">
+       <section class="section_tab  invoicing_emails_tabs">
       
         <ul class="nav nav-tabs" id="myTab" role="tablist">
 
@@ -62,7 +62,7 @@
                 <div class="form-group">
                     <label class="col-lg-12">@lang('settings.message')</label>
                     <div class="col-lg-12">
-                <textarea id="" class="form-control editor text_invoice_message"  style="height: 600px;" name="email_template">{{ templates('invoice_message') ? templates('invoice_message')->template_body : '' }}
+                <textarea  class="form-control editor text_invoice_message"  style="height: 600px;" name="email_template">{{ templates('invoice_message') ? templates('invoice_message')->template_body : '' }}
                 </textarea>
 
                     </div>
@@ -97,7 +97,7 @@
                         <div class="form-group">
                             <label class="col-lg-12">@lang('settings.message')</label>
                             <div class="col-lg-12">
-                        <textarea id="" class="form-control editor"  style="height: 600px;" name="email_template">{{ templates('invoice_reminder') ? templates('invoice_reminder')->template_body : '' }}
+                        <textarea  class="form-control editor"  style="height: 600px;" name="email_template">{{ templates('invoice_reminder') ? templates('invoice_reminder')->template_body : '' }}
                         </textarea>
 
                             </div>
@@ -132,7 +132,7 @@
                     <div class="form-group">
                         <label class="col-lg-12">@lang('settings.message')</label>
                         <div class="col-lg-12">
-                    <textarea id="" class="form-control editor"  style="height: 600px;" name="email_template">{{ templates('payment_email') ? templates('payment_email')->template_body : '' }}
+                    <textarea  class="form-control editor"  style="height: 600px;" name="email_template">{{ templates('payment_email') ? templates('payment_email')->template_body : '' }}
                     </textarea>
 
                         </div>
@@ -165,7 +165,7 @@
                     <div class="form-group">
                         <label class="col-lg-12">@lang('settings.message')</label>
                         <div class="col-lg-12">
-                    <textarea id="" class="form-control editor"  style="height: 600px;" name="email_template">{{ templates('invoice_overdue_email') ? templates('invoice_overdue_email')->template_body : '' }}
+                    <textarea  class="form-control editor"  style="height: 600px;" name="email_template">{{ templates('invoice_overdue_email') ? templates('invoice_overdue_email')->template_body : '' }}
                     </textarea>
 
                         </div>
@@ -198,7 +198,7 @@
                     <div class="form-group">
                         <label class="col-lg-12">@lang('settings.message')</label>
                         <div class="col-lg-12">
-                    <textarea id="" class="form-control editor"  style="height: 600px;" name="email_template">{{ templates('refund_confirmation') ? templates('refund_confirmation')->template_body : '' }}
+                    <textarea  class="form-control editor"  style="height: 600px;" name="email_template">{{ templates('refund_confirmation') ? templates('refund_confirmation')->template_body : '' }}
                     </textarea>
 
                         </div>
