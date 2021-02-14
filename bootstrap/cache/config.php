@@ -543,7 +543,7 @@
     'debug' => true,
     'url' => 'http://127.0.0.1:8000/',
     'asset_url' => NULL,
-    'timezone' => 'Africa/Accra',
+    'timezone' => 'Africa/Cairo',
     'locale' => 'en',
     'fallback_locale' => 'en',
     'faker_locale' => 'en_US',
@@ -725,7 +725,7 @@
       'file' => 
       array (
         'driver' => 'file',
-        'path' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\storage\\framework/cache/data',
+        'path' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\storage\\framework/cache/data',
       ),
       'memcached' => 
       array (
@@ -802,7 +802,7 @@
       array (
         'driver' => 'sqlite',
         'url' => NULL,
-        'database' => 'hameddbpms',
+        'database' => 'pms_laravel',
         'prefix' => '',
         'foreign_key_constraints' => true,
       ),
@@ -812,7 +812,7 @@
         'url' => NULL,
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'hameddbpms',
+        'database' => 'pms_laravel',
         'username' => 'root',
         'password' => '',
         'unix_socket' => '',
@@ -832,7 +832,7 @@
         'url' => NULL,
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'hameddbpms',
+        'database' => 'pms_laravel',
         'username' => 'root',
         'password' => '',
         'charset' => 'utf8',
@@ -847,7 +847,7 @@
         'url' => NULL,
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'hameddbpms',
+        'database' => 'pms_laravel',
         'username' => 'root',
         'password' => '',
         'charset' => 'utf8',
@@ -888,10 +888,10 @@
     'orientation' => 'portrait',
     'defines' => 
     array (
-      'font_dir' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\storage\\fonts/',
-      'font_cache' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\storage\\fonts/',
-      'temp_dir' => 'C:\\Users\\Dina\\AppData\\Local\\Temp',
-      'chroot' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel',
+      'font_dir' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\storage\\fonts/',
+      'font_cache' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\storage\\fonts/',
+      'temp_dir' => 'C:\\Users\\DEV-Back\\AppData\\Local\\Temp',
+      'chroot' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel',
       'enable_font_subsetting' => false,
       'pdf_backend' => 'CPDF',
       'default_media_type' => 'screen',
@@ -942,12 +942,12 @@
       'local' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\storage\\app',
+        'root' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\storage\\app',
       ),
       'public' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\storage\\app/public',
+        'root' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\storage\\app/public',
         'url' => 'http://127.0.0.1:8000//storage',
         'visibility' => 'public',
       ),
@@ -963,7 +963,7 @@
     ),
     'links' => 
     array (
-      'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\public\\storage' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\storage\\app/public',
+      'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\public\\storage' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\storage\\app/public',
     ),
   ),
   'hashing' => 
@@ -986,24 +986,24 @@
     array (
       'path' => 
       array (
-        'migration' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\database/migrations/',
-        'model' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\app\\Models/',
-        'datatables' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\app\\DataTables/',
-        'repository' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\app\\Repositories/',
-        'routes' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\routes/web.php',
-        'lang' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\resources/lang/en/lang.php',
-        'api_routes' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\routes/api.php',
-        'request' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\app\\Http/Requests/',
-        'api_request' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\app\\Http/Requests/API/',
-        'controller' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\app\\Http/Controllers/',
-        'api_controller' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\app\\Http/Controllers/API/',
-        'test_trait' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\tests/traits/',
-        'repository_test' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\tests/',
-        'api_test' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\tests/',
-        'views' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\resources/views/',
-        'schema_files' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\resources/model_schemas/',
-        'templates_dir' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\resources/infyom/infyom-generator-templates/',
-        'modelJs' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\resources/assets/js/models/',
+        'migration' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\database/migrations/',
+        'model' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\app\\Models/',
+        'datatables' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\app\\DataTables/',
+        'repository' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\app\\Repositories/',
+        'routes' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\routes/web.php',
+        'lang' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\resources/lang/en/lang.php',
+        'api_routes' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\routes/api.php',
+        'request' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\app\\Http/Requests/',
+        'api_request' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\app\\Http/Requests/API/',
+        'controller' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\app\\Http/Controllers/',
+        'api_controller' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\app\\Http/Controllers/API/',
+        'test_trait' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\tests/traits/',
+        'repository_test' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\tests/',
+        'api_test' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\tests/',
+        'views' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\resources/views/',
+        'schema_files' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\resources/model_schemas/',
+        'templates_dir' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\resources/infyom/infyom-generator-templates/',
+        'modelJs' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\resources/assets/js/models/',
       ),
       'namespace' => 
       array (
@@ -1115,13 +1115,13 @@
       'single' => 
       array (
         'driver' => 'single',
-        'path' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\storage\\logs/laravel.log',
+        'path' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\storage\\logs/laravel.log',
         'level' => 'debug',
       ),
       'daily' => 
       array (
         'driver' => 'daily',
-        'path' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\storage\\logs/laravel.log',
+        'path' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\storage\\logs/laravel.log',
         'level' => 'debug',
         'days' => 14,
       ),
@@ -1171,7 +1171,7 @@
       ),
       'emergency' => 
       array (
-        'path' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\storage\\logs/laravel.log',
+        'path' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\storage\\logs/laravel.log',
       ),
     ),
   ),
@@ -1183,20 +1183,20 @@
       'smtp' => 
       array (
         'transport' => 'smtp',
-        'host' => 'smtp.mailgun.org',
-        'port' => 587,
-        'encryption' => 'tls',
-        'username' => NULL,
-        'password' => NULL,
+        'host' => '',
+        'port' => '',
+        'encryption' => '',
+        'username' => '',
+        'password' => '',
       ),
       'mailgun' => 
       array (
         'transport' => 'smtp',
-        'host' => 'smtp.mailgun.org',
-        'port' => 587,
-        'encryption' => 'tls',
-        'username' => NULL,
-        'password' => NULL,
+        'host' => '',
+        'port' => '',
+        'encryption' => '',
+        'username' => '',
+        'password' => '',
       ),
       'postmark' => 
       array (
@@ -1228,15 +1228,15 @@
     ),
     'from' => 
     array (
-      'address' => 'info@onetecgroup.com',
-      'name' => NULL,
+      'address' => '',
+      'name' => 'Laravel',
     ),
     'markdown' => 
     array (
       'theme' => 'default',
       'paths' => 
       array (
-        0 => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\resources\\views/vendor/mail',
+        0 => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\resources\\views/vendor/mail',
       ),
     ),
   ),
@@ -1317,7 +1317,7 @@
     'stubs' => 
     array (
       'enabled' => false,
-      'path' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel/vendor/nwidart/laravel-modules/src/Commands/stubs',
+      'path' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel/vendor/nwidart/laravel-modules/src/Commands/stubs',
       'files' => 
       array (
         'routes/web' => 'Routes/web.php',
@@ -1381,9 +1381,9 @@
     ),
     'paths' => 
     array (
-      'modules' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\Modules',
-      'assets' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\public\\modules',
-      'migration' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\database/migrations',
+      'modules' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\Modules',
+      'assets' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\public\\modules',
+      'migration' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\database/migrations',
       'generator' => 
       array (
         'config' => 
@@ -1518,7 +1518,7 @@
       'enabled' => false,
       'paths' => 
       array (
-        0 => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\vendor/*/*',
+        0 => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\vendor/*/*',
       ),
     ),
     'composer' => 
@@ -1546,7 +1546,7 @@
       'file' => 
       array (
         'class' => 'Nwidart\\Modules\\Activators\\FileActivator',
-        'statuses-file' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\modules_statuses.json',
+        'statuses-file' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\modules_statuses.json',
         'cache-key' => 'activator.installed',
         'cache-lifetime' => 604800,
       ),
@@ -1592,7 +1592,7 @@
     array (
     ),
     'auto_language_detection' => false,
-    'temp_dir' => 'C:\\Users\\Dina\\AppData\\Local\\Temp',
+    'temp_dir' => 'C:\\Users\\DEV-Back\\AppData\\Local\\Temp',
     'pdfa' => false,
     'pdfaauto' => false,
   ),
@@ -1753,9 +1753,9 @@
     ),
     'generator' => 
     array (
-      'basePath' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\app',
+      'basePath' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\app',
       'rootNamespace' => 'App\\',
-      'stubsOverridePath' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\app',
+      'stubsOverridePath' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\app',
       'paths' => 
       array (
         'models' => 'Entities',
@@ -1795,7 +1795,7 @@
     'lifetime' => '120',
     'expire_on_close' => false,
     'encrypt' => false,
-    'files' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\storage\\framework/sessions',
+    'files' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\storage\\framework/sessions',
     'connection' => NULL,
     'table' => 'sessions',
     'store' => NULL,
@@ -2038,9 +2038,9 @@
   array (
     'paths' => 
     array (
-      0 => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\resources\\views',
+      0 => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\resources\\views',
     ),
-    'compiled' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\storage\\framework\\views',
+    'compiled' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\storage\\framework\\views',
   ),
   'flare' => 
   array (
@@ -2099,7 +2099,7 @@
   'livewire' => 
   array (
     'class_namespace' => 'App\\Http\\Livewire',
-    'view_path' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\resources\\views/livewire',
+    'view_path' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\resources\\views/livewire',
     'layout' => 'layouts.app',
     'asset_url' => NULL,
     'middleware_group' => 'web',
@@ -2232,7 +2232,7 @@
     ),
     'temporary_files' => 
     array (
-      'local_path' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\storage\\framework/laravel-excel',
+      'local_path' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\storage\\framework/laravel-excel',
       'remote_disk' => NULL,
       'remote_prefix' => NULL,
       'force_resync_remote' => NULL,
@@ -2313,13 +2313,31 @@
   array (
     'name' => 'ProjectManagement',
   ),
+  'setting' => 
+  array (
+    'name' => 'Setting',
+  ),
   'sales' => 
   array (
     'name' => 'Sales',
   ),
-  'setting' => 
+  'twilio-notification-channel' => 
   array (
-    'name' => 'Setting',
+    'username' => NULL,
+    'password' => NULL,
+    'auth_token' => 'edd81f6c492666ed661354f8df7d0f1f',
+    'account_sid' => 'AC52fb3b8317c80e3a9cc9551040d75b56',
+    'from' => NULL,
+    'alphanumeric_sender' => NULL,
+    'sms_service_sid' => NULL,
+    'debug_to' => NULL,
+    'ignored_error_codes' => 
+    array (
+      0 => 21608,
+      1 => 21211,
+      2 => 21614,
+      3 => 21408,
+    ),
   ),
   'tinker' => 
   array (

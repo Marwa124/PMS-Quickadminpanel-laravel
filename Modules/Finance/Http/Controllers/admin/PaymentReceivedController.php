@@ -157,18 +157,18 @@ class PaymentReceivedController extends Controller
             ]);
 
 
-//            Transaction::create([
-//                'date'          => $request->payment_date,
-//                'account_id'    => $request->account_id,
-//                'type'          => 'deposit',
-//                'name'          => $request->transaction_id,
-//                'amount'        => $request->amount,
-//                'credit'        => $request->amount,
-//                'total_balance' => $account->balance,
-//                'added_by'      => auth()->user()->id,
-//                'payment_id'    => $payment->id,
-//                'invoice_id'    => $request->invoice_id
-//            ]);
+            Transaction::create([
+                'date'          => $request->payment_date,
+                'account_id'    => $request->account_id,
+                'type'          => 'deposit',
+                'name'          => $request->transaction_id,
+                'amount'        => $request->amount,
+                'credit'        => $request->amount,
+                'total_balance' => $account->balance,
+                'added_by'      => auth()->user()->id,
+                'payment_id'    => $payment->id,
+                'invoice_id'    => $request->invoice_id
+            ]);
 
             // Notify User
 
@@ -220,6 +220,7 @@ class PaymentReceivedController extends Controller
                 $account->name. ' '.trans('cruds.account.fields.balance').' : '.$account->balance ;
 
             Mail::mailer('smtp')->to('mabrouk@onetecgroup.com')->send(new FinanceMail($email_from, $sender,$message));
+
             //send mail to CEO of company
 //            Mail::mailer('smtp')->to('CEO')->send(new FinanceMail($email_from, $sender,$message));
 
@@ -232,8 +233,8 @@ class PaymentReceivedController extends Controller
         }catch(\Exception $e){
             // An error occured; cancel the transaction...
             DB::rollback();
-            $flashMsg = flash(trans('cruds.messages.create_failed'), 'danger');
-            return redirect()->back()->with($flashMsg)->withInput();
+//            $flashMsg = flash(trans('cruds.messages.create_failed'), 'danger');
+//            return redirect()->back()->with($flashMsg)->withInput();
             // and throw the error again.
             throw $e;
         }
