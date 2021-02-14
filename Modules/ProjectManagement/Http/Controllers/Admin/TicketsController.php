@@ -5,7 +5,9 @@ namespace Modules\ProjectManagement\Http\Controllers\Admin;
 use App\Events\NewNotification;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\MediaUploadingTrait;
+use App\Models\User;
 use App\Notifications\ProjectManagementNotification;
+use Illuminate\Support\Facades\DB;
 use Modules\HR\Entities\AccountDetail;
 use Modules\ProjectManagement\Entities\ticket;
 use Modules\ProjectManagement\Entities\TicketReplay;
@@ -76,21 +78,35 @@ class TicketsController extends Controller
     public function store(StoreTicketRequest $request)
     {
         abort_if(Gate::denies('ticket_create'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
+        try{
+            // Begin a transaction
+            DB::beginTransaction();
 
-        $request['reporter'] = auth()->user()->id;
-        $request['ticket_code'] = 'tick'.substr(time(),-7);           //pms + time function to be sure this num is unique
+            $request['reporter'] = auth()->user()->id;
+            $request['ticket_code'] = 'tick'.substr(time(),-7);           //pms + time function to be sure this num is unique
 
-        $ticket = Ticket::create($request->all());
+            $ticket = Ticket::create($request->all());
 
-        if ($request->input('file', false)) {
-            $ticket->addMedia(storage_path('tmp/uploads/' . $request->input('file')))->toMediaCollection('file');
+            if ($request->input('file', false)) {
+                $ticket->addMedia(storage_path('tmp/uploads/' . $request->input('file')))->toMediaCollection('file');
+            }
+
+            if ($media = $request->input('ck-media', false)) {
+                Media::whereIn('id', $media)->update(['model_id' => $ticket->id]);
+            }
+            // Commit the transaction
+            DB::commit();
+
+            return redirect()->route('projectmanagement.admin.tickets.index')->with(flash(trans('cruds.messages.create_success'), 'success'));
+
+        }catch (\Exception $e) {
+            // An error occured; cancel the transaction...
+            DB::rollback();
+            return back()->with(flash(trans('cruds.messages.create_failed'), 'danger'))->withInput();
+            // and throw the error again.
+            throw $e;
         }
-
-        if ($media = $request->input('ck-media', false)) {
-            Media::whereIn('id', $media)->update(['model_id' => $ticket->id]);
-        }
-
-        return redirect()->route('projectmanagement.admin.tickets.index');
+//        return redirect()->route('projectmanagement.admin.tickets.index');
     }
 
     public function edit(Ticket $ticket)
@@ -160,7 +176,16 @@ class TicketsController extends Controller
                 // send mail
                 $sender =  settings('smtp_sender_name');
                 $email_from =  settings('smtp_email') ;
-                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender));
+
+                if(User::find(auth()->user()->id)->accountDetail && User::find(auth()->user()->id)->accountDetail()->first())
+                {
+                    $userName = AccountDetail::where('user_id', auth()->user()->id)->first()->fullname;
+                }else {
+                    $userName = User::find(auth()->user()->id)->name;
+                }
+
+                $message = $userName.' '.'Update The Ticket : '.$ticket->ticket_code;
+                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
             }
 
             DB::commit();
@@ -199,18 +224,45 @@ class TicketsController extends Controller
     public function destroy(Ticket $ticket)
     {
         abort_if(Gate::denies('ticket_delete'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
+        try {
+            // Begin a transaction
+            DB::beginTransaction();
 
-        $ticket->delete();
+            $ticket->delete();
 
-        return back();
+            // Commit the transaction
+            DB::commit();
+            return  redirect()->back()->with(flash(trans('cruds.messages.delete_success'), 'success'));
+
+        }catch(\Exception $e){
+            // An error occured; cancel the transaction...
+            DB::rollback();
+            return redirect()->back()->with(flash(trans('cruds.messages.delete_failed'), 'danger'));
+            // and throw the error again.
+            throw $e;
+        }
+//        return back();
     }
 
     public function massDestroy(MassDestroyTicketRequest $request)
     {
         abort_if(Gate::denies('ticket_delete'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
+        try {
+            // Begin a transaction
+            DB::beginTransaction();
 
-        Ticket::whereIn('id', request('ids'))->delete();
+            Ticket::whereIn('id', request('ids'))->delete();
 
+        // Commit the transaction
+            DB::commit();
+
+        }catch(\Exception $e){
+            // An error occured; cancel the transaction...
+            DB::rollback();
+
+            // and throw the error again.
+            throw $e;
+        }
         return response(null, Response::HTTP_NO_CONTENT);
     }
 
@@ -320,7 +372,16 @@ class TicketsController extends Controller
                 // send mail
                 $sender =  settings('smtp_sender_name');
                 $email_from =  settings('smtp_email') ;
-                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender));
+
+                if(User::find(auth()->user()->id)->accountDetail && User::find(auth()->user()->id)->accountDetail()->first())
+                {
+                    $userName = AccountDetail::where('user_id', auth()->user()->id)->first()->fullname;
+                }else {
+                    $userName = User::find(auth()->user()->id)->name;
+                }
+
+                $message = $userName.' '.'Assign The Ticket : '.$ticket->ticket_code.' To '.$user->name;
+                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
             }
             // Commit the transaction
             DB::commit();
@@ -342,43 +403,59 @@ class TicketsController extends Controller
     public function replay(Request $request)
     {
 
-        if ($request->ticket_replay_id){
+        try {
+            // Begin a transaction
+            DB::beginTransaction();
 
-            $validator = $request->validate([
-                'replay_body' => 'required',
-            ]);
-//            if ($validator->fails()) {
-//                return redirect()->back()->withErrors($validator)->withInput();
-//            }
+            if ($request->ticket_replay_id){
 
+                $validator = $request->validate([
+                    'ticket_id'         => 'exists:tickets,id',
+                    'replay_body'       => 'required',
+                    'replier_id'        => 'exists:users,id',
+                    'ticket_replay_id'  => 'exists:ticket_replays,id',
+                ]);
+                if($validator->fails()) {
+                    return redirect()->back()->withErrors($validator)->withInput();
+                }
 
-            $replay = TicketReplay::create([
-                'ticket_id'         => $request->ticket_id,
-                'body'              => $request->replay_body,
-                'replier_id'        => auth()->user()->id,
-                'ticket_replay_id'  => $request->ticket_replay_id,
-            ]);
-        }else{
+                $replay = TicketReplay::create([
+                    'ticket_id'         => $request->ticket_id,
+                    'body'              => $request->replay_body,
+                    'replier_id'        => auth()->user()->id,
+                    'ticket_replay_id'  => $request->ticket_replay_id,
+                ]);
+            }else{
 
-            $validator = $request->validate([
-                'body' => 'required',
-            ]);
+                $validator = $request->validate([
+                    'ticket_id'     => 'exists:tickets,id',
+                    'body'          => 'required',
+                    'replier_id'    => 'exists:users,id',
+                ]);
 
-//            if ($validator->fails()) {
-//                return redirect()->back()->withErrors($validator)->withInput();
-//            }
+                if($validator->fails()) {
+                    return redirect()->back()->withErrors($validator)->withInput();
+                }
 
-            $replay = TicketReplay::create([
-                'ticket_id'         => $request->ticket_id,
-                'body'              => $request->body,
-                'replier_id'        => auth()->user()->id,
+                $replay = TicketReplay::create([
+                    'ticket_id'         => $request->ticket_id,
+                    'body'              => $request->body,
+                    'replier_id'        => auth()->user()->id,
+                ]);
+            }
+            // Commit the transaction
+            DB::commit();
+            return back()->with(flash(trans('cruds.messages.add_replay_success'), 'danger'))->withInput();
 
-            ]);
+        }catch(\Exception $e){
+            // An error occured; cancel the transaction...
+            DB::rollback();
+            return back()->with(flash(trans('cruds.messages.add_replay_failed'), 'danger'))->withInput();
 
+            // and throw the error again.
+            throw $e;
         }
-
-        //save attachment
-        return redirect()->back();
+//        return redirect()->back();
     }
 
     public function change_status(Request $request)
@@ -420,19 +497,28 @@ class TicketsController extends Controller
                 // send mail
                 $sender =  settings('smtp_sender_name');
                 $email_from =  settings('smtp_email') ;
-                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender));
+
+                if(User::find(auth()->user()->id)->accountDetail && User::find(auth()->user()->id)->accountDetail()->first())
+                {
+                    $userName = AccountDetail::where('user_id', auth()->user()->id)->first()->fullname;
+                }else {
+                    $userName = User::find(auth()->user()->id)->name;
+                }
+
+                $message = $userName.' '.'Update The Ticket : '.$ticket->ticket_code.' status to '.$ticket->status;
+                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
             }
 
             // Commit the transaction
             DB::commit();
 
-            return back()->with(flash(trans('cruds.messages.update_note_success'), 'success'));
+            return back()->with(flash(trans('cruds.messages.update_status_success'), 'success'));
 
         }catch(\Exception $e){
             // An error occured; cancel the transaction...
             DB::rollback();
 
-            return back()->with(flash(trans('cruds.messages.update_note_failed'), 'danger'))->withInput();
+            return back()->with(flash(trans('cruds.messages.update_status_failed'), 'danger'))->withInput();
             // and throw the error again.
             throw $e;
         }
@@ -444,22 +530,39 @@ class TicketsController extends Controller
     public function forceDelete(Request $request,$id)
     {
         abort_if(Gate::denies('ticket_delete'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
+        try {
+            // Begin a transaction
+            DB::beginTransaction();
 
-        //dd($request->all(),$id);
-        $action = $request->action;
+            //dd($request->all(),$id);
+            $action = $request->action;
 
-        if ($action == 'force_delete') {
+            if ($action == 'force_delete') {
 
-            $ticket = Ticket::onlyTrashed()->where('id', $id)->first();
-            //force Delete Task
-            $this->forceDeleteTicket($ticket);
+                $ticket = Ticket::onlyTrashed()->where('id', $id)->first();
+                //force Delete Task
+                $this->forceDeleteTicket($ticket);
+                $message = 'force_delete_success';
 
-        } else if ($action == 'restore') {
-            //restore Task
-            Ticket::onlyTrashed()->where('id', $id)->restore();
+            } else if ($action == 'restore') {
+                //restore Task
+                Ticket::onlyTrashed()->where('id', $id)->restore();
+                $message = 'restore_success';
+
+            }
+            // Commit the transaction
+            DB::commit();
+            return back()->with(flash(trans('cruds.messages.'.$message), 'success'));
+
+        }catch(\Exception $e){
+            // An error occured; cancel the transaction...
+            DB::rollback();
+            return back()->with(flash(trans('cruds.messages.action_failed'), 'danger'));
+
+            // and throw the error again.
+            throw $e;
         }
-
-        return back();
+//        return back();
 
     }
 

@@ -8,9 +8,11 @@ use Modules\Sales\Http\Requests\Destroy\MassDestroyOpportunityRequest;
 use Modules\Sales\Http\Requests\Store\StoreOpportunityRequest;
 use Modules\Sales\Http\Requests\Update\UpdateOpportunityRequest;
 use Modules\Sales\Entities\Lead;
+use Modules\Sales\Entities\Result;
 use Modules\Sales\Entities\Opportunity;
 use Spatie\Permission\Models\Permission;
 use App\Models\PermissionGroup;
+use App\Models\Client;
 use Gate;
 use Illuminate\Http\Request;
 use Spatie\MediaLibrary\Models\Media;
@@ -78,8 +80,9 @@ class OpportunitiesController extends Controller
     {
         abort_if(Gate::denies('opportunity_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-
-        return view('sales::admin.opportunities.show', compact('opportunity'));
+        $clients=Client::all()->pluck('name', 'id');
+        $results=Result::all()->pluck('name', 'id');
+        return view('sales::admin.opportunities.show', compact('opportunity','clients','results'));
     }
 
     public function destroy(Opportunity $opportunity)
@@ -108,5 +111,20 @@ class OpportunitiesController extends Controller
         $media         = $model->addMediaFromRequest('upload')->toMediaCollection('ck-media');
 
         return response()->json(['id' => $media->id, 'url' => $media->getUrl()], Response::HTTP_CREATED);
+    }
+
+    public function createcalls(Request $request)
+    {
+        DB::beginTransaction();
+
+        try {
+            $opportunities = Opportunity::findOrFail($request->opportunities_id);
+            Call::create($request->all());
+            DB::commit();
+            return redirect()->route('sales.admin.calls.index');
+
+        } catch (\Exception $e) {
+            return redirect()->back()->with(['message' => 'Something wrong happen','alert-type' => 'error']);
+        }
     }
 }

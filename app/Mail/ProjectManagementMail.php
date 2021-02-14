@@ -19,10 +19,12 @@ class ProjectManagementMail extends Mailable
 
     protected $email;
     protected $name;
-    public function __construct($email, $name)
+    protected $message;
+    public function __construct($email, $name,$message=null)
     {
         $this->email = $email;
         $this->name = $name;
+        $this->message = $message;
     }
 
     /**
@@ -32,6 +34,10 @@ class ProjectManagementMail extends Mailable
      */
     public function build()
     {
+        if ($this->message){
+
+            return $this->from($this->email, $this->name)->html($this->message);
+        }
         return $this->from($this->email, $this->name)->html('This a Test Mail in Project Management');
         // return $this->view('view.name');
     }

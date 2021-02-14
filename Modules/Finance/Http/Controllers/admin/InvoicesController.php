@@ -438,25 +438,33 @@ class InvoicesController extends Controller
             $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
             event(new NewNotification($userNotify));
 
+            if (!$user->email){
+                $flashMsg = flash(trans('cruds.messages.client_not_have_email'), 'danger');
+                return redirect()->back()->with($flashMsg);
+            }
             // send mail
             $sender =  settings('smtp_sender_name');
             $email_from =  settings('smtp_email') ;
-            Mail::mailer('smtp')->to($user->email)->send(new FinanceMail($email_from, $sender));
+//            $message = 'Reminder The Date of Invoice <a href="'.route("finance.admin.invoices.show", $invoice->id).'">'.$invoice->reference_no.'</a> : '.$invoice->due_date;
+            $message = trans('global.reminder').trans('cruds.invoice.fields.due_date').trans('cruds.invoice.title_singular').' <a href="'.route("finance.admin.invoices.show", $invoice->id).'">'.$invoice->reference_no.'</a> : '.$invoice->due_date;
 
-            $flashMsg = flash(trans('cruds.messages.payment_amounts_more_invoice_amount'), 'sucess');
+            Mail::mailer('smtp')->to($user->email)->send(new FinanceMail($email_from, $sender,$message));
+
+            $flashMsg = flash(trans('cruds.messages.send_reminder_success'), 'sucess');
 
             // Commit the transaction
             DB::commit();
+            return redirect()->back()->with($flashMsg);
 
         }catch(\Exception $e){
             // An error occured; cancel the transaction...
             DB::rollback();
-            $flashMsg = flash(trans('cruds.messages.payment_amounts_more_invoice_amount'), 'danger');
-
+            $flashMsg = flash(trans('cruds.messages.send_reminder_failed'), 'danger');
+            return redirect()->back()->with($flashMsg);
             // and throw the error again.
             throw $e;
         }
-        return redirect()->back()->with($flashMsg);
+//        return redirect()->back()->with($flashMsg);
 
     }
 
