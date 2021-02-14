@@ -543,7 +543,7 @@
     'debug' => true,
     'url' => 'http://127.0.0.1:8000/',
     'asset_url' => NULL,
-    'timezone' => 'Africa/Accra',
+    'timezone' => 'Pacific/Midway',
     'locale' => 'en',
     'fallback_locale' => 'en',
     'faker_locale' => 'en_US',
@@ -802,7 +802,7 @@
       array (
         'driver' => 'sqlite',
         'url' => NULL,
-        'database' => 'hameddbpms',
+        'database' => 'pms_laravel',
         'prefix' => '',
         'foreign_key_constraints' => true,
       ),
@@ -812,7 +812,7 @@
         'url' => NULL,
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'hameddbpms',
+        'database' => 'pms_laravel',
         'username' => 'root',
         'password' => '',
         'unix_socket' => '',
@@ -832,7 +832,7 @@
         'url' => NULL,
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'hameddbpms',
+        'database' => 'pms_laravel',
         'username' => 'root',
         'password' => '',
         'charset' => 'utf8',
@@ -847,7 +847,7 @@
         'url' => NULL,
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'hameddbpms',
+        'database' => 'pms_laravel',
         'username' => 'root',
         'password' => '',
         'charset' => 'utf8',
@@ -1183,20 +1183,20 @@
       'smtp' => 
       array (
         'transport' => 'smtp',
-        'host' => 'smtp.mailgun.org',
-        'port' => 587,
-        'encryption' => 'tls',
-        'username' => NULL,
-        'password' => NULL,
+        'host' => 'mail.onetecgroup.com',
+        'port' => '465',
+        'encryption' => 'ssl',
+        'username' => 'admin@onetecgroup.com',
+        'password' => 'm7mdsdfcz',
       ),
       'mailgun' => 
       array (
         'transport' => 'smtp',
         'host' => 'smtp.mailgun.org',
-        'port' => 587,
+        'port' => '587',
         'encryption' => 'tls',
-        'username' => NULL,
-        'password' => NULL,
+        'username' => 'postmaster@sandboxe31bb8c7d4b44782a216a3ee62328fc9.mailgun.org',
+        'password' => '31d7a041ba3baf4f4fb9b51eacd23fac-4de08e90-2044ce92',
       ),
       'postmark' => 
       array (
@@ -1229,7 +1229,7 @@
     'from' => 
     array (
       'address' => 'info@onetecgroup.com',
-      'name' => NULL,
+      'name' => 'mohamed',
     ),
     'markdown' => 
     array (
@@ -1815,7 +1815,7 @@
   array (
     'triggers' => 
     array (
-      'SMS_INVOICE_REMINDER' => 
+      'sms_invoice_reminder' => 
       array (
         'merge_fields' => 
         array (
@@ -1834,7 +1834,7 @@
         'label' => 'Invoice Reminder Notice',
         'info' => 'Send SMS when invoice reminder notice sent when send invoice to client primary contact.',
       ),
-      'SMS_INVOICE_OVERDUE' => 
+      'sms_invoice_overdue' => 
       array (
         'merge_fields' => 
         array (
@@ -1853,7 +1853,7 @@
         'label' => 'Invoice Overdue Notice',
         'info' => 'Send SMS when invoice overdue notice  sent to client primary contact.',
       ),
-      'SMS_PAYMENT_RECORDED' => 
+      'sms_payment_recorded' => 
       array (
         'merge_fields' => 
         array (
@@ -1874,7 +1874,7 @@
         'label' => 'Invoice Payment Recorded',
         'info' => 'Send SMS when invoice payment is saved.',
       ),
-      'SMS_ESTIMATE_EXP_REMINDER' => 
+      'sms_estimate_exp_reminder' => 
       array (
         'merge_fields' => 
         array (
@@ -1893,7 +1893,7 @@
         'label' => 'Estimate Expiration Reminder',
         'info' => 'Send SMS when expiration Estimate  sent to client primary contact.',
       ),
-      'SMS_PROPOSAL_EXP_REMINDER' => 
+      'sms_proposal_exp_reminder' => 
       array (
         'merge_fields' => 
         array (
@@ -1910,7 +1910,7 @@
         'label' => 'Proposal Expiration Reminder',
         'info' => 'Send SMS when expiration reminder send to Related Proposals.',
       ),
-      'SMS_PURCHASE_CONFIRMATION' => 
+      'sms_purchase_confirmation' => 
       array (
         'merge_fields' => 
         array (
@@ -1929,7 +1929,7 @@
         'info' => 'Send SMS when Purchase confirmation/update stock notice sent to ',
         'sms_number' => true,
       ),
-      'SMS_PURCHASE_PAYMENT_CONFIRMATION' => 
+      'sms_purchase_payment_confirmation' => 
       array (
         'merge_fields' => 
         array (
@@ -1949,7 +1949,7 @@
         'label' => 'Purchase payment Notice',
         'info' => 'Send SMS when Purchase payment confirmation notice sent.',
       ),
-      'SMS_RETURN_STOCK' => 
+      'sms_return_stock' => 
       array (
         'merge_fields' => 
         array (
@@ -1967,7 +1967,7 @@
         'label' => 'Purchase Return Stock Notice',
         'info' => 'Send SMS when Purchase return stock notice sent.',
       ),
-      'SMS_TRANSACTION_RECORD' => 
+      'sms_transaction_record' => 
       array (
         'merge_fields' => 
         array (
@@ -1984,7 +1984,7 @@
         'info' => 'Send SMS when Transaction Record expense/deposit/transfer notified for reminder.',
         'sms_number' => true,
       ),
-      'SMS_STAFF_REMINDER' => 
+      'sms_staff_reminder' => 
       array (
         'merge_fields' => 
         array (

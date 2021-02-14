@@ -10,6 +10,9 @@ use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
 use \DateTimeInterface;
 use  Modules\Sales\Entities\Proposal;
+use  Modules\Sales\Entities\Meeting;
+use  Modules\Sales\Entities\Call;
+use Modules\ProjectManagement\Entities\TaskAttachment;
 use Spatie\Permission\Models\Permission;
 class Opportunity extends Model implements HasMedia
 {
@@ -80,7 +83,15 @@ class Opportunity extends Model implements HasMedia
 
     public function calls()
     {
-        return $this->hasMany(Call::class,'opportunities_id','id')->where('opportunities_id','!=','null');
+        return $this->hasMany(Call::class,'opportunities_id','id');
+    }
+    public function meetings()
+    {
+        return $this->hasMany(Meeting::class,'opportunities_id','id');
+    }
+    public function attachments()
+    {
+        return $this->hasMany(TaskAttachment::class,'opportunities_id','id');
     }
 
 }

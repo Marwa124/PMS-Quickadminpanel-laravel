@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 @section('content')
-
+@inject('accountDetailModel', 'Modules\HR\Entities\AccountDetail')
 
 <div class="card">
     
@@ -27,7 +27,7 @@
                         <a class="nav-link active" id="v-pills-details-tab" data-toggle="pill" href="#v-pills-details" role="tab" aria-controls="v-pills-details" aria-selected="true">{{trans('cruds.opportunity.title_singular')}} {{trans('global.details')}}</a>
                     <a class="nav-link" id="v-pills-tasks-tab" data-toggle="pill" href="#v-pills-tasks" role="tab"  aria-controls="v-pills-tasks" aria-selected="false">Call<span  class="float-right"> </span></a>
                         <a class="nav-link" id="v-pills-bugs-tab" data-toggle="pill" href="#v-pills-bugs" role="tab"   aria-controls="v-pills-bugs" aria-selected="false">Meetings<span  class="float-right"> </span></a>
-                        <a class="nav-link" id="v-pills-notes-tab" data-toggle="pill" href="#v-pills-notes" role="tab"  aria-controls="v-pills-notes"   aria-selected="false">Comments</a>
+                        {{-- <a class="nav-link" id="v-pills-notes-tab" data-toggle="pill" href="#v-pills-notes" role="tab"  aria-controls="v-pills-notes"   aria-selected="false">Comments</a> --}}
                         <a class="nav-link" id="v-pills-tickets-tab" data-toggle="pill" href="#v-pills-tickets" role="tab" aria-controls="v-pills-tickets" aria-selected="false">Attachment<span  class="float-right"> </span></a>
                     
                     </div>
@@ -83,10 +83,10 @@
                                 <h6 class="card-header">
                                     <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                                         <li class="nav-item">
-                                            <a class="nav-link active" id="pills-Tasks-tab" data-toggle="pill" href="#pills-Tasks" role="tab" aria-controls="pills-Tasks" aria-selected="true">Tasks</a>
+                                            <a class="nav-link active" id="pills-Tasks-tab" data-toggle="pill" href="#pills-Tasks" role="tab" aria-controls="pills-Tasks" aria-selected="true">calls</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" id="pills-newTasks-tab" data-toggle="pill" href="#pills-newTasks" role="tab" aria-controls="pills-newTasks" aria-selected="false">New Tasks</a>
+                                            <a class="nav-link" id="pills-newTasks-tab" data-toggle="pill" href="#pills-newTasks" role="tab" aria-controls="pills-newTasks" aria-selected="false">New calls</a>
                                         </li>
                                     </ul>
 
@@ -104,17 +104,17 @@
                                                     </th>
                                                     
                                                     <th>
-                                                        {{ trans('cruds.calls.fields.data_contact') }}
+                                                        {{ trans('cruds.opportunity.fields.data_contact') }}
                                                     </th>
                                                     <th>
-                                                        {{ trans('cruds.calls.fields.lead_qualification') }}
+                                                        {{ trans('cruds.opportunity.fields.opportunity_qualification') }}
                                                     </th>
                                                 
                                                     <th>
-                                                        {{ trans('cruds.calls.fields.Contact_With') }}
+                                                        {{ trans('cruds.opportunity.fields.Contact_With') }}
                                                     </th>
                                                     <th>
-                                                        {{ trans('cruds.calls.fields.firstorsecond') }}
+                                                        {{ trans('cruds.opportunity.fields.call_by') }}
                                                     </th>
                                                     <th>
                                                         &nbsp;
@@ -128,9 +128,20 @@
                                                         <td>{{ $loop->iteration }}</td>
                                                         <td>{{ $call->date }}</td>
                                                         <td>{{ $call->qualification }}</td>
-                                                        <td>{{isset($call->client)? $call->client->name :''}}</td>
-                                                        <td>{{ $call->call }}</td>
-                                                     
+                                                        <td>{{ !empty($call->client)?$call->client->name:'' }}</td>
+                                                        <td>{{ $call->call_by }}</td>
+                                                        <td>
+                                                            <a href="javascript:;"  data-id="{{ $call->id }}" data-toggle="modal" data-target="#exampleModal" 
+                                                            data-call_by="{{ $call->call_by}}" 
+                                                            data-date="{{ $call->date}}"
+                                                            data-note="{{ $call->note}}" 
+                                                            data-next_action="{{ $call->next_action}}" 
+                                                            data-next_action_date="{{ $call->next_action_date}}" 
+                                                            data-call="{{ $call->call}}" 
+                                                            data-qualification="{{ $call->qualification}}"
+                                                            data-result_id="{{ $call->result_id}}" 
+                                                            data-opportunities_id="{{ $call->opportunities_id}}" 
+                                                            data-client_id="{{ $call->client_id}}" ><i class="fas fa-eye"></i></a></td>
                                                     </tr>
                                                 @empty
                                                     <tr>
@@ -152,11 +163,11 @@
                                 </div>
                                 <div class="tab-pane fade" id="pills-newTasks" role="tabpanel" aria-labelledby="pills-newTasks-tab">
                                    
-                                        <form action="{{route('sales.admin.calls.store')}}" method="post">
+                                        <form action="{{route('sales.admin.opportunities.calls')}}" method="post">
                                             @csrf
                                             <div class="container">
 
-                                                <input type="hidden" name="call">
+                                                <input type="hidden" name="opportunities_id" value="{{$opportunity->id}}">
 
                                                 <div class="row">
                                                     <div class="col-6">
@@ -178,23 +189,22 @@
                                                             <select class="form-control" id="exampleFormControlSelect1"
                                                                 name="result_id">
                                                                 @if(!empty($results))
-                                                                @foreach($results as $result)
-                                                                <option value="{{$result->id}}">{{$result->name}}
+                                                                @foreach($results as $key=>$result)
+                                                                <option value="{{$key}}">{{$result}}
                                                                 </option>
                                                                 @endforeach
                                                                 @endif
                                                             </select>
                                                         </div>
                                                         <div class="form-group mr-5">
-                                                            <label for="exampleFormControlSelect1">Lead</label>
+                                                            <label for="exampleFormControlSelect1">clients</label>
                                                             <select class="form-control" id="exampleFormControlSelect1"
-                                                                name="lead_id">
+                                                                name="client_id">
 
-                                                                @if(!empty($leads))
-                                                                @foreach($leads as $lead)
-                                                                <option value="{{$lead->id}}"
-                                                                    {{isset($_GET['id']) && $_GET['id'] == $lead->id ? 'selected' : ''}}>
-                                                                    {{$lead->client_name}}</option>
+                                                                @if(!empty($clients))
+                                                                @foreach($clients as $keyclient=>$client)
+                                                                <option value="{{$keyclient}}">
+                                                                    {{$client}}</option>
                                                                 @endforeach
                                                                 @endif
                                                             </select>
@@ -265,196 +275,205 @@
                             </div>
                         </div>
                     </div>
-                    {{-- <div class="tab-pane fade" id="v-pills-tasks" role="tabpanel" aria-labelledby="v-pills-tasks-tab">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="nav flex-row nav-pills" id="v-pills-tab" role="tablist"
-                                    aria-orientation="horizontal">
-                                    <a class="nav-link active" id="v-pills-task-tab" data-toggle="pill" href="#v-pills-task"
-                                        role="tab" aria-controls="v-pills-task"
-                                        aria-selected="true">{{ trans('cruds.calls.title_singular') }}</a>
-                                    @can('task_create')
-                                    <a class="nav-link" id="v-pills-tasks-tab" data-toggle="pill" href="#v-pills-tasks" role="tab"  aria-controls="v-pills-tasks" aria-selected="false">
-                                    {{ trans('global.create') }}
-                                        {{ trans('cruds.calls.title_singular') }}</a>
-                                    @endcan
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade show active" id="v-pills-task" role="tabpanel"
-                            aria-labelledby="v-pills-task-tab">
-                            <div class="card">
-                                <div class="table-responsive"  >
-                                    <table class=" table table-bordered table-striped table-hover datatable datatable-Task " >
-                                        <thead>
-                                            <tr>
-                                                <th >
-                        
-                                                </th>
-                                                
-                                                <th>
-                                                    {{ trans('cruds.calls.fields.data_contact') }}
-                                                </th>
-                                                <th>
-                                                    {{ trans('cruds.calls.fields.lead_qualification') }}
-                                                </th>
-                                            
-                                                <th>
-                                                    {{ trans('cruds.calls.fields.Contact_With') }}
-                                                </th>
-                                                <th>
-                                                    {{ trans('cruds.calls.fields.firstorsecond') }}
-                                                </th>
-                                                <th>
-                                                    &nbsp;
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody >
-                                        @if($opportunity->calls)
-                                            @forelse($opportunity->calls as $key => $call)
-                                                <tr data-entry-id="{{ $call->id }}">
-                                                    <td>{{ $loop->iteration }}</td>
-                                                    <td>{{ $call->date }}</td>
-                                                    <td>{{ $call->qualification }}</td>
-                                                    <td>{{isset($call->client)? $call->client->name :''}}</td>
-                                                    <td>{{ $call->call }}</td>
-                                                 
-                                                </tr>
-                                            @empty
-                                                <tr>
-                                                    <td colspan="9" >
-                                                        <center> {{trans('cruds.messages.no_Calls_found_in_Opportunity')}} </center>
-                                                    </td>
-                                                </tr>
-                                            @endforelse
-                                        @else
-                                            <tr>
-                                                <td colspan="9" >
-                                                    {{trans('cruds.messages.no_Calls_found_in_Opportunity')}}
-                                                </td>
-                                            </tr>
-                                        @endif
-                                        </tbody>
-                                    </table>
-                                </div> 
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="v-pills-tasks" role="tabpanel" aria-labelledby="v-pills-tasks-tab">
-                            <div class="card">
-                                <div class="table-responsive"  >
-                                    <form  action="{{route('sales.admin.calls.store')}}" method="post">
-                                        @csrf
-                                        <div class="container">
-                            
-                                            <input type="hidden" name="opportunities_id" value="{{$opportunity->id}}">
-                            
-                                            <div class="row">
-                                                <div class="col-6">
-                                                    <div class="form-group mr-5">
-                                                        <label for="exampleFormControlInput1">Call By</label>
-                                                        <input type="text" name="call_by" class="form-control" id="exampleFormControlInput1" placeholder="Call By">
-                                                    </div>
-                            
-                                                    <div class="form-group mr-5">
-                                                        <label for="exampleFormControlInput1">Note</label>
-                                                        <textarea class="form-control" name="note" id="exampleFormControlInput1" placeholder="Note"></textarea>
-                                                    </div>
-                            
-                                                    <div class="form-group mr-5">
-                                                        <label for="exampleFormControlSelect1">Result</label>
-                                                        <select class="form-control" id="exampleFormControlSelect1" name="result_id">
-                                                            @if(!empty($results))
-                                                                @foreach($results as $resultkey => $result)
-                                                                    <option value="{{$resultkey}}">{{$result}}</option>
-                                                                @endforeach
-                                                            @endif
-                                                        </select>
-                                                    </div>
-                                                   
-                                                    <div class="form-group mr-5">
-                                                        <label for="exampleFormControlSelect1">Clients</label>
-                                                        <select class="form-control" id="exampleFormControlSelect1" name="client_id">
-                                                               
-                                                            @if(!empty($clients))
-                                                                @foreach($clients as $key=>$client)
-                                                                    <option value="{{$key}}">{{$client}}</option>
-                                                                @endforeach
-                                                            @endif
-                                                        </select>
-                                                    </div>
-                            
-                                                    <div class="col-6">
-                                                        <div class="form-group mr-5">
-                                                            <label for="exampleFormControlInput1"> Date</label>
-                                                            <input type="date" class="form-control" name="date" id="exampleFormControlInput1" placeholder="select date">
-                                                        </div>
-                                
-                                
-                                                        <div class="form-group mr-5">
-                                                            <label for="exampleFormControlInput1">Next Action</label>
-                                                            <textarea class="form-control" name="next_action" id="exampleFormControlInput1" placeholder="Next Action"></textarea>
-                                                        </div>
-                                
-                                
-                                                        <div class="form-group mr-5">
-                                                            <label for="exampleFormControlInput1">Next Action Date</label>
-                                                            <input type="date" class="form-control" name="next_action_date" id="exampleFormControlInput1" placeholder="select date">
-                                                        </div>
-                                
-                                                        <div class="form-group mr-5">
-                                                            <label for="exampleFormControlSelect1">Qualification</label>
-                                                            <select class="form-control" id="exampleFormControlSelect1" name="qualification">
-                                                                <option value="Qualified-Meeting">Qualified-Meeting</option>
-                                                                <option value="Qualified-Follow Up">Qualified-Follow Up</option>
-                                                                <option value="Proposal Sent">Proposal Sent</option>
-                                                                <option value="Qualified-Survey">Qualified-Survey</option>
-                                                                <option value="Qualified-Postponed">Qualified-Postponed</option>
-                                                                <option value="Un-Qualified">Un-Qualified</option>
-                                                                <option value="other">other</option>
-                                                            </select>
-                                                        </div>
-                                
-                                
-                                
-                                
-                                                    </div>
-                                                    <div class="form-group mr-5" style="padding-top: 30px">
-                                                        <button type="submit" class="btn btn-info"><i></i>Save Changes</button>
-                                                    </div>
-                                                </div>
-                            
-                                    </form>
-                                </div> 
-                            </div>
-                        </div>
-                    </div> --}}
+                 
                     <div class="tab-pane fade" id="v-pills-bugs" role="tabpanel" aria-labelledby="v-pills-bugs-tab">
                         <div class="card">
-                            <div class="card-body">
-                                <div class="nav flex-row nav-pills" id="v-pills-tab" role="tablist"
-                                    aria-orientation="horizontal">
-                                    <a class="nav-link active" id="v-pills-bug-tab" data-toggle="pill" href="#v-pills-bug"
-                                        role="tab" aria-controls="v-pills-bug"
-                                        aria-selected="true">{{ trans('cruds.bug.title') }}</a>
-                                    @can('bug_create')
-                                    <a class="nav-link" id="v-pills-new_bug-tab" href="#" role="tab"
-                                        aria-controls="v-pills-new_bug" aria-selected="false">New
-                                        {{ trans('cruds.bug.title_singular') }}</a>
-                                    @endcan
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade show active" id="v-pills-bug" role="tabpanel"
-                            aria-labelledby="v-pills-bug-tab">
-                            <div class="card">
-                                <div>
-                                    <div class="card-header">
+                            <h6 class="card-header">
+                                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="pills-meeting-tab" data-toggle="pill" href="#pills-meeting" role="tab" aria-controls="pills-Tasks" aria-selected="true">Meeting</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="pills-meetingnew-tab" data-toggle="pill" href="#pills-meetingnew" role="tab" aria-controls="pills-newTasks" aria-selected="false">New Meeting</a>
+                                    </li>
+                                </ul>
 
+                            </h6>
+                        <div class="card-body">
+                            
+                            <div class="tab-content" id="pills-tabContent">
+                            <div class="tab-pane fade show active" id="pills-meeting" role="tabpanel" aria-labelledby="pills-meeting-tab">
+                                <table class=" table table-bordered table-striped table-hover datatable datatable-meetingss ">
+                                <thead>
+                                    <tr>
+                                       
+                                        <th>
+                                            #
+                                        </th>
+                                        <th>
+                                            {{ trans('cruds.opportunity.fields.user') }}
+                                        </th>
+                                        <th>
+                                            {{ trans('cruds.opportunity.fields.name') }}
+                                        </th>
+                                        <th>
+                                            {{ trans('cruds.opportunity.fields.attendees') }}
+                                        </th>
+                                        <th>
+                                            {{ trans('cruds.opportunity.fields.start_date') }}
+                                        </th>
+                                        <th>
+                                            {{ trans('cruds.opportunity.fields.end_date') }}
+                                        </th>
+                                        <th>
+                                            {{ trans('cruds.opportunity.fields.location') }}
+                                        </th>
+                                        <th>
+                                            {{ trans('cruds.opportunity.fields.description') }}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if ($opportunity->meetings)
+                                    @forelse($opportunity->meetings as $key => $meetingMinute)
+                                    <tr data-entry-id="{{ $meetingMinute->id }}">
+                                        <td>
+                                            {{ $loop->iteration }}
+                                        </td>
+                                       
+                                        <td>
+                                           
+                                            {{ $meetingMinute->user->accountDetail->fullname ?? '' }}
+                                        </td>
+                                        <td>
+                                            {{ $meetingMinute->name ?? '' }}
+                                        </td>
+                                        <td>
+                                            @foreach ($meetingMinute->attendees as $item)
+                                           
+                                            @php
+                                            $userName = $accountDetailModel::where('user_id', $item)->pluck('fullname')->first();
+                                            @endphp
+                                            {{ $userName ?? '' }} <?php echo "</br>"; ?>
+                                            @endforeach
+                                        </td>
+                                        <td>
+                                            {{ $meetingMinute->start_date ?? '' }}
+                                        </td>
+                                        <td>
+                                            {{ $meetingMinute->end_date ?? '' }}
+                                        </td>
+                                        <td>
+                                            {{ $meetingMinute->location ?? '' }}
+                                        </td>
+                                        <td>
+                                            {{ $meetingMinute->description ?? '' }}
+                                        </td>
+                
+                                    </tr>
+                                 
+                                    @empty
+                                        <tr>
+                                            <td colspan="8" >
+                                                <center> {{trans('cruds.messages.no_Meetings_found_in_Opportunity')}} </center>
+                                            </td>
+                                        </tr>
+                                    @endforelse
+                                    @else
+                                        <tr>
+                                            <td colspan="8" >
+                                                {{trans('cruds.messages.no_Meetings_found_in_Opportunity')}}
+                                            </td>
+                                        </tr>
+                                    @endif
+                                </tbody>
+                                </table>
+                            </div>
+                            <div class="tab-pane fade" id="pills-meetingnew" role="tabpanel" aria-labelledby="pills-meetingnew-tab">
+                               
+                                <form method="POST" action="{{ route("sales.admin.opportunities.storemeeting") }}" enctype="multipart/form-data">
+                                    @csrf
+                                    <input name="opportunities_id" value="{{ $opportunity->id }}" type="hidden">
+                                    <div class="form-group">
+                                        <label class="required" for="user_id">{{ trans('cruds.opportunity.fields.responsible') }}</label>
+                                        <select class="form-control select2 {{ $errors->has('user') ? 'is-invalid' : '' }}" name="user_id" id="user_id" required>
+                                            @foreach($users as $id => $user)
+                                                <option value="{{ $id }}" {{ old('user_id') == $id ? 'selected' : '' }}>{{ $user }}</option>
+                                            @endforeach
+                                        </select>
+                                        @if($errors->has('user'))
+                                            <div class="invalid-feedback">
+                                                {{ $errors->first('user') }}
+                                            </div>
+                                        @endif
+                                        <span class="help-block">{{ trans('cruds.opportunity.fields.user_helper') }}</span>
                                     </div>
-                                </div>
+                                    <div class="form-group">
+                                        <label class="required" for="name">{{ trans('cruds.opportunity.fields.name') }}</label>
+                                        <input class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" type="text" name="name" id="name" value="{{ old('name', '') }}" required>
+                                        @if($errors->has('name'))
+                                            <div class="invalid-feedback">
+                                                {{ $errors->first('name') }}
+                                            </div>
+                                        @endif
+                                        <span class="help-block">{{ trans('cruds.opportunity.fields.name_helper') }}</span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>{{ trans('cruds.opportunity.fields.attendees') }}</label>
+                                        <select class="form-control" name="attendees[]" id="attendees" multiple="multiple">
+                                            @foreach($users as $key => $label)
+                                                <option value="{{ $key }}" {{ old('attendees') === (string) $key ? 'selected' : '' }} {{ $key == 0 ? 'disabled' : '' }}>{{ $label }}</option>
+                                            @endforeach
+                                        </select>
+                                        @if($errors->has('attendees'))
+                                            <div class="invalid-feedback">
+                                                {{ $errors->first('attendees') }}
+                                            </div>
+                                        @endif
+                                        <span class="help-block">{{ trans('cruds.opportunity.fields.attendees_helper') }}</span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="required" for="start_date">{{ trans('cruds.opportunity.fields.start_date') }}</label>
+                                        <input class="form-control datetime {{ $errors->has('start_date') ? 'is-invalid' : '' }}" type="text" name="start_date" id="start_date" value="{{ old('start_date') }}" required>
+                                        @if($errors->has('start_date'))
+                                            <div class="invalid-feedback">
+                                                {{ $errors->first('start_date') }}
+                                            </div>
+                                        @endif
+                                        <span class="help-block">{{ trans('cruds.opportunity.fields.start_date_helper') }}</span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="required" for="end_date">{{ trans('cruds.opportunity.fields.end_date') }}</label>
+                                        <input class="form-control datetime {{ $errors->has('end_date') ? 'is-invalid' : '' }}" type="text" name="end_date" id="end_date" value="{{ old('end_date') }}" required>
+                                        @if($errors->has('end_date'))
+                                            <div class="invalid-feedback">
+                                                {{ $errors->first('end_date') }}
+                                            </div>
+                                        @endif
+                                        <span class="help-block">{{ trans('cruds.opportunity.fields.end_date_helper') }}</span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="location">{{ trans('cruds.opportunity.fields.location') }}</label>
+                                        <input class="form-control {{ $errors->has('location') ? 'is-invalid' : '' }}" type="text" name="location" id="location" value="{{ old('location', '') }}">
+                                        @if($errors->has('location'))
+                                            <div class="invalid-feedback">
+                                                {{ $errors->first('location') }}
+                                            </div>
+                                        @endif
+                                        <span class="help-block">{{ trans('cruds.opportunity.fields.location_helper') }}</span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="description">{{ trans('cruds.opportunity.fields.description') }}</label>
+                                        <textarea class="form-control  {{ $errors->has('description') ? 'is-invalid' : '' }}" name="description" id="description">{!! old('description') !!}</textarea>
+                                        @if($errors->has('description'))
+                                            <div class="invalid-feedback">
+                                                {{ $errors->first('description') }}
+                                            </div>
+                                        @endif
+                                        <span class="help-block">{{ trans('cruds.opportunity.fields.description_helper') }}</span>
+                                    </div>
+                                    <div class="form-group">
+                                        <button class="btn btn-danger" type="submit">
+                                            {{ trans('global.save') }}
+                                        </button>
+                                    </div>
+                                </form>
+                              
+                            </div>
                             </div>
                         </div>
+                    </div>
+                
                     </div>
                     <div class="tab-pane fade" id="v-pills-notes" role="tabpanel" aria-labelledby="v-pills-notes-tab">
                         <div class="card">
@@ -465,24 +484,80 @@
                     </div>
                     <div class="tab-pane fade" id="v-pills-tickets" role="tabpanel" aria-labelledby="v-pills-tickets-tab">
                         <div class="card">
-                            <div class="card-body">
-                                <div class="nav flex-row nav-pills" id="v-pills-tab" role="tablist"
-                                    aria-orientation="horizontal">
-                                    <a class="nav-link active" id="v-pills-ticket-tab" data-toggle="pill"
-                                        href="#v-pills-ticket" role="tab" aria-controls="v-pills-ticket"
-                                        aria-selected="true">{{ trans('cruds.ticket.title') }}</a>
-                                    @can('ticket_create')
-                                    <a class="nav-link" id="v-pills-new_ticket-tab" href="#" role="tab"
-                                        aria-controls="v-pills-new_ticket" aria-selected="false">New
-                                        {{ trans('cruds.ticket.title_singular') }}</a>
-                                    @endcan
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade show active" id="v-pills-ticket" role="tabpanel"
-                            aria-labelledby="v-pills-ticket-tab">
-                            <div class="card">
+                            <h6 class="card-header">
+                                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="pills-attchment-tab" data-toggle="pill" href="#pills-attchment" role="tab" aria-controls="pills-attchment" aria-selected="true">attchment</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="btn" id="newattach-tab" data-toggle="modal" data-target="#attachmentExample" >New attchment</a>
+                                    </li>
+                                </ul>
 
+                            </h6>
+                        <div class="card-body">
+                            
+                            <div class="tab-content" id="pills-tabContent">
+                            <div class="tab-pane fade show active" id="pills-attchment" role="tabpanel" aria-labelledby="pills-attchment-tab">
+                                <table class=" table table-bordered table-striped table-hover datatable datatable-attachment ">
+                                    <thead>
+                                        <tr>
+                                        
+                                            <th>
+                                                #
+                                            </th>
+                                            <th>
+                                                {{ trans('cruds.opportunity.fields.name') }}
+                                            </th>
+                                         
+                                            <th>
+                                                {{ trans('cruds.opportunity.fields.description') }}
+                                            </th>
+                                            <th>
+                                                {{ trans('cruds.opportunity.fields.attachment') }}
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if ($opportunity->attachments)
+                                        @forelse($opportunity->attachments as $key => $attach)
+                                        <tr data-entry-id="{{ $attach->id }}">
+                                            <td>
+                                                {{ $loop->iteration }}
+                                            </td>
+                                        
+                                            <td>
+                                            
+                                                {{ $attach->name?? '' }}
+                                            </td>
+                                            <td>
+                                                {{ $attach->description ?? '' }}
+                                            </td>
+                                           
+                                            <td>
+                                               <img src="{{ $attach->description }}" alt="" sizes="50*50" srcset="">
+                                            </td>
+                    
+                                        </tr>
+                                    
+                                        @empty
+                                            <tr>
+                                                <td colspan="8" >
+                                                    <center> {{trans('cruds.messages.no_Meetings_found_in_Opportunity')}} </center>
+                                                </td>
+                                            </tr>
+                                        @endforelse
+                                        @else
+                                            <tr>
+                                                <td colspan="8" >
+                                                    {{trans('cruds.messages.no_Meetings_found_in_Opportunity')}}
+                                                </td>
+                                            </tr>
+                                        @endif
+                                    </tbody>
+                                </table>
+                            </div>
+                            
                             </div>
                         </div>
                     </div>
@@ -493,12 +568,95 @@
     </div>
 </div>
 
+    <!-- Modal -->
+
+    <div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Show Calls</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                
+                    <div class="modal-body">
+                        @include('sales::admin.opportunities.showcalls', ['results' => $results,'clients'=>$clients])
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+               
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <!-- Modal attachment-->
+
+    <div class="modal fade bd-example-modal-lg" id="attachmentExample" tabindex="-1" role="dialog"
+        aria-labelledby="attachmentLabel" aria-hidden="true">
+
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="attachmentLabel">Show Calls</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="POST" action="{{ route("sales.admin.opportunities.storeattachment",$opportunity->id) }}" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body">
+                        
+                        @include('sales::admin.opportunities.attachmentform',['opportunity',$opportunity])
+                      
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-info">save</button>
+                    </div>
+                </form>
+               
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
 @endsection
 
 @section('scripts')
 
     @parent
+    <script>
 
+        $('#exampleModal').on('show.bs.modal', function (event) {
+          
+            var button = $(event.relatedTarget) // Button that triggered the modal
+            var call_by = button.data('call_by') // Extract info from data-* attributes
+            var date = button.data('date') // Extract info from data-* attributes
+            var note = button.data('note') // Extract info from data-* attributes
+            var next_action = button.data('next_action') // Extract info from data-* attributes
+            var next_action_date = button.data('next_action_date') // Extract info from data-* attributes
+            var call = button.data('call') // Extract info from data-* attributes
+            var qualification = button.data('qualification') // Extract info from data-* attributes
+            var result_id = button.data('result_id') // Extract info from data-* attributes
+            var opportunities_id = button.data('opportunities_id') // Extract info from data-* attributes
+            var client_id = button.data('client_id') // Extract info from data-* attributes
+            var modal = $(this)
+            modal.find('#call_by').val(call_by)
+            modal.find('#date').val(date)
+            modal.find('#note').val(note)
+            modal.find('#next_action').val(next_action)
+            modal.find('#next_action_date').val(next_action_date)
+            modal.find('#call').val(call)
+            modal.find('#qualification').val(qualification).change()
+            modal.find('#result_id').val(result_id).change()
+            modal.find('#opportunities_id').val(opportunities_id).change()
+            modal.find('#client_id').val(client_id).change()
+        });
+
+    </script>
     {{--    For datatable of tasks--}}
     <script>
 
@@ -511,15 +669,15 @@
                 [7, 25, 50, "All"],
             ],
         });
-
-        $('.datatable-Milestone').DataTable()
+          // done
+        $('.datatable-meetingss').DataTable()
         $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e){
             $($.fn.dataTable.tables(true)).DataTable()
                 .columns.adjust()
                 .responsive.recalc()
                 .scroller.measure();
         });
-
+      // done
         $('.datatable-Task').DataTable()
         $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e){
             $($.fn.dataTable.tables(true)).DataTable()
@@ -535,8 +693,8 @@
                 .responsive.recalc()
                 .scroller.measure();
         });
-
-        $('.datatable-Ticket').DataTable()
+        // done
+        $('.datatable-attachment').DataTable()
         $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e){
             $($.fn.dataTable.tables(true)).DataTable()
                 .columns.adjust()
@@ -544,197 +702,68 @@
                 .scroller.measure();
         });
 
-        $('.datatable-Invoice').DataTable()
-        $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e){
-            $($.fn.dataTable.tables(true)).DataTable()
-                .columns.adjust()
-                .responsive.recalc()
-                .scroller.measure();
-        });
+       
 
     </script>
 
 {{--    For editor in texteara notes--}}
-    <script>
-        $(document).ready(function () {
-            function SimpleUploadAdapter(editor) {
-                editor.plugins.get('FileRepository').createUploadAdapter = function(loader) {
-                    return {
-                        upload: function() {
-                            return loader.file
-                                .then(function (file) {
-                                    return new Promise(function(resolve, reject) {
-                                        // Init request
-                                        var xhr = new XMLHttpRequest();
-                                        xhr.open('POST', '/admin/projectmanagement/projects/ckmedia', true);
-                                        xhr.setRequestHeader('x-csrf-token', window._token);
-                                        xhr.setRequestHeader('Accept', 'application/json');
-                                        xhr.responseType = 'json';
+<script>
 
-                                        // Init listeners
-                                        var genericErrorText = `Couldn't upload file: ${ file.name }.`;
-                                        xhr.addEventListener('error', function() { reject(genericErrorText) });
-                                        xhr.addEventListener('abort', function() { reject() });
-                                        xhr.addEventListener('load', function() {
-                                            var response = xhr.response;
+    $(document).ready(function () {
+       
+     $('#attendees').select2();
+    });
+</script>
 
-                                            if (!response || xhr.status !== 201) {
-                                                return reject(response && response.message ? `${genericErrorText}\n${xhr.status} ${response.message}` : `${genericErrorText}\n ${xhr.status} ${xhr.statusText}`);
-                                            }
-
-                                            $('form').append('<input type="hidden" name="ck-media[]" value="' + response.id + '">');
-
-                                            resolve({ default: response.url });
-                                        });
-
-                                        if (xhr.upload) {
-                                            xhr.upload.addEventListener('progress', function(e) {
-                                                if (e.lengthComputable) {
-                                                    loader.uploadTotal = e.total;
-                                                    loader.uploaded = e.loaded;
-                                                }
-                                            });
-                                        }
-
-                                        // Send request
-                                        var data = new FormData();
-                                        data.append('upload', file);
-                                        data.append('crud_id',0);
-                                        xhr.send(data);
-                                    });
-                                })
-                        }
-                    };
-                }
+   {{-- attachment --}}
+   <script>
+    Dropzone.options.attachmentsDropzone = {
+        url: '{{ route('projectmanagement.admin.task-attachments.storeMedia') }}',
+        maxFilesize: 2, // MB
+        maxFiles: 1,
+        addRemoveLinks: true,
+        headers: {
+            'X-CSRF-TOKEN': "{{ csrf_token() }}"
+        },
+        params: {
+            size: 2
+        },
+        success: function (file, response) {
+            $('form').find('input[name="attachments"]').remove();
+            $('form').append('<input type="hidden" name="attachments[]" value="' + response.name + '">')
+        },
+        removedfile: function (file) {
+            file.previewElement.remove();
+            if (file.status !== 'error') {
+                $('form').find('input[name="attachments[]"]').remove();
+                this.options.maxFiles = this.options.maxFiles + 1
+            }
+        },
+        init: function () {
+                @if(isset($transfer) && $transfer->attachments)
+            var file = {!! json_encode($transfer->attachments) !!}
+                    this.options.addedfile.call(this, file);
+            file.previewElement.classList.add('dz-complete');
+            $('form').append('<input type="hidden" name="attachments[]" value="' + file.file_name + '">');
+            this.options.maxFiles = this.options.maxFiles - 1;
+            @endif
+        },
+        error: function (file, response) {
+            if ($.type(response) === 'string') {
+                var message = response //dropzone sends it's own error messages in string
+            } else {
+                var message = response.errors.file
+            }
+            file.previewElement.classList.add('dz-error');
+            _ref = file.previewElement.querySelectorAll('[data-dz-errormessage]');
+            _results = []
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                node = _ref[_i];
+                _results.push(node.textContent = message)
             }
 
-            var allEditors = document.querySelectorAll('.ckeditor');
-            for (var i = 0; i < allEditors.length; ++i) {
-                ClassicEditor.create(
-                    allEditors[i], {
-                        extraPlugins: [SimpleUploadAdapter]
-                    }
-                );
-            }
-
-
-
-
-        });
-
-
-    </script>
-
-{{--    For Calendar --}}
-
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js'></script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.min.js'></script>
-    <script>
-
-        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-            var target = $(e.target).attr("href") // activated tab
-
-        });
-
-
-
-     
-
-
-        function showEditTime(timer_id) {
-            var i, tabcontent, tablinks;
-            tabcontent = document.getElementById("v-pills-time_sheet-tab");
-
-                tabcontent.classList.remove('active');
-                tabcontent.classList.remove('show');
-            // tabcontent.style.display = "none";
-            document.getElementById('v-pills-time_sheet').classList.remove('active');
-            document.getElementById('v-pills-time_sheet').classList.remove('show');
-            document.getElementById('v-pills-time_sheet').style.display = "none" ;
-
-
-            document.getElementById('v-pills-new_time_sheet-tab').classList.add('active');
-            document.getElementById('v-pills-new_time_sheet-tab').classList.add('show');
-
-            document.getElementById('v-pills-new_time_sheet').classList.add('active');
-            document.getElementById('v-pills-new_time_sheet').classList.add('show');
-            document.getElementById('v-pills-new_time_sheet').style.display = "block";
-
-            var alltimesheets = document.getElementById('timesheets').value;
-            var timesheets = JSON.parse(alltimesheets);
-            timesheets.filter(function(value,key){
-
-                //var time = $(this).data('id');
-                if(timer_id == value.id){
-
-                    $('textarea[name="reason"]').val(value.reason);
-                    $('input[name="timesheet_id"]').val(value.id);
-
-                    // start time and start date
-                    let start_timestamp = value.start_time
-                    var start = new Date(start_timestamp * 1000);
-                    var months = ['01','02','03','04','05','06','07','08','09','10','11','12'];
-                    var year = start.getFullYear();
-                    var month = months[start.getMonth()];
-                    //var month = start.getMonth()+1;
-                    var date = start.getDate();
-                    var hour = start.getHours();
-                    var min = start.getMinutes();
-
-                    if(min.toString().length==1){
-                        min = '0'+min;
-                    }
-                    if(hour.toString().length==1){
-                        hour = '0'+hour;
-                    }
-                    if(date.toString().length==1){
-                        date = '0'+date;
-                    }
-
-                    var time = hour + ':' + min ;
-                    var dateValue = year + '-' + month + '-' + date;
-
-                    $('input[name="start_time"]').val(time);
-                    $('input[name="start_date"]').val(dateValue);
-
-                    // start time and start date
-                    let end_timestamp = value.end_time
-
-                    var end = new Date(end_timestamp * 1000);
-                    //var months = ['01','02','03','04','05','06','07','08','09','10','11','12'];
-                    var year = end.getFullYear();
-                    var month = months[end.getMonth()];
-                    //var month = end.getMonth()+1;
-                    var date = end.getDate();
-                    var hour = end.getHours();
-                    var min = end.getMinutes();
-
-                    if(min.toString().length==1){
-                        min = '0'+min;
-                    }
-                    if(hour.toString().length==1){
-                        hour = '0'+hour;
-                    }
-                    if(date.toString().length==1){
-                        date = '0'+date;
-                    }
-                    var time = hour + ':' + min ;
-                    var dateValue = year + '-' + month + '-' + date;
-
-                    $('input[name="end_time"]').val(time);
-                    $('input[name="end_date"]').val(dateValue);
-                }
-            })
-
+            return _results
         }
-
-        //session flash message timeout after 5 sec
-        $("document").ready(function(){
-            setTimeout(function(){
-                $(".flash-message").remove();
-            }, 5000 ); // 5 secs
-
-        });
-
-    </script>
+    }
+</script>
 @endsection
