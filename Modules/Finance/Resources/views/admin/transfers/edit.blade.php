@@ -90,7 +90,7 @@
 
                         @foreach($payment_methods as $id => $payment_method)
                             <option
-                                value="{{ $payment_method->id }}" {{  old('payment_method_id') ? old('payment_method_id') : $transfer->payment_method_id == $payment_method->id  ? 'selected' : ''  }}>{{ $payment_method->name }}</option>
+                                value="{{ $payment_method->id }}" {{  old('payment_method_id') ? old('payment_method_id') : ($transfer->payment_method_id == $payment_method->id  ? 'selected' : '' ) }}>{{ $payment_method->name }}</option>
                         @endforeach
                     </select>
                     @if($errors->has('payment_method_id'))

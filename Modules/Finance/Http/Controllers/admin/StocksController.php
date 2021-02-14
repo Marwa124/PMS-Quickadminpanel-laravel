@@ -14,6 +14,7 @@ use App\Models\StockSubCategory;
 use Gate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Modules\HR\Entities\Designation;
 use Symfony\Component\HttpFoundation\Response;
 
 class StocksController extends Controller
@@ -202,5 +203,131 @@ class StocksController extends Controller
         return redirect()->route('finance.admin.stocks.history');
     }
 
+
+
+
+    public function report()
+    {
+        //        abort_if(Gate::denies('stocks'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        $designations = Designation::all();
+        $stock_categories = StockCategory::all();
+        return view('finance::admin.stocks.report', compact('designations','stock_categories'));
+    }
+
+
+    public function report_result(Request $request)
+    {
+        //        abort_if(Gate::denies('stocks'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        if($request->item_id != null){
+            $request->validate([
+                'item_id'  => 'integer|exists:stocks,id'
+            ]);
+            $stock = Stock::findOrFail($request->item_id);
+            $stock_ids = Stock::where('name',$stock->name)->get()->pluck('id');
+            $stocks = Stock::where('name',$stock->name)->where('stock_sub_category_id',$stock->stock_sub_category_id)->get();
+            $assigned_stocks = AssignStock::whereIn('stock_id',$stock_ids)->where('sub_category_id',$stock->stock_sub_category_id)->get();
+            $cat_name = StockSubCategory::findOrFail($stock->stock_sub_category_id)->name;
+            $stock_name = $stock->name;
+            $id = $stock->id;
+            $loadview = view('finance::admin.stocks.ajaxload_report_data', compact('stocks','assigned_stocks','cat_name','stock_name','id'))->render();
+
+        }else{
+            $request->validate([
+                'start'  => 'date',
+                'end'    => 'date',
+            ]);
+            $start = $request->start;
+            $end   = $request->end;
+            $stocks = Stock::where('buying_date','>=',$request->start)->where('buying_date','<=',$request->end)->get();
+            $assigned_stocks = AssignStock::where('assign_date','>=',$request->start)->where('assign_date','<=',$request->end)->get();
+            $sub_stocks = StockSubCategory::all();
+            $loadview = view('finance::admin.stocks.ajaxload_report_data', compact('stocks','assigned_stocks','start','end','sub_stocks'))->render();
+
+        }
+
+
+        return response()->json($loadview, Response::HTTP_CREATED);
+
+    }
+
+    public function get_items(Request $request)
+    {
+        //        abort_if(Gate::denies('stocks'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        $request->validate([
+            'id'  =>'required|integer|exists:stock_sub_categories,id'
+        ]);
+        $items = Stock::where('stock_sub_category_id',$request->id)->get()->unique('name');
+
+        $loadview = view('finance::admin.stocks.ajaxload_items_data', compact('items'))->render();
+        return response()->json($loadview, Response::HTTP_CREATED);
+
+    }
+
+
+    public function pdf($id)
+    {
+
+//        abort_if(Gate::denies('stocks'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
+
+
+            $stock = Stock::findOrFail($id);
+            $stock_ids = Stock::where('name',$stock->name)->get()->pluck('id');
+            $stocks = Stock::where('name',$stock->name)->where('stock_sub_category_id',$stock->stock_sub_category_id)->get();
+            $assigned_stocks = AssignStock::whereIn('stock_id',$stock_ids)->where('sub_category_id',$stock->stock_sub_category_id)->get();
+            $cat_name = StockSubCategory::findOrFail($stock->stock_sub_category_id)->name;
+            $stock_name = $stock->name;
+            $id = $stock->id;
+
+
+        $title = $stock->name . '-assigned_stock.pdf'  ?? '-assigned_stock.pdf' ;
+        $compact = [
+            'stocks'   => $stocks,
+            'assigned_stocks' => $assigned_stocks,
+            'cat_name' => $cat_name,
+            'stock_name' => $stock_name,
+            'id' => $id,
+        ];
+
+        $view = 'finance::admin.stocks.pdf';
+        download_pdf($view,$compact,$title);
+
+
+        return abort(Response::HTTP_FORBIDDEN, trans('global.forbidden_page_not_allow_to_you'));
+
+    }
+
+
+    public function pdf_period($start,$end)
+    {
+
+//        abort_if(Gate::denies('stocks'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
+
+        if($start == null || empty($start) ||$end == null || empty($end) ){
+            return abort(Response::HTTP_FORBIDDEN, trans('global.forbidden_page_not_allow_to_you'));
+        }
+
+
+        $stocks = Stock::where('buying_date','>=',$start)->where('buying_date','<=',$end)->get();
+        $assigned_stocks = AssignStock::where('assign_date','>=',$start)->where('assign_date','<=',$end)->get();
+        $sub_stocks = StockSubCategory::all();
+
+
+
+        $title = $start.'_'.$end . '_assigned_stock.pdf'  ?? 'assigned_stock.pdf' ;
+        $compact = [
+            'stocks'   => $stocks,
+            'assigned_stocks' => $assigned_stocks,
+            'sub_stocks' => $sub_stocks,
+        ];
+
+        $view = 'finance::admin.stocks.pdf_period';
+        download_pdf($view,$compact,$title);
+
+
+        return abort(Response::HTTP_FORBIDDEN, trans('global.forbidden_page_not_allow_to_you'));
+
+    }
 
 }

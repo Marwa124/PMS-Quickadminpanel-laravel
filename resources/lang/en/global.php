@@ -299,5 +299,6 @@ return [
     'minutes'                              => 'Minutes',
     'seconds'                              => 'Seconds',
     'info'                                 => 'Info',
+    'reminder'                             => 'Reminder',
 
     ];

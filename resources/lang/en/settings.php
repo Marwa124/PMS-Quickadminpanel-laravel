@@ -204,6 +204,16 @@ return [
     'mail_configurations_not_set' => 'Mail Configuration Are Not Set Correctly',
     'mail_sent' => 'Mail Sent Successfully',
 
+    'sms_settings' => 'Sms Settings',
+    'account_sid' => 'Account SID',
+    'account_token' => 'Account Token',
+    'twilio_number' => 'Twilio Number',
+    'active' => 'Active',
+    'twilio' => 'Twilio',
+    'plivo' => 'Plivo',
+    'only_one_active_sms_gateway' => 'Only One Active SMS Gateway Should Active ',
+    'available_merge_fields' => 'Available Merge Fields',
+
 
 
 

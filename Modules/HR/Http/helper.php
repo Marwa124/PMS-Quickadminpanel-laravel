@@ -303,3 +303,127 @@ if (!function_exists('display_date')) {
         return date($format, $date);
     }
 }
+
+if (!function_exists('is_trigger_message_empty')) {
+
+    function is_trigger_message_empty($message)
+    {
+        if (trim($message) === '') {
+            return false;
+        }
+        return true;
+    }
+}
+
+
+if (!function_exists('get_activate_gateway')) {
+    function get_activate_gateway()
+    {
+
+        $active = false;
+        foreach (get_gateways() as $id => $gateway) {
+            if (settings($id . '_status') == '1') {
+                $active = $gateway;
+                break;
+            }
+        }
+        return $active;
+    }
+}
+
+
+if (!function_exists('get_gateways')) {
+
+    function get_gateways()
+    {
+        $sms_gateway = [
+            'twilio' => [
+                'name' => 'Twilio',
+                'id' => 'twilio',
+                'options' => [
+                    [
+                        'name' => 'twilio_account_sid',
+                        'label' => 'Account SID',
+                        'value' => settings('twilio_account_sid'),
+                    ],
+                    [
+                        'name' => 'twilio_auth_token',
+                        'label' => 'Auth Token',
+                        'value' => settings('twilio_auth_token'),
+                    ],
+                    [
+                        'name' => 'twilio_phone_number',
+                        'label' => 'Twilio Phone Number',
+                        'value' => settings('twilio_phone_number'),
+                    ],
+                ],
+            ],
+            'plivo' => [
+                'name' => 'Plivo',
+                'id' => 'plivo',
+                'options' => [
+                    [
+                        'name' => 'plivo_account_sid',
+                        'label' => 'Account SID',
+                        'value' => settings('plivo_account_sid'),
+                    ],
+                    [
+                        'name' => 'plivo_auth_token',
+                        'label' => 'Auth Token',
+                        'value' => settings('plivo_auth_token'),
+                    ],
+                    [
+                        'name' => 'plivo_phone_number',
+                        'label' => 'plivo Phone Number',
+                        'value' => settings('plivo_phone_number'),
+                    ],
+                ],
+            ],
+        ];
+
+        return $sms_gateway;
+    }
+}
+if (!function_exists('get_available_triggers')) {
+    function get_available_triggers()
+    {
+        $triggers = config('sms.triggers');
+
+        foreach ($triggers as $trigger_id => $triger) {
+            $triggers[$trigger_id]['value'] = settings('sms_template_' . $trigger_id);
+            if (!empty($triger['sms_number'])) {
+                if (!empty(settings($trigger_id . '_sms_number'))) {
+                    $sms_number = settings($trigger_id . '_sms_number');
+                } else {
+                    $sms_number = '01006143107';
+                }
+                $triggers[$trigger_id]['sms_number'] = $sms_number;
+            }
+        }
+        return $triggers;
+    }
+}
+
+if (!function_exists('is_any_trigger_active')) {
+    function is_any_trigger_active()
+    {
+
+        $active = false;
+        foreach (get_available_triggers() as $trigger_id => $trigger_opts) {
+            if (is_trigger_message_empty(settings('sms_template_' . $trigger_id))) {
+                $active = true;
+                break;
+            }
+        }
+
+        return $active;
+    }
+}
+
+if (!function_exists('trigger_option_name')) {
+
+    function trigger_option_name($trigger)
+    {
+        return 'sms_template_' . $trigger;
+    }
+}

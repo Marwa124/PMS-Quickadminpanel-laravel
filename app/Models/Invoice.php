@@ -12,11 +12,12 @@ use Spatie\MediaLibrary\Models\Media;
 use \DateTimeInterface;
 use  Modules\ProjectManagement\Entities\Activity;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Notifications\Notifiable;
 
 
 class Invoice extends Model implements HasMedia
 {
-    use SoftDeletes, HasMediaTrait;
+    use SoftDeletes, HasMediaTrait, Notifiable;
 
     public $table = 'invoices';
 
@@ -265,5 +266,11 @@ class Invoice extends Model implements HasMedia
     public function activities()
     {
         return $this->hasMany(Activity::class,'module_field_id')->where('module','=','invoice')->orderBy('id','desc');
+    }
+
+
+    public function transaction()
+    {
+        return $this->hasOne(Transaction::class, 'invoice_id');
     }
 }

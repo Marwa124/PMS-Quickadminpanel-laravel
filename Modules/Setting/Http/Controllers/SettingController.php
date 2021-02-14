@@ -42,6 +42,12 @@ class SettingController extends Controller
             $default_tax = !is_numeric(settings('default_tax')) ? unserialize(settings('default_tax')) : settings('default_tax');
         }
 
+        $gateways = get_gateways();
+        $triggers = get_available_triggers();
+        $total_gateways = count($gateways);
+
+        // dd($gateways, $triggers, $total_gateways);
+
 
 
 
@@ -55,7 +61,10 @@ class SettingController extends Controller
                 'timezones',
                 'taxes',
                 'default_tax',
-                'decimal'
+                'decimal',
+                'gateways',
+                'triggers',
+                'total_gateways'
 
             )
         );
@@ -563,13 +572,6 @@ class SettingController extends Controller
 
 
 
-
-
-
-
-
-
-
     function send_test_mail(Request $request)
     {
 
@@ -590,11 +592,18 @@ class SettingController extends Controller
         try {
             $sender =  request('mailer') == 'smtp' ? settings('smtp_sender_name') : settings('mailgun_sender_name');
             $email_from =  request('mailer') == 'smtp' ? settings('smtp_email') : settings('mailgun_email');
+
             Mail::mailer($request->mailer)->to(request('test_email'))->send(new TestMail($email_from, $sender));
             return back()->with(flash(trans('settings.mail_sent'), 'success'))->with('pill', 'email-settings');
         } catch (\Exception $e) {
-
             return back()->with(flash(trans('settings.mail_configurations_not_set'), 'danger'))->with('pill', 'email-settings');
         }
+    }
+
+
+    public function save_sms(Request $request)
+    {
+
+        dd(request()->all());
     }
 }

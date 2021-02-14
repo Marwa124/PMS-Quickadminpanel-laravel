@@ -4,6 +4,7 @@ namespace Modules\ProjectManagement\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 use Modules\HR\Entities\AccountDetail;
 use Modules\ProjectManagement\Http\Controllers\Traits\ProjectManagementHelperTrait;
 use Modules\ProjectManagement\Http\Requests\MassDestroyMilestoneRequest;
@@ -75,9 +76,23 @@ class MilestonesController extends Controller
     public function store(StoreMilestoneRequest $request)
     {
         abort_if(Gate::denies('milestone_create'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
+        try {
+            // Begin a transaction
+            DB::beginTransaction();
+            $milestone = Milestone::create($request->all());
 
-        $milestone = Milestone::create($request->all());
-        return redirect()->route('projectmanagement.admin.milestones.index');
+            // Commit the transaction
+            DB::commit();
+            return redirect()->route('projectmanagement.admin.milestones.index')->with(flash(trans('cruds.messages.create_success'), 'success'));
+
+        }catch (\Exception $e) {
+            // An error occured; cancel the transaction...
+            DB::rollback();
+
+            return redirect()->back()->with(flash(trans('cruds.messages.create_failed'), 'danger'))->withInput();
+            // and throw the error again.
+            throw $e;
+        }
     }
 
     public function edit(Milestone $milestone)
@@ -105,9 +120,23 @@ class MilestonesController extends Controller
     {
         abort_if(Gate::denies('milestone_edit'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
-        $milestone->update($request->all());
+        try {
+            // Begin a transaction
+            DB::beginTransaction();
+            $milestone->update($request->all());
 
-        return redirect()->route('projectmanagement.admin.milestones.index');
+            // Commit the transaction
+            DB::commit();
+            return redirect()->route('projectmanagement.admin.milestones.index')->with(flash(trans('cruds.messages.update_success'), 'success'));
+
+        }catch (\Exception $e) {
+            // An error occured; cancel the transaction...
+            DB::rollback();
+
+            return redirect()->back()->with(flash(trans('cruds.messages.update_failed'), 'danger'))->withInput();
+            // and throw the error again.
+            throw $e;
+        }
     }
 
     public function show(Milestone $milestone)
@@ -133,23 +162,50 @@ class MilestonesController extends Controller
     {
         abort_if(Gate::denies('milestone_delete'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
         //$milestone->accountDetails()->detach();
-        $milestone->delete();
+        try {
+            // Begin a transaction
+            DB::beginTransaction();
 
-        return back();
+            $milestone->delete();
+
+            // Commit the transaction
+            DB::commit();
+            return redirect()->back()->with(flash(trans('cruds.messages.delete_success'), 'danger'));
+        }catch (\Exception $e) {
+            // An error occured; cancel the transaction...
+            DB::rollback();
+
+            return redirect()->back()->with(flash(trans('cruds.messages.delete_failed'), 'danger'));
+            // and throw the error again.
+            throw $e;
+        }
     }
 
     public function massDestroy(MassDestroyMilestoneRequest $request)
     {
         abort_if(Gate::denies('milestone_delete'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
-        $ids = request('ids');
+        try {
+            // Begin a transaction
+            DB::beginTransaction();
 
-        //Milestone::whereIn('id', request('ids'))->delete();
+            $ids = request('ids');
 
-        foreach ($ids as $id){
-            $milestone = Project::where('id',$id)->first();
+            //Milestone::whereIn('id', request('ids'))->delete();
 
-            $milestone->delete();
+            foreach ($ids as $id){
+                $milestone = Project::where('id',$id)->first();
+
+                $milestone->delete();
+            }
+            // Commit the transaction
+            DB::commit();
+        }catch (\Exception $e) {
+            // An error occured; cancel the transaction...
+            DB::rollback();
+
+            // and throw the error again.
+            throw $e;
         }
 
         return response(null, Response::HTTP_NO_CONTENT);
@@ -191,61 +247,96 @@ class MilestonesController extends Controller
     {
         abort_if(Gate::denies('milestone_assign_to'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
-        $milestone = Milestone::findOrFail($request->milsetone_id);
-        if ($request->accounts) {
+        try {
+            // Begin a transaction
+            DB::beginTransaction();
 
-            $milestone->accountDetails()->sync($request->accounts);
+            $milestone = Milestone::findOrFail($request->milsetone_id);
+            if ($request->accounts) {
 
-            // set permission to users
-            $accounts = AccountDetail::whereIn('id', $request->accounts)->with('user.department')->get();
+                $milestone->accountDetails()->sync($request->accounts);
 
-            $milestone_permissions_head_names = ['project_management_access', 'milestone_access', 'milestone_create', 'milestone_show', 'milestone_edit', 'milestone_assign_to'];
-            $milestone_permissions_notToMember_names = ['milestone_create', 'milestone_edit', 'milestone_assign_to'];
-            $milestone_permissions_toMember_names = ['project_management_access', 'milestone_access', 'milestone_show'];
+                // set permission to users
+                $accounts = AccountDetail::whereIn('id', $request->accounts)->with('user.department')->get();
 
-            $milestone_permissions_head = $this->getPermissionID($milestone_permissions_head_names);
-            $milestone_permissions_notToMember = $this->getPermissionID($milestone_permissions_notToMember_names);
-            $milestone_permissions_toMember = $this->getPermissionID($milestone_permissions_toMember_names);
+                $milestone_permissions_head_names = ['project_management_access', 'milestone_access', 'milestone_create', 'milestone_show', 'milestone_edit', 'milestone_assign_to'];
+                $milestone_permissions_notToMember_names = ['milestone_create', 'milestone_edit', 'milestone_assign_to'];
+                $milestone_permissions_toMember_names = ['project_management_access', 'milestone_access', 'milestone_show'];
 
-            foreach ($accounts as $account) {
+                $milestone_permissions_head = $this->getPermissionID($milestone_permissions_head_names);
+                $milestone_permissions_notToMember = $this->getPermissionID($milestone_permissions_notToMember_names);
+                $milestone_permissions_toMember = $this->getPermissionID($milestone_permissions_toMember_names);
 
-                foreach ($account->user->permissions as $permission) {
+                foreach ($accounts as $account) {
 
-                    if (in_array($permission->name, $milestone_permissions_notToMember_names)) {
-                        $account->user->permissions()->detach($milestone_permissions_notToMember);
+                    foreach ($account->user->permissions as $permission) {
+
+                        if (in_array($permission->name, $milestone_permissions_notToMember_names)) {
+                            $account->user->permissions()->detach($milestone_permissions_notToMember);
+                        }
+                    }
+                    $account->user->permissions()->syncWithoutDetaching($milestone_permissions_toMember);
+
+                    foreach ($account->user->department as $department) {
+                        if ($department->department_name == $milestone->project->department->department_name) {
+                            $account->user->permissions()->syncWithoutDetaching($milestone_permissions_head);
+
+                            break;
+                        }
                     }
                 }
-                $account->user->permissions()->syncWithoutDetaching($milestone_permissions_toMember);
-
-                foreach ($account->user->department as $department) {
-                    if ($department->department_name == $milestone->project->department->department_name) {
-                        $account->user->permissions()->syncWithoutDetaching($milestone_permissions_head);
-
-                        break;
-                    }
-                }
+            }else{
+                $milestone->accountDetails()->detach();
             }
-        }else{
-            $milestone->accountDetails()->detach();
+
+            // Commit the transaction
+            DB::commit();
+
+            return redirect()->route('projectmanagement.admin.milestones.index')->with(flash(trans('cruds.messages.assignto_success'), 'success'));
+
+        }catch (\Exception $e) {
+            // An error occured; cancel the transaction...
+            DB::rollback();
+
+            return back()->with(flash(trans('cruds.messages.assignto_failed'), 'danger'))->withInput();
+
+            // and throw the error again.
+            throw $e;
         }
-        return redirect()->route('projectmanagement.admin.milestones.index');
+//            return redirect()->route('projectmanagement.admin.milestones.index');
     }
 
     public function forceDelete(Request $request,$id)
     {
         abort_if(Gate::denies('milestone_delete'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
-        //dd($request->all(),$id);
-        $action = $request->action;
+        try {
+            // Begin a transaction
+            DB::beginTransaction();
 
-        if ($action == 'force_delete') {
+            $action = $request->action;
+            $message = '';
+            if ($action == 'force_delete') {
 
-            $milestone = Milestone::onlyTrashed()->where('id', $id)->first();
+                $milestone = Milestone::onlyTrashed()->where('id', $id)->first();
 
-            $this->forceDeleteMilestone($milestone);
+                $this->forceDeleteMilestone($milestone);
+                $message = 'force_delete_success';
+            } else if ($action == 'restore') {
+                Milestone::onlyTrashed()->where('id', $id)->restore();
+                $message = 'restore_success';
+            }
+            // Commit the transaction
+            DB::commit();
+            return back()->with(flash(trans('cruds.messages.'.$message), 'success'));
 
-        } else if ($action == 'restore') {
-            Milestone::onlyTrashed()->where('id', $id)->restore();
+        }catch(\Exception $e){
+            // An error occured; cancel the transaction...
+            DB::rollback();
+//            $message = 'action_failed';
+            return back()->with(flash(trans('cruds.messages.action_failed'), 'danger'));
+            // and throw the error again.
+            throw $e;
         }
 
         return back();

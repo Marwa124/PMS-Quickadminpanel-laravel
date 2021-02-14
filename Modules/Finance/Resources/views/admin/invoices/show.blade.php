@@ -10,7 +10,7 @@
       <button type="button" class="btn btn-secondary">Clone</button>
 
       <!-- Indicates a successful or positive action -->
-      <button type="button" class="btn btn-warning">Reminder </button>
+      <a href="{{route('finance.admin.invoices.reminder_invoice',$invoice->id)}}" class="btn btn-warning">{{trans('global.reminder')}} </a>
 
 
       <div class="btn-group">

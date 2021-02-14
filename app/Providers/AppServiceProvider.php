@@ -62,7 +62,7 @@ class AppServiceProvider extends ServiceProvider
 
 
 
-            config(['app.timezone' => settings('timezone')]);
+            config(['app.timezone' => settings('timezone','Africa/Cairo')]);
         } catch (\Exception $e) {
         }
     }

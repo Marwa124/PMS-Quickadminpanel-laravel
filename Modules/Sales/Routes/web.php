@@ -74,6 +74,6 @@ Route::group(['as' => 'sales.admin.', 'prefix' => 'admin/sales', 'namespace' => 
     Route::post('opportunities/media', 'OpportunitiesController@storeMedia')->name('opportunities.storeMedia');
     Route::post('opportunities/ckmedia', 'OpportunitiesController@storeCKEditorImages')->name('opportunities.storeCKEditorImages');
     Route::resource('opportunities', 'OpportunitiesController');
-    Route::post('opportunities/createCall', 'OpportunitiesController@createCall')->name('opportunities.createCall');
+    Route::post('opportunities/calls', 'OpportunitiesController@createcalls')->name('opportunities.calls');
    
 });

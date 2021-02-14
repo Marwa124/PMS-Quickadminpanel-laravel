@@ -38,6 +38,17 @@ Route::group(['as' => 'finance.admin.', 'prefix' => 'admin/finance', 'namespace'
 
     ////////////////////////////////END PAYMENT Received/////////////////////////////////////////////////////////////////
 
+
+    ////////////////////////////////////PAYMENT Received/////////////////////////////////////////////////////////////////
+    ///
+    Route::get('payment_received/create/{id}','PaymentReceivedController@create')->name('payment_received.create');
+    Route::post('payment_received/create_by_invoice','PaymentReceivedController@create_by_invoice')->name('payment_received.create_by_invoice');
+    Route::delete('payment_received/mass_destroy','PaymentReceivedController@massDestroy')->name('payment_received.massDestroy');
+    Route::get('payment_received/payment_received_pdf/{id}','PaymentReceivedController@payment_received_pdf')->name('payment_received.payment_received_pdf');
+    Route::resource('payment_received','PaymentReceivedController')->except(['create']);
+
+    ////////////////////////////////END PAYMENT Received/////////////////////////////////////////////////////////////////
+
     ////////////////////////////////////TRANSFERS//////////////////////////////////////////////////////////////////////
     Route::post('transfers/media', 'TransfersController@storeMediaWithSameName')->name('transfers.storeMedia');
     Route::get('transfers/media/download/{id}', 'TransfersController@downloadMedia')->name('transfers.download.attach');
@@ -95,6 +106,7 @@ Route::group(['as' => 'finance.admin.', 'prefix' => 'admin/finance', 'namespace'
     Route::post('invoices/ckmedia', 'InvoicesController@storeCKEditorImages')->name('invoices.storeCKEditorImages');
     Route::resource('invoices', 'InvoicesController');
     Route::get('invoices/getpdf/{id}', 'PdfController@pdf')->name('invoices.pdf');
+    Route::get('invoices/reminder/{id}', 'InvoicesController@reminder_invoice')->name('invoices.reminder_invoice');
 //    Route::get('invoices/invoice_pdf/{id}', 'PdfController@pdf')->name('invoices.invoice_pdf');
     Route::post('invoices/get_projects', 'InvoicesController@get_projects');
     Route::get('invoices/change_status_approved/{id}', 'InvoicesController@change_status_approved')->name('invoices.change_status_approved');
@@ -136,6 +148,11 @@ Route::group(['as' => 'finance.admin.', 'prefix' => 'admin/finance', 'namespace'
     Route::put('stocks_history/update','StocksController@stocks_history_update')->name('stocks_history.update');
     Route::delete('stocks_history/destroy/{id}','StocksController@stocks_history_destroy')->name('stocks_history.destroy');
 
+    Route::get('stocks/report','StocksController@report')->name('stocks.report');
+    Route::post('stocks/report/getresult','StocksController@report_result')->name('stocks.getresult');
+    Route::post('stocks/report/get_items','StocksController@get_items')->name('stocks.get_items');
+    Route::get('stocks/report/pdf/{id}','StocksController@pdf')->name('stocks.pdf');
+    Route::get('stocks/report/pdf/{start}/{end}','StocksController@pdf_period')->name('stocks.pdf_period');
     ////////////////////////////////END STOCK LIST//////////////////////////////////////////////////////////////
 
 
@@ -151,5 +168,44 @@ Route::group(['as' => 'finance.admin.', 'prefix' => 'admin/finance', 'namespace'
 
 
     ////////////////////////////////END Office Asset//////////////////////////////////////////////////////////////
+
+
+
+
+
+    ////////////////////////////////////PETTY CASH/////////////////////////////////////////////////////////////////
+    Route::post('petty_cash/media', 'PettycashController@storeMediaWithSameName')->name('petty_cash.storeMedia');
+    Route::get('petty_cash/media/download/{id}', 'PettycashController@downloadMedia')->name('petty_cash.download.attach');
+    Route::get('petty_cash/media/view/{id}', 'PettycashController@viewMedia')->name('petty_cash.view.attach');
+//    Route::get('petty_cash/media/delete/{id}/{transfer}', 'PettycashController@deleteMedia')->name('petty_cash.delete.attach');
+    Route::resource('petty_cash','PettycashController');
+    Route::delete('petty_cash_mass_destroy','PettycashController@massDestroy')->name('petty_cash.massDestroy');
+    Route::get('petty_cash_get_data','PettycashController@get_data')->name('petty_cash.get_data');
+    Route::get('petty_cash_getapproved/{id}','PettycashController@getapproved')->name('petty_cash.getapproved');
+    Route::get('petty_cash_getrejected/{id}','PettycashController@getrejected')->name('petty_cash.getrejected');
+    Route::get('petty_cash/pdf/{id}','PettycashController@pdf')->name('petty_cash.pdf');
+    Route::post('petty_cash/deduction/{id}','PettycashController@deduction')->name('petty_cash.deduction');
+    ////////////////////////////////END PETTY CASH/////////////////////////////////////////////////////////////////
+
+    ////////////////////////////////////SETTLEMENT/////////////////////////////////////////////////////////////////
+    Route::post('settlement/media', 'SettlementController@storeMediaWithSameName')->name('settlement.storeMedia');
+    Route::get('settlement/media/download/{id}', 'SettlementController@downloadMedia')->name('settlement.download.attach');
+    Route::get('settlement/media/view/{id}', 'SettlementController@viewMedia')->name('settlement.view.attach');
+//    Route::get('settlement/media/delete/{id}/{transfer}', 'SettlementController@deleteMedia')->name('settlement.delete.attach');
+    Route::get('settlement/create/settlement/{id}','SettlementController@create_with_id')->name('settlement.create.id');
+    Route::resource('settlement','SettlementController');
+    Route::delete('settlement_mass_destroy','SettlementController@massDestroy')->name('settlement.massDestroy');
+    Route::get('settlement_get_data','SettlementController@get_data')->name('settlement.get_data');
+    Route::get('settlement_getapproved/{id}','SettlementController@getapproved')->name('settlement.getapproved');
+    Route::get('settlement_getrejected/{id}','SettlementController@getrejected')->name('settlement.getrejected');
+    Route::get('settlement/pdf/{id}','SettlementController@pdf')->name('settlement.pdf');
+    ////////////////////////////////END SETTLEMENT/////////////////////////////////////////////////////////////////
+
+    ////////////////////////////////////TRANSACTIONS/////////////////////////////////////////////////////////////////
+    Route::get('transactions','TransactionsController@index')->name('transactions.index');
+    Route::get('transactions/pdf','TransactionsController@pdf')->name('transactions.pdf');
+    ////////////////////////////////END TRANSACTIONS/////////////////////////////////////////////////////////////////
+
+
 
 });
