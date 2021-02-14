@@ -174,7 +174,7 @@ if (!function_exists('timezones')) {
 
 
 
-if (!function_exists('set_locale')) {
+if (!function_exists('get_locale')) {
     function get_locale($user = FALSE)
     {
         $locale = null;
