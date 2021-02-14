@@ -11,7 +11,7 @@ class CreateTransactionsTable extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->nullable();
-            $table->string('type');
+            $table->string('type')->nullable();
             $table->decimal('amount', 15, 2)->nullable();
             $table->integer('paid_by')->nullable();
             $table->string('reference')->nullable();
@@ -23,18 +23,20 @@ class CreateTransactionsTable extends Migration
             $table->float('debit', 15, 2)->nullable();
             $table->float('credit', 15, 2)->nullable();
             $table->float('total_balance', 15, 2)->nullable();
-            $table->string('client_visible');
+            $table->string('client_visible')->nullable();
             $table->integer('added_by')->nullable();
             $table->integer('paid')->nullable();
-            $table->string('billable');
+            $table->string('billable')->nullable();
             $table->string('deposit')->nullable();
             $table->string('deposit_2')->nullable();
             $table->string('under_55')->nullable();
             $table->unsignedInteger('project_id')->nullable();
-            $table->unsignedInteger('account_id');
-            $table->unsignedInteger('invoice_id');
-            $table->unsignedInteger('payment_method_id')->nullable();
-            $table->unsignedInteger('expense_category_id')->nullable();
+            $table->unsignedInteger('account_id')->nullable();
+            $table->unsignedInteger('invoice_id')->nullable();
+            $table->unsignedInteger('payment_id')->nullable();
+            $table->unsignedInteger('expense_id')->nullable();
+            $table->unsignedInteger('deposit_id')->nullable();
+            $table->unsignedInteger('transfer_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

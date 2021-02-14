@@ -95,4 +95,9 @@ class Transfer extends Model implements HasMedia
     {
         return $this->getMedia('attachment')->last();
     }
+
+    public function transaction()
+    {
+        return $this->hasOne(Transaction::class, 'transfer_id');
+    }
 }

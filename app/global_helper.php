@@ -178,6 +178,26 @@ if (!function_exists('generate_invoice_number')) {
 }
 
 
+
+if (!function_exists('generate_pettycash_number')) {
+
+    function generate_pettycash_number()
+    {
+
+        $lastrecorder = \App\Models\Pettycash::max('id');
+        $date = \Carbon\Carbon::now();
+        if ($lastrecorder == null) {
+            $nextPoNumber = 'Pettycash-' . $date->isoFormat('D/MMM/Y') . '/' . '0001';
+        } else {
+            //increase 1 with last invoice number
+            $incr = $lastrecorder + 1;
+            $nextPoNumber = 'Pettycash-' . $date->isoFormat('D/MMM/Y') . '/' . '000' . $incr;
+        }
+        return $nextPoNumber;
+    }
+}
+
+
 if (!function_exists('get_taxes')) {
 
     function get_taxes($id)

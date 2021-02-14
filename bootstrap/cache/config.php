@@ -129,6 +129,7 @@
         45 => 'assign_stocks_create',
         46 => 'assign_stocks_edit',
         47 => 'assign_stocks_delete',
+        48 => 'transaction_access',
       ),
       'penalty_category' => 
       array (
@@ -542,7 +543,7 @@
     'debug' => true,
     'url' => 'http://127.0.0.1:8000/',
     'asset_url' => NULL,
-    'timezone' => 'Pacific/Midway',
+    'timezone' => 'Africa/Cairo',
     'locale' => 'en',
     'fallback_locale' => 'en',
     'faker_locale' => 'en_US',
@@ -724,7 +725,7 @@
       'file' => 
       array (
         'driver' => 'file',
-        'path' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\storage\\framework/cache/data',
+        'path' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\storage\\framework/cache/data',
       ),
       'memcached' => 
       array (
@@ -887,10 +888,10 @@
     'orientation' => 'portrait',
     'defines' => 
     array (
-      'font_dir' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\storage\\fonts/',
-      'font_cache' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\storage\\fonts/',
-      'temp_dir' => 'C:\\Users\\DEV-Back\\AppData\\Local\\Temp',
-      'chroot' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel',
+      'font_dir' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\storage\\fonts/',
+      'font_cache' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\storage\\fonts/',
+      'temp_dir' => 'C:\\Users\\dell\\AppData\\Local\\Temp',
+      'chroot' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel',
       'enable_font_subsetting' => false,
       'pdf_backend' => 'CPDF',
       'default_media_type' => 'screen',
@@ -941,12 +942,12 @@
       'local' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\storage\\app',
+        'root' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\storage\\app',
       ),
       'public' => 
       array (
         'driver' => 'local',
-        'root' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\storage\\app/public',
+        'root' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\storage\\app/public',
         'url' => 'http://127.0.0.1:8000//storage',
         'visibility' => 'public',
       ),
@@ -962,7 +963,7 @@
     ),
     'links' => 
     array (
-      'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\public\\storage' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\storage\\app/public',
+      'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\public\\storage' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\storage\\app/public',
     ),
   ),
   'hashing' => 
@@ -985,24 +986,24 @@
     array (
       'path' => 
       array (
-        'migration' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\database/migrations/',
-        'model' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\app\\Models/',
-        'datatables' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\app\\DataTables/',
-        'repository' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\app\\Repositories/',
-        'routes' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\routes/web.php',
-        'lang' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\resources/lang/en/lang.php',
-        'api_routes' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\routes/api.php',
-        'request' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\app\\Http/Requests/',
-        'api_request' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\app\\Http/Requests/API/',
-        'controller' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\app\\Http/Controllers/',
-        'api_controller' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\app\\Http/Controllers/API/',
-        'test_trait' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\tests/traits/',
-        'repository_test' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\tests/',
-        'api_test' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\tests/',
-        'views' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\resources/views/',
-        'schema_files' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\resources/model_schemas/',
-        'templates_dir' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\resources/infyom/infyom-generator-templates/',
-        'modelJs' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\resources/assets/js/models/',
+        'migration' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\database/migrations/',
+        'model' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\app\\Models/',
+        'datatables' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\app\\DataTables/',
+        'repository' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\app\\Repositories/',
+        'routes' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\routes/web.php',
+        'lang' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\resources/lang/en/lang.php',
+        'api_routes' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\routes/api.php',
+        'request' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\app\\Http/Requests/',
+        'api_request' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\app\\Http/Requests/API/',
+        'controller' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\app\\Http/Controllers/',
+        'api_controller' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\app\\Http/Controllers/API/',
+        'test_trait' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\tests/traits/',
+        'repository_test' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\tests/',
+        'api_test' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\tests/',
+        'views' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\resources/views/',
+        'schema_files' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\resources/model_schemas/',
+        'templates_dir' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\resources/infyom/infyom-generator-templates/',
+        'modelJs' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\resources/assets/js/models/',
       ),
       'namespace' => 
       array (
@@ -1114,13 +1115,13 @@
       'single' => 
       array (
         'driver' => 'single',
-        'path' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\storage\\logs/laravel.log',
+        'path' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\storage\\logs/laravel.log',
         'level' => 'debug',
       ),
       'daily' => 
       array (
         'driver' => 'daily',
-        'path' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\storage\\logs/laravel.log',
+        'path' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\storage\\logs/laravel.log',
         'level' => 'debug',
         'days' => 14,
       ),
@@ -1170,7 +1171,7 @@
       ),
       'emergency' => 
       array (
-        'path' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\storage\\logs/laravel.log',
+        'path' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\storage\\logs/laravel.log',
       ),
     ),
   ),
@@ -1182,20 +1183,20 @@
       'smtp' => 
       array (
         'transport' => 'smtp',
-        'host' => 'mail.onetecgroup.com',
-        'port' => '465',
-        'encryption' => 'ssl',
-        'username' => 'admin@onetecgroup.com',
-        'password' => 'm7mdsdfcz',
+        'host' => 'smtp.mailgun.org',
+        'port' => 587,
+        'encryption' => 'tls',
+        'username' => NULL,
+        'password' => NULL,
       ),
       'mailgun' => 
       array (
         'transport' => 'smtp',
         'host' => 'smtp.mailgun.org',
-        'port' => '587',
+        'port' => 587,
         'encryption' => 'tls',
-        'username' => 'postmaster@sandboxe31bb8c7d4b44782a216a3ee62328fc9.mailgun.org',
-        'password' => '31d7a041ba3baf4f4fb9b51eacd23fac-4de08e90-2044ce92',
+        'username' => NULL,
+        'password' => NULL,
       ),
       'postmark' => 
       array (
@@ -1227,15 +1228,15 @@
     ),
     'from' => 
     array (
-      'address' => 'info@onetecgroup.com',
-      'name' => 'mohamed',
+      'address' => NULL,
+      'name' => NULL,
     ),
     'markdown' => 
     array (
       'theme' => 'default',
       'paths' => 
       array (
-        0 => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\resources\\views/vendor/mail',
+        0 => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\resources\\views/vendor/mail',
       ),
     ),
   ),
@@ -1316,7 +1317,7 @@
     'stubs' => 
     array (
       'enabled' => false,
-      'path' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel/vendor/nwidart/laravel-modules/src/Commands/stubs',
+      'path' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel/vendor/nwidart/laravel-modules/src/Commands/stubs',
       'files' => 
       array (
         'routes/web' => 'Routes/web.php',
@@ -1380,9 +1381,9 @@
     ),
     'paths' => 
     array (
-      'modules' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\Modules',
-      'assets' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\public\\modules',
-      'migration' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\database/migrations',
+      'modules' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\Modules',
+      'assets' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\public\\modules',
+      'migration' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\database/migrations',
       'generator' => 
       array (
         'config' => 
@@ -1517,7 +1518,7 @@
       'enabled' => false,
       'paths' => 
       array (
-        0 => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\vendor/*/*',
+        0 => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\vendor/*/*',
       ),
     ),
     'composer' => 
@@ -1545,7 +1546,7 @@
       'file' => 
       array (
         'class' => 'Nwidart\\Modules\\Activators\\FileActivator',
-        'statuses-file' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\modules_statuses.json',
+        'statuses-file' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\modules_statuses.json',
         'cache-key' => 'activator.installed',
         'cache-lifetime' => 604800,
       ),
@@ -1591,7 +1592,7 @@
     array (
     ),
     'auto_language_detection' => false,
-    'temp_dir' => 'C:\\Users\\DEV-Back\\AppData\\Local\\Temp',
+    'temp_dir' => 'C:\\Users\\dell\\AppData\\Local\\Temp',
     'pdfa' => false,
     'pdfaauto' => false,
   ),
@@ -1752,9 +1753,9 @@
     ),
     'generator' => 
     array (
-      'basePath' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\app',
+      'basePath' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\app',
       'rootNamespace' => 'App\\',
-      'stubsOverridePath' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\app',
+      'stubsOverridePath' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\app',
       'paths' => 
       array (
         'models' => 'Entities',
@@ -1783,9 +1784,9 @@
     ),
     'plivo' => 
     array (
-      'auth_id' => 'MAMWFMNJAWNMI1N2UWNM',
-      'auth_token' => 'NGI2Mzc4MDhmOTA3ZGQ2OGYyZmMyYjdjYzU0YjFh',
-      'from_number' => '+13043559141',
+      'auth_id' => NULL,
+      'auth_token' => NULL,
+      'from_number' => NULL,
     ),
   ),
   'session' => 
@@ -1794,7 +1795,7 @@
     'lifetime' => '120',
     'expire_on_close' => false,
     'encrypt' => false,
-    'files' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\storage\\framework/sessions',
+    'files' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\storage\\framework/sessions',
     'connection' => NULL,
     'table' => 'sessions',
     'store' => NULL,
@@ -1809,6 +1810,196 @@
     'secure' => NULL,
     'http_only' => true,
     'same_site' => 'lax',
+  ),
+  'sms' => 
+  array (
+    'triggers' => 
+    array (
+      'SMS_INVOICE_REMINDER' => 
+      array (
+        'merge_fields' => 
+        array (
+          0 => '{full_name}',
+          1 => '{client_name}',
+          2 => '{contact_email}',
+          3 => '{invoice_link}',
+          4 => '{invoice_ref}',
+          5 => '{invoice_date}',
+          6 => '{invoice_due_date}',
+          7 => '{invoice_status}',
+          8 => '{invoice_subtotal}',
+          9 => '{invoice_total}',
+          10 => '{site_name}',
+        ),
+        'label' => 'Invoice Reminder Notice',
+        'info' => 'Send SMS when invoice reminder notice sent when send invoice to client primary contact.',
+      ),
+      'SMS_INVOICE_OVERDUE' => 
+      array (
+        'merge_fields' => 
+        array (
+          0 => '{full_name}',
+          1 => '{client_name}',
+          2 => '{contact_email}',
+          3 => '{invoice_link}',
+          4 => '{invoice_ref}',
+          5 => '{invoice_date}',
+          6 => '{invoice_due_date}',
+          7 => '{invoice_status}',
+          8 => '{invoice_subtotal}',
+          9 => '{invoice_total}',
+          10 => '{site_name}',
+        ),
+        'label' => 'Invoice Overdue Notice',
+        'info' => 'Send SMS when invoice overdue notice  sent to client primary contact.',
+      ),
+      'SMS_PAYMENT_RECORDED' => 
+      array (
+        'merge_fields' => 
+        array (
+          0 => '{full_name}',
+          1 => '{client_name}',
+          2 => '{contact_email}',
+          3 => '{invoice_link}',
+          4 => '{invoice_ref}',
+          5 => '{invoice_date}',
+          6 => '{invoice_due_date}',
+          7 => '{invoice_status}',
+          8 => '{invoice_subtotal}',
+          9 => '{invoice_total}',
+          10 => '{site_name}',
+          11 => '{payment_amount}',
+          12 => '{payment_date}',
+        ),
+        'label' => 'Invoice Payment Recorded',
+        'info' => 'Send SMS when invoice payment is saved.',
+      ),
+      'SMS_ESTIMATE_EXP_REMINDER' => 
+      array (
+        'merge_fields' => 
+        array (
+          0 => '{full_name}',
+          1 => '{client_name}',
+          2 => '{contact_email}',
+          3 => '{estimate_link}',
+          4 => '{estimate_ref}',
+          5 => '{estimate_date}',
+          6 => '{estimate_due_date}',
+          7 => '{estimate_status}',
+          8 => '{estimate_subtotal}',
+          9 => '{estimate_total}',
+          10 => '{site_name}',
+        ),
+        'label' => 'Estimate Expiration Reminder',
+        'info' => 'Send SMS when expiration Estimate  sent to client primary contact.',
+      ),
+      'SMS_PROPOSAL_EXP_REMINDER' => 
+      array (
+        'merge_fields' => 
+        array (
+          0 => '{proposal_ref}',
+          1 => '{proposal_link}',
+          2 => '{proposal_date}',
+          3 => '{proposal_due_date}',
+          4 => '{proposal_status}',
+          5 => '{proposal_subtotal}',
+          6 => '{proposal_total}',
+          7 => '{proposal_related_to}',
+          8 => '{site_name}',
+        ),
+        'label' => 'Proposal Expiration Reminder',
+        'info' => 'Send SMS when expiration reminder send to Related Proposals.',
+      ),
+      'SMS_PURCHASE_CONFIRMATION' => 
+      array (
+        'merge_fields' => 
+        array (
+          0 => '{supplier_name}',
+          1 => '{supplier_email}',
+          2 => '{purchase_link}',
+          3 => '{purchase_ref}',
+          4 => '{purchase_date}',
+          5 => '{purchase_due_date}',
+          6 => '{purchase_status}',
+          7 => '{purchase_subtotal}',
+          8 => '{purchase_total}',
+          9 => '{site_name}',
+        ),
+        'label' => 'Purchase Notice',
+        'info' => 'Send SMS when Purchase confirmation/update stock notice sent to ',
+        'sms_number' => true,
+      ),
+      'SMS_PURCHASE_PAYMENT_CONFIRMATION' => 
+      array (
+        'merge_fields' => 
+        array (
+          0 => '{supplier_name}',
+          1 => '{supplier_email}',
+          2 => '{purchase_link}',
+          3 => '{purchase_ref}',
+          4 => '{purchase_date}',
+          5 => '{purchase_due_date}',
+          6 => '{purchase_status}',
+          7 => '{purchase_subtotal}',
+          8 => '{purchase_total}',
+          9 => '{site_name}',
+          10 => '{payment_amount}',
+          11 => '{payment_date}',
+        ),
+        'label' => 'Purchase payment Notice',
+        'info' => 'Send SMS when Purchase payment confirmation notice sent.',
+      ),
+      'SMS_RETURN_STOCK' => 
+      array (
+        'merge_fields' => 
+        array (
+          0 => '{supplier_name}',
+          1 => '{supplier_email}',
+          2 => '{return_stock_link}',
+          3 => '{return_stock_ref}',
+          4 => '{return_stock_date}',
+          5 => '{return_stock_due_date}',
+          6 => '{return_stock_status}',
+          7 => '{return_stock_subtotal}',
+          8 => '{return_stock_total}',
+          9 => '{site_name}',
+        ),
+        'label' => 'Purchase Return Stock Notice',
+        'info' => 'Send SMS when Purchase return stock notice sent.',
+      ),
+      'SMS_TRANSACTION_RECORD' => 
+      array (
+        'merge_fields' => 
+        array (
+          0 => '{transaction_type}',
+          1 => '{transaction_title}',
+          2 => '{transaction_date}',
+          3 => '{transaction_amount}',
+          4 => '{transaction_account}',
+          5 => '{transaction_balance}',
+          6 => '{transaction_paid_by}',
+          7 => '{transaction_link}',
+        ),
+        'label' => 'Transaction Record expense/deposit/transfer',
+        'info' => 'Send SMS when Transaction Record expense/deposit/transfer notified for reminder.',
+        'sms_number' => true,
+      ),
+      'SMS_STAFF_REMINDER' => 
+      array (
+        'merge_fields' => 
+        array (
+          0 => '{name}',
+          1 => '{reference}',
+          2 => '{reminder_description}',
+          3 => '{reminder_date}',
+          4 => '{reminder_related}',
+          5 => '{reminder_related_link}',
+          6 => '{site_name}',
+        ),
+        'label' => 'Staff Reminder',
+        'info' => 'Send SMS when staff notified for reminder.',
+      ),
+    ),
   ),
   'translation-manager' => 
   array (
@@ -1847,9 +2038,9 @@
   array (
     'paths' => 
     array (
-      0 => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\resources\\views',
+      0 => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\resources\\views',
     ),
-    'compiled' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\storage\\framework\\views',
+    'compiled' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\storage\\framework\\views',
   ),
   'flare' => 
   array (
@@ -1863,8 +2054,6 @@
       'report_query_bindings' => true,
       'report_view_data' => true,
       'grouping_type' => NULL,
-      'report_logs' => true,
-      'maximum_number_of_collected_logs' => 200,
     ),
     'send_logs_as_events' => true,
   ),
@@ -1908,7 +2097,7 @@
   'livewire' => 
   array (
     'class_namespace' => 'App\\Http\\Livewire',
-    'view_path' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\resources\\views/livewire',
+    'view_path' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\resources\\views/livewire',
     'layout' => 'layouts.app',
     'asset_url' => NULL,
     'middleware_group' => 'web',
@@ -2041,7 +2230,7 @@
     ),
     'temporary_files' => 
     array (
-      'local_path' => 'C:\\Users\\DEV-Back\\Desktop\\pms_laravel\\PMS-Quickadminpanel-laravel\\storage\\framework/laravel-excel',
+      'local_path' => 'C:\\xampp\\htdocs\\PMS-Quickadminpanel-laravel\\storage\\framework/laravel-excel',
       'remote_disk' => NULL,
       'remote_prefix' => NULL,
       'force_resync_remote' => NULL,
@@ -2122,13 +2311,13 @@
   array (
     'name' => 'ProjectManagement',
   ),
-  'setting' => 
-  array (
-    'name' => 'Setting',
-  ),
   'sales' => 
   array (
     'name' => 'Sales',
+  ),
+  'setting' => 
+  array (
+    'name' => 'Setting',
   ),
   'tinker' => 
   array (
