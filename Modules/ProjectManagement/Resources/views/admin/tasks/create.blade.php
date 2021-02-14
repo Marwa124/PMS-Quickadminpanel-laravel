@@ -281,7 +281,7 @@
                         <input type="hidden" name="old_project" id="old_project" value="{{old('project_id')}}"/>
                         <input type="hidden" name="project_task_id" id="project_task_id" value="{{ $project ? $project->id : null}}"/>
                         <label for="project_id">{{ trans('cruds.task.fields.project') }}</label>
-                        <select class="form-control select2 {{ $errors->has('project') ? 'is-invalid' : '' }}" name="project_id" id="project_id" onchange="getProjectId()">
+                        <select class="form-control select2 {{ $errors->has('project_id') ? 'is-invalid' : '' }}" name="project_id" id="project_id" onchange="getProjectId()">
                             <option value="" selected disabled>{{trans('global.pleaseSelect')}}</option>
 
                             @foreach($projects as $id => $v_project)
@@ -292,9 +292,9 @@
                                 @endif
                             @endforeach
                         </select>
-                        @if($errors->has('project'))
+                        @if($errors->has('project_id'))
                             <div class="invalid-feedback">
-                                {{ $errors->first('project') }}
+                                {{ $errors->first('project_id') }}
                             </div>
                         @endif
                         <span class="help-block">{{ trans('cruds.task.fields.project_helper') }}</span>
@@ -303,7 +303,7 @@
                         <label for="milestone_id">{{ trans('cruds.task.fields.milestone') }}</label>
                         <input type="hidden" name="old_milestone" id="old_milestone" value="{{old('milestone_id')}}"/>
                         <input type="hidden" name="milestones" id="milestones" value="{{$milestones}}"/>
-                        <select class="form-control select2 {{ $errors->has('milestone') ? 'is-invalid' : '' }}" name="milestone_id" id="milestone_id">
+                        <select class="form-control select2 {{ $errors->has('milestone_id') ? 'is-invalid' : '' }}" name="milestone_id" id="milestone_id">
 
         {{--                    @foreach($milestones as $id => $milestone)--}}
         {{--                        <option value="{{ $id }}" {{ old('milestone_id') == $id ? 'selected' : '' }}>{{ $milestone }}</option>--}}
@@ -311,9 +311,9 @@
 
 
                         </select>
-                        @if($errors->has('milestone'))
+                        @if($errors->has('milestone_id'))
                             <div class="invalid-feedback">
-                                {{ $errors->first('milestone') }}
+                                {{ $errors->first('milestone_id') }}
                             </div>
                         @endif
                         <span class="help-block">{{ trans('cruds.task.fields.milestone_helper') }}</span>

@@ -4,7 +4,7 @@
         id="project_id" required>
     <option value="" selected="">{{trans('global.pleaseSelect')}}</option>
     @foreach($projects as $project)
-        <option value="{{$project->id}}">{{$project->name}}</option>
+        <option value="{{$project->id}}">{{$project->{'name_'.app()->getLocale()} ?? ''}}</option>
     @endforeach
 </select>
 @if($errors->has('project_id'))

@@ -16,7 +16,7 @@ a<!DOCTYPE html>
         @yield('title')
     </title>
     {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script> --}}
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" />
+    {{-- <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" /> --}}
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" />
     <link href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" rel="stylesheet" />
     <link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet" />
@@ -91,6 +91,8 @@ a<!DOCTYPE html>
 
     });
   </script>
+
+  
 </head>
 
 <body class="c-app" {{--dir="{{app()->getLocale() == 'en' ? 'ltr' : 'rtl'}}"--}}>
@@ -278,6 +280,7 @@ a<!DOCTYPE html>
     </div> <!--End App Id-->
     <script src="{{ asset('js/app.js') }}"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" ></script>
 
 
     <?php
@@ -297,8 +300,7 @@ a<!DOCTYPE html>
 
     <?php } else { ?>
             <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" ></script>
-            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"  ></script>
+            {{-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"  ></script> --}}
             <script src="https://unpkg.com/@coreui/coreui/dist/js/coreui.bundle.min.js"></script>
     <?php } ?>
 
@@ -322,13 +324,15 @@ a<!DOCTYPE html>
     <script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
     <script src="https://cdn.datatables.net/select/1.3.0/js/dataTables.select.min.js"></script>
-    <script src="https://cdn.ckeditor.com/ckeditor5/16.0.0/classic/ckeditor.js"></script>
+    {{-- <script src="https://cdn.ckeditor.com/ckeditor5/16.0.0/classic/ckeditor.js"></script> --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.js"></script>
 
     <script src="https://cdn.datatables.net/fixedheader/3.1.7/js/dataTables.fixedHeader.min.js"></script>
+    <script src="https://cdn.ckeditor.com/4.16.0/standard-all/ckeditor.js"></script>
+
 
     {{-- Publish job application on social medias  --}}
     <script src="{{ asset('js/share.js') }}"></script>
@@ -456,6 +460,9 @@ a<!DOCTYPE html>
 });
 
     </script>
+
+
+
     <script>
         $(document).ready(function () {
     $(".notifications-menu").on('click', function () {
@@ -534,6 +541,17 @@ a<!DOCTYPE html>
         var url = $(this).attr('href');
         window.location = url;
     });
+
+
+    
+    $(".editor").each(function () {
+        // CKEDITOR.inline( this );
+        CKEDITOR.replace(this, {
+          height: 250,
+          width: 700,
+          extraPlugins: "colorbutton,colordialog,save",
+        });
+      });
 });
 
     </script>
@@ -558,6 +576,7 @@ a<!DOCTYPE html>
     </script>
 
     @yield('scripts')
+    @stack('settings')
 
     {{-- Social Media Share Links --}}
     <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5fa91eb31c6d29d3"></script>
@@ -577,6 +596,8 @@ a<!DOCTYPE html>
 
             </script>
     @endif
+
+
 </body>
 
 </html>

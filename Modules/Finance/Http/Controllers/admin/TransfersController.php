@@ -3,6 +3,7 @@
 namespace Modules\Finance\Http\Controllers\admin;
 
 use App\Http\Controllers\Traits\MediaUploadingTrait;
+use App\Models\Transaction;
 use Gate;
 use App\Models\Transfer;
 use Modules\HR\Entities\Account;
@@ -11,12 +12,13 @@ use Spatie\MediaLibrary\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Modules\ProjectManagement\Http\Controllers\Traits\ProjectManagementHelperTrait;
 use DataTables;
 
 
 class TransfersController extends Controller
 {
-    use MediaUploadingTrait;
+    use MediaUploadingTrait,ProjectManagementHelperTrait;
 
     public function index()
     {
@@ -109,11 +111,37 @@ class TransfersController extends Controller
             ]);
 
 
-        if ($request->input('attachments', false)) {
+            if ($request->input('attachments', false)) {
                 foreach ($request->attachments as $attachment) {
                     $transfer->addMedia(storage_path('tmp/uploads/' . $attachment))->toMediaCollection('attachments');
                 }
             }
+
+
+            Transaction::create([
+                'date'          => $request->date,
+                'account_id'    => $request->from_account,
+                'type'          => 'expense',
+                'name'          => 'transfer',
+                'amount'        => $request->amount,
+                'debit'         => $request->amount,
+                'total_balance' => $from_account->balance,
+                'added_by'      => auth()->user()->id,
+                'transfer_id'   => $transfer->id
+            ]);
+
+
+            Transaction::create([
+                'date'          => $request->date,
+                'account_id'    => $request->to_account,
+                'type'          => 'deposit',
+                'name'          => 'transfer',
+                'amount'        => $request->amount,
+                'credit'        => $request->amount,
+                'total_balance' => $to_account->balance,
+                'added_by'      => auth()->user()->id,
+                'transfer_id'   => $transfer->id
+            ]);
 
             return redirect()->route('finance.admin.transfers.index');
 
@@ -123,6 +151,7 @@ class TransfersController extends Controller
     public function edit($id)
     {
         abort_if(Gate::denies('transfer_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $transfer = Transfer::findOrFail($id);
         $accounts = Account::all();
         $payment_methods = PaymentMethod::all();
@@ -168,6 +197,11 @@ class TransfersController extends Controller
             }
         }
 
+        Transaction::where('transfer_id',$id)->update([
+            'date'          => $request->date,
+        ]);
+
+
         return redirect()->route('finance.admin.transfers.index');
     }
 
@@ -191,6 +225,8 @@ class TransfersController extends Controller
 
         $transfer->clearMediaCollection('attachments');
         $transfer->delete();
+
+        Transaction::where('transfer_id',$id)->delete();
         return back();
     }
 
@@ -215,6 +251,7 @@ class TransfersController extends Controller
 
             $transfer->clearMediaCollection('attachments');
             $transfer->delete();
+            Transaction::where('transfer_id',$id)->delete();
 
         }
 
@@ -246,6 +283,26 @@ class TransfersController extends Controller
     }
 
 
+    public function transfer_pdf()
+    {
+        //abort_if(Gate::denies('transfer_pdf'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        $title = trans('cruds.transfers.transfers_report') . '.pdf';
+
+        $transfers = Transfer::all();
+        $total_balance = Transfer::sum('amount');
+
+        $compact = [
+            'transfers'     => $transfers,
+            'total_balance' => $total_balance,
+
+        ];
+
+        $view = 'finance::admin.transfers.transfer_pdf';
+
+        $this->stream_pdf($view,$compact,$title);
+        //$this->download_pdf($view,$compact,$title);
+    }
 
 
 }

@@ -42,4 +42,8 @@ class Stock extends Model
     {
         return $this->belongsTo(StockCategory::class, 'stock_category_id');
     }
+    public function assigned_stocks()
+    {
+        return $this->hasMany(AssignStock::class, 'stock_id');
+    }
 }

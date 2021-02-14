@@ -35,4 +35,8 @@ class StockSubCategory extends Model
     {
         return $this->belongsTo(StockCategory::class, 'stock_category_id');
     }
+    public function stocks()
+    {
+        return $this->hasMany(Stock::class, 'stock_sub_category_id');
+    }
 }

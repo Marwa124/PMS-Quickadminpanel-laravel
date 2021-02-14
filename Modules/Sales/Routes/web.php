@@ -18,6 +18,7 @@
 Route::group(['as' => 'sales.admin.', 'prefix' => 'admin/sales', 'namespace' => 'Admin', 'middleware' => ['auth']],function() {
      // Proposals
     Route::delete('proposals/destroy', 'ProposalsController@massDestroy')->name('proposals.massDestroy');
+    Route::post('proposals/forceDelete/{id}', 'ProposalsController@forceDelete')->name('proposals.forceDelete');
     Route::post('proposals/changestatus', 'ProposalsController@changestatus')->name('proposals.changestatus');
     Route::post('proposals/filter', 'ProposalsController@filter')->name('proposals.filter');
     Route::post('proposals/getmodule', 'ProposalsController@getmodule')->name('proposals.getmodule');
@@ -67,4 +68,12 @@ Route::group(['as' => 'sales.admin.', 'prefix' => 'admin/sales', 'namespace' => 
     //Finalresults
     Route::get('finalresult/getdata', 'FinalresultsController@getData')->name('finalresult.getdata');
     Route::resource('finalresults', 'FinalresultsController');
+
+    // Opportunities
+    Route::delete('opportunities/destroy', 'OpportunitiesController@massDestroy')->name('opportunities.massDestroy');
+    Route::post('opportunities/media', 'OpportunitiesController@storeMedia')->name('opportunities.storeMedia');
+    Route::post('opportunities/ckmedia', 'OpportunitiesController@storeCKEditorImages')->name('opportunities.storeCKEditorImages');
+    Route::resource('opportunities', 'OpportunitiesController');
+    Route::post('opportunities/calls', 'OpportunitiesController@createcalls')->name('opportunities.calls');
+   
 });

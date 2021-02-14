@@ -3,7 +3,7 @@
 namespace Modules\ProjectManagement\Entities;
 
 use App\Models\Lead;
-use App\Models\Opportunity;
+use Modules\Sales\Entities\Opportunity;
 use App\Models\User;
 use App\Models\WorkTracking;
 use Carbon\Carbon;

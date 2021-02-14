@@ -50,7 +50,7 @@
                             <select class="form-control" id="exampleFormControlSelect21" name="country_code">
                                 @if(!empty($types))
                                 @foreach($codes as $code)
-                                <option value="{{$code->code}}">{{$code->code}}</option>
+                                <option value="{{$code->calling_code}}">{{$code->long_name}}({{$code->calling_code}})</option>
                                 @endforeach
                                 @endif
                             </select>

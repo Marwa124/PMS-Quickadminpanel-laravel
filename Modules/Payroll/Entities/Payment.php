@@ -9,6 +9,9 @@ use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
 use \DateTimeInterface;
+use App\Models\Invoice;
+use Modules\HR\Entities\Account;
+use App\Models\Transaction;
 
 class Payment extends Model implements HasMedia
 {
@@ -73,5 +76,10 @@ class Payment extends Model implements HasMedia
     public function transaction()
     {
         return $this->belongsTo(Transaction::class, 'transaction_id');
+    }
+
+    public function paymentMethod()
+    {
+        return $this->belongsTo(PaymentMethod::class, 'payment_method');
     }
 }

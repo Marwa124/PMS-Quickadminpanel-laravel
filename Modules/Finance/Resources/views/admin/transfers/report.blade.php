@@ -1,11 +1,14 @@
 @extends('layouts.admin')
 @section('content')
 
+    <a class="btn btn-danger m-3" href="{{route('finance.admin.transfers.transfer_pdf')}}" title="{{ trans('cruds.transfers.transfers_report') }} pdf">
+        <i class="fa fa-file-pdf  " aria-hidden="true" ></i>
+    </a>
+
     <div class="card">
         <div class="card-header">
             {{ trans('cruds.transfers.transfers_report') }} {{ trans('global.list') }}
         </div>
-
         <div class="card-body">
             <div class="table-responsive">
                 <table class=" table table-bordered table-striped table-hover datatable ">
@@ -44,10 +47,10 @@
                                 {{ $transfer->date ?? '' }}
                             </td>
                             <td>
-                                {{ $transfer->from_account ?? '' }}
+                                {{ $transfer->from->name ?? '' }}
                             </td>
                             <td>
-                                {{ $transfer->to_account ?? '' }}
+                                {{ $transfer->to->name ?? '' }}
                             </td>
                             <td>
                                 {{ $transfer->payment_method->name ?? '' }}

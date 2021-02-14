@@ -90,4 +90,9 @@ class Deposit extends Model implements HasMedia
     {
         $this->attributes['entry_date'] = $value ? Carbon::createFromFormat(config('panel.date_format'), $value)->format('Y-m-d') : null;
     }
+
+    public function transaction()
+    {
+        return $this->hasOne(Transaction::class, 'deposit_id');
+    }
 }

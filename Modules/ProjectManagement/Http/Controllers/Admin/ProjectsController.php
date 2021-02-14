@@ -5,7 +5,9 @@ namespace Modules\ProjectManagement\Http\Controllers\Admin;
 use App\Events\NewNotification;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\MediaUploadingTrait;
+use App\Mail\ProjectManagementMail;
 use App\Models\Invoice;
+use App\Models\User;
 use App\Notifications\ProjectManagementNotification;
 use Illuminate\Support\Facades\DB;
 use Modules\HR\Entities\AccountDetail;
@@ -23,6 +25,7 @@ use Illuminate\Http\Request;
 use Spatie\MediaLibrary\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
 use PDF;
+use Illuminate\Support\Facades\Mail;
 use Modules\ProjectManagement\Entities\Milestone;
 use Modules\ProjectManagement\Entities\Task;
 
@@ -89,15 +92,18 @@ class ProjectsController extends Controller
             // Commit the transaction
             DB::commit();
 
+            return redirect()->route('projectmanagement.admin.projects.index')->with(flash(trans('cruds.messages.create_success'), 'success'));
+
         }catch(\Exception $e){
             // An error occured; cancel the transaction...
             DB::rollback();
 
+            return redirect()->back()->with(flash(trans('cruds.messages.create_failed'), 'danger'))->withInput();
             // and throw the error again.
             throw $e;
         }
 
-        return redirect()->route('projectmanagement.admin.projects.index');
+//        return redirect()->route('projectmanagement.admin.projects.index')->with(flash(trans('cruds.messages.update_success'), 'success'));
     }
 
     public function edit(Project $project)
@@ -146,20 +152,37 @@ class ProjectsController extends Controller
             {
                 $user = $accountUser->user;
                 //dd($user);
-                $dataMail = [
-                    'subjectMail'    => 'Update Project '.$project->{'name_'.app()->getLocale()},
-                    'bodyMail'       => 'Update The Project '.$project->{'name_'.app()->getLocale()},
-                    'action'         => route("projectmanagement.admin.projects.show", $project->id)
-                ];
+//                $dataMail = [
+//                    'subjectMail'    => 'Update Project '.$project->{'name_'.app()->getLocale()},
+//                    'bodyMail'       => 'Update The Project '.$project->{'name_'.app()->getLocale()},
+//                    'action'         => route("projectmanagement.admin.projects.show", $project->id)
+//                ];
 
                 $dataNotification = [
                     'message'       => 'Update The Project : '.$project->{'name_'.app()->getLocale()},
                     'route_path'    => 'admin/projectmanagement/projects',
                 ];
 
-                $user->notify(new ProjectManagementNotification($project,$user,$dataMail,$dataNotification));
+//                $user->notify(new ProjectManagementNotification($project,$user,$dataMail,$dataNotification));
+
+                //send notification
+                $user->notify(new ProjectManagementNotification($project,$user,$dataNotification));
                 $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
                 event(new NewNotification($userNotify));
+
+                // send mail
+                $sender =  settings('smtp_sender_name');
+                $email_from =  settings('smtp_email') ;
+
+                if(User::find(auth()->user()->id)->accountDetail && User::find(auth()->user()->id)->accountDetail()->first())
+                {
+                    $userName = AccountDetail::where('user_id', auth()->user()->id)->first()->fullname;
+                }else {
+                    $userName = User::find(auth()->user()->id)->name;
+                }
+                $message = $userName.' '.'Update The Project <a href="'.route("projectmanagement.admin.projects.show", $project->id).'">'.$project->{'name_'.app()->getLocale()}.'</a>';
+                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
+
             }
 
             setActivity('project',$project->id,'Update Project Details','تعديل تفاصيل المشروع',$project->name_en,$project->name_ar);
@@ -167,15 +190,18 @@ class ProjectsController extends Controller
             // Commit the transaction
             DB::commit();
 
+            return redirect()->route('projectmanagement.admin.projects.index')->with(flash(trans('cruds.messages.update_success'), 'success'));
+
+
         }catch(\Exception $e){
             // An error occured; cancel the transaction...
             DB::rollback();
 
+            return redirect()->back()->with(flash(trans('cruds.messages.update_failed'), 'danger'))->withInput();
             // and throw the error again.
             throw $e;
         }
 
-        return redirect()->route('projectmanagement.admin.projects.index');
     }
 
     public function show(Project $project)
@@ -229,17 +255,16 @@ class ProjectsController extends Controller
 
             // Commit the transaction
             DB::commit();
+            return redirect()->route('projectmanagement.admin.projects.index')->with(flash(trans('cruds.messages.delete_success'), 'success'));
 
         }catch(\Exception $e){
             // An error occured; cancel the transaction...
             DB::rollback();
-
+            return redirect()->back()->with(flash(trans('cruds.messages.delete_failed'), 'danger'));
             // and throw the error again.
             throw $e;
         }
 
-
-        return back();
     }
 
     public function massDestroy(MassDestroyProjectRequest $request)
@@ -365,23 +390,41 @@ class ProjectsController extends Controller
             // Notify User
             foreach ($project->accountDetails as $accountUser)
             {
-    //            dd($project->accountDetails());
                 $user = $accountUser->user;
-                //dd($user);
-                $dataMail = [
-                        'subjectMail'    => 'New Project Assign To You',
-                        'bodyMail'       => 'Assign The Project '.$project->name.' To '.$user->name,
-                        'action'         => route("projectmanagement.admin.projects.show", $project->id)
-                ];
-
+//                $dataMail = [
+//                        'subjectMail'    => 'New Project Assign To You',
+//                        'bodyMail'       => 'Assign The Project '.$project->name.' To '.$user->name,
+//                        'action'         => route("projectmanagement.admin.projects.show", $project->id)
+//                ];
+//
                 $dataNotification = [
-                        'message'       => 'Assign The Project : '.$project->name.' To '.$user->name,
+                        'message'       => 'Assign The Project : '.$project->{'name_'.app()->getLocale()}.' To '.$user->name,
                         'route_path'    => 'admin/projectmanagement/projects',
                 ];
+//
+//                $user->notify(new ProjectManagementNotification($project,$user,$dataMail,$dataNotification));
 
-                $user->notify(new ProjectManagementNotification($project,$user,$dataMail,$dataNotification));
+                //send notification
+                $user->notify(new ProjectManagementNotification($project,$user,$dataNotification));
                 $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
                 event(new NewNotification($userNotify));
+
+                // send mail
+                $sender =  settings('smtp_sender_name');
+                $email_from =  settings('smtp_email') ;
+
+                if(User::find(auth()->user()->id)->accountDetail && User::find(auth()->user()->id)->accountDetail()->first())
+                {
+                    $userName = AccountDetail::where('user_id', auth()->user()->id)->first()->fullname;
+                }else {
+                    $userName = User::find(auth()->user()->id)->name;
+                }
+
+//                $message = $userName.' '.'Assign The Project '.$project->{'name_'.app()->getLocale()}.' To '.$user->name;
+                $message = $userName.' '.'Assign The Project <a href="'.route("projectmanagement.admin.projects.show", $project->id).'">'.$project->{'name_'.app()->getLocale()}.'</a> To '.$user->name;
+
+                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
+
             }
 
             setActivity('project',$project->id,'Update Assign to ','تعديل القائمين على مشروع ',$project->name_en,$project->name_ar);
@@ -390,15 +433,17 @@ class ProjectsController extends Controller
             // Commit the transaction
             DB::commit();
 
+            return redirect()->route('projectmanagement.admin.projects.index')->with(flash(trans('cruds.messages.assignto_success'), 'success'));
+
         }catch(\Exception $e){
             // An error occured; cancel the transaction...
             DB::rollback();
 
+            return back()->with(flash(trans('cruds.messages.assignto_failed'), 'danger'))->withInput();
             // and throw the error again.
             throw $e;
         }
 
-        return redirect()->route('projectmanagement.admin.projects.index');
     }
 
     public function update_note(Request $request)
@@ -418,20 +463,40 @@ class ProjectsController extends Controller
             {
                 $user = $accountUser->user;
                 //dd($user);
-                $dataMail = [
-                    'subjectMail'    => 'Update Project '.$project->name,
-                    'bodyMail'       => 'Update Note Of Project '.$project->name,
-                    'action'         => route("projectmanagement.admin.projects.show", $project->id)
-                ];
+//                $dataMail = [
+//                    'subjectMail'    => 'Update Project '.$project->name,
+//                    'bodyMail'       => 'Update Note Of Project '.$project->name,
+//                    'action'         => route("projectmanagement.admin.projects.show", $project->id)
+//                ];
 
                 $dataNotification = [
-                    'message'       => 'Update Note Of Project : '.$project->name,
+                    'message'       => 'Update Note Of Project : '.$project->{'name_'.app()->getLocale()},
                     'route_path'    => 'admin/projectmanagement/projects',
                 ];
 
-                $user->notify(new ProjectManagementNotification($project,$user,$dataMail,$dataNotification));
+//                $user->notify(new ProjectManagementNotification($project,$user,$dataMail,$dataNotification));
+
+                //send notification
+                $user->notify(new ProjectManagementNotification($project,$user,$dataNotification));
                 $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
                 event(new NewNotification($userNotify));
+
+                // send mail
+                $sender =  settings('smtp_sender_name');
+                $email_from =  settings('smtp_email') ;
+
+                if(User::find(auth()->user()->id)->accountDetail && User::find(auth()->user()->id)->accountDetail()->first())
+                {
+                    $userName = AccountDetail::where('user_id', auth()->user()->id)->first()->fullname;
+                }else {
+                    $userName = User::find(auth()->user()->id)->name;
+                }
+
+//                $message = $userName.' '.'Update Note Of Project '.$project->{'name_'.app()->getLocale()};
+                $message = $userName.' '.'Update Note Of Project <a href="'.route("projectmanagement.admin.projects.show", $project->id).'">'.$project->{'name_'.app()->getLocale()}.'</a>';
+
+                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
+
             }
 
             setActivity('project',$project->id,'Update Note','تعديل الملاحظات',$project->name_en,$project->name_ar);
@@ -439,15 +504,18 @@ class ProjectsController extends Controller
             // Commit the transaction
             DB::commit();
 
+            return back()->with(flash(trans('cruds.messages.update_note_success'), 'success'));
+
         }catch(\Exception $e){
             // An error occured; cancel the transaction...
             DB::rollback();
 
+            return back()->with(flash(trans('cruds.messages.update_note_failed'), 'danger'))->withInput();
             // and throw the error again.
             throw $e;
         }
 
-        return redirect()->back();
+//        return redirect()->back();
     }
 
     public function update_project_timer($project_id)
@@ -494,15 +562,17 @@ class ProjectsController extends Controller
                 // Commit the transaction
                 DB::commit();
 
+                return back()->with(flash(trans('cruds.messages.update_project_timer_success'), 'success'));
+
             }catch(\Exception $e){
                 // An error occured; cancel the transaction...
                 DB::rollback();
-
+                return back()->with(flash(trans('cruds.messages.update_project_timer_failed'), 'danger'))->withInput();
                 // and throw the error again.
                 throw $e;
             }
 
-            return redirect()->back();
+//            return redirect()->back();
         }
 
         return abort(Response::HTTP_FORBIDDEN, trans('global.forbidden_page_not_allow_to_you'));
@@ -513,24 +583,35 @@ class ProjectsController extends Controller
     {
 
         abort_if(Gate::denies('project_create'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
+        try{
+            // Begin a transaction
+            DB::beginTransaction();
 
-        // get project by id
-        $project  = Project::findOrFail($project_id);
+            // get project by id
+            $project  = Project::findOrFail($project_id);
 
+            // check if user can access this project or not
+            $projects = auth()->user()->getUserProjectsByUserID(auth()->user()->id)->pluck('id');
 
-        // check if user can access this project or not
-        $projects = auth()->user()->getUserProjectsByUserID(auth()->user()->id)->pluck('id');
+            if (!in_array($project_id,$projects->toArray())){
 
-        if (!in_array($project_id,$projects->toArray())){
+                return abort(Response::HTTP_FORBIDDEN, trans('global.forbidden_page_not_allow_to_you'));
+            }
 
-            return abort(Response::HTTP_FORBIDDEN, trans('global.forbidden_page_not_allow_to_you'));
+            $newproject = $project->cloneProject();
+
+            // Commit the transaction
+            DB::commit();
+
+            return redirect()->route('projectmanagement.admin.projects.show',$newproject->id)->with(flash(trans('cruds.messages.clone_success'), 'success'));
+
+        }catch (\Exception $e) {
+            // An error occured; cancel the transaction...
+            DB::rollback();
+            return back()->with(flash(trans('cruds.messages.clone_failed'), 'danger'));
+            // and throw the error again.
+            throw $e;
         }
-
-        $newproject = $project->cloneProject();
-
-        return redirect()->route('projectmanagement.admin.projects.show',$newproject->id);
-
-
     }
 
     public function forceDelete(Request $request,$id)
@@ -548,26 +629,30 @@ class ProjectsController extends Controller
                 $project = Project::onlyTrashed()->where('id', $id)->first();
 
                 $this->forceDeleteProject($project);
+                $message = 'force_delete_success';
 
             } else if ($action == 'restore') {
+
                 Project::onlyTrashed()->where('id', $id)->restore();
                 $project = Project::findOrFail($id);
-
+                $message = 'restore_success';
                 setActivity('project',$project->id,'Restore Project Details ','إسترجاع المشروع من الحذف',$project->name_en,$project->name_ar);
             }
 
             // Commit the transaction
             DB::commit();
+            return back()->with(flash(trans('cruds.messages.'.$message), 'success'));
 
         }catch(\Exception $e){
             // An error occured; cancel the transaction...
             DB::rollback();
+            return back()->with(flash(trans('cruds.messages.action_failed'), 'danger'));
 
             // and throw the error again.
             throw $e;
         }
 
-        return back();
+//        return back();
 
     }
 
@@ -616,53 +701,6 @@ class ProjectsController extends Controller
         return abort(Response::HTTP_FORBIDDEN, trans('global.forbidden_page_not_allow_to_you'));
 
     }
-
-//    public function project_pdf($project_id)
-//    {
-//
-//        abort_if(Gate::denies('project_show'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
-//
-//        // check if user can access this project or not
-//        $projects = auth()->user()->getUserProjectsByUserID(auth()->user()->id)->pluck('id');
-//
-//        if (in_array($project_id,$projects->toArray())){
-//
-//                $project = Project::findOrFail($project_id);
-//
-//
-//            $project->load('client','department','TimeSheetOn','TimeSheet');
-//
-//            $total_expense = $project->transactions->where('type' , 'Expense')->sum('amount');
-//            $billable_expense = $project->transactions->where(array('type' => 'Expense', 'billable' => 'Yes'))->sum('amount');
-//            $not_billable_expense = $project->transactions->where(array('type' => 'Expense', 'billable' => 'No'))->sum('amount');
-//
-//            $all_expense_info =  $project->transactions->where('type', 'Expense');
-//
-//            $paid_expense = 0;
-//            foreach ($all_expense_info as $v_expenses){
-//                if ($v_expenses->invoices_id != 0) {
-//                    $paid_expense += Invoice::get_invoice_paid_amount($v_expenses->invoices_id);
-//                }
-//            }
-//
-//
-//           //return view('projectmanagement::admin.projects.project_pdf',compact('project','total_expense','billable_expense','not_billable_expense','paid_expense'));
-//
-//            //view()->share('project',$project);
-//
-//            $pdf = PDF::loadView('projectmanagement::admin.projects.project_pdf',compact('project','total_expense','billable_expense','not_billable_expense','paid_expense'));
-//    //        $pdf = PDF::loadView('projectmanagement::admin.projects.project_pdf',[
-//    //            'project' => $project
-//    //        ]);
-//            //$pdf->SetDirectionality('rtl');
-//
-//            return $pdf->download('project.pdf');
-//        }
-//
-//        return abort(Response::HTTP_FORBIDDEN, trans('global.forbidden_page_not_allow_to_you'));
-//
-//
-//    }
 
     public function project_report()
     {

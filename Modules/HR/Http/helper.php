@@ -1,16 +1,22 @@
 <?php
 
 use Carbon\Carbon;
+use Vonage\Client;
+use Plivo\RestClient;
 use App\Models\Config;
 use App\Models\Locale;
 use Carbon\CarbonPeriod;
+use App\Models\EmailTemplate;
 use Modules\HR\Entities\Absence;
 use Modules\HR\Entities\Holiday;
 use Modules\HR\Entities\Vacation;
 use Modules\HR\Entities\WorkingDay;
+use Vonage\Client\Credentials\Basic;
 use Modules\HR\Entities\AccountDetail;
+use Twilio\Rest\Client as TwilioClient;
 use Modules\HR\Entities\LeaveApplication;
 use Modules\HR\Entities\FingerprintAttendance;
+
 
 if (!function_exists('getAbsentUsers')) {
     function getAbsentUsers($date, $user_id)
@@ -300,5 +306,153 @@ if (!function_exists('display_date')) {
         $format = $format ? $format : settings('date_format');
 
         return date($format, $date);
+    }
+}
+
+// if (!function_exists('is_trigger_message_empty')) {
+
+//     function is_trigger_message_empty($message)
+//     {
+//         if (trim($message) === '') {
+//             return false;
+//         }
+//         return true;
+//     }
+// }
+
+
+// if (!function_exists('get_activate_gateway')) {
+//     function get_activate_gateway()
+//     {
+
+//         $active = false;
+//         foreach (get_gateways() as $id => $gateway) {
+//             if (settings($id . '_status') == '1') {
+//                 $active = $gateway;
+//                 break;
+//             }
+//         }
+//         return $active;
+//     }
+// }
+
+
+if (!function_exists('get_available_triggers')) {
+    function get_available_triggers()
+    {
+        $triggers = config('sms.triggers');
+
+        foreach ($triggers as $trigger_id => $triger) {
+            $triggers[$trigger_id]['value'] = settings('sms_template_' . strtolower($trigger_id));
+
+            if (!empty($triger['sms_number'])) {
+                if (!empty(settings($trigger_id . '_sms_number'))) {
+                    $sms_number = settings($trigger_id . '_sms_number');
+                } else {
+                    $sms_number = '01006143107';
+                }
+                $triggers[$trigger_id]['sms_number'] = $sms_number;
+            }
+        }
+        return $triggers;
+    }
+}
+
+if (!function_exists('is_any_trigger_active')) {
+    function is_any_trigger_active()
+    {
+
+        $active = false;
+        foreach (get_available_triggers() as $trigger_id => $trigger_opts) {
+            if (is_trigger_message_empty(settings('sms_template_' . $trigger_id))) {
+                $active = true;
+                break;
+            }
+        }
+
+        return $active;
+    }
+}
+
+if (!function_exists('trigger_option_name')) {
+
+    function trigger_option_name($trigger)
+    {
+        return 'sms_template_' . strtolower($trigger);
+    }
+}
+
+
+if (!function_exists('sendMsgByTwilio')) {
+
+    function sendMsgByTwilio($msg, $to = null)
+    {
+        $account_sid = settings('twilio_account_sid');
+        $auth_token  = settings('twilio_token_auth');
+        $number      = settings('twilio_phone_number');
+
+        $client = new TwilioClient($account_sid, $auth_token);
+        $msg = $client->messages->create(
+            '+' . $to,
+            ['from' => $number, 'body' => $msg]
+        );
+    }
+}
+
+
+
+
+
+if (!function_exists('sendMsgByNexmo')) {
+
+    function sendMsgByNexmo($msg, $to = null)
+    {
+        $account_sid = settings('nexmo_account_sid');
+        $auth_token  = settings('nexmo_token_auth');
+        $from      = settings('nexmo_phone_number');
+
+        $basic  = new Basic($account_sid, $auth_token);
+        $client = new Client($basic);
+
+        $message = $client->message()->send([
+            'to'   => $to,
+            'from' => $from,
+            'text' => $msg
+        ]);
+    }
+}
+
+
+
+if (!function_exists('sendMsgByPlivo')) {
+
+    function sendMsgByPlivo($msg, $to = null)
+    {
+        $account_sid = settings('plivo_account_sid');
+        $auth_token  = settings('plivo_token_auth');
+        $from      = settings('plivo_phone_number');
+
+        $client = new RestClient($account_sid, $auth_token);
+
+
+        $message_created = $client->messages->create(
+            $from,
+            [$to],
+            'Hello, world!'
+        );
+    }
+}
+
+
+if (!function_exists('templates')) {
+    function templates($email_group)
+    {
+
+        $email_template  = EmailTemplate::where('email_group', $email_group)->first();
+        if ($email_template) {
+            return $email_template;
+        } else {
+            return false;
+        }
     }
 }
