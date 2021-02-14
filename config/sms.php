@@ -60,22 +60,22 @@ $proposal_merge_fields = [
 return [
 
     'triggers' => [
-        'SMS_INVOICE_REMINDER' => [
+        'sms_invoice_reminder' => [
             'merge_fields' => array_merge($customer_merge_fields, $invoice_merge_fields),
             'label' => 'Invoice Reminder Notice',
             'info' => 'Send SMS when invoice reminder notice sent when send invoice to client primary contact.',
         ],
-        'SMS_INVOICE_OVERDUE' => [
+        'sms_invoice_overdue' => [
             'merge_fields' => array_merge($customer_merge_fields, $invoice_merge_fields),
             'label' => 'Invoice Overdue Notice',
             'info' => 'Send SMS when invoice overdue notice  sent to client primary contact.',
         ],
-        'SMS_PAYMENT_RECORDED' => [
+        'sms_payment_recorded' => [
             'merge_fields' => array_merge($customer_merge_fields, $invoice_merge_fields, ['{payment_amount}', '{payment_date}']),
             'label' => 'Invoice Payment Recorded',
             'info' => 'Send SMS when invoice payment is saved.',
         ],
-        'SMS_ESTIMATE_EXP_REMINDER' => [
+        'sms_estimate_exp_reminder' => [
             'merge_fields' => array_merge(
                 $customer_merge_fields,
                 [
@@ -92,28 +92,28 @@ return [
             'label' => 'Estimate Expiration Reminder',
             'info' => 'Send SMS when expiration Estimate  sent to client primary contact.',
         ],
-        'SMS_PROPOSAL_EXP_REMINDER' => [
+        'sms_proposal_exp_reminder' => [
             'merge_fields' => $proposal_merge_fields,
             'label' => 'Proposal Expiration Reminder',
             'info' => 'Send SMS when expiration reminder send to Related Proposals.',
         ],
-        'SMS_PURCHASE_CONFIRMATION' => [
+        'sms_purchase_confirmation' => [
             'merge_fields' => array_merge($supplier_merge_fields, $purchase_merge_fields),
             'label' => 'Purchase Notice',
             'info' => 'Send SMS when Purchase confirmation/update stock notice sent to ',
             'sms_number' => true,
         ],
-        'SMS_PURCHASE_PAYMENT_CONFIRMATION' => [
+        'sms_purchase_payment_confirmation' => [
             'merge_fields' => array_merge($supplier_merge_fields, $purchase_merge_fields, ['{payment_amount}', '{payment_date}']),
             'label' => 'Purchase payment Notice',
             'info' => 'Send SMS when Purchase payment confirmation notice sent.',
         ],
-        'SMS_RETURN_STOCK' => [
+        'sms_return_stock' => [
             'merge_fields' => array_merge($supplier_merge_fields, $return_merge_fields),
             'label' => 'Purchase Return Stock Notice',
             'info' => 'Send SMS when Purchase return stock notice sent.',
         ],
-        'SMS_TRANSACTION_RECORD' => [
+        'sms_transaction_record' => [
             'merge_fields' => [
                 '{transaction_type}',
                 '{transaction_title}',
@@ -128,7 +128,7 @@ return [
             'info' => 'Send SMS when Transaction Record expense/deposit/transfer notified for reminder.',
             'sms_number' => true,
         ],
-        'SMS_STAFF_REMINDER' => [
+        'sms_staff_reminder' => [
             'merge_fields' => [
                 '{name}',
                 '{reference}',

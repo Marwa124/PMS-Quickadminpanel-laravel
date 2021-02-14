@@ -1,4 +1,6 @@
 @extends('layouts.admin')
+
+
 <style>
 
 
@@ -57,6 +59,7 @@ body{
 @section('styles')
 <script src="{{ asset('js/toast.min.js') }}"></script>
 <link rel="stylesheet" type="text/css" href="{{ asset('css/toast.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('css/animated.min.css') }}">
 @endsection
 @section('content')
     <div class="row">
@@ -79,12 +82,7 @@ body{
 
             <div class="tab-content" id="v-pills-tabContent">
 
-                @include('setting::tabs.company_details')
-
-
-                @include('setting::tabs.company_system')
-                @include('setting::tabs.email_settings')
-                @include('setting::tabs.sms_settings')
+                @include('setting::tabs.invoice')
 
 
 
@@ -94,11 +92,11 @@ body{
 
 
 @endsection
+@push('settings')
 
 
-@if(session()->has('pill'))
 <script>
-    console.log('here')
+    
 window.onload = (event) => {
 
    
@@ -109,19 +107,8 @@ window.onload = (event) => {
     }
   });
 
+           
 
-
-    var pill = '{{ session()->get('pill','company-details') }}'
-
-    //reset all tabs
-    $('.nav-pills .nav-link').attr('aria-selected',false)
-    $('.nav-pills .nav-link').removeClass('active')
-    $('.tab-content .tab-pane').removeClass('active').removeClass('show')
-
-    //open the wanted tab
-    $('.nav-pills .'+pill).attr('aria-selected',true)
-    $('.nav-pills .'+pill).addClass('active')
-    $('.tab-content .'+pill).addClass('active').addClass('show')
 };
 
 
@@ -130,22 +117,17 @@ window.onload = (event) => {
    
 </script>
 
-@endif 
-
-
 
 <script>
-
-    function slideToggle(id){
-     
-    if(document.getElementById( id).style.display == '' ){
-        document.getElementById( id).style.display ='none';
-    } else {
-        document.getElementById( id).style.display ='';
-    
-    }
-    
-    }
-    </script>
+       $(".editor-simple").each(function () {
+        // CKEDITOR.inline( this );
+        CKEDITOR.replace(this, {
+          height:100,
+         
+          extraPlugins: "colorbutton,colordialog",
+        });
+      });
+</script>
+@endpush
 
 

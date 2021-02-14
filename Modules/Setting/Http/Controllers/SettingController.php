@@ -10,6 +10,7 @@ use App\Models\Country;
 use App\Models\Currency;
 use App\Models\Language;
 use Illuminate\Http\Request;
+use App\Models\EmailTemplate;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
@@ -23,48 +24,19 @@ class SettingController extends Controller
      * Display a listing of the resource.
      * @return Renderable
      */
-    public function company_details()
+    public function show_details()
     {
         abort_if(Gate::denies('setting_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
 
         $countries  = Country::all();
-        $currencies = Currency::all();
-        $languages  = Language::all();
-        $locales    = Locale::all();
-        $timezones  = timezones();
-        $taxes = TaxRate::orderBy('rate_percent', 'ASC')->get();
-
-        $default_tax = [];
-
-        $decimal = sprintf('%0' . settings('decimal_separator', 2) . 'd', 0);
-        if (settings('default_tax')) {
-            $default_tax = !is_numeric(settings('default_tax')) ? unserialize(settings('default_tax')) : settings('default_tax');
-        }
-
-        $gateways = get_gateways();
-        $triggers = get_available_triggers();
-        $total_gateways = count($gateways);
-
-        // dd($gateways, $triggers, $total_gateways);
-
-
 
 
         return view(
-            'setting::company_details.index',
+            'setting::settings.company_details',
             compact(
                 'countries',
-                'currencies',
-                'languages',
-                'locales',
-                'timezones',
-                'taxes',
-                'default_tax',
-                'decimal',
-                'gateways',
-                'triggers',
-                'total_gateways'
+
 
             )
         );
@@ -163,6 +135,46 @@ class SettingController extends Controller
             return back()->withInput()->with(flash(' Something Went Wrong', 'danger'));
         }
     }
+
+
+
+    public function show_system()
+    {
+        abort_if(Gate::denies('setting_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+
+        $currencies = Currency::all();
+        $languages  = Language::all();
+        $locales    = Locale::all();
+        $timezones  = timezones();
+        $taxes = TaxRate::orderBy('rate_percent', 'ASC')->get();
+
+        $default_tax = [];
+
+        $decimal = sprintf('%0' . settings('decimal_separator', 2) . 'd', 0);
+        if (settings('default_tax')) {
+            $default_tax = !is_numeric(settings('default_tax')) ? unserialize(settings('default_tax')) : settings('default_tax');
+        }
+
+
+
+
+        return view(
+            'setting::settings.company_system',
+            compact(
+                'currencies',
+                'languages',
+                'locales',
+                'timezones',
+                'taxes',
+                'default_tax',
+                'decimal',
+
+
+            )
+        );
+    }
+
 
 
     public function save_currency(Request $request)
@@ -440,6 +452,18 @@ class SettingController extends Controller
 
 
 
+
+
+    public function show_email()
+    {
+
+
+
+        return view('setting::settings.email_settings');
+    }
+
+
+
     public function save_mail_mailgun(Request $request)
     {
 
@@ -601,9 +625,416 @@ class SettingController extends Controller
     }
 
 
+    public function show_sms()
+    {
+        $triggers = get_available_triggers();
+        return view('setting::settings.sms_settings', compact('triggers'));
+    }
+
     public function save_sms(Request $request)
     {
 
-        dd(request()->all());
+        try {
+
+            if ($request->has('sms_status')) {
+
+                if ($request->sms_status == 'twilio') {
+                    $validator = Validator::make($request->all(), [
+
+                        'twilio_account_sid'  => 'required|string',
+                        'twilio_token_auth'   => 'required|string',
+                        'twilio_phone_number' => 'required|string|regex:/^([0-9\s\-\+\(\)]*)$/|min:5|max:20',
+
+                    ], [
+
+                        'twilio_account_sid.required'  => trans('settings.twilio_account_sid_required'),
+                        'twilio_account_sid.string'    => trans('settings.twilio_account_sid_string'),
+
+                        'twilio_token_auth.required'  => trans('settings.twilio_token_auth_required'),
+                        'twilio_token_auth.string'    => trans('settings.twilio_token_auth_string'),
+
+                        'twilio_phone_number.required'  => trans('settings.twilio_phone_number_required'),
+                        'twilio_phone_number.string'    => trans('settings.twilio_phone_number_string'),
+
+                        'twilio_phone_number.regex'     => trans('settings.twilio_phone_number_regex'),
+
+
+                    ]);
+
+                    if ($validator->fails()) {
+
+                        return back()->withInput()->with(flash($validator->errors()->all()[0], 'danger'))->with('pill', 'sms-settings');
+                    }
+
+                    Config::updateorCreate(
+                        ['key' => 'twilio_account_sid'],
+                        ['value' => request('twilio_account_sid')]
+                    );
+
+                    Config::updateorCreate(
+                        ['key' => 'twilio_phone_number'],
+                        ['value' => request('twilio_phone_number')]
+                    );
+                    Config::updateorCreate(
+                        ['key' => 'twilio_token_auth'],
+                        ['value' => request('twilio_token_auth')]
+                    );
+                }
+
+                if ($request->sms_status == 'nexmo') {
+
+                    $validator = Validator::make($request->all(), [
+
+                        'nexmo_account_sid'  => 'required|string',
+                        'nexmo_token_auth'   => 'required|string',
+                        'nexmo_phone_number' => 'required|string|regex:/^([0-9\s\-\+\(\)]*)$/|min:5|max:20',
+
+                    ], [
+
+                        'nexmo_account_sid.required'  => trans('settings.nexmo_account_sid_required'),
+                        'nexmo_account_sid.string'    => trans('settings.nexmo_account_sid_string'),
+
+                        'nexmo_token_auth.required'  => trans('settings.nexmo_token_auth_required'),
+                        'nexmo_token_auth.string'    => trans('settings.nexmo_token_auth_string'),
+
+                        'nexmo_phone_number.required'  => trans('settings.nexmo_phone_number_required'),
+                        'nexmo_phone_number.string'    => trans('settings.nexmo_phone_number_string'),
+
+
+
+                    ]);
+
+                    if ($validator->fails()) {
+
+                        return back()->withInput()->with(flash($validator->errors()->all()[0], 'danger'))->with('pill', 'sms-settings');
+                    }
+
+                    Config::updateorCreate(
+                        ['key' => 'nexmo_account_sid'],
+                        ['value' => request('nexmo_account_sid')]
+                    );
+
+                    Config::updateorCreate(
+                        ['key' => 'nexmo_phone_number'],
+                        ['value' => request('nexmo_phone_number')]
+                    );
+                    Config::updateorCreate(
+                        ['key' => 'nexmo_token_auth'],
+                        ['value' => request('nexmo_token_auth')]
+                    );
+                }
+            }
+
+
+            $validator = Validator::make($request->all(), [
+
+                'sms_invoice_reminder'              => 'sometimes|nullable|string',
+                'sms_invoice_overdue'               => 'sometimes|nullable|string',
+                'sms_payment_recorded'              => 'sometimes|nullable|string',
+                'sms_estimate_exp_reminder'         => 'sometimes|nullable|string',
+                'sms_proposal_exp_reminder'         => 'sometimes|nullable|string',
+                'sms_purchase_confirmation'         => 'sometimes|nullable|string',
+                'sms_purchase_payment_confirmation' => 'sometimes|nullable|string',
+                'sms_return_stock'                  => 'sometimes|nullable|string',
+                'sms_transaction_record'            => 'sometimes|nullable|string',
+                'sms_staff_reminder'                => 'sometimes|nullable|string',
+            ], [
+                'sms_invoice_reminder.string'              => trans('settings.sms_invoice_reminder_string'),
+                'sms_invoice_overdue.string'               => trans('settings.sms_invoice_overdue_string'),
+                'sms_payment_recorded.string'              => trans('settings.sms_payment_recorded_string'),
+                'sms_estimate_exp_reminder.string'         => trans('settings.sms_estimate_exp_reminder_string'),
+                'sms_proposal_exp_reminder.string'         => trans('settings.sms_proposal_exp_reminder_string'),
+                'sms_purchase_confirmation.string'         => trans('settings.sms_purchase_confirmation_string'),
+                'sms_purchase_payment_confirmation.string' => trans('settings.sms_purchase_payment_confirmation_string'),
+                'sms_return_stock.string'                  => trans('settings.sms_return_stock_string'),
+                'sms_transaction_record.string'            => trans('settings.sms_transaction_record_string'),
+                'sms_staff_reminder.string'                => trans('settings.sms_staff_reminder_string'),
+            ]);
+
+            if ($validator->fails()) {
+
+                return back()->withInput()->with(flash($validator->errors()->all()[0], 'danger'))->with('pill', 'sms-settings');
+            }
+
+
+            Config::updateorCreate(
+                ['key' => 'sms_invoice_reminder'],
+                ['value' => request('sms_invoice_reminder')]
+            );
+
+            Config::updateorCreate(
+                ['key' => 'sms_invoice_overdue'],
+                ['value' => request('sms_invoice_overdue')]
+            );
+            Config::updateorCreate(
+                ['key' => 'sms_payment_recorded'],
+                ['value' => request('sms_payment_recorded')]
+            );
+
+            Config::updateorCreate(
+                ['key' => 'sms_estimate_exp_reminder'],
+                ['value' => request('sms_estimate_exp_reminder')]
+            );
+
+            Config::updateorCreate(
+                ['key' => 'sms_proposal_exp_reminder'],
+                ['value' => request('sms_proposal_exp_reminder')]
+            );
+
+
+            Config::updateorCreate(
+                ['key' => 'sms_purchase_confirmation'],
+                ['value' => request('sms_purchase_confirmation')]
+            );
+            Config::updateorCreate(
+                ['key' => 'sms_purchase_payment_confirmation'],
+                ['value' => request('sms_purchase_payment_confirmation')]
+            );
+
+            Config::updateorCreate(
+                ['key' => 'sms_return_stock'],
+                ['value' => request('sms_return_stock')]
+            );
+
+            Config::updateorCreate(
+                ['key' => 'sms_transaction_record'],
+                ['value' => request('sms_transaction_record')]
+            );
+            Config::updateorCreate(
+                ['key' => 'sms_staff_reminder'],
+                ['value' => request('sms_staff_reminder')]
+            );
+            Config::updateorCreate(
+                ['key' => 'sms_status'],
+                ['value' => request('sms_status')]
+            );
+
+            return back()->with(flash(trans('settings.sms_updated'), 'success'))->with('pill', 'sms-settings');
+        } catch (\Exception $e) {
+            dd($e->getMessage());
+        }
+    }
+
+
+    public function test_sms(Request $request)
+    {
+
+        $validator = Validator::make($request->all(), [
+
+            'msg'                   => 'required|string',
+            'type'                  => 'required|string|in:twilio,nexmo',
+            'phone'                 => 'required|string|regex:/^([0-9\s\-\+\(\)]*)$/',
+
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->errors()->all()[0]], 400);
+        }
+
+        try {
+            if (request('type') == 'twilio') {
+                // '+2001123408535'
+                sendMsgByTwilio(request('msg'), request('phone'));
+            } else if (request('type') == 'nexmo') {
+
+                sendMsgByNexmo(request('msg'), request('phone'));
+            }
+
+            return response()->json(['message' => trans('settings.message_sent')], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' =>  $e->getMessage() . 'Something went Wrong'], 400);
+        }
+    }
+
+
+
+
+    public function show_templates()
+    {
+
+        return view('setting::settings.email_templates');
+    }
+
+    function update_templates(Request $request)
+    {
+
+
+        try {
+
+
+            $validator = Validator::make($request->all(), [
+                'email_group'     => 'required|string|exists:email_templates,email_group',
+                'subject'  => 'required|string',
+                'email_template'     => 'required|string'
+            ]);
+
+
+            if ($validator->fails()) {
+                return back()->with(flash($validator->errors()->all()[0], 'danger'))->with('pill', 'email-templates');
+            }
+
+            $template = EmailTemplate::where('email_group', $request->email_group)->first();
+            if (!$template) {
+
+                abort(404);
+            }
+
+
+
+            $template->update(['subject' => $request->subject, 'template_body' => $request->email_template]);
+
+
+            return back()->with(flash(trans('settings.template_updated'), 'success'))->with('pill', 'email-templates')->with('template', request('email_group'))->with('tab', request('tab'));
+        } catch (\Exception $e) {
+            return back()->with(flash('Something went Wrong', 'danger'))->with('pill', 'email-templates');
+        }
+    }
+
+
+
+    public function show_invoice()
+    {
+        return view('setting::settings.invoice');
+    }
+
+
+    public function update_invoice(Request $request)
+    {
+
+
+        try {
+
+            $validator = Validator::make($request->all(), [
+                'invoice_prefix' => 'required|string',
+                'invoices_due_after' => 'required|integer',
+                'invoice_start_no' => 'required|integer',
+
+                'invoice_number_format' => 'sometimes|nullable|string',
+
+                'qty_calculation_from_items' => 'sometimes|nullable|in:yes,no',
+
+                'amount_to_words' => 'sometimes|nullable|in:yes,no',
+
+                'allow_customer_edit_amount' => 'sometimes|nullable|in:yes,no',
+                'increment_invoice_number' => 'sometimes|nullable|in:yes,no',
+                'show_item_tax' => 'sometimes|nullable|in:yes,no',
+                'send_email_when_recur' => 'sometimes|nullable|in:yes,no',
+                'invoice_view' => 'sometimes|nullable|in:0,1',
+                'invoice_logo' => 'sometimes|nullable|mimes:jpeg,png,jpg,gif,svg',
+                'default_terms' => 'sometimes|nullable|string',
+                'invoice_footer' => 'sometimes|nullable|string',
+            ], [
+
+
+                'invoice_prefix.required'         => trans('settings.invoice_prefix_required'),
+                'invoice_prefix.string'           => trans('settings.invoice_prefix_string'),
+
+                'invoices_due_after.required'     => trans('settings.invoices_due_after_required'),
+                'invoices_due_after.integer'      => trans('settings.invoices_due_after_integer'),
+
+                'invoice_start_no.required'       => trans('settings.invoice_start_no_required'),
+                'invoice_start_no.integer'        => trans('settings.invoice_start_no_integer'),
+
+                'invoice_number_format.string'    => trans('settings.invoice_number_format_string'),
+                'qty_calculation_from_items.in'   => trans('settings.qty_calculation_from_items_in'),
+                'amount_to_words.in'              => trans('settings.amount_to_words_in'),
+                'allow_customer_edit_amount.in'   => trans('settings.allow_customer_edit_amount_in'),
+                'increment_invoice_number.in'     => trans('settings.increment_invoice_number_in'),
+
+                'show_item_tax.in'                => trans('settings.show_item_tax_in'),
+                'send_email_when_recur.in'        => trans('settings.send_email_when_recur_in'),
+                'invoice_logo.mimes'              => trans('settings.invoice_logo_mimes'),
+
+                'default_terms.string'            => trans('settings.default_terms_string'),
+                'invoice_footer.string'           => trans('settings.invoice_footer_string'),
+
+
+
+            ]);
+
+
+            if ($validator->fails()) {
+                return back()->with(flash($validator->errors()->all()[0], 'danger'))->with('pill', 'invoice');
+            }
+
+
+            Config::updateorCreate(
+                ['key' => 'invoice_prefix'],
+                ['value' => request('invoice_prefix')]
+            );
+
+            Config::updateorCreate(
+                ['key' => 'invoices_due_after'],
+                ['value' => request('invoices_due_after')]
+            );
+            Config::updateorCreate(
+                ['key' => 'invoice_start_no'],
+                ['value' => request('invoice_start_no')]
+            );
+
+            Config::updateorCreate(
+                ['key' => 'invoice_number_format'],
+                ['value' => request('invoice_number_format')]
+            );
+
+            Config::updateorCreate(
+                ['key' => 'qty_calculation_from_items'],
+                ['value' => request('qty_calculation_from_items')]
+            );
+
+
+            Config::updateorCreate(
+                ['key' => 'amount_to_words'],
+                ['value' => request('amount_to_words')]
+            );
+            Config::updateorCreate(
+                ['key' => 'allow_customer_edit_amount'],
+                ['value' => request('allow_customer_edit_amount')]
+            );
+
+            Config::updateorCreate(
+                ['key' => 'increment_invoice_number'],
+                ['value' => request('increment_invoice_number')]
+            );
+
+            Config::updateorCreate(
+                ['key' => 'show_item_tax'],
+                ['value' => request('show_item_tax')]
+            );
+            Config::updateorCreate(
+                ['key' => 'send_email_when_recur'],
+                ['value' => request('send_email_when_recur')]
+            );
+            Config::updateorCreate(
+                ['key' => 'invoice_view'],
+                ['value' => request('invoice_view')]
+            );
+
+            if ($request->file('invoice_logo')) {
+
+
+                $imageName = time() . '-inv.' . $request->invoice_logo->extension();
+
+                $request->invoice_logo->move(public_path('settings/invoice/.'), $imageName);
+                Config::updateorCreate(
+                    ['key' => 'invoice_logo'],
+                    ['value' => $imageName]
+                );
+            }
+
+
+
+            Config::updateorCreate(
+                ['key' => 'default_terms'],
+                ['value' => request('default_terms')]
+            );
+            Config::updateorCreate(
+                ['key' => 'invoice_footer'],
+                ['value' => request('invoice_footer')]
+            );
+
+            return back()->with(flash(trans('settings.invoice_updated'), 'success'))->with('pill', 'invoice');
+        } catch (\Exception $e) {
+        }
     }
 }

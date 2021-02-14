@@ -36,12 +36,12 @@ class User extends Authenticatable implements HasMedia
 {
     use SoftDeletes, Notifiable, HasApiTokens, HasMediaTrait;
     use HasRoles;
-    public function routeNotificationForTwilio()
-    {
-        // return '+2001061739707';
-        // return '+2001006143107';
-        return '+2001123408535';
-    }
+    // public function routeNotificationForTwilio()
+    // {
+    //     // return '+2001061739707';
+    //     // return '+2001006143107';
+    //     return '+2001123408535';
+    // }
 
     // public function routeNotificationForPlivo()
     // {

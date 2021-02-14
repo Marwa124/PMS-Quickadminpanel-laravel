@@ -1,5 +1,5 @@
 
-<div class="tab-pane company-system" id="v-pills-company-system" role="tabpanel"
+<div class="tab-pane fade show active" id="v-pills-company-system" role="tabpanel"
 aria-labelledby="v-pills-details-tab">
 
 
@@ -206,7 +206,7 @@ aria-labelledby="v-pills-details-tab">
                         </div>
                         <div class="col-md-5">
 
-                            <select name="default_tax[]" class="select2" id="" multiple="multiple">
+                            <select name="default_tax[]" class="select2"  multiple="multiple">
  
 
                                 @forelse ($taxes as $tax)
@@ -286,7 +286,7 @@ aria-labelledby="v-pills-details-tab">
                         </div>
                         <div class="col-md-5">
 
-                            <select name="time_format" class="select2" id="">
+                            <select name="time_format" class="select2" >
                                 <option value="">@lang('settings.time_format')</option>
                                 <option @if(old('time_format',settings('time_format')) == 'g:i a'  ) {{ 'selected' }} @endif  value="g:i a">{{ date("g:i a") }}</option>
                                 <option @if(old('time_format',settings('time_format')) == 'g:i A'  ) {{ 'selected' }} @endif  value="g:i A">{{ date("g:i A") }}</option>
@@ -311,7 +311,7 @@ aria-labelledby="v-pills-details-tab">
                         <div class="col-md-5">
 
 
-                            <select name="money_format" class="select2" id="">
+                            <select name="money_format" class="select2" >
                                 <option value="">@lang('settings.money_format')</option>
                                 <option value="1" @if(old('money_format',settings('money_format')) == 1 )  {{ 'selected' }} @endif>{{ "1,234." . $decimal }}</option>
                                 <option value="2"  @if(old('money_format',settings('money_format')) == 2 )  {{ 'selected' }} @endif>{{"1.234," . $decimal}}</option>

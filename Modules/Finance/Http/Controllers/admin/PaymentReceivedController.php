@@ -36,26 +36,26 @@ class PaymentReceivedController extends Controller
         //abort_if(Gate::denies('payment_received_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $payments = Payment::all();
         $invoices = Invoice::all();
-//        dd($invoices);
+        //        dd($invoices);
         $invoices = Invoice::when($invoices, function ($query, $invoices) {
-            foreach($invoices as $invoice){
-//            dd($invoice->get_invoice_paid_amount($invoice->id),$invoice);
+            foreach ($invoices as $invoice) {
+                //            dd($invoice->get_invoice_paid_amount($invoice->id),$invoice);
                 $amount = DB::table('payments')
-//                    ->where('invoices_id', $query->first()->id)
+                    //                    ->where('invoices_id', $query->first()->id)
                     ->where('invoice_id', $invoice->id)
-                    ->where('deleted_at','=',null)
+                    ->where('deleted_at', '=', null)
                     ->sum('amount');
 
-                $query->where('total_amount', '>' ,$amount);
-//                dd($invoice->get_invoice_paid_amount($invoice->id),$invoice,$amount);
+                $query->where('total_amount', '>', $amount);
+                //                dd($invoice->get_invoice_paid_amount($invoice->id),$invoice,$amount);
             }
-                return $query;
-//                dd($query);
+            return $query;
+            //                dd($query);
         })
-            ->whereNotIn('status',['waiting_approval','cancelled','rejected'])
+            ->whereNotIn('status', ['waiting_approval', 'cancelled', 'rejected'])
             ->get();
-//            dd($invoices);
-        return view('finance::admin.paymentReceived.index',compact('payments','invoices'));
+        //            dd($invoices);
+        return view('finance::admin.paymentReceived.index', compact('payments', 'invoices'));
     }
 
     public function create_by_invoice(Request $request)
@@ -63,13 +63,13 @@ class PaymentReceivedController extends Controller
 
         //dd($request->all());
         $invoice_id         = $request->invoice_id;
-        return redirect()->route('finance.admin.payment_received.create',$invoice_id);
-//        $transaction_id     = 'trans-'.substr(time(),-6);           //trans + time function to be sure this num is unique
-//        $accounts           = Account::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
-//        $transactions       = Transaction::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
-//        $payment_methods    = PaymentMethod::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        return redirect()->route('finance.admin.payment_received.create', $invoice_id);
+        //        $transaction_id     = 'trans-'.substr(time(),-6);           //trans + time function to be sure this num is unique
+        //        $accounts           = Account::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        //        $transactions       = Transaction::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        //        $payment_methods    = PaymentMethod::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-//        return view('finance::admin.paymentReceived.create',compact('accounts','transactions','payment_methods','invoice_id','transaction_id'));
+        //        return view('finance::admin.paymentReceived.create',compact('accounts','transactions','payment_methods','invoice_id','transaction_id'));
     }
     /**
      * Show the form for creating a new resource.
@@ -78,20 +78,20 @@ class PaymentReceivedController extends Controller
      */
     public function create($id)
     {
-//        abort_if(Gate::denies('payment_received_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        $invoice = Invoice::whereNotIn('status',['waiting_approval','cancelled','rejected'])->findOrFail($id);
-//        $invoice = Invoice::whereNotIn('status',['waiting_approval','cancelled','rejected'])->where('id',$id)->get();
+        //        abort_if(Gate::denies('payment_received_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        $invoice = Invoice::whereNotIn('status', ['waiting_approval', 'cancelled', 'rejected'])->findOrFail($id);
+        //        $invoice = Invoice::whereNotIn('status',['waiting_approval','cancelled','rejected'])->where('id',$id)->get();
 
         $invoice_id         = $id;
-        $transaction_id     = substr(time(),-6);           //trans + time function to be sure this num is unique
+        $transaction_id     = substr(time(), -6);           //trans + time function to be sure this num is unique
         $accounts           = Account::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
         $payment_methods    = PaymentMethod::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-//        $transactions       = Transaction::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        //        $transactions       = Transaction::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-//        dd($accounts,$transactions);
+        //        dd($accounts,$transactions);
 
-        return view('finance::admin.paymentReceived.create',compact('accounts','payment_methods','invoice_id','transaction_id'));
+        return view('finance::admin.paymentReceived.create', compact('accounts', 'payment_methods', 'invoice_id', 'transaction_id'));
     }
 
     /**
@@ -109,18 +109,16 @@ class PaymentReceivedController extends Controller
             //  validate form data
             $validator = Validator::make($request->all(), [
 
-                'transaction_id'    => ['required','numeric','unique:payments,transaction_id'],
+                'transaction_id'    => ['required', 'numeric', 'unique:payments,transaction_id'],
                 'invoice_id'        => ['required', 'exists:invoices,id'],
-    //            'payer_email'       => ['required', 'email'],
+                //            'payer_email'       => ['required', 'email'],
                 'payment_method'    => ['required', 'exists:payment_methods,id'],
                 'amount'            => ['required', 'numeric'],
-                'notes'             => ['nullable', 'min:3','max:1000'],
+                'notes'             => ['nullable', 'min:3', 'max:1000'],
                 'payment_date'      => ['required', 'date_format:' . config('panel.date_format')],
                 'account_id'        => ['required', 'exists:accounts,id'],
 
-            ],[
-
-            ]);
+            ], []);
 
             if($validator->fails()) {
                 return redirect()->back()->withErrors($validator)->withInput();
@@ -130,7 +128,7 @@ class PaymentReceivedController extends Controller
             $amounts = $this->total_amount($invoice->id);
             $amounts += $request->amount;
 
-            if (($invoice->total_amount - $amounts) < 0){
+            if (($invoice->total_amount - $amounts) < 0) {
                 $flashMsg = flash(trans('cruds.messages.payment_amounts_more_invoice_amount'), 'danger');
 
                 return redirect()->back()->with($flashMsg)->withInput();
@@ -239,8 +237,7 @@ class PaymentReceivedController extends Controller
             throw $e;
         }
 
-//        return redirect()->route('finance.admin.payment_received.index');
-
+        return redirect()->route('finance.admin.payment_received.index');
     }
 
     /**
@@ -259,8 +256,8 @@ class PaymentReceivedController extends Controller
         $amounts            = $this->total_amount($payment->invoice_id);
 
 
-        return view('finance::admin.paymentReceived.SHOW',compact('payment','amounts'));
-//        return view('finance::admin.paymentReceived.SHOW',compact('payment','accounts','payment_methods','amounts'));
+        return view('finance::admin.paymentReceived.SHOW', compact('payment', 'amounts'));
+        //        return view('finance::admin.paymentReceived.SHOW',compact('payment','accounts','payment_methods','amounts'));
     }
 
     /**
@@ -280,12 +277,12 @@ class PaymentReceivedController extends Controller
         $accounts           = Account::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
         $payment_methods    = PaymentMethod::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
         $amounts            = $this->total_amount($payment->invoice_id);
-//        $transactions       = Transaction::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        //        $transactions       = Transaction::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
 
 
         //dd($payment->invoice);
 
-        return view('finance::admin.paymentReceived.edit',compact('payment','accounts','payment_methods','amounts'));
+        return view('finance::admin.paymentReceived.edit', compact('payment', 'accounts', 'payment_methods', 'amounts'));
     }
 
     /**
@@ -305,18 +302,18 @@ class PaymentReceivedController extends Controller
             //  validate form data
             $validator = Validator::make($request->all(), [
 
-//                'transaction_id'    => ['required','numeric','unique:payments,transaction_id'],
-//                'invoice_id'        => ['required', 'exists:invoices,id'],
+                //                'transaction_id'    => ['required','numeric','unique:payments,transaction_id'],
+                //                'invoice_id'        => ['required', 'exists:invoices,id'],
                 //            'payer_email'       => ['required', 'email'],
                 'payment_method'    => ['required', 'exists:payment_methods,id'],
                 'amount'            => ['required', 'numeric'],
                 'payment_date'      => ['required', 'date_format:' . config('panel.date_format')],
-                'notes'             => ['nullable', 'min:3','max:1000'],
-//                'account_id'        => ['required', 'exists:accounts,id'],
+                'notes'             => ['nullable', 'min:3', 'max:1000'],
+                //                'account_id'        => ['required', 'exists:accounts,id'],
 
-            ],[]);
+            ], []);
 
-            if($validator->fails()) {
+            if ($validator->fails()) {
                 return redirect()->back()->withErrors($validator)->withInput();
             }
 
@@ -328,7 +325,7 @@ class PaymentReceivedController extends Controller
             $amounts -= $payment->amount;
             $amounts += $request->amount;
 
-            if (($invoice->total_amount - $amounts) < 0){
+            if (($invoice->total_amount - $amounts) < 0) {
                 $flashMsg = flash(trans('cruds.messages.payment_amounts_more_invoice_amount'), 'danger');
 
                 return redirect()->back()->with($flashMsg)->withInput();
@@ -345,13 +342,13 @@ class PaymentReceivedController extends Controller
 
             //update payment
             $payment->update([
-//                'transaction_id'    => $request->transaction_id,
-//                'invoice_id'        => $request->invoice_id,
+                //                'transaction_id'    => $request->transaction_id,
+                //                'invoice_id'        => $request->invoice_id,
                 'payment_method'    => $request->payment_method,
                 'amount'            => $request->amount,
                 'payment_date'      => $request->payment_date,
                 'notes'             => $request->notes,
-//                'account_id'        => $request->account_id,
+                //                'account_id'        => $request->account_id,
                 'paid_by'           => auth()->user()->id,
             ]);
 
@@ -431,7 +428,7 @@ class PaymentReceivedController extends Controller
      */
     public function destroy($id)
     {
-//        abort_if(Gate::denies('payment_received_delete'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
+        //        abort_if(Gate::denies('payment_received_delete'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
 
         try {
             // Begin a transaction
@@ -450,6 +447,10 @@ class PaymentReceivedController extends Controller
 
             $payment->delete();
 
+            Transaction::where('payment_id', $id)->delete();
+            // Commit the transaction
+            DB::commit();
+        } catch (\Exception $e) {
             Transaction::where('payment_id',$id)->delete();
 
             // Notify User
@@ -518,16 +519,14 @@ class PaymentReceivedController extends Controller
     public function massDestroy(Request $request)
     {
         //        abort_if(Gate::denies('payment_received_delete'), Response::HTTP_FORBIDDEN, trans('global.forbidden_page'));
-//        dd($request->all());
+        //        dd($request->all());
         //  validate form data
         $validator = Validator::make($request->all(), [
             'ids'   => 'required|array',
             'ids.*' => 'exists:payments,id',
-        ],[
+        ], []);
 
-        ]);
-
-        if($validator->fails()) {
+        if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
@@ -612,7 +611,7 @@ class PaymentReceivedController extends Controller
             }
         }
 
-//        Payment::whereIn('id', request('ids'))->delete();
+        //        Payment::whereIn('id', request('ids'))->delete();
 
         return response(null, Response::HTTP_NO_CONTENT);
     }
@@ -635,17 +634,16 @@ class PaymentReceivedController extends Controller
         ];
 
         $view = 'finance::admin.paymentReceived.payment_received_pdf';
-//        $this->download_pdf($view,$compact,$title);
-        $this->stream_pdf($view,$compact,$title);
+        //        $this->download_pdf($view,$compact,$title);
+        $this->stream_pdf($view, $compact, $title);
     }
 
     public function total_amount($invoice_id)
     {
-        $payments = Payment::where('invoice_id',$invoice_id)->where('deleted_at','=',null)->get();
+        $payments = Payment::where('invoice_id', $invoice_id)->where('deleted_at', '=', null)->get();
         $amounts = 0;
 
-        foreach ($payments as $payment)
-        {
+        foreach ($payments as $payment) {
             $amounts += $payment->amount;
         }
 
