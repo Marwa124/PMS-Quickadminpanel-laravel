@@ -27,6 +27,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
     Route::get('settings/email', 'SettingController@show_email')->name('admin.settings.email.index');
     Route::get('settings/sms', 'SettingController@show_sms')->name('admin.settings.sms.index');
     Route::get('settings/invoice', 'SettingController@show_invoice')->name('admin.settings.invoice.index');
+    Route::get('settings/estimate', 'SettingController@show_estimate')->name('admin.settings.estimate.index');
+
+    Route::get('settings/proposal', 'SettingController@show_proposal')->name('admin.settings.proposal.index');
+    Route::get('settings/purchase', 'SettingController@show_purchase')->name('admin.settings.purchase.index');
+    Route::get('settings/tickets', 'SettingController@show_tickets')->name('admin.settings.tickets.index');
 
 
     Route::post('save_details', 'SettingController@save_details')->name('admin.details.store');
@@ -46,4 +51,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
     Route::post('test-sms', 'SettingController@test_sms')->name('admin.sms.test');
     Route::post('update_templates', 'SettingController@update_templates')->name('admin.update.templates');
     Route::post('update_invoice_settings', 'SettingController@update_invoice')->name('admin.invoice.settings.store');
+
+
+    Route::post('update_estimate_settings', 'SettingController@update_estimate')->name('admin.estimate.settings.store');
+
+    Route::post('update_proposal_settings', 'SettingController@update_proposal')->name('admin.proposal.settings.store');
+    Route::post('update_purchase_settings', 'SettingController@update_purchase')->name('admin.purchase.settings.store');
+    Route::post('update_tickets_settings', 'SettingController@update_tickets')->name('admin.tickets.settings.store');
 });

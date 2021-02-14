@@ -51,6 +51,30 @@
         </a>
 
 
+        <a href="{{ route('admin.settings.estimate.index') }}"
+           class="nav-link {{ request()->is('admin/settings/estimate') ? 'active' : ''}}"        
+           aria-selected="true"><i class="fa fa-fw fa-file"></i>@lang('settings.estimate_settings')   
+       
+       </a>
+        <a href="{{ route('admin.settings.proposal.index') }}"
+           class="nav-link {{ request()->is('admin/settings/proposal') ? 'active' : ''}}"        
+           aria-selected="true"><i class="fa fa-fw fa-leaf"></i>@lang('settings.proposal_settings')   
+       
+        </a>
+        <a href="{{ route('admin.settings.purchase.index') }}"
+           class="nav-link {{ request()->is('admin/settings/purchase') ? 'active' : ''}}"        
+           aria-selected="true"><i class="fa fa-fw fa-leaf"></i>@lang('settings.purchase_settings')   
+       
+        </a>
+
+
+        <a href="{{ route('admin.settings.tickets.index') }}"
+        class="nav-link {{ request()->is('admin/settings/tickets') ? 'active' : ''}}"        
+        aria-selected="true"><i class="fa fa-fw fa-leaf"></i>@lang('settings.tickets_settings')   
+    
+     </a>
+
+
 
 
 

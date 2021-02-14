@@ -6,12 +6,16 @@ use Gate;
 use App\Mail\TestMail;
 use App\Models\Config;
 use App\Models\Locale;
+use App\Models\Statue;
 use App\Models\Country;
 use App\Models\Currency;
 use App\Models\Language;
+use App\Models\Priority;
 use Illuminate\Http\Request;
 use App\Models\EmailTemplate;
+use Modules\Sales\Entities\Type;
 use Illuminate\Routing\Controller;
+use Modules\HR\Entities\Department;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Contracts\Support\Renderable;
@@ -35,9 +39,7 @@ class SettingController extends Controller
         return view(
             'setting::settings.company_details',
             compact(
-                'countries',
-
-
+                'countries'
             )
         );
     }
@@ -168,7 +170,7 @@ class SettingController extends Controller
                 'timezones',
                 'taxes',
                 'default_tax',
-                'decimal',
+                'decimal'
 
 
             )
@@ -1035,6 +1037,355 @@ class SettingController extends Controller
 
             return back()->with(flash(trans('settings.invoice_updated'), 'success'))->with('pill', 'invoice');
         } catch (\Exception $e) {
+
+            return back()->with(flash('something went wrong', 'danger'));
         }
+    }
+
+
+    public function show_estimate()
+    {
+        return view('setting::settings.estimate');
+    }
+
+
+
+
+
+
+
+    public function update_estimate(Request $request)
+    {
+
+
+        try {
+
+            $validator = Validator::make($request->all(), [
+                'estimate_prefix' => 'required|string',
+                'estimate_start_no' => 'required|integer',
+
+                'estimate_number_format' => 'sometimes|nullable|string',
+
+                'increment_estimate_number' => 'sometimes|nullable|in:yes,no',
+                'show_estimate_tax' => 'sometimes|nullable|in:yes,no',
+                'estimate_terms' => 'sometimes|nullable|string',
+                'estimate_footer' => 'sometimes|nullable|string',
+            ], [
+
+
+                'estimate_prefix.required'         => trans('settings.estimate_prefix_required'),
+                'estimate_prefix.string'           => trans('settings.estimate_prefix_string'),
+
+                'estimate_start_no.required'       => trans('settings.estimate_start_no_required'),
+                'estimate_start_no.integer'        => trans('settings.estimate_start_no_integer'),
+
+                'estimate_number_format.string'    => trans('settings.estimate_number_format_string'),
+
+                'increment_estimate_number.in'     => trans('settings.increment_estimate_number_in'),
+
+                'show_estimate_tax.in'                => trans('settings.show_item_tax_in'),
+
+                'estimate_terms.string'            => trans('settings.estimate_terms_string'),
+                'estimate_footer.string'           => trans('settings.estimate_footer_string'),
+
+
+
+            ]);
+
+
+            if ($validator->fails()) {
+                return back()->with(flash($validator->errors()->all()[0], 'danger'));
+            }
+
+
+            Config::updateorCreate(
+                ['key' => 'estimate_prefix'],
+                ['value' => request('estimate_prefix')]
+            );
+
+
+            Config::updateorCreate(
+                ['key' => 'estimate_start_no'],
+                ['value' => request('estimate_start_no')]
+            );
+
+            Config::updateorCreate(
+                ['key' => 'estimate_number_format'],
+                ['value' => request('estimate_number_format')]
+            );
+
+
+
+            Config::updateorCreate(
+                ['key' => 'increment_estimate_number'],
+                ['value' => request('increment_estimate_number')]
+            );
+
+            Config::updateorCreate(
+                ['key' => 'show_estimate_tax'],
+                ['value' => request('show_estimate_tax')]
+            );
+
+
+            Config::updateorCreate(
+                ['key' => 'estimate_terms'],
+                ['value' => request('estimate_terms')]
+            );
+            Config::updateorCreate(
+                ['key' => 'estimate_footer'],
+                ['value' => request('estimate_footer')]
+            );
+
+            return back()->with(flash(trans('settings.estimate_updated'), 'success'));
+        } catch (\Exception $e) {
+
+            return back()->with(flash('something went wrong', 'danger'));
+        }
+    }
+
+
+
+
+
+
+    public function show_proposal()
+    {
+        return view('setting::settings.proposal');
+    }
+
+
+
+
+
+
+
+    public function update_proposal(Request $request)
+    {
+
+
+        try {
+
+            $validator = Validator::make($request->all(), [
+                'proposal_prefix' => 'required|string',
+                'proposal_start_no' => 'required|integer',
+
+                'proposal_number_format' => 'sometimes|nullable|string',
+
+                'increment_proposal_number' => 'sometimes|nullable|in:yes,no',
+                'show_proposal_tax' => 'sometimes|nullable|in:yes,no',
+                'proposal_terms' => 'sometimes|nullable|string',
+                'proposal_footer' => 'sometimes|nullable|string',
+            ], [
+
+
+                'proposal_prefix.required'         => trans('settings.proposal_prefix_required'),
+                'proposal_prefix.string'           => trans('settings.proposal_prefix_string'),
+
+                'proposal_start_no.required'       => trans('settings.proposal_start_no_required'),
+                'proposal_start_no.integer'        => trans('settings.proposal_start_no_integer'),
+
+                'proposal_number_format.string'    => trans('settings.proposal_number_format_string'),
+
+                'increment_proposal_number.in'     => trans('settings.increment_proposal_number_in'),
+
+                'show_proposal_tax.in'             => trans('settings.show_item_tax_in'),
+
+                'proposal_terms.string'            => trans('settings.proposal_terms_string'),
+                'proposal_footer.string'           => trans('settings.proposal_footer_string'),
+
+
+
+            ]);
+
+
+            if ($validator->fails()) {
+                return back()->with(flash($validator->errors()->all()[0], 'danger'));
+            }
+
+
+            Config::updateorCreate(
+                ['key' => 'proposal_prefix'],
+                ['value' => request('proposal_prefix')]
+            );
+
+
+            Config::updateorCreate(
+                ['key' => 'proposal_start_no'],
+                ['value' => request('proposal_start_no')]
+            );
+
+            Config::updateorCreate(
+                ['key' => 'proposal_number_format'],
+                ['value' => request('proposal_number_format')]
+            );
+
+
+
+            Config::updateorCreate(
+                ['key' => 'increment_proposal_number'],
+                ['value' => request('increment_proposal_number')]
+            );
+
+            Config::updateorCreate(
+                ['key' => 'show_proposal_tax'],
+                ['value' => request('show_proposal_tax')]
+            );
+
+
+            Config::updateorCreate(
+                ['key' => 'proposal_terms'],
+                ['value' => request('proposal_terms')]
+            );
+            Config::updateorCreate(
+                ['key' => 'proposal_footer'],
+                ['value' => request('proposal_footer')]
+            );
+
+            return back()->with(flash(trans('settings.proposal_updated'), 'success'));
+        } catch (\Exception $e) {
+
+            return back()->with(flash('something went wrong', 'danger'));
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+    public function show_purchase()
+    {
+        return view('setting::settings.purchase');
+    }
+
+
+
+
+
+
+
+    public function update_purchase(Request $request)
+    {
+
+
+        try {
+
+            $validator = Validator::make($request->all(), [
+                'purchase_prefix'             => 'required|string',
+                'purchase_start_no'           => 'required|string',
+
+                'purchase_number_format'      => 'sometimes|nullable|string',
+                'return_stock_prefix'         => 'required|string',
+                'return_stock_number_format'  => 'required|string',
+
+                'return_stock_start_no'      => 'sometimes|nullable|string',
+
+                'purchase_notes' => 'sometimes|nullable|string',
+            ], [
+
+
+                'purchase_perfix.required'         => trans('settings.purchase_perfix_required'),
+                'purchase_perfix.string'           => trans('settings.purchase_perfix_string'),
+
+                'purchase_start_no.required'       => trans('settings.purchase_start_no_required'),
+                'purchase_start_no.string'        => trans('settings.purchase_start_no_string'),
+
+                'purchase_number_format.string'    => trans('settings.purchase_number_format_string'),
+
+
+
+                'return_stock_prefix.required'         => trans('settings.return_stock_prefix_required'),
+                'return_stock_prefix.string'           => trans('settings.return_stock_prefix_string'),
+
+                'return_stock_start_no.required'       => trans('settings.return_stock_start_no_required'),
+                'return_stock_start_no.integer'        => trans('settings.return_stock_start_no_integer'),
+
+                'return_stock_number_format.string'    => trans('settings.return_stock_number_format_string'),
+
+
+
+
+                '.string'           => trans('settings.purchase_notes_string'),
+
+
+
+            ]);
+
+
+            if ($validator->fails()) {
+                return back()->withInput()->with(flash($validator->errors()->all()[0], 'danger'));
+            }
+
+
+
+            Config::updateorCreate(
+                ['key' => 'purchase_prefix'],
+                ['value' => request('purchase_prefix')]
+            );
+
+
+            Config::updateorCreate(
+                ['key' => 'purchase_number_format'],
+                ['value' => request('purchase_number_format')]
+            );
+
+            Config::updateorCreate(
+                ['key' => 'purchase_start_no'],
+                ['value' => request('purchase_start_no')]
+            );
+
+
+
+
+            Config::updateorCreate(
+                ['key' => 'return_stock_prefix'],
+                ['value' => request('return_stock_prefix')]
+            );
+
+
+            Config::updateorCreate(
+                ['key' => 'return_stock_number_format'],
+                ['value' => request('return_stock_number_format')]
+            );
+
+            Config::updateorCreate(
+                ['key' => 'return_stock_start_no'],
+                ['value' => request('return_stock_start_no')]
+            );
+
+            Config::updateorCreate(
+                ['key' => 'purchase_notes'],
+                ['value' => request('purchase_notes')]
+            );
+
+            return back()->with(flash(trans('settings.purchase_updated'), 'success'));
+        } catch (\Exception $e) {
+
+            return back()->withInput()->with(flash('something went wrong', 'danger'));
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+    public function show_tickets()
+    {
+        $departments         = Department::all();
+        $status              = Statue::all();
+        $priorities          = Priority::all();
+        // $types               = Type::all();
+
+        return view('setting::settings.tickets', compact('departments', 'status', 'priorities'));
     }
 }

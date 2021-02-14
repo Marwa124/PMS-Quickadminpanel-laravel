@@ -374,6 +374,8 @@ return [
     'purchase'  => 'Purchase',
     'amount_to_words_lowercase'  => 'Amount to words lowercase',
     'allow_customer_edit_amount'  => 'Allow customer edit amount',
+
+
     'allow_customer_edit_amount_help'  => 'Allow customer edit amount help',
     'increment_invoice_number' => 'Increment invoice number',
     'show_item_tax'  => 'Show item tax',
@@ -419,6 +421,114 @@ return [
 
 
 
+
+    'estimate_prefix_required'           => 'Estimate Perfix Is Required',
+    'estimate_prefix_string'             => 'Estimate Perfix Should Be String',
+
+
+    'estimate_start_no_required'         => 'Estimate Start Is Required',
+    'estimate_start_no_integer'          => 'Estimate Start Should Be Number',
+
+    'estimate_number_format_string'      => 'Estimate Format Should Be String',
+    'increment_estimate_number_in'       => 'Increment Estimate Number Isn\'t Valid',
+
+    'show_item_tax_in'                   => 'Show Item Tax Isn\'t Valid',
+
+    'default_terms_string'               => 'Default Terms Should Be String',
+    'estimate_footer_string'             => 'Estimate Footer Should Be String',
+
+    'estimate_updated'                   => 'Estimate Updated Successfully',
+
+
+    'estimate_settings'                 => 'Estimate Settings',
+    'estimate_prefix'                   => 'Estimate Prefix',
+
+    'estimate_start_no'                 => 'Estimate Start No',
+    'number_format'                     => 'Number Format',
+    'estimate_terms'                    => 'Estimate Terms',
+    'show_estimate_tax'                 => 'Show Estimate Tax',
+    'estimate_footer'                   => 'Estimate Footer',
+
+
+    'proposal_settings'                 => 'Proposal Settings',
+
+
+
+    'proposal_prefix_required'           => 'Proposal Perfix Is Required',
+    'proposal_prefix_string'             => 'Proposal Perfix Should Be String',
+
+
+    'proposal_start_no_required'         => 'Proposal Start Is Required',
+    'proposal_start_no_integer'          => 'Proposal Start Should Be Number',
+
+    'proposal_number_format_string'      => 'Proposal Format Should Be String',
+    'increment_proposal_number_in'       => 'Increment Proposal Number Isn\'t Valid',
+
+    'show_item_tax_in'                   => 'Show Item Tax Isn\'t Valid',
+
+    'default_terms_string'               => 'Default Terms Should Be String',
+    'proposal_footer_string'             => 'Proposal Footer Should Be String',
+
+    'proposal_updated'                   => 'Proposal Updated Successfully',
+
+
+    'proposal_settings'                 => 'Proposal Settings',
+    'proposal_prefix'                   => 'Proposal Prefix',
+
+    'proposal_start_no'                 => 'Proposal Start No',
+    'number_format'                     => 'Number Format',
+    'proposal_terms'                    => 'Proposal Terms',
+    'show_proposal_tax'                 => 'Show Proposal Tax',
+    'proposal_footer'                   => 'Proposal Footer',
+    'increment_proposal_number' => 'Increment Proposal No',
+
+    'purchase_prefix' => 'Purchase Prefix',
+    'purchase_start_no' => 'Purchase Start No',
+    'return_stock_prefix' => 'Return Stock Prefix',
+    'return_stock_start_no' => 'Return Stock Start No',
+    'return_stock' => 'Return Stock',
+
+    'purchase_notes' => 'Purchase Notes',
+
+    'purchase_settings' => 'Purchase Settings',
+
+
+
+
+
+
+
+
+    'purchase_perfix_required'                => 'Purchase Perfix Is Required',
+    'purchase_perfix_string'                  => 'Purchase Perfix Should Be String',
+
+
+    'purchase_start_no_required'              => 'Purchase Start No Is Required',
+    'purchase_start_no_string'               => 'Purchase Start No Should Be String',
+
+    'purchase_number_format_string'           => 'Purchase Format Should Be String',
+
+
+    'purchase_notes_string'                   => 'Purchase Notes Should Be String',
+
+
+
+    'return_stock_perfix_required'                => 'return stock Perfix Is Required',
+    'return_stock_perfix_string'                  => 'return stock Perfix Should Be String',
+
+
+    'return_stock_start_no_required'              => 'return stock Start No Is Required',
+    'return_stock_start_no_string'               => 'return stock Start No Should Be String',
+
+    'return_stock_number_format_string'           => 'return stock Format Should Be String',
+
+
+
+
+    'purchase_updated'                       => 'Purchase Updated Successfully',
+    'purchase_notes_string'                  => 'Purchase Notes Should Be String',
+
+    'tickets_settings'    => 'Tickets & Leads Settings',
 
 
 
