@@ -3,7 +3,6 @@
 namespace Modules\MaterialsSuppliers\Entities;
 
 use Illuminate\Database\Eloquent\Model;
-
 class ItemPurchaseTax extends Model
 {
 

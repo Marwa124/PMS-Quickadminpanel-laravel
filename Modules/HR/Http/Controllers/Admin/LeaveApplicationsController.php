@@ -5,6 +5,7 @@ namespace Modules\HR\Http\Controllers\Admin;
 use App\Events\NewNotification;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\MediaUploadingTrait;
+use App\Mail\ProjectManagementMail;
 use Modules\HR\Entities\AccountDetail;
 // use App\Models\Notification;
 use Modules\HR\Http\Requests\Destroy\MassDestroyLeaveApplicationRequest;
@@ -271,17 +272,61 @@ class LeaveApplicationsController extends Controller
         /* !!!: Notification (db, mail) via Laravel $user->notify() */
 
         $leave_category = LeaveCategory::where('id', $leaveApplication->leave_category_id)->first()->name;
-        $department_head_employee = User::find($leaveApplication->user_id)->accountDetail->designation->department->department_head()->first();
-        $board_members = Department::where('department_name', 'Board Members')->orWhere('department_name', 'CEO')->select('email')->get();
+        if(User::find($leaveApplication->user_id)->accountDetail->designation()->first())
+        {
+            $department_head_employee = User::find($leaveApplication->user_id)->accountDetail->designation->department->department_head()->first();
+            $board_members = Department::where('department_name', 'Board Members')->orWhere('department_name', 'CEO')->select('email')->get();
+        }
 
 
         setActivity('leaveApplication',$leaveApplication->id,'New Leave Application Saved','حفط طلب مغادرة جديد',$leave_category,'');
 
 
          $user = User::find(23);
-        //  $user->notify(new LeaveApplicationNotification($leaveApplication, $leave_category));
-        //  $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
-        //  event(new NewNotification($userNotify));
+         $user->notify(new LeaveApplicationNotification($leaveApplication, $leave_category));
+         $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
+         event(new NewNotification($userNotify));
+
+
+
+try {
+    
+    // send mail 
+    $sender = settings('smtp_sender_name'); $email_from = settings('smtp_email') ;
+    
+    //send mail to client 
+    $template = templates('leave_request_email'); 
+    // $message = str_replace("{REF}",$invoice->reference_no,$template->template_body); 
+    $message = str_replace("{NAME}",$user->name,$template->template_body); 
+    $message = str_replace("{LEAVE_CATEGORY}",$leave_category,$message); 
+    $message = str_replace("{START_DATE}",$leaveApplication->leave_start_date,$message); 
+    $message = str_replace("{END_DATE}",$leaveApplication->leave_end_date,$message); 
+    $message = str_replace("{REASON}",$leaveApplication->reason,$message); 
+    $message = str_replace("{APPLICATION_LINK}",route("hr.admin.leave-applications.show", $leaveApplication->id),$message); 
+    $message = str_replace("{SITE_NAME}",settings('company_name'),$message);
+        Mail::mailer('smtp')
+        // ->to('mabrouk@onetecgroup.com') 
+        ->to('marwa@onetecgroup.com') 
+        
+        // ->cc('mabrouk@onetecgroup.com') 
+        // ->cc('sara@onetecgroup.com') 
+        ->bcc('marwa@onetecgroup.com') 
+        ->send(new ProjectManagementMail($email_from, $sender, $template->subject, $message));
+    
+
+
+} catch(\Exception $msg ){
+    return $msg;
+}    
+        
+
+
+
+
+
+
+
+
 
         // if($department_head_employee){
         //     $department_head_employee->notify(new LeaveApplicationNotification($leaveApplication, $leave_category));

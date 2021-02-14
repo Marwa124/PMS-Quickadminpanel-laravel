@@ -29,7 +29,7 @@ class StoreLeaveApplicationRequest extends FormRequest
             ],
             'leave_type'        => [
                 'required',
-                'in:single_day, multi_days, hours'
+                'in:single_day,multi_days,hours'
             ],
             'hours'             => [
                 'integer',

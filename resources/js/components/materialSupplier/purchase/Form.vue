@@ -358,8 +358,6 @@
                     taxRate_total: {},
                     total: 0,
 
-                    // totalTaxForm: 0,
-
                     removedTax: '',
                     AddedTax: ''
                 }),
@@ -537,11 +535,8 @@
                     )
 
                 
-            let numberFormat = parseFloat(this.form.adjustment);
-            console.log(typeof numberFormat);
-            //    this.total = parseFloat(this.form.sub_total + this.totalTaxAdded - this.form.discount_total) 
-               this.total = parseFloat((this.form.sub_total + this.totalTaxAdded + numberFormat + this.form.discount_total).toFixed(2))
-
+                let numberFormat = parseFloat(this.form.adjustment);
+                this.total = parseFloat((this.form.sub_total + this.totalTaxAdded + numberFormat + this.form.discount_total).toFixed(2))
                 //////////////// Total Tax /////////////////////////
 
             },
@@ -568,21 +563,13 @@
                         form.sub_total = result
 
 
-                        // form.discount_total = -parseFloat((form.discount_percent * subTotal * (1/100)).toFixed(2))
-
-                if (form.discount_type == "after_tax") {
-                    form.discount_total = -parseFloat((form.discount_percent * (subTotal + this.total) * (1/100)).toFixed(2))
-                }else {
-                    form.discount_total = -parseFloat((form.discount_percent * subTotal * (1/100)).toFixed(2))
-                }
+                        if (form.discount_type == "after_tax") {
+                            form.discount_total = -parseFloat((form.discount_percent * (subTotal + this.total) * (1/100)).toFixed(2))
+                        }else {
+                            form.discount_total = -parseFloat((form.discount_percent * subTotal * (1/100)).toFixed(2))
+                        }
                         this.calculateTotalTaxes()
 
-    //             console.log(this.totalTaxAdded, this.total);
-
-    // this.total = form.sub_total + parseFloat(this.totalTaxAdded) + parseFloat(form.adjustment) - form.discount_total
-
-// form.total = form.sub_total + form.totalTaxForm - form.discount_total + form.adjustment
-// console.log(form.sub_total , form.totalTaxForm , form.discount_total , form.adjustment);
                     }
                 },
                 deep: true

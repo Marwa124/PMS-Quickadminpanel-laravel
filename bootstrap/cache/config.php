@@ -119,9 +119,17 @@
         35 => 'stock_category_delete',
         36 => 'stock_category_edit',
         37 => 'stock_category_create',
-        38 => 'stock_create',
-        39 => 'stock_edit',
-        40 => 'stock_delete',
+        38 => 'transfer_pdf',
+        39 => 'balance_sheet_pdf',
+        40 => 'stock_create',
+        41 => 'stock_edit',
+        42 => 'stock_delete',
+        43 => 'manage_stock',
+        44 => 'assign_stocks',
+        45 => 'assign_stocks_create',
+        46 => 'assign_stocks_edit',
+        47 => 'assign_stocks_delete',
+        48 => 'transaction_access',
       ),
       'penalty_category' => 
       array (
@@ -505,13 +513,13 @@
         4 => 'purchase_payment_edit',
         5 => 'purchase_payment_delete',
       ),
-      'purchase' => 
+      'payment_received' => 
       array (
-        0 => 'purchase_access',
-        1 => 'purchase_create',
-        2 => 'purchase_edit',
-        3 => 'purchase_show',
-        4 => 'purchase_delete',
+        0 => 'payment_received_access',
+        1 => 'payment_received_create',
+        2 => 'payment_received_edit',
+        3 => 'payment_received_show',
+        4 => 'payment_received_delete',
       ),
       'time_sheet' => 
       array (
@@ -537,7 +545,7 @@
     'debug' => true,
     'url' => 'http://01-test-permission-pms.test',
     'asset_url' => NULL,
-    'timezone' => 'Africa/Cairo',
+    'timezone' => 'Pacific/Midway',
     'locale' => 'en',
     'fallback_locale' => 'en',
     'faker_locale' => 'en_US',
@@ -796,7 +804,7 @@
       array (
         'driver' => 'sqlite',
         'url' => NULL,
-        'database' => 'pms_server_beta1',
+        'database' => 'new_pms_lara',
         'prefix' => '',
         'foreign_key_constraints' => true,
       ),
@@ -806,7 +814,7 @@
         'url' => NULL,
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'pms_server_beta1',
+        'database' => 'new_pms_lara',
         'username' => 'root',
         'password' => '',
         'unix_socket' => '',
@@ -826,7 +834,7 @@
         'url' => NULL,
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'pms_server_beta1',
+        'database' => 'new_pms_lara',
         'username' => 'root',
         'password' => '',
         'charset' => 'utf8',
@@ -841,7 +849,7 @@
         'url' => NULL,
         'host' => '127.0.0.1',
         'port' => '3306',
-        'database' => 'pms_server_beta1',
+        'database' => 'new_pms_lara',
         'username' => 'root',
         'password' => '',
         'charset' => 'utf8',
@@ -903,6 +911,7 @@
   array (
     'status' => 
     array (
+      'sent' => '<span class="btn btn-xs btn-success">Sent</span>',
       'cancelled' => '<span class="btn btn-xs btn-danger">Cancelled</span>',
       'unpaid' => '<span class="btn btn-xs btn-danger">Unpaid</span>',
       'paid' => '<span class="btn btn-xs btn-success">Paid</span>',
@@ -1170,17 +1179,35 @@
   ),
   'mail' => 
   array (
-    'default' => 'smtp',
+    'default' => '',
     'mailers' => 
     array (
       'smtp' => 
       array (
         'transport' => 'smtp',
-        'host' => 'smtp.gmail.com',
+        'host' => 'mail.onetecgroup.com',
+        'port' => '465',
+        'encryption' => 'ssl',
+        'username' => 'admin@onetecgroup.com',
+        'password' => 'm7mdsdfcz',
+      ),
+      'mailgun' => 
+      array (
+        'transport' => 'smtp',
+        'host' => 'smtp.mailgun.org',
         'port' => '587',
         'encryption' => 'tls',
-        'username' => 'mabrouk@onetecgroup.com',
-        'password' => '12345',
+        'username' => 'postmaster@sandboxe31bb8c7d4b44782a216a3ee62328fc9.mailgun.org',
+        'password' => '31d7a041ba3baf4f4fb9b51eacd23fac-4de08e90-2044ce92',
+      ),
+      'postmark' => 
+      array (
+        'transport' => 'smtp',
+        'host' => '',
+        'port' => '',
+        'encryption' => '',
+        'username' => '',
+        'password' => '',
       ),
       'ses' => 
       array (
@@ -1203,8 +1230,8 @@
     ),
     'from' => 
     array (
-      'address' => 'mabrouk@onetecgroup.com',
-      'name' => 'Laravel',
+      'address' => 'info@onetecgroup.com',
+      'name' => 'mohamed',
     ),
     'markdown' => 
     array (
@@ -1747,12 +1774,6 @@
   ),
   'services' => 
   array (
-    'mailgun' => 
-    array (
-      'domain' => NULL,
-      'secret' => NULL,
-      'endpoint' => 'api.mailgun.net',
-    ),
     'postmark' => 
     array (
       'token' => NULL,
@@ -1762,6 +1783,12 @@
       'key' => '',
       'secret' => '',
       'region' => 'us-east-1',
+    ),
+    'plivo' => 
+    array (
+      'auth_id' => NULL,
+      'auth_token' => NULL,
+      'from_number' => NULL,
     ),
   ),
   'session' => 
@@ -1785,6 +1812,196 @@
     'secure' => NULL,
     'http_only' => true,
     'same_site' => 'lax',
+  ),
+  'sms' => 
+  array (
+    'triggers' => 
+    array (
+      'sms_invoice_reminder' => 
+      array (
+        'merge_fields' => 
+        array (
+          0 => '{full_name}',
+          1 => '{client_name}',
+          2 => '{contact_email}',
+          3 => '{invoice_link}',
+          4 => '{invoice_ref}',
+          5 => '{invoice_date}',
+          6 => '{invoice_due_date}',
+          7 => '{invoice_status}',
+          8 => '{invoice_subtotal}',
+          9 => '{invoice_total}',
+          10 => '{site_name}',
+        ),
+        'label' => 'Invoice Reminder Notice',
+        'info' => 'Send SMS when invoice reminder notice sent when send invoice to client primary contact.',
+      ),
+      'sms_invoice_overdue' => 
+      array (
+        'merge_fields' => 
+        array (
+          0 => '{full_name}',
+          1 => '{client_name}',
+          2 => '{contact_email}',
+          3 => '{invoice_link}',
+          4 => '{invoice_ref}',
+          5 => '{invoice_date}',
+          6 => '{invoice_due_date}',
+          7 => '{invoice_status}',
+          8 => '{invoice_subtotal}',
+          9 => '{invoice_total}',
+          10 => '{site_name}',
+        ),
+        'label' => 'Invoice Overdue Notice',
+        'info' => 'Send SMS when invoice overdue notice  sent to client primary contact.',
+      ),
+      'sms_payment_recorded' => 
+      array (
+        'merge_fields' => 
+        array (
+          0 => '{full_name}',
+          1 => '{client_name}',
+          2 => '{contact_email}',
+          3 => '{invoice_link}',
+          4 => '{invoice_ref}',
+          5 => '{invoice_date}',
+          6 => '{invoice_due_date}',
+          7 => '{invoice_status}',
+          8 => '{invoice_subtotal}',
+          9 => '{invoice_total}',
+          10 => '{site_name}',
+          11 => '{payment_amount}',
+          12 => '{payment_date}',
+        ),
+        'label' => 'Invoice Payment Recorded',
+        'info' => 'Send SMS when invoice payment is saved.',
+      ),
+      'sms_estimate_exp_reminder' => 
+      array (
+        'merge_fields' => 
+        array (
+          0 => '{full_name}',
+          1 => '{client_name}',
+          2 => '{contact_email}',
+          3 => '{estimate_link}',
+          4 => '{estimate_ref}',
+          5 => '{estimate_date}',
+          6 => '{estimate_due_date}',
+          7 => '{estimate_status}',
+          8 => '{estimate_subtotal}',
+          9 => '{estimate_total}',
+          10 => '{site_name}',
+        ),
+        'label' => 'Estimate Expiration Reminder',
+        'info' => 'Send SMS when expiration Estimate  sent to client primary contact.',
+      ),
+      'sms_proposal_exp_reminder' => 
+      array (
+        'merge_fields' => 
+        array (
+          0 => '{proposal_ref}',
+          1 => '{proposal_link}',
+          2 => '{proposal_date}',
+          3 => '{proposal_due_date}',
+          4 => '{proposal_status}',
+          5 => '{proposal_subtotal}',
+          6 => '{proposal_total}',
+          7 => '{proposal_related_to}',
+          8 => '{site_name}',
+        ),
+        'label' => 'Proposal Expiration Reminder',
+        'info' => 'Send SMS when expiration reminder send to Related Proposals.',
+      ),
+      'sms_purchase_confirmation' => 
+      array (
+        'merge_fields' => 
+        array (
+          0 => '{supplier_name}',
+          1 => '{supplier_email}',
+          2 => '{purchase_link}',
+          3 => '{purchase_ref}',
+          4 => '{purchase_date}',
+          5 => '{purchase_due_date}',
+          6 => '{purchase_status}',
+          7 => '{purchase_subtotal}',
+          8 => '{purchase_total}',
+          9 => '{site_name}',
+        ),
+        'label' => 'Purchase Notice',
+        'info' => 'Send SMS when Purchase confirmation/update stock notice sent to ',
+        'sms_number' => true,
+      ),
+      'sms_purchase_payment_confirmation' => 
+      array (
+        'merge_fields' => 
+        array (
+          0 => '{supplier_name}',
+          1 => '{supplier_email}',
+          2 => '{purchase_link}',
+          3 => '{purchase_ref}',
+          4 => '{purchase_date}',
+          5 => '{purchase_due_date}',
+          6 => '{purchase_status}',
+          7 => '{purchase_subtotal}',
+          8 => '{purchase_total}',
+          9 => '{site_name}',
+          10 => '{payment_amount}',
+          11 => '{payment_date}',
+        ),
+        'label' => 'Purchase payment Notice',
+        'info' => 'Send SMS when Purchase payment confirmation notice sent.',
+      ),
+      'sms_return_stock' => 
+      array (
+        'merge_fields' => 
+        array (
+          0 => '{supplier_name}',
+          1 => '{supplier_email}',
+          2 => '{return_stock_link}',
+          3 => '{return_stock_ref}',
+          4 => '{return_stock_date}',
+          5 => '{return_stock_due_date}',
+          6 => '{return_stock_status}',
+          7 => '{return_stock_subtotal}',
+          8 => '{return_stock_total}',
+          9 => '{site_name}',
+        ),
+        'label' => 'Purchase Return Stock Notice',
+        'info' => 'Send SMS when Purchase return stock notice sent.',
+      ),
+      'sms_transaction_record' => 
+      array (
+        'merge_fields' => 
+        array (
+          0 => '{transaction_type}',
+          1 => '{transaction_title}',
+          2 => '{transaction_date}',
+          3 => '{transaction_amount}',
+          4 => '{transaction_account}',
+          5 => '{transaction_balance}',
+          6 => '{transaction_paid_by}',
+          7 => '{transaction_link}',
+        ),
+        'label' => 'Transaction Record expense/deposit/transfer',
+        'info' => 'Send SMS when Transaction Record expense/deposit/transfer notified for reminder.',
+        'sms_number' => true,
+      ),
+      'sms_staff_reminder' => 
+      array (
+        'merge_fields' => 
+        array (
+          0 => '{name}',
+          1 => '{reference}',
+          2 => '{reminder_description}',
+          3 => '{reminder_date}',
+          4 => '{reminder_related}',
+          5 => '{reminder_related_link}',
+          6 => '{site_name}',
+        ),
+        'label' => 'Staff Reminder',
+        'info' => 'Send SMS when staff notified for reminder.',
+      ),
+    ),
   ),
   'translation-manager' => 
   array (
