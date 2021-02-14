@@ -1810,6 +1810,8 @@ return [
             'location_helper'    => ' ',
             'description'        => 'Description',
             'description_helper' => ' ',
+            'attachment'        => 'attachment',
+            'attachment_helper' => ' ',
         ],
     ],
     'client'                 => [

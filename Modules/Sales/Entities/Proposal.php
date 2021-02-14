@@ -11,7 +11,7 @@ use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
 use App\Models\User;
 use Modules\Sales\Entities\Opportunity;
-use App\Models\Client;
+use Modules\Sales\Entities\Client;
 use App\Models\Invoice;
 use  Modules\Sales\Entities\ProposalItemTax;
 use  Modules\ProjectManagement\Entities\Activity;

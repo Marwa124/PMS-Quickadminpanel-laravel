@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Requests;
+namespace Modules\Sales\Http\Requests\Update;
 
-use App\Models\Client;
+use Modules\Sales\Entities\Client;
 use Gate;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Response;
 
-class StoreClientRequest extends FormRequest
+class UpdateClientRequest extends FormRequest
 {
     public function authorize()
     {
-        return Gate::allows('client_create');
+        return Gate::allows('client_edit');
     }
 
     public function rules()

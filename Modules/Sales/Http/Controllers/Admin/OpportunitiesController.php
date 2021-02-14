@@ -17,7 +17,7 @@ use Spatie\Permission\Models\Permission;
 use Modules\HR\Entities\AccountDetail;
 use Modules\ProjectManagement\Entities\TaskAttachment;
 use App\Models\PermissionGroup;
-use App\Models\Client;
+use Modules\Sales\Entities\Client;
 use Gate;
 use Illuminate\Http\Request;
 use Spatie\MediaLibrary\Models\Media;
@@ -189,6 +189,22 @@ class OpportunitiesController extends Controller
      
     }
 
+
+    public function destroymeeting(Meeting $meeting)
+    { 
+        // dd($meeting);
+        try{
+            // abort_if(Gate::denies('meeting_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+            $meeting->delete();
+            return back()->with(flash('Meeting add successfully', 'success'));
+        } catch (\Exception $e) {
+            // dd($e);
+            return redirect()->back()->with(['message' => 'Something wrong happen','alert-type' => 'error']);
+        }
+    }
+
+
     public function storeattachment(StoreTaskAttachmentRequest $request,Opportunity $opportunity)
     {
          DB::beginTransaction();
@@ -208,8 +224,35 @@ class OpportunitiesController extends Controller
 
 
         } catch (\Exception $e) {
-            dd($e);
+            
             return redirect()->back()->with(['message' => 'Something wrong happen','alert-type' => 'error']);
         }
+    }
+
+    // attachment opperation
+    public function downloadMedia($id)
+    {
+        $media = Media::findOrFail($id);
+        return response()->download($media->getPath(), $media->file_name);
+    }
+
+    public function viewMedia($id)
+    {
+        $media = Media::findOrFail($id);
+        return response()->file($media->getPath());
+    }
+
+    public function deleteMedia($id,TaskAttachment $taskAttachment)
+    { 
+        DB::beginTransaction();
+         try{
+            $taskAttachment->deleteMedia($id);
+            $taskAttachment->delete(); 
+            DB::commit();
+            return redirect()->back()->with(flash('Attachment Deleted successfully', 'success'));
+        } catch (\Exception $e) {
+            return redirect()->back()->with(['message' => 'Something wrong happen','alert-type' => 'error']);
+        }
+
     }
 }

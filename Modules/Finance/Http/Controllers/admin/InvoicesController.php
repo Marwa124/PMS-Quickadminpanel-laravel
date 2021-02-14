@@ -5,7 +5,7 @@ namespace Modules\Finance\Http\Controllers\admin;
 use App\Events\NewNotification;
 use App\Http\Controllers\Traits\MediaUploadingTrait;
 use App\Mail\FinanceMail;
-use App\Models\Client;
+use Modules\Sales\Entities\Client;
 use App\Models\Invoice;
 use App\Models\InvoiceItemTax;
 use App\Models\ItemInvoiceRelations;

@@ -4,7 +4,7 @@ namespace App\Models;
 
 
 
-use App\Models\Client;
+use Modules\Sales\Entities\Client;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;

@@ -321,6 +321,9 @@
                                         <th>
                                             {{ trans('cruds.opportunity.fields.description') }}
                                         </th>
+                                        <th>
+                                         action
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -359,7 +362,13 @@
                                         <td>
                                             {{ $meetingMinute->description ?? '' }}
                                         </td>
-                
+                                        <td>
+                                            <form action="{{ route('sales.admin.opportunities.destroymeeting', $meetingMinute->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                            <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
+                                            </form>
+                                        </td>
                                     </tr>
                                  
                                     @empty
@@ -535,7 +544,12 @@
                                             </td>
                                            
                                             <td>
-                                               <img src="{{ $attach->description }}" alt="" sizes="50*50" srcset="">
+                                               <a href="{{route('sales.admin.opportunities.download.attach',$attach->id)}}" target="_blank"><i
+                                                  class="fas fa-download"></i></a>
+                                               <a href="{{route('sales.admin.opportunities.view.attach',$attach->id)}}" target="_blank"><i
+                                                    class="fas fa-eye"></i></a>
+                                                    <a href="{{route('sales.admin.opportunities.delete.attach',[$attach->id,$attach->id])}}"><i
+                                                             class="fas fa-trash-alt"></i> </a>    
                                             </td>
                     
                                         </tr>

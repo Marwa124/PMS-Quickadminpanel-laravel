@@ -7,7 +7,7 @@ use App\Http\Controllers\Traits\MediaUploadingTrait;
 use App\Http\Requests\MassDestroyCrmDocumentRequest;
 use App\Http\Requests\StoreCrmDocumentRequest;
 use App\Http\Requests\UpdateCrmDocumentRequest;
-use App\Models\Client;
+use Modules\Sales\Entities\Client;
 use App\Models\CrmDocument;
 use Gate;
 use Illuminate\Http\Request;

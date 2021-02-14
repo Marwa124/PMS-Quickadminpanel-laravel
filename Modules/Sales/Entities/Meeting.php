@@ -10,14 +10,14 @@ use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
 use  Modules\Sales\Entities\Opportunity;
-use App\Models\client;
+use Modules\Sales\Entities\Client;
 
 use \DateTimeInterface;
 
 class Meeting extends Model
 {
 
-       use SoftDeletes, HasMediaTrait;
+       use SoftDeletes;
      const ATTENDEES_SELECT = [
     
         ];
@@ -67,11 +67,11 @@ class Meeting extends Model
             $this->attributes['end_date'] = $value ? Carbon::createFromFormat(config('panel.date_time_format'), $value)->format('Y-m-d H:i:s') : null;
         }
     
-        public function registerMediaConversions(Media $media = null)
-        {
-            $this->addMediaConversion('thumb')->fit('crop', 50, 50);
-            $this->addMediaConversion('preview')->fit('crop', 120, 120);
-        }
+        // public function registerMediaConversions(Media $media = null)
+        // {
+        //     $this->addMediaConversion('thumb')->fit('crop', 50, 50);
+        //     $this->addMediaConversion('preview')->fit('crop', 120, 120);
+        // }
     
         public function user()
         {

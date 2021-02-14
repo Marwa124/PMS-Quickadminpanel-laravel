@@ -3,7 +3,7 @@
 namespace Modules\Sales\Entities;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\client;
+use Modules\Sales\Entities\Client;
 class Call extends Model
 {
     protected $guarded =[];

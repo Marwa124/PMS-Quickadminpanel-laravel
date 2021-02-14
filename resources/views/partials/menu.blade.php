@@ -1179,7 +1179,7 @@
                   {{--@endcan --}}
                 {{--  @can('client_access') --}}
                 <li class="c-sidebar-nav-item">
-                    <a href="{{ route("admin.clients.index") }}"
+                    <a href="{{ route("sales.admin.clients.index") }}"
                        class="c-sidebar-nav-link {{ request()->is("admin/clients") || request()->is("admin/clients/*") ? "active" : "" }}">
                         <i class="fa-fw fas fa-users c-sidebar-nav-icon">
 

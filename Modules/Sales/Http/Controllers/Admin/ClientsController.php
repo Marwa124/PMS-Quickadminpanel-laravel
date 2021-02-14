@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace Modules\Sales\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\MediaUploadingTrait;
-use App\Http\Requests\MassDestroyClientRequest;
-use App\Http\Requests\StoreClientRequest;
-use App\Http\Requests\UpdateClientRequest;
+use Modules\Sales\Http\Requests\Destroy\MassDestroyClientRequest;
+use Modules\Sales\Http\Requests\Store\StoreClientRequest;
+use Modules\Sales\Entities\UpdateClientRequest;
 use Modules\HR\Entities\AccountDetail;
-use App\Models\Client;
+use Modules\Sales\Entities\Client;
 use Gate;
 use Illuminate\Http\Request;
 use Spatie\MediaLibrary\Models\Media;
@@ -26,7 +26,7 @@ class ClientsController extends Controller
 
         $account_details = AccountDetail::get();
 
-        return view('admin.clients.index', compact('clients', 'account_details'));
+        return view('sales::admin.clients.index', compact('clients', 'account_details'));
     }
 
     public function create()
@@ -35,7 +35,7 @@ class ClientsController extends Controller
 
         $statuses = AccountDetail::all()->pluck('fullname', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        return view('admin.clients.create', compact('statuses'));
+        return view('sales::admin.clients.create', compact('statuses'));
     }
 
     public function store(StoreClientRequest $request)
@@ -46,7 +46,7 @@ class ClientsController extends Controller
             Media::whereIn('id', $media)->update(['model_id' => $client->id]);
         }
 
-        return redirect()->route('admin.clients.index');
+        return redirect()->route('sales.admin.clients.index');
     }
 
     public function edit(Client $client)
@@ -57,14 +57,14 @@ class ClientsController extends Controller
 
         $client->load('status');
 
-        return view('admin.clients.edit', compact('statuses', 'client'));
+        return view('sales::admin.clients.edit', compact('statuses', 'client'));
     }
 
     public function update(UpdateClientRequest $request, Client $client)
     {
         $client->update($request->all());
 
-        return redirect()->route('admin.clients.index');
+        return redirect()->route('sales.admin.clients.index');
     }
 
     public function show(Client $client)
@@ -73,7 +73,7 @@ class ClientsController extends Controller
 
         // $client->load('status', 'clientProjects');
 
-        return view('admin.clients.show', compact('client'));
+        return view('sales::admin.clients.show', compact('client'));
     }
 
     public function destroy(Client $client)

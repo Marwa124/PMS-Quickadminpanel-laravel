@@ -19,7 +19,7 @@ use Modules\ProjectManagement\Http\Controllers\Traits\ProjectManagementHelperTra
 use Modules\ProjectManagement\Http\Requests\MassDestroyProjectRequest;
 use Modules\ProjectManagement\Http\Requests\StoreProjectRequest;
 use Modules\ProjectManagement\Http\Requests\UpdateProjectRequest;
-use App\Models\Client;
+use Modules\Sales\Entities\Client;
 use Modules\ProjectManagement\Entities\Project;
 use Gate;
 use Illuminate\Http\Request;

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Requests;
+namespace Modules\Sales\Http\Requests\Destroy;
 
-use App\Models\Client;
+use Modules\Sales\Entities\Client;
 use Gate;
 use Illuminate\Foundation\Http\FormRequest;
 use Symfony\Component\HttpFoundation\Response;

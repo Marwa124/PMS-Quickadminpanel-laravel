@@ -119,11 +119,11 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     // Route::resource('leads', 'LeadsController');
 
 
-    // Clients
-    Route::delete('clients/destroy', 'ClientsController@massDestroy')->name('clients.massDestroy');
-    Route::post('clients/media', 'ClientsController@storeMedia')->name('clients.storeMedia');
-    Route::post('clients/ckmedia', 'ClientsController@storeCKEditorImages')->name('clients.storeCKEditorImages');
-    Route::resource('clients', 'ClientsController');
+    // // Clients
+    // Route::delete('clients/destroy', 'ClientsController@massDestroy')->name('clients.massDestroy');
+    // Route::post('clients/media', 'ClientsController@storeMedia')->name('clients.storeMedia');
+    // Route::post('clients/ckmedia', 'ClientsController@storeCKEditorImages')->name('clients.storeCKEditorImages');
+    // Route::resource('clients', 'ClientsController');
 
     // Client Menus
     Route::delete('client-menus/destroy', 'ClientMenuController@massDestroy')->name('client-menus.massDestroy');

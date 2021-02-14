@@ -3,7 +3,7 @@
 namespace Modules\Finance\Http\Controllers\admin;
 
 use App\Http\Controllers\Traits\MediaUploadingTrait;
-use App\Models\Client;
+use Modules\Sales\Entities\Client;
 use App\Models\Transaction;
 use Gate;
 use App\Models\Deposit;

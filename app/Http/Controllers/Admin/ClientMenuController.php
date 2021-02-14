@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\MassDestroyClientMenuRequest;
 use App\Http\Requests\StoreClientMenuRequest;
 use App\Http\Requests\UpdateClientMenuRequest;
-use App\Models\ClientMenu;
+use Modules\Sales\Entities\ClientMenu;
 use Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
