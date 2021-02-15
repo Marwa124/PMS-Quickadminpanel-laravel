@@ -530,6 +530,27 @@ return [
 
     'tickets_settings'    => 'Tickets & Leads Settings',
 
+    'default_department' => 'Default Department',
+    'default_status' => 'Default Status',
+    'default_priority' => 'Default Priority',
+    'notify_ticket_reopened' => 'Notify Ticket Reopened',
+    'new' => 'New',
+    'priority' => 'Priority',
+    'leads_settings' => 'Leads Settings',
+    'default' => 'Default',
+    'source'  => 'Source',
+    'status' => 'Status',
+    'leads_status' => 'Status',
+    'priorities' => 'Priorities',
+    'upload' => 'Upload',
+    'new_priority' => 'New Priority',
+    'priority_en' => 'Priority En',
+    'priority_ar' => 'Priority ar',
+    'priority_added' => 'Priority added Successfully',
+    'priority_deleted' => 'Priority deleted Successfully',
+    'lead_source_updated' => 'Lead Source Updated',
+    'lead_source' => 'Lead Source',
+
 
 
 

@@ -11,6 +11,8 @@ use App\Models\Country;
 use App\Models\Currency;
 use App\Models\Language;
 use App\Models\Priority;
+use App\Models\LeadSource;
+use App\Models\LeadStatus;
 use Illuminate\Http\Request;
 use App\Models\EmailTemplate;
 use Modules\Sales\Entities\Type;
@@ -1277,13 +1279,16 @@ class SettingController extends Controller
 
             $validator = Validator::make($request->all(), [
                 'purchase_prefix'             => 'required|string',
-                'purchase_start_no'           => 'required|string',
+                'purchase_start_no'           => 'sometimes|nullable|string',
 
                 'purchase_number_format'      => 'sometimes|nullable|string',
-                'return_stock_prefix'         => 'required|string',
-                'return_stock_number_format'  => 'required|string',
 
+
+
+                'return_stock_prefix'         => 'required|string',
                 'return_stock_start_no'      => 'sometimes|nullable|string',
+                'return_stock_number_format'  => 'sometimes|nullable|string',
+
 
                 'purchase_notes' => 'sometimes|nullable|string',
             ], [
@@ -1292,7 +1297,6 @@ class SettingController extends Controller
                 'purchase_perfix.required'         => trans('settings.purchase_perfix_required'),
                 'purchase_perfix.string'           => trans('settings.purchase_perfix_string'),
 
-                'purchase_start_no.required'       => trans('settings.purchase_start_no_required'),
                 'purchase_start_no.string'        => trans('settings.purchase_start_no_string'),
 
                 'purchase_number_format.string'    => trans('settings.purchase_number_format_string'),
@@ -1302,15 +1306,14 @@ class SettingController extends Controller
                 'return_stock_prefix.required'         => trans('settings.return_stock_prefix_required'),
                 'return_stock_prefix.string'           => trans('settings.return_stock_prefix_string'),
 
-                'return_stock_start_no.required'       => trans('settings.return_stock_start_no_required'),
-                'return_stock_start_no.integer'        => trans('settings.return_stock_start_no_integer'),
+                'return_stock_start_no.string'        => trans('settings.return_stock_start_no_string'),
 
                 'return_stock_number_format.string'    => trans('settings.return_stock_number_format_string'),
 
 
 
 
-                '.string'           => trans('settings.purchase_notes_string'),
+                'purchase_notes.string'           => trans('settings.purchase_notes_string'),
 
 
 
@@ -1329,10 +1332,6 @@ class SettingController extends Controller
             );
 
 
-            Config::updateorCreate(
-                ['key' => 'purchase_number_format'],
-                ['value' => request('purchase_number_format')]
-            );
 
             Config::updateorCreate(
                 ['key' => 'purchase_start_no'],
@@ -1340,6 +1339,10 @@ class SettingController extends Controller
             );
 
 
+            Config::updateorCreate(
+                ['key' => 'purchase_number_format'],
+                ['value' => request('purchase_number_format')]
+            );
 
 
             Config::updateorCreate(
@@ -1384,8 +1387,112 @@ class SettingController extends Controller
         $departments         = Department::all();
         $status              = Statue::all();
         $priorities          = Priority::all();
-        // $types               = Type::all();
+        $types               = Type::all();
+        $leads_status        = LeadStatus::all();
+        $lead_sources        = LeadSource::all();
 
-        return view('setting::settings.tickets', compact('departments', 'status', 'priorities'));
+        return view('setting::settings.tickets', compact('departments', 'status', 'priorities', 'leads_status', 'lead_sources'));
+    }
+
+    public function save_priority(Request $request)
+    {
+
+        try {
+            $validator = Validator::make($request->all(), [
+                'priority_en' => 'required|string',
+                'priority_ar' => 'required|string'
+            ], [
+                'priority_en.required' => ' Priority English Name is required',
+                'priority_en.string' => ' Priority English Name Should Be String',
+                'priority_ar.required' => ' Priority Arabic Name is required',
+                'priority_ar.string' => ' Priority Arabic Name Should Be String',
+
+            ]);
+
+
+            if ($validator->fails()) {
+                return back()->withInput()->with(flash($validator->errors()->all()[0], 'danger'));
+            }
+
+            Priority::create([
+                'priority_en' => $request->priority_en,
+                'priority_ar' => $request->priority_ar
+            ]);
+
+
+            return back()->with(flash(trans('settings.priority_added'), 'success'));
+        } catch (\Exception $e) {
+
+            return back()->withInput()->with(flash('something went wrong', 'danger'));
+        }
+    }
+
+
+
+    public function delete_priority(Request $request)
+    {
+
+        try {
+
+
+            Priority::findorfail($request->id)->delete();
+
+
+
+            return back()->with(flash(trans('settings.priority_deleted'), 'success'));
+        } catch (\Exception $e) {
+
+            return back()->withInput()->with(flash('something went wrong', 'danger'));
+        }
+    }
+
+    public function show_lead_source()
+    {
+
+        $lead_sources        = LeadSource::all();
+
+        return view('setting::settings.lead_source', compact('lead_sources'));
+    }
+
+
+    public function update_lead_source(Request $request)
+    {
+        $source = LeadSource::findorfail($request->id);
+
+
+
+        try {
+            $validator = Validator::make($request->all(), [
+                'lead_source' => 'required|string',
+                'lead_source_ar' => 'required|string'
+            ], [
+                'lead_source.required' => ' Lead Source English Name is required',
+                'lead_source.string' => ' Lead Source English Name Should Be String',
+
+                'lead_source_ar.required' => ' Lead Source Arabic Name is required',
+                'lead_source_ar.string' => ' Lead Source Arabic Name Should Be String',
+
+            ]);
+
+
+            if ($validator->fails()) {
+                return response()->json(['message' => $validator->errors()->all()[0]], 400);
+            }
+
+            $source->update([
+                'lead_source' => $request->lead_source,
+                'lead_source_ar' => $request->lead_source_ar
+            ]);
+
+            return response()->json(['message' => trans('settings.lead_source_updated')], 200);
+        } catch (\Exception $e) {
+
+            return back()->withInput()->with(flash('something went wrong', 'danger'));
+        }
+    }
+
+    public function delete_lead_source(Request $request)
+    {
+        dd('delete', $request->id);
     }
 }
