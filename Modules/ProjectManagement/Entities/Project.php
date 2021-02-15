@@ -2,6 +2,7 @@
 
 namespace Modules\ProjectManagement\Entities;
 
+use App\Models\Expense;
 use Modules\Sales\Entities\Client;
 use App\Models\Invoice;
 use App\Models\Transaction;
@@ -163,6 +164,11 @@ class Project extends Model implements HasMedia
     public function invoices()
     {
         return $this->hasMany(Invoice::class,'project_id');
+    }
+
+    public function expenses()
+    {
+        return $this->hasMany(Expense::class,'project_id');
     }
 
     public function tickets()

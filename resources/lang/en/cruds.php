@@ -1877,6 +1877,10 @@ return [
             'deleted_at_helper'      => ' ',
             'status'                 => 'Status',
             'status_helper'          => ' ',
+            'response'                 => 'Who`s Responsible',
+            'response_helper'          => ' ',
+            'group_name'              => 'Group Name',
+            'group_name_helper'       => ' ',
         ],
     ],
     'clientMenu'             => [
