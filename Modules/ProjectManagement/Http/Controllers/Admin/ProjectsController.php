@@ -261,12 +261,11 @@ class ProjectsController extends Controller
         if (in_array($project->id,$projects->toArray())){
 
             $project->load('client','department','TimeSheetOn','TimeSheet');
-
+//            dd($project->invoices->whereNotIn('status', ['waiting_approval', 'cancelled', 'rejected'])->sum('total_amount'));
             $total_expense = $project->transactions->where('type' , 'Expense')->sum('amount');
             $billable_expense = $project->transactions->where(array('type' => 'Expense', 'billable' => 'Yes'))->sum('amount');
-            $not_billable_expense = $project->transactions->where(array('type' => 'Expense', 'billable' => 'No'))->sum('amount');
-
-            $all_expense_info =  $project->transactions->where('type', 'Expense');
+            $not_billable_expense   = $project->transactions->where(array('type' => 'Expense', 'billable' => 'No'))->sum('amount');
+            $all_expense_info       = $project->transactions->where('type', 'Expense');
 
             $paid_expense = 0;
             foreach ($all_expense_info as $v_expenses){
@@ -275,6 +274,14 @@ class ProjectsController extends Controller
                 }
             }
 
+//            $total_expense          = $project->expenses->sum('amount');
+//            $billable_expense       = $project->expenses->where('status','unpaid')->sum('amount');
+//            $not_billable_expense   = $project->expenses->where('status','non_approved')->sum('amount');
+//            $paid_expense           = $project->expenses->where('status','paid')->sum('amount');
+//
+//            $total_bill             = $project->invoices->whereNotIn('status', ['waiting_approval', 'cancelled', 'rejected'])->sum('total_amount');
+//
+//            dd($billable_expense , $paid_expense,$billable_expense - $paid_expense);
             return view('projectmanagement::admin.projects.show', compact('project','total_expense','billable_expense','not_billable_expense','paid_expense'));
 
         }
