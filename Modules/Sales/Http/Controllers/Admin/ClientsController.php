@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\MediaUploadingTrait;
 use Modules\Sales\Http\Requests\Destroy\MassDestroyClientRequest;
 use Modules\Sales\Http\Requests\Store\StoreClientRequest;
-use Modules\Sales\Entities\UpdateClientRequest;
+use Modules\Sales\Http\Requests\Store\StoreClientContactRequest;
+use Modules\Sales\Http\Requests\Update\UpdateClientRequest;
 use Modules\HR\Entities\AccountDetail;
 use Modules\Sales\Entities\Client;
+use Modules\Sales\Entities\ClientContact;
 use App\Models\Currency;
 use App\Models\Country;
 use App\Models\Language;
@@ -51,17 +53,6 @@ class ClientsController extends Controller
 
 
         $client = Client::create($request->all());
-         $user = User::create([
-             'name'=>$request->username,
-             'username'=>$request->username,
-             'email'=>$request->email,
-             'password'=>$request->password,
-
-         ]);
-         $role=Role::where('name','User')->pluck('id');
-         if(!empty($role)){
-             $user->syncRoles($role);
-          };
         if ($media = $request->input('ck-media', false)) {
             Media::whereIn('id', $media)->update(['model_id' => $client->id]);
         }
@@ -74,10 +65,13 @@ class ClientsController extends Controller
         abort_if(Gate::denies('client_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $statuses = AccountDetail::all()->pluck('fullname', 'id')->prepend(trans('global.pleaseSelect'), '');
-
+        $currencies = Currency::all();
+        $countries  = Country::all();
+        $languages  = Language::all();
+        $customerGroups = CustomerGroup::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
         $client->load('status');
 
-        return view('sales::admin.clients.edit', compact('statuses', 'client'));
+        return view('sales::admin.clients.edit', compact('statuses', 'client','currencies','countries','languages','customerGroups'));
     }
 
     public function update(UpdateClientRequest $request, Client $client)
@@ -90,10 +84,10 @@ class ClientsController extends Controller
     public function show(Client $client)
     {
         abort_if(Gate::denies('client_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        $countries  = Country::all();
+        $client->load('status', 'clientProjects');
 
-        // $client->load('status', 'clientProjects');
-
-        return view('sales::admin.clients.show', compact('client'));
+        return view('sales::admin.clients.show', compact('client','countries'));
     }
 
     public function destroy(Client $client)
@@ -122,5 +116,18 @@ class ClientsController extends Controller
         $media         = $model->addMediaFromRequest('upload')->toMediaCollection('ck-media');
 
         return response()->json(['id' => $media->id, 'url' => $media->getUrl()], Response::HTTP_CREATED);
+    }
+
+    public function contactstore(StoreClientContactRequest $request)
+    {
+        DB::beginTransaction();
+        try{
+        $client = ClientContact::create($request->all());
+
+        DB::commit();
+            return redirect()->back()->with(flash('Contact Add successfully', 'success'));
+        } catch (\Exception $e) {
+            return redirect()->back()->with(['message' => 'Something wrong happen','alert-type' => 'error']);
+        }
     }
 }

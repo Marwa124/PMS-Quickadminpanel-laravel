@@ -90,5 +90,6 @@ Route::group(['as' => 'sales.admin.', 'prefix' => 'admin/sales', 'namespace' => 
     Route::post('clients/media', 'ClientsController@storeMedia')->name('clients.storeMedia');
     Route::post('clients/ckmedia', 'ClientsController@storeCKEditorImages')->name('clients.storeCKEditorImages');
     Route::resource('clients', 'ClientsController');
+    Route::post('clients/contactstore', 'ClientsController@contactstore')->name('clients.contactstore');
 
 });

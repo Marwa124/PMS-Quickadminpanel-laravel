@@ -112,7 +112,7 @@ class StoreClientRequest extends FormRequest
             ],
             'email'                => [
                 'required',
-                'unique:users',
+                // 'unique:users',
             ],
         ];
     }

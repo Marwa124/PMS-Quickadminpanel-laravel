@@ -10,6 +10,7 @@ use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
 use \DateTimeInterface;
 use Modules\HR\Entities\AccountDetail;
+use Modules\Sales\Entities\ClientContact;
 use Illuminate\Notifications\Notifiable;
 
 class Client extends Model implements HasMedia
@@ -87,5 +88,9 @@ class Client extends Model implements HasMedia
     public function proposals()
     {
         return $this->hasMany(Proposal::class,'module_id')->where('module','=','opportunities')->orderBy('id','desc');
+    }
+    public function clientcontacts()
+    {
+        return $this->hasMany(ClientContact::class,'client_id');
     }
 }

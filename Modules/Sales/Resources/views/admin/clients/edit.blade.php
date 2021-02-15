@@ -11,14 +11,20 @@
             @method('PUT')
             @csrf
             <div class="form-group">
-                <label for="primary_contact">{{ trans('cruds.client.fields.primary_contact') }}</label>
-                <input class="form-control {{ $errors->has('primary_contact') ? 'is-invalid' : '' }}" type="number" name="primary_contact" id="primary_contact" value="{{ old('primary_contact', $client->primary_contact) }}" step="1">
-                @if($errors->has('primary_contact'))
-                    <div class="invalid-feedback">
-                        {{ $errors->first('primary_contact') }}
-                    </div>
-                @endif
-                <span class="help-block">{{ trans('cruds.client.fields.primary_contact_helper') }}</span>
+                <label class="required" for="tax_rate">{{ trans('cruds.client.fields.group_name') }}</label>
+                <div class="input-group">
+                    <select class="form-control  {{ $errors->has('client') ? 'is-invalid' : '' }}"
+                        name="customer_group_id" id="customer_group_id" required>
+                        @foreach($customerGroups as $id => $customerGroup)
+                        <option value="{{ $id }}" {{ (old('customer_group_id') ? old('customer_group_id') : $client->customer_group_id ?? '') == $id ? 'selected' : '' }}>
+                            {{ $customerGroup }}</option>
+                        @endforeach
+                    </select>
+                    <span class="input-group-append">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#primaryModal" ><i
+                                class="fa fa-plus"></i></button>
+                    </span>
+                </div>
             </div>
             <div class="form-group">
                 <label class="required" for="name">{{ trans('cruds.client.fields.name') }}</label>
@@ -31,8 +37,8 @@
                 <span class="help-block">{{ trans('cruds.client.fields.name_helper') }}</span>
             </div>
             <div class="form-group">
-                <label for="email">{{ trans('cruds.client.fields.email') }}</label>
-                <input class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}" type="email" name="email" id="email" value="{{ old('email', $client->email) }}">
+                <label for="email"  class="required" >{{ trans('cruds.client.fields.email') }}</label>
+                <input class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}" type="email" name="email" id="email" value="{{ old('email', $client->email) }}" required >
                 @if($errors->has('email'))
                     <div class="invalid-feedback">
                         {{ $errors->first('email') }}
@@ -172,7 +178,19 @@
             </div>
             <div class="form-group">
                 <label for="language">{{ trans('cruds.client.fields.language') }}</label>
-                <input class="form-control {{ $errors->has('language') ? 'is-invalid' : '' }}" type="text" name="language" id="language" value="{{ old('language', $client->language) }}">
+               
+                <select class="form-control select_box select2" style="width:100%" name="language">
+            
+                    <option
+                       value="" >
+                       @lang('settings.default_language')
+                    </option>
+                       @forelse ($languages as $language)
+                       <option   {{ old('language',$client->language) == $language->name ? 'selected' : settings('default_language') }} value="{{ $language->name }}"> {{ $language->name }}</option>
+                       @empty
+                       
+                   @endforelse
+               </select>   
                 @if($errors->has('language'))
                     <div class="invalid-feedback">
                         {{ $errors->first('language') }}
@@ -182,7 +200,18 @@
             </div>
             <div class="form-group">
                 <label for="country">{{ trans('cruds.client.fields.country') }}</label>
-                <input class="form-control {{ $errors->has('country') ? 'is-invalid' : '' }}" type="text" name="country" id="country" value="{{ old('country', $client->country) }}">
+
+                <select class="form-control select_box"  name="country">
+                    <option
+                        value="" >
+                        @lang('settings.select_country')
+                        </option>
+                        @forelse ($countries as $country)
+                        <option  {{ old('country',$client->country) == $country->value ? ' selected' : settings('company_country') }} value="{{ $country->value }}"> {{ $country->value }}</option>
+                        @empty
+                        
+                        @endforelse
+                    </select>             
                 @if($errors->has('country'))
                     <div class="invalid-feedback">
                         {{ $errors->first('country') }}
@@ -232,7 +261,7 @@
             </div>
             <div class="form-group">
                 <label for="password">{{ trans('cruds.client.fields.password') }}</label>
-                <input class="form-control {{ $errors->has('password') ? 'is-invalid' : '' }}" type="password" name="password" id="password">
+                <input class="form-control {{ $errors->has('password') ? 'is-invalid' : '' }}" type="password" name="password" id="password"  >
                 @if($errors->has('password'))
                     <div class="invalid-feedback">
                         {{ $errors->first('password') }}
@@ -241,8 +270,8 @@
                 <span class="help-block">{{ trans('cruds.client.fields.password_helper') }}</span>
             </div>
             <div class="form-group">
-                <label for="username">{{ trans('cruds.client.fields.username') }}</label>
-                <input class="form-control {{ $errors->has('username') ? 'is-invalid' : '' }}" type="text" name="username" id="username" value="{{ old('username', $client->username) }}">
+                <label for="username" class="required" >{{ trans('cruds.client.fields.username') }}</label>
+                <input class="form-control {{ $errors->has('username') ? 'is-invalid' : '' }}" type="text" name="username" id="username" value="{{ old('username', $client->username) }}"  required >
                 @if($errors->has('username'))
                     <div class="invalid-feedback">
                         {{ $errors->first('username') }}
@@ -273,6 +302,51 @@
     </div>
 </div>
 
+<!-- /.modal -->
+
+<div class="modal fade" id="primaryModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-primary" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"> {{ trans('global.create') }} {{ trans('cruds.customerGroup.title_singular') }}
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form method="POST" action="#" id="form2">
+                    @csrf
+                    <div class="form-group">
+                        <label class="required" for="type">{{ trans('cruds.customerGroup.fields.type') }}</label>
+                        <input class="form-control {{ $errors->has('type') ? 'is-invalid' : '' }}" type="text"
+                            name="type" id="type" value="{{ old('type', '') }}" required>
+
+                    </div>
+                    <div class="form-group">
+                        <label class="required" for="name">{{ trans('cruds.customerGroup.fields.name') }}</label>
+                        <input class="form-control" type="text" name="namecustomgroup" id="namecustomgroup"
+                            value="{{ old('name', '') }}" required>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="description">{{ trans('cruds.customerGroup.fields.description') }}</label>
+                        <textarea class="form-control" name="descriptioncustomgroup"
+                            id="descriptioncustomgroup"></textarea>
+
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="customgroupsubmit">
+                    {{ trans('global.save') }}</button>
+            </div>
+            </form>
+        </div>
+        <!-- /.modal-content -->
+</div>
+<!-- /.modal-dialog -->
 
 
 @endsection
@@ -340,6 +414,47 @@
     );
   }
 });
+
+    //add new custom group 
+    // 
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }});
+
+    $("#customgroupsubmit").click(function (e) {
+
+        // e.preventDefault();
+
+        var type = $("input[name=type]").val();
+        var name = $("input[name=namecustomgroup]").val();
+        var description = $("textarea[name=descriptioncustomgroup]").val();
+        var url = '{{ route("materialssuppliers.admin.customer-groups.store") }}';
+
+        $.ajax({
+                url: url,
+                method: 'POST',
+                data: {
+                    type: type,
+                    name: name,
+                    description: description
+                }
+            })
+            .done(function (response) {
+                $('#customer_group_id').append('<option value="' + response.id + '" selected="selected">' +
+                    response.name + '</option>');
+                $("#primaryModal").modal("hide");
+                $(".modal-backdrop").remove();//remove background
+                $('body').removeClass('modal-open');// For scroll run
+                $('#primaryModal').find('#form2')[0].reset();
+
+            });
+        // .error(function(error){
+        //   console.log(error)
+        // });
+
+
+    });
 </script>
 
 @endsection
