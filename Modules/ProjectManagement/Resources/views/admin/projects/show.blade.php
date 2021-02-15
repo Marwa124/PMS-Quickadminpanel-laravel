@@ -849,11 +849,7 @@
                                             {{ $errors->first('notes') }}
                                         </div>
                                     @endif
-<<<<<<< HEAD
                                     {{--                        <span class="help-block">{{ trans('cruds.project.fields.note_helper') }}</span>--}}
-=======
-                                {{--                        <span class="help-block">{{ trans('cruds.project.fields.note_helper') }}</span>--}}
->>>>>>> bb0450b953ae1c0fc488492861ae5b240b322677
                                 </div>
                                 <input type="hidden" name="project_id" value="{{$project->id}}"/>
                                 <div class="form-group col-md-12">
@@ -1394,46 +1390,10 @@
                                                                 @endcan
 
                                                             </td>
-<<<<<<< HEAD
                                                         @endcanany
 
                                                     </tr>
                                                 @empty
-=======
-                                                            <td>
-                                                            {{--                                                                get_time_spent_result in file global_helper --}}
-                                                                @if($timer->end_time && $timer->start_time)
-                                                                    {{ get_time_spent_result($timer->end_time - $timer->start_time)  }}
-                                                                @endif
-                                                            </td>
-                                                            @canany(['time_sheet_edit','time_sheet_delete'])
-                                                                <td>
-                                                                    @can('time_sheet_edit')
-                                                                        <input type="hidden" name="timesheets" id="timesheets" value="{{$project->TimeSheet}}">
-                                                                        <a class="btn btn-xs btn-info tablinks"  onclick="showEditTime('{{$timer->id}}')" data-id="{{$timer->id}}"  id="edit_timesheet" title=" {{ trans('global.edit') }}">
-                                                                            <span class="fa fa-pencil-square-o"></span>
-                                                                        </a>
-                                                                    @endcan
-
-                                                                    @can('time_sheet_delete')
-                                                                        <form action="{{route('projectmanagement.admin.time-sheets.destroy',$timer->id)}}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
-                                                                            <input type="hidden" name="_method" value="DELETE">
-                                                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                                            <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
-                                                                        </form>
-                                                                    @endcan
-
-                                                                </td>
-                                                            @endcanany
-
-                                                        </tr>
-                                                    @empty
-                                                        <tr>
-                                                            <td colspan="7"> {{trans('cruds.messages.no_time_sheet_found_in_project')}}</td>
-                                                        </tr>
-                                                    @endforelse
-                                                @else
->>>>>>> bb0450b953ae1c0fc488492861ae5b240b322677
                                                     <tr>
                                                         <td colspan="7"> {{trans('cruds.messages.no_time_sheet_found_in_project')}}</td>
                                                     </tr>
@@ -1739,11 +1699,7 @@
                                         </a>
                                     </div>
 
-<<<<<<< HEAD
                                     {{--                                                                replies of replay--}}
-=======
-                    {{--                                                                replies of replay--}}
->>>>>>> bb0450b953ae1c0fc488492861ae5b240b322677
                                     @if(isset($comment->replay))
 
                                         @foreach($comment->replay as $comment_of_replay)
@@ -1822,7 +1778,6 @@
                                                 </button>
                                                 <div class="modal-body">
                                                     <div class="row">
-<<<<<<< HEAD
                                                         {{--                                                                                                        @forelse(json_decode($comment->attachments) as $attach)--}}
 
 
@@ -1843,28 +1798,6 @@
                                                         {{--                                                                                                        @empty--}}
                                                         {{--                                                                                                            No Attachments found--}}
                                                         {{--                                                                                                        @endforelse--}}
-=======
-                                                    {{--                                                                                                        @forelse(json_decode($comment->attachments) as $attach)--}}
-
-
-                                                    {{--                                                                                                            <div class="col-md-4">--}}
-                                                    {{--                                                                                                                <a  target="_blank" href="{{ asset('uploads/projects/'.$attach) }}">--}}
-
-                                                    {{--                                                                                                                    @if(strpos($attach,'.pdf') !== false)--}}
-                                                    {{--                                                                                                                        <img style="width:150px;height:180px;" src="{{ asset('pdf.png') }}" alt="">--}}
-                                                    {{--                                                                                                                    @elseif(strpos($attach,'.xlsx') !== false || strpos($attach,'.xls') !== false || strpos($attach,'.csv') !== false || strpos($attach,'.txt') !== false)--}}
-                                                    {{--                                                                                                                        <img style="width:150px;height:180px;" src="{{ asset('excel.png') }}" alt="">--}}
-
-                                                    {{--                                                                                                                    @else--}}
-                                                    {{--                                                                                                                        <img style="width:150px;height:200px;" src="{{ asset('uploads/projects/'.$attach) }}" alt="">--}}
-                                                    {{--                                                                                                                    @endif--}}
-                                                    {{--                                                                                                                </a>--}}
-
-                                                    {{--                                                                                                            </div>--}}
-                                                    {{--                                                                                                        @empty--}}
-                                                    {{--                                                                                                            No Attachments found--}}
-                                                    {{--                                                                                                        @endforelse--}}
->>>>>>> bb0450b953ae1c0fc488492861ae5b240b322677
                                                     </div>
                                                 </div>
 
@@ -2028,15 +1961,7 @@
                 _results.push(node.textContent = message)
             }
 
-<<<<<<< HEAD
     {{--    For editor in texteara notes--}}
-=======
-            return _results
-        }
-    }
-</script>
-{{--    For editor in texteara notes--}}
->>>>>>> bb0450b953ae1c0fc488492861ae5b240b322677
     <script>
         $(document).ready(function () {
             function SimpleUploadAdapter(editor) {
