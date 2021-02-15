@@ -2,21 +2,22 @@
 
 namespace App\Models;
 
-use DateTimeInterface;
 use Illuminate\Database\Eloquent\Model;
+use \DateTimeInterface;
 
-class LeadStatus extends Model
+class Statue extends Model
 {
 
-    public $table = 'lead_statuses';
+
+    public $table = 'statues';
 
     protected $dates = [
         'created_at',
         'updated_at',
-
     ];
 
-    protected $fillable = ['name_en', 'name_ar'];
+    protected $fillable = ['status_ar', 'status_en'];
+
 
 
     protected function serializeDate(DateTimeInterface $date)
