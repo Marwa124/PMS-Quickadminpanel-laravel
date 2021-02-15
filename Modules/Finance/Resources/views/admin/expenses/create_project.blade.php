@@ -31,7 +31,7 @@
 
 
                             <option
-                                    value="{{ $project->id }}" {{ old('project_id') == $project->id ? 'selected' : '' }}>{{ $project->name }}</option>
+                                    value="{{ $project->id }}" {{ old('project_id') == $project->id ? 'selected' : '' }}>{{ $project->{'name_'.app()->getLocale()} ?? '' }}</option>
                     </select>
                     @if($errors->has('project_id'))
                         <div class="invalid-feedback">
