@@ -13,6 +13,7 @@ use \DateTimeInterface;
 use  Modules\ProjectManagement\Entities\Activity;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Notifications\Notifiable;
+use Modules\Sales\Entities\Client;
 
 
 class Invoice extends Model implements HasMedia

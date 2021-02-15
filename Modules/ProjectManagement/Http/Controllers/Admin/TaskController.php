@@ -761,6 +761,7 @@ class TaskController extends Controller
             // Begin a transaction
             DB::beginTransaction();
 
+            $task = Task::findOrFail($request->task_id);
             if ($request->comment_replay_id){
 
                 $validator = Validator::make($request->all(),[
@@ -778,6 +779,9 @@ class TaskController extends Controller
                     'user_id'               => auth()->user()->id,
                     'comment_replay_id'     => $request->comment_replay_id,
                 ]);
+
+                setActivity('task',$task->id,'add replay on comment ','تم إضافة رد على تعليق',$task->name_en,$task->name_ar);
+
             }else{
 
                 $validator = Validator::make( $request->all(),[
@@ -789,13 +793,58 @@ class TaskController extends Controller
                     return redirect()->back()->with(flash(trans('cruds.messages.add_replay_failed'), 'danger'))->withErrors($validator)->withInput();
                 }
 
-                $replay = Comment::create([
+                $comment = Comment::create([
                     'module_field_id'       => $request->task_id,
                     'comment'               => $request->comment,
                     'module'                => 'task',
                     'user_id'               => auth()->user()->id,
                 ]);
+
+                setActivity('task',$task->id,'add comment ','تم إضافة تعليق',$task->name_en,$task->name_ar);
+
             }
+
+            if ($comment && $comment->user)
+            {
+
+                // Notify User
+                foreach ($task->accountDetails as $accountUser)
+                {
+                    $user = $accountUser->user;
+
+                    $dataNotification = [
+                        'message'       => 'Comment On The Task : '.$task->{'name_'.app()->getLocale()},
+                        'route_path'    => 'admin/projectmanagement/tasks',
+                    ];
+
+                    //                $user->notify(new ProjectManagementNotification($project,$user,$dataMail,$dataNotification));
+
+                    //send notification
+                    $user->notify(new ProjectManagementNotification($task,$user,$dataNotification));
+                    $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
+                    event(new NewNotification($userNotify));
+
+                    // send mail
+                    $sender =  settings('smtp_sender_name');
+                    $email_from =  settings('smtp_email') ;
+
+                    //send mail to client
+                    $template = templates('tasks_comments');
+                    $message = str_replace("{POSTED_BY}",$comment->user->name,$template->template_body);
+                    $message = str_replace("{TASK_NAME}",$task->name_en,$message);
+                    $message = str_replace("{COMMENT_URL}",route("projectmanagement.admin.tasks.show", $task->id),$message);
+                    $message = str_replace("{COMMENT_MESSAGE}",$comment->comment,$message);
+                    $message = str_replace("{SITE_NAME}",settings('company_name'),$message);
+
+                    Mail::mailer('smtp')->to($user->email)
+                        ->cc(['mabrouk@onetecgroup.com','sara@onetecgroup.com'])
+                        ->bcc('marwa@onetecgroup.com')
+                        ->send(new ProjectManagementMail($email_from, $sender,$message,$template->subject));
+                }
+
+
+            }
+
             // Commit the transaction
             DB::commit();
             return back()->with(flash(trans('cruds.messages.add_replay_success'), 'success'));

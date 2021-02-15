@@ -259,6 +259,7 @@
                     <a class="nav-link" id="v-pills-invoices-tab"       data-toggle="pill" href="#v-pills-invoices" role="tab" aria-controls="v-pills-invoices" aria-selected="false">{{ trans('cruds.invoice.title') }}<span class="float-right">                     {{$project->invoices && $project->invoices()->count() > 0 ? $project->invoices()->count() : ''}}</span></a>
                     <a class="nav-link" id="v-pills-time_sheets-tab"    data-toggle="pill" href="#v-pills-time_sheets" role="tab" aria-controls="v-pills-time_sheets" aria-selected="false">{{ trans('cruds.project.fields.time_sheet') }}<span class="float-right">   {{$project->TimeSheet && $project->TimeSheet()->count() > 0 ? $project->TimeSheet()->count() : ''}}</span></a>
                     <a class="nav-link" id="v-pills-calendar-tab"       data-toggle="pill" href="#v-pills-calendar" role="tab" aria-controls="v-pills-calendar" aria-selected="false" onclick="generateCalendar()">{{ trans('cruds.tasksCalendar.title') }}</a>
+                    {{--<a class="nav-link" id="v-pills-expenses-tab"        data-toggle="pill" href="#v-pills-expenses" role="tab" aria-controls="v-pills-expenses" aria-selected="false" >{{ trans('cruds.expense.title') }} <span class="float-right">                  {{$project->expenses && $project->expenses()->count() > 0 ? $project->expenses()->count() : ''}}</span></a>--}}
                     <a class="nav-link" id="v-pills-activities-tab"     data-toggle="pill" href="#v-pills-activities" role="tab" aria-controls="v-pills-activities" aria-selected="false">{{ trans('cruds.activities.title') }}<span class="float-right">              {{$project->activities && $project->activities()->count() > 0 ? $project->activities()->count() : ''}}</span></a>
                 </div>
             </div>
@@ -833,9 +834,9 @@
                         <div class="card-body">
                             <div class="nav flex-row nav-pills" id="v-pills-tab" role="tablist" aria-orientation="horizontal">
                                 <a class="nav-link active" id="v-pills-invoice-tab" data-toggle="pill" href="#v-pills-invoice" role="tab" aria-controls="v-pills-invoice" aria-selected="true">{{ trans('cruds.invoice.title') }}</a>
-                                @can('invoice_create')
-                                    <a class="nav-link" id="v-pills-new_invoice-tab" href="{{route('admin.invoices.create') }}" role="tab" aria-controls="v-pills-new_invoice" aria-selected="false">New {{ trans('cruds.invoice.title_singular') }}</a>
-                                @endcan
+                                {{--@can('invoice_create')--}}
+                                    {{--<a class="nav-link" id="v-pills-new_invoice-tab" href="{{route('admin.invoices.create') }}" role="tab" aria-controls="v-pills-new_invoice" aria-selected="false">New {{ trans('cruds.invoice.title_singular') }}</a>--}}
+                                {{--@endcan--}}
                             </div>
                         </div>
                     </div>
@@ -852,26 +853,24 @@
                                                     {{ trans('cruds.invoice.fields.id') }}
                                                 </th>
                                                 <th>
-                                                    {{ trans('cruds.invoice.fields.recur_start_date') }}
+                                                    {{ trans('cruds.invoice.title_singular') }}
                                                 </th>
                                                 <th>
-                                                    {{ trans('cruds.invoice.fields.recur_end_date') }}
+                                                    {{ trans('cruds.invoice.fields.date') }}
                                                 </th>
                                                 <th>
-                                                    {{ trans('cruds.invoice.fields.client') }}
+                                                    {{ trans('cruds.invoice.fields.due_date') }}
                                                 </th>
                                                 <th>
-                                                    {{ trans('cruds.invoice.fields.invoice_date') }}
+                                                    {{ trans('cruds.invoice.fields.client_name') }}
                                                 </th>
                                                 <th>
-                                                    {{ trans('cruds.invoice.fields.discount_percent') }}
-                                                </th>
-                                                <th>
-                                                    {{ trans('cruds.invoice.fields.currerncy') }}
+                                                    {{ trans('cruds.invoice.fields.due_amount') }}
                                                 </th>
                                                 <th>
                                                     {{ trans('cruds.invoice.fields.status') }}
                                                 </th>
+
                                                 @canany(['invoice_show' , 'invoice_edit' , 'invoice_delete'])
                                                     <th>
                                                         &nbsp;
@@ -887,42 +886,45 @@
                                                                 {{ $invoice->id ?? '' }}
                                                             </td>
                                                             <td>
-                                                                {{ $invoice->recur_start_date ?? '' }}
-                                                            </td>
-                                                            <td>
-                                                                {{ $invoice->recur_end_date ?? '' }}
-                                                            </td>
-                                                            <td>
-                                                                {{ $invoice->client->primary_contact ?? '' }}
+                                                                {{ $invoice->reference_no ?? '' }}
                                                             </td>
                                                             <td>
                                                                 {{ $invoice->invoice_date ?? '' }}
                                                             </td>
                                                             <td>
-                                                                {{ $invoice->discount_percent ?? '' }}
+                                                                @php
+                                                                    if(date('Y-m-d',strtotime($invoice->due_date)) < date('Y-m-d'))
+                                                                        $overdue = '<span class="btn btn-xs btn-danger">Overdue</span>' ;
+                                                                    else
+                                                                        $overdue = '';
+                                                                @endphp
+                                                                {!! $invoice->due_date .' '. $overdue ?? ''  !!}
                                                             </td>
                                                             <td>
-                                                                {{ $invoice->currerncy ?? '' }}
+                                                                {{ $invoice->client->name ?? '' }}
                                                             </td>
                                                             <td>
-                                                                {{ App\Models\Invoice::STATUS_SELECT[$invoice->status] ?? '' }}
+                                                                {{ $invoice->total_amount ?? '' }}
+                                                            </td>
+                                                            <td>
+                                                                {!!  config("enum.status.$invoice->status") ?? ''  !!}
                                                             </td>
                                                             @canany(['invoice_show' , 'invoice_edit' , 'invoice_delete'])
                                                                 <td>
                                                                     @can('invoice_show')
-                                                                        <a class="btn btn-xs btn-primary" href="{{ route('admin.invoices.show', $invoice->id) }}">
+                                                                        <a class="btn btn-xs btn-primary" href="{{ route('finance.admin.invoices.show', $invoice->id) }}">
                                                                             {{ trans('global.view') }}
                                                                         </a>
                                                                     @endcan
 
                                                                     @can('invoice_edit')
-                                                                        <a class="btn btn-xs btn-info" href="{{ route('admin.invoices.edit', $invoice->id) }}">
+                                                                        <a class="btn btn-xs btn-info" href="{{ route('finance.admin.invoices.edit', $invoice->id) }}">
                                                                             {{ trans('global.edit') }}
                                                                         </a>
                                                                     @endcan
 
                                                                     @can('invoice_delete')
-                                                                        <form action="{{ route('admin.invoices.destroy', $invoice->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                                                        <form action="{{ route('finance.admin.invoices.destroy', $invoice->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
                                                                             <input type="hidden" name="_method" value="DELETE">
                                                                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                                                             <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
@@ -937,11 +939,127 @@
                                                     @endforeach
                                                 @else
                                                     <tr>
-                                                        <td colspan="9"> {{trans('cruds.messages.no_invoices_found_in_project')}}</td>
+                                                        <td colspan="8"> {{trans('cruds.messages.no_invoices_found_in_project')}}</td>
                                                     </tr>
                                                 @endif
                                             </tbody>
                                         </table>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="v-pills-expenses" role="tabpanel" aria-labelledby="v-pills-expenses-tab">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="nav flex-row nav-pills" id="v-pills-tab" role="tablist" aria-orientation="horizontal">
+                                <a class="nav-link active" id="v-pills-expense-tab" data-toggle="pill" href="#v-pills-expense" role="tab" aria-controls="v-pills-expense" aria-selected="true">{{ trans('cruds.expense.title') }}</a>
+                                {{--@can('invoice_create')--}}
+                                    {{--<a class="nav-link" id="v-pills-new_expense-tab" href="{{route('admin.expenses.create') }}" role="tab" aria-controls="v-pills-new_invoice" aria-selected="false">New {{ trans('cruds.expense.title_singular') }}</a>--}}
+                                {{--@endcan--}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade show active" id="v-pills-expense" role="tabpanel" aria-labelledby="v-pills-expense-tab">
+                        <div class="card">
+                            <div>
+                                <div class="card-header">
+
+                                    <div class="table-responsive">
+                                        <table id="datatable" class=" table table-bordered table-striped table-hover datatable datatable-expenses">
+                                            <thead>
+                                            <tr>
+                                                <th>
+
+                                                </th>
+                                                <th>
+                                                    {{ trans('cruds.expenses.fields.title') }}
+                                                </th>
+                                                <th>
+                                                    {{ trans('cruds.expenses.fields.date') }}
+                                                </th>
+                                                <th>
+                                                    {{ trans('cruds.expenses.fields.account_name') }}
+                                                </th>
+                                                <th>
+                                                    {{ trans('cruds.expenses.fields.amount') }}
+                                                </th>
+                                                <th>
+                                                    {{ trans('cruds.expenses.fields.status') }}
+                                                </th>
+                                                <th>
+                                                    {{ trans('cruds.expenses.fields.attachment') }}
+                                                </th>
+                                                <th>
+
+                                                </th>
+
+                                            </tr>
+
+                                            </thead>
+                                            {{--<tbody>--}}
+                                            {{--@if(isset($project->expenses))--}}
+                                                {{--@foreach($project->expenses as $expense)--}}
+                                                    {{--<tr data-entry-id="{{ $expense->id }}">--}}
+                                                        {{--<td>--}}
+                                                            {{--{{ $expense->id ?? '' }}--}}
+                                                        {{--</td>--}}
+                                                        {{--<td>--}}
+                                                            {{--{{ $expense->title ?? '' }}--}}
+                                                        {{--</td>--}}
+                                                        {{--<td>--}}
+                                                            {{--{{ $expense->date ?? '' }}--}}
+                                                        {{--</td>--}}
+                                                        {{--<td>--}}
+                                                            {{--{{$expense->account && $expense->account->name ? $expense->account->name : ''}}--}}
+                                                        {{--</td>--}}
+                                                        {{--<td>--}}
+                                                            {{--{{ $expense->amount ?? '' }}--}}
+                                                        {{--</td>--}}
+                                                        {{--<td>--}}
+                                                            {{--{{ $expense->status ?? '' }}--}}
+                                                        {{--</td>--}}
+                                                        {{--<td>--}}
+                                                           {{----}}
+                                                        {{--</td>--}}
+                                                        {{--@canany(['invoice_show' , 'invoice_edit' , 'invoice_delete'])--}}
+                                                            {{--<td>--}}
+                                                                {{--@can('invoice_show')--}}
+                                                                    {{--<a class="btn btn-xs btn-primary" href="{{ route('finance.admin.invoices.show', $invoice->id) }}">--}}
+                                                                        {{--{{ trans('global.view') }}--}}
+                                                                    {{--</a>--}}
+                                                                {{--@endcan--}}
+
+                                                                {{--@can('invoice_edit')--}}
+                                                                    {{--<a class="btn btn-xs btn-info" href="{{ route('finance.admin.invoices.edit', $invoice->id) }}">--}}
+                                                                        {{--{{ trans('global.edit') }}--}}
+                                                                    {{--</a>--}}
+                                                                {{--@endcan--}}
+
+                                                                {{--@can('invoice_delete')--}}
+                                                                    {{--<form action="{{ route('finance.admin.invoices.destroy', $invoice->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">--}}
+                                                                        {{--<input type="hidden" name="_method" value="DELETE">--}}
+                                                                        {{--<input type="hidden" name="_token" value="{{ csrf_token() }}">--}}
+                                                                        {{--<input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">--}}
+                                                                    {{--</form>--}}
+                                                                {{--@endcan--}}
+
+                                                            {{--</td>--}}
+                                                        {{--@endcanany--}}
+
+                                                    {{--</tr>--}}
+
+                                                {{--@endforeach--}}
+                                            {{--@else--}}
+                                                {{--<tr>--}}
+                                                    {{--<td colspan="8"> {{trans('cruds.messages.no_invoices_found_in_project')}}</td>--}}
+                                                {{--</tr>--}}
+                                            {{--@endif--}}
+                                            {{--</tbody>--}}
+                                        </table>
+
 
                                     </div>
                                 </div>
@@ -1397,6 +1515,14 @@
                 .scroller.measure();
         });
 
+        $('.datatable-expenses').DataTable()
+        $('a[data-toggle="tab"]').on('shown.bs.tab click', function(e){
+            $($.fn.dataTable.tables(true)).DataTable()
+                .columns.adjust()
+                .responsive.recalc()
+                .scroller.measure();
+        });
+
     </script>
 
 {{--    For editor in texteara notes--}}
@@ -1453,14 +1579,14 @@
                 }
             }
 
-            var allEditors = document.querySelectorAll('.ckeditor');
-            for (var i = 0; i < allEditors.length; ++i) {
-                ClassicEditor.create(
-                    allEditors[i], {
-                        extraPlugins: [SimpleUploadAdapter]
-                    }
-                );
-            }
+            // var allEditors = document.querySelectorAll('.ckeditor');
+            // for (var i = 0; i < allEditors.length; ++i) {
+            //     ClassicEditor.create(
+            //         allEditors[i], {
+            //             extraPlugins: [SimpleUploadAdapter]
+            //         }
+            //     );
+            // }
 
             {{--$('#calendar').fullCalendar({--}}
             {{--    // put your options and callbacks here--}}
