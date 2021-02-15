@@ -231,8 +231,8 @@ class User extends Authenticatable implements HasMedia
         $user = User::findOrFail($user_id);
         $departments = Department::where('department_head_id', $user_id)->get();
 
-        if ($user->hasrole(['Admin', 'Super Admin'])) {
 
+        if ($user->hasrole(['Admin', 'Super Admin'])) {
             if ($trashed) {
                 //            abort_if(Gate::denies('project_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
                 return Project::onlyTrashed()->get();
@@ -241,6 +241,7 @@ class User extends Authenticatable implements HasMedia
             $projects = Project::all();
         } elseif ($departments->count() > 0) {
             // get projects to show for head department of this projects
+          
 
             if ($trashed) {
                 //            abort_if(Gate::denies('project_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
@@ -249,13 +250,13 @@ class User extends Authenticatable implements HasMedia
 
             $projects = Project::whereIn('department_id', $departments->pluck('id'))->get();
         } else {
-
+  
             if ($trashed) {
                 //            abort_if(Gate::denies('project_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-                return $user->accountDetail->trashProjects;
+                return $user->accountDetail?$user->accountDetail->trashProjects:collect([]);
             }
 
-            $projects = $user->accountDetail->projects;
+            $projects = $user->accountDetail?$user->accountDetail->projects:collect([]);
         }
 
         return $projects;
@@ -293,10 +294,10 @@ class User extends Authenticatable implements HasMedia
         } else {
             if ($trashed) {
                 //            abort_if(Gate::denies('milestone_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-                return $user->accountDetail->trashMilestones;
+                return $user->accountDetail?$user->accountDetail->trashMilestones:collect([]);
             }
 
-            $milestones = $user->accountDetail->milestones;
+            $milestones = $user->accountDetail?$user->accountDetail->milestones:collect([]);
         }
 
 
@@ -348,15 +349,15 @@ class User extends Authenticatable implements HasMedia
 
             if ($trashed) {
                 //            abort_if(Gate::denies('task_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-                return $user->accountDetail->trashTasks;
+                return $user->accountDetail?$user->accountDetail->trashTasks:collect([]);
             }
 
             if ($sub_task) {
 
-                return $user->accountDetail->tasks;
+                return $user->accountDetail?$user->accountDetail->tasks:collect([]);
             }
 
-            $tasks = $user->accountDetail->tasks->where('parent_task_id', null);
+            $tasks = $user->accountDetail?$user->accountDetail->tasks->where('parent_task_id', null):collect([]);
         }
 
         return $tasks;
@@ -394,7 +395,7 @@ class User extends Authenticatable implements HasMedia
 
             if ($trashed) {
                 //            abort_if(Gate::denies('bug_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-                $bugs = $user->accountDetail->trashBugs;
+                $bugs = $user->accountDetail?$user->accountDetail->trashBugs:collect([]);
                 if (!$bugs) {
                     $bugs = Bug::onlyTrashed()
                         ->whereHas('reporterBy', function ($query) {
@@ -404,7 +405,7 @@ class User extends Authenticatable implements HasMedia
                 return $bugs;
             }
 
-            $bugs = $user->accountDetail->bugs;
+            $bugs = $user->accountDetail?$user->accountDetail->bugs:collect([]);
             if (!$bugs || $bugs->count() == 0) {
                 $bugs = Bug::whereHas('reporterBy', function ($query) {
                     $query->where('id', auth()->user()->id);
@@ -447,7 +448,7 @@ class User extends Authenticatable implements HasMedia
 
             if ($trashed) {
                 //            abort_if(Gate::denies('ticket_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-                $tickets = $user->accountDetail->trashTickets;
+                $tickets = $user->accountDetail?$user->accountDetail->trashTickets:collect([]);
 
                 if (!$tickets) {
                     $tickets = Ticket::onlyTrashed()
@@ -458,7 +459,7 @@ class User extends Authenticatable implements HasMedia
                 return $tickets;
             }
 
-            $tickets = $user->accountDetail->tickets;
+            $tickets = $user->accountDetail?$user->accountDetail->tickets:collect([]);
             if (!$tickets || $tickets->count() == 0) {
                 $tickets = Ticket::whereHas('reporterBy', function ($query) {
                     $query->where('id', auth()->user()->id);
@@ -485,10 +486,10 @@ class User extends Authenticatable implements HasMedia
 
             if ($trashed) {
                 //            abort_if(Gate::denies('work_tracking_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-                return $user->accountDetail->trashWork_tracking;
+                return $user->accountDetail?$user->accountDetail->trashWork_tracking:collect([]);
             }
 
-            $allWorkTracking = $user->accountDetail->work_tracking;
+            $allWorkTracking = $user->accountDetail?$user->accountDetail->work_tracking:collect([]);
         }
 
         return $allWorkTracking;

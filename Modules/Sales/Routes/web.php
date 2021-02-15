@@ -75,5 +75,21 @@ Route::group(['as' => 'sales.admin.', 'prefix' => 'admin/sales', 'namespace' => 
     Route::post('opportunities/ckmedia', 'OpportunitiesController@storeCKEditorImages')->name('opportunities.storeCKEditorImages');
     Route::resource('opportunities', 'OpportunitiesController');
     Route::post('opportunities/calls', 'OpportunitiesController@createcalls')->name('opportunities.calls');
-   
+    Route::post('opportunities/meetings', 'OpportunitiesController@storemeeting')->name('opportunities.storemeeting');
+    Route::delete('opportunities/destroymeeting/{meeting}', 'OpportunitiesController@destroymeeting')->name('opportunities.destroymeeting');
+    Route::post('opportunities/attachments/{opportunity}', 'OpportunitiesController@storeattachment')->name('opportunities.storeattachment');
+    Route::post('opportunities/media', 'OpportunitiesController@storeMediaWithSameName')->name('opportunities.storeMedia');
+    Route::get('opportunities/media/download/{id}', 'OpportunitiesController@downloadMedia')->name('opportunities.download.attach');
+    Route::get('opportunities/media/view/{id}', 'OpportunitiesController@viewMedia')->name('opportunities.view.attach');
+    Route::get('opportunities/media/delete/{id}/{taskAttachment}', 'OpportunitiesController@deleteMedia')->name('opportunities.delete.attach');
+    Route::post('opportunities/add_comment','OpportunitiesController@add_comment')->name('opportunities.add_comment');
+
+
+    // Clients
+    Route::delete('clients/destroy', 'ClientsController@massDestroy')->name('clients.massDestroy');
+    Route::post('clients/media', 'ClientsController@storeMedia')->name('clients.storeMedia');
+    Route::post('clients/ckmedia', 'ClientsController@storeCKEditorImages')->name('clients.storeCKEditorImages');
+    Route::resource('clients', 'ClientsController');
+    Route::post('clients/contactstore', 'ClientsController@contactstore')->name('clients.contactstore');
+
 });

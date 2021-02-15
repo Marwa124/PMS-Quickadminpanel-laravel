@@ -2,7 +2,8 @@
 
 namespace Modules\ProjectManagement\Entities;
 
-use App\Models\Client;
+use App\Models\Expense;
+use Modules\Sales\Entities\Client;
 use App\Models\Invoice;
 use App\Models\Transaction;
 use Illuminate\Notifications\Notifiable;
@@ -13,7 +14,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
+use Modules\ProjectManagement\Entities\TaskAttachment;
 use \DateTimeInterface;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ProjectManagementMail;
 
 class Project extends Model implements HasMedia
 {
@@ -163,6 +167,11 @@ class Project extends Model implements HasMedia
         return $this->hasMany(Invoice::class,'project_id');
     }
 
+    public function expenses()
+    {
+        return $this->hasMany(Expense::class,'project_id');
+    }
+
     public function tickets()
     {
         return $this->hasMany(Ticket::class,'project_id');
@@ -185,6 +194,16 @@ class Project extends Model implements HasMedia
         return $this->hasMany(Activity::class,'module_field_id')->where('module','=','project')->orderBy('id','desc');
     }
 
+    public function comments()
+    {
+        return $this->hasMany(Comment::class,'module_field_id')->where('module','=','project')->where('comment_replay_id','=',null)->orderBy('id','desc');
+    }
+
+    public function comments_with_replies()
+    {
+        return $this->hasMany(Comment::class,'module_field_id')->where('module','=','project')->orderBy('id','desc');
+    }
+
     public function cloneProject()
     {
         // clone project as new project
@@ -198,6 +217,28 @@ class Project extends Model implements HasMedia
         //setActivity('project',$newproject->id,'Save Project Details',$newproject->name);
         setActivity('project',$newproject->id,'Save Project Details','حفظ تفاصيل المشروع',$newproject->name_en,$newproject->name_ar);
 
+
+        $user = $newproject->client;
+
+        // send mail
+        $sender =  settings('smtp_sender_name');
+        $email_from =  settings('smtp_email') ;
+
+        //send mail to client
+        $template = templates('client_notification');
+//            $message = str_replace("{REF}",$invoice->reference_no,$template->template_body);
+        $message = str_replace("{CLIENT_NAME}",$user->name,$template->template_body);
+        $message = str_replace("{PROJECT_NAME}",$newproject->name_en,$message);
+        $message = str_replace("{PROJECT_LINK}",route("projectmanagement.admin.projects.show", $newproject->id),$message);
+        $message = str_replace("{SITE_NAME}",settings('company_name'),$message);
+
+//            Mail::mailer('smtp')->to($user->email)->send(new FinanceMail($email_from, $sender,$message));
+        Mail::mailer('smtp')->to($user->email)
+            ->cc('mabrouk@onetecgroup.com')
+            ->cc('sara@onetecgroup.com')
+            ->bcc('marwa@onetecgroup.com')
+            ->send(new ProjectManagementMail($email_from, $sender,$message,$template->subject));
+
         // clone milestones in project to add for new project
         foreach ($this->milestones as $milestone)
         {
@@ -207,5 +248,10 @@ class Project extends Model implements HasMedia
         }
 
         return $newproject;
+    }
+
+    public function attachments()
+    {
+        return $this->hasMany(TaskAttachment::class,'project_id','id');
     }
 }

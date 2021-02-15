@@ -83,6 +83,11 @@ Route::group(['as' => 'finance.admin.', 'prefix' => 'admin/finance', 'namespace'
     Route::get('expenses_get_data','ExpensesController@get_data')->name('expenses.get_data');
     Route::get('expenses_getapproved/{id}','ExpensesController@getapproved')->name('expenses.getapproved');
     Route::get('expenses_getpaid/{id}','ExpensesController@getpaid')->name('expenses.getpaid');
+
+
+
+    Route::get('expenses/create/project/{id}','ExpensesController@create_project')->name('expenses.project.create');
+    Route::post('expenses/store/project','ExpensesController@store_project')->name('expenses.project.store');
     ////////////////////////////////END EXPENSES///////////////////////////////////////////////////////////////////////
 
     ////////////////////////////////////DEPOSITS///////////////////////////////////////////////////////////////////////
@@ -114,6 +119,7 @@ Route::group(['as' => 'finance.admin.', 'prefix' => 'admin/finance', 'namespace'
     Route::get('invoices/change_status_reject/{id}', 'InvoicesController@change_status_reject')->name('invoices.change_status_reject');
     Route::post('invoices/changestatus', 'InvoicesController@changestatus')->name('invoices.changestatus');
     Route::get('invoices/history_invoice/{invoice}', 'InvoicesController@history_invoice')->name('invoices.history_invoice');
+    Route::get('invoices/email_invoice/{id}', 'InvoicesController@email_invoice')->name('invoices.email_invoice');
 
     ////////////////////////////////END INVOICES///////////////////////////////////////////////////////////////////////
 

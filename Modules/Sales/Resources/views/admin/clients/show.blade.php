@@ -1,9 +1,9 @@
 @extends('layouts.admin')
 @section('content')
 
-    {{-- <a class="btn btn-default" href="{{ route('sales.admin.opportunities.index') }}">
+    <a class="btn btn-default" href="{{ route('sales.admin.clients.index') }}">
         {{ trans('global.back_to_list') }}
-    </a> --}}
+    </a>
 
     <div class="flash-message">
         @if(Session::has('messages'))
@@ -94,8 +94,8 @@
             <div class="card">
 
                 <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                    <a class="nav-link active" id="v-pills-details-tab" data-toggle="pill" href="#v-pills-details" role="tab" aria-controls="v-pills-details" aria-selected="true">{{trans('cruds.opportunity.title_singular')}} {{trans('global.details')}}</a>
-                    <a class="nav-link" id="v-pills-tasks-tab" data-toggle="pill" href="#v-pills-tasks" role="tab"  aria-controls="v-pills-tasks" aria-selected="false">Call<span  class="float-right"> </span></a>
+                    <a class="nav-link active" id="v-pills-details-tab" data-toggle="pill" href="#v-pills-details" role="tab" aria-controls="v-pills-details" aria-selected="true">{{trans('cruds.client.title_singular')}} {{trans('global.details')}}</a>
+                    <a class="nav-link" id="v-pills-contact-tab" data-toggle="pill" href="#v-pills-contact" role="tab"  aria-controls="v-pills-contact" aria-selected="false">Contact<span  class="float-right"> </span></a>
                     <a class="nav-link" id="v-pills-bugs-tab" data-toggle="pill" href="#v-pills-bugs" role="tab"   aria-controls="v-pills-bugs" aria-selected="false">Meetings<span  class="float-right"> </span></a>
                     <a class="nav-link" id="v-pills-notes-tab" data-toggle="pill" href="#v-pills-notes" role="tab"  aria-controls="v-pills-notes"   aria-selected="false">Comments</a>
                     <a class="nav-link" id="v-pills-tickets-tab" data-toggle="pill" href="#v-pills-tickets" role="tab" aria-controls="v-pills-tickets" aria-selected="false">Attachment<span  class="float-right"> </span></a>
@@ -103,51 +103,54 @@
                 </div>
             </div>
         </div>
+        
         <div class="col-9">
             <div class="tab-content" id="v-pills-tabContent">
                 <div class="tab-pane fade show active" id="v-pills-details" role="tabpanel"
                     aria-labelledby="v-pills-details-tab">
                     <div class="card">
-                    <h5 class="card-header">Notes
-                            <a class="float-right btn text-light btn-danger small" style="text-decoration:none;">Add new</a>
+                    <h5 class="card-header"> {{trans('cruds.client.title_singular')}} {{trans('global.details')}} 
+                        @can('client_edit')
+                       
+                        <a href=" {{ route('sales.admin.clients.edit', $client->id) }}" class="float-right btn text-light btn-danger small" style="text-decoration:none;">{{trans('global.edit')}}</a>
+                          @endcan
                             </h5>
                         <div class="card-body">
-                            <h5>Contact Details</h5>
                             <div class="row">
                                 <div class="col-6">
                                    <div class="d-flex">
-                                        <p style="flex:1">name</p>
-                                        <p style="flex:1">Ali</p>
+                                        <p style="flex:1">{{ trans('cruds.client.fields.email') }}</p>
+                                        <p style="flex:1">{{ $client->name ?? '' }}</p>
                                    </div>
                                    <div class="d-flex">
-                                        <p style="flex:1">contact person</p>
+                                        <p style="flex:1">Contact Person</p>
                                         <p style="flex:1">dsfakj</p>
                                    </div>
                                    <div class="d-flex">
-                                        <p style="flex:1">Email</p>
-                                        <p style="flex:1">aaaa@sssc.com</p>
+                                        <p style="flex:1">{{ trans('cruds.client.fields.email') }}</p>
+                                        <p style="flex:1">{{ $client->email ?? ''}}</p>
                                    </div>
                                    <div class="d-flex">
-                                        <p style="flex:1">City</p>
-                                        <p style="flex:1">Cairo</p>
+                                        <p style="flex:1">{{ trans('cruds.client.fields.city') }}</p>
+                                        <p style="flex:1">{{ $client->city ?? ''}}</p>
                                    </div>
                                    <div class="d-flex">
-                                        <p style="flex:1">Zip Code</p>
-                                        <p style="flex:1">12218</p>
+                                        <p style="flex:1">{{ trans('cruds.client.fields.zipcode') }}</p>
+                                        <p style="flex:1">{{ $client->zipcode ?? ''}}</p>
                                    </div>
                                 </div>
                                 <div class="col-6">
                                     <div class="d-flex">
-                                        <p style="flex:1">Address</p>
-                                        <p style="flex:1">djfsahj</p>
+                                        <p style="flex:1">{{ trans('cruds.client.fields.address') }}</p>
+                                        <p style="flex:1">{{ $client->address ?? ''}}</p>
                                     </div>
                                     <div class="d-flex">
-                                        <p style="flex:1">Phone</p>
-                                        <p style="flex:1">+2212122</p>
+                                        <p style="flex:1">{{ trans('cruds.client.fields.phone') }}</p>
+                                        <p style="flex:1">{{ $client->phone ?? ''}} {{ $client->mobile ? ("/".$client->mobile) : '' }}</p>
                                    </div>
                                    <div class="d-flex">
-                                        <p style="flex:1">Fax</p>
-                                        <p style="flex:1">1212222</p>
+                                        <p style="flex:1">{{ trans('cruds.client.fields.fax') }}</p>
+                                        <p style="flex:1">{{ $client->fax ?? ''}}</p>
                                    </div>
                                    <div class="text-center my-5">
                                     <h4>Received Amount</h4>
@@ -157,11 +160,11 @@
                                 </div>
                             </div>
                             <div>
-                                <div class="progress" style="width: auto" >
+                                {{-- <div class="progress" style="width: auto" >
                                     <div class="progress-bar {{60 >= 50 ? 'bg-success' : 'bg-danger'}}" role="progressbar" style="width: 60%; " aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
                                         60%
                                     </div>
-                                </div>
+                                </div> --}}
                                 <div class="d-flex justify-content-between mt-4">
                                     <div class="d-flex align-items-center">
                                         <div>Invoice Amount</div>
@@ -176,18 +179,151 @@
                         </div>
                     </div>
                 </div>
-                <div class="tab-pane fade" id="v-pills-tasks" role="tabpanel" aria-labelledby="v-pills-tasks-tab">
-                    <div class="card">
-                            <h5 class="card-header">Notes
-                            <a class="float-right btn text-light btn-danger small" style="text-decoration:none;">Add new</a>
-                            </h5>
-                        <div class="card-body">
-                            <div class="nav flex-row nav-pills" id="v-pills-tab" role="tablist"
-                                aria-orientation="horizontal">
-                                <h3>table</h3>
+                <div class="tab-pane fade" id="v-pills-contact" role="tabpanel" aria-labelledby="v-pills-contact-tab">
+                        <div class="card">
+                            <h6 class="card-header">
+                                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="pills-Contact-tab" data-toggle="pill" href="#pills-Contact" role="tab" aria-controls="pills-Contact" aria-selected="true">Contact</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="pills-newContact-tab" data-toggle="pill" href="#pills-newContact" role="tab" aria-controls="pills-newContact" aria-selected="false">New Contact</a>
+                                    </li>
+                                </ul>
+
+                            </h6>
+                            <div class="card-body">
+                                
+                                <div class="tab-content" id="pills-tabContent">
+                                <div class="tab-pane fade show active" id="pills-Contact" role="tabpanel" aria-labelledby="pills-Contact-tab">
+                               
+                                </div>
+                                <div class="tab-pane fade" id="pills-newContact" role="tabpanel" aria-labelledby="pills-newContact-tab">
+
+                                    <form method="POST" action="{{ route("sales.admin.clients.contactstore") }}" enctype="multipart/form-data">
+                                        @csrf
+                                        <input type="hidden" name="clients_id" value="{{$client->id}}">
+                                        <div class="form-group">
+                                            <label class="required" for="name">{{ trans('cruds.client.fields.name') }}</label>
+                                            <input class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" type="text" name="name" id="name" value="{{ old('name', '') }}" required>
+                                            @if($errors->has('name'))
+                                                <div class="invalid-feedback">
+                                                    {{ $errors->first('name') }}
+                                                </div>
+                                            @endif
+                                            <span class="help-block">{{ trans('cruds.client.fields.name_helper') }}</span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="email" class="required">{{ trans('cruds.client.fields.email') }}</label>
+                                            <input class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}" type="email" name="email" id="email" value="{{ old('email') }}" required>
+                                            @if($errors->has('email'))
+                                                <div class="invalid-feedback">
+                                                    {{ $errors->first('email') }}
+                                                </div>
+                                            @endif
+                                            <span class="help-block">{{ trans('cruds.client.fields.email_helper') }}</span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="short_note">{{ trans('cruds.client.fields.short_note') }}</label>
+                                            <textarea class="form-control ckeditor {{ $errors->has('short_note') ? 'is-invalid' : '' }}" name="short_note" id="short_note">{!! old('short_note') !!}</textarea>
+                                            @if($errors->has('short_note'))
+                                                <div class="invalid-feedback">
+                                                    {{ $errors->first('short_note') }}
+                                                </div>
+                                            @endif
+                                            <span class="help-block">{{ trans('cruds.client.fields.short_note_helper') }}</span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="phone">{{ trans('cruds.client.fields.phone') }}</label>
+                                            <input class="form-control {{ $errors->has('phone') ? 'is-invalid' : '' }}" type="text" name="phone" id="phone" value="{{ old('phone', '') }}">
+                                            @if($errors->has('phone'))
+                                                <div class="invalid-feedback">
+                                                    {{ $errors->first('phone') }}
+                                                </div>
+                                            @endif
+                                            <span class="help-block">{{ trans('cruds.client.fields.phone_helper') }}</span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="mobile">{{ trans('cruds.client.fields.mobile') }}</label>
+                                            <input class="form-control {{ $errors->has('mobile') ? 'is-invalid' : '' }}" type="text" name="mobile" id="mobile" value="{{ old('mobile', '') }}">
+                                            @if($errors->has('mobile'))
+                                                <div class="invalid-feedback">
+                                                    {{ $errors->first('mobile') }}
+                                                </div>
+                                            @endif
+                                            <span class="help-block">{{ trans('cruds.client.fields.mobile_helper') }}</span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="fax">{{ trans('cruds.client.fields.fax') }}</label>
+                                            <input class="form-control {{ $errors->has('fax') ? 'is-invalid' : '' }}" type="text" name="fax" id="fax" value="{{ old('fax', '') }}">
+                                            @if($errors->has('fax'))
+                                                <div class="invalid-feedback">
+                                                    {{ $errors->first('fax') }}
+                                                </div>
+                                            @endif
+                                            <span class="help-block">{{ trans('cruds.client.fields.fax_helper') }}</span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="address">{{ trans('cruds.client.fields.address') }}</label>
+                                            <input class="form-control {{ $errors->has('address') ? 'is-invalid' : '' }}" type="text" name="address" id="address" value="{{ old('address', '') }}">
+                                            @if($errors->has('address'))
+                                                <div class="invalid-feedback">
+                                                    {{ $errors->first('address') }}
+                                                </div>
+                                            @endif
+                                            <span class="help-block">{{ trans('cruds.client.fields.address_helper') }}</span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="city">{{ trans('cruds.client.fields.city') }}</label>
+                                            <input class="form-control {{ $errors->has('city') ? 'is-invalid' : '' }}" type="text" name="city" id="city" value="{{ old('city', '') }}">
+                                            @if($errors->has('city'))
+                                                <div class="invalid-feedback">
+                                                    {{ $errors->first('city') }}
+                                                </div>
+                                            @endif
+                                            <span class="help-block">{{ trans('cruds.client.fields.city_helper') }}</span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="zipcode">{{ trans('cruds.client.fields.zipcode') }}</label>
+                                            <input class="form-control {{ $errors->has('zipcode') ? 'is-invalid' : '' }}" type="text" name="zipcode" id="zipcode" value="{{ old('zipcode', '') }}">
+                                            @if($errors->has('zipcode'))
+                                                <div class="invalid-feedback">
+                                                    {{ $errors->first('zipcode') }}
+                                                </div>
+                                            @endif
+                                            <span class="help-block">{{ trans('cruds.client.fields.zipcode_helper') }}</span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="country">{{ trans('cruds.client.fields.country') }}</label>
+                                            <select class="form-control select_box"  name="country">
+                                                <option
+                                                    value="" >
+                                                    @lang('settings.select_country')
+                                                    </option>
+                                                    @forelse ($countries as $country)
+                                                    <option  {{ old('country',settings('company_country')) == $country->value ? ' selected' : ''}} value="{{ $country->value }}"> {{ $country->value }}</option>
+                                                    @empty
+                                                    
+                                                    @endforelse
+                                                </select>             
+                                            @if($errors->has('country'))
+                                                <div class="invalid-feedback">
+                                                    {{ $errors->first('country') }}
+                                                </div>
+                                            @endif
+                                            <span class="help-block">{{ trans('cruds.client.fields.country_helper') }}</span>
+                                        </div>
+                                        <div class="form-group">
+                                            <button class="btn btn-danger" type="submit">
+                                                {{ trans('global.save') }}
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
                 </div>
                 <div class="tab-pane fade" id="v-pills-bugs" role="tabpanel" aria-labelledby="v-pills-bugs-tab">
                     <div class="card">
@@ -216,7 +352,7 @@
                         </div>
                     </div>
                 <div class="tab-pane fade" id="v-pills-tickets" role="tabpanel" aria-labelledby="v-pills-tickets-tab">
-                    <div class="card">
+                       <div class="card">
                                 <h6 class="card-header">
                                     <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                                         <li class="nav-item">

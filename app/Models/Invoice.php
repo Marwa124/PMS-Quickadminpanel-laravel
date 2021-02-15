@@ -13,6 +13,7 @@ use \DateTimeInterface;
 use  Modules\ProjectManagement\Entities\Activity;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Notifications\Notifiable;
+use Modules\Sales\Entities\Client;
 
 
 class Invoice extends Model implements HasMedia
@@ -267,13 +268,9 @@ class Invoice extends Model implements HasMedia
     {
         return $this->hasMany(Activity::class,'module_field_id')->where('module','=','invoice')->orderBy('id','desc');
     }
-<<<<<<< HEAD
-=======
-
 
     public function transaction()
     {
         return $this->hasOne(Transaction::class, 'invoice_id');
     }
->>>>>>> c23dbcdab10da059d2eb3147cf9d18573d39b789
 }

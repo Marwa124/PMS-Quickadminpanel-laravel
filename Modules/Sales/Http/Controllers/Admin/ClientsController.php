@@ -1,19 +1,26 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace Modules\Sales\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\MediaUploadingTrait;
-use App\Http\Requests\MassDestroyClientRequest;
-use App\Http\Requests\StoreClientRequest;
-use App\Http\Requests\UpdateClientRequest;
+use Modules\Sales\Http\Requests\Destroy\MassDestroyClientRequest;
+use Modules\Sales\Http\Requests\Store\StoreClientRequest;
+use Modules\Sales\Http\Requests\Store\StoreClientContactRequest;
+use Modules\Sales\Http\Requests\Update\UpdateClientRequest;
 use Modules\HR\Entities\AccountDetail;
-use App\Models\Client;
+use Modules\Sales\Entities\Client;
+use Modules\Sales\Entities\ClientContact;
+use App\Models\Currency;
+use App\Models\Country;
+use App\Models\Language;
+use App\Models\User;
 use Gate;
 use Illuminate\Http\Request;
 use Spatie\MediaLibrary\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
-
+use Modules\MaterialsSuppliers\Entities\CustomerGroup;
+use Spatie\Permission\Models\Role;
 class ClientsController extends Controller
 {
     use MediaUploadingTrait;
@@ -26,27 +33,31 @@ class ClientsController extends Controller
 
         $account_details = AccountDetail::get();
 
-        return view('admin.clients.index', compact('clients', 'account_details'));
+        return view('sales::admin.clients.index', compact('clients', 'account_details'));
     }
 
     public function create()
     {
         abort_if(Gate::denies('client_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
+        $currencies = Currency::all();
+        $countries  = Country::all();
+        $languages  = Language::all();
+        $customerGroups = CustomerGroup::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
         $statuses = AccountDetail::all()->pluck('fullname', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        return view('admin.clients.create', compact('statuses'));
+        return view('sales::admin.clients.create', compact('statuses','currencies','countries','languages','customerGroups'));
     }
 
     public function store(StoreClientRequest $request)
     {
-        $client = Client::create($request->all());
 
+
+        $client = Client::create($request->all());
         if ($media = $request->input('ck-media', false)) {
             Media::whereIn('id', $media)->update(['model_id' => $client->id]);
         }
 
-        return redirect()->route('admin.clients.index');
+        return redirect()->route('sales.admin.clients.index');
     }
 
     public function edit(Client $client)
@@ -54,26 +65,29 @@ class ClientsController extends Controller
         abort_if(Gate::denies('client_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $statuses = AccountDetail::all()->pluck('fullname', 'id')->prepend(trans('global.pleaseSelect'), '');
-
+        $currencies = Currency::all();
+        $countries  = Country::all();
+        $languages  = Language::all();
+        $customerGroups = CustomerGroup::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
         $client->load('status');
 
-        return view('admin.clients.edit', compact('statuses', 'client'));
+        return view('sales::admin.clients.edit', compact('statuses', 'client','currencies','countries','languages','customerGroups'));
     }
 
     public function update(UpdateClientRequest $request, Client $client)
     {
         $client->update($request->all());
 
-        return redirect()->route('admin.clients.index');
+        return redirect()->route('sales.admin.clients.index');
     }
 
     public function show(Client $client)
     {
         abort_if(Gate::denies('client_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        $countries  = Country::all();
+        $client->load('status', 'clientProjects');
 
-        // $client->load('status', 'clientProjects');
-
-        return view('admin.clients.show', compact('client'));
+        return view('sales::admin.clients.show', compact('client','countries'));
     }
 
     public function destroy(Client $client)
@@ -102,5 +116,18 @@ class ClientsController extends Controller
         $media         = $model->addMediaFromRequest('upload')->toMediaCollection('ck-media');
 
         return response()->json(['id' => $media->id, 'url' => $media->getUrl()], Response::HTTP_CREATED);
+    }
+
+    public function contactstore(StoreClientContactRequest $request)
+    {
+        DB::beginTransaction();
+        try{
+        $client = ClientContact::create($request->all());
+
+        DB::commit();
+            return redirect()->back()->with(flash('Contact Add successfully', 'success'));
+        } catch (\Exception $e) {
+            return redirect()->back()->with(['message' => 'Something wrong happen','alert-type' => 'error']);
+        }
     }
 }

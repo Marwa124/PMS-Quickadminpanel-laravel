@@ -83,12 +83,12 @@ class StoreProjectRequest extends FormRequest
             ],
             'description_en'     => [
                 'string',
-                'regex:/^[a-zA-Z ][1-9]*+$/u',
+                // 'regex:/^[a-zA-Z ][1-9]*+$/u',
                 'nullable',
             ],
             'description_ar'     => [
                 'string',
-                'regex:/^[اأإء-ي ][1-9]*+$/ui',
+                // 'regex:/^[اأإء-ي ][1-9]*+$/ui',
                 'nullable',
             ],
         ];

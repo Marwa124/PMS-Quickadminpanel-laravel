@@ -46,7 +46,12 @@ Route::group(['prefix' => 'admin/projectmanagement', 'as' => 'projectmanagement.
     Route::get('tasks/{id}/clone','TaskController@task_clone')->name('tasks.clone');
     Route::post('tasks/{id}/force-destroy', 'TaskController@forceDelete')->name('tasks.forceDestroy');
     Route::get('tasks/reports/task_report', 'TaskController@task_report')->name('tasks.task_report');
-
+    Route::post('tasks/add_comment','TaskController@add_comment')->name('tasks.add_comment');
+    Route::post('tasks/attachments/{task}', 'TaskController@storeattachment')->name('tasks.storeattachment');
+    Route::post('tasks/media', 'TaskController@storeMediaWithSameName')->name('tasks.storeMedia');
+    Route::get('tasks/media/download/{id}', 'TaskController@downloadMedia')->name('tasks.download.attach');
+    Route::get('tasks/media/view/{id}', 'TaskController@viewMedia')->name('tasks.view.attach');
+    Route::get('tasks/media/delete/{id}/{taskAttachment}', 'TaskController@deleteMedia')->name('tasks.delete.attach');
 
 
     // Tasks Calendars
@@ -66,6 +71,12 @@ Route::group(['prefix' => 'admin/projectmanagement', 'as' => 'projectmanagement.
     Route::get('projects/index/trashed','ProjectsController@index')->name('projects.trashed.index');
     Route::post('projects/{id}/force-destroy', 'ProjectsController@forceDelete')->name('projects.forceDestroy');
     Route::get('projects/reports/project_report', 'ProjectsController@project_report')->name('projects.project_report');
+    Route::post('projects/add_comment','ProjectsController@add_comment')->name('projects.add_comment');
+    Route::post('projects/attachments/{project}', 'ProjectsController@storeattachment')->name('projects.storeattachment');
+    Route::post('projects/media', 'ProjectsController@storeMediaWithSameName')->name('projects.storeMedia');
+    Route::get('projects/media/download/{id}', 'ProjectsController@downloadMedia')->name('projects.download.attach');
+    Route::get('projects/media/view/{id}', 'ProjectsController@viewMedia')->name('projects.view.attach');
+    Route::get('projects/media/delete/{id}/{taskAttachment}', 'ProjectsController@deleteMedia')->name('projects.delete.attach');
 
 
     // Milestones
@@ -91,7 +102,12 @@ Route::group(['prefix' => 'admin/projectmanagement', 'as' => 'projectmanagement.
     Route::get('bugs/index/trashed','BugsController@index')->name('bugs.trashed.index');
     Route::post('bugs/{id}/force-destroy', 'BugsController@forceDelete')->name('bugs.forceDestroy');
     Route::get('bugs/reports/bug_report', 'BugsController@bug_report')->name('bugs.bug_report');
-
+    Route::post('bugs/add_comment','BugsController@add_comment')->name('bugs.add_comment');
+    Route::post('bugs/attachments/{bug}', 'BugsController@storeattachment')->name('bugs.storeattachment');
+    Route::post('bugs/media', 'BugsController@storeMediaWithSameName')->name('bugs.storeMedia');
+    Route::get('bugs/media/download/{id}', 'BugsController@downloadMedia')->name('bugs.download.attach');
+    Route::get('bugs/media/view/{id}', 'BugsController@viewMedia')->name('bugs.view.attach');
+    Route::get('bugs/media/delete/{id}/{taskAttachment}', 'BugsController@deleteMedia')->name('bugs.delete.attach');
     // Tickets
     Route::delete('tickets/destroy', 'TicketsController@massDestroy')->name('tickets.massDestroy');
     Route::post('tickets/media', 'TicketsController@storeMedia')->name('tickets.storeMedia');
@@ -132,6 +148,8 @@ Route::group(['prefix' => 'admin/projectmanagement', 'as' => 'projectmanagement.
     Route::get('work-trackings/{id}/assign_to','WorkTrackingController@getAssignTo')->name('work-trackings.getAssignTo');
     Route::post('work-trackings/assign_to','WorkTrackingController@storeAssignTo')->name('work-trackings.storeAssignTo');
     Route::post('work-trackings/{id}/force-destroy', 'WorkTrackingController@forceDelete')->name('work-trackings.forceDestroy');
+    Route::post('work-trackings/add_comment','WorkTrackingController@add_comment')->name('work-trackings.add_comment');
+
 
     // Time Work Types
 //    Route::delete('time-work-types/destroy', 'TimeWorkTypeController@massDestroy')->name('time-work-types.massDestroy');

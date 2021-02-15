@@ -3,7 +3,7 @@
 namespace Modules\Sales\Entities;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\client;
+use Modules\Sales\Entities\Client;
 class Call extends Model
 {
     protected $guarded =[];
@@ -20,7 +20,7 @@ class Call extends Model
     }
     public function client()
     {
-        return $this->belongsTo(client::class,'client_id','id')->where('client_id','!=',NUll);
+        return $this->belongsTo(client::class,'client_id');
     }
     public function opportunities()
     {

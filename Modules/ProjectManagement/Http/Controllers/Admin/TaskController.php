@@ -8,6 +8,7 @@ use App\Http\Controllers\Traits\MediaUploadingTrait;
 use App\Notifications\ProjectManagementNotification;
 use Illuminate\Support\Facades\DB;
 use Modules\HR\Entities\AccountDetail;
+use Modules\ProjectManagement\Entities\Comment;
 use Modules\ProjectManagement\Entities\Milestone;
 use Modules\ProjectManagement\Entities\TimeSheet;
 use Modules\ProjectManagement\Http\Controllers\Traits\ProjectManagementHelperTrait;
@@ -26,6 +27,9 @@ use Spatie\MediaLibrary\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ProjectManagementMail;
+use Validator;
+use Modules\ProjectManagement\Http\Requests\StoreTaskAttachmentRequest;
+use Modules\ProjectManagement\Entities\TaskAttachment;
 
 class TaskController extends Controller
 {
@@ -226,21 +230,14 @@ class TaskController extends Controller
             // Notify User
             foreach ($task->accountDetails as $accountUser) {
                 $user = $accountUser->user;
-//                $dataMail = [
-//                    'subjectMail' => 'Update Task ' . $task->name,
-//                    'bodyMail' => 'Update The Task ' . $task->name,
-//                    'action' => route("projectmanagement.admin.tasks.show", $task->id)
-//                ];
 
                 $dataNotification = [
                     'message' => 'Update The Task : ' . $task->{'name_'.app()->getLocale()},
                     'route_path' => 'admin/projectmanagement/tasks',
                 ];
 
-//                $user->notify(new ProjectManagementNotification($task, $user, $dataMail, $dataNotification));
 
                 //send notification
-//                $user->notify(new ProjectManagementNotification($task, $user, $dataMail, $dataNotification));
                 $user->notify(new ProjectManagementNotification($task, $user, $dataNotification));
                 $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
                 event(new NewNotification($userNotify));
@@ -256,8 +253,32 @@ class TaskController extends Controller
                     $userName = User::find(auth()->user()->id)->name;
                 }
 
-                $message = $userName.' '.'Update The Task '.$task->{'name_'.app()->getLocale()};
-                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
+                // send mail
+                $sender =  settings('smtp_sender_name');
+                $email_from =  settings('smtp_email') ;
+
+                if(User::find(auth()->user()->id)->accountDetail && User::find(auth()->user()->id)->accountDetail()->first())
+                {
+                    $userName = AccountDetail::where('user_id', auth()->user()->id)->first()->fullname;
+                }else {
+                    $userName = User::find(auth()->user()->id)->name;
+                }
+
+                //send mail to user
+                $template = templates('tasks_updated');
+                $message = str_replace("{ASSIGNED_BY}",$userName,$template->template_body);
+                $message = str_replace("{TASK_NAME}",$task->name_en,$message);
+                $message = str_replace("{TASK_URL}",route("projectmanagement.admin.tasks.show", $task->id),$message);
+                $message = str_replace("{SITE_NAME}",settings('company_name'),$message);
+
+                Mail::mailer('smtp')->to($user->email)
+                    ->cc(['mabrouk@onetecgroup.com','sara@onetecgroup.com'])
+                    ->bcc('marwa@onetecgroup.com')
+                    ->send(new ProjectManagementMail($email_from, $sender,$message,$template->subject));
+
+//                $message = $userName.' '.'Update The Task '.$task->{'name_'.app()->getLocale()};
+//                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
+
             }
 
             setActivity('task', $task->id, 'Update Task Details', 'تعديل تفاصيل المهمه', $task->name_en, $task->name_ar);
@@ -477,8 +498,21 @@ class TaskController extends Controller
                     $userName = User::find(auth()->user()->id)->name;
                 }
 
-                $message = $userName.' '.'Assign The Task : '.$task->{'name_'.app()->getLocale()}. ' To ' . $user->name;
-                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
+                //send mail to user
+                $template = templates('task_assigned');
+                $message = str_replace("{ASSIGNED_BY}",$userName,$template->template_body);
+                $message = str_replace("{TASK_NAME}",$task->name_en,$message);
+                $message = str_replace("{TASK_URL}",route("projectmanagement.admin.tasks.show", $task->id),$message);
+                $message = str_replace("{SITE_NAME}",settings('company_name'),$message);
+
+                Mail::mailer('smtp')->to($user->email)
+                    ->cc(['mabrouk@onetecgroup.com','sara@onetecgroup.com'])
+                    ->bcc('marwa@onetecgroup.com')
+                    ->send(new ProjectManagementMail($email_from, $sender,$message,$template->subject));
+
+//                $message = $userName.' '.'Assign The Task : '.$task->{'name_'.app()->getLocale()}. ' To ' . $user->name;
+//                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
+
             }
 
             setActivity('task', $task->id, 'Update Assign to', 'تعديل القائمين على مهمة', $task->name_en, $task->name_ar);
@@ -512,18 +546,12 @@ class TaskController extends Controller
             // Notify User
             foreach ($task->accountDetails as $accountUser) {
                 $user = $accountUser->user;
-//                $dataMail = [
-//                    'subjectMail' => 'Update Task ' . $task->name,
-//                    'bodyMail' => 'Update Note Of Task ' . $task->name,
-//                    'action' => route("projectmanagement.admin.tasks.show", $task->id)
-//                ];
 
                 $dataNotification = [
                     'message' => 'Update Note Of Task : ' . $task->{'name_'.app()->getLocale()},
                     'route_path' => 'admin/projectmanagement/tasks',
                 ];
 
-//                $user->notify(new ProjectManagementNotification($task, $user, $dataMail, $dataNotification));
 
                 //send notification
                 $user->notify(new ProjectManagementNotification($task, $user, $dataNotification));
@@ -541,8 +569,19 @@ class TaskController extends Controller
                     $userName = User::find(auth()->user()->id)->name;
                 }
 
-                $message = $userName.' '.'Update Note Of Task '.$task->{'name_'.app()->getLocale()};
-                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
+                //send mail to user
+                $template = templates('tasks_updated');
+                $message = str_replace("{ASSIGNED_BY}",$userName,$template->template_body);
+                $message = str_replace("{TASK_NAME}",$task->name_en,$message);
+                $message = str_replace("{TASK_URL}",route("projectmanagement.admin.tasks.show", $task->id),$message);
+                $message = str_replace("{SITE_NAME}",settings('company_name'),$message);
+
+                Mail::mailer('smtp')->to($user->email)
+                    ->cc(['mabrouk@onetecgroup.com','sara@onetecgroup.com'])
+                    ->bcc('marwa@onetecgroup.com')
+                    ->send(new ProjectManagementMail($email_from, $sender,$message,$template->subject));
+//                $message = $userName.' '.'Update Note Of Task '.$task->{'name_'.app()->getLocale()};
+//                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
             }
 
             setActivity('task', $task->id, 'Update Note','تعديل الملاحظات', $task->name_en, $task->name_ar);
@@ -717,5 +756,166 @@ class TaskController extends Controller
 //        return abort(Response::HTTP_FORBIDDEN, trans('global.forbidden_page_not_allow_to_you'));
     }
 
+    public function add_comment(Request $request)
+    {
 
+        try {
+            // Begin a transaction
+            DB::beginTransaction();
+
+            $task = Task::findOrFail($request->task_id);
+            if ($request->comment_replay_id){
+
+                $validator = Validator::make($request->all(),[
+                    'task_id'           => 'exists:tasks,id',
+                    'replay_comment'    => 'required',
+                    'comment_replay_id' => 'exists:comments,id',
+                ]);
+                if($validator->fails()) {
+                    return redirect()->back()->with(flash(trans('cruds.messages.add_replay_failed'), 'danger'))->withErrors($validator)->withInput();
+                }
+                $comment = Comment::create([
+                    'module_field_id'       => $request->task_id,
+                    'comment'               => $request->replay_comment,
+                    'module'                => 'task',
+                    'user_id'               => auth()->user()->id,
+                    'comment_replay_id'     => $request->comment_replay_id,
+                ]);
+
+                setActivity('task',$task->id,'add replay on comment ','تم إضافة رد على تعليق',$task->name_en,$task->name_ar);
+
+            }else{
+
+                $validator = Validator::make( $request->all(),[
+                    'task_id'           => 'exists:tasks,id',
+                    'comment'           => 'required',
+                ]);
+
+                if($validator->fails()) {
+                    return redirect()->back()->with(flash(trans('cruds.messages.add_replay_failed'), 'danger'))->withErrors($validator)->withInput();
+                }
+
+                $comment = Comment::create([
+                    'module_field_id'       => $request->task_id,
+                    'comment'               => $request->comment,
+                    'module'                => 'task',
+                    'user_id'               => auth()->user()->id,
+                ]);
+
+                setActivity('task',$task->id,'add comment ','تم إضافة تعليق',$task->name_en,$task->name_ar);
+
+            }
+
+            if ($comment && $comment->user)
+            {
+
+                // Notify User
+                foreach ($task->accountDetails as $accountUser)
+                {
+                    $user = $accountUser->user;
+
+                    $dataNotification = [
+                        'message'       => 'Comment On The Task : '.$task->{'name_'.app()->getLocale()},
+                        'route_path'    => 'admin/projectmanagement/tasks',
+                    ];
+
+                    //                $user->notify(new ProjectManagementNotification($project,$user,$dataMail,$dataNotification));
+
+                    //send notification
+                    $user->notify(new ProjectManagementNotification($task,$user,$dataNotification));
+                    $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
+                    event(new NewNotification($userNotify));
+
+                    // send mail
+                    $sender =  settings('smtp_sender_name');
+                    $email_from =  settings('smtp_email') ;
+
+                    //send mail to client
+                    $template = templates('tasks_comments');
+                    $message = str_replace("{POSTED_BY}",$comment->user->name,$template->template_body);
+                    $message = str_replace("{TASK_NAME}",$task->name_en,$message);
+                    $message = str_replace("{COMMENT_URL}",route("projectmanagement.admin.tasks.show", $task->id),$message);
+                    $message = str_replace("{COMMENT_MESSAGE}",$comment->comment,$message);
+                    $message = str_replace("{SITE_NAME}",settings('company_name'),$message);
+
+                    Mail::mailer('smtp')->to($user->email)
+                        ->cc(['mabrouk@onetecgroup.com','sara@onetecgroup.com'])
+                        ->bcc('marwa@onetecgroup.com')
+                        ->send(new ProjectManagementMail($email_from, $sender,$message,$template->subject));
+                }
+
+
+            }
+
+            // Commit the transaction
+            DB::commit();
+            return back()->with(flash(trans('cruds.messages.add_replay_success'), 'success'));
+
+        }catch(\Exception $e){
+            // An error occured; cancel the transaction...
+            DB::rollback();
+            return back()->with(flash(trans('cruds.messages.add_replay_failed'), 'danger'))->withInput();
+
+            // and throw the error again.
+            throw $e;
+        }
+//        return redirect()->back();
+    }
+
+    public function storeattachment(StoreTaskAttachmentRequest $request,Task $task)
+    {
+         DB::beginTransaction();
+         try{
+            $taskAttachment = TaskAttachment::create($request->all());
+            if ($request->input('attachments', false)) {
+                foreach ($request->attachments as $attachment) {
+                    $taskAttachment->addMedia(storage_path('tmp/uploads/' . $attachment))->toMediaCollection('attachments');
+                }
+            }
+            if ($media = $request->input('ck-media', false)) {
+                Media::whereIn('id', $media)->update(['model_id' => $taskAttachment->id]);
+            }
+            setActivity('Task',$task->id,'add Attachments to Task ','تم اضافة مرفقات الي المهمة',$task->name_en,$task->name_ar);
+            DB::commit();
+            return redirect()->back()->with(flash('Attachment add successfully', 'success'));
+
+
+        } catch (\Exception $e) {
+            
+            return redirect()->back()->with(['message' => 'Something wrong happen','alert-type' => 'error']);
+        }
+    }
+
+    // attachment opperation
+    public function downloadMedia($id)
+    {
+        $media = Media::findOrFail($id);
+        return response()->download($media->getPath(), $media->file_name);
+    }
+
+    public function viewMedia($id)
+    {
+        $media = Media::findOrFail($id);
+        return response()->file($media->getPath());
+    }
+
+    public function deleteMedia($id,TaskAttachment $taskAttachment)
+    { 
+
+        DB::beginTransaction();
+         try{
+             $Task= Task::find($taskAttachment->task_id);
+            if($taskAttachment->hasMedia('attachments') == true){
+                $taskAttachment->clearMediaCollection('attachments');
+            }
+            $taskAttachment->delete(); 
+            setActivity('Task',$Task->id,'Delete Task attachments Details','تم حذف مرفقات المهمة',$Task->name_en,$Task->name_ar);
+            DB::commit();
+            return redirect()->back()->with(flash('Attachment Deleted successfully', 'success'));
+        } catch (\Exception $e) {
+
+            return redirect()->back()->with(['message' => 'Something wrong happen','alert-type' => 'error']);
+        }
+
+    }
 }

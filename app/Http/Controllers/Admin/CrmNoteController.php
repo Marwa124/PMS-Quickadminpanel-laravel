@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\MassDestroyCrmNoteRequest;
 use App\Http\Requests\StoreCrmNoteRequest;
 use App\Http\Requests\UpdateCrmNoteRequest;
-use App\Models\Client;
+use Modules\Sales\Entities\Client;
 use App\Models\CrmNote;
 use App\Models\User;
 use Gate;

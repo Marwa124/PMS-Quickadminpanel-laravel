@@ -3,7 +3,8 @@
 namespace Modules\Finance\Http\Controllers\admin;
 
 use App\Http\Controllers\Traits\MediaUploadingTrait;
-use App\Models\Client;
+use Modules\ProjectManagement\Entities\Project;
+use Modules\Sales\Entities\Client;
 use App\Models\Transaction;
 use Gate;
 use App\Models\Expense;
@@ -125,25 +126,25 @@ class ExpensesController extends Controller
 
         $expenses = Expense::create($data);
 
-        $account->update([
-            'balance'   => $account->balance - $request->amount
-        ]);
+//        $account->update([
+//            'balance'   => $account->balance - $request->amount
+//        ]);
+//
+//        $expenses->update([
+//           'bank_balance'   =>  $account->balance
+//        ]);
 
-        $expenses->update([
-           'bank_balance'   =>  $account->balance
-        ]);
-
-        Transaction::create([
-           'date'           => $request->entry_date,
-            'account_id'    => $request->account_id,
-            'type'          => 'expense',
-            'name'          => $request->title,
-            'amount'        => $request->amount,
-            'debit'         => $request->amount,
-            'total_balance' => $account->balance,
-            'added_by'      => auth()->user()->id,
-            'expense_id'    => $expenses->id
-        ]);
+//        Transaction::create([
+//           'date'           => $request->entry_date,
+//            'account_id'    => $request->account_id,
+//            'type'          => 'expense',
+//            'name'          => $request->title,
+//            'amount'        => $request->amount,
+//            'debit'         => $request->amount,
+//            'total_balance' => $account->balance,
+//            'added_by'      => auth()->user()->id,
+//            'expense_id'    => $expenses->id
+//        ]);
 
 
 
@@ -292,13 +293,17 @@ class ExpensesController extends Controller
         $account  =  Account::findOrFail($expense->account_id);
 
         if($account->balance > $expense->amount){
-            $expense->update([
-                'status'        =>  'paid'
+            $account->update([
+                'balance'   => $account->balance - $expense->amount
             ]);
 
-            $account->update([
-                'balance' => $account->balance - $expense->amount
+            $expense->update([
+                'status'        =>  'paid',
+                'bank_balance'   =>  $account->balance
             ]);
+
+
+
         }
         else{
             //Error Balance
@@ -306,6 +311,66 @@ class ExpensesController extends Controller
         return redirect()->route('finance.admin.expenses.index');
 
     }
+
+
+
+
+    public function create_project($id)
+    {
+        abort_if(Gate::denies('expenses_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        $accounts = Account::all();
+        $payment_methods = PaymentMethod::all();
+        $expenses_category = ExpenseCategory::all();
+        $project = Project::findOrFail($id);
+        $client = Client::findOrFail($project->client_id);
+
+        return view('finance::admin.expenses.create_project', compact('accounts', 'payment_methods','expenses_category','client','project'));
+    }
+
+    public function store_project(Request $request)
+    {
+        $account = Account::findOrFail($request->account_id);
+
+        $request->validate([
+            'account_id' => 'numeric|required|exists:accounts,id',
+            'project_id' => 'numeric|required|exists:projects,id',
+            'amount' => 'numeric|required|max:'.$account->balance
+        ]);
+
+        $data = $request->except('attachments');
+
+        $expenses = Expense::create($data);
+
+
+//        Transaction::create([
+//           'date'           => $request->entry_date,
+//            'account_id'    => $request->account_id,
+//            'type'          => 'expense',
+//            'name'          => $request->title,
+//            'amount'        => $request->amount,
+//            'debit'         => $request->amount,
+//            'total_balance' => $account->balance,
+//            'added_by'      => auth()->user()->id,
+//            'expense_id'    => $expenses->id
+//        ]);
+
+
+
+        if ($request->input('attachments', false)) {
+            foreach ($request->attachments as $attachment) {
+                $expenses->addMedia(storage_path('tmp/uploads/' . $attachment))->toMediaCollection('attachments');
+            }
+        }
+
+        return redirect()->route('finance.admin.expenses.index');
+
+
+    }
+
+
+
+
 
 
 }

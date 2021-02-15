@@ -18,6 +18,7 @@
         </button>
         <div class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 34px, 0px); top: 0px; left: 0px; will-change: transform;">
 
+          <a  class="dropdown-item" href="{{ route('finance.admin.invoices.email_invoice', $invoice->id) }}"> {{ trans('cruds.invoice.fields.email_invoice') }}</a>
             <a class="dropdown-item changestatus" data-status="sent"
                title="Mark as {{trans('cruds.invoice.fields.sent')}}">{{ trans('cruds.proposal.fields.Mark_As') }}
                 {{trans('cruds.invoice.fields.sent')}}</a>

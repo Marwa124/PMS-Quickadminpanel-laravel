@@ -1,28 +1,32 @@
 <?php
 
-namespace App\Http\Requests;
+namespace Modules\Sales\Http\Requests\Store;
 
-use App\Models\Client;
+use Modules\Sales\Entities\Client;
 use Gate;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Response;
 
-class UpdateClientRequest extends FormRequest
+class StoreClientRequest extends FormRequest
 {
     public function authorize()
     {
-        return Gate::allows('client_edit');
+        return Gate::allows('client_create');
+    }
+
+
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'client_status'=>1,
+            'password'=> bcrypt($this->password),
+        ]);
     }
 
     public function rules()
     {
         return [
-            'primary_contact' => [
-                'nullable',
-                'integer',
-                'min:-2147483648',
-                'max:2147483647',
-            ],
+            
             'name'            => [
                 'string',
                 'required',
@@ -101,7 +105,14 @@ class UpdateClientRequest extends FormRequest
             ],
             'username'        => [
                 'string',
-                'nullable',
+                'required',
+            ],
+            'password'        => [
+                'required',
+            ],
+            'email'                => [
+                'required',
+                // 'unique:users',
             ],
         ];
     }

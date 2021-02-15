@@ -35,6 +35,7 @@ class FinanceMail extends Mailable
      */
     public function build()
     {
+//        dd($this->message);
         if ($this->message){
 
             return $this->from($this->email, $this->name)->html($this->message);

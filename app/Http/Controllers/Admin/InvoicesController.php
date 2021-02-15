@@ -7,7 +7,7 @@ use App\Http\Controllers\Traits\MediaUploadingTrait;
 use App\Http\Requests\MassDestroyInvoiceRequest;
 use App\Http\Requests\StoreInvoiceRequest;
 use App\Http\Requests\UpdateInvoiceRequest;
-use App\Models\Client;
+use Modules\Sales\Entities\Client;
 use App\Models\Invoice;
 use Modules\ProjectManagement\Entities\Project;;
 use Gate;

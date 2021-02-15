@@ -254,9 +254,10 @@
 
                 <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                     <a class="nav-link active" id="v-pills-details-tab" data-toggle="pill" href="#v-pills-details" role="tab" aria-controls="v-pills-details" aria-selected="true">{{ trans('cruds.bug.title') }} {{trans('global.details')}}</a>
+                    <a class="nav-link" id="v-pills-comments-tab"       data-toggle="pill" href="#v-pills-comments" role="tab" aria-controls="v-pills-comments" aria-selected="false">{{ trans('cruds.comment.title') }}<span class="float-right">   {{$bug->comments_with_replies && $bug->comments_with_replies()->count() > 0 ? $bug->comments_with_replies()->count() : ''}}</span></a>
                     <a class="nav-link" id="v-pills-notes-tab" data-toggle="pill" href="#v-pills-notes" role="tab" aria-controls="v-pills-notes" aria-selected="false">{{ trans('cruds.bug.fields.notes') }}</a>
                     <a class="nav-link" id="v-pills-activities-tab" data-toggle="pill" href="#v-pills-activities" role="tab" aria-controls="v-pills-activities" aria-selected="false">{{ trans('cruds.activities.title') }}<span class="float-right">{{$bug->activities()->count() > 0 ? $bug->activities()->count() : ''}}</span></a>
-                    {{--                    <a class="nav-link" id="v-pills-comments-tab" data-toggle="pill" href="#v-pills-comments" role="tab" aria-controls="v-pills-comments" aria-selected="false">Comments</a>--}}
+                    <a class="nav-link" id="v-pills-attachment-tab"     data-toggle="pill" href="#v-pills-attachment" role="tab" aria-controls="v-pills-attachment" aria-selected="false">{{ trans('cruds.project.fields.attachment') }}<span  class="float-right"> </span></a>
                 </div>
             </div>
         </div>
@@ -280,7 +281,7 @@
                                         <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.bug.fields.name') }} :</p> <span class="col-md-6">{{ $bug->{'name_'.app()->getLocale()} ?? '' }}</span> </div>
                                         <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.bug.fields.issue_no') }} : </p><span class="col-md-6">{{ $bug->issue_no ?? '' }}</span> </div>
                                         <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.title') }} {{ trans('cruds.project.fields.name') }}  : </p><span class="col-md-6">{{ $bug->project ? $bug->project->{'name_'.app()->getLocale()} : '' }}</span> </div>
-{{--                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.task.title') }} {{ trans('cruds.task.fields.name') }}  : </p><span class="col-md-6">{{ $bug->task->name }}</span> </div>--}}
+                                    {{--                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.task.title') }} {{ trans('cruds.task.fields.name') }}  : </p><span class="col-md-6">{{ $bug->task->name }}</span> </div>--}}
                                         <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.bug.fields.status') }} : </p><span class="col-md-6 "><span class="bg-success p-1">{{$bug->status ? trans("cruds.status.".$bug->status)  : '' }}</span></span> </div>
                                         <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.bug.fields.priority') }} :</p> <span class="col-md-6 "><span class="bg-info p-1"> {{ $bug->priority ? trans("cruds.status.".$bug->priority)  : '' }}</span></span> </div>
                                         <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.bug.fields.severity') }} :</p> <span class="col-md-6"><span class="bg-danger p-1">{{ $bug->severity ? trans("cruds.status.".$bug->severity)  : '' }}</span></span> </div>
@@ -374,16 +375,323 @@
                     </div>
                     </div>
                 </div>
-                <div class="tab-pane fade" id="v-pills-comments" role="tabpanel" aria-labelledby="v-pills-comments-tab">...</div>
+                <div class="tab-pane fade" id="v-pills-attachment" role="tabpanel" aria-labelledby="v-pills-attachment-tab">
+                    <div class="card">
+                        <h6 class="card-header">
+                            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="pills-attchment-tab" data-toggle="pill" href="#pills-attchment" role="tab" aria-controls="pills-attchment" aria-selected="true">attchment</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="btn" id="newattach-tab" data-toggle="modal" data-target="#attachmentExample" >New attchment</a>
+                                </li>
+                            </ul>
+
+                        </h6>
+                    <div class="card-body">
+                        
+                        <div class="tab-content" id="pills-tabContent">
+                        <div class="tab-pane fade show active" id="pills-attchment" role="tabpanel" aria-labelledby="pills-attchment-tab">
+                            <table class=" table table-bordered table-striped table-hover datatable datatable-attachment ">
+                                <thead>
+                                    <tr>
+                                    
+                                        <th>
+                                            #
+                                        </th>
+                                        <th>
+                                            {{ trans('cruds.opportunity.fields.name') }}
+                                        </th>
+                                     
+                                        <th>
+                                            {{ trans('cruds.opportunity.fields.description') }}
+                                        </th>
+                                        <th>
+                                            {{ trans('cruds.opportunity.fields.attachment') }}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if ($bug->attachments)
+                                    @forelse($bug->attachments as $key => $attach)
+                                    <tr data-entry-id="{{ $attach->id }}">
+                                        <td>
+                                            {{ $loop->iteration }}
+                                        </td>
+                                    
+                                        <td>
+                                        
+                                            {{ $attach->name?? '' }}
+                                        </td>
+                                        <td>
+                                            {{ $attach->description ?? '' }}
+                                        </td>
+                                       
+                                        <td>
+                                           
+                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter_{{ $attach->id }}">
+                                                Attachment
+                                            </button>
+                                            @php
+                                            $attachments=$attach->getMedia('attachments');
+                                            @endphp
+                                            <div class="modal fade" id="exampleModalCenter_{{ $attach->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                @include('projectmanagement::admin.bugs.partials.modal',['attachments',$attachments])
+                                            </div>
+                                         
+                                           <a class="btn btn-danger" href="{{route('projectmanagement.admin.bugs.delete.attach',[$attach->id,$attach->id])}}"><i class="fas fa-trash-alt"></i></a>    
+                                        </td>
+                
+                                    </tr>
+                                
+                                    @empty
+                                        <tr>
+                                            <td colspan="8" >
+                                                <center> {{trans('cruds.messages.no_attachment_found_in_project')}} </center>
+                                            </td>
+                                        </tr>
+                                    @endforelse
+                                    @else
+                                        <tr>
+                                            <td colspan="8" >
+                                                {{trans('cruds.messages.no_attachment_found_in_project')}}
+                                            </td>
+                                        </tr>
+                                    @endif
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="v-pills-comments" role="tabpanel" aria-labelledby="v-pills-comments-tab">
+                    <div class="card"  >
+                        <h5 class="card-header">{{ trans('cruds.comment.title') }} </h5>
+                        <div class="card-body">
+
+
+                            <form action="{{ route('projectmanagement.admin.bugs.add_comment') }}" method="post" class="" enctype="multipart/form-data">
+                                @csrf
+                                <input type="hidden" name="bug_id" value="{{ $bug->id }}">
+
+                                <div class="col-lg-12 col-md-12" style="padding-bottom: 20px;">
+
+                                    <label class="form-group " for="comment">{{ trans('cruds.comment.title_singular') }}</label>
+                                    <textarea class="form-control ckeditor {{ $errors->has('comment') ? 'is-invalid' : '' }}" name="comment" id="comment">{!! old('comment')!!}</textarea>
+
+                                </div>
+
+
+
+                                <div class="col-12 ">
+                                    <button type="submit" class="btn btn-primary float-right" >{{ trans('global.save') }}</button>
+                                </div>
+                            </form>
+                            <hr class="col-md-11 ml-3">
+                            @foreach($bug->comments as $comment)
+                                <div class="col-md-12 ml-1" style="margin-bottom: 40px;">
+                                    <div class="col-md-12">
+                                        <img  class="img-thumbnail rounded-circle" title="{{ $comment->user && $comment->user->name ? $comment->user->name : '' }}" width="5%" src="{{ $comment->user && $comment->user->accountDetail ? str_replace('storage', 'storage', $comment->user && $comment->user->accountDetail ? $comment->user->accountDetail->avatar->getUrl() : '') : asset('images/default.png') }}" alt="{{ $comment->user && $comment->user->accountDetail && $comment->user->accountDetail->fullname ? $comment->user->accountDetail->fullname : '' }}">
+
+                                        {{$comment->user && $comment->user->name ? $comment->user->name  : ''}}
+
+                                        <strong> {!! $comment->comment !!}</strong>
+                                        <a id="add-replay" onclick="addReplay('{{$comment->id}}')" type="button" class="mb-5" >
+                                            <i class="fa fa-reply"></i>
+                                            {{ trans('cruds.ticket.fields.replay') }}
+                                        </a>
+                                    </div>
+
+                                    {{--                                                                replies of replay--}}
+                                    @if(isset($comment->replay))
+
+                                        @foreach($comment->replay as $comment_of_replay)
+                                            <div class="col-md-10 ml-5">
+                                                <img  class="img-thumbnail rounded-circle" title="{{ $comment->user && $comment->user->name ? $comment->user->name : '' }}" width="5%" src="{{ $comment->user && $comment->user->accountDetail ? str_replace('storage', 'storage', $comment->user && $comment->user->accountDetail ? $comment->user->accountDetail->avatar->getUrl() : '') : asset('images/default.png') }}" alt="{{ $comment->user && $comment->user->accountDetail && $comment->user->accountDetail->fullname ? $comment->user->accountDetail->fullname : '' }}">
+
+                                                {{$comment_of_replay->user && $comment_of_replay->user->name ? $comment_of_replay->user->name : ''}}
+
+                                                <strong> {!! $comment_of_replay->comment !!}</strong>
+                                            </div>
+                                            <hr class="col-md-10">
+                                        @endforeach
+                                    @endif
+
+
+                                    <div class="replay" id="replay_{{$comment->id}}" style="display:{{$errors->has('replay_comment') ? 'block': 'none'}}" >
+
+                                        <form action="{{ route('projectmanagement.admin.bugs.add_comment') }}" method="post" enctype="multipart/form-data">
+                                            @csrf
+                                            <input type="hidden" name="bug_id" value="{{ $bug->id }}">
+                                            <input type="hidden" name="comment_replay_id" value="{{ $comment->id }}">
+
+                                            <div class="col-lg-12 col-md-12" style="padding-bottom: 20px;">
+
+                                                <label class="form-group " for="replay_comment">{{ trans('cruds.ticket.fields.replay') }}</label>
+                                                <textarea class="form-control ckeditor {{ $errors->has('replay_comment') ? 'is-invalid' : '' }}"  name="replay_comment" id="replay_comment">{!! old('replay_comment')!!}</textarea>
+
+                                            </div>
+
+                                            <div class="col-12 pb-5">
+                                                <button type="submit" id="replaySubmitBtn" class="btn btn-primary float-right" >{{ trans('global.save') }}</button>
+                                            </div>
+                                        </form>
+                                    </div>
+
+
+                                    <hr class="col-md-11">
+
+
+
+                                </div>
+
+
+                                {{--                                                        @if(json_decode($comment->attachments))--}}
+                                {{--                                                            <div class="col-md-4 mb-2 ml-2">--}}
+                                {{--                                                                <button  type="button" data-toggle="modal" data-target="#replay_{{ $comment->id }}" class="btn btn-secondary" style="border-radius: 0;" >--}}
+                                {{--                                                                    @lang('locale.view_attachments')--}}
+                                {{--                                                                </button>--}}
+                                {{--                                                            </div>--}}
+                                {{--                                                        @endif--}}
+
+
+
+
+
+                                <div class="modal-info mr-1 mb-1 d-inline-block">
+                                    <div class="modal fade text-left" id="replay_attach_{{ $comment->id }}" tabindex="-1" role="dialog"
+                                         aria-labelledby="myModalLabel130" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+                                            <div class="modal-content" style="height:500px;width:700px;">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        {{--                                                                                                        @forelse(json_decode($comment->attachments) as $attach)--}}
+
+
+                                                        {{--                                                                                                            <div class="col-md-4">--}}
+                                                        {{--                                                                                                                <a  target="_blank" href="{{ asset('uploads/projects/'.$attach) }}">--}}
+
+                                                        {{--                                                                                                                    @if(strpos($attach,'.pdf') !== false)--}}
+                                                        {{--                                                                                                                        <img style="width:150px;height:180px;" src="{{ asset('pdf.png') }}" alt="">--}}
+                                                        {{--                                                                                                                    @elseif(strpos($attach,'.xlsx') !== false || strpos($attach,'.xls') !== false || strpos($attach,'.csv') !== false || strpos($attach,'.txt') !== false)--}}
+                                                        {{--                                                                                                                        <img style="width:150px;height:180px;" src="{{ asset('excel.png') }}" alt="">--}}
+
+                                                        {{--                                                                                                                    @else--}}
+                                                        {{--                                                                                                                        <img style="width:150px;height:200px;" src="{{ asset('uploads/projects/'.$attach) }}" alt="">--}}
+                                                        {{--                                                                                                                    @endif--}}
+                                                        {{--                                                                                                                </a>--}}
+
+                                                        {{--                                                                                                            </div>--}}
+                                                        {{--                                                                                                        @empty--}}
+                                                        {{--                                                                                                            No Attachments found--}}
+                                                        {{--                                                                                                        @endforelse--}}
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            @endforeach
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </div>
     </div>
+
+    <!-- Modal attachment-->
+
+    <div class="modal fade bd-example-modal-lg" id="attachmentExample" tabindex="-1" role="dialog"
+    aria-labelledby="attachmentLabel" aria-hidden="true">
+
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="attachmentLabel">Show Attachment</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="POST" action="{{ route("projectmanagement.admin.bugs.storeattachment",$bug->id) }}" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-body">
+                    
+                    @include('projectmanagement::admin.bugs.partials.attachmentform',['bug',$bug])
+                  
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-info">save</button>
+                </div>
+            </form>
+           
+        </div>
+    </div>
+</div>
+<!-- Modal -->
 @endsection
 
 @section('scripts')
 
     {{--    For editor in texteara notes--}}
-
+    <script>
+        Dropzone.options.attachmentsDropzone = {
+            url: '{{ route('projectmanagement.admin.task-attachments.storeMedia') }}',
+            maxFilesize: 2, // MB
+            maxFiles: 10,
+            addRemoveLinks: true,
+            headers: {
+                'X-CSRF-TOKEN': "{{ csrf_token() }}"
+            },
+            params: {
+                size: 2
+            },
+            success: function (file, response) {
+                $('form').find('input[name="attachments"]').remove();
+                $('form').append('<input type="hidden" name="attachments[]" value="' + response.name + '">')
+            },
+            removedfile: function (file) {
+                file.previewElement.remove();
+                if (file.status !== 'error') {
+                    $('form').find('input[name="attachments[]"]').remove();
+                    this.options.maxFiles = this.options.maxFiles + 1
+                }
+            },
+            init: function () {
+                    @if(isset($transfer) && $transfer->attachments)
+                var file = {!! json_encode($transfer->attachments) !!}
+                        this.options.addedfile.call(this, file);
+                file.previewElement.classList.add('dz-complete');
+                $('form').append('<input type="hidden" name="attachments[]" value="' + file.file_name + '">');
+                this.options.maxFiles = this.options.maxFiles - 1;
+                @endif
+            },
+            error: function (file, response) {
+                if ($.type(response) === 'string') {
+                    var message = response //dropzone sends it's own error messages in string
+                } else {
+                    var message = response.errors.file
+                }
+                file.previewElement.classList.add('dz-error');
+                _ref = file.previewElement.querySelectorAll('[data-dz-errormessage]');
+                _results = []
+                for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                    node = _ref[_i];
+                    _results.push(node.textContent = message)
+                }
+    
+                return _results
+            }
+        }
+    </script>
     <script>
         $(document).ready(function () {
             function SimpleUploadAdapter(editor) {
@@ -448,6 +756,55 @@
             }
         });
 
+        // comment and replay on comment
+
+        var count = 0;
+        function replayForm() {
+            if (count % 2 == 0){
+
+
+                // document.getElementById("replay").classList.add('visible');
+                // document.getElementById("replay").classList.remove('invisible');
+                document.getElementById("replay_ticket").style.display = 'block';
+
+                count++;
+            }else {
+                // document.getElementById("replay").classList.add('invisible');
+                //
+                // document.getElementById("replay").classList.remove('visible');
+                document.getElementById("replay_ticket").style.display = 'none';
+                count++;
+            }
+
+        }
+
+        // CKEDITOR.replace('body');
+
+        $('.replay_submit').click(function(){
+
+            $('.replay_ticket').removeClass('hidden');
+        })
+
+        $('.replay_submit').dblclick(function(){
+
+            $('.replay_ticket').addClass('hidden');
+            $('.replay_submit').removeClass('disabled');
+        })
+
+        var i = 0;
+        function addReplay(replay_id) {
+
+            if (i % 2 == 0){
+
+                document.getElementById("replay_"+replay_id).style.display = 'block';
+                i++;
+            }else {
+
+                document.getElementById("replay_"+replay_id).style.display = 'none';
+                i++;
+            }
+
+        }
 
 
     </script>

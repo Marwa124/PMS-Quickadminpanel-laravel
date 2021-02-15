@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Notifications\ProjectManagementNotification;
 use Modules\HR\Entities\AccountDetail;
 use Modules\ProjectManagement\Entities\Bug;
+use Modules\ProjectManagement\Entities\Comment;
 use Modules\ProjectManagement\Http\Controllers\Traits\ProjectManagementHelperTrait;
 use Modules\ProjectManagement\Http\Requests\MassDestroyBugRequest;
 use Modules\ProjectManagement\Http\Requests\StoreBugRequest;
@@ -22,7 +23,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ProjectManagementMail;
-
+use Validator;
+use Modules\ProjectManagement\Http\Requests\StoreTaskAttachmentRequest;
+use Modules\ProjectManagement\Entities\TaskAttachment;
 
 class BugsController extends Controller
 {
@@ -171,18 +174,11 @@ class BugsController extends Controller
             foreach ($bug->accountDetails as $accountUser)
             {
                 $user = $accountUser->user;
-//                $dataMail = [
-//                    'subjectMail'    => 'Update Bug '.$bug->name,
-//                    'bodyMail'       => 'Update The Bug '.$bug->name,
-//                    'action'         => route("projectmanagement.admin.bugs.show", $bug->id)
-//                ];
 
                 $dataNotification = [
                     'message'       => 'Update The Bug : '.$bug->{'name_'.app()->getLocale()},
                     'route_path'    => 'admin/projectmanagement/bugs',
                 ];
-
-//                $user->notify(new ProjectManagementNotification($bug,$user,$dataMail,$dataNotification));
 
                 //send notification
                 $user->notify(new ProjectManagementNotification($bug,$user,$dataNotification));
@@ -200,8 +196,22 @@ class BugsController extends Controller
                     $userName = User::find(auth()->user()->id)->name;
                 }
 
-                $message = $userName.' '.'Update The Bug '.$bug->{'name_'.app()->getLocale()};
-                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
+//                $message = $userName.' '.'Update The Bug '.$bug->{'name_'.app()->getLocale()};
+//                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
+
+                //send mail to user
+                $template = templates('bug_updated');
+                $message = str_replace("{ASSIGNED_BY}",$userName,$template->template_body);
+                $message = str_replace("{BUG_TITLE}",$bug->name_en,$message);
+                $message = str_replace("{STATUS}",$bug->status,$message);
+                $message = str_replace("{MARKED_BY}",$bug->reporterBy && $bug->reporterBy->name ? $bug->reporterBy->name : '',$message);
+                $message = str_replace("{BUG_URL}",route("projectmanagement.admin.bugs.show", $bug->id),$message);
+                $message = str_replace("{SITE_NAME}",settings('company_name'),$message);
+
+                Mail::mailer('smtp')->to($user->email)
+                    ->cc(['mabrouk@onetecgroup.com','sara@onetecgroup.com'])
+                    ->bcc('marwa@onetecgroup.com')
+                    ->send(new ProjectManagementMail($email_from, $sender,$message,$template->subject));
             }
 
             setActivity('bug', $bug->id, 'Update Bug', ' bug تعديل', $bug->status, $bug->status);
@@ -392,18 +402,11 @@ class BugsController extends Controller
             foreach ($bug->accountDetails as $accountUser)
             {
                 $user = $accountUser->user;
-//                $dataMail = [
-//                    'subjectMail'    => 'New Bug Assign To You',
-//                    'bodyMail'       => 'Assign The Bug '.$bug->name.' To '.$user->name,
-//                    'action'         => route("projectmanagement.admin.bugs.show", $bug->id)
-//                ];
 
                 $dataNotification = [
                     'message'       => 'Assign The Bug : '.$bug->{'name_'.app()->getLocale()}.' To '.$user->name,
                     'route_path'    => 'admin/projectmanagement/bugs',
                 ];
-
-//                $user->notify(new ProjectManagementNotification($bug,$user,$dataMail,$dataNotification));
 
                 //send notification
                 $user->notify(new ProjectManagementNotification($bug,$user,$dataNotification));
@@ -421,11 +424,22 @@ class BugsController extends Controller
                     $userName = User::find(auth()->user()->id)->name;
                 }
 
-                $message = $userName.' '.'Assign The Bug '.$bug->{'name_'.app()->getLocale()}.' To '.$user->name;
-                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
+//                $message = $userName.' '.'Assign The Bug '.$bug->{'name_'.app()->getLocale()}.' To '.$user->name;
+//                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
+
+                //send mail to user
+                $template = templates('bug_assigned');
+                $message = str_replace("{ASSIGNED_BY}",$userName,$template->template_body);
+                $message = str_replace("{BUG_TITLE}",$bug->name_en,$message);
+                $message = str_replace("{BUG_URL}",route("projectmanagement.admin.bugs.show", $bug->id),$message);
+                $message = str_replace("{SITE_NAME}",settings('company_name'),$message);
+
+                Mail::mailer('smtp')->to($user->email)
+                    ->cc(['mabrouk@onetecgroup.com','sara@onetecgroup.com'])
+                    ->bcc('marwa@onetecgroup.com')
+                    ->send(new ProjectManagementMail($email_from, $sender,$message,$template->subject));
             }
 
-//            setActivity('bug',$bug->id,'Update Assign to',$bug->name);
             setActivity('bug', $bug->id, 'Update Assign to', ' bug تعديل القائمين على', $bug->name_en, $bug->name_ar);
 
             // Commit the transaction
@@ -463,37 +477,31 @@ class BugsController extends Controller
             foreach ($bug->accountDetails as $accountUser)
             {
                 $user = $accountUser->user;
-//                $dataMail = [
-//                    'subjectMail'    => 'Update Bug '.$bug->name,
-//                    'bodyMail'       => 'Update Note Of Bug '.$bug->name,
-//                    'action'         => route("projectmanagement.admin.bugs.show", $bug->id)
-//                ];
 
                 $dataNotification = [
                     'message'       => 'Update Note Of Bug : '.$bug->{'name_'.app()->getLocale()},
                     'route_path'    => 'admin/projectmanagement/bugs',
                 ];
 
-//                $user->notify(new ProjectManagementNotification($bug,$user,$dataMail,$dataNotification));
-
                 //send notification
                 $user->notify(new ProjectManagementNotification($bug,$user,$dataNotification));
                 $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
                 event(new NewNotification($userNotify));
 
-                // send mail
-                $sender =  settings('smtp_sender_name');
-                $email_from =  settings('smtp_email') ;
+//                // send mail
+//                $sender =  settings('smtp_sender_name');
+//                $email_from =  settings('smtp_email') ;
+//
+//                if(User::find(auth()->user()->id)->accountDetail && User::find(auth()->user()->id)->accountDetail()->first())
+//                {
+//                    $userName = AccountDetail::where('user_id', auth()->user()->id)->first()->fullname;
+//                }else {
+//                    $userName = User::find(auth()->user()->id)->name;
+//                }
 
-                if(User::find(auth()->user()->id)->accountDetail && User::find(auth()->user()->id)->accountDetail()->first())
-                {
-                    $userName = AccountDetail::where('user_id', auth()->user()->id)->first()->fullname;
-                }else {
-                    $userName = User::find(auth()->user()->id)->name;
-                }
+//                $message = $userName.' '.'Update Note Of Bug '.$bug->{'name_'.app()->getLocale()};
+//                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
 
-                $message = $userName.' '.'Update Note Of Bug '.$bug->{'name_'.app()->getLocale()};
-                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
             }
 
 //            setActivity('bug',$bug->id,'Update Note ',$bug->name);
@@ -598,5 +606,168 @@ class BugsController extends Controller
 //        }
 //
 //        return abort(Response::HTTP_FORBIDDEN, trans('global.forbidden_page_not_allow_to_you'));
+    }
+
+    public function add_comment(Request $request)
+    {
+
+        try {
+            // Begin a transaction
+            DB::beginTransaction();
+
+            $bug = Bug::findOrFail($request->bug_id);
+            if ($request->comment_replay_id){
+
+                $validator = Validator::make($request->all(),[
+                    'bug_id'            => 'exists:bugs,id',
+                    'replay_comment'    => 'required',
+                    'comment_replay_id' => 'exists:comments,id',
+                ]);
+                if($validator->fails()) {
+                    return redirect()->back()->with(flash(trans('cruds.messages.add_replay_failed'), 'danger'))->withErrors($validator)->withInput();
+                }
+                $comment = Comment::create([
+                    'module_field_id'       => $request->bug_id,
+                    'comment'               => $request->replay_comment,
+                    'module'                => 'bug',
+                    'user_id'               => auth()->user()->id,
+                    'comment_replay_id'     => $request->comment_replay_id,
+                ]);
+
+                setActivity('bug', $bug->id,'add replay on comment ','تم إضافة رد على تعليق', $bug->name_en, $bug->name_ar);
+
+            }else{
+
+                $validator = Validator::make( $request->all(),[
+                    'bug_id'        => 'exists:bugs,id',
+                    'comment'           => 'required',
+                ]);
+
+                if($validator->fails()) {
+                    return redirect()->back()->with(flash(trans('cruds.messages.add_replay_failed'), 'danger'))->withErrors($validator)->withInput();
+                }
+
+                $comment = Comment::create([
+                    'module_field_id'       => $request->bug_id,
+                    'comment'               => $request->comment,
+                    'module'                => 'bug',
+                    'user_id'               => auth()->user()->id,
+                ]);
+
+                setActivity('bug', $bug->id, 'add comment ','تم إضافة تعليق', $bug->name_en, $bug->name_ar);
+
+            }
+
+            if ($comment && $comment->user)
+            {
+
+                // Notify User
+                foreach ($bug->accountDetails as $accountUser)
+                {
+                    $user = $accountUser->user;
+
+                    $dataNotification = [
+                        'message'       => 'Comment On The Bug : '.$bug->{'name_'.app()->getLocale()},
+                        'route_path'    => 'admin/projectmanagement/bugs',
+                    ];
+
+                    //                $user->notify(new ProjectManagementNotification($project,$user,$dataMail,$dataNotification));
+
+                    //send notification
+                    $user->notify(new ProjectManagementNotification($bug,$user,$dataNotification));
+                    $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
+                    event(new NewNotification($userNotify));
+
+                    // send mail
+                    $sender =  settings('smtp_sender_name');
+                    $email_from =  settings('smtp_email') ;
+
+                    //send mail to client
+                    $template = templates('bug_comments');
+                    $message = str_replace("{POSTED_BY}",$comment->user->name,$template->template_body);
+                    $message = str_replace("{BUG_TITLE}",$bug->name_en,$message);
+                    $message = str_replace("{COMMENT_URL}",route("projectmanagement.admin.bugs.show", $bug->id),$message);
+                    $message = str_replace("{COMMENT_MESSAGE}",$comment->comment,$message);
+                    $message = str_replace("{SITE_NAME}",settings('company_name'),$message);
+
+                    Mail::mailer('smtp')->to($user->email)
+                        ->cc(['mabrouk@onetecgroup.com','sara@onetecgroup.com'])
+                        ->bcc('marwa@onetecgroup.com')
+                        ->send(new ProjectManagementMail($email_from, $sender,$message,$template->subject));
+                }
+
+
+            }
+            // Commit the transaction
+            DB::commit();
+            return back()->with(flash(trans('cruds.messages.add_replay_success'), 'success'));
+
+        }catch(\Exception $e){
+            // An error occured; cancel the transaction...
+            DB::rollback();
+            return back()->with(flash(trans('cruds.messages.add_replay_failed'), 'danger'))->withInput();
+
+            // and throw the error again.
+            throw $e;
+        }
+//        return redirect()->back();
+    }
+
+
+    public function storeattachment(StoreTaskAttachmentRequest $request,Bug $bug)
+    {
+         DB::beginTransaction();
+         try{
+            $taskAttachment = TaskAttachment::create($request->all());
+            if ($request->input('attachments', false)) {
+                foreach ($request->attachments as $attachment) {
+                    $taskAttachment->addMedia(storage_path('tmp/uploads/' . $attachment))->toMediaCollection('attachments');
+                }
+            }
+            if ($media = $request->input('ck-media', false)) {
+                Media::whereIn('id', $media)->update(['model_id' => $taskAttachment->id]);
+            }
+            setActivity('Bug',$bug->id,'add Attachments to bug ','تم اضافة مرفقات الي المهمة',$bug->name_en,$bug->name_ar);
+            DB::commit();
+            return redirect()->back()->with(flash('Attachment add successfully', 'success'));
+
+
+        } catch (\Exception $e) {
+            
+            return redirect()->back()->with(['message' => 'Something wrong happen','alert-type' => 'error']);
+        }
+    }
+
+    // attachment opperation
+    public function downloadMedia($id)
+    {
+        $media = Media::findOrFail($id);
+        return response()->download($media->getPath(), $media->file_name);
+    }
+
+    public function viewMedia($id)
+    {
+        $media = Media::findOrFail($id);
+        return response()->file($media->getPath());
+    }
+
+    public function deleteMedia($id,TaskAttachment $taskAttachment)
+    { 
+
+        DB::beginTransaction();
+         try{
+             $bug= Bug::find($taskAttachment->bug_id);
+            if($taskAttachment->hasMedia('attachments') == true){
+                $taskAttachment->clearMediaCollection('attachments');
+            }
+            $taskAttachment->delete(); 
+            setActivity('Bug',$bug->id,'Delete bug attachments Details','تم حذف مرفقات ',$bug->name_en,$bug->name_ar);
+            DB::commit();
+            return redirect()->back()->with(flash('Attachment Deleted successfully', 'success'));
+        } catch (\Exception $e) {
+
+            return redirect()->back()->with(['message' => 'Something wrong happen','alert-type' => 'error']);
+        }
+
     }
 }

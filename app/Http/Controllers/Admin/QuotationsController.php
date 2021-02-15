@@ -7,7 +7,7 @@ use App\Http\Controllers\Traits\MediaUploadingTrait;
 use App\Http\Requests\MassDestroyQuotationRequest;
 use App\Http\Requests\StoreQuotationRequest;
 use App\Http\Requests\UpdateQuotationRequest;
-use App\Models\Client;
+use Modules\Sales\Entities\Client;
 use App\Models\Quotation;
 use App\Models\User;
 use Gate;

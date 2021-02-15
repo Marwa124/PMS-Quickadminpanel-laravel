@@ -28,9 +28,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
     Route::get('settings/sms', 'SettingController@show_sms')->name('admin.settings.sms.index');
     Route::get('settings/invoice', 'SettingController@show_invoice')->name('admin.settings.invoice.index');
     Route::get('settings/estimate', 'SettingController@show_estimate')->name('admin.settings.estimate.index');
+    Route::get('settings/lead_source', 'SettingController@show_lead_source')->name('admin.settings.lead_source.index');
+
 
     Route::get('settings/proposal', 'SettingController@show_proposal')->name('admin.settings.proposal.index');
     Route::get('settings/purchase', 'SettingController@show_purchase')->name('admin.settings.purchase.index');
+    Route::get('settings/tickets', 'SettingController@show_tickets')->name('admin.settings.tickets.index');
 
 
     Route::post('save_details', 'SettingController@save_details')->name('admin.details.store');
@@ -56,4 +59,13 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
 
     Route::post('update_proposal_settings', 'SettingController@update_proposal')->name('admin.proposal.settings.store');
     Route::post('update_purchase_settings', 'SettingController@update_purchase')->name('admin.purchase.settings.store');
+    Route::post('update_tickets_settings', 'SettingController@update_tickets')->name('admin.tickets.settings.store');
+
+
+    Route::post('add_lead_source_settings', 'SettingController@save_lead_source')->name('admin.lead_source.settings.store');
+    Route::post('update_lead_source_settings', 'SettingController@update_lead_source')->name('admin.lead_source.settings.update');
+    Route::post('delete_lead_source_settings', 'SettingController@delete_lead_source')->name('admin.lead_source.settings.delete');
+
+    Route::post('save_priority', 'SettingController@save_priority')->name('admin.tickets.priority.store');
+    Route::post('delete_priority', 'SettingController@delete_priority')->name('admin.tickets.priority.delete');
 });

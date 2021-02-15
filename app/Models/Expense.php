@@ -4,7 +4,8 @@ namespace App\Models;
 
 
 
-use App\Models\Client;
+use Modules\ProjectManagement\Entities\Project;
+use Modules\Sales\Entities\Client;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -41,6 +42,7 @@ class Expense extends Model implements HasMedia
         'created_by',
         'paid_by_id',
         'account_id',
+        'project_id',
         'created_at',
         'updated_at',
         'deleted_at',
@@ -96,4 +98,11 @@ class Expense extends Model implements HasMedia
     {
         return $this->hasOne(Transaction::class, 'expense_id');
     }
+
+
+    public function project()
+    {
+        return $this->belongsTo(Project::class, 'project_id');
+    }
+
 }

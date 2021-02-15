@@ -8,7 +8,7 @@
 
         <div class="card-body">
             <form method="POST" action="{{ route("finance.admin.expenses.store") }}" enctype="multipart/form-data">
-                <input type="hidden" name="status" id="status" @if(auth()->user()->hasRole('Admin') || auth()->user()->hasRole('Super Admin') ) value="paid" @else value="non_approved" @endif>
+{{--                <input type="hidden" name="status" id="status" @if(auth()->user()->hasRole('Admin') || auth()->user()->hasRole('Super Admin') ) value="paid" @else value="non_approved" @endif>--}}
                 <input type="hidden" name="created_by" id="created_by"  value="{{auth()->user()->id}}" >
                 @csrf
 

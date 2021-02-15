@@ -12,13 +12,14 @@ use App\Notifications\ProjectManagementNotification;
 use Illuminate\Support\Facades\DB;
 use Modules\HR\Entities\AccountDetail;
 use Modules\HR\Entities\Department;
+use Modules\ProjectManagement\Entities\Comment;
 use Modules\ProjectManagement\Entities\TaskStatus;
 use Modules\ProjectManagement\Entities\TimeSheet;
 use Modules\ProjectManagement\Http\Controllers\Traits\ProjectManagementHelperTrait;
 use Modules\ProjectManagement\Http\Requests\MassDestroyProjectRequest;
 use Modules\ProjectManagement\Http\Requests\StoreProjectRequest;
 use Modules\ProjectManagement\Http\Requests\UpdateProjectRequest;
-use App\Models\Client;
+use Modules\Sales\Entities\Client;
 use Modules\ProjectManagement\Entities\Project;
 use Gate;
 use Illuminate\Http\Request;
@@ -28,7 +29,9 @@ use PDF;
 use Illuminate\Support\Facades\Mail;
 use Modules\ProjectManagement\Entities\Milestone;
 use Modules\ProjectManagement\Entities\Task;
-
+use Validator;
+use Modules\ProjectManagement\Http\Requests\StoreTaskAttachmentRequest;
+use Modules\ProjectManagement\Entities\TaskAttachment;
 class ProjectsController extends Controller
 {
     use MediaUploadingTrait,ProjectManagementHelperTrait;
@@ -86,6 +89,35 @@ class ProjectsController extends Controller
             if ($media = $request->input('ck-media', false)) {
                 Media::whereIn('id', $media)->update(['model_id' => $project->id]);
             }
+
+            if (!$project->client || !$project->client->email)
+            {
+                $flashMsg = flash(trans('cruds.messages.client_not_have_email'), 'danger');
+                return redirect()->back()->with($flashMsg);
+            }
+
+            $user = $project->client;
+
+            // send mail
+            $sender =  settings('smtp_sender_name');
+            $email_from =  settings('smtp_email') ;
+
+            //send mail to client
+            $template = templates('client_notification');
+//            $message = str_replace("{REF}",$invoice->reference_no,$template->template_body);
+            $message = str_replace("{CLIENT_NAME}",$user->name,$template->template_body);
+            $message = str_replace("{PROJECT_NAME}",$project->name_en,$message);
+            $message = str_replace("{PROJECT_LINK}",route("projectmanagement.admin.projects.show", $project->id),$message);
+            $message = str_replace("{SITE_NAME}",settings('company_name'),$message);
+
+//            Mail::mailer('smtp')->to($user->email)->send(new FinanceMail($email_from, $sender,$message));
+            Mail::mailer('smtp')->to($user->email)
+                ->cc(['mabrouk@onetecgroup.com','sara@onetecgroup.com'])
+                ->bcc('marwa@onetecgroup.com')
+                ->send(new ProjectManagementMail($email_from, $sender,$message,$template->subject));
+
+//            $message = ' '.'Update The Project <a href="'.route("projectmanagement.admin.projects.show", $project->id).'">'.$project->{'name_'.app()->getLocale()}.'</a>';
+//            Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
 
             setActivity('project',$project->id,'Save Project Details','حفظ تفاصيل المشروع',$project->name_en,$project->name_ar);
 
@@ -151,12 +183,6 @@ class ProjectsController extends Controller
             foreach ($project->accountDetails as $accountUser)
             {
                 $user = $accountUser->user;
-                //dd($user);
-//                $dataMail = [
-//                    'subjectMail'    => 'Update Project '.$project->{'name_'.app()->getLocale()},
-//                    'bodyMail'       => 'Update The Project '.$project->{'name_'.app()->getLocale()},
-//                    'action'         => route("projectmanagement.admin.projects.show", $project->id)
-//                ];
 
                 $dataNotification = [
                     'message'       => 'Update The Project : '.$project->{'name_'.app()->getLocale()},
@@ -170,19 +196,41 @@ class ProjectsController extends Controller
                 $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
                 event(new NewNotification($userNotify));
 
+//                // send mail
+//                $sender =  settings('smtp_sender_name');
+//                $email_from =  settings('smtp_email') ;
+//
+//                if(User::find(auth()->user()->id)->accountDetail && User::find(auth()->user()->id)->accountDetail()->first())
+//                {
+//                    $userName = AccountDetail::where('user_id', auth()->user()->id)->first()->fullname;
+//                }else {
+//                    $userName = User::find(auth()->user()->id)->name;
+//                }
+//
+//                $message = $userName.' '.'Update The Project <a href="'.route("projectmanagement.admin.projects.show", $project->id).'">'.$project->{'name_'.app()->getLocale()}.'</a>';
+//                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
+
+            }
+
+            if ($project->project_status == 'completed')
+            {
+                $user = $project->client;
+
                 // send mail
                 $sender =  settings('smtp_sender_name');
                 $email_from =  settings('smtp_email') ;
 
-                if(User::find(auth()->user()->id)->accountDetail && User::find(auth()->user()->id)->accountDetail()->first())
-                {
-                    $userName = AccountDetail::where('user_id', auth()->user()->id)->first()->fullname;
-                }else {
-                    $userName = User::find(auth()->user()->id)->name;
-                }
-                $message = $userName.' '.'Update The Project <a href="'.route("projectmanagement.admin.projects.show", $project->id).'">'.$project->{'name_'.app()->getLocale()}.'</a>';
-                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
+                //send mail to client
+                $template = templates('complete_projects');
+                $message = str_replace("{CLIENT_NAME}",$user->name,$template->template_body);
+                $message = str_replace("{PROJECT_NAME}",$project->name_en,$message);
+                $message = str_replace("{PROJECT_LINK}",route("projectmanagement.admin.projects.show", $project->id),$message);
+                $message = str_replace("{SITE_NAME}",settings('company_name'),$message);
 
+                Mail::mailer('smtp')->to($user->email)
+                    ->cc(['mabrouk@onetecgroup.com','sara@onetecgroup.com'])
+                    ->bcc('marwa@onetecgroup.com')
+                    ->send(new ProjectManagementMail($email_from, $sender,$message,$template->subject));
             }
 
             setActivity('project',$project->id,'Update Project Details','تعديل تفاصيل المشروع',$project->name_en,$project->name_ar);
@@ -214,12 +262,11 @@ class ProjectsController extends Controller
         if (in_array($project->id,$projects->toArray())){
 
             $project->load('client','department','TimeSheetOn','TimeSheet');
-
+//            dd($project->invoices->whereNotIn('status', ['waiting_approval', 'cancelled', 'rejected'])->sum('total_amount'));
             $total_expense = $project->transactions->where('type' , 'Expense')->sum('amount');
             $billable_expense = $project->transactions->where(array('type' => 'Expense', 'billable' => 'Yes'))->sum('amount');
-            $not_billable_expense = $project->transactions->where(array('type' => 'Expense', 'billable' => 'No'))->sum('amount');
-
-            $all_expense_info =  $project->transactions->where('type', 'Expense');
+            $not_billable_expense   = $project->transactions->where(array('type' => 'Expense', 'billable' => 'No'))->sum('amount');
+            $all_expense_info       = $project->transactions->where('type', 'Expense');
 
             $paid_expense = 0;
             foreach ($all_expense_info as $v_expenses){
@@ -228,6 +275,14 @@ class ProjectsController extends Controller
                 }
             }
 
+//            $total_expense          = $project->expenses->sum('amount');
+//            $billable_expense       = $project->expenses->where('status','unpaid')->sum('amount');
+//            $not_billable_expense   = $project->expenses->where('status','non_approved')->sum('amount');
+//            $paid_expense           = $project->expenses->where('status','paid')->sum('amount');
+//
+//            $total_bill             = $project->invoices->whereNotIn('status', ['waiting_approval', 'cancelled', 'rejected'])->sum('total_amount');
+//
+//            dd($billable_expense , $paid_expense,$billable_expense - $paid_expense);
             return view('projectmanagement::admin.projects.show', compact('project','total_expense','billable_expense','not_billable_expense','paid_expense'));
 
         }
@@ -391,12 +446,7 @@ class ProjectsController extends Controller
             foreach ($project->accountDetails as $accountUser)
             {
                 $user = $accountUser->user;
-//                $dataMail = [
-//                        'subjectMail'    => 'New Project Assign To You',
-//                        'bodyMail'       => 'Assign The Project '.$project->name.' To '.$user->name,
-//                        'action'         => route("projectmanagement.admin.projects.show", $project->id)
-//                ];
-//
+
                 $dataNotification = [
                         'message'       => 'Assign The Project : '.$project->{'name_'.app()->getLocale()}.' To '.$user->name,
                         'route_path'    => 'admin/projectmanagement/projects',
@@ -420,10 +470,20 @@ class ProjectsController extends Controller
                     $userName = User::find(auth()->user()->id)->name;
                 }
 
-//                $message = $userName.' '.'Assign The Project '.$project->{'name_'.app()->getLocale()}.' To '.$user->name;
-                $message = $userName.' '.'Assign The Project <a href="'.route("projectmanagement.admin.projects.show", $project->id).'">'.$project->{'name_'.app()->getLocale()}.'</a> To '.$user->name;
+                //send mail to user
+                $template = templates('assigned_project');
+                $message = str_replace("{ASSIGNED_BY}",$userName,$template->template_body);
+                $message = str_replace("{PROJECT_NAME}",$project->name_en,$message);
+                $message = str_replace("{PROJECT_LINK}",route("projectmanagement.admin.projects.show", $project->id),$message);
+                $message = str_replace("{SITE_NAME}",settings('company_name'),$message);
 
-                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
+                Mail::mailer('smtp')->to($user->email)
+                    ->cc(['mabrouk@onetecgroup.com','sara@onetecgroup.com'])
+                    ->bcc('marwa@onetecgroup.com')
+                    ->send(new ProjectManagementMail($email_from, $sender,$message,$template->subject));
+//                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
+
+//                $message = $userName.' '.'Assign The Project <a href="'.route("projectmanagement.admin.projects.show", $project->id).'">'.$project->{'name_'.app()->getLocale()}.'</a> To '.$user->name;
 
             }
 
@@ -481,21 +541,21 @@ class ProjectsController extends Controller
                 $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
                 event(new NewNotification($userNotify));
 
-                // send mail
-                $sender =  settings('smtp_sender_name');
-                $email_from =  settings('smtp_email') ;
-
-                if(User::find(auth()->user()->id)->accountDetail && User::find(auth()->user()->id)->accountDetail()->first())
-                {
-                    $userName = AccountDetail::where('user_id', auth()->user()->id)->first()->fullname;
-                }else {
-                    $userName = User::find(auth()->user()->id)->name;
-                }
-
-//                $message = $userName.' '.'Update Note Of Project '.$project->{'name_'.app()->getLocale()};
-                $message = $userName.' '.'Update Note Of Project <a href="'.route("projectmanagement.admin.projects.show", $project->id).'">'.$project->{'name_'.app()->getLocale()}.'</a>';
-
-                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
+//                // send mail
+//                $sender =  settings('smtp_sender_name');
+//                $email_from =  settings('smtp_email') ;
+//
+//                if(User::find(auth()->user()->id)->accountDetail && User::find(auth()->user()->id)->accountDetail()->first())
+//                {
+//                    $userName = AccountDetail::where('user_id', auth()->user()->id)->first()->fullname;
+//                }else {
+//                    $userName = User::find(auth()->user()->id)->name;
+//                }
+//
+////                $message = $userName.' '.'Update Note Of Project '.$project->{'name_'.app()->getLocale()};
+//                $message = $userName.' '.'Update Note Of Project <a href="'.route("projectmanagement.admin.projects.show", $project->id).'">'.$project->{'name_'.app()->getLocale()}.'</a>';
+//
+//                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
 
             }
 
@@ -709,6 +769,171 @@ class ProjectsController extends Controller
         $projects = Project::all();
 
         return view('projectmanagement::admin.projects.project_report', compact('projects'));
+
+    }
+
+    public function add_comment(Request $request)
+    {
+
+        try {
+            // Begin a transaction
+            DB::beginTransaction();
+
+            $project = Project::findOrFail($request->project_id);
+            if ($request->comment_replay_id){
+
+                $validator = Validator::make($request->all(),[
+                    'project_id'        => 'exists:projects,id',
+                    'replay_comment'    => 'required',
+                    'comment_replay_id'  => 'exists:comments,id',
+                ]);
+                if($validator->fails()) {
+                    return redirect()->back()->with(flash(trans('cruds.messages.add_replay_failed'), 'danger'))->withErrors($validator)->withInput();
+                }
+                $comment = Comment::create([
+                    'module_field_id'       => $request->project_id,
+                    'comment'               => $request->replay_comment,
+                    'module'                => 'project',
+                    'user_id'               => auth()->user()->id,
+                    'comment_replay_id'     => $request->comment_replay_id,
+                ]);
+
+                setActivity('project',$project->id,'add replay on comment ','تم إضافة رد على تعليق',$project->name_en,$project->name_ar);
+                $flashMsg = flash(trans('cruds.messages.add_replay_success'), 'success');
+
+            }else{
+
+                $validator = Validator::make( $request->all(),[
+                    'project_id'        => 'exists:projects,id',
+                    'comment'           => 'required',
+                ]);
+
+                if($validator->fails()) {
+                    return redirect()->back()->with(flash(trans('cruds.messages.add_replay_failed'), 'danger'))->withErrors($validator)->withInput();
+                }
+
+                $comment = Comment::create([
+                    'module_field_id'       => $request->project_id,
+                    'comment'               => $request->comment,
+                    'module'                => 'project',
+                    'user_id'               => auth()->user()->id,
+                ]);
+
+                setActivity('project',$project->id,'add comment ','تم إضافة تعليق',$project->name_en,$project->name_ar);
+                $flashMsg = flash(trans('cruds.messages.add_comment_success'), 'success');
+            }
+
+            if ($comment && $comment->user)
+            {
+
+                // Notify User
+                foreach ($project->accountDetails as $accountUser)
+                {
+                    $user = $accountUser->user;
+
+                    $dataNotification = [
+                        'message'       => 'Comment On The Project : '.$project->{'name_'.app()->getLocale()},
+                        'route_path'    => 'admin/projectmanagement/projects',
+                    ];
+
+    //                $user->notify(new ProjectManagementNotification($project,$user,$dataMail,$dataNotification));
+
+                    //send notification
+                    $user->notify(new ProjectManagementNotification($project,$user,$dataNotification));
+                    $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
+                    event(new NewNotification($userNotify));
+
+                    // send mail
+                    $sender =  settings('smtp_sender_name');
+                    $email_from =  settings('smtp_email') ;
+
+                    //send mail to client
+                    $template = templates('project_comments');
+                    $message = str_replace("{POSTED_BY}",$comment->user->name,$template->template_body);
+                    $message = str_replace("{PROJECT_NAME}",$project->name_en,$message);
+                    $message = str_replace("{COMMENT_URL}",route("projectmanagement.admin.projects.show", $project->id),$message);
+                    $message = str_replace("{COMMENT_MESSAGE}",$comment->comment,$message);
+                    $message = str_replace("{SITE_NAME}",settings('company_name'),$message);
+
+                    Mail::mailer('smtp')->to($user->email)
+                        ->cc(['mabrouk@onetecgroup.com','sara@onetecgroup.com'])
+                        ->bcc('marwa@onetecgroup.com')
+                        ->send(new ProjectManagementMail($email_from, $sender,$message,$template->subject));
+                }
+
+
+            }
+            // Commit the transaction
+            DB::commit();
+            return back()->with($flashMsg);
+
+        }catch(\Exception $e){
+            // An error occured; cancel the transaction...
+            DB::rollback();
+            return back()->with(flash(trans('cruds.messages.add_comment_failed'), 'danger'))->withInput();
+
+            // and throw the error again.
+            throw $e;
+        }
+//        return redirect()->back();
+    }
+
+
+    
+    public function storeattachment(StoreTaskAttachmentRequest $request,Project $project)
+    {
+         DB::beginTransaction();
+         try{
+            $taskAttachment = TaskAttachment::create($request->all());
+            if ($request->input('attachments', false)) {
+                foreach ($request->attachments as $attachment) {
+                    $taskAttachment->addMedia(storage_path('tmp/uploads/' . $attachment))->toMediaCollection('attachments');
+                }
+            }
+            if ($media = $request->input('ck-media', false)) {
+                Media::whereIn('id', $media)->update(['model_id' => $taskAttachment->id]);
+            }
+            setActivity('project',$project->id,'add Attachments to project ','تم اضافة مرفقات الي المشروع',$project->name_en,$project->name_ar);
+            DB::commit();
+            return redirect()->back()->with(flash('Attachment add successfully', 'success'));
+
+
+        } catch (\Exception $e) {
+            
+            return redirect()->back()->with(['message' => 'Something wrong happen','alert-type' => 'error']);
+        }
+    }
+
+    // attachment opperation
+    public function downloadMedia($id)
+    {
+        $media = Media::findOrFail($id);
+        return response()->download($media->getPath(), $media->file_name);
+    }
+
+    public function viewMedia($id)
+    {
+        $media = Media::findOrFail($id);
+        return response()->file($media->getPath());
+    }
+
+    public function deleteMedia($id,TaskAttachment $taskAttachment)
+    { 
+
+        DB::beginTransaction();
+         try{
+             $project= Project::find($taskAttachment->project_id);
+            if($taskAttachment->hasMedia('attachments') == true){
+                $taskAttachment->clearMediaCollection('attachments');
+            }
+            $taskAttachment->delete(); 
+            setActivity('project',$project->id,'Delete Project Details','تم حذف المشروع',$project->name_en,$project->name_ar);
+            DB::commit();
+            return redirect()->back()->with(flash('Attachment Deleted successfully', 'success'));
+        } catch (\Exception $e) {
+
+            return redirect()->back()->with(['message' => 'Something wrong happen','alert-type' => 'error']);
+        }
 
     }
 }

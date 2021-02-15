@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Notifications\ProjectManagementNotification;
 use Modules\HR\Entities\Designation;
+use Modules\ProjectManagement\Entities\Comment;
 use Modules\ProjectManagement\Http\Controllers\Traits\ProjectManagementHelperTrait;
 use Modules\ProjectManagement\Http\Requests\MassDestroyWorkTrackingRequest;
 use Modules\ProjectManagement\Http\Requests\StoreWorkTrackingRequest;
@@ -20,6 +21,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\DB;
 use App\Mail\ProjectManagementMail;
 use Illuminate\Support\Facades\Mail;
+use Validator;
 
 class WorkTrackingController extends Controller
 {
@@ -77,7 +79,7 @@ class WorkTrackingController extends Controller
         }catch(\Exception $e){
             // An error occured; cancel the transaction...
             DB::rollback();
-            return redirect()->back()->with(flash(trans('cruds.messages.create_failed'), 'danger'))->withInput();
+//            return redirect()->back()->with(flash(trans('cruds.messages.create_failed'), 'danger'))->withInput();
             // and throw the error again.
             throw $e;
         }
@@ -133,15 +135,15 @@ class WorkTrackingController extends Controller
                 $sender =  settings('smtp_sender_name');
                 $email_from =  settings('smtp_email') ;
 
-                if(User::find(auth()->user()->id)->accountDetail && User::find(auth()->user()->id)->accountDetail()->first())
-                {
-                    $userName = AccountDetail::where('user_id', auth()->user()->id)->first()->fullname;
-                }else {
-                    $userName = User::find(auth()->user()->id)->name;
-                }
-
-                $message = $userName.' '.'Update Work Tracking '.$workTracking->{'subject_'.app()->getLocale()};
-                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
+//                if(User::find(auth()->user()->id)->accountDetail && User::find(auth()->user()->id)->accountDetail()->first())
+//                {
+//                    $userName = AccountDetail::where('user_id', auth()->user()->id)->first()->fullname;
+//                }else {
+//                    $userName = User::find(auth()->user()->id)->name;
+//                }
+//
+//                $message = $userName.' '.'Update Work Tracking '.$workTracking->{'subject_'.app()->getLocale()};
+//                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
 
             }
 
@@ -389,19 +391,19 @@ class WorkTrackingController extends Controller
                 $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
                 event(new NewNotification($userNotify));
 
-                // send mail
-                $sender =  settings('smtp_sender_name');
-                $email_from =  settings('smtp_email') ;
-
-                if(User::find(auth()->user()->id)->accountDetail && User::find(auth()->user()->id)->accountDetail()->first())
-                {
-                    $userName = AccountDetail::where('user_id', auth()->user()->id)->first()->fullname;
-                }else {
-                    $userName = User::find(auth()->user()->id)->name;
-                }
-
-                $message = $userName.' '.'Assign The Work Tracking  '.$workTracking->{'subject_'.app()->getLocale()}.' To '.$user->name;
-                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
+//                // send mail
+//                $sender =  settings('smtp_sender_name');
+//                $email_from =  settings('smtp_email') ;
+//
+//                if(User::find(auth()->user()->id)->accountDetail && User::find(auth()->user()->id)->accountDetail()->first())
+//                {
+//                    $userName = AccountDetail::where('user_id', auth()->user()->id)->first()->fullname;
+//                }else {
+//                    $userName = User::find(auth()->user()->id)->name;
+//                }
+//
+//                $message = $userName.' '.'Assign The Work Tracking  '.$workTracking->{'subject_'.app()->getLocale()}.' To '.$user->name;
+//                Mail::mailer('smtp')->to($user->email)->send(new ProjectManagementMail($email_from, $sender,$message));
             }
 
             setActivity('workTracking',$workTracking->id,'Update Assign to ','تعديل القائمين على مشروع',$workTracking->subject_en,$workTracking->subject_ar);
@@ -422,4 +424,112 @@ class WorkTrackingController extends Controller
 
 //        return redirect()->route('projectmanagement.admin.work-trackings.index');
     }
+
+    public function add_comment(Request $request)
+    {
+
+        try {
+            // Begin a transaction
+            DB::beginTransaction();
+
+            $workTracking = WorkTracking::findOrFail($request->workTracking_id);
+
+            if ($request->comment_replay_id){
+
+                $validator = Validator::make($request->all(),[
+                    'workTracking_id'   => 'exists:work_trackings,id',
+                    'replay_comment'    => 'required',
+                    'comment_replay_id' => 'exists:comments,id',
+                ]);
+                if($validator->fails()) {
+                    return redirect()->back()->with(flash(trans('cruds.messages.add_replay_failed'), 'danger'))->withErrors($validator)->withInput();
+                }
+                $comment = Comment::create([
+                    'module_field_id'       => $request->workTracking_id,
+                    'comment'               => $request->replay_comment,
+                    'module'                => 'workTracking',
+                    'user_id'               => auth()->user()->id,
+                    'comment_replay_id'     => $request->comment_replay_id,
+                ]);
+
+                setActivity('workTracking',$workTracking->id,'add replay on comment ','تم إضافة رد على تعليق',$workTracking->subject_en,$workTracking->subject_ar);
+
+            }else{
+
+                $validator = Validator::make( $request->all(),[
+                    'workTracking_id'   => 'exists:work_trackings,id',
+                    'comment'           => 'required',
+                ]);
+
+                if($validator->fails()) {
+                    return redirect()->back()->with(flash(trans('cruds.messages.add_replay_failed'), 'danger'))->withErrors($validator)->withInput();
+                }
+
+                $comment = Comment::create([
+                    'module_field_id'       => $request->workTracking_id,
+                    'comment'               => $request->comment,
+                    'module'                => 'workTracking',
+                    'user_id'               => auth()->user()->id,
+                ]);
+
+                setActivity('workTracking',$workTracking->id,'add comment ','تم إضافة تعليق',$workTracking->subject_en,$workTracking->subject_ar);
+
+            }
+
+            if ($comment && $comment->user)
+            {
+
+                // Notify User
+                foreach ($workTracking->accountDetails as $accountUser)
+                {
+                    $user = $accountUser->user;
+
+                    $dataNotification = [
+                        'message'       => 'Comment On The Work Tracking : '.$workTracking->{'subject_'.app()->getLocale()},
+                        'route_path'    => 'admin/projectmanagement/work-trackings',
+                    ];
+
+                    //                $user->notify(new ProjectManagementNotification($project,$user,$dataMail,$dataNotification));
+
+                    //send notification
+                    $user->notify(new ProjectManagementNotification($workTracking,$user,$dataNotification));
+                    $userNotify = $user->notifications->where('notifiable_id', $user->id)->sortBy(['created_at' => 'desc'])->first();
+                    event(new NewNotification($userNotify));
+
+//                    // send mail
+//                    $sender =  settings('smtp_sender_name');
+//                    $email_from =  settings('smtp_email') ;
+//
+//                    //send mail to client
+//                    $template = templates('project_comments');
+//                    $message = str_replace("{POSTED_BY}",$comment->user->name,$template->template_body);
+//                    $message = str_replace("{PROJECT_NAME}",$workTracking->subject_en,$message);
+//                    $message = str_replace("{COMMENT_URL}",route("projectmanagement.admin.work-trackings.show", $workTracking->id),$message);
+//                    $message = str_replace("{COMMENT_MESSAGE}",$comment->comment,$message);
+//                    $message = str_replace("{SITE_NAME}",settings('company_name'),$message);
+//
+//                    Mail::mailer('smtp')->to($user->email)
+//                        ->cc(['mabrouk@onetecgroup.com','sara@onetecgroup.com'])
+//                        ->bcc('marwa@onetecgroup.com')
+//                        ->send(new ProjectManagementMail($email_from, $sender,$message,$template->subject));
+                }
+
+
+            }
+
+            // Commit the transaction
+            DB::commit();
+            return back()->with(flash(trans('cruds.messages.add_replay_success'), 'success'));
+
+        }catch(\Exception $e){
+            // An error occured; cancel the transaction...
+            DB::rollback();
+            return back()->with(flash(trans('cruds.messages.add_replay_failed'), 'danger'))->withInput();
+
+            // and throw the error again.
+            throw $e;
+        }
+//        return redirect()->back();
+    }
+
 }
