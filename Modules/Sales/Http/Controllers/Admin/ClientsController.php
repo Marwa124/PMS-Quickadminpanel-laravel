@@ -9,11 +9,16 @@ use Modules\Sales\Http\Requests\Store\StoreClientRequest;
 use Modules\Sales\Entities\UpdateClientRequest;
 use Modules\HR\Entities\AccountDetail;
 use Modules\Sales\Entities\Client;
+use App\Models\Currency;
+use App\Models\Country;
+use App\Models\Language;
+use App\Models\User;
 use Gate;
 use Illuminate\Http\Request;
 use Spatie\MediaLibrary\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
-
+use Modules\MaterialsSuppliers\Entities\CustomerGroup;
+use Spatie\Permission\Models\Role;
 class ClientsController extends Controller
 {
     use MediaUploadingTrait;
@@ -32,16 +37,31 @@ class ClientsController extends Controller
     public function create()
     {
         abort_if(Gate::denies('client_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
+        $currencies = Currency::all();
+        $countries  = Country::all();
+        $languages  = Language::all();
+        $customerGroups = CustomerGroup::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
         $statuses = AccountDetail::all()->pluck('fullname', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        return view('sales::admin.clients.create', compact('statuses'));
+        return view('sales::admin.clients.create', compact('statuses','currencies','countries','languages','customerGroups'));
     }
 
     public function store(StoreClientRequest $request)
     {
-        $client = Client::create($request->all());
 
+
+        $client = Client::create($request->all());
+         $user = User::create([
+             'name'=>$request->username,
+             'username'=>$request->username,
+             'email'=>$request->email,
+             'password'=>$request->password,
+
+         ]);
+         $role=Role::where('name','User')->pluck('id');
+         if(!empty($role)){
+             $user->syncRoles($role);
+          };
         if ($media = $request->input('ck-media', false)) {
             Media::whereIn('id', $media)->update(['model_id' => $client->id]);
         }
