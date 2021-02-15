@@ -14,7 +14,7 @@ class CreateDepositsTable extends Migration
             $table->decimal('amount', 15, 2)->nullable();
             $table->string('title')->nullable();
             $table->text('notes')->nullable();
-            $table->enum('status',['paid','non_approved','unpaid'])->nullable();
+            $table->enum('status',['paid','non_approved','unpaid'])->default('non_approved')->nullable();
             $table->string('reference')->nullable();
             $table->string('bank_balance')->nullable();
 

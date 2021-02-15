@@ -83,6 +83,11 @@ Route::group(['as' => 'finance.admin.', 'prefix' => 'admin/finance', 'namespace'
     Route::get('expenses_get_data','ExpensesController@get_data')->name('expenses.get_data');
     Route::get('expenses_getapproved/{id}','ExpensesController@getapproved')->name('expenses.getapproved');
     Route::get('expenses_getpaid/{id}','ExpensesController@getpaid')->name('expenses.getpaid');
+
+
+
+    Route::get('expenses/create/project/{id}','ExpensesController@create_project')->name('expenses.project.create');
+    Route::post('expenses/store/project','ExpensesController@store_project')->name('expenses.project.store');
     ////////////////////////////////END EXPENSES///////////////////////////////////////////////////////////////////////
 
     ////////////////////////////////////DEPOSITS///////////////////////////////////////////////////////////////////////
