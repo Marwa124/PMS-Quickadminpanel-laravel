@@ -31,8 +31,8 @@
         </div>
 
     <!-- <form @submit.prevent="purposalSubmit" @keydown="form.onKeydown($event)"> -->
-    <form @submit.prevent="purchaseId ? purposalUpdate()
-        : purposalSubmit()" @keydown="form.onKeydown($event)">
+    <form @submit.prevent="purchaseId ? purchaseUpdate()
+        : purchaseSubmit()" @keydown="form.onKeydown($event)">
 
         <div class="my-3 d-flex justify-content-around">
             <div class="col-md-6">
@@ -314,7 +314,7 @@
 
     export default {
         components: {HasError, AlertErrors, AlertSuccess, Multiselect, VueEditor},
-        props: ['langKey', 'purchaseId', 'purchase', 'supplierPurchase', 'userPurchase', 'itemPurchase', 'itemTaxPurchase'],
+        props: ['langKey', 'purchaseId', 'purchase', 'supplierPurchase', 'userPurchase', 'itemPurchase', 'itemTaxPurchase', 'totalVal'],
         data() {
             return {
                 urlGetAccountDetails: '/api/v1/admin/hr/account-details',
@@ -371,7 +371,7 @@
             }
         },
         methods: {
-            purposalSubmit() {
+            purchaseSubmit() {
                 this.spinnerLoad = true;
                 this.form.total = this.total
 
@@ -381,10 +381,10 @@
                         if(data == 201) window.location.href = this.urlPurchase
                     })
             },
-            purposalUpdate() {
+            purchaseUpdate() {
                 this.spinnerLoad = true;
                 this.form.total = this.total
-                console.log(this.form.total);
+                // console.log(this.form.total);
 
                 this.form.put(this.urlGetPurchaseId).then(({data}) => {
                     this.spinnerLoad = false;
@@ -511,34 +511,36 @@
 
                 this.totalTaxAdded = 0
                 this.form.items.forEach(element => {
-                    var indexRow = element.rowIndex;
-
-                    if(indexRow) {
-                        this.form.items[indexRow].taxes.map(tax => {
-
-                            if(tax.name || removedItem) {
-                                if (removedItem[0]) {
-                                    if (typeof removedItem[0] == 'string' && (typeof this.form.taxRate_total[removedItem[0]] == 'object')) {
-                                        this.form.taxRate_total[removedItem[0]].value = 0;
-                                        this.form.removedTax = '';
-                                    }else {
-                                        removedItem.forEach(element => {
-                                            this.form.taxRate_total[element[0]].value = 0;
+                    // element.taxes.id &&s
+                    // if ( !this.purchaseId) {
+                        var indexRow = element.rowIndex;
+                        if(indexRow) {
+                            this.form.items[indexRow].taxes.map(tax => {
+                                
+                                if(tax.name || removedItem) {
+                                    if (removedItem[0]) {
+                                        if (typeof removedItem[0] == 'string' && (typeof this.form.taxRate_total[removedItem[0]] == 'object')) {
+                                            this.form.taxRate_total[removedItem[0]].value = 0;
                                             this.form.removedTax = '';
-                                        });
-                                    }
-                                }else {
-                                    for (var key in taxName) {
-                                        if (key == tax.name) {
-                                            taxName[tax.name] += this.form.items[indexRow].total * (tax.rate_percent / 100)
-                                            this.form.taxRate_total[tax.name].value = parseFloat((taxName[tax.name]).toFixed(2))
-
+                                        }else {
+                                            removedItem.forEach(element => {
+                                                this.form.taxRate_total[element[0]].value = 0;
+                                                this.form.removedTax = '';
+                                            });
+                                        }
+                                    }else {
+                                        for (var key in taxName) {
+                                            if (key == tax.name) {
+                                                taxName[tax.name] += this.form.items[indexRow].total * (tax.rate_percent / 100)
+                                                this.form.taxRate_total[tax.name].value = parseFloat((taxName[tax.name]).toFixed(2))
+    
+                                            }
                                         }
                                     }
                                 }
-                            }
-                        });
-                    }
+                            });
+                        }
+                    // }
                 });
                 //////////////// Total Tax /////////////////////////
                 var self = this;
@@ -595,20 +597,39 @@
         mounted() {
             i18n.locale = this.langKey;
             if (this.purchaseId) {
+                console.log("Sgfdgdfg");
                 var formSupplier = this.form.supplier_id;
                 this.form.fill(this.purchase)
                 this.form.user_id     = {'user_id': this.userPurchase.user_id, 'fullname': this.userPurchase.fullname}
                 this.form.supplier_id = formSupplier;
-                this.form.items       = this.itemPurchase;
+                // this.form.items       = this.itemPurchase;
                 // this.form.itemTaxPurchase = this.itemTaxPurchase;
-                // for(this.itemTaxPurchase )
-    // this.itemTaxPurchase.forEach(element => {
-    //     if (element[0] == ) {
+                
+                this.form.items = [];
+                this.itemTaxPurchase.forEach(element => {
+                    if (element[1]) {
+                        element[0].taxes = {"id": element[1].id, "rate_percent": element[1].rate_percent}
+                    }else {
+                        element[0].taxes = []
+                    }
+                    this.form.items.push(element[0], element[0].taxes); 
+                    
+                });
 
-    //     }
-    //     console.log(element);
-    // });
-                console.log(this.itemPurchase);
+                var dataTaxTotal = []
+
+                for(let [i, item] of Object.entries(this.totalVal)) {
+                    dataTaxTotal.push({ "name": item.name, "value": (item.value).toFixed(2) });                      
+                }
+                this.form.taxRate_total = {...dataTaxTotal}
+                for(let [i, item] of Object.entries(this.form.items)) {
+                    console.log("dsfdfs ", i, item);
+                    if (!item.name) {
+                        this.form.items.splice(i, 1);
+                    }                        
+                }
+                this.form.items.splice(-1, 1);
+
                 this.addItemToModel('', '');
             }
             this.getAccountDetails();

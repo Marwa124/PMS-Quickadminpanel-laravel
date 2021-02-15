@@ -3334,6 +3334,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-multiselect */ "./node_modules/vue-multiselect/dist/vue-multiselect.min.js");
 /* harmony import */ var vue_multiselect__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(vue_multiselect__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var vue2_editor__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue2-editor */ "./node_modules/vue2-editor/dist/vue2-editor.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
@@ -3667,7 +3681,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     Multiselect: vue_multiselect__WEBPACK_IMPORTED_MODULE_2___default.a,
     VueEditor: vue2_editor__WEBPACK_IMPORTED_MODULE_3__["VueEditor"]
   },
-  props: ['langKey', 'purchaseId', 'purchase', 'supplierPurchase', 'userPurchase', 'itemPurchase', 'itemTaxPurchase'],
+  props: ['langKey', 'purchaseId', 'purchase', 'supplierPurchase', 'userPurchase', 'itemPurchase', 'itemTaxPurchase', 'totalVal'],
   data: function data() {
     return {
       urlGetAccountDetails: '/api/v1/admin/hr/account-details',
@@ -3717,7 +3731,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
     };
   },
   methods: {
-    purposalSubmit: function purposalSubmit() {
+    purchaseSubmit: function purchaseSubmit() {
       var _this = this;
 
       this.spinnerLoad = true;
@@ -3728,12 +3742,12 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         if (data == 201) window.location.href = _this.urlPurchase;
       });
     },
-    purposalUpdate: function purposalUpdate() {
+    purchaseUpdate: function purchaseUpdate() {
       var _this2 = this;
 
       this.spinnerLoad = true;
-      this.form.total = this.total;
-      console.log(this.form.total);
+      this.form.total = this.total; // console.log(this.form.total);
+
       this.form.put(this.urlGetPurchaseId).then(function (_ref2) {
         var data = _ref2.data;
         _this2.spinnerLoad = false;
@@ -3874,6 +3888,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       });
       this.totalTaxAdded = 0;
       this.form.items.forEach(function (element) {
+        // element.taxes.id &&s
+        // if ( !this.purchaseId) {
         var indexRow = element.rowIndex;
 
         if (indexRow) {
@@ -3899,7 +3915,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
               }
             }
           });
-        }
+        } // }
+
       }); //////////////// Total Tax /////////////////////////
 
       var self = this;
@@ -3947,25 +3964,62 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
   },
   mounted: function mounted() {
+    var _this8 = this;
+
     _plugins_i18n__WEBPACK_IMPORTED_MODULE_1__["default"].locale = this.langKey;
 
     if (this.purchaseId) {
+      console.log("Sgfdgdfg");
       var formSupplier = this.form.supplier_id;
       this.form.fill(this.purchase);
       this.form.user_id = {
         'user_id': this.userPurchase.user_id,
         'fullname': this.userPurchase.fullname
       };
-      this.form.supplier_id = formSupplier;
-      this.form.items = this.itemPurchase; // this.form.itemTaxPurchase = this.itemTaxPurchase;
-      // for(this.itemTaxPurchase )
-      // this.itemTaxPurchase.forEach(element => {
-      //     if (element[0] == ) {
-      //     }
-      //     console.log(element);
-      // });
+      this.form.supplier_id = formSupplier; // this.form.items       = this.itemPurchase;
+      // this.form.itemTaxPurchase = this.itemTaxPurchase;
 
-      console.log(this.itemPurchase);
+      this.form.items = [];
+      this.itemTaxPurchase.forEach(function (element) {
+        if (element[1]) {
+          element[0].taxes = {
+            "id": element[1].id,
+            "rate_percent": element[1].rate_percent
+          };
+        } else {
+          element[0].taxes = [];
+        }
+
+        _this8.form.items.push(element[0], element[0].taxes);
+      });
+      var dataTaxTotal = [];
+
+      for (var _i2 = 0, _Object$entries2 = Object.entries(this.totalVal); _i2 < _Object$entries2.length; _i2++) {
+        var _Object$entries2$_i = _slicedToArray(_Object$entries2[_i2], 2),
+            i = _Object$entries2$_i[0],
+            item = _Object$entries2$_i[1];
+
+        dataTaxTotal.push({
+          "name": item.name,
+          "value": item.value.toFixed(2)
+        });
+      }
+
+      this.form.taxRate_total = _objectSpread({}, dataTaxTotal);
+
+      for (var _i3 = 0, _Object$entries3 = Object.entries(this.form.items); _i3 < _Object$entries3.length; _i3++) {
+        var _Object$entries3$_i = _slicedToArray(_Object$entries3[_i3], 2),
+            _i4 = _Object$entries3$_i[0],
+            _item = _Object$entries3$_i[1];
+
+        console.log("dsfdfs ", _i4, _item);
+
+        if (!_item.name) {
+          this.form.items.splice(_i4, 1);
+        }
+      }
+
+      this.form.items.splice(-1, 1);
       this.addItemToModel('', '');
     }
 
@@ -72008,7 +72062,7 @@ var render = function() {
         on: {
           submit: function($event) {
             $event.preventDefault()
-            _vm.purchaseId ? _vm.purposalUpdate() : _vm.purposalSubmit()
+            _vm.purchaseId ? _vm.purchaseUpdate() : _vm.purchaseSubmit()
           },
           keydown: function($event) {
             return _vm.form.onKeydown($event)
@@ -88630,8 +88684,8 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_i18n__WEBPACK_IMPORTED_MODULE
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! F:\laragon\www\01-Test-Permission-PMS\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! F:\laragon\www\01-Test-Permission-PMS\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\laragon\www\01-Test-Permission-PMS\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\laragon\www\01-Test-Permission-PMS\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

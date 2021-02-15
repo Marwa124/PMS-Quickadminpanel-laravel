@@ -60,7 +60,7 @@ class UpdateJobCircularRequest extends FormRequest
                 'required',
             ],
             'status'          => [
-                'in:unpublished, published'
+                'in:unpublished,published'
             ]
         ];
     }

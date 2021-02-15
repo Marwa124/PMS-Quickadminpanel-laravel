@@ -13,6 +13,7 @@
         :user-purchase= "{{ json_encode($userPurchase) }}"
         :item-purchase= "{{ json_encode($itemPurchase) }}"
         :item-tax-purchase= "{{ json_encode($itemTaxPurchase) }}"
+        :total-val= "{{ json_encode($totalVal) }}"
         :lang-key={{json_encode(app()->getLocale())}}>
     </purchase-form>
 

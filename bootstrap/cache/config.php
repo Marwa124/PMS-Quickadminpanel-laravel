@@ -545,7 +545,7 @@
     'debug' => true,
     'url' => 'http://01-test-permission-pms.test',
     'asset_url' => NULL,
-    'timezone' => 'Africa/Cairo',
+    'timezone' => 'Pacific/Midway',
     'locale' => 'en',
     'fallback_locale' => 'en',
     'faker_locale' => 'en_US',
@@ -727,7 +727,7 @@
       'file' => 
       array (
         'driver' => 'file',
-        'path' => 'F:\\laragon\\www\\01-Test-Permission-PMS\\storage\\framework/cache/data',
+        'path' => 'C:\\laragon\\www\\01-Test-Permission-PMS\\storage\\framework/cache/data',
       ),
       'memcached' => 
       array (
@@ -890,10 +890,10 @@
     'orientation' => 'portrait',
     'defines' => 
     array (
-      'font_dir' => 'F:\\laragon\\www\\01-Test-Permission-PMS\\storage\\fonts/',
-      'font_cache' => 'F:\\laragon\\www\\01-Test-Permission-PMS\\storage\\fonts/',
-      'temp_dir' => 'C:\\Users\\PROFES~1\\AppData\\Local\\Temp',
-      'chroot' => 'F:\\laragon\\www\\01-Test-Permission-PMS',
+      'font_dir' => 'C:\\laragon\\www\\01-Test-Permission-PMS\\storage\\fonts/',
+      'font_cache' => 'C:\\laragon\\www\\01-Test-Permission-PMS\\storage\\fonts/',
+      'temp_dir' => 'C:\\Users\\marwa\\AppData\\Local\\Temp',
+      'chroot' => 'C:\\laragon\\www\\01-Test-Permission-PMS',
       'enable_font_subsetting' => false,
       'pdf_backend' => 'CPDF',
       'default_media_type' => 'screen',
@@ -944,12 +944,12 @@
       'local' => 
       array (
         'driver' => 'local',
-        'root' => 'F:\\laragon\\www\\01-Test-Permission-PMS\\storage\\app',
+        'root' => 'C:\\laragon\\www\\01-Test-Permission-PMS\\storage\\app',
       ),
       'public' => 
       array (
         'driver' => 'local',
-        'root' => 'F:\\laragon\\www\\01-Test-Permission-PMS\\storage\\app/public',
+        'root' => 'C:\\laragon\\www\\01-Test-Permission-PMS\\storage\\app/public',
         'url' => 'http://01-test-permission-pms.test/storage',
         'visibility' => 'public',
       ),
@@ -965,7 +965,7 @@
     ),
     'links' => 
     array (
-      'F:\\laragon\\www\\01-Test-Permission-PMS\\public\\storage' => 'F:\\laragon\\www\\01-Test-Permission-PMS\\storage\\app/public',
+      'C:\\laragon\\www\\01-Test-Permission-PMS\\public\\storage' => 'C:\\laragon\\www\\01-Test-Permission-PMS\\storage\\app/public',
     ),
   ),
   'hashing' => 
@@ -988,24 +988,24 @@
     array (
       'path' => 
       array (
-        'migration' => 'F:\\laragon\\www\\01-Test-Permission-PMS\\database/migrations/',
-        'model' => 'F:\\laragon\\www\\01-Test-Permission-PMS\\app\\Models/',
-        'datatables' => 'F:\\laragon\\www\\01-Test-Permission-PMS\\app\\DataTables/',
-        'repository' => 'F:\\laragon\\www\\01-Test-Permission-PMS\\app\\Repositories/',
-        'routes' => 'F:\\laragon\\www\\01-Test-Permission-PMS\\routes/web.php',
-        'lang' => 'F:\\laragon\\www\\01-Test-Permission-PMS\\resources/lang/en/lang.php',
-        'api_routes' => 'F:\\laragon\\www\\01-Test-Permission-PMS\\routes/api.php',
-        'request' => 'F:\\laragon\\www\\01-Test-Permission-PMS\\app\\Http/Requests/',
-        'api_request' => 'F:\\laragon\\www\\01-Test-Permission-PMS\\app\\Http/Requests/API/',
-        'controller' => 'F:\\laragon\\www\\01-Test-Permission-PMS\\app\\Http/Controllers/',
-        'api_controller' => 'F:\\laragon\\www\\01-Test-Permission-PMS\\app\\Http/Controllers/API/',
-        'test_trait' => 'F:\\laragon\\www\\01-Test-Permission-PMS\\tests/traits/',
-        'repository_test' => 'F:\\laragon\\www\\01-Test-Permission-PMS\\tests/',
-        'api_test' => 'F:\\laragon\\www\\01-Test-Permission-PMS\\tests/',
-        'views' => 'F:\\laragon\\www\\01-Test-Permission-PMS\\resources/views/',
-        'schema_files' => 'F:\\laragon\\www\\01-Test-Permission-PMS\\resources/model_schemas/',
-        'templates_dir' => 'F:\\laragon\\www\\01-Test-Permission-PMS\\resources/infyom/infyom-generator-templates/',
-        'modelJs' => 'F:\\laragon\\www\\01-Test-Permission-PMS\\resources/assets/js/models/',
+        'migration' => 'C:\\laragon\\www\\01-Test-Permission-PMS\\database/migrations/',
+        'model' => 'C:\\laragon\\www\\01-Test-Permission-PMS\\app\\Models/',
+        'datatables' => 'C:\\laragon\\www\\01-Test-Permission-PMS\\app\\DataTables/',
+        'repository' => 'C:\\laragon\\www\\01-Test-Permission-PMS\\app\\Repositories/',
+        'routes' => 'C:\\laragon\\www\\01-Test-Permission-PMS\\routes/web.php',
+        'lang' => 'C:\\laragon\\www\\01-Test-Permission-PMS\\resources/lang/en/lang.php',
+        'api_routes' => 'C:\\laragon\\www\\01-Test-Permission-PMS\\routes/api.php',
+        'request' => 'C:\\laragon\\www\\01-Test-Permission-PMS\\app\\Http/Requests/',
+        'api_request' => 'C:\\laragon\\www\\01-Test-Permission-PMS\\app\\Http/Requests/API/',
+        'controller' => 'C:\\laragon\\www\\01-Test-Permission-PMS\\app\\Http/Controllers/',
+        'api_controller' => 'C:\\laragon\\www\\01-Test-Permission-PMS\\app\\Http/Controllers/API/',
+        'test_trait' => 'C:\\laragon\\www\\01-Test-Permission-PMS\\tests/traits/',
+        'repository_test' => 'C:\\laragon\\www\\01-Test-Permission-PMS\\tests/',
+        'api_test' => 'C:\\laragon\\www\\01-Test-Permission-PMS\\tests/',
+        'views' => 'C:\\laragon\\www\\01-Test-Permission-PMS\\resources/views/',
+        'schema_files' => 'C:\\laragon\\www\\01-Test-Permission-PMS\\resources/model_schemas/',
+        'templates_dir' => 'C:\\laragon\\www\\01-Test-Permission-PMS\\resources/infyom/infyom-generator-templates/',
+        'modelJs' => 'C:\\laragon\\www\\01-Test-Permission-PMS\\resources/assets/js/models/',
       ),
       'namespace' => 
       array (
@@ -1117,13 +1117,13 @@
       'single' => 
       array (
         'driver' => 'single',
-        'path' => 'F:\\laragon\\www\\01-Test-Permission-PMS\\storage\\logs/laravel.log',
+        'path' => 'C:\\laragon\\www\\01-Test-Permission-PMS\\storage\\logs/laravel.log',
         'level' => 'debug',
       ),
       'daily' => 
       array (
         'driver' => 'daily',
-        'path' => 'F:\\laragon\\www\\01-Test-Permission-PMS\\storage\\logs/laravel.log',
+        'path' => 'C:\\laragon\\www\\01-Test-Permission-PMS\\storage\\logs/laravel.log',
         'level' => 'debug',
         'days' => 14,
       ),
@@ -1173,7 +1173,7 @@
       ),
       'emergency' => 
       array (
-        'path' => 'F:\\laragon\\www\\01-Test-Permission-PMS\\storage\\logs/laravel.log',
+        'path' => 'C:\\laragon\\www\\01-Test-Permission-PMS\\storage\\logs/laravel.log',
       ),
     ),
   ),
@@ -1185,20 +1185,20 @@
       'smtp' => 
       array (
         'transport' => 'smtp',
-        'host' => '',
-        'port' => '',
-        'encryption' => '',
-        'username' => '',
-        'password' => '',
+        'host' => 'mail.onetecgroup.com',
+        'port' => '465',
+        'encryption' => 'ssl',
+        'username' => 'admin@onetecgroup.com',
+        'password' => 'm7mdsdfcz',
       ),
       'mailgun' => 
       array (
         'transport' => 'smtp',
-        'host' => '',
-        'port' => '',
-        'encryption' => '',
-        'username' => '',
-        'password' => '',
+        'host' => 'smtp.mailgun.org',
+        'port' => '587',
+        'encryption' => 'tls',
+        'username' => 'postmaster@sandboxe31bb8c7d4b44782a216a3ee62328fc9.mailgun.org',
+        'password' => '31d7a041ba3baf4f4fb9b51eacd23fac-4de08e90-2044ce92',
       ),
       'postmark' => 
       array (
@@ -1230,15 +1230,15 @@
     ),
     'from' => 
     array (
-      'address' => '',
-      'name' => 'Laravel',
+      'address' => 'info@onetecgroup.com',
+      'name' => 'mohamed',
     ),
     'markdown' => 
     array (
       'theme' => 'default',
       'paths' => 
       array (
-        0 => 'F:\\laragon\\www\\01-Test-Permission-PMS\\resources\\views/vendor/mail',
+        0 => 'C:\\laragon\\www\\01-Test-Permission-PMS\\resources\\views/vendor/mail',
       ),
     ),
   ),
@@ -1319,7 +1319,7 @@
     'stubs' => 
     array (
       'enabled' => false,
-      'path' => 'F:\\laragon\\www\\01-Test-Permission-PMS/vendor/nwidart/laravel-modules/src/Commands/stubs',
+      'path' => 'C:\\laragon\\www\\01-Test-Permission-PMS/vendor/nwidart/laravel-modules/src/Commands/stubs',
       'files' => 
       array (
         'routes/web' => 'Routes/web.php',
@@ -1383,9 +1383,9 @@
     ),
     'paths' => 
     array (
-      'modules' => 'F:\\laragon\\www\\01-Test-Permission-PMS\\Modules',
-      'assets' => 'F:\\laragon\\www\\01-Test-Permission-PMS\\public\\modules',
-      'migration' => 'F:\\laragon\\www\\01-Test-Permission-PMS\\database/migrations',
+      'modules' => 'C:\\laragon\\www\\01-Test-Permission-PMS\\Modules',
+      'assets' => 'C:\\laragon\\www\\01-Test-Permission-PMS\\public\\modules',
+      'migration' => 'C:\\laragon\\www\\01-Test-Permission-PMS\\database/migrations',
       'generator' => 
       array (
         'config' => 
@@ -1520,7 +1520,7 @@
       'enabled' => false,
       'paths' => 
       array (
-        0 => 'F:\\laragon\\www\\01-Test-Permission-PMS\\vendor/*/*',
+        0 => 'C:\\laragon\\www\\01-Test-Permission-PMS\\vendor/*/*',
       ),
     ),
     'composer' => 
@@ -1548,7 +1548,7 @@
       'file' => 
       array (
         'class' => 'Nwidart\\Modules\\Activators\\FileActivator',
-        'statuses-file' => 'F:\\laragon\\www\\01-Test-Permission-PMS\\modules_statuses.json',
+        'statuses-file' => 'C:\\laragon\\www\\01-Test-Permission-PMS\\modules_statuses.json',
         'cache-key' => 'activator.installed',
         'cache-lifetime' => 604800,
       ),
@@ -1594,7 +1594,7 @@
     array (
     ),
     'auto_language_detection' => false,
-    'temp_dir' => 'C:\\Users\\PROFES~1\\AppData\\Local\\Temp',
+    'temp_dir' => 'C:\\Users\\marwa\\AppData\\Local\\Temp',
     'pdfa' => false,
     'pdfaauto' => false,
   ),
@@ -1755,9 +1755,9 @@
     ),
     'generator' => 
     array (
-      'basePath' => 'F:\\laragon\\www\\01-Test-Permission-PMS\\app',
+      'basePath' => 'C:\\laragon\\www\\01-Test-Permission-PMS\\app',
       'rootNamespace' => 'App\\',
-      'stubsOverridePath' => 'F:\\laragon\\www\\01-Test-Permission-PMS\\app',
+      'stubsOverridePath' => 'C:\\laragon\\www\\01-Test-Permission-PMS\\app',
       'paths' => 
       array (
         'models' => 'Entities',
@@ -1797,7 +1797,7 @@
     'lifetime' => '120',
     'expire_on_close' => false,
     'encrypt' => false,
-    'files' => 'F:\\laragon\\www\\01-Test-Permission-PMS\\storage\\framework/sessions',
+    'files' => 'C:\\laragon\\www\\01-Test-Permission-PMS\\storage\\framework/sessions',
     'connection' => NULL,
     'table' => 'sessions',
     'store' => NULL,
@@ -2040,9 +2040,9 @@
   array (
     'paths' => 
     array (
-      0 => 'F:\\laragon\\www\\01-Test-Permission-PMS\\resources\\views',
+      0 => 'C:\\laragon\\www\\01-Test-Permission-PMS\\resources\\views',
     ),
-    'compiled' => 'F:\\laragon\\www\\01-Test-Permission-PMS\\storage\\framework\\views',
+    'compiled' => 'C:\\laragon\\www\\01-Test-Permission-PMS\\storage\\framework\\views',
   ),
   'flare' => 
   array (
@@ -2056,8 +2056,6 @@
       'report_query_bindings' => true,
       'report_view_data' => true,
       'grouping_type' => NULL,
-      'report_logs' => true,
-      'maximum_number_of_collected_logs' => 200,
     ),
     'send_logs_as_events' => true,
   ),
@@ -2101,7 +2099,7 @@
   'livewire' => 
   array (
     'class_namespace' => 'App\\Http\\Livewire',
-    'view_path' => 'F:\\laragon\\www\\01-Test-Permission-PMS\\resources\\views/livewire',
+    'view_path' => 'C:\\laragon\\www\\01-Test-Permission-PMS\\resources\\views/livewire',
     'layout' => 'layouts.app',
     'asset_url' => NULL,
     'middleware_group' => 'web',
@@ -2234,7 +2232,7 @@
     ),
     'temporary_files' => 
     array (
-      'local_path' => 'F:\\laragon\\www\\01-Test-Permission-PMS\\storage\\framework/laravel-excel',
+      'local_path' => 'C:\\laragon\\www\\01-Test-Permission-PMS\\storage\\framework/laravel-excel',
       'remote_disk' => NULL,
       'remote_prefix' => NULL,
       'force_resync_remote' => NULL,
@@ -2315,13 +2313,13 @@
   array (
     'name' => 'ProjectManagement',
   ),
-  'sales' => 
-  array (
-    'name' => 'Sales',
-  ),
   'setting' => 
   array (
     'name' => 'Setting',
+  ),
+  'sales' => 
+  array (
+    'name' => 'Sales',
   ),
   'tinker' => 
   array (

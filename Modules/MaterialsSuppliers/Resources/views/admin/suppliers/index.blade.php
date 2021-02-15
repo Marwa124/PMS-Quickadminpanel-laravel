@@ -23,9 +23,6 @@
 
                         </th>
                         <th>
-                            {{ trans('cruds.supplier.fields.id') }}
-                        </th>
-                        <th>
                             {{ trans('cruds.supplier.fields.name') }}
                         </th>
                         <th>
@@ -47,46 +44,12 @@
                             &nbsp;
                         </th>
                     </tr>
-                    <tr>
-                        <td>
-                        </td>
-                        <td>
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                        </td>
-                        <td>
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                        </td>
-                        <td>
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                        </td>
-                        <td>
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                        </td>
-                        <td>
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                        </td>
-                        <td>
-                            <input class="search" type="text" placeholder="{{ trans('global.search') }}">
-                        </td>
-                        <td>
-                            <select class="search">
-                                @foreach($customer_groups as $key => $item)
-                                    <option value="{{ $item->type }}">{{ $item->type }}</option>
-                                @endforeach
-                            </select>
-                        </td>
-                        <td>
-                        </td>
-                    </tr>
                 </thead>
                 <tbody>
                     @foreach($suppliers as $key => $supplier)
                         <tr data-entry-id="{{ $supplier->id }}">
                             <td>
 
-                            </td>
-                            <td>
-                                {{ $supplier->id ?? '' }}
                             </td>
                             <td>
                                 {{ $supplier->name ?? '' }}

@@ -12,7 +12,9 @@ use Modules\MaterialsSuppliers\Entities\Supplier;
 use Gate;
 use Illuminate\Http\Request;
 use Modules\MaterialsSuppliers\Entities\Purchase;
+use Modules\MaterialsSuppliers\Entities\TaxRate;
 use Modules\MaterialsSuppliers\Http\Repository\PurchaseRepository;
+use Modules\Sales\Entities\ProposalsItem;
 use Spatie\MediaLibrary\Models\Media;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -47,6 +49,8 @@ class PurchaseController extends Controller
     public function store(StorePurchaseRequest $request, PurchaseRepository $purchase)
     {
         $purchase->createPurchase($request);
+        dd($purchase->createPurchase($request));
+        
         return response()->json(Response::HTTP_CREATED);
     }
 
@@ -54,38 +58,49 @@ class PurchaseController extends Controller
     {
         abort_if(Gate::denies('purchase_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        // $suppliers = Supplier::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
-
-        // $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
-
-        // $purchase->load('supplier', 'user');
-                    // $itemPurchase = ProposalsItem::findOrFail($item['id']);
-                    // dd($itemPurchase->purchaseTaxes()->get());
         $supplierPurchase = $purchase->supplier()->select('id', 'name')->first();
         $userPurchase = $purchase->user->accountDetail()->select('fullname', 'user_id')->first();
-        $itemPurchase = $purchase->items()->get()->load('purchaseTaxes');
-        // dd($itemPurchase);
+        
+        // $itemTaxesPurchase = [];
+        $itemPurchase = $purchase->items()->get();
+        $taxes = TaxRate::get();
         $itemTaxPurchase = [];
-        // foreach ($itemPurchase as $key => $value) {
-        //     array_push($itemTaxPurchase, $value->purchaseTaxes()->where('purchase_id', $purchase->id)->get());
-        // }
-
+        $totalTaxPurchase = [];
+        foreach ($itemPurchase as $value) {
+            $itemTax = $purchase->itemtaxs->where('item_id',$value->id)->all();
+            if ($itemTax) {
+                foreach ($itemTax as $tax) {
+                    $taxObj = TaxRate::find($tax->tax_id);
+                    $taxval = $value->pivot->total * ($taxObj->rate_percent / 100);
+                    array_push($totalTaxPurchase, [$taxval, $taxObj->name]);
+                }
+                
+                array_push($itemTaxPurchase, [$value, $taxObj]);
+            }
+        }
+        $value = '';
+        $totalVal = [];
+        foreach ($totalTaxPurchase as $indexVal) {
+            if ($indexVal[1] == $value) {
+                array_push($totalVal, ['name' => $indexVal[1], 'value' => $indexVal[0]]);
+            }
+            $value = $indexVal[1];
+        }
 
         $fields = ['user', 'user_id', 'supplier_id'];
-        // $object = Model::find($id);
         $purchase = collect($purchase->toArray())->except($fields);
 
-        // dd($purchase);
         return view('materialssuppliers::admin.purchases.edit',
-            compact('supplierPurchase', 'userPurchase', 'itemPurchase', 'itemTaxPurchase', 'purchase'));
+            compact('supplierPurchase', 'userPurchase', 'itemPurchase', 'itemTaxPurchase', 'purchase', 'totalVal'));
     }
 
-    public function update(UpdatePurchaseRequest $request, Purchase $purchase)
-    {
-        $purchase->update($request->all());
-        // $purchase->permissions()->sync($request->input('permissions', []));
 
-        return redirect()->route('materialssuppliers.admin.purchases.index');
+    public function update(UpdatePurchaseRequest $request, Purchase $purchase,  PurchaseRepository $repo)
+    {
+        // dd($request->all());
+        $repo->updatePurchase($purchase, $request);
+        // dd($repo->updatePurchase($purchase, $request));
+        return response()->json(Response::HTTP_CREATED);
     }
 
     public function show(Purchase $purchase)

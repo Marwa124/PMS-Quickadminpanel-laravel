@@ -75,6 +75,11 @@ class Purchase extends Model implements HasMedia
         );
     }
 
+    public function itemtaxs()
+    {
+        return $this->hasMany(ItemPurchaseTax::class, 'purchase_id', 'id');
+    }
+
     public function getDateSentAttribute($value)
     {
         return $value ? Carbon::parse($value)->format(config('panel.date_format')) : null;

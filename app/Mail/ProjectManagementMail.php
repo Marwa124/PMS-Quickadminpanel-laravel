@@ -19,7 +19,7 @@ class ProjectManagementMail extends Mailable
 
     protected $email;
     protected $name;
-    public $subject;
+    public   $subject;
     protected $message;
     public function __construct($email, $name, $subject, $message=null)
     {
