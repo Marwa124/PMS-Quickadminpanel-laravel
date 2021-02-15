@@ -246,7 +246,9 @@ class OpportunitiesController extends Controller
     { 
         DB::beginTransaction();
          try{
-            $taskAttachment->deleteMedia($id);
+            if($taskAttachment->hasMedia('attachments') == true){
+                $taskAttachment->clearMediaCollection('attachments');
+            }
             $taskAttachment->delete(); 
             DB::commit();
             return redirect()->back()->with(flash('Attachment Deleted successfully', 'success'));

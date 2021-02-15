@@ -257,6 +257,7 @@
                     <a class="nav-link" id="v-pills-comments-tab"       data-toggle="pill" href="#v-pills-comments" role="tab" aria-controls="v-pills-comments" aria-selected="false">{{ trans('cruds.comment.title') }}<span class="float-right">   {{$bug->comments_with_replies && $bug->comments_with_replies()->count() > 0 ? $bug->comments_with_replies()->count() : ''}}</span></a>
                     <a class="nav-link" id="v-pills-notes-tab" data-toggle="pill" href="#v-pills-notes" role="tab" aria-controls="v-pills-notes" aria-selected="false">{{ trans('cruds.bug.fields.notes') }}</a>
                     <a class="nav-link" id="v-pills-activities-tab" data-toggle="pill" href="#v-pills-activities" role="tab" aria-controls="v-pills-activities" aria-selected="false">{{ trans('cruds.activities.title') }}<span class="float-right">{{$bug->activities()->count() > 0 ? $bug->activities()->count() : ''}}</span></a>
+                    <a class="nav-link" id="v-pills-attachment-tab"     data-toggle="pill" href="#v-pills-attachment" role="tab" aria-controls="v-pills-attachment" aria-selected="false">{{ trans('cruds.project.fields.attachment') }}<span  class="float-right"> </span></a>
                 </div>
             </div>
         </div>
@@ -280,7 +281,7 @@
                                         <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.bug.fields.name') }} :</p> <span class="col-md-6">{{ $bug->{'name_'.app()->getLocale()} ?? '' }}</span> </div>
                                         <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.bug.fields.issue_no') }} : </p><span class="col-md-6">{{ $bug->issue_no ?? '' }}</span> </div>
                                         <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.project.title') }} {{ trans('cruds.project.fields.name') }}  : </p><span class="col-md-6">{{ $bug->project ? $bug->project->{'name_'.app()->getLocale()} : '' }}</span> </div>
-{{--                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.task.title') }} {{ trans('cruds.task.fields.name') }}  : </p><span class="col-md-6">{{ $bug->task->name }}</span> </div>--}}
+                                    {{--                                        <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.task.title') }} {{ trans('cruds.task.fields.name') }}  : </p><span class="col-md-6">{{ $bug->task->name }}</span> </div>--}}
                                         <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.bug.fields.status') }} : </p><span class="col-md-6 "><span class="bg-success p-1">{{$bug->status ? trans("cruds.status.".$bug->status)  : '' }}</span></span> </div>
                                         <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.bug.fields.priority') }} :</p> <span class="col-md-6 "><span class="bg-info p-1"> {{ $bug->priority ? trans("cruds.status.".$bug->priority)  : '' }}</span></span> </div>
                                         <div class="row"> <p class="font-bold col-md-6">{{ trans('cruds.bug.fields.severity') }} :</p> <span class="col-md-6"><span class="bg-danger p-1">{{ $bug->severity ? trans("cruds.status.".$bug->severity)  : '' }}</span></span> </div>
@@ -372,6 +373,96 @@
                             </div>
                         @endif
                     </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="v-pills-attachment" role="tabpanel" aria-labelledby="v-pills-attachment-tab">
+                    <div class="card">
+                        <h6 class="card-header">
+                            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="pills-attchment-tab" data-toggle="pill" href="#pills-attchment" role="tab" aria-controls="pills-attchment" aria-selected="true">attchment</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="btn" id="newattach-tab" data-toggle="modal" data-target="#attachmentExample" >New attchment</a>
+                                </li>
+                            </ul>
+
+                        </h6>
+                    <div class="card-body">
+                        
+                        <div class="tab-content" id="pills-tabContent">
+                        <div class="tab-pane fade show active" id="pills-attchment" role="tabpanel" aria-labelledby="pills-attchment-tab">
+                            <table class=" table table-bordered table-striped table-hover datatable datatable-attachment ">
+                                <thead>
+                                    <tr>
+                                    
+                                        <th>
+                                            #
+                                        </th>
+                                        <th>
+                                            {{ trans('cruds.opportunity.fields.name') }}
+                                        </th>
+                                     
+                                        <th>
+                                            {{ trans('cruds.opportunity.fields.description') }}
+                                        </th>
+                                        <th>
+                                            {{ trans('cruds.opportunity.fields.attachment') }}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if ($bug->attachments)
+                                    @forelse($bug->attachments as $key => $attach)
+                                    <tr data-entry-id="{{ $attach->id }}">
+                                        <td>
+                                            {{ $loop->iteration }}
+                                        </td>
+                                    
+                                        <td>
+                                        
+                                            {{ $attach->name?? '' }}
+                                        </td>
+                                        <td>
+                                            {{ $attach->description ?? '' }}
+                                        </td>
+                                       
+                                        <td>
+                                           
+                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter_{{ $attach->id }}">
+                                                Attachment
+                                            </button>
+                                            @php
+                                            $attachments=$attach->getMedia('attachments');
+                                            @endphp
+                                            <div class="modal fade" id="exampleModalCenter_{{ $attach->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                @include('projectmanagement::admin.bugs.partials.modal',['attachments',$attachments])
+                                            </div>
+                                         
+                                           <a class="btn btn-danger" href="{{route('projectmanagement.admin.bugs.delete.attach',[$attach->id,$attach->id])}}"><i class="fas fa-trash-alt"></i></a>    
+                                        </td>
+                
+                                    </tr>
+                                
+                                    @empty
+                                        <tr>
+                                            <td colspan="8" >
+                                                <center> {{trans('cruds.messages.no_attachment_found_in_project')}} </center>
+                                            </td>
+                                        </tr>
+                                    @endforelse
+                                    @else
+                                        <tr>
+                                            <td colspan="8" >
+                                                {{trans('cruds.messages.no_attachment_found_in_project')}}
+                                            </td>
+                                        </tr>
+                                    @endif
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        </div>
                     </div>
                 </div>
                 <div class="tab-pane fade" id="v-pills-comments" role="tabpanel" aria-labelledby="v-pills-comments-tab">
@@ -515,12 +606,92 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal attachment-->
+
+    <div class="modal fade bd-example-modal-lg" id="attachmentExample" tabindex="-1" role="dialog"
+    aria-labelledby="attachmentLabel" aria-hidden="true">
+
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="attachmentLabel">Show Attachment</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="POST" action="{{ route("projectmanagement.admin.bugs.storeattachment",$bug->id) }}" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-body">
+                    
+                    @include('projectmanagement::admin.bugs.partials.attachmentform',['bug',$bug])
+                  
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-info">save</button>
+                </div>
+            </form>
+           
+        </div>
+    </div>
+</div>
+<!-- Modal -->
 @endsection
 
 @section('scripts')
 
     {{--    For editor in texteara notes--}}
-
+    <script>
+        Dropzone.options.attachmentsDropzone = {
+            url: '{{ route('projectmanagement.admin.task-attachments.storeMedia') }}',
+            maxFilesize: 2, // MB
+            maxFiles: 10,
+            addRemoveLinks: true,
+            headers: {
+                'X-CSRF-TOKEN': "{{ csrf_token() }}"
+            },
+            params: {
+                size: 2
+            },
+            success: function (file, response) {
+                $('form').find('input[name="attachments"]').remove();
+                $('form').append('<input type="hidden" name="attachments[]" value="' + response.name + '">')
+            },
+            removedfile: function (file) {
+                file.previewElement.remove();
+                if (file.status !== 'error') {
+                    $('form').find('input[name="attachments[]"]').remove();
+                    this.options.maxFiles = this.options.maxFiles + 1
+                }
+            },
+            init: function () {
+                    @if(isset($transfer) && $transfer->attachments)
+                var file = {!! json_encode($transfer->attachments) !!}
+                        this.options.addedfile.call(this, file);
+                file.previewElement.classList.add('dz-complete');
+                $('form').append('<input type="hidden" name="attachments[]" value="' + file.file_name + '">');
+                this.options.maxFiles = this.options.maxFiles - 1;
+                @endif
+            },
+            error: function (file, response) {
+                if ($.type(response) === 'string') {
+                    var message = response //dropzone sends it's own error messages in string
+                } else {
+                    var message = response.errors.file
+                }
+                file.previewElement.classList.add('dz-error');
+                _ref = file.previewElement.querySelectorAll('[data-dz-errormessage]');
+                _results = []
+                for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                    node = _ref[_i];
+                    _results.push(node.textContent = message)
+                }
+    
+                return _results
+            }
+        }
+    </script>
     <script>
         $(document).ready(function () {
             function SimpleUploadAdapter(editor) {

@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\ProjectManagement\Entities\Project;
+use Modules\ProjectManagement\Entities\TaskAttachment;
 use Modules\ProjectManagement\Entities\Task;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
@@ -100,5 +101,10 @@ class Bug extends Model implements HasMedia
     public function comments_with_replies()
     {
         return $this->hasMany(Comment::class,'module_field_id')->where('module','=','bug')->orderBy('id','desc');
+    }
+
+    public function attachments()
+    {
+        return $this->hasMany(TaskAttachment::class,'bug_id','id');
     }
 }

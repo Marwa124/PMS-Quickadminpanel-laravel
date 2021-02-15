@@ -259,6 +259,7 @@
                     <a class="nav-link" id="v-pills-invoices-tab"       data-toggle="pill" href="#v-pills-invoices" role="tab" aria-controls="v-pills-invoices" aria-selected="false">{{ trans('cruds.invoice.title') }}<span class="float-right">                     {{$project->invoices && $project->invoices()->count() > 0 ? $project->invoices()->count() : ''}}</span></a>
                     <a class="nav-link" id="v-pills-time_sheets-tab"    data-toggle="pill" href="#v-pills-time_sheets" role="tab" aria-controls="v-pills-time_sheets" aria-selected="false">{{ trans('cruds.project.fields.time_sheet') }}<span class="float-right">   {{$project->TimeSheet && $project->TimeSheet()->count() > 0 ? $project->TimeSheet()->count() : ''}}</span></a>
                     <a class="nav-link" id="v-pills-calendar-tab"       data-toggle="pill" href="#v-pills-calendar" role="tab" aria-controls="v-pills-calendar" aria-selected="false" onclick="generateCalendar()">{{ trans('cruds.tasksCalendar.title') }}</a>
+                    <a class="nav-link" id="v-pills-attachment-tab"     data-toggle="pill" href="#v-pills-attachment" role="tab" aria-controls="v-pills-attachment" aria-selected="false">{{ trans('cruds.project.fields.attachment') }}<span  class="float-right"> </span></a>
                     {{--<a class="nav-link" id="v-pills-expenses-tab"        data-toggle="pill" href="#v-pills-expenses" role="tab" aria-controls="v-pills-expenses" aria-selected="false" >{{ trans('cruds.expense.title') }} <span class="float-right">                  {{$project->expenses && $project->expenses()->count() > 0 ? $project->expenses()->count() : ''}}</span></a>--}}
                     <a class="nav-link" id="v-pills-activities-tab"     data-toggle="pill" href="#v-pills-activities" role="tab" aria-controls="v-pills-activities" aria-selected="false">{{ trans('cruds.activities.title') }}<span class="float-right">              {{$project->activities && $project->activities()->count() > 0 ? $project->activities()->count() : ''}}</span></a>
                 </div>
@@ -708,7 +709,7 @@
                                             {{ $errors->first('notes') }}
                                         </div>
                                     @endif
-            {{--                        <span class="help-block">{{ trans('cruds.project.fields.note_helper') }}</span>--}}
+                                {{--                        <span class="help-block">{{ trans('cruds.project.fields.note_helper') }}</span>--}}
                                 </div>
                                 <input type="hidden" name="project_id" value="{{$project->id}}" />
                                 <div class="form-group col-md-12">
@@ -1144,7 +1145,7 @@
                                                                 @endif
                                                             </td>
                                                             <td>
-{{--                                                                get_time_spent_result in file global_helper --}}
+                                                            {{--                                                                get_time_spent_result in file global_helper --}}
                                                                 @if($timer->end_time && $timer->start_time)
                                                                     {{ get_time_spent_result($timer->end_time - $timer->start_time)  }}
                                                                 @endif
@@ -1315,6 +1316,96 @@
                     </div>
                     </div>
                 </div>
+                <div class="tab-pane fade" id="v-pills-attachment" role="tabpanel" aria-labelledby="v-pills-attachment-tab">
+                    <div class="card">
+                        <h6 class="card-header">
+                            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="pills-attchment-tab" data-toggle="pill" href="#pills-attchment" role="tab" aria-controls="pills-attchment" aria-selected="true">attchment</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="btn" id="newattach-tab" data-toggle="modal" data-target="#attachmentExample" >New attchment</a>
+                                </li>
+                            </ul>
+
+                        </h6>
+                    <div class="card-body">
+                        
+                        <div class="tab-content" id="pills-tabContent">
+                        <div class="tab-pane fade show active" id="pills-attchment" role="tabpanel" aria-labelledby="pills-attchment-tab">
+                            <table class=" table table-bordered table-striped table-hover datatable datatable-attachment ">
+                                <thead>
+                                    <tr>
+                                    
+                                        <th>
+                                            #
+                                        </th>
+                                        <th>
+                                            {{ trans('cruds.opportunity.fields.name') }}
+                                        </th>
+                                     
+                                        <th>
+                                            {{ trans('cruds.opportunity.fields.description') }}
+                                        </th>
+                                        <th>
+                                            {{ trans('cruds.opportunity.fields.attachment') }}
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if ($project->attachments)
+                                    @forelse($project->attachments as $key => $attach)
+                                    <tr data-entry-id="{{ $attach->id }}">
+                                        <td>
+                                            {{ $loop->iteration }}
+                                        </td>
+                                    
+                                        <td>
+                                        
+                                            {{ $attach->name?? '' }}
+                                        </td>
+                                        <td>
+                                            {{ $attach->description ?? '' }}
+                                        </td>
+                                       
+                                        <td>
+                                           
+                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter_{{ $attach->id }}">
+                                                Attachment
+                                            </button>
+                                            @php
+                                            $attachments=$attach->getMedia('attachments');
+                                            @endphp
+                                            <div class="modal fade bd-example-modal-l" id="exampleModalCenter_{{ $attach->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                @include('projectmanagement::admin.projects.partials.modal',['attachments',$attachments])
+                                            </div>
+                                         
+                                           <a class="btn btn-danger" href="{{route('projectmanagement.admin.projects.delete.attach',[$attach->id,$attach->id])}}"><i class="fas fa-trash-alt"></i></a>    
+                                        </td>
+                
+                                    </tr>
+                                
+                                    @empty
+                                        <tr>
+                                            <td colspan="8" >
+                                                <center> {{trans('cruds.messages.no_attachment_found_in_project')}} </center>
+                                            </td>
+                                        </tr>
+                                    @endforelse
+                                    @else
+                                        <tr>
+                                            <td colspan="8" >
+                                                {{trans('cruds.messages.no_attachment_found_in_project')}}
+                                            </td>
+                                        </tr>
+                                    @endif
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        </div>
+                    </div>
+                </div>
                 <div class="tab-pane fade" id="v-pills-comments" role="tabpanel" aria-labelledby="v-pills-comments-tab">
                     <div class="card"  >
                         <h5 class="card-header">{{ trans('cruds.comment.title') }} </h5>
@@ -1353,7 +1444,7 @@
                                         </a>
                                     </div>
 
-{{--                                                                replies of replay--}}
+                    {{--                                                                replies of replay--}}
                                     @if(isset($comment->replay))
 
                                         @foreach($comment->replay as $comment_of_replay)
@@ -1397,13 +1488,13 @@
                                 </div>
 
 
-{{--                                                        @if(json_decode($comment->attachments))--}}
-{{--                                                            <div class="col-md-4 mb-2 ml-2">--}}
-{{--                                                                <button  type="button" data-toggle="modal" data-target="#replay_{{ $comment->id }}" class="btn btn-secondary" style="border-radius: 0;" >--}}
-{{--                                                                    @lang('locale.view_attachments')--}}
-{{--                                                                </button>--}}
-{{--                                                            </div>--}}
-{{--                                                        @endif--}}
+                                {{--                                                        @if(json_decode($comment->attachments))--}}
+                                {{--                                                            <div class="col-md-4 mb-2 ml-2">--}}
+                                {{--                                                                <button  type="button" data-toggle="modal" data-target="#replay_{{ $comment->id }}" class="btn btn-secondary" style="border-radius: 0;" >--}}
+                                {{--                                                                    @lang('locale.view_attachments')--}}
+                                {{--                                                                </button>--}}
+                                {{--                                                            </div>--}}
+                                {{--                                                        @endif--}}
 
 
 
@@ -1419,26 +1510,26 @@
                                                 </button>
                                                 <div class="modal-body">
                                                     <div class="row">
-{{--                                                                                                        @forelse(json_decode($comment->attachments) as $attach)--}}
+                                                    {{--                                                                                                        @forelse(json_decode($comment->attachments) as $attach)--}}
 
 
-{{--                                                                                                            <div class="col-md-4">--}}
-{{--                                                                                                                <a  target="_blank" href="{{ asset('uploads/projects/'.$attach) }}">--}}
+                                                    {{--                                                                                                            <div class="col-md-4">--}}
+                                                    {{--                                                                                                                <a  target="_blank" href="{{ asset('uploads/projects/'.$attach) }}">--}}
 
-{{--                                                                                                                    @if(strpos($attach,'.pdf') !== false)--}}
-{{--                                                                                                                        <img style="width:150px;height:180px;" src="{{ asset('pdf.png') }}" alt="">--}}
-{{--                                                                                                                    @elseif(strpos($attach,'.xlsx') !== false || strpos($attach,'.xls') !== false || strpos($attach,'.csv') !== false || strpos($attach,'.txt') !== false)--}}
-{{--                                                                                                                        <img style="width:150px;height:180px;" src="{{ asset('excel.png') }}" alt="">--}}
+                                                    {{--                                                                                                                    @if(strpos($attach,'.pdf') !== false)--}}
+                                                    {{--                                                                                                                        <img style="width:150px;height:180px;" src="{{ asset('pdf.png') }}" alt="">--}}
+                                                    {{--                                                                                                                    @elseif(strpos($attach,'.xlsx') !== false || strpos($attach,'.xls') !== false || strpos($attach,'.csv') !== false || strpos($attach,'.txt') !== false)--}}
+                                                    {{--                                                                                                                        <img style="width:150px;height:180px;" src="{{ asset('excel.png') }}" alt="">--}}
 
-{{--                                                                                                                    @else--}}
-{{--                                                                                                                        <img style="width:150px;height:200px;" src="{{ asset('uploads/projects/'.$attach) }}" alt="">--}}
-{{--                                                                                                                    @endif--}}
-{{--                                                                                                                </a>--}}
+                                                    {{--                                                                                                                    @else--}}
+                                                    {{--                                                                                                                        <img style="width:150px;height:200px;" src="{{ asset('uploads/projects/'.$attach) }}" alt="">--}}
+                                                    {{--                                                                                                                    @endif--}}
+                                                    {{--                                                                                                                </a>--}}
 
-{{--                                                                                                            </div>--}}
-{{--                                                                                                        @empty--}}
-{{--                                                                                                            No Attachments found--}}
-{{--                                                                                                        @endforelse--}}
+                                                    {{--                                                                                                            </div>--}}
+                                                    {{--                                                                                                        @empty--}}
+                                                    {{--                                                                                                            No Attachments found--}}
+                                                    {{--                                                                                                        @endforelse--}}
                                                     </div>
                                                 </div>
 
@@ -1456,6 +1547,37 @@
             </div>
         </div>
     </div>
+
+        <!-- Modal attachment-->
+
+        <div class="modal fade bd-example-modal-lg" id="attachmentExample" tabindex="-1" role="dialog"
+        aria-labelledby="attachmentLabel" aria-hidden="true">
+
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="attachmentLabel">Show Attachment</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="POST" action="{{ route("projectmanagement.admin.projects.storeattachment",$project->id) }}" enctype="multipart/form-data">
+                    @csrf
+                    <div class="modal-body">
+                        
+                        @include('projectmanagement::admin.projects.partials.attachmentform',['project',$project])
+                      
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-info">save</button>
+                    </div>
+                </form>
+               
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
 @endsection
 
 @section('scripts')
@@ -1524,7 +1646,57 @@
         });
 
     </script>
+    {{-- dropzone --}}
+  <script>
+    Dropzone.options.attachmentsDropzone = {
+        url: '{{ route('projectmanagement.admin.task-attachments.storeMedia') }}',
+        maxFilesize: 2, // MB
+        maxFiles: 10,
+        addRemoveLinks: true,
+        headers: {
+            'X-CSRF-TOKEN': "{{ csrf_token() }}"
+        },
+        params: {
+            size: 2
+        },
+        success: function (file, response) {
+            $('form').find('input[name="attachments"]').remove();
+            $('form').append('<input type="hidden" name="attachments[]" value="' + response.name + '">')
+        },
+        removedfile: function (file) {
+            file.previewElement.remove();
+            if (file.status !== 'error') {
+                $('form').find('input[name="attachments[]"]').remove();
+                this.options.maxFiles = this.options.maxFiles + 1
+            }
+        },
+        init: function () {
+                @if(isset($transfer) && $transfer->attachments)
+            var file = {!! json_encode($transfer->attachments) !!}
+                    this.options.addedfile.call(this, file);
+            file.previewElement.classList.add('dz-complete');
+            $('form').append('<input type="hidden" name="attachments[]" value="' + file.file_name + '">');
+            this.options.maxFiles = this.options.maxFiles - 1;
+            @endif
+        },
+        error: function (file, response) {
+            if ($.type(response) === 'string') {
+                var message = response //dropzone sends it's own error messages in string
+            } else {
+                var message = response.errors.file
+            }
+            file.previewElement.classList.add('dz-error');
+            _ref = file.previewElement.querySelectorAll('[data-dz-errormessage]');
+            _results = []
+            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                node = _ref[_i];
+                _results.push(node.textContent = message)
+            }
 
+            return _results
+        }
+    }
+</script>
 {{--    For editor in texteara notes--}}
     <script>
         $(document).ready(function () {

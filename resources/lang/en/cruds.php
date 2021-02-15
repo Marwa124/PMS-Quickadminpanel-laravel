@@ -2021,6 +2021,7 @@ return [
             'total_bill'                => 'Total Bill',
             'project_report'            => 'Project Report',
             'total_projects_time_spent' => 'Total Projects Time Spent',
+            'attachment'                => 'Attachment',
         ],
     ],
     'projectSetting'         => [
@@ -3860,6 +3861,7 @@ return [
         'project_of_task_not_have_department'       => 'The Project Of Task don\'t have Department',
         'time_date_after_or_equal'                  => 'The Time Of End Date Must Be After Or Equal ',
         'payment_amounts_more_invoice_amount'       => 'The Payment Amounts More Than Due Invoice Amount  ',
+        'no_attachment_found_in_project'            => 'No Attachment Found in Project',
 
         // sales massages
         'sure_clone_proposal'                       => 'Are you sure to clone Proposal with items ?',
