@@ -247,7 +247,9 @@ class OpportunitiesController extends Controller
     { 
         DB::beginTransaction();
          try{
-            $taskAttachment->deleteMedia($id);
+            if($taskAttachment->hasMedia('attachments') == true){
+                $taskAttachment->clearMediaCollection('attachments');
+            }
             $taskAttachment->delete(); 
             DB::commit();
             return redirect()->back()->with(flash('Attachment Deleted successfully', 'success'));
@@ -264,7 +266,7 @@ class OpportunitiesController extends Controller
             // Begin a transaction
             DB::beginTransaction();
 
-            $opportunity = Opportunity::findOrFail($request->opportunity_id);
+//            $opportunity = Opportunity::findOrFail($request->opportunity_id);
             if ($request->comment_replay_id){
 
                 $validator = Validator::make($request->all(),[
@@ -283,7 +285,7 @@ class OpportunitiesController extends Controller
                     'comment_replay_id'     => $request->comment_replay_id,
                 ]);
 
-                setActivity('opportunity',$opportunity->id,'add replay on comment ','تم إضافة رد على تعليق',$opportunity->name,$opportunity->name);
+//                setActivity('opportunity',$opportunity->id,'add replay on comment ','تم إضافة رد على تعليق',$opportunity->name,$opportunity->name);
                 $flashMsg = flash(trans('cruds.messages.add_replay_success'), 'success');
 
             }else{
@@ -304,7 +306,7 @@ class OpportunitiesController extends Controller
                     'user_id'               => auth()->user()->id,
                 ]);
 
-                setActivity('opportunity',$opportunity->id,'add comment ','تم إضافة تعليق',$opportunity->name,$opportunity->name);
+//                setActivity('opportunity',$opportunity->id,'add comment ','تم إضافة تعليق',$opportunity->name,$opportunity->name);
                 $flashMsg = flash(trans('cruds.messages.add_comment_success'), 'success');
             }
 

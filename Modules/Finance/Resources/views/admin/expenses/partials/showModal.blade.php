@@ -55,7 +55,7 @@
                                 {{ trans('cruds.expenses.fields.project') }}
                             </th>
                             <td>
-                                {{ $request->project->name ?? '' }}
+                                {{ $request->project->{'name_'.app()->getLocale()} ?? '' }}
                             </td>
                         </tr>
                     @endif

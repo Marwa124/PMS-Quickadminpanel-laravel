@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
+use Modules\ProjectManagement\Entities\TaskAttachment;
 use \DateTimeInterface;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ProjectManagementMail;
@@ -247,5 +248,10 @@ class Project extends Model implements HasMedia
         }
 
         return $newproject;
+    }
+
+    public function attachments()
+    {
+        return $this->hasMany(TaskAttachment::class,'project_id','id');
     }
 }

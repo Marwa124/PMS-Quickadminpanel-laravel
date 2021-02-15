@@ -30,7 +30,8 @@ use Illuminate\Support\Facades\Mail;
 use Modules\ProjectManagement\Entities\Milestone;
 use Modules\ProjectManagement\Entities\Task;
 use Validator;
-
+use Modules\ProjectManagement\Http\Requests\StoreTaskAttachmentRequest;
+use Modules\ProjectManagement\Entities\TaskAttachment;
 class ProjectsController extends Controller
 {
     use MediaUploadingTrait,ProjectManagementHelperTrait;
@@ -877,4 +878,62 @@ class ProjectsController extends Controller
 //        return redirect()->back();
     }
 
+
+    
+    public function storeattachment(StoreTaskAttachmentRequest $request,Project $project)
+    {
+         DB::beginTransaction();
+         try{
+            $taskAttachment = TaskAttachment::create($request->all());
+            if ($request->input('attachments', false)) {
+                foreach ($request->attachments as $attachment) {
+                    $taskAttachment->addMedia(storage_path('tmp/uploads/' . $attachment))->toMediaCollection('attachments');
+                }
+            }
+            if ($media = $request->input('ck-media', false)) {
+                Media::whereIn('id', $media)->update(['model_id' => $taskAttachment->id]);
+            }
+            setActivity('project',$project->id,'add Attachments to project ','تم اضافة مرفقات الي المشروع',$project->name_en,$project->name_ar);
+            DB::commit();
+            return redirect()->back()->with(flash('Attachment add successfully', 'success'));
+
+
+        } catch (\Exception $e) {
+            
+            return redirect()->back()->with(['message' => 'Something wrong happen','alert-type' => 'error']);
+        }
+    }
+
+    // attachment opperation
+    public function downloadMedia($id)
+    {
+        $media = Media::findOrFail($id);
+        return response()->download($media->getPath(), $media->file_name);
+    }
+
+    public function viewMedia($id)
+    {
+        $media = Media::findOrFail($id);
+        return response()->file($media->getPath());
+    }
+
+    public function deleteMedia($id,TaskAttachment $taskAttachment)
+    { 
+
+        DB::beginTransaction();
+         try{
+             $project= Project::find($taskAttachment->project_id);
+            if($taskAttachment->hasMedia('attachments') == true){
+                $taskAttachment->clearMediaCollection('attachments');
+            }
+            $taskAttachment->delete(); 
+            setActivity('project',$project->id,'Delete Project Details','تم حذف المشروع',$project->name_en,$project->name_ar);
+            DB::commit();
+            return redirect()->back()->with(flash('Attachment Deleted successfully', 'success'));
+        } catch (\Exception $e) {
+
+            return redirect()->back()->with(['message' => 'Something wrong happen','alert-type' => 'error']);
+        }
+
+    }
 }

@@ -24,7 +24,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ProjectManagementMail;
 use Validator;
-
+use Modules\ProjectManagement\Http\Requests\StoreTaskAttachmentRequest;
+use Modules\ProjectManagement\Entities\TaskAttachment;
 
 class BugsController extends Controller
 {
@@ -712,4 +713,61 @@ class BugsController extends Controller
 //        return redirect()->back();
     }
 
+
+    public function storeattachment(StoreTaskAttachmentRequest $request,Bug $bug)
+    {
+         DB::beginTransaction();
+         try{
+            $taskAttachment = TaskAttachment::create($request->all());
+            if ($request->input('attachments', false)) {
+                foreach ($request->attachments as $attachment) {
+                    $taskAttachment->addMedia(storage_path('tmp/uploads/' . $attachment))->toMediaCollection('attachments');
+                }
+            }
+            if ($media = $request->input('ck-media', false)) {
+                Media::whereIn('id', $media)->update(['model_id' => $taskAttachment->id]);
+            }
+            setActivity('Bug',$bug->id,'add Attachments to bug ','تم اضافة مرفقات الي المهمة',$bug->name_en,$bug->name_ar);
+            DB::commit();
+            return redirect()->back()->with(flash('Attachment add successfully', 'success'));
+
+
+        } catch (\Exception $e) {
+            
+            return redirect()->back()->with(['message' => 'Something wrong happen','alert-type' => 'error']);
+        }
+    }
+
+    // attachment opperation
+    public function downloadMedia($id)
+    {
+        $media = Media::findOrFail($id);
+        return response()->download($media->getPath(), $media->file_name);
+    }
+
+    public function viewMedia($id)
+    {
+        $media = Media::findOrFail($id);
+        return response()->file($media->getPath());
+    }
+
+    public function deleteMedia($id,TaskAttachment $taskAttachment)
+    { 
+
+        DB::beginTransaction();
+         try{
+             $bug= Bug::find($taskAttachment->bug_id);
+            if($taskAttachment->hasMedia('attachments') == true){
+                $taskAttachment->clearMediaCollection('attachments');
+            }
+            $taskAttachment->delete(); 
+            setActivity('Bug',$bug->id,'Delete bug attachments Details','تم حذف مرفقات ',$bug->name_en,$bug->name_ar);
+            DB::commit();
+            return redirect()->back()->with(flash('Attachment Deleted successfully', 'success'));
+        } catch (\Exception $e) {
+
+            return redirect()->back()->with(['message' => 'Something wrong happen','alert-type' => 'error']);
+        }
+
+    }
 }

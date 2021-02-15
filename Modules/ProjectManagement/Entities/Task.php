@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Modules\ProjectManagement\Entities\Project;
+use Modules\ProjectManagement\Entities\TaskAttachment;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
@@ -233,11 +234,16 @@ class Task extends Model implements HasMedia
 
             $new_sub_task = Task::findOrFail($new_sub_task->id);
 
-//            setActivity('task',$new_sub_task->id,'Save Task Details',$new_sub_task->name);
+            // setActivity('task',$new_sub_task->id,'Save Task Details',$new_sub_task->name);
             setActivity('task',$new_sub_task->id,'Save Task Details','حقظ تفاصيل المهمه',$new_sub_task->name_en,$new_sub_task->name_ar);
 
         }
 
         return $new_task;
+    }
+
+    public function attachments()
+    {
+        return $this->hasMany(TaskAttachment::class,'task_id','id');
     }
 }
