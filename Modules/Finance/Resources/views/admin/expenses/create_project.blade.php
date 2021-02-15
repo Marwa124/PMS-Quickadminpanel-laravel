@@ -25,6 +25,24 @@
 
                 <div class="form-group">
                     <label class="required"
+                           for="project_id">{{ trans('cruds.expenses.fields.project') }}</label>
+                    <select class="form-control select2 {{ $errors->has('project_id') ? 'is-invalid' : '' }}"
+                            name="project_id" id="project_id" required>
+
+
+                            <option
+                                    value="{{ $project->id }}" {{ old('project_id') == $project->id ? 'selected' : '' }}>{{ $project->name }}</option>
+                    </select>
+                    @if($errors->has('project_id'))
+                        <div class="invalid-feedback">
+                            {{ $errors->first('project_id') }}
+                        </div>
+                    @endif
+                </div>
+
+
+                <div class="form-group">
+                    <label class="required"
                            for="account_id">{{ trans('cruds.expenses.fields.account_name') }}</label>
                     <select class="form-control select2 {{ $errors->has('account_id') ? 'is-invalid' : '' }}"
                             name="account_id" id="account_id" required>
@@ -96,12 +114,8 @@
                     <label  for="paid_by">{{ trans('cruds.expenses.fields.paid_by') }}</label>
                     <select class="form-control select2 {{ $errors->has('expense_category_id ') ? 'is-invalid' : '' }}"
                             name="paid_by_id" id="paid_by" >
-                        <option
-                                value="" selected>{{ trans('cruds.expenses.fields.select_paid') }}</option>
-                        @foreach($clients as $id => $client)
                             <option
                                 value="{{ $client->id }}" {{ old('paid_by_id') == $client->id ? 'selected' : '' }}>{{ $client->name }}</option>
-                        @endforeach
                     </select>
                     @if($errors->has('paid_by_id'))
                         <div class="invalid-feedback">
