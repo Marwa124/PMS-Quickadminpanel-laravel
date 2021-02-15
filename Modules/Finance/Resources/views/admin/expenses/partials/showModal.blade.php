@@ -48,6 +48,17 @@
                             {{ $request->amount ?? '' }} EGP
                         </td>
                     </tr>
+                    @if($request->project_id != null)
+
+                        <tr>
+                            <th>
+                                {{ trans('cruds.expenses.fields.project') }}
+                            </th>
+                            <td>
+                                {{ $request->project->name ?? '' }}
+                            </td>
+                        </tr>
+                    @endif
                     <tr>
                         <th>
                             {{ trans('cruds.expenses.fields.status') }}

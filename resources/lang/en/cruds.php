@@ -90,6 +90,7 @@ return [
             'select_expense_category'  => 'Select Expense Category',
             'select_paid'  => 'Select Paid',
             'entry_date'  => 'Entry Date',
+            'project'  => 'Project',
         ]
     ],
 
