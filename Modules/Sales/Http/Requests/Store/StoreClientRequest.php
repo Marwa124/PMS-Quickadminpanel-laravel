@@ -14,15 +14,19 @@ class StoreClientRequest extends FormRequest
         return Gate::allows('client_create');
     }
 
+
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'client_status'=>1,
+            'password'=> bcrypt($this->password),
+        ]);
+    }
+
     public function rules()
     {
         return [
-            'primary_contact' => [
-                'nullable',
-                'integer',
-                'min:-2147483648',
-                'max:2147483647',
-            ],
+            
             'name'            => [
                 'string',
                 'required',
@@ -101,7 +105,14 @@ class StoreClientRequest extends FormRequest
             ],
             'username'        => [
                 'string',
-                'nullable',
+                'required',
+            ],
+            'password'        => [
+                'required',
+            ],
+            'email'                => [
+                'required',
+                'unique:users',
             ],
         ];
     }

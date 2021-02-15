@@ -5,18 +5,18 @@ namespace App\Models;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Model;
 
-class LeadStatus extends Model
+class Priority extends Model
 {
 
-    public $table = 'lead_statuses';
+    public $table = 'priorities';
 
     protected $dates = [
         'created_at',
         'updated_at',
-
     ];
 
-    protected $fillable = ['name_en', 'name_ar'];
+    protected $fillable = ['priority_en', 'priority_ar'];
+
 
 
     protected function serializeDate(DateTimeInterface $date)
