@@ -4,6 +4,7 @@ namespace Modules\Sales\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\MediaUploadingTrait;
+use Modules\ProjectManagement\Entities\Comment;
 use Modules\Sales\Http\Requests\Destroy\MassDestroyOpportunityRequest;
 use Modules\Sales\Http\Requests\Store\StoreOpportunityRequest;
 use Modules\ProjectManagement\Http\Requests\StoreTaskAttachmentRequest;
@@ -255,4 +256,72 @@ class OpportunitiesController extends Controller
         }
 
     }
+
+    public function add_comment(Request $request)
+    {
+
+        try {
+            // Begin a transaction
+            DB::beginTransaction();
+
+            $opportunity = Opportunity::findOrFail($request->opportunity_id);
+            if ($request->comment_replay_id){
+
+                $validator = Validator::make($request->all(),[
+                    'opportunity_id'        => 'exists:opportunities,id',
+                    'replay_comment'    => 'required',
+                    'comment_replay_id'  => 'exists:comments,id',
+                ]);
+                if($validator->fails()) {
+                    return redirect()->back()->with(flash(trans('cruds.messages.add_replay_failed'), 'danger'))->withErrors($validator)->withInput();
+                }
+                $comment = Comment::create([
+                    'module_field_id'       => $request->opportunity_id,
+                    'comment'               => $request->replay_comment,
+                    'module'                => 'opportunity',
+                    'user_id'               => auth()->user()->id,
+                    'comment_replay_id'     => $request->comment_replay_id,
+                ]);
+
+                setActivity('opportunity',$opportunity->id,'add replay on comment ','تم إضافة رد على تعليق',$opportunity->name,$opportunity->name);
+                $flashMsg = flash(trans('cruds.messages.add_replay_success'), 'success');
+
+            }else{
+
+                $validator = Validator::make( $request->all(),[
+                    'opportunity_id'    => 'exists:opportunities,id',
+                    'comment'           => 'required',
+                ]);
+
+                if($validator->fails()) {
+                    return redirect()->back()->with(flash(trans('cruds.messages.add_replay_failed'), 'danger'))->withErrors($validator)->withInput();
+                }
+
+                $comment = Comment::create([
+                    'module_field_id'       => $request->opportunity_id,
+                    'comment'               => $request->comment,
+                    'module'                => 'opportunity',
+                    'user_id'               => auth()->user()->id,
+                ]);
+
+                setActivity('opportunity',$opportunity->id,'add comment ','تم إضافة تعليق',$opportunity->name,$opportunity->name);
+                $flashMsg = flash(trans('cruds.messages.add_comment_success'), 'success');
+            }
+
+
+            // Commit the transaction
+            DB::commit();
+            return back()->with($flashMsg);
+
+        }catch(\Exception $e){
+            // An error occured; cancel the transaction...
+            DB::rollback();
+            return back()->with(flash(trans('cruds.messages.add_comment_failed'), 'danger'))->withInput();
+
+            // and throw the error again.
+            throw $e;
+        }
+//        return redirect()->back();
+    }
+
 }

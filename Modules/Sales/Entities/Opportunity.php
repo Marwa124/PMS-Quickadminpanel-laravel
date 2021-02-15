@@ -5,6 +5,7 @@ namespace Modules\Sales\Entities;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Modules\ProjectManagement\Entities\Comment;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 use Spatie\MediaLibrary\Models\Media;
@@ -92,6 +93,16 @@ class Opportunity extends Model implements HasMedia
     public function attachments()
     {
         return $this->hasMany(TaskAttachment::class,'opportunities_id','id');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class,'module_field_id')->where('module','=','opportunity')->where('comment_replay_id','=',null)->orderBy('id','desc');
+    }
+
+    public function comments_with_replies()
+    {
+        return $this->hasMany(Comment::class,'module_field_id')->where('module','=','opportunity')->orderBy('id','desc');
     }
 
 }

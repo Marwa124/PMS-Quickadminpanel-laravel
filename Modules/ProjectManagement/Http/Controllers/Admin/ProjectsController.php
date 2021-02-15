@@ -791,6 +791,7 @@ class ProjectsController extends Controller
                 ]);
 
                 setActivity('project',$project->id,'add replay on comment ','تم إضافة رد على تعليق',$project->name_en,$project->name_ar);
+                $flashMsg = flash(trans('cruds.messages.add_replay_success'), 'success');
 
             }else{
 
@@ -811,6 +812,7 @@ class ProjectsController extends Controller
                 ]);
 
                 setActivity('project',$project->id,'add comment ','تم إضافة تعليق',$project->name_en,$project->name_ar);
+                $flashMsg = flash(trans('cruds.messages.add_comment_success'), 'success');
             }
 
             if ($comment && $comment->user)
@@ -855,12 +857,12 @@ class ProjectsController extends Controller
             }
             // Commit the transaction
             DB::commit();
-            return back()->with(flash(trans('cruds.messages.add_replay_success'), 'success'));
+            return back()->with($flashMsg);
 
         }catch(\Exception $e){
             // An error occured; cancel the transaction...
             DB::rollback();
-            return back()->with(flash(trans('cruds.messages.add_replay_failed'), 'danger'))->withInput();
+            return back()->with(flash(trans('cruds.messages.add_comment_failed'), 'danger'))->withInput();
 
             // and throw the error again.
             throw $e;

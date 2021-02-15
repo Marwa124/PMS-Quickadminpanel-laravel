@@ -1753,38 +1753,38 @@
 
         // comment and replay on comment
 
-        var count = 0;
-        function replayForm() {
-            if (count % 2 == 0){
-
-
-                // document.getElementById("replay").classList.add('visible');
-                // document.getElementById("replay").classList.remove('invisible');
-                document.getElementById("replay_ticket").style.display = 'block';
-
-                count++;
-            }else {
-                // document.getElementById("replay").classList.add('invisible');
-                //
-                // document.getElementById("replay").classList.remove('visible');
-                document.getElementById("replay_ticket").style.display = 'none';
-                count++;
-            }
-
-        }
-
-        // CKEDITOR.replace('body');
-
-        $('.replay_submit').click(function(){
-
-            $('.replay_ticket').removeClass('hidden');
-        })
-
-        $('.replay_submit').dblclick(function(){
-
-            $('.replay_ticket').addClass('hidden');
-            $('.replay_submit').removeClass('disabled');
-        })
+        // var count = 0;
+        // function replayForm() {
+        //     if (count % 2 == 0){
+        //
+        //
+        //         // document.getElementById("replay").classList.add('visible');
+        //         // document.getElementById("replay").classList.remove('invisible');
+        //         document.getElementById("replay_ticket").style.display = 'block';
+        //
+        //         count++;
+        //     }else {
+        //         // document.getElementById("replay").classList.add('invisible');
+        //         //
+        //         // document.getElementById("replay").classList.remove('visible');
+        //         document.getElementById("replay_ticket").style.display = 'none';
+        //         count++;
+        //     }
+        //
+        // }
+        //
+        // // CKEDITOR.replace('body');
+        //
+        // $('.replay_submit').click(function(){
+        //
+        //     $('.replay_ticket').removeClass('hidden');
+        // })
+        //
+        // $('.replay_submit').dblclick(function(){
+        //
+        //     $('.replay_ticket').addClass('hidden');
+        //     $('.replay_submit').removeClass('disabled');
+        // })
 
         var i = 0;
         function addReplay(replay_id) {

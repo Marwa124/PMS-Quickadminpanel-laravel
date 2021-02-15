@@ -82,8 +82,9 @@ Route::group(['as' => 'sales.admin.', 'prefix' => 'admin/sales', 'namespace' => 
     Route::get('opportunities/media/download/{id}', 'OpportunitiesController@downloadMedia')->name('opportunities.download.attach');
     Route::get('opportunities/media/view/{id}', 'OpportunitiesController@viewMedia')->name('opportunities.view.attach');
     Route::get('opportunities/media/delete/{id}/{taskAttachment}', 'OpportunitiesController@deleteMedia')->name('opportunities.delete.attach');
+    Route::post('opportunities/add_comment','OpportunitiesController@add_comment')->name('opportunities.add_comment');
 
-    
+
     // Clients
     Route::delete('clients/destroy', 'ClientsController@massDestroy')->name('clients.massDestroy');
     Route::post('clients/media', 'ClientsController@storeMedia')->name('clients.storeMedia');
